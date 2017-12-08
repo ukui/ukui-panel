@@ -1,0 +1,19 @@
+Hacking on mate-panel
+======================
+
+ + The development occurs in git:
+
+     https://github.com/mate-desktop/mate-panel
+
+   For information on how to access MATE git please read:
+
+     http://wiki.mate-desktop.org
+
+ + Please send patches as bug reports in MATE Bugzilla:
+
+     https://github.com/mate-desktop/mate-panel/issues
+
+ + Please try and send a patch against a recent version of this package.
+   Patches (pull requests) against git master are most preferable.
+
+ + Don't commit any but the most trivial patches without approval.

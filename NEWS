@@ -1,0 +1,235 @@
+### mate-panel 1.19.3
+
+  * Translations update
+  * wncklet: stop segfaults, warnings on removing in-process switcher, window-list
+  * fish: fix adding back after removal
+  * Fish: stop all warnings on removing when built in-process
+  * Clock: fix removal warnings when in-process applet removed
+  * clock: stop segfault on removing applet when built in-process
+  * libmate-panel-applet: fix typos in id->factory_id rename
+  * libmate-panel-applet: Only declare _panel_applet_shlib_factory() when needed
+  * libmate-panel-applet: fix error in unregistering dbus object
+  * libmate-panel-applet: fix build warning
+  * libmate-panel-applet: fix introspection
+  * libmate-panel-applet: unown bus name and unregister dbus object
+  * libmate-panel-applet GTK 3.14/3.16: fix custom bg w alpha
+  * libmate-panel-applet: include dummy variable in factory for certian applets
+  * libmate-panel-applet: fix bg rendering for in-process applets
+  * libpanel-applet/panel-applet.h: Rename id to factory_id for factory
+  * limatepanel-applet: add panel-applet-private.h
+  * don't use GtkPlug/GtkSocket for in process applets
+  * make it possible to get applet widget
+  * libpanel-applet: add panel_applet_factory_get_applet_widget
+  * libpanel-applet: return process type and applet uid
+  * libpanel-applet: store factories in hash table
+  * libpanel-applet: delay GtkPlug creation
+  * libpanel-applet: add process type to private data
+  * libpanel-applet: Remove out_process from panel_applet_factory_main()
+  * avoid deprecated gdk_screen_get_width/height
+  * avoid deprecated gdk_screen_get_n_monitors
+  * fish: fix applet opening as thin line when built in-process
+  * Forces a window scale of 1 for the panel,
+    instead of using the default or user configured scale.
+  * avoid deprecated gdk_screen_make_display_name
+  * avoid deprecated gdk_display_get_screen
+  * don't use deprecated gtk_show_uri
+
+### mate-panel 1.19.2
+
+  * Translations update
+  * avoid deprecated gdk_screen_get_number
+  * fix applet crashes on transparent user-set panel bg
+  * system tray: fix hidden icons on image/transparent color BG
+  * Fix GTK theme image bg support on vertical panel
+  * Make panel image background in GTK theme work again
+  * clock: fix hovering over timezone text, causes panel to scale beyond screen limit
+  * GTK 3.18+ fix transparent default panel bg
+
+### mate-panel 1.19.1
+
+  * Translations update
+  * menu: restore focus after drag-n-dropping menuitem outside
+  * menu: restore focus after closing popup menu of a menuitem
+  * Fix: menubar/menu-button can't launch mozo
+  * menu: remove incorrect code from the popup menu of a menuitem
+  * status notifier: follow same menu theme as rest of panel
+  * fix moving applets between panels
+  * Restore Polish translation credits from GNOME
+  * menu: fix crash when some .desktop file has empty Icon field
+  * clock: properly handle visibility of edit button
+  * clock: drop deprecated gtk_size_group_set_ignore_hidden
+  * clock: move GtkButton in another horizontal GtkBox parent
+  * clock.c: drop deprecated gtk_size_group_set_ignore_hidden
+  * localized application's name and description
+  * menu-button: disconnect from GSettings when applet is removed
+  * action-button: disconnect from GSettings when applet is removed
+  * remove a needless glib check
+
+### mate-panel 1.19.0
+
+  * Translations update
+  * status-notifier: fix crash on unknown signal name
+  * use GTK+3 bookmarks location for Places menu
+  * doc: remove some references to nonexistent stuff
+  * fix build with gcc 4.9.2 (looks like it's in c89 mode by default)
+  * Run dialog: Add option to reverse history view
+  * Run dialog: Fix wrong history len with max size 1
+  * Run dialog: Allow changing history size
+  * doc: drop ancient MateConf references
+  * Run dialog: Fix wrong history order
+  * status-notifier: Do not hide passive items
+  * update copyright year to 2017
+  * panel-menu-bar: fix build warning and some spacing
+  * properly fit expanded panel to smaller screen size
+  * system-tray: Properly propagate orientation changes
+  * notification-area: Fix item orientation
+  * workspace switcher: handle GDK_SCROLL_SMOOTH and fix build warning
+  * Reenable workspace switcher wrapping
+  * pre-bump version
+  * status-notifier: Fix handling of icon-padding style property
+  * Simplify panel description shown when switching panels with the WM
+  * status-notifier: Plug a memory leak
+  * remove deprecated sys/timeb.h header, as nothing uses it
+  * status-notifier-watcher: Allow re-registration of registered items (#543)
+  * setup custom icon
+  * Revert "Suppress the shutdown option in the panel if LTSP_CLIENT is set"
+  * status-notifier: Plug a memory leak
+  * notification area: Fix memory leak sorting items
+
+### mate-panel 1.18.0
+
+  * NEWS: use consistent, project wide, markdown-like formatting
+    to make generating release announcements easier
+  * Build: require libmate-menu >= 1.10 and dconf >= 0.13.4
+  * Build: require libmateweather and libmate-desktop >= 1.17
+  * Move to GTK+3 (require GTK+ >= 3.14), drop GTK+2 code and
+    --with-gtk build option
+  * Launchers: add desktop actions support for additional launch
+    options
+  * Menu applets: add support for Menulibre menu editor, and prefer
+    it to Mozo if both are installed
+  * Notification area: add StatusNotifier support
+  * Fix lots of GTK+ deprecations and runtime warnings
+  * Don't spam accessible name changes when it is translated
+  * Some code cleanups
+  * Translations update
+
+### mate-panel 1.16.1
+
+  * Clock applet: mark current day in the calendar
+  * Clock applet: update tooltip only when new text is different
+    (fixes some OpenGL issues in fullscreen apps)
+  * GTK+3: stop calendar window jumping when expanding/folding
+    locations
+  * GTK+3: fix showing icon at mouse cursor on launcher drag-n-drop
+  * GTK+3: fix a heap of runtime warnings
+
+### mate-panel 1.16.0
+
+  * Use GtkAboutDialog instead of MateAboutDialog
+  * GTK+3: use GtkColorButton/GtkColorChooser in properties dialog
+  * GTK+3: fix a lot of deprecations
+  * Some more fixes and cleanups
+  * Translations update
+
+### mate-panel 1.14.2
+
+  * Some fixes for opensuse.layout
+  * Some more fixes and cleanups
+  * Translations update
+  * Make distcheck use currently selected GTK+ version
+
+### mate-panel 1.14.1
+
+  * Fix missing focus for panel widgets (needed for Orca to work)
+  * Some more fixes and cleanups
+  * Translations update
+
+### mate-panel 1.14.0
+
+  * Drop MateConf migration script
+  * Add separate "Delete" button in reload applet dialog, and
+    make "Don't Reload" button do what it says (it won't delete
+    applet permanently now)
+  * Make max number of bookmarks in menu (before submenu is created)
+    configurable via GSettings key
+  * Make icon size of menu items configurable via GSettings key
+  * Change default menubar icon size to 22px
+  * Drop "Ubuntu hacks" (--enable-ubuntu build option) as Ubuntu
+    dropped that stuff long ago
+  * GTK+3: add several style classes
+  * GTK+3: add several css names for 3.20
+  * GTK+3: fix rendering of custom backgrounds with 3.18 and newer
+  * GTK+3: fix a lot of deprecations
+  * Some more fixes and cleanups
+  * Translations update
+  * Add Changelog generation
+
+### mate-panel 1.12.2
+
+  * Drawer applet: fix occasional stretching of drawer's panel
+    over the entire screen
+  * Drawer applet: fix occasional crash on applet removing
+  * GTK+3: fix infinite loop with some themes
+  * Some more fixes
+
+### mate-panel 1.12.1
+
+  * GTK+3: fix background in some themes
+  * Some more fixes
+
+### mate-panel 1.12.0
+
+  * Require xrandr 1.3
+  * Add option to enable/disable week numbers in calendar
+  * Fix positions of locked applets on screen resolution change
+  * Retrieve strings directly from gschema (requires intltool 0.50.1)
+  * Switch to org.gnome.SessionManager (used by action buttons)
+  * GTK+3: add a style class for applets to follow panel-menu-bar
+  * Multiple GTK+3 fixes
+  * Some more fixes and cleanups
+
+### mate-panel 1.10.1
+
+  * Fish and clock applets: help fixes
+  * Drawer applet: fix opening after adding applets to it
+  * Force Quit applet: fix desktop freezing with GTK+3
+  * Some more GTK+3 fixes
+  * Some code cleanup
+  * Translations updates
+
+### mate-panel 1.10.0
+
+  * Gtk3, Fix deprecated use of gdk pointer api
+  * Gtk3, Port all GtkStyle to GtkStyleContext
+  * Gtk3, Port gtk_rc_parse_string to GtkCssProvider
+  * Gtk3, Several small fixes
+  * Several more fixes from monsta
+  * GDK_KEY_* is also in Gtk+2.24
+  * showdesktop: Fix the size of the icon
+  * clock: Check allocated size before creating the shadow pixbuf
+  * applet: Disconnect show and deactivate menu signals before destroying the applet menu
+  * Add a gtkimage with the current pixbuf to button-widget
+  * Fix implicit declaration of function of gdk_x11_set_sm_client_id
+  * panel-addto: Remove the vbox as it is redundant.
+  * na: Fix handling of SYSTEM_TRAY_CANCEL_MESSAGE
+  * Use gtk icon cache instead of custom one
+  * Several small fixes by monsta
+
+### mate-panel 1.8.0
+
+  * Added support for multiple layouts, stored in $(datadir)/mate-panel/layouts
+  * Added --layout parameter
+  * Add hook to support run dialog and main menu opening with metacity
+  * Switch to libwnck
+  * Use yelp-tools instead of mate-doc-utils
+
+### mate-panel 1.6.0
+
+  * add --run-dialog option to open run dialog
+  * migration to gsettings
+  * panel-menu-button: supports changed notify for new "has-arrow" key
+  * clock applet: removed evolution support
+  * default layout: default panel layout is loaded from
+    $(datadir)/mate-panel/panel-default-layout.mate. You can ovverride it by
+    providing $(datadir)/mate-panel/panel-default-layout.dist.

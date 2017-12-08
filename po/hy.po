@@ -1,0 +1,2849 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Aram Palyan <ararat.info@gmail.com>, 2014
+# Siranush <ss.m.95@mail.ru>, 2015-2016
+msgid ""
+msgstr ""
+"Project-Id-Version: MATE Desktop Environment\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-26 11:42+0300\n"
+"PO-Revision-Date: 2017-09-19 11:04+0000\n"
+"Last-Translator: monsta <monsta@inbox.ru>\n"
+"Language-Team: Armenian (http://www.transifex.com/mate/MATE/language/hy/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hy\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../applets/clock/calendar-window.c:248 ../applets/clock/clock.ui.h:27
+msgid "Locations"
+msgstr "Տեղակայություններ"
+
+#: ../applets/clock/calendar-window.c:248
+msgid "Edit"
+msgstr "Խմբագրել"
+
+#: ../applets/clock/calendar-window.c:474
+msgid "Calendar"
+msgstr "Օրացույց"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format (eg, like
+#. * in the US: 8:10 am). The %p expands to am/pm.
+#: ../applets/clock/clock.c:455
+msgid "%l:%M:%S %p"
+msgstr "%l:%M:%S %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format (eg, like
+#. * in the US: 8:10 am). The %p expands to am/pm.
+#: ../applets/clock/clock.c:455 ../applets/clock/clock-location-tile.c:513
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format (eg, like
+#. * in France: 20:10).
+#. Translators: This is a strftime format
+#. * string.
+#. * It is used to display the time in 24-hours
+#. * format (eg, like in France: 20:10).
+#: ../applets/clock/clock.c:460 ../applets/clock/clock.c:1613
+msgid "%H:%M:%S"
+msgstr "%H:%M:%S"
+
+#. Translators: This is a strftime format
+#. * string.
+#. * It is used to display the time in 24-hours
+#. * format (eg, like in France: 20:10).
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10).
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format (eg, like
+#. * in France: 20:10).
+#: ../applets/clock/clock.c:460 ../applets/clock/clock.c:1619
+#: ../applets/clock/clock-location-tile.c:473
+#: ../applets/clock/clock-location-tile.c:520
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the date. Replace %e with %d if, when
+#. * the day of the month as a decimal number is a single digit,
+#. * it should begin with a 0 in your locale (e.g. "May 01"
+#. * instead of "May  1").
+#: ../applets/clock/clock.c:471
+msgid "%a %b %e"
+msgstr "%a %b %e"
+
+#. translators: reverse the order of these arguments
+#. *              if the time should come before the
+#. *              date on a clock in your locale.
+#: ../applets/clock/clock.c:478
+#, c-format
+msgid ""
+"%1$s\n"
+"%2$s"
+msgstr "%1$s\n%2$s"
+
+#. translators: reverse the order of these arguments
+#. *              if the time should come before the
+#. *              date on a clock in your locale.
+#: ../applets/clock/clock.c:486
+#, c-format
+msgid "%1$s, %2$s"
+msgstr "%1$s, %2$s"
+
+#. Show date in tooltip.
+#. Translators: This is a strftime format string.
+#. * It is used to display a date. Please leave "%%s" as it is:
+#. * it will be used to insert the timezone name later.
+#: ../applets/clock/clock.c:659
+msgid "%A %B %d (%%s)"
+msgstr "%A %B %d (%%s)"
+
+#: ../applets/clock/clock.c:685
+msgid "Click to hide month calendar"
+msgstr "Կտտացրեք ամսվա օրացույցը փակելու համար"
+
+#: ../applets/clock/clock.c:687
+msgid "Click to view month calendar"
+msgstr "Կտտացրեք ամսվա օրացույցը տեսնելու համար"
+
+#: ../applets/clock/clock.c:1451
+msgid "Computer Clock"
+msgstr "Համակարգչային ժամացույց"
+
+#. Translators: This is a strftime format
+#. * string.
+#. * It is used to display the time in 12-hours
+#. * format with a leading 0 if needed (eg, like
+#. * in the US: 08:10 am). The %p expands to
+#. * am/pm.
+#: ../applets/clock/clock.c:1598
+msgid "%I:%M:%S %p"
+msgstr "%I:%M:%S %p"
+
+#. Translators: This is a strftime format
+#. * string.
+#. * It is used to display the time in 12-hours
+#. * format with a leading 0 if needed (eg, like
+#. * in the US: 08:10 am). The %p expands to
+#. * am/pm.
+#: ../applets/clock/clock.c:1606
+msgid "%I:%M %p"
+msgstr "%I:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display a date in the full format (so that people can
+#. * copy and paste it elsewhere).
+#: ../applets/clock/clock.c:1652
+msgid "%A, %B %d %Y"
+msgstr "%A, %B %d %Y"
+
+#: ../applets/clock/clock.c:1683
+msgid "Set System Time..."
+msgstr "Կարգավորել համակարգի ժամը…"
+
+#: ../applets/clock/clock.c:1684
+msgid "Set System Time"
+msgstr "Կարգավորել համակարգի ժամը"
+
+#: ../applets/clock/clock.c:1699
+msgid "Failed to set the system time"
+msgstr "Համակարգի ժամի կարգավորումը ձախողված է"
+
+#: ../applets/clock/clock.c:1897 ../applets/fish/fish.c:1673
+#: ../applets/wncklet/window-list.c:179
+#: ../applets/wncklet/workspace-switcher.c:336
+msgid "_Preferences"
+msgstr "_Նախընտրություններ"
+
+#: ../applets/clock/clock.c:1900 ../applets/fish/fish.c:1676
+#: ../applets/notification_area/main.c:176
+#: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-list.c:187
+#: ../applets/wncklet/window-menu.c:100
+#: ../applets/wncklet/workspace-switcher.c:344 ../mate-panel/drawer.c:545
+#: ../mate-panel/panel-action-button.c:730
+#: ../mate-panel/panel-context-menu.c:265 ../mate-panel/panel-menu-bar.c:359
+#: ../mate-panel/panel-menu-button.c:666
+msgid "_Help"
+msgstr "_Օգնություն"
+
+#: ../applets/clock/clock.c:1903 ../applets/fish/fish.c:1679
+#: ../applets/notification_area/main.c:179
+#: ../applets/wncklet/showdesktop.c:243 ../applets/wncklet/window-list.c:195
+#: ../applets/wncklet/window-menu.c:108
+#: ../applets/wncklet/workspace-switcher.c:352
+msgid "_About"
+msgstr "_Մասին"
+
+#: ../applets/clock/clock.c:1906
+msgid "Copy _Time"
+msgstr "Պատճենել _ժամը"
+
+#: ../applets/clock/clock.c:1909
+msgid "Copy _Date"
+msgstr "Պատճենել _ամսաթիվը"
+
+#: ../applets/clock/clock.c:1912
+msgid "Ad_just Date & Time"
+msgstr "Ուղ_ղել ամսաթիվը և ժամը"
+
+#: ../applets/clock/clock.c:2855
+msgid "Choose Location"
+msgstr "Ընտրել տեղակայությունը"
+
+#: ../applets/clock/clock.c:2934
+msgid "Edit Location"
+msgstr "Խմբագրել տեղակայությունը"
+
+#: ../applets/clock/clock.c:3061
+msgid "City Name"
+msgstr "Քաղաքի անունը"
+
+#: ../applets/clock/clock.c:3065
+msgid "City Time Zone"
+msgstr "Քաղաքի ժամային գոտի"
+
+#: ../applets/clock/clock.c:3280
+#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:3
+msgid "Clock"
+msgstr "Ժամացույց"
+
+#: ../applets/clock/clock.c:3282
+msgid "The Clock displays the current time and date"
+msgstr "Ժամացույցը ցույց է տալիս ընթացիկ ժամը և օրը"
+
+#: ../applets/clock/clock.c:3286 ../applets/fish/fish.c:575
+#: ../applets/notification_area/main.c:170
+#: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:562
+#: ../applets/wncklet/window-menu.c:90
+#: ../applets/wncklet/workspace-switcher.c:604
+#: ../mate-panel/panel-context-menu.c:121
+msgid "translator-credits"
+msgstr "թարգմանչի կրեդիտներ"
+
+#. Languages that have a single word that translates as either "state" or
+#. "province" should use that instead of "region".
+#: ../applets/clock/clock.ui.h:2
+msgid ""
+"<small><i>Type a city, region, or country name and then select a match from "
+"the pop-up.</i></small>"
+msgstr "<small><i>Տպե՛ք քաղաքի, մարզի կամ երկրի անունը ապա ելնող պատուհանից ընտրեք դրան համապատասխանողը։</i></small>"
+
+#: ../applets/clock/clock.ui.h:3
+msgid "_Timezone:"
+msgstr "_Ժամային գոտի՝"
+
+#: ../applets/clock/clock.ui.h:4
+msgid "_Location Name:"
+msgstr "_Տեղակայության անունը."
+
+#: ../applets/clock/clock.ui.h:5
+msgid "<i>(optional)</i>"
+msgstr "<i>(կամընտրական)</i>"
+
+#: ../applets/clock/clock.ui.h:6
+msgid "L_ongitude:"
+msgstr "Ե_րկարություն՝"
+
+#: ../applets/clock/clock.ui.h:7
+msgid "L_atitude:"
+msgstr "Լ_այնություն՝"
+
+#: ../applets/clock/clock.ui.h:8
+msgid "Time & Date"
+msgstr "Ժամ և օր"
+
+#: ../applets/clock/clock.ui.h:9
+msgid "_Time:"
+msgstr "_Ժամ՝"
+
+#: ../applets/clock/clock.ui.h:10
+msgid "Current Time:"
+msgstr "Ընթացիկ ժամանակ."
+
+#: ../applets/clock/clock.ui.h:11
+msgid "_Set System Time"
+msgstr "_Կարգավորել համակարգի ժամը"
+
+#: ../applets/clock/clock.ui.h:12
+msgid "East"
+msgstr "Արևելք"
+
+#: ../applets/clock/clock.ui.h:13
+msgid "West"
+msgstr "Արևմուտք"
+
+#: ../applets/clock/clock.ui.h:14
+msgid "North"
+msgstr "Հյուսիս"
+
+#: ../applets/clock/clock.ui.h:15
+msgid "South"
+msgstr "Հարավ"
+
+#: ../applets/clock/clock.ui.h:16
+msgid "Clock Preferences"
+msgstr "Ժամացույցի նախընտրություններ"
+
+#: ../applets/clock/clock.ui.h:17
+msgid "Clock Format"
+msgstr "Ժամացույցի ձևաչափ"
+
+#: ../applets/clock/clock.ui.h:18
+msgid "_12 hour format"
+msgstr "_12ժամյա ձևաչափ"
+
+#: ../applets/clock/clock.ui.h:19
+msgid "_24 hour format"
+msgstr "_24ժամյա ձևաչափ"
+
+#: ../applets/clock/clock.ui.h:20
+msgid "Panel Display"
+msgstr "Վահանակի դիսփլեը"
+
+#: ../applets/clock/clock.ui.h:21
+msgid "Show the _date"
+msgstr "Ցույց տալ _ամսաթիվը"
+
+#: ../applets/clock/clock.ui.h:22
+msgid "Show seco_nds"
+msgstr "Ցույց տալ _վայրկյանները"
+
+#: ../applets/clock/clock.ui.h:23
+msgid "Show wee_k numbers in calendar"
+msgstr "Ցույց տալ շաբաթ_վա համարները օրացույցում"
+
+#: ../applets/clock/clock.ui.h:24
+msgid "Show _weather"
+msgstr "Ցույց տալ _եղանակը"
+
+#: ../applets/clock/clock.ui.h:25
+msgid "Show _temperature"
+msgstr "Ցույց տալ _ջերմաստիճանը"
+
+#: ../applets/clock/clock.ui.h:26 ../applets/fish/fish.ui.h:2
+#: ../mate-panel/panel-properties-dialog.ui.h:11
+msgid "General"
+msgstr "Ընդհանուր"
+
+#: ../applets/clock/clock.ui.h:28
+msgid "Display"
+msgstr "Դիսփլեյ"
+
+#: ../applets/clock/clock.ui.h:29
+msgid "_Visibility unit:"
+msgstr "_Տեսանելիության միավոր."
+
+#: ../applets/clock/clock.ui.h:30
+msgid "_Pressure unit:"
+msgstr "_Ճնշման միավոր՝ "
+
+#: ../applets/clock/clock.ui.h:31
+msgid "_Wind speed unit:"
+msgstr "_Քամու ուժգնության միավոր."
+
+#: ../applets/clock/clock.ui.h:32
+msgid "_Temperature unit:"
+msgstr "_Ջերմաստիճանի միավոր."
+
+#: ../applets/clock/clock.ui.h:33
+msgid "Weather"
+msgstr "Եղանակ"
+
+#: ../applets/clock/clock.ui.h:34
+msgid "Time _Settings"
+msgstr "Ժամանկի_պարամետրեր"
+
+#: ../applets/clock/clock-location-tile.c:183
+msgid "Failed to set the system timezone"
+msgstr "Համակարգի ժամային գոտու կարգավորումը ձախողված է"
+
+#: ../applets/clock/clock-location-tile.c:231
+msgid "<small>Set...</small>"
+msgstr "<small>Կարգավորում...</small>"
+
+#: ../applets/clock/clock-location-tile.c:232
+msgid "<small>Set</small>"
+msgstr "<small>Կարգավորում</small>"
+
+#: ../applets/clock/clock-location-tile.c:314
+msgid ""
+"Set location as current location and use its timezone for this computer"
+msgstr "Կարգավորել տեղակայությունը որպես ընթացիկ, և օգտագործել դրա ժամային գոտին այս համակարգչի համար"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../applets/clock/clock-location-tile.c:450
+msgid "%l:%M <small>%p (%A)</small>"
+msgstr "%l:%M <small>%p (%A)</small>"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#: ../applets/clock/clock-location-tile.c:458
+msgid "%H:%M <small>(%A)</small>"
+msgstr "%H:%M <small>(%A)</small>"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am). The %p expands to
+#. * am/pm.
+#: ../applets/clock/clock-location-tile.c:467
+msgid "%l:%M <small>%p</small>"
+msgstr "%l:%M <small>%p</small>"
+
+#: ../applets/clock/clock-location-tile.c:606
+#, c-format
+msgid "%s, %s"
+msgstr "%s, %s"
+
+#. FMQ: it's broken to read from another module's translations; add some API
+#. to libmateweather.
+#: ../applets/clock/clock-location-tile.c:618
+#: ../applets/clock/clock-location-tile.c:627
+msgid "Unknown"
+msgstr "Անհայտ"
+
+#. Translators: The two strings are temperatures.
+#: ../applets/clock/clock-location-tile.c:620
+#, c-format
+msgid "%s, feels like %s"
+msgstr "%s,–ը ինչպես %s"
+
+#: ../applets/clock/clock-location-tile.c:643
+#, c-format
+msgid "Sunrise: %s / Sunset: %s"
+msgstr "Արևածագ. %s / Մայրամուտ. %s"
+
+#: ../applets/clock/clock-utils.c:95 ../applets/fish/fish.c:168
+#: ../applets/notification_area/main.c:121 ../applets/wncklet/wncklet.c:71
+#: ../mate-panel/libpanel-util/panel-show.c:234
+#, c-format
+msgid "Could not display help document '%s'"
+msgstr "Չի հաջողվել ցուց տալ օգնության փաստաթուղթ '%s'-ը"
+
+#: ../applets/clock/clock-utils.c:124 ../applets/fish/fish.c:194
+#: ../applets/notification_area/main.c:135 ../applets/wncklet/wncklet.c:88
+msgid "Error displaying help document"
+msgstr "Սխալ՝ օգնության փաստաթուղթը ցուցադրելիս"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:1
+msgid "Hour format"
+msgstr "Ժամի ձևաչափ"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:2
+msgid ""
+"This key specifies the hour format used by the clock applet. Possible values"
+" are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom\". If set"
+" to \"internet\", the clock will display Internet time. The Internet time "
+"system divides the day into 1000 \".beats\". There are no time zones in this"
+" system, so time is the same all over the world. If set to \"unix\", the "
+"clock will display time in seconds since Epoch, i.e. 1970-01-01. If set to "
+"\"custom\", the clock will display time according to the format specified in"
+" the custom_format key."
+msgstr "Այս ստեղնը նշում  է ժամացույց ապլետի օգտագործած ժամի ձևաչափը։ Հնարավոր արժեքներն են՝ \"12-hour\",\"24-hour\",\"internet\",\"unix\"և\"custom\"։ Եթե ընտրված է \"ինտերնետ\"–ը, ժամացույցը կցուցադրի ինտերնետ ժամանակը։ Ինտերնետի ժամային գոտին օրը բաժանում է 1000 \".beats\"–ի։ Այս համակագում բացակայում են ժամային գոտիները, այնպես որ ժամանակը ամբողջ աշխարհում նույնն է։ Եթե ընտրված է \"unix\"-ը, ապա ժամացույցը ցույց կտա ժամերը վայրկյաններով դարաշրջանից՝ այն է՝ 1970-01-01–ից սկսած։ Եթե ընտրված է \"custom\" տարբերակը, ապա ժամացույցը ժամերը ցույց կտա ըստ custom_format ստեղնում նշված ձևաչափի։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:3
+msgid "Custom format of the clock"
+msgstr "Ժամացույցի սովորական ձևաչափ"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:4
+msgid ""
+"This key specifies the format used by the clock applet when the format key "
+"is set to \"custom\". You can use conversion specifiers understood by "
+"strftime() to obtain a specific format. See the strftime() manual for more "
+"information."
+msgstr "Այս ստեղնը նշում է ժամացույցի ապլետի ձևաչափը, երբ ձևաչափի ստեղնը կարգավորված է \"custom\"-ում։ Դուք կարող եք օգտագործել strftime()-ով հասկացված փոխարկման հատկորոշիչները յուրահատուկ ձևաչափ ստանալու համար։ Նայեք strftime() manual-ը ավելի շատ տեղեկատվության համար։ "
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:5
+msgid "Show time with seconds"
+msgstr "Ցույց տալ ժամը վայրկյաններով"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:6
+msgid "If true, display seconds in time."
+msgstr "Եթե ճիշտ է, ապա ցույց տալ վայրկյանները ժամում։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:7
+msgid "Show date in clock"
+msgstr "Ցուցադրել ամսաթիվը ժամացույցի մեջ"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:8
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Եթե ճիշտ է, ապա ժամացույցում բացի ժամից ցույց տալ նաև ամսաթիվը։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:9
+msgid "Show date in tooltip"
+msgstr "Ցույց տալ ամսաթիվը հուշման մեջ"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:10
+msgid "If true, show date in a tooltip when the pointer is over the clock."
+msgstr "Եթե ճիշտ է, ապա ցույց տալ ամսաթիվը հուշման մեջ, երբ սլաքը ժամացույցի վրա է։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:11
+msgid "Show weather in clock"
+msgstr "Ցույց տալ եղանակը ժամացույցի մեջ"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:12
+msgid "If true, display a weather icon."
+msgstr "Եթե ճիշտ է, ապա ցուց տալ եղանակի պատկերանիշը։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:13
+msgid "Show temperature in clock"
+msgstr "Ցուցադրել ջերմաստիճանը ժամացույցի մեջ"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:14
+msgid "If true, show the temperature next to the weather icon."
+msgstr "Եթե ճիշտ է, ապա ցույց տալ ջերմաստիճանը եղանակի պատկերանիշից հետո։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:15
+msgid "Show week numbers in calendar"
+msgstr "Ցույց տալ շաբաթների թիվը օրացույցում"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:16
+msgid "If true, show week numbers in the calendar."
+msgstr "Եթե ճիշտ է, ապա ցույց տալ շաբաթների թիվը օրացույցում։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:17
+msgid "Expand list of locations"
+msgstr "Ընդլայնել տեղակայությունների ցուցակը"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:18
+msgid "If true, expand the list of locations in the calendar window."
+msgstr "Եթե ճիշտ է, ապա ընդլայնել տեղակայությունների ցուցակը օրացույցի պատուհանում։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:19
+msgid "List of locations"
+msgstr "տեղակայությունների ցուցակ"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:20
+msgid "A list of locations to display in the calendar window."
+msgstr "Տեղակայությունների ցուցակը օրացույցի պատուհանում ցույց տալու համար։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:21
+msgid "Temperature unit"
+msgstr "Ջերմաստիճանի միավոր"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:22
+msgid "The unit to use when showing temperatures."
+msgstr "Միավորն օգտագործել ջերմաստիճանները ցույց տալիս։"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:23
+msgid "Speed unit"
+msgstr "Արագության միավոր"
+
+#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:24
+msgid "The unit to use when showing wind speed."
+msgstr "Միավորն օգտագործել քամու ուժգնությունը ցույց տալիս։"
+
+#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:1
+msgid "Clock Applet Factory"
+msgstr "Ժամացույց Ապլետի Գործարան"
+
+#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:2
+msgid "Factory for clock applet"
+msgstr "ժամացույց ապլետի գործարան"
+
+#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:4
+msgid "Get the current time and date"
+msgstr "Ստանալ ընթացիկ ժամանակը և ամսաթիվը"
+
+#: ../applets/fish/fish.c:264
+#, c-format
+msgid ""
+"Warning:  The command appears to be something actually useful.\n"
+"Since this is a useless applet, you may not want to do this.\n"
+"We strongly advise you against using %s for anything\n"
+"which would make the applet \"practical\" or useful."
+msgstr "Ուշադրություն՝ հավանաբար հրահանգը իրականում օգտակար է։\nՔանի որ սա անօգտակար ապլետ է, Դուք կարող է չցանկանաք օգտագործել այն։\nԽորհուրդ ենք տալիս %s–ը  ինչ–որ բանի համար չօգտագործել\nորը  ապլետը կդարձնի \"practical\" կամ օգտակար։"
+
+#: ../applets/fish/fish.c:436
+msgid "Images"
+msgstr "Պատկերներ"
+
+#: ../applets/fish/fish.c:542 ../applets/fish/fish.c:586
+#: ../applets/fish/fish.c:692
+#, no-c-format
+msgid "%s the Fish"
+msgstr "%s Ձկնիկը"
+
+#: ../applets/fish/fish.c:543
+#, c-format
+msgid ""
+"%s has no use what-so-ever. It only takes up disk space and compilation "
+"time, and if loaded it also takes up precious panel space and memory. "
+"Anybody found using it should be promptly sent for a psychiatric evaluation."
+msgstr "%s ընդհանրապես չի օգտագործվում։ Այն միայն դիսկի վրա տեղ և կոմպիլյացիայի ժամանակ, իսկ բեռնելու դեպքում վահանակի թանկարժեք տեղ և հիշողույթուն է զբաղեցնում։ Յուրաքնչյուր ոք հոգեբանի կարիք կունենա  դրա օգտագործումից հետո։"
+
+#: ../applets/fish/fish.c:563
+msgid "(with minor help from George)"
+msgstr "(Ջորջի աննշան օգնությամբ)"
+
+#: ../applets/fish/fish.c:569
+#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:3
+msgid "Fish"
+msgstr "Ձկնիկ"
+
+#: ../applets/fish/fish.c:587
+#, c-format
+msgid "%s the Fish, a contemporary oracle"
+msgstr "%s Ձկնիկը, ժամանակակից մարգարե"
+
+#: ../applets/fish/fish.c:653
+msgid "Unable to locate the command to execute"
+msgstr "Անհնար է գտնել հրահանգը գործարկելու համար"
+
+#: ../applets/fish/fish.c:697
+#, no-c-format
+msgid "%s the Fish Says:"
+msgstr "%s Չկնիկն ասում է՝ "
+
+#: ../applets/fish/fish.c:760
+#, c-format
+msgid ""
+"Unable to read output from command\n"
+"\n"
+"Details: %s"
+msgstr "Հնարավոր չէ կարդալ հրամանի ելքային տվյալները\n\nՄանրամասներ՝ %s"
+
+#: ../applets/fish/fish.c:836
+msgid "_Speak again"
+msgstr "_Նորից խոսեք"
+
+#: ../applets/fish/fish.c:923
+#, c-format
+msgid "The configured command is not working and has been replaced by: %s"
+msgstr "Տվյալ կոնֆիգուրացիա ունեցող հրահանգը չի աշխատում և փոխարինվել է %s–ով"
+
+#: ../applets/fish/fish.c:955
+#, c-format
+msgid ""
+"Unable to execute '%s'\n"
+"\n"
+"Details: %s"
+msgstr "Անհնար է կատարել'%s'\n\nՄանրամասներ՝ %s "
+
+#: ../applets/fish/fish.c:971
+#, c-format
+msgid ""
+"Unable to read from '%s'\n"
+"\n"
+"Details: %s"
+msgstr "Անհնար է կարդալ '%s'–ից\n\nՄանրամասներ՝ %s "
+
+#: ../applets/fish/fish.c:1529
+msgid "The water needs changing"
+msgstr "Ջուրը անհրաժեշտ է փոխել"
+
+#: ../applets/fish/fish.c:1531
+msgid "Look at today's date!"
+msgstr "Նայել այսօրվա ամսաթիվը։"
+
+#: ../applets/fish/fish.c:1614
+#, c-format
+msgid "%s the Fish, the fortune teller"
+msgstr "%s Ձկնիկը՝ ապագայի գուշակը,"
+
+#: ../applets/fish/fish.ui.h:1
+msgid "Fish Preferences"
+msgstr "Ձկնիկի նախընտրությունները"
+
+#: ../applets/fish/fish.ui.h:3
+msgid "_Name of fish:"
+msgstr "_Չկնիկի անունը"
+
+#: ../applets/fish/fish.ui.h:4
+msgid "Co_mmand to run when clicked:"
+msgstr "Հրա_ման, որը կգործարկվի կտտոցով"
+
+#: ../applets/fish/fish.ui.h:5
+msgid "Animation"
+msgstr "Անիմացիա"
+
+#: ../applets/fish/fish.ui.h:6 ../mate-panel/panel-properties-dialog.ui.h:14
+msgid "    "
+msgstr "    "
+
+#: ../applets/fish/fish.ui.h:7
+msgid "_File:"
+msgstr "_Ֆայլ"
+
+#: ../applets/fish/fish.ui.h:8
+msgid "Select an animation"
+msgstr "Ընտրել անիմացիա"
+
+#: ../applets/fish/fish.ui.h:9
+msgid "_Total frames in animation:"
+msgstr "_Ընդհանուր կադրեր անիմացիայում."
+
+#: ../applets/fish/fish.ui.h:10
+msgid "_Pause per frame:"
+msgstr "_Դադարեցում կադրում."
+
+#: ../applets/fish/fish.ui.h:11
+msgid "frames"
+msgstr "կադրեր"
+
+#: ../applets/fish/fish.ui.h:12
+msgid "seconds"
+msgstr "վայրկյաններ"
+
+#: ../applets/fish/fish.ui.h:13
+msgid "_Rotate on vertical panels"
+msgstr "_Շրջել ուղղահայաց վահանակների վրա"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:1
+msgid "The fish's name"
+msgstr "Ձկնիկի անունը"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:2
+msgid ""
+"A fish without a name is a pretty dull fish. Bring your fish to life by "
+"naming him."
+msgstr "Միանգամայն ձանձրալի անուն չունեցող ձկնիկ։ Կյանքի՛ կոչեք ձեր ձկնիկին՝ նրան անուն տալով։"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:3
+msgid "The fish's animation pixmap"
+msgstr "Ձկնիկի անիմացիայի արտապատկերում"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:4
+msgid ""
+"This key specifies the filename of the pixmap which will be used for the "
+"animation displayed in the fish applet relative to the pixmap directory."
+msgstr "Այս ստեղնը նշում է արտապատկերման ֆայլի անունը, որը պետք է օգտագործվի ձկնիկ ապլետում ցույց տրվող անիմացիայի համար՝ սկսած արտապատկերման գրացուցակից։"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:5
+msgid "Command to execute on click"
+msgstr "Կտտացրեք գործարկելու հրաման տալու համար"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:6
+msgid ""
+"This key specifies the command that will be tried to execute when the fish "
+"is clicked."
+msgstr "Այս ստեղնը նշում է այն հրահանգը, որը պետք է որ գործարկվի, երբ ձկնիկի վրա կտտացնում եք։"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:7
+msgid "Frames in fish's animation"
+msgstr "Կադրեր ձկնիկի անիմացիայում"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:8
+msgid ""
+"This key specifies the number of frames that will be displayed in the fish's"
+" animation."
+msgstr "Այս ստեղնը բնորոշում է կադրերի թիվը, որոնք պետք է ցույց տրվեն ձկնիկի անիմացիայում։"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:9
+msgid "Pause per frame"
+msgstr "Դադարեցում կադրում"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:10
+msgid "This key specifies the number of seconds each frame will be displayed."
+msgstr "Այս ստեղնը նշում է յուրաքանչյուր կադրի ցուցադրման տևողությունը վայրկյաններով։"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:11
+msgid "Rotate on vertical panels"
+msgstr "Շրջել ուղղաձիգ վահանակների վրա"
+
+#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:12
+msgid ""
+"If true, the fish's animation will be displayed rotated on vertical panels."
+msgstr "Եթե ճիշտ է, ապա ձկնիկի անիմացիոն պատկերը ուղղահայաց վահանակի վրա կերևա շրջված։"
+
+#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:1
+msgid "Wanda Factory"
+msgstr "Wanda Գործարան"
+
+#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:2
+msgid "From Whence That Stupid Fish Came"
+msgstr "Որտեղից, որ հայտնվեց այս հիմար ձկնիկը"
+
+#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:4
+msgid "Display a swimming fish or another animated creature"
+msgstr "Ցուցադրել լողացող ձուկ կամ այլ անիմացիոն արարած"
+
+#: ../applets/notification_area/main.c:164
+#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:3
+msgid "Notification Area"
+msgstr "Ծանուցման տարածք"
+
+#: ../applets/notification_area/main.c:380
+msgid "Panel Notification Area"
+msgstr "Վահանակի ծանուցման տարածք"
+
+#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:1
+msgid "Notification Area Factory"
+msgstr "Ծանուցման տարածքի գործարան"
+
+#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:2
+msgid "Factory for notification area"
+msgstr "Ծանուցման տարածքի համար գործարան"
+
+#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:4
+msgid "Area where notification icons appear"
+msgstr "Տարածքը, որտեղ հայտնվում են ծանուցման պատկերակները "
+
+#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:1
+msgid "Show windows from all workspaces"
+msgstr "Ցույց տալ բոլոր աշխատասեղանների պատուհանները"
+
+#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:2
+msgid ""
+"If true, the window list will show windows from all workspaces. Otherwise it"
+" will only display windows from the current workspace."
+msgstr "Եթե ճիշտ է, ապա պատուհանների ցանկը ցույց կտա բոլոր աշխատասեղանների պատուհաններ։ Հակառակ դեպքում ցույց կտա միայն ընթացիկ աշխատասեղանի պատուհանները։"
+
+#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:3
+msgid "When to group windows"
+msgstr "Երբ խմբավորել պատուհանները"
+
+#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:4
+msgid ""
+"Decides when to group windows from the same application on the window list. "
+"Possible values are \"never\", \"auto\" and \"always\"."
+msgstr "Որոշում է, թե երբ խմբավորել միատեսակ ծրագրերի պատուհանները Պատուհանների ցանկում։ Հնարավոր արժեքներն են \"never\", \"auto\" և \"always\"։"
+
+#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:5
+msgid "Move windows to current workspace when unminimized"
+msgstr "Վերականգնելիս պատուհանները տեղափոխել ընթացիկ աշխատասեղան"
+
+#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:6
+msgid ""
+"If true, then when unminimizing a window, move it to the current workspace. "
+"Otherwise, switch to the workspace of the window."
+msgstr "Եթե ճիշտ է, ապա պատուհանը վերականգնելիս տեղափոխեք կամ ընթացիկ կամ պատուհանի աշխատասեղան։"
+
+#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:1
+msgid "Display workspace names"
+msgstr "Ցույց տալ աշխատասեղանների անվանումները"
+
+#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:2
+msgid ""
+"If true, the workspaces in the workspace switcher will display the names of "
+"the workspaces. Otherwise they will display the windows on the workspace. "
+"This setting only works when the window manager is Marco."
+msgstr "Եթե ճիշտ է, ապա աշխատասեղանները աշխատասեղանի փոխարկչում ցույց կտան աշխատասեղանների անվանումները։ Հակառակ դեպքում աշխատասեղանի վրա կերևան պատուհանները։ Այս պարամետրը աշխատում է միայն այն ժամանակ, երբ պատուհանի կառավարիչը Marco-ն է։"
+
+#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:3
+msgid "Display all workspaces"
+msgstr "Ցույց տալ բոլոր աշխատասեղանները"
+
+#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:4
+msgid ""
+"If true, the workspace switcher will show all workspaces. Otherwise it will "
+"only show the current workspace."
+msgstr "Եթե ճիշտ է, ապա աշխատասեղանի փոխարկիչը ցույց կտա բոլոր աշխատասեղանները։ Հակառակ դեպքում կտեսնեք միայն ընթացիկ աշխատասեղանը։"
+
+#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:5
+msgid "Rows in workspace switcher"
+msgstr "Տողեր աշխատասեղանի փոխարկչում"
+
+#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:6
+msgid ""
+"This key specifies how many rows (for horizontal layout) or columns (for "
+"vertical layout) the workspace switcher shows the workspaces in. This key is"
+" only relevant if the display_all_workspaces key is true."
+msgstr "Այս ստեղնը նշում է, թե քանի տող  (հորիզոնական դիրքով) կամ սյուն (ուղղահայաց դիրքով)  է աշխատասեղանի փոխարկիչը ցույց տալիս աշխասեղաններում։ Այս ստեղնը տեղին է, եթե  display_all_workspaces ստեղնը ճիշտ է։"
+
+#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:7
+msgid "Wrap around on scroll"
+msgstr "Փաթեթավորեք շուրջ ոլորելով"
+
+#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:8
+msgid ""
+"If true, the workspace switcher will allow wrap-around, which means "
+"switching from the first to the last workspace and vice versa via scrolling."
+msgstr "Եթե ճիշտ է, աշխատատիրույթի փոխարկիչը պետք է թույլ տա պատել շուրջ, ինչը նշանակում է, որ անցումը առաջինից վերջին աշխատանքային տարածք և հակառակը կլինի պտտման միջոցով։"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:1
+msgid "Window Navigation Applet Factory"
+msgstr "Պատուհանի նավիգացիայի ապլետի գործարան"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:2
+msgid "Factory for the window navigation related applets"
+msgstr "Պատուհանի նավիգացիայի հետ կապված ապլետի համար գործարան"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:3
+#: ../applets/wncklet/window-menu.c:83 ../applets/wncklet/window-menu.c:255
+msgid "Window Selector"
+msgstr "Պատուհանների ընտրում"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:4
+msgid "Switch between open windows using a menu"
+msgstr "Անցնել բաց պատուհանների միջև, օգտագործելով մենյուն"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:5
+#: ../applets/wncklet/workspace-switcher.c:597
+msgid "Workspace Switcher"
+msgstr "Աշխատասեղանի փոխարկիչ"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:6
+msgid "Switch between workspaces"
+msgstr "Աշխատատիրույթների միջև անջատի"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:7
+#: ../applets/wncklet/window-list.c:555
+msgid "Window List"
+msgstr "Պատուհանի ցանկ"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:8
+msgid "Switch between open windows using buttons"
+msgstr "Անցնել բաց պատուհանների միջև, օգտագործելով կոճակները"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:9
+msgid "Show Desktop"
+msgstr "Ցույց տալ աշխատանքային սեղանը"
+
+#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:10
+msgid "Hide application windows and show the desktop"
+msgstr "Թաքցնել դիմումի պատուհանները եւ ցույց տալ աշխատանքային սեղանը"
+
+#: ../applets/wncklet/showdesktop.c:186
+#, c-format
+msgid "Failed to load %s: %s\n"
+msgstr "%s: %s բեռնելու խափանում\n"
+
+#: ../applets/wncklet/showdesktop.c:186
+msgid "Icon not found"
+msgstr "Պատկերանիշը գտնված չէ"
+
+#: ../applets/wncklet/showdesktop.c:259
+msgid "Click here to restore hidden windows."
+msgstr "Կտտացրեք այստեղ թաքնված պատուհանները վերականգնելու համար։"
+
+#: ../applets/wncklet/showdesktop.c:263
+msgid "Click here to hide all windows and show the desktop."
+msgstr "Կտտացրեք այստեղ բոլոր պատուհանները թաքցնելու և աշխաըասեղանը ցույց տալու համար։"
+
+#: ../applets/wncklet/showdesktop.c:447 ../applets/wncklet/showdesktop.c:513
+msgid "Show Desktop Button"
+msgstr "Ցույց տալ աշխատասեղանի կոճակը"
+
+#: ../applets/wncklet/showdesktop.c:515
+msgid "This button lets you hide all windows and show the desktop."
+msgstr "Այս կոճակը Ձեզ թույլ կտա թաքցնել բոլոր պատուհանները և ցույց տալ աշխաըասեղանը։"
+
+#: ../applets/wncklet/showdesktop.c:541
+msgid ""
+"Your window manager does not support the show desktop button, or you are not"
+" running a window manager."
+msgstr "Ձեր պատուհանների կառավարիչը չունի աշխաըասեղան ցույց տվող կոճակ, կամ դուք պատուհանի կառավարչին չեք ակտիվացրել։"
+
+#: ../applets/wncklet/window-list.c:171
+msgid "_System Monitor"
+msgstr "_Համակարգի Մոնիտոր"
+
+#: ../applets/wncklet/window-list.c:557
+msgid ""
+"The Window List shows a list of all windows in a set of buttons and lets you"
+" browse them."
+msgstr "Պատուհանների ցուցակը ցույց է տալիս բոլոր պատուհանների ցուցակը՝ իրենց ստեղներով և հնարավորություն է ընձեռում զննել որևէ մեկը։"
+
+#: ../applets/wncklet/window-list.ui.h:1
+msgid "Window List Preferences"
+msgstr "Պատուհանների ցանկի նախապատվություններ"
+
+#: ../applets/wncklet/window-list.ui.h:2
+msgid "Window List Content"
+msgstr "Պատուհանի ցանկի պարունակությունը"
+
+#: ../applets/wncklet/window-list.ui.h:3
+msgid "Sh_ow windows from current workspace"
+msgstr "Ցույց_տալ ընթացիկ աշխատասեղանի պատուհանները"
+
+#: ../applets/wncklet/window-list.ui.h:4
+msgid "Show windows from a_ll workspaces"
+msgstr "Ցույց տալ բո_լոր աշխատասեղանները"
+
+#: ../applets/wncklet/window-list.ui.h:5
+msgid "Window Grouping"
+msgstr "Պատուհանների խմբավորում"
+
+#: ../applets/wncklet/window-list.ui.h:6
+msgid "_Never group windows"
+msgstr "_Երբեք չխմբավորել պատուհանները"
+
+#: ../applets/wncklet/window-list.ui.h:7
+msgid "Group windows when _space is limited"
+msgstr "Խնբավորել պատուհանները երբ _տարածքը սահմանափակ է"
+
+#: ../applets/wncklet/window-list.ui.h:8
+msgid "_Always group windows"
+msgstr "_Միշտ խմբավորել պատուհանները"
+
+#: ../applets/wncklet/window-list.ui.h:9
+msgid "Restoring Minimized Windows"
+msgstr "Փոքրացված պատուհանների վերականգնում"
+
+#: ../applets/wncklet/window-list.ui.h:10
+msgid "Restore to current _workspace"
+msgstr "Վերականգնել ընթացիկ _աշխատասեղանը"
+
+#: ../applets/wncklet/window-list.ui.h:11
+msgid "Restore to na_tive workspace"
+msgstr "Վերականգնել բուն աշխատասեղանը"
+
+#: ../applets/wncklet/window-menu.c:85
+msgid ""
+"The Window Selector shows a list of all windows in a menu and lets you "
+"browse them."
+msgstr "Պատուհանի ընտրողը ցույց է տալիս բոլոր պատուհանների ցուցակը մենյուի մեջ և թույլ է տալիս զննել դրանք"
+
+#: ../applets/wncklet/workspace-switcher.c:198
+#: ../applets/wncklet/workspace-switcher.c:899
+#: ../applets/wncklet/workspace-switcher.ui.h:4
+msgid "rows"
+msgstr "տողեր"
+
+#: ../applets/wncklet/workspace-switcher.c:198
+#: ../applets/wncklet/workspace-switcher.c:899
+msgid "columns"
+msgstr "սյուներ"
+
+#: ../applets/wncklet/workspace-switcher.c:599
+msgid ""
+"The Workspace Switcher shows you a small version of your workspaces that "
+"lets you manage your windows."
+msgstr "Աշխատատիրույթի Փոխարկիչը ցույց է տալիս աշխատատիրույթների փոքրացված տարբերակները, ինչը հնարավորություն է տալիս ղեկավարել պատուհանները։"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:1
+msgid "Workspace Switcher Preferences"
+msgstr "Աշխատասեղանի Փոխարկչի նախապատվություններ"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:2
+msgid "Show _only the current workspace"
+msgstr "Ցուցադրել _միայն ընթացիկ աշխատասեղանը"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:3
+msgid "Show _all workspaces in:"
+msgstr "Ցույց տալ _բոլոր աշխատսեղանները այստեղ՝"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:5
+msgid "Switcher"
+msgstr "Փոխարկիչ"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:6
+msgid "Number of _workspaces:"
+msgstr "Աշխատսեղանների_թիվը՝"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:7
+msgid "Workspace na_mes:"
+msgstr "Աշխատասեղանի ան_վանումները՝"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:8
+msgid "Workspace Names"
+msgstr "Աշխատասեղանների անունները"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:9
+msgid "Show workspace _names in switcher"
+msgstr "Ցույց տալ աշխատասեղանի_անվանումը փոխարկչում"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:10
+msgid "Allow workspace _wrap around in switcher"
+msgstr "Թույլ տալ աշխատատիրույթի շորջը _պատել կոմուտատոր"
+
+#: ../applets/wncklet/workspace-switcher.ui.h:11
+msgid "Workspaces"
+msgstr "Աշխատասեղաններ"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:1
+msgid "Default panel layout"
+msgstr "Վահանակի հիմնական դասավորությունը"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:2
+msgid "The default panels layout to use when panels are created or resetted."
+msgstr "Վահանակների հիմնական դասավորությունը օգտագործել, երբ վահանկներ են ստեղծվել կամ վերականգնվել։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:3
+msgid "Enable program list in \"Run Application\" dialog"
+msgstr "Միացնել ծրագրերի ցանկը  \"Run Application\" դիալոգում"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:4
+msgid ""
+"If true, the \"Known Applications\" listing in the \"Run Application\" "
+"dialog is made available. Whether or not the listing is expanded when the "
+"dialog is shown is controlled by the show_program_list key."
+msgstr "Եթե ճիշտ է, ապա \"Known Applications\" ցանկը \"Run Application\" դիալոգում կիրառելի է։ Ցանկը  ընդլայնվում է, երբ դիալոգը ցույց է տրվում և վերահսկվում է show_program_list ստեղնով։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:5
+msgid "Expand program list in \"Run Application\" dialog"
+msgstr "Ընդլայնել ծրագրի ցանկը  \"Run Application\" դիալոգում"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:6
+msgid ""
+"If true, the \"Known Applications\" listing in the \"Run Application\" "
+"dialog is expanded when the dialog is opened. This key is only relevant if "
+"the enable_program_list key is true."
+msgstr "Եթե ճիշտ է, ապա \"Known Applications\" ցանկը \"Run Application\" դիալոգում ընդլայնվում է, երբ դիալոգը բաց է։ Այս ստեղնը տեղին է միայն եթե enable_program_list–ը ստեղնը ճիշտ է։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:7
+msgid "Enable autocompletion in \"Run Application\" dialog"
+msgstr "Միացնել ավտոմատ լրացումը \"Run Application\" դիալոգում"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:8
+msgid ""
+"If true, autocompletion in the \"Run Application\" dialog is made available."
+msgstr "Եթե ճիշտ է, ապա ավտոմատ լրացումը  \"Run Application\" դիալոգում հնարավոր է։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:9
+msgid "History for \"Run Application\" dialog"
+msgstr "\"Գործարկել Դիմումը\" երկխոսության համար պատմություն"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:10
+msgid ""
+"This is the list of commands used in \"Run Application\" dialog. The "
+"commands are sorted descendingly by recency (e.g., most recent command comes"
+" first)."
+msgstr ""
+
+#: ../data/org.mate.panel.gschema.xml.in.h:11
+msgid "Maximum history size for \"Run Application\" dialog"
+msgstr ""
+
+#: ../data/org.mate.panel.gschema.xml.in.h:12
+msgid ""
+"Controls the maximum size of the history of the \"Run Application\" dialog. "
+"A value of 0 will disable the history."
+msgstr ""
+
+#: ../data/org.mate.panel.gschema.xml.in.h:13
+msgid "Reverse the history of the \"Run Application\" dialog"
+msgstr ""
+
+#: ../data/org.mate.panel.gschema.xml.in.h:14
+msgid ""
+"Displays the history in reverse. Provides a consistent view for terminal "
+"users as the up key will select the most recent entry."
+msgstr ""
+
+#: ../data/org.mate.panel.gschema.xml.in.h:15
+msgid "Panel ID list"
+msgstr "Վահանակի ID ցանկ"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:16
+msgid ""
+"A list of panel IDs. Each ID identifies an individual toplevel panel. The "
+"settings for each of these panels are stored in /apps/panel/toplevels/$(id)."
+msgstr "Վահանակի ID–ների ցուցակ։ Յուրաքանչյուր ID սահմանում է անհատական բարձր կարգի վահանակ։ Այս ապլետներից յուրաքանչյուրի պարամետրերը  պահվում են  /apps/panel/toplevels/$(id)–ում։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:17
+msgid "Panel object ID list"
+msgstr "Վահանակի տարրի ID ցանկ"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:18
+msgid ""
+"A list of panel object IDs. Each ID identifies an individual panel object "
+"(e.g. a launcher, action button or menu button/bar). The settings for each "
+"of these objects are stored in /apps/panel/objects/$(id)."
+msgstr "Վահանակի օբյեկտների ID–ների ցուցակ։ Յուրաքանչյուր ID սահմանում է անհատական վահանակի օբյեկտ (օրինակ՝ գործարկիչ,  գործողության ստեղն, մենյուի կոճակ/տող)։ Այս օբյեկտներից յուրաքանչյուրի պարամետրերը  պահվում են apps/panel/objects/$(id)–ում։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:19
+msgid "Enable tooltips"
+msgstr "ՄԻացնել հուշումը"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:20
+msgid "If true, tooltips are shown for objects in panels."
+msgstr "Եթե ճիշտ է, ապա հուշումները ցույց են տրվում վահանակներում՝ որպես օբյեկտ։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:21
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:27
+msgid "Enable animations"
+msgstr "Միացնել անիմացիաները"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:22
+msgid "Autoclose drawer"
+msgstr "Ավտոմատ փակել դարակը"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:23
+msgid ""
+"If true, a drawer will automatically be closed when the user clicks a "
+"launcher in it."
+msgstr "եթե ճիշտ է, ապա դարակը ավտոմատ կերպով փակվում է, երբ օգտագործողը կտտացնում է նրա գործարկչի վրա։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:24
+msgid "Confirm panel removal"
+msgstr "Հաստատել վահանակի հեռացումը"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:25
+msgid ""
+"If true, a dialog is shown asking for confirmation if the user wants to "
+"remove a panel."
+msgstr "Եթե ճիշտ է, ապա երևում է դիալոգը, որը հարց է տալիս հաստատման վերաբերյալ, եթե օգտագործողը ցանկանում է հեռացնել վահանակը։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:26
+msgid "Highlight launchers on mouseover"
+msgstr "Ընդգծել գործարկիչները մկնիկը նրա վրա պահելու դեպքում"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:27
+msgid ""
+"If true, a launcher is highlighted when the user moves the pointer over it."
+msgstr "Եթե ճիշտ է, ապա գործարկիչը ընդգծվում է, երբ օգտագործողը շարժում է սլաքը դրա վրայով։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:28
+msgid "Complete panel lockdown"
+msgstr "Վահանակի ամբողջական արգելափակում"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:29
+msgid ""
+"If true, the panel will not allow any changes to the configuration of the "
+"panel. Individual applets may need to be locked down separately however. The"
+" panel must be restarted for this to take effect."
+msgstr "Եթե ճիշտ է, ապա վահանակը թույլ չի տա որևէ փոփոխություններ վահանակի կոնֆիգուրացիաներում։ Անհատական ապլետները հնարավոր է առանձին–առանձին արգելափակվելու կարիք ունենան։ Սրա համար վահանակը պետք է վերագործարկվի։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:30
+msgid "Applet IIDs to disable from loading"
+msgstr "Ապլետի IID, որոնք պետք է բեռնումից անջատել"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:31
+msgid ""
+"A list of applet IIDs that the panel will ignore. This way you can disable "
+"certain applets from loading or showing up in the menu. For example to "
+"disable the mini-commander applet add 'OAFIID:MATE_MiniCommanderApplet' to "
+"this list. The panel must be restarted for this to take effect."
+msgstr "Ապլետի IID ցանկ, որը վահանակը անտեսելու է։ Այս կերպ դուք կարող եք անջատել որոշ ապլետներ և չբեռնել կամ ցույց չտալ ցանկի մեջ։ Օրինակ՝ անջատելու համար Մինի–հրահանգ ապլետը պետք է այս ցուցակին  ավելացնել'OAFIID:MATE_MiniCommanderApplet'։ Վահանակը պետք է վերագործարկել այս արդյունքը ստանալու համար։"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:32
+msgid "Disable Force Quit"
+msgstr "Ապաակտիվացնել ստիպողական անջատում"
+
+#: ../data/org.mate.panel.gschema.xml.in.h:33
+msgid ""
+"If true, the panel will not allow a user to force an application to quit by "
+"removing access to the force quit button."
+msgstr "Եթե ճիշտ է, ապա վահանակը թույլ չի տա օգտագործողին դուրս գալ ծրագրից՝ անհասանելի դարձնելով ստիպողական անջատման կոճակը։"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:1
+msgid "Show applications menu"
+msgstr "Ցույց տալ դիմումների ընտրացանկը"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:2
+msgid "If true, show applications item in menu bar."
+msgstr "Եթե ճիշտ է, ապա ցույց տալ դիմումների տարրը ընտրացանկի մեջ"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:3
+msgid "Show places menu"
+msgstr "Ցեւյց տալ տեղերի ընտրացանկը"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:4
+msgid "If true, show places item in menu bar."
+msgstr "Եթե ճիշտ է, ապա ցույց տալ տեղերի տարրը ընտրացանկում։"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:5
+msgid "Show desktop menu"
+msgstr "Ցույց տալ աշխատասեղանի ընտրացանկը"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:6
+msgid "If true, show desktop item in menu bar."
+msgstr "Եթե ճիշտ է, ապա ցույց տալ աշխատասեղանի տարրը ընտրացանկում։"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:7
+msgid "Show icon"
+msgstr "Ցուցադրել պատկերակը"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:8
+msgid "If true, show icon in menu bar."
+msgstr "Եթե ճիշտ է, ապա ցույց տալ պատկերանշանը ընտրացանկի մեջ։"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:9
+msgid "Icon to show in menu bar"
+msgstr "Պատկերանշանը ցույց տալ ընտրացանկի մեջ"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:10
+msgid "Set the theme icon name to use in menu bar."
+msgstr "Սահմանել թեմայի պատկերանշանի անունը ընտրացանկում օգտագործելու համար։"
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:11
+msgid "Menu bar icon size"
+msgstr ""
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:12
+msgid ""
+"Set the size of an icon used in menu bar. The panel must be restarted for "
+"this to take effect."
+msgstr ""
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:13
+msgid "Menu items icon size"
+msgstr ""
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:14
+msgid ""
+"Set the size of icons used in the menu. The panel must be restarted for this"
+" to take effect."
+msgstr ""
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:15
+msgid "Threshold of menu items before submenu is created"
+msgstr ""
+
+#: ../data/org.mate.panel.menubar.gschema.xml.in.h:16
+msgid ""
+"Maximum number of menu items (i.e. bookmarks) that are displayed without "
+"being put in a submenu."
+msgstr ""
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:1
+msgid "Panel object type"
+msgstr "Վահանակի օբյեկտի տեսակը"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:2
+msgid "The type of this panel object."
+msgstr "Այս վահանակի օբյեկտի տիպը"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:3
+msgid "Toplevel panel containing object"
+msgstr "Վերին մակարդակի վահանակ պարունակող օբյեկտ"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:4
+msgid "The identifier of the toplevel panel which contains this object."
+msgstr "Վերին մակարդակի վահանակի իդենտիֆիկատոր, որը պարունակում է այս օբյեկտը։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:5
+msgid "Object's position on the panel"
+msgstr "Օբյեկտի դիրքը վահանակի վրա"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:6
+msgid ""
+"The position of this panel object. The position is specified by the number "
+"of pixels from the left (or top if vertical) panel edge."
+msgstr "Այս վահանակի օբյեկտի դիրքը։ Դիրքը նշվում է վահանակի ձախ ծայրի(կամ ուղղահայացի դեպքում վերևի) պիքսելների թվով։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:7
+msgid "Interpret position relative to bottom/right edge"
+msgstr "Մեկնաբանել դիրքը ըստ ներքևի և աջ մասերի"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:8
+msgid ""
+"If true, the position of the object is interpreted relative to the right (or"
+" bottom if vertical) edge of the panel."
+msgstr "Եթե ճիշտ է, ապա տարրի դիրքը մեկնաբանվում է վահանակի աջ ծայրի (կամ ներքևի, եթե ուղղահայաց է) համեմատ"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:9
+msgid "Lock the object to the panel"
+msgstr "Օբյեկտն արգելափակել վահանակին"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:10
+msgid ""
+"If true, the user may not move the applet without first unlocking the object"
+" using the \"Unlock\" menuitem."
+msgstr "Եթե ճիշտ է, ապա օգտագործողը չի կարող է շարժել ապլետը առանց օբյեկտը արգելափակումից դուրս բերելու՝ օգտագործելով \"Unlock\" մենյույի կետը։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:11
+msgid "Applet IID"
+msgstr "Ապլետ IID"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:12
+msgid ""
+"The implementation ID of the applet - e.g. "
+"\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
+"object_type key is \"external-applet\" (or the deprecated \"matecomponent-"
+"applet\")."
+msgstr "Ապլետի իրականացման ID֊օրինակ \"ClockAppletFactory::ClockApplet\"։ Այս բանալին տեղին է միայն այն դեպքում, եթե object_type բանալին \"external-applet\" է (կամ \"matecomponent-applet\")։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:13
+msgid "Panel attached to drawer"
+msgstr "Դարակին ամրացված վահանակ"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:14
+msgid ""
+"The identifier of the panel attached to this drawer. This key is only "
+"relevant if the object_type key is \"drawer-object\"."
+msgstr "Այս դարակին կցված վահանակի իդենտիֆիկատոր։ Այս ստեղնը տեղին է միայն եթե object_type ստեղնը \"drawer-object\" է։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:15
+msgid "Tooltip displayed for drawer or menu"
+msgstr "Դարակի կամ մենյուի համար ցույց տրվող հուշում։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:16
+msgid ""
+"The text to display in a tooltip for this drawer or this menu. This key is "
+"only relevant if the object_type key is \"drawer-object\" or \"menu-"
+"object\"."
+msgstr "Հուշման մեջ ցույց տրվող տեքստը այս դարակի կամ մենյուի համար։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:17
+msgid "Use custom icon for object's button"
+msgstr "Օգտագործել սովորական պատկերանշանը որպես օբյեկտի ստեղն"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:18
+msgid ""
+"If true, the custom_icon key is used as a custom icon for the button. If "
+"false, the custom_icon key is ignored. This key is only relevant if the "
+"object_type key is \"menu-object\" or \"drawer-object\"."
+msgstr "Եթե ճիշտ է, ապա custom_icon ստեղնն օգտագործվում է որպես սովորական պատկերանիշ կոճակի համար։ եթե սխալ է, custom_icon ստեղնն անտեսվում է։ Այս ստեղնը տեղին է միայն, երբ object_type ստեղնը  \"menu-object\" կամ \"drawer-object\" է։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:19
+msgid "Icon used for object's button"
+msgstr "Պատկերանիշ, որն օգտագործվում է տարրերի ստեղների համար"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:20
+msgid ""
+"The location of the image file used as the icon for the object's button. "
+"This key is only relevant if the object_type key is \"drawer-object\" or "
+"\"menu-object\" and the use_custom_icon key is true."
+msgstr "Նկարի ֆայլի տեղը, որն օգտագործվում է որպես օբյեկտի կոճակի պատկերանիշ։ Այս ստեղնը տեղին է միայն երբ object_type ստեղնը \"drawer-object\" է, կամ \"menu-object\" և use_custom_icon ստեղնը ճիշտ է։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:21
+msgid "Use custom path for menu contents"
+msgstr "Օգտագործել սովորական ուղին որպես մենյուի բովանդակություն"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:22
+msgid ""
+"If true, the menu_path key is used as the path from which the menu contents "
+"should be constructed. If false, the menu_path key is ignored. This key is "
+"only relevant if the object_type key is \"menu-object\"."
+msgstr "Եթե ճիշտ է, ապա menu_path ստեղնն օգտագործվում է որպես մի տեղ, որտեղից ցանկի բովանդակությունը պետք է կառուցվի։ Եթե սխալ է, menu_path ստեղնը անտեսվում է։ Այս ստեղնը տեղին է միայն երբ object_type ստեղնը \"menu-object\" է։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:23
+msgid "Menu content path"
+msgstr "Ցանկի բովանդակության ուղի"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:24
+msgid ""
+"The path from which the menu contents is contructed. This key is only "
+"relevant if the use_menu_path key is true and the object_type key is \"menu-"
+"object\"."
+msgstr "Ուղին, որից մենյուի բովանդակությունն է սկսվում։ Այս ստեղնը տեղին է միայն, եթե use_menu_path ստեղնը ճիշտ է և object_type ստեղնը  \"menu-object\" է։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:25
+msgid "Draw arrow in menu button"
+msgstr "Քաշել սլաքը ընտրացանկ կոճակի մեջ"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:26
+msgid ""
+"If true, an arrow is drawn over the menu button icon. If false, menu button "
+"has only the icon."
+msgstr "եթե ճիշտ է, ապա սլաքը քաշել ընտրացանկի կոճակի պատկերանշանի շուրք; Եթե սխալ է ընտրացանկի կոճակը ունի միայն պատկերանշան։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:27
+msgid "Launcher location"
+msgstr "Գործարկչի տեղը"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:28
+msgid ""
+"The location of the .desktop file describing the launcher. This key is only "
+"relevant if the object_type key is \"launcher-object\"."
+msgstr " .desktop ֆայլի տեղը, որը նկարագրում է գործարկիչը։ Այս ստեղնը տեղին է միայն եթե object_type ստեղնը \"launcher-object\" է։"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:29
+msgid "Action button type"
+msgstr "Գործողության ստեղնի տեսակ"
+
+#: ../data/org.mate.panel.object.gschema.xml.in.h:30
+msgid ""
+"The action type this button represents. Possible values are \"lock\", "
+"\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
+"relevant if the object_type key is \"action-applet\"."
+msgstr "Այս ստեղնը բնութագրող գործողության տեսակը։ Հնարավոր արժեքներն են \"lock\", \"logout\", \"run\", \"search\" and \"screenshot\". Այս ստեղնը միայն տեղին է, եթե object_type ստեղնը \"action-applet\" է։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:1
+msgid "Name to identify panel"
+msgstr "Անունը վահանակը նույնացնելու համար"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:2
+msgid ""
+"This is a human readable name which you can use to identify a panel. Its "
+"main purpose is to serve as the panel's window title which is useful when "
+"navigating between panels."
+msgstr "Սա մարդու անուն է, որը դուք կարող եք օգտագործել վահանակը ճանաչելու համար։ Դրա հիմնական նպատակն է ծառայել որպես վահանակի պատուհանի վերնագիր, որն օգտակար է վահանակների միջև նավիգացիայի ժամանակ։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:3
+msgid "X screen where the panel is displayed"
+msgstr "X էկրան, որտեղ ցույց է տրվում վահանակը"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:4
+msgid ""
+"With a multi-screen setup, you may have panels on each individual screen. "
+"This key identifies the current screen the panel is displayed on."
+msgstr "Բազմէկրան կարգավորվածքով դուք կարող եք ունենալ վահանակներ յուրաքանչյուր առանձին էկրանում։ Այս ստեղնը նույնացնում է ընթացիկ էկրանը, որի վրա պատկերված է վահանակը։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:5
+msgid "Xinerama monitor where the panel is displayed"
+msgstr "Xinerama մոնիտոր, որտեղ ցույց է տրվում վահանակը"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:6
+msgid ""
+"In a Xinerama setup, you may have panels on each individual monitor. This "
+"key identifies the current monitor the panel is displayed on."
+msgstr " Xinerama կարգավորվածքում դուք կարող եք վահանակներ ունենալ յուրաքանչյուր անհատական մոնիտորի վրա։ Այս ստեղնը նույնացնում է այն աշխատանքային մոնիտորը, որի վրա վահանակը ցույց է տրվում։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:7
+msgid "Expand to occupy entire screen width"
+msgstr "Ընդլայնել ամբողջ էկրանի լայնությունը գրավելու համար"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:8
+msgid ""
+"If true, the panel will occupy the entire screen width (height if this is a "
+"vertical panel). In this mode the panel can only be placed at a screen edge."
+" If false, the panel will only be large enough to accommodate the applets, "
+"launchers and buttons on the panel."
+msgstr "Եթե ճիշտ է, ապա վահանակը կզբաղեցնի էկրանի ամբողջ լայնությունը (բարձրությունը, եթե ուղղահայաց վահանակ է)։ Այս ռեժիմում վահանակը կարող է տեղակայվել միայն էկրանի անկյունում։ Եթե սխալ է, վահանակը ընդամենը կարող է այնքան մեծ լինել, որ ապլենտները, գործարկիչները և ստեղները կարողանա վահանակի վրա հարմարեցնել։ "
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:9
+msgid "Panel orientation"
+msgstr "Վահանակի կողմնորոշում"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:10
+msgid ""
+"The orientation of the panel. Possible values are \"top\", \"bottom\", "
+"\"left\", \"right\". In expanded mode the key specifies which screen edge "
+"the panel is on. In un-expanded mode the difference between \"top\" and "
+"\"bottom\" is less important - both indicate that this is a horizontal panel"
+" - but still give a useful hint as to how some panel objects should behave. "
+"For example, on a \"top\" panel a menu button will pop up its menu below the"
+" panel, whereas on a \"bottom\" panel the menu will be popped up above the "
+"panel."
+msgstr "Վահանակի կողմնորոշումը։ Հնարավոր արժեքներն են \"top\", \"bottom\", \"left\", \"right\"։ Ընդլայնված ռեժիմում ստեղնը նշում է, թե  էկրանի որ ծայրին է գտնվում վահանակը։ Ոչ ընդլայնված ռեժիմում \"top\" և \"bottom\" –ի միջև տարբերությունը պակաս կարևոր է, երկուսն էլ ցույց են տալիս որ սա հորիզոնական վահանակ է, սակայն տալիս են օգտակար հուշում այն մասին թե ինչպիսին պետք է լինի վահանակի մի քանի տարրերի վարքագիծը։ Օրինակ, \"top\" վահանակում ցանկ ստեղնը էկրան կբերի իր ցանկը վահանակի ներքևում, մինչդեռ  \"bottom\" վահանակում ցանկը էկրանին կհայտնվի վահանակի վերևում։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:11
+msgid "Panel size"
+msgstr "Վահանակի չափը"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:12
+msgid ""
+"The height (width for a vertical panel) of the panel. The panel will "
+"determine at runtime a minimum size based on the font size and other "
+"indicators. The maximum size is fixed at one quarter of the screen height "
+"(or width)."
+msgstr "Վահանակի բարձրությունը (հորիզոնական վահանակի համար լայնությունը)։ Վահանկը սահմանում է նվազագույն չափը աշխատանքային ժամանակում՝ հենվելով տառատեսակի չափի և այլ ցուցիչների վրա։ Առավելագույն չափը ֆիքսված է էկրանի բարձրության (կամ լայնության) մեկ քառորդի չափով։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:13
+msgid "X co-ordinate of panel"
+msgstr "Վահանակի X կոորդինատ"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:14
+msgid ""
+"The location of the panel along the x-axis. This key is only relevant in un-"
+"expanded mode. In expanded mode this key is ignored and the panel is placed "
+"at the screen edge specified by the orientation key."
+msgstr "Վահանակի տեղը x առանցքի երկայնքով։ Այս ստեղնը միայն տեղին է ոչ ընդլայնված ռեժիմում։ Ընդլայնված ռեժիմում այս ստեղն անտեսվում է և վահանակը տեղակայվում է էկրանի ծայրին՝ նշված կողմնորոշիչ ստեղնով։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:15
+msgid "Y co-ordinate of panel"
+msgstr "Վահանակի Y կոորդինատ"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:16
+msgid ""
+"The location of the panel along the y-axis. This key is only relevant in un-"
+"expanded mode. In expanded mode this key is ignored and the panel is placed "
+"at the screen edge specified by the orientation key."
+msgstr "Վահանակի տեղը y առանցքի երկայնքով։ Այս ստեղնը տեղին է միայն ոչ ընդլայնված ռեժիմում։ Ընդլայնված ռեժիմում այս ստեղն անտեսվում է, և վահանակը տեղակայվում է էկրանի ծայրին նշված կողմնորոշիչ ստեղնով։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:17
+msgid "X co-ordinate of panel, starting from the right of the screen"
+msgstr "Վահանակի X կոորդինատ՝ սկսելով էկրանի աջ կողմից "
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:18
+msgid ""
+"The location of the panel along the x-axis, starting from the right of the "
+"screen. If set to -1, the value is ignored and the value of the x key is "
+"used. If the value is greater than 0, then the value of the x key is "
+"ignored. This key is only relevant in un-expanded mode. In expanded mode "
+"this key is ignored and the panel is placed at the screen edge specified by "
+"the orientation key."
+msgstr "Վահանակի տեղը x առանցքի երկայնքով՝ սկսած էկրանի աջ կողմից։ Եթե դրված է 1, արժեքը բաց է թողնվում և x ստեղնի արժեքն է գործածվում։ Եթե արժեքը 0–ից մեծ է, ապա x ստեղնի արժեքը բաց է թողնվում։ Այս ստեղնը միայն տեղին է ոչ ընդլայնված ռեժիմում։ Ընդլայնված ռեժիմում այս ստեղնը բաց է թողնվում և վահանակը տեղակայվում է էկրանի ծայրին՝ նշված կողմնորոշիչ ստեղնով։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:19
+msgid "Y co-ordinate of panel, starting from the bottom of the screen"
+msgstr "Վահանակի Y կոորդինատ՝ սկսելով էկրանի ներքևից"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:20
+msgid ""
+"The location of the panel along the y-axis, starting from the bottom of the "
+"screen. If set to -1, the value is ignored and the value of the y key is "
+"used. If the value is greater than 0, then the value of the y key is "
+"ignored. This key is only relevant in un-expanded mode. In expanded mode "
+"this key is ignored and the panel is placed at the screen edge specified by "
+"the orientation key."
+msgstr "Վահանակի տեղը y առանցքի երկայնքով՝ սկսած էկրանի ներքևից։ Եթե դրված է 1, արժեքը բաց է թողնվում և  y ստեղնի արժեքն է գործածվում։ Եթե արժեքը 0–ից մեծ է, ապա y ստեղնի արժեքը բաց է թողնվում։ Այս ստեղնը տեղին է միայն ոչ ընդլայնված ռեժիմում։ Ընդլայնված ռեժիմում այս ստեղնը բաց է թողնվում և վահանակը տեղակայվում է էկրանի ծայրին՝ նշված կողմնորոշիչ ստեղնով։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:21
+msgid "Center panel on x-axis"
+msgstr "Կենտրոն վահանակ  x առանցքի վրա"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:22
+msgid ""
+"If true, the x and x_right keys are ignored and the panel is placed at the "
+"center of the x-axis of the screen. If the panel is resized it will remain "
+"at that position - i.e. the panel will grow on both sides. If false, the x "
+"and x_right keys specify the location of the panel."
+msgstr "Եթե ճիշտ է, x և x_right ստեղները անտեսվում են, և վահանակը տեղակայվում է էկրանի x առանցքի կենտրոնում։ Եթե վահանակի չափերը փոփոխվում են, այն կմնա նույն դիրքում, այն է՝ վահանակը կմեծանա երկու կողմից։ Եթե սխալ է, x և x_right ստեղները նշում են վահանակի տեղը։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:23
+msgid "Center panel on y-axis"
+msgstr "Կենտրոն վահանակ  x առանցքի վրա"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:24
+msgid ""
+"If true, the y and y_bottom keys are ignored and the panel is placed at the "
+"center of the y-axis of the screen. If the panel is resized it will remain "
+"at that position - i.e. the panel will grow on both sides. If false, the y "
+"and y_bottom keys specify the location of the panel."
+msgstr "Եթե ճիշտ է, y և y_bottom ստեղները անտեսվում են, և վահանակը տեղակայվում է էկրանի y առանցքի կենտրոնում։  Եթե վահանակի չափերը փոփոխվեն, այն կմնա նույն դիրքում, այն է՝ վահանակը կմեծանա երկու կողմից։ Եթե սխալ է, y և y_bottom ստեղները նշում են վահանակի տեղը։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:25
+msgid "Automatically hide panel into corner"
+msgstr "Վահանակը ավտոմատ թաքցնել անկյունում"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:26
+msgid ""
+"If true, the panel is automatically hidden into a corner of the screen when "
+"the pointer leaves the panel area. Moving the pointer to that corner again "
+"will cause the panel to re-appear."
+msgstr "Եթե ճիշտ է, ապա վահանակը ավտոմատ թաքցվում է էկրանի անկյունում, երբ սլաքը թողնվում է վահանակի տարածքում։ Տեղափոխելով սլաքը դեպի այդ անկյունը վահանակը կրկին տեսանելի է դառնում։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:28
+msgid ""
+"If true, hiding and un-hiding of this panel will be animated rather than "
+"happening instantly."
+msgstr "Եթե ճիշտ է, ապա այս վահանակի թաքցնելը և տեսանելի դարձնելը կլինեն անիմացված և ոչ արագ կատարվող։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:29
+msgid "Enable hide buttons"
+msgstr "Թաքցնել ստեղները միացնել"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:30
+msgid ""
+"If true, buttons will be placed on each side of the panel which may be used "
+"to move the panel to edge of the screen, leaving only a button showing."
+msgstr "Եթե ճիշտ է, ապա ստեղները պետք է տեղակայվեն վահանակի յուրաքանչյուր կողմում, որոնք կարող են օգտագործվել վահանակը էկրանի ծայրը տեղափոխելու համար, թողնելով միայն ստեղնը։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:31
+msgid "Enable arrows on hide buttons"
+msgstr "Թաքցնել ստեղների վրա սլաքներն ակտիվացնել"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:32
+msgid ""
+"If true, arrows will be placed on the hide buttons. This key is only "
+"relevant if the enable_buttons key is true."
+msgstr "Եթե ճիշտ է, ապա սլաքները պետք է տեղադրվեն թաքցնել կոճակների վրա։ Այս ստեղնը տեղին է միայն, երբ enable_buttons ստեղնը ճշգրիտ է։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:33
+msgid "Panel autohide delay"
+msgstr "Վահանակը ավտոմատ  թաքցնելու ուշացում"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:34
+msgid ""
+"Specifies the number of milliseconds delay after the pointer leaves the "
+"panel area before the panel is automatically hidden. This key is only "
+"relevant if the auto_hide key is true."
+msgstr "Նշում  է միլիվայրկյանների ուշացման թիվը այն բանից հետո, երբ սլաքը մտնում է վահանակի տիրույթ, նախքան վահանակը ավտոմատ կերպով փակվում է։ Այս ստեղնը տեղին է միայն եթե auto_hide ստեղնը ճիշտ է։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:35
+msgid "Panel autounhide delay"
+msgstr "Վահանակը ավտոմատ  թաքցնելու ուշացում"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:36
+msgid ""
+"Specifies the number of milliseconds delay after the pointer enters the "
+"panel area before the panel is automatically re-shown. This key is only "
+"relevant if the auto_hide key is true."
+msgstr "Նշում է միլիվայրկյանների ուշացման թիվը այն բանից հետո, երբ սլաքը մտնում է վահանակի տիրույթ, նախքան վահանակի ավտոմատ կերպով նորից երևալը։ Այս ստեղնը տեղին է միայն եթե auto_hide ստեղնը ճիշտ է։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:37
+msgid "Visible pixels when hidden"
+msgstr "Տեսանելի պիքսելներ թաքնված ժամանակ"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:38
+msgid ""
+"Specifies the number of pixels visible when the panel is automatically "
+"hidden into a corner. This key is only relevant if the auto_hide key is "
+"true."
+msgstr "Նշում  է պիքսելների թիվը, որոնք տեսանելի են, երբ վահանակը ավտոմատ կերպով թաքնվում է անկյունում։ Այս ստեղնը տեղին է միայն, եթե auto_hide ստեղնը ճիշտ է։ "
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:39
+msgid "Animation speed"
+msgstr "Անիմացիայի արագությունը"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:40
+msgid ""
+"The speed in which panel animations should occur. Possible values are "
+"\"slow\", \"medium\" and \"fast\". This key is only relevant if the "
+"enable_animations key is true."
+msgstr "Արագությունը, որով պետք է կատարվեն վահանակի անիմացիաները։ Հնարավոր արժեքներն են \"slow\", \"medium\" and \"fast\"։ Այս ստեղնը տեղին է միայն եթե enable_animations ստեղնը ճիշտ է։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:41
+msgid "Background type"
+msgstr "Ֆոնի տեսակ"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:42
+msgid ""
+"Which type of background should be used for this panel. Possible values are "
+"\"none\" - the default GTK+ widget background will be used, \"color\" - the "
+"color key will be used as background color or \"image\" - the image "
+"specified by the image key will be used as background."
+msgstr "Ինչ տեսակի ֆոն պետք է օգտագործվի այս վահանակի համար։ Հնարավոր արժեքներն են \"none\"–նախնական GTK+ widget ֆոն կօգտագործվի, \"color\"֊ գույնի ստեղնը կօգտագործվի որպես ֆոնի գույն, կամ \"image\"– այն պատկերը, որը կնշի նկարի ստեղնով, դա էլ կօգտագործվի որպես ֆոն։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:43
+msgid "Background color"
+msgstr "Ֆոնի գույն"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:44
+msgid "Specifies the background color for the panel in #RGB format."
+msgstr "Նշել վահանակի ֆոնի գույնը #RGB ձևաչափում։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:45
+msgid "Background color opacity"
+msgstr "Ֆոնի գույնի անթափանցությունը"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:46
+msgid ""
+"Specifies the opacity of the background color format. If the color is not "
+"completely opaque (a value of less than 65535), the color will be composited"
+" onto the desktop background image."
+msgstr "Նշում  է ֆոնի գույնի անթափանց ֆորմատը։ Եթե գույնը ամբողջովին անթափանց չէ ( 65535–ի պակաս արժեքի դեպքում) գույնը կտեղակայվի աշխատանքային էկրանի ֆոնի կոմպոզիցիայի մեջ։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:47
+msgid "Background image"
+msgstr "Ֆոնի նկար"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:48
+msgid ""
+"Specifies the file to be used for the background image. If the image "
+"contains an alpha channel it will be composited onto the desktop background "
+"image."
+msgstr "Նշում է այն ֆայլը, որը պետք է օգտագործվի ֆոնի նկարի համար։ Եթե նկարը պարունակում է ալֆա ալիք, այն կտեղակայվի աշխատասեղանի ֆոնի նկարի կոմպոզիցիայում։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:49
+msgid "Fit image to panel"
+msgstr "Պատկերը տեղավորել վահանակի վրա"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:50
+msgid ""
+"If true, the image will be scaled (retaining the aspect ratio of the image) "
+"to the panel height (if horizontal)."
+msgstr "Եթե ճիշտ է, ապա պատկերը կլինի մասշտաբային (պահպանելով պատկերի ասպեկտային հարաբերությունը) վահանակի բարձրության համեմատ(եթե հորիզոնական է)։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:51
+msgid "Stretch image to panel"
+msgstr "Պատկերը ձգել մինչև վահանակ"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:52
+msgid ""
+"If true, the image will be scaled to the panel dimensions. The aspect ratio "
+"of the image will not be maintained."
+msgstr "Եթե ճիշտ է, ապա պատկերի մասշտաբը համապատասխանեցվում է վահանակի չափումներին։ Պատկերի ասպեկտային հարաբերությունը չի պահպանվի։"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:53
+msgid "Rotate image on vertical panels"
+msgstr "Պատկերը ուղղաձիգ վահանակի վրա շրջել"
+
+#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:54
+msgid ""
+"If true, the background image will be rotated when the panel is oriented "
+"vertically."
+msgstr "Եթե ճիշտ է, ապա Ֆոնի նկարը կշրջվի, երբ վահանակը տեղակայված է ուղղահայաց։"
+
+#: ../mate-panel/libegg/eggdesktopfile.c:165
+#, c-format
+msgid "File is not a valid .desktop file"
+msgstr "Ֆայլը վավեր չէ .աշխատանքային սեղանի ֆայլ"
+
+#: ../mate-panel/libegg/eggdesktopfile.c:188
+#, c-format
+msgid "Unrecognized desktop file Version '%s'"
+msgstr "Չճանաչված աշխատանքային ֆայլի տարբերակ  '%s'"
+
+#: ../mate-panel/libegg/eggdesktopfile.c:957
+#, c-format
+msgid "Starting %s"
+msgstr "Սկսում է %s"
+
+#: ../mate-panel/libegg/eggdesktopfile.c:1098
+#, c-format
+msgid "Application does not accept documents on command line"
+msgstr "Ծրագիրը փաստաթուղթ չի ընդունում հրամանի տողում "
+
+#: ../mate-panel/libegg/eggdesktopfile.c:1166
+#, c-format
+msgid "Unrecognized launch option: %d"
+msgstr "Չճանաչված գործարկչի ընտրացանկ. %d"
+
+#: ../mate-panel/libegg/eggdesktopfile.c:1365
+#, c-format
+msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
+msgstr "Չի հաջողվել անցկացնել փաստաթղթի URI–ները  աշխատաքային սեղանի մուտքի 'Type=Link'–ին "
+
+#: ../mate-panel/libegg/eggdesktopfile.c:1386
+#, c-format
+msgid "Not a launchable item"
+msgstr "Չգործարկվող տարր"
+
+#: ../mate-panel/libegg/eggsmclient.c:226
+msgid "Disable connection to session manager"
+msgstr "Ապաակտիվացնել սեսիայի կառավարչի հետ կապը"
+
+#: ../mate-panel/libegg/eggsmclient.c:229
+msgid "Specify file containing saved configuration"
+msgstr "Նշել պահպանված կոնֆիգուրացիա պարունակող ֆայլը"
+
+#: ../mate-panel/libegg/eggsmclient.c:229
+msgid "FILE"
+msgstr "ՖԱՅԼ"
+
+#: ../mate-panel/libegg/eggsmclient.c:232
+msgid "Specify session management ID"
+msgstr "Նշել սեսիայի կառավարման ID–ին"
+
+#: ../mate-panel/libegg/eggsmclient.c:232
+msgid "ID"
+msgstr "ID"
+
+#: ../mate-panel/libegg/eggsmclient.c:253
+msgid "Session management options:"
+msgstr "Սեսիայի կառավարման ընտրացանկ."
+
+#: ../mate-panel/libegg/eggsmclient.c:254
+msgid "Show session management options"
+msgstr "Ցույց տալ սեսիայի կառավարման ընտրացանկը"
+
+#. FIXME: We need a title in this case, but we don't know what
+#. * the format should be. Let's put something simple until
+#. * the following bug gets fixed:
+#. * http://bugzilla.gnome.org/show_bug.cgi?id=165132
+#. FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=165132
+#: ../mate-panel/libpanel-util/panel-error.c:76
+#: ../mate-panel/panel-applet-frame.c:827
+#: ../mate-panel/panel-applet-frame.c:1003
+msgid "Error"
+msgstr "Սխալ"
+
+#: ../mate-panel/libpanel-util/panel-icon-chooser.c:381
+msgid "Choose an icon"
+msgstr "Ընտրել պատկերանիշ"
+
+#: ../mate-panel/libpanel-util/panel-launch.c:45
+#, c-format
+msgid "Could not launch '%s'"
+msgstr "Հնարավոր չէ գործարկել '%s'-ը"
+
+#: ../mate-panel/libpanel-util/panel-launch.c:48 ../mate-panel/launcher.c:162
+msgid "Could not launch application"
+msgstr "Հնարավոր չէ գործարկել ծրագիրը"
+
+#: ../mate-panel/libpanel-util/panel-show.c:44
+#, c-format
+msgid "Could not open location '%s'"
+msgstr "Չի հաջողվել բացել %s' հասցեն "
+
+#: ../mate-panel/libpanel-util/panel-show.c:158
+msgid "No application to handle search folders is installed."
+msgstr "Ոչ մի ծրագիր չի տեղադրվել փնտրման պանակները գտնելու համար։"
+
+#: ../mate-panel/applet.c:466
+msgid "???"
+msgstr "???"
+
+#: ../mate-panel/applet.c:545 ../libmate-panel-applet/mate-panel-applet.c:139
+msgid "_Remove From Panel"
+msgstr "_Հեռացնել վահանակից"
+
+#: ../mate-panel/applet.c:556 ../libmate-panel-applet/mate-panel-applet.c:142
+msgid "_Move"
+msgstr "_Տեղաշարժել"
+
+#: ../mate-panel/applet.c:573 ../libmate-panel-applet/mate-panel-applet.c:148
+msgid "Loc_k To Panel"
+msgstr "_Պահել վահանակի վրա"
+
+#: ../mate-panel/applet.c:1384
+msgid "Cannot find an empty spot"
+msgstr "Չի հաջողվել դատարկ տեղ գտնել"
+
+#: ../mate-panel/drawer.c:346 ../mate-panel/panel-addto.c:175
+#: ../mate-panel/panel-toplevel.c:1615
+msgid "Drawer"
+msgstr "Դարակ"
+
+#: ../mate-panel/drawer.c:533
+msgid "_Add to Drawer..."
+msgstr "_Ավելացնել դարակում..."
+
+#: ../mate-panel/drawer.c:539 ../mate-panel/launcher.c:556
+#: ../mate-panel/panel-action-button.c:192
+#: ../mate-panel/panel-context-menu.c:196
+msgid "_Properties"
+msgstr "_Հատկություններ"
+
+#: ../mate-panel/mate-desktop-item-edit.c:27
+msgid "Create new file in the given directory"
+msgstr "Տրված գրացուցակում նոր ֆայլ բացել"
+
+#: ../mate-panel/mate-desktop-item-edit.c:28
+msgid "[FILE...]"
+msgstr "[ՖԱՅԼ...]"
+
+#: ../mate-panel/mate-desktop-item-edit.c:106
+msgid "- Edit .desktop files"
+msgstr "- Խմբագրել ։աշխատանքային սեղանի ֆայլեր"
+
+#: ../mate-panel/mate-desktop-item-edit.c:144
+#: ../mate-panel/mate-desktop-item-edit.c:197 ../mate-panel/launcher.c:928
+msgid "Create Launcher"
+msgstr "Ստեղծել գործարկիչ"
+
+#: ../mate-panel/mate-desktop-item-edit.c:168
+#: ../mate-panel/mate-desktop-item-edit.c:191
+msgid "Directory Properties"
+msgstr "Պանակի հատկություններ"
+
+#: ../mate-panel/mate-desktop-item-edit.c:174 ../mate-panel/launcher.c:775
+msgid "Launcher Properties"
+msgstr "Գործարկչի հատկություններ"
+
+#: ../mate-panel/mate-panel.desktop.in.in.h:1 ../mate-panel/main.c:136
+msgid "Panel"
+msgstr "Վահանակ"
+
+#: ../mate-panel/mate-panel.desktop.in.in.h:2
+msgid ""
+"Launch other applications and provide various utilities to manage windows, "
+"show the time, etc."
+msgstr "Windows–ը կառավարելու համար գործարկել այլ ծրագրեր և ապահովել տարբեր օժանդակ ծրագրերով. ցույց տալ ժամը և այլն։"
+
+#: ../mate-panel/launcher.c:120
+msgid "Could not show this URL"
+msgstr "Չի հաջողվել ցույց տալ այս URL–ը"
+
+#: ../mate-panel/launcher.c:121
+msgid "No URL was specified."
+msgstr "Ոչ մի URL նշված չէ։"
+
+#: ../mate-panel/launcher.c:214
+msgid "Could not use dropped item"
+msgstr "Չի հաջողվել օգտագործել հեռացված միավորը"
+
+#: ../mate-panel/launcher.c:440
+#, c-format
+msgid "No URI provided for panel launcher desktop file\n"
+msgstr "Վահանակի գործարկչի  աշխատանքային սեղանի ֆայլի համար URI չկա\n"
+
+#: ../mate-panel/launcher.c:465
+#, c-format
+msgid "Unable to open desktop file %s for panel launcher\n"
+msgstr ""
+
+#: ../mate-panel/launcher.c:533
+msgid "_Launch"
+msgstr "_Գործարկել"
+
+#: ../mate-panel/launcher.c:869
+#, c-format
+msgid "Key %s is not set, cannot load launcher\n"
+msgstr "Ստեղն  %s–ը կարգավորված չէ, հնարավոր չէ բեռնել գործարկիչը\n"
+
+#: ../mate-panel/launcher.c:997 ../mate-panel/panel-ditem-editor.c:1330
+#: ../mate-panel/panel-ditem-editor.c:1364
+#: ../mate-panel/panel-ditem-editor.c:1395
+msgid "Could not save launcher"
+msgstr "Անհնար է գործարկիչը պահել"
+
+#: ../mate-panel/main.c:47
+msgid "Replace a currently running panel"
+msgstr "Տեղափոխել գործարկվող վահանակը"
+
+#. this feature was request in #mate irc channel
+#: ../mate-panel/main.c:49
+msgid "Reset the panel configuration to default"
+msgstr "Վերականգնել վահանակի լռելյայն կոնֆիգուրացիան"
+
+#. open run dialog
+#: ../mate-panel/main.c:51
+msgid "Execute the run dialog"
+msgstr "Կատարում է երկխոսության աշխատանքը"
+
+#. default panels layout
+#: ../mate-panel/main.c:53
+msgid "Set the default panel layout"
+msgstr "Սահմանել վահանակի հիմնական դասավորությունը"
+
+#: ../mate-panel/menu.c:527
+msgid "Add this launcher to _panel"
+msgstr "Ավելացնել այս գործարկիչը _վահանակի վրա"
+
+#: ../mate-panel/menu.c:534
+msgid "Add this launcher to _desktop"
+msgstr "Ավելացնել այս գործարկիչը _աշխատասեղանի վրա"
+
+#: ../mate-panel/menu.c:546
+msgid "_Entire menu"
+msgstr "_Ամբողջ մենյուն"
+
+#: ../mate-panel/menu.c:551
+msgid "Add this as _drawer to panel"
+msgstr "Ավելացնել սա վահանակի վրա որպես  _դարակ"
+
+#: ../mate-panel/menu.c:558
+msgid "Add this as _menu to panel"
+msgstr "Ավելացնել սա վահանակի վրա որպես _մենյու"
+
+#: ../mate-panel/panel-action-button.c:180
+msgid "_Activate Screensaver"
+msgstr "_Ակտիվացնել էկրանի հանգստի ռեժիմի ծրագիրը"
+
+#: ../mate-panel/panel-action-button.c:186
+msgid "_Lock Screen"
+msgstr "_Արգելափակել էկրանը"
+
+#: ../mate-panel/panel-action-button.c:314
+msgid "Could not connect to server"
+msgstr "Չի հաջողվել միանալ սերվերին"
+
+#: ../mate-panel/panel-action-button.c:345
+msgid "Lock Screen"
+msgstr "Արգելափակել էկրանը"
+
+#: ../mate-panel/panel-action-button.c:346
+msgid "Protect your computer from unauthorized use"
+msgstr "Պաշտպանիր համակարգիչդ ոչ իրավասու օգտագործումից"
+
+#. when changing one of those two strings, don't forget to
+#. * update the ones in panel-menu-items.c (look for
+#. * "1" (msgctxt: "panel:showusername"))
+#: ../mate-panel/panel-action-button.c:360
+msgid "Log Out..."
+msgstr "Ելք․․․"
+
+#: ../mate-panel/panel-action-button.c:361
+msgid "Log out of this session to log in as a different user"
+msgstr "Դուրս գալ այս սեսիայից մեկ այլ օգտագործողով մուտք գործելու համար"
+
+#: ../mate-panel/panel-action-button.c:370
+msgid "Run Application..."
+msgstr "Գոծարկել ծրագիրը…"
+
+#: ../mate-panel/panel-action-button.c:371
+msgid "Run an application by typing a command or choosing from a list"
+msgstr "Գործարկել ծրագիր՝ գրելով հրահանգը կամ ընտրելով ցուցակից"
+
+#: ../mate-panel/panel-action-button.c:380
+msgid "Search for Files..."
+msgstr "Փնտրել ֆայլերը…"
+
+#: ../mate-panel/panel-action-button.c:381
+msgid "Locate documents and folders on this computer by name or content"
+msgstr "Դասավորել փաստաթղթերն ու պանակները ըստ անվան և պարունակության"
+
+#: ../mate-panel/panel-action-button.c:389
+#: ../mate-panel/panel-force-quit.c:251
+msgid "Force Quit"
+msgstr "Ստիպողական անջատում"
+
+#: ../mate-panel/panel-action-button.c:390
+msgid "Force a misbehaving application to quit"
+msgstr "Ստիպել սխալ ծրագրին ընդհատվել"
+
+#. FIXME icon
+#: ../mate-panel/panel-action-button.c:399
+msgid "Connect to Server..."
+msgstr "Միանալ սերվերին…"
+
+#: ../mate-panel/panel-action-button.c:400
+msgid "Connect to a remote computer or shared disk"
+msgstr "Միանալ հեռադիր համակարգչին կամ դիսկին"
+
+#: ../mate-panel/panel-action-button.c:408
+msgid "Shut Down..."
+msgstr "Անջատել…"
+
+#: ../mate-panel/panel-action-button.c:409
+msgid "Shut down the computer"
+msgstr "Անջատել համակարգիչը"
+
+#: ../mate-panel/panel-addto.c:116
+msgid "Custom Application Launcher"
+msgstr "Սովորական գործարկչի ծրագիր"
+
+#: ../mate-panel/panel-addto.c:117
+msgid "Create a new launcher"
+msgstr "Ստեղծել նոր գործարկիչ"
+
+#: ../mate-panel/panel-addto.c:127
+msgid "Application Launcher..."
+msgstr "Ծրագրի գործարկիչ…"
+
+#: ../mate-panel/panel-addto.c:128
+msgid "Copy a launcher from the applications menu"
+msgstr "Պատճենել գործարկիչը ծրագրերի մենյուից "
+
+#: ../mate-panel/panel-addto.c:142 ../mate-panel/panel-menu-button.c:1094
+msgid "Main Menu"
+msgstr "Գլխավոր մենյու"
+
+#: ../mate-panel/panel-addto.c:143
+msgid "The main MATE menu"
+msgstr "Գնոմի գլխավոր մենյու"
+
+#: ../mate-panel/panel-addto.c:153
+msgid "Menu Bar"
+msgstr "Մենյուի տող"
+
+#: ../mate-panel/panel-addto.c:154
+msgid "A custom menu bar"
+msgstr "Սովորական մենյուի տող"
+
+#: ../mate-panel/panel-addto.c:164
+msgid "Separator"
+msgstr "Բաժանարար"
+
+#: ../mate-panel/panel-addto.c:165
+msgid "A separator to organize the panel items"
+msgstr "Վահանակի միավորները կազմակերպելու բաժանարար"
+
+#: ../mate-panel/panel-addto.c:176
+msgid "A pop out drawer to store other items in"
+msgstr "Հայտնվող դարակ այլ տարրեր պահելու համար"
+
+#: ../mate-panel/panel-addto.c:257
+msgid "(empty)"
+msgstr "(դատարկ)"
+
+#: ../mate-panel/panel-addto.c:988
+#, c-format
+msgid "Find an _item to add to \"%s\":"
+msgstr "Գտնել _միավոր \"%s\"–ին ավելացնելու համար."
+
+#: ../mate-panel/panel-addto.c:992
+#, c-format
+msgid "Add to Drawer"
+msgstr "Ավելացնել դարակում"
+
+#: ../mate-panel/panel-addto.c:994
+msgid "Find an _item to add to the drawer:"
+msgstr "Գտնել _տարր դարակում ավելացնելու համար."
+
+#: ../mate-panel/panel-addto.c:996
+#, c-format
+msgid "Add to Panel"
+msgstr "Ավելացնել վահանակին"
+
+#: ../mate-panel/panel-addto.c:998
+msgid "Find an _item to add to the panel:"
+msgstr "Գտնել _միավոր վահանակի վրա ավելացնելու համար․"
+
+#: ../mate-panel/panel-applet-frame.c:788
+#, c-format
+msgid "\"%s\" has quit unexpectedly"
+msgstr "\"%s\"–ը անսպասելի ընդհատվեց"
+
+#: ../mate-panel/panel-applet-frame.c:790
+msgid "Panel object has quit unexpectedly"
+msgstr "Վահանակի միավորը անսպասելի ընդհատվեց"
+
+#: ../mate-panel/panel-applet-frame.c:797
+msgid ""
+"If you reload a panel object, it will automatically be added back to the "
+"panel."
+msgstr "Եթե վերբեռնեք վահանակի օբյեկտը, այն ավտոմատ կերպով կավելացվի վահանակին։"
+
+#: ../mate-panel/panel-applet-frame.c:804
+msgid "D_elete"
+msgstr "Ջ_նջել"
+
+#: ../mate-panel/panel-applet-frame.c:805
+#: ../mate-panel/panel-applet-frame.c:810
+msgid "_Don't Reload"
+msgstr "_Չվերաբեռնել"
+
+#: ../mate-panel/panel-applet-frame.c:806
+#: ../mate-panel/panel-applet-frame.c:811
+msgid "_Reload"
+msgstr "_Վերաբեռնել"
+
+#: ../mate-panel/panel-applet-frame.c:966
+#, c-format
+msgid "The panel encountered a problem while loading \"%s\"."
+msgstr "Բեռնման ժամանակ վահանակը բարդությունների հանդիպեց \"%s\"։"
+
+#: ../mate-panel/panel-applet-frame.c:982
+msgid "Do you want to delete the applet from your configuration?"
+msgstr "Ցանկանու՞մ եք հեռացնել ապլետը ձեր կոնֆիգուրացիայից։"
+
+#: ../mate-panel/panel-context-menu.c:89
+msgid "And many, many others..."
+msgstr "Եվ շատ–շատ այլ…"
+
+#: ../mate-panel/panel-context-menu.c:112
+msgid "The MATE Panel"
+msgstr "Գնոմ վահանակ"
+
+#: ../mate-panel/panel-context-menu.c:116
+msgid ""
+"This program is responsible for launching other applications and provides "
+"useful utilities."
+msgstr "Ծրագիրը պատասխանատու է այլ ծրագրերի գործարկման համար և ապահովում է օգտակար օժանդակ ծրագրերով։"
+
+#: ../mate-panel/panel-context-menu.c:120
+msgid "About the MATE Panel"
+msgstr "Գնոմ վահանակի մասին"
+
+#: ../mate-panel/panel-context-menu.c:151
+msgid "Cannot delete this panel"
+msgstr "Հնարավոր չէ հեռացնել այս վահանակը"
+
+#: ../mate-panel/panel-context-menu.c:152
+msgid "You must always have at least one panel."
+msgstr "Դուք միշտ ամենաքիչը մեկ վահանակ պետք է ունենաք։"
+
+#: ../mate-panel/panel-context-menu.c:185
+msgid "_Add to Panel..."
+msgstr "_Ավելացնել վահանակին…"
+
+#: ../mate-panel/panel-context-menu.c:206
+msgid "_Delete This Panel"
+msgstr "_Հեռացնել այս վահանակը"
+
+#: ../mate-panel/panel-context-menu.c:221
+msgid "_New Panel"
+msgstr "_Նոր վահանակ"
+
+#: ../mate-panel/panel-context-menu.c:273
+msgid "A_bout Panels"
+msgstr "Վահանակների մա_սին"
+
+#: ../mate-panel/panel-ditem-editor.c:114
+msgid "Application"
+msgstr "Ծրագիր"
+
+#: ../mate-panel/panel-ditem-editor.c:116
+msgid "Application in Terminal"
+msgstr "Ծրագիր տերմինալում"
+
+#: ../mate-panel/panel-ditem-editor.c:118
+msgid "Location"
+msgstr "Տեղակայություն"
+
+#. Type
+#: ../mate-panel/panel-ditem-editor.c:610
+msgid "_Type:"
+msgstr "_Տեսակ․"
+
+#. Name
+#: ../mate-panel/panel-ditem-editor.c:617
+msgid "_Name:"
+msgstr "_Անվանումը․"
+
+#: ../mate-panel/panel-ditem-editor.c:642
+msgid "_Browse..."
+msgstr "_Զննել․․․"
+
+#. Comment
+#: ../mate-panel/panel-ditem-editor.c:649
+msgid "Co_mment:"
+msgstr "Մեկնաբանություն."
+
+#: ../mate-panel/panel-ditem-editor.c:981
+msgid "Choose an application..."
+msgstr "Ընտրել ծրագիր"
+
+#: ../mate-panel/panel-ditem-editor.c:985
+msgid "Choose a file..."
+msgstr "Ֆայլ ընտրել…"
+
+#: ../mate-panel/panel-ditem-editor.c:1150
+#: ../mate-panel/panel-ditem-editor.c:1159
+msgid "Comm_and:"
+msgstr "Հրաման․"
+
+#: ../mate-panel/panel-ditem-editor.c:1168
+msgid "_Location:"
+msgstr "_Տեղակայություն․"
+
+#: ../mate-panel/panel-ditem-editor.c:1331
+msgid "The name of the launcher is not set."
+msgstr "Գործարկչի անվանումը նշված չէ։"
+
+#: ../mate-panel/panel-ditem-editor.c:1335
+msgid "Could not save directory properties"
+msgstr "Չի հաջողվել պահել գրացուցակի հատկությունները"
+
+#: ../mate-panel/panel-ditem-editor.c:1336
+msgid "The name of the directory is not set."
+msgstr "Գրացուցակի անվանումը կարգավորված չէ։"
+
+#: ../mate-panel/panel-ditem-editor.c:1352
+msgid "The command of the launcher is not set."
+msgstr "Գործարկչի հրամանը նշված չէ։"
+
+#: ../mate-panel/panel-ditem-editor.c:1355
+msgid "The location of the launcher is not set."
+msgstr "Գործարկչի տեղը նշված չէ։"
+
+#: ../mate-panel/panel-ditem-editor.c:1432
+msgid "Could not display help document"
+msgstr "Չի հաջողվել ցույց տալ օգնության փաստաթուղթը"
+
+#: ../mate-panel/panel-force-quit.c:80
+msgid ""
+"Click on a window to force the application to quit. To cancel press <ESC>."
+msgstr "Կտտացրեք պատուհանի վրա ծրագիրը փակելու համար։ Այն չեղյալ համարելու համար սեղմեք <ESC>։"
+
+#: ../mate-panel/panel-force-quit.c:234
+msgid "Force this application to exit?"
+msgstr "Ստիպե՞լ այս ծրագրին փակվել։"
+
+#: ../mate-panel/panel-force-quit.c:237
+msgid ""
+"If you choose to force an application to exit, unsaved changes in any open "
+"documents in it might get lost."
+msgstr "Եթե ծրագիրը փակեք, ցանկացած  չպահված փոփոխություն բաց փաստաթղթերում հնարավոր է,որ կորչի։"
+
+#: ../mate-panel/panel-menu-bar.c:99
+msgid "Browse and run installed applications"
+msgstr "Զննել և գործարկել տեղադրված ծրագրերը"
+
+#: ../mate-panel/panel-menu-bar.c:100
+msgid "Access documents, folders and network places"
+msgstr "Մուտք գործելու փաստաթղթեր, պանակներ և ցանցեր"
+
+#: ../mate-panel/panel-menu-bar.c:101
+msgid "Change desktop appearance and behavior, get help, or log out"
+msgstr "Փոխել աշխատանքային սեղանի տեսքը և ռեժիմը, օգնություն ստանալ կամ դուրս գալ"
+
+#: ../mate-panel/panel-menu-bar.c:168
+msgid "Applications"
+msgstr "Ծրագրեր"
+
+#: ../mate-panel/panel-menu-bar.c:364 ../mate-panel/panel-menu-button.c:672
+msgid "_Edit Menus"
+msgstr "_Խմբագրել մենյուները"
+
+#: ../mate-panel/panel-menu-items.c:473
+msgid "Bookmarks"
+msgstr "Էջանշաններ"
+
+#. Translators: %s is a URI
+#: ../mate-panel/panel-menu-items.c:496 ../mate-panel/panel.c:549
+#, c-format
+msgid "Open '%s'"
+msgstr "Բացել '%s'"
+
+#: ../mate-panel/panel-menu-items.c:567
+#, c-format
+msgid "Unable to scan %s for media changes"
+msgstr "Հնարավոր չէ սկանավորել %s–ը մեդիայի փոփոխությունների համար"
+
+#: ../mate-panel/panel-menu-items.c:610
+#, c-format
+msgid "Rescan %s"
+msgstr "Վերասկանավորել %s–ը"
+
+#: ../mate-panel/panel-menu-items.c:647
+#, c-format
+msgid "Unable to mount %s"
+msgstr "Հնարավոր չէ %s–ը տեղադրել"
+
+#: ../mate-panel/panel-menu-items.c:710
+#, c-format
+msgid "Mount %s"
+msgstr "Տեղադրել %s–ը"
+
+#: ../mate-panel/panel-menu-items.c:918
+msgid "Removable Media"
+msgstr "Հեռացվող մեդիա"
+
+#: ../mate-panel/panel-menu-items.c:1005
+msgid "Network Places"
+msgstr "Ցանցային տեղանքներ"
+
+#: ../mate-panel/panel-menu-items.c:1044
+msgid "Open your personal folder"
+msgstr "Բացել անձնական պանակը"
+
+#. Translators: Desktop is used here as in
+#. * "Desktop Folder" (this is not the Desktop
+#. * environment).
+#: ../mate-panel/panel-menu-items.c:1063
+msgctxt "Desktop Folder"
+msgid "Desktop"
+msgstr "Աշխատանքային սեղան"
+
+#: ../mate-panel/panel-menu-items.c:1064
+msgid "Open the contents of your desktop in a folder"
+msgstr "Բացել աշխատասեղանի պարունակությունը պանակի մեջ"
+
+#: ../mate-panel/panel-menu-items.c:1080
+msgid "Computer"
+msgstr "Համակարգիչ"
+
+#: ../mate-panel/panel-menu-items.c:1085
+msgid ""
+"Browse all local and remote disks and folders accessible from this computer"
+msgstr "Թերթել բոլոր տեղական և հեռավոր սկավառակները և թղթապանակները, որոնք հասանելի են այս համակարգչում"
+
+#: ../mate-panel/panel-menu-items.c:1098
+msgid "Network"
+msgstr "Ցանց"
+
+#: ../mate-panel/panel-menu-items.c:1099
+msgid "Browse bookmarked and local network locations"
+msgstr "Փնտրել էջանշված և տեղական ցանցային վայրերը"
+
+#: ../mate-panel/panel-menu-items.c:1497
+msgid "Places"
+msgstr "Կարգեր"
+
+#: ../mate-panel/panel-menu-items.c:1525
+msgid "System"
+msgstr "Համակարգ"
+
+#. Below this, we only have log out/shutdown items
+#. Translators: translate "1" (msgctxt: "panel:showusername") to anything
+#. * but "1" if "Log Out %s" doesn't make any sense in your
+#. * language (where %s is a username).
+#: ../mate-panel/panel-menu-items.c:1610
+msgctxt "panel:showusername"
+msgid "1"
+msgstr "1"
+
+#. keep those strings in sync with the ones in
+#. * panel-action-button.c
+#. Translators: this string is used ONLY if you translated
+#. * "1" (msgctxt: "panel:showusername") to "1"
+#: ../mate-panel/panel-menu-items.c:1622
+#, c-format
+msgid "Log Out %s..."
+msgstr "Ելք %s..."
+
+#. Translators: this string is used ONLY if you translated
+#. * "1" (msgctxt: "panel:showusername") to "1"
+#: ../mate-panel/panel-menu-items.c:1626
+#, c-format
+msgid "Log out %s of this session to log in as a different user"
+msgstr "Դուրս գալ %s սեսիայից մեկ այլ օգտագործողով մուտք գործելու համար"
+
+#: ../mate-panel/panel-properties-dialog.c:120
+#: ../mate-panel/panel-test-applets.c:58
+msgctxt "Orientation"
+msgid "Top"
+msgstr "Վերև"
+
+#: ../mate-panel/panel-properties-dialog.c:121
+#: ../mate-panel/panel-test-applets.c:59
+msgctxt "Orientation"
+msgid "Bottom"
+msgstr "Ներքև"
+
+#: ../mate-panel/panel-properties-dialog.c:122
+#: ../mate-panel/panel-test-applets.c:60
+msgctxt "Orientation"
+msgid "Left"
+msgstr "Ձախ"
+
+#: ../mate-panel/panel-properties-dialog.c:123
+#: ../mate-panel/panel-test-applets.c:61
+msgctxt "Orientation"
+msgid "Right"
+msgstr "Աջ"
+
+#: ../mate-panel/panel-properties-dialog.c:819
+msgid "Drawer Properties"
+msgstr "Դարակի հատկությունները"
+
+#: ../mate-panel/panel-properties-dialog.c:939
+#: ../mate-panel/panel-run-dialog.c:1970
+#, c-format
+msgid "Unable to load file '%s': %s."
+msgstr "Հնարավոր չէ բեռնել '%s': %s ֆայլը"
+
+#: ../mate-panel/panel-properties-dialog.c:945
+msgid "Could not display properties dialog"
+msgstr "Հնարավոր չէ ցուցադրել նախընտրությունների դիալոգը"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:1
+msgid "Panel Properties"
+msgstr "Վահանակի հատկություններ"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:2
+msgid "Some of these properties are locked down"
+msgstr "Այս պարամետրերից մի քանիսը արգելափակված են"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:3
+msgid "_Icon:"
+msgstr "_Պատկերանիշ՝"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:4
+msgid "pixels"
+msgstr "պիքսելներ"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:5
+#: ../mate-panel/panel-test-applets.ui.h:5
+msgid "_Orientation:"
+msgstr "_Կողմնորոշում"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:6
+#: ../mate-panel/panel-test-applets.ui.h:3
+msgid "_Size:"
+msgstr "_Չափ՝"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:7
+msgid "E_xpand"
+msgstr "Ընդ_լայնել"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:8
+msgid "_Autohide"
+msgstr "_Ավտոմատ թաքցնել"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:9
+msgid "Show hide _buttons"
+msgstr "Ցույց տալ թաքցնել _ստեղները"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:10
+msgid "Arro_ws on hide buttons"
+msgstr "Սլաք_ներ թաքցնել կոճակների վրա"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:12
+msgid "_None (use system theme)"
+msgstr "_Դատարկ (օգտագործել համակարգի թեման)"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:13
+msgid "Solid c_olor"
+msgstr "Մաքուր գույն"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:15
+msgid "Pick a color"
+msgstr "Ընտրել գույն"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:16
+msgid "<small>Transparent</small>"
+msgstr "<small>Թափանցիկ</small>"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:17
+msgid "Co_lor:"
+msgstr "Գույ_ն"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:18
+msgid "S_tyle:"
+msgstr "Ոճ."
+
+#: ../mate-panel/panel-properties-dialog.ui.h:19
+msgid "<small>Opaque</small>"
+msgstr "<small>Անթափանց</small>"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:20
+msgid "Background _image:"
+msgstr "Ֆոնի _նկար"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:21
+msgid "Select background"
+msgstr "Ընտրել ֆոնը"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:22
+msgid "Background"
+msgstr "Ֆոն"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:23
+msgid "Image Background Details"
+msgstr "Նկարի ֆոնի մանրամասներ"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:24
+msgid "_Tile"
+msgstr "_Խճանկար"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:25
+msgid "_Scale"
+msgstr "_Մասշտաբ"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:26
+msgid "St_retch"
+msgstr "Ձգ_ել"
+
+#: ../mate-panel/panel-properties-dialog.ui.h:27
+msgid "Rotate image when panel is _vertical"
+msgstr "Պատկերը պտտել, երբ վահանակը _ուղղահայաց է"
+
+#: ../mate-panel/panel-recent.c:78 ../mate-panel/panel-recent.c:88
+#, c-format
+msgid "Could not open recently used document \"%s\""
+msgstr "Չի հաջողվել բացել վերջերս օգտագործված  \"%s\" փաստաթուղթը"
+
+#: ../mate-panel/panel-recent.c:90
+#, c-format
+msgid "An unknown error occurred while trying to open \"%s\"."
+msgstr "Անհայտ սխալ՝  \"%s\"–ը բացել փորձելիս։"
+
+#: ../mate-panel/panel-recent.c:147
+msgid "Clear the Recent Documents list?"
+msgstr "Մաքրե՞լ վերջին փաստաթղթերի ցուցակը։"
+
+#: ../mate-panel/panel-recent.c:149
+msgid ""
+"If you clear the Recent Documents list, you clear the following:\n"
+"• All items from the Places → Recent Documents menu item.\n"
+"• All items from the recent documents list in all applications."
+msgstr "Վերջին փաստաթղթերի ցանկը ջնջելու դեպքում դուք կջնջեք նաև.\n• Բոլոր տարրերը տեղանքներից → վերջին փաստաթղթերի մենյուի տարրերը։\n• Բոլոր տարրերը վերջին փաստաթղթեր ցանկից բոլոր ծրագրերում։"
+
+#: ../mate-panel/panel-recent.c:161
+msgid "Clear Recent Documents"
+msgstr "Մաքրել վերջին փաստաթղթերը"
+
+#: ../mate-panel/panel-recent.c:196
+msgid "Recent Documents"
+msgstr "Վերջին փաստաթղթեր"
+
+#: ../mate-panel/panel-recent.c:235
+msgid "Clear Recent Documents..."
+msgstr "Մաքրել վերջին փաստաթղթերը․․․"
+
+#: ../mate-panel/panel-recent.c:237
+msgid "Clear all items from the recent documents list"
+msgstr "Մաքրել բոլոր փաստաթղթերը վերջին փաստաթղթերի ցանկից"
+
+#: ../mate-panel/panel-run-dialog.c:417
+#, c-format
+msgid "Could not run command '%s'"
+msgstr "Անհնար է '%s' հրահանգը գործարկել "
+
+#: ../mate-panel/panel-run-dialog.c:457
+#, c-format
+msgid "Could not convert '%s' from UTF-8"
+msgstr "Չի հաջողվել '%s–ը UTF-8–ից փոխակերպել"
+
+#: ../mate-panel/panel-run-dialog.c:1204
+msgid "Choose a file to append to the command..."
+msgstr "Ընտրել ֆայլը հրահանգին ավելացնելու համար…"
+
+#: ../mate-panel/panel-run-dialog.c:1582 ../mate-panel/panel-run-dialog.ui.h:9
+msgid "Select an application to view its description."
+msgstr "Ընտրել ծրագիրը նկարագրությունը տեսնելու համար։"
+
+#: ../mate-panel/panel-run-dialog.c:1620
+#, c-format
+msgid "Will run command: '%s'"
+msgstr "Հրահանգը կկատարվի. '%s'"
+
+#: ../mate-panel/panel-run-dialog.c:1653
+#, c-format
+msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
+msgstr " URI ցանկը, որը տեղակայվել է գործարկում դիալոգում սխալ ձևաչափ  (%d) կամ երկարություն ունի (%d)\n"
+
+#: ../mate-panel/panel-run-dialog.c:1975
+msgid "Could not display run dialog"
+msgstr "Չի հաջողվել ցուցադրել գործարկվող դիալոգը"
+
+#: ../mate-panel/panel-run-dialog.ui.h:1
+msgid "Run Application"
+msgstr "Գործարկել Ծրագիրը"
+
+#: ../mate-panel/panel-run-dialog.ui.h:2
+msgid "Command icon"
+msgstr "Հրահանգի պատկերանիշ"
+
+#: ../mate-panel/panel-run-dialog.ui.h:3
+msgid "The icon of the command to be run."
+msgstr "Գործարկվող հրահանգի պատկերանիշը։"
+
+#: ../mate-panel/panel-run-dialog.ui.h:4
+msgid "Run in _terminal"
+msgstr "Գործարկել _տերմինալում"
+
+#: ../mate-panel/panel-run-dialog.ui.h:5
+msgid "Select this box to run the command in a terminal window."
+msgstr "Ընտրել այս արկղը հրահանգը տերմինալի պատուհանում գործարկելու համար։"
+
+#: ../mate-panel/panel-run-dialog.ui.h:6
+msgid "Run with _file..."
+msgstr "Գործարկել _ֆայլի հետ…"
+
+#: ../mate-panel/panel-run-dialog.ui.h:7
+msgid ""
+"Click this button to browse for a file whose name to append to the command "
+"string."
+msgstr "Կտտացնել այս՝ ստեղնին ընտրելու այն ֆայլը, որի անունը պետք է ավելացնել հրահանգների տողին։"
+
+#: ../mate-panel/panel-run-dialog.ui.h:8
+msgid "List of known applications"
+msgstr "Հայտնի ծրագրերի ցանկ"
+
+#: ../mate-panel/panel-run-dialog.ui.h:10
+msgid "Show list of known _applications"
+msgstr "Ցույց տալ հայտնի ծրագրերի ցանկը"
+
+#: ../mate-panel/panel-run-dialog.ui.h:11 ../mate-panel/panel-stock-icons.c:97
+msgid "_Run"
+msgstr "_Գործարկել"
+
+#: ../mate-panel/panel-run-dialog.ui.h:12
+msgid ""
+"Click this button to run the selected application or the command in the "
+"command entry field."
+msgstr "Կտտացնել այս ստեղնին՝ գործարկելու համար ընտրված ծրագիրը կամ հրանանգը հրահանգների մուտքի դաշտում։"
+
+#: ../mate-panel/panel-stock-icons.c:98
+msgid "_Force quit"
+msgstr "_Ստիպողաբար անջատել"
+
+#: ../mate-panel/panel-stock-icons.c:99
+msgid "C_lear"
+msgstr "Մ_աքրել"
+
+#: ../mate-panel/panel-stock-icons.c:100
+msgid "D_on't Delete"
+msgstr "Չ_հեռացնել"
+
+#: ../mate-panel/panel-test-applets.c:39
+msgid "Specify an applet IID to load"
+msgstr "Նշել IID ապլետը բեռնելու համար"
+
+#: ../mate-panel/panel-test-applets.c:40
+msgid ""
+"Specify a gsettings path in which the applet preferences should be stored"
+msgstr "Նշեք պարամետրերի ուղին, որը պետք է պահվի ապլետի նախապատվությունները։"
+
+#: ../mate-panel/panel-test-applets.c:41
+msgid "Specify the initial size of the applet (xx-small, medium, large etc.)"
+msgstr "Նշել ապլետի նախնական չափը (xx-փոքր, միջին, մեծ, և այլն.)"
+
+#: ../mate-panel/panel-test-applets.c:42
+msgid ""
+"Specify the initial orientation of the applet (top, bottom, left or right)"
+msgstr "Նշել ապլետի նախնական կողմնորոշումը (վերև, ներքև, ձախ կամ աջ)"
+
+#: ../mate-panel/panel-test-applets.c:66
+msgctxt "Size"
+msgid "XX Small"
+msgstr "XX փոքր"
+
+#: ../mate-panel/panel-test-applets.c:67
+msgctxt "Size"
+msgid "X Small"
+msgstr "X փոքր"
+
+#: ../mate-panel/panel-test-applets.c:68
+msgctxt "Size"
+msgid "Small"
+msgstr "Փոքր"
+
+#: ../mate-panel/panel-test-applets.c:69
+msgctxt "Size"
+msgid "Medium"
+msgstr "Միջին"
+
+#: ../mate-panel/panel-test-applets.c:70
+msgctxt "Size"
+msgid "Large"
+msgstr "Մեծ"
+
+#: ../mate-panel/panel-test-applets.c:71
+msgctxt "Size"
+msgid "X Large"
+msgstr "X մեծ"
+
+#: ../mate-panel/panel-test-applets.c:72
+msgctxt "Size"
+msgid "XX Large"
+msgstr "XX մեծ"
+
+#: ../mate-panel/panel-test-applets.c:130
+#, c-format
+msgid "Failed to load applet %s"
+msgstr "Չհաջողվեց բեռնել %s ապլետը"
+
+#. This is an utility to easily test various applets
+#: ../mate-panel/panel-test-applets.ui.h:2
+msgid "Test applet utility"
+msgstr "Ապլետի ստուգան գործիք"
+
+#: ../mate-panel/panel-test-applets.ui.h:4
+msgid "_Applet:"
+msgstr "_Ապլետ"
+
+#: ../mate-panel/panel-test-applets.ui.h:6
+msgid "_Prefs Path:"
+msgstr "_Պարամետրերի Ուղի։"
+
+#: ../mate-panel/panel-toplevel.c:1218
+msgid "Hide Panel"
+msgstr "Վահանակը թաքցնել"
+
+#. translators: these string will be shown in MetaCity's switch window
+#. * popup when you pass the focus to a panel
+#: ../mate-panel/panel-toplevel.c:1621 ../mate-panel/panel-toplevel.c:1631
+msgid "Top Panel"
+msgstr ""
+
+#: ../mate-panel/panel-toplevel.c:1623
+msgid "Bottom Panel"
+msgstr ""
+
+#: ../mate-panel/panel-toplevel.c:1625
+msgid "Left Panel"
+msgstr ""
+
+#: ../mate-panel/panel-toplevel.c:1627
+msgid "Right Panel"
+msgstr ""
+
+#: ../mate-panel/panel-util.c:347
+#, c-format
+msgid "Icon '%s' not found"
+msgstr "'%s' պատկերանիշը հայտնաբերված չէ"
+
+#: ../mate-panel/panel-util.c:465
+#, c-format
+msgid "Could not execute '%s'"
+msgstr "Չի հաջողվել %s'–ը կատարել "
+
+#: ../mate-panel/panel-util.c:693
+msgid "file"
+msgstr "ֆայլ"
+
+#: ../mate-panel/panel-util.c:866
+msgid "Home Folder"
+msgstr "Տնային պանակ"
+
+#. Translators: this is the same string as the one found in
+#. * caja
+#: ../mate-panel/panel-util.c:878
+msgid "File System"
+msgstr "Ֆայլի համակարգ"
+
+#: ../mate-panel/panel-util.c:1051
+msgid "Search"
+msgstr "Որոնում"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#: ../mate-panel/panel-util.c:1097
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#: ../mate-panel/panel.c:482
+#, c-format
+msgid "Open URL: %s"
+msgstr "ԲացելURL: %s"
+
+#: ../mate-panel/panel.c:1332
+msgid "Delete this drawer?"
+msgstr "Հեռացնե՞լ այս դարակը։"
+
+#: ../mate-panel/panel.c:1333
+msgid ""
+"When a drawer is deleted, the drawer and its\n"
+"settings are lost."
+msgstr "Երբ դարակը հեռացված է, այն և իր կարգավորվածքները \nկորչում են"
+
+#: ../mate-panel/panel.c:1336
+msgid "Delete this panel?"
+msgstr "Հեռացնե՞լ այս վահանակը։"
+
+#: ../mate-panel/panel.c:1337
+msgid ""
+"When a panel is deleted, the panel and its\n"
+"settings are lost."
+msgstr "Երբ վահանակը հեռացվում է, վահանակը և իր \nկարգադրվածքները կորչում են"
