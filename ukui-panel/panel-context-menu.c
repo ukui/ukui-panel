@@ -2,6 +2,7 @@
  * panel-context-menu.c: context menu for the panels
  *
  * Copyright (C) 2004 Vincent Untz
+ * Copyright (C) 2017, Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -44,6 +45,7 @@
 #include "panel-config-global.h"
 #include "panel-profile.h"
 #include "panel-properties-dialog.h"
+#include "panel-settings-dialog.h"
 #include "panel-lockdown.h"
 #include "panel-addto.h"
 #include "panel-icon-names.h"
@@ -229,6 +231,15 @@ panel_context_menu_build_edition (PanelWidget *panel_widget,
 {
 	GtkWidget *menuitem;
 	GtkWidget *image;
+
+	menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Settings"));
+	image = gtk_image_new_from_icon_name ("applications-system", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+	gtk_widget_show (menuitem);
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+	g_signal_connect_swapped (menuitem, "activate",
+				  G_CALLBACK (panel_settings_dialog_present),
+				  panel_widget->toplevel);
 
 	menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Add to Panel..."));
 	image = gtk_image_new_from_icon_name ("list-add", GTK_ICON_SIZE_MENU);

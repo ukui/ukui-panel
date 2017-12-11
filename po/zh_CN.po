@@ -2203,6 +2203,10 @@ msgstr "无法删除此面板"
 msgid "You must always have at least one panel."
 msgstr "您必须至少有一个面板。"
 
+#: ../ukui-panel/panel-context-menu.c:184
+msgid "_Settings"
+msgstr "任务栏设置(_S)"
+
 #: ../ukui-panel/panel-context-menu.c:185
 msgid "_Add to Panel..."
 msgstr "添加到面板(_A)..."
@@ -2569,6 +2573,42 @@ msgstr "拉伸(_R)"
 #: ../ukui-panel/panel-properties-dialog.ui.h:27
 msgid "Rotate image when panel is _vertical"
 msgstr "面板垂直放置时旋转图像(_V)"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:1
+msgid "Lock the taskbar"
+msgstr "锁定任务栏"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:2
+msgid "Hide the taskbar"
+msgstr "自动隐藏任务栏"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:3
+msgid "The taskbar position on the screen："
+msgstr "任务栏在屏幕上的位置："
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:4
+msgid "Change taskbar height and icon size"
+msgstr "更改任务栏高度和图标大小"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:5
+msgid "Default-100%"
+msgstr "默认-100%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:6
+msgid "Medium-150%"
+msgstr "中-150%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:7
+msgid "Large-200%"
+msgstr "大-200%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:8
+msgid "Notification area"
+msgstr "通知区域"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:9
+msgid "Customize icons appear on the taskbar"
+msgstr "自定义哪些图标显示在任务栏上"
 
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format

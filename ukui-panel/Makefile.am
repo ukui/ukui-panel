@@ -36,6 +36,7 @@ panel_sources = \
 	panel-config-global.c \
 	panel-util.c \
 	panel-properties-dialog.c \
+	panel-settings-dialog.c \
 	panel-run-dialog.c \
 	menu.c \
 	panel-context-menu.c \
@@ -82,6 +83,7 @@ panel_headers = \
 	drawer.h \
 	panel-util.h \
 	panel-properties-dialog.h \
+	panel-settings-dialog.h \
 	panel-config-global.h \
 	panel-run-dialog.h \
 	menu.h \
@@ -225,6 +227,7 @@ BUILT_SOURCES = \
 uidir = $(datadir)/ukui-panel/ui
 ui_DATA = \
 	panel-properties-dialog.ui \
+	panel-settings-dialog.ui \
 	panel-run-dialog.ui \
 	panel-test-applets.ui
 

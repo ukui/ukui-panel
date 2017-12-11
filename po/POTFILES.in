@@ -57,6 +57,8 @@ ukui-panel/panel-menu-items.c
 ukui-panel/panel-profile.c
 ukui-panel/panel-properties-dialog.c
 [type: gettext/glade]ukui-panel/panel-properties-dialog.ui
+ukui-panel/panel-settings-dialog.c
+[type: gettext/glade]ukui-panel/panel-settings-dialog.ui
 ukui-panel/panel-recent.c
 ukui-panel/panel-run-dialog.c
 [type: gettext/glade]ukui-panel/panel-run-dialog.ui
