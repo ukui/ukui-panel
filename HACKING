@@ -1,17 +1,17 @@
-Hacking on mate-panel
+Hacking on ukui-panel
 ======================
 
  + The development occurs in git:
 
-     https://github.com/mate-desktop/mate-panel
+     https://github.com/ukui-desktop/ukui-panel
 
-   For information on how to access MATE git please read:
+   For information on how to access UKUI git please read:
 
-     http://wiki.mate-desktop.org
+     http://wiki.ukui-desktop.org
 
- + Please send patches as bug reports in MATE Bugzilla:
+ + Please send patches as bug reports in UKUI Bugzilla:
 
-     https://github.com/mate-desktop/mate-panel/issues
+     https://github.com/ukui-desktop/ukui-panel/issues
 
  + Please try and send a patch against a recent version of this package.
    Patches (pull requests) against git master are most preferable.

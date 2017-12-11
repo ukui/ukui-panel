@@ -1,7 +1,7 @@
 ========== af.po ==========
-# Afrikaans translation of mate-panel.
+# Afrikaans translation of ukui-panel.
 # Copyright (C) 2004 Zuza Software Foundation
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Zuza Software Foundation <info@translate.org.za>, 2004
 # F Wolff <friedel@translate.org.za>, 2008, 2010.
 
@@ -11,7 +11,7 @@
 ========== am.po ==========
 # Translations into the Amharic Language.
 # Copyright (C) 2002 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Ge'ez Frontier Foundation <locales@geez.org>, 2002.
 #
 #
@@ -20,7 +20,7 @@
 
 
 ========== ar.po ==========
-# translation of mate-panel.HEAD.po to Arabic
+# translation of ukui-panel.HEAD.po to Arabic
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2004 THE PACKAGE'S COPYRIGHT HOLDER
 # Sayed Jaffer Al-Mosawi <mosawi@arabeyes.org>, 2002.
@@ -45,10 +45,10 @@
 
 
 ========== ast.po ==========
-# translation of mate-panel-2.0.po to Asturian
-# Asturian translation for mate-panel
+# translation of ukui-panel-2.0.po to Asturian
+# Asturian translation for ukui-panel
 # Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2006.
 # Xose S. Puente <xspuente@gmail.com>, 2007.
@@ -57,8 +57,8 @@
 
 
 ========== az.po ==========
-# translation of mate-panel.HEAD.az.po to Azerbaijani
-# translation of mate-panel.HEAD.az.po to Azerbaijani Turkish
+# translation of ukui-panel.HEAD.az.po to Azerbaijani
+# translation of ukui-panel.HEAD.az.po to Azerbaijani Turkish
 # Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # Vasif Ismailoglu MD <azerb_linux@hotmail.com>, 2000.
 # Mətin Əmirov <metin@karegen.com>, 2003, 2004.
@@ -68,7 +68,7 @@
 
 
 ========== be.po ==========
-# Беларускі пераклад mate-panel.HEAD.
+# Беларускі пераклад ukui-panel.HEAD.
 # SOME DESCRIPTIVE TITLE
 # Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # Vital Khilko <dojlid@mova.org>, 2003.
@@ -81,9 +81,9 @@
 
 
 ========== be@latin.po ==========
-# Biełaruski pierakład mate-panel.
-# Copyright (C) 2007 THE mate-panel'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the mate-panel package.
+# Biełaruski pierakład ukui-panel.
+# Copyright (C) 2007 THE ukui-panel'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ukui-panel package.
 # Alaksandar Navicki <zolak@lacinka.org>, 2007. Łacinka.org
 #
 
@@ -91,7 +91,7 @@
 
 
 ========== bg.po ==========
-# Bulgarian translation of mate-panel po-file.
+# Bulgarian translation of ukui-panel po-file.
 # Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 # Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 # Peter Slavov <pslavov@i-space.org>, 2004.
@@ -105,9 +105,9 @@
 
 
 ========== bn.po ==========
-# Bangla Translation of Mate-Panel file.
+# Bangla Translation of Ukui-Panel file.
 # Copyright (C) 2005 Free Software Foundation.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Runa Bhattacharjee<runa@bengalinux.org>, 2005.
 # Runa Bhattacharjee <runab@fedoraproject.org>, 2008.
@@ -121,9 +121,9 @@
 
 ========== bn_IN.po ==========
 # translation of bn_IN.po to Bengali INDIA
-# Bangla Translation of Mate-Panel file.
+# Bangla Translation of Ukui-Panel file.
 # Copyright (C) 2005 Free Software Foundation.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Runa Bhattacharjee<runa@bengalinux.org>, 2005.
 # Runa Bhattacharjee <runab@fedoraproject.org>, 2008.
@@ -133,9 +133,9 @@
 
 
 ========== br.po ==========
-# Breton translation for mate-panel
+# Breton translation for ukui-panel
 # Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Jérémy Ar Floc'h <jeremy.lefloch@gmail.com>, 2006
 # Giulia Fraboulet <djoulia@gmail.com>, 2006
@@ -147,9 +147,9 @@
 
 
 ========== bs.po ==========
-# translation of mate-panel.HEAD.po to Bosnian
-# translation of mate-panel.HEAD.bs.po to Bosnian
-# This file is distributed under the same license as the mate-panel package.
+# translation of ukui-panel.HEAD.po to Bosnian
+# translation of ukui-panel.HEAD.bs.po to Bosnian
+# This file is distributed under the same license as the ukui-panel package.
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # Mehemed Šaćirović <mesa@tesanj.net>, 2004.
 # Kemal Šanjta <gomez@lugzdk.ba>, 2004.
@@ -159,7 +159,7 @@
 
 
 ========== ca.po ==========
-# mate-panel translation to Catalan.
+# ukui-panel translation to Catalan.
 # Copyright © 2000-2007 Free Software Foundation, Inc.
 # Ivan Vilata i Balaguer <ivan@selidor.net>, 2000.
 # Softcatalà <info@softcatala.org>, 2000.
@@ -173,7 +173,7 @@
 
 
 ========== ca@valencia.po ==========
-# mate-panel translation to Catalan.
+# ukui-panel translation to Catalan.
 # Copyright © 2000-2007 Free Software Foundation, Inc.
 # Ivan Vilata i Balaguer <ivan@selidor.net>, 2000.
 # Softcatalà <info@softcatala.org>, 2000.
@@ -186,8 +186,8 @@
 
 
 ========== crh.po ==========
-# Qırımtatarca mate-panel.
-# This file is distributed under the same license as the mate-panel package.
+# Qırımtatarca ukui-panel.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Reşat SABIQ <tilde.birlik@gmail.com>, 2009, 2010.
 
@@ -195,10 +195,10 @@
 
 
 ========== cs.po ==========
-# Czech translation of mate-panel.
-# Copyright (C) 1999, 2006, 2007, 2008, 2009, 2010 the author(s) of mate-panel.
+# Czech translation of ukui-panel.
+# Copyright (C) 1999, 2006, 2007, 2008, 2009, 2010 the author(s) of ukui-panel.
 # Copyright (C) 2004, 2005, 2006 Miloslav Trmac <mitr@volny.cz>.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # GIS <gis@academy.cas.cz>, 1999.
 # David Šauer <davids@penguin.cz>, 1999.
 # George Lebl <jirka@5z.com>, 2000, 2001.
@@ -212,8 +212,8 @@
 
 
 ========== cy.po ==========
-# mate-panel yn Gymraeg.
-# This file is distributed under the same license as the mate-panel package.
+# ukui-panel yn Gymraeg.
+# This file is distributed under the same license as the ukui-panel package.
 # www.gyfieithu.co.uk <kyfieithu@kyfieithu.co.uk>, 2003.
 # Dafydd Harries <daf@muse.19inch.net>, 2003 2004.
 # Dafydd Tomos <i10n@da.fydd.org>, 2004.
@@ -223,9 +223,9 @@
 
 
 ========== da.po ==========
-# Danish translation of mate-panel.
+# Danish translation of ukui-panel.
 # Copyright (C) 1998-99, 2000-10 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Kenneth Christiansen <kenneth@ripen.dk>, 1998-2000.
 # Birger Langkjer <birger.langkjer@image.dk>, 1999.
@@ -246,7 +246,7 @@
 #   workspace switcher -> arbejdsområdeskifter
 #   URL -> adresse
 #
-# Se i øvrigt po-filen til mate-applets.
+# Se i øvrigt po-filen til ukui-applets.
 # Husk at tilføje dig i credit-listen (besked id "translator-credits")
 #
 
@@ -254,16 +254,16 @@
 
 
 ========== de.po ==========
-# German mate-panel translation.
+# German ukui-panel translation.
 # Copyright (C) 1998-2004 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Carsten Schaar <nhadcasc@fs-maphy.uni-hannover.de>, 1998.
 # Matthias Warkus <mawa@iname.com>, 1999-2001.
 # Karl Eichwalder <ke@suse.de>, 2000, 2001.
 # Christian Meyer <chrisime@gnome.org>, 2000, 2001.
 # Benedikt Roth <Benedikt.Roth@gmx.net>, 2000, 2001.
 # Jörgen Scheibengruber <mfcn@gmx.de>, 2002.
-# Christian Neumair <chris@mate-de.org>, 2002-2004.
+# Christian Neumair <chris@ukui-de.org>, 2002-2004.
 # Hendrik Richter <hendrikr@gnome.org>, 2004-2007, 2009.
 # Christian Kintner <mail@christian-kintner.de>, 2006.
 # Philipp Kerling <k.philipp@gmail.com>, 2008.
@@ -277,7 +277,7 @@
 
 
 ========== dz.po ==========
-# Dzongkha translation of mate-panel.
+# Dzongkha translation of ukui-panel.
 # Copyright @ 2006 Free Software Foundation, Inc.
 # Mindu Dorji.
 #
@@ -286,7 +286,7 @@
 
 
 ========== el.po ==========
-# Greek translation of MATE Panel
+# Greek translation of UKUI Panel
 # Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
 #
 # simos: 874 messages, 18Feb2001, (sgpbea).
@@ -296,8 +296,8 @@
 # simos: 897 messages, 28Nov2001, (feeling good to translate HEAD).
 # simos: 272 messages, 20Apr2002, 118 messages remaining.
 # kostas: 513 messages, 19Oct2002, completed translation.
-# kostas: 531 messages, 07Jan2003, updated translation for Mate 2.1x.
-# kostas:update for Mate 2.4, 49 strings remain 02Jun2003.
+# kostas: 531 messages, 07Jan2003, updated translation for Ukui 2.1x.
+# kostas:update for Ukui 2.4, 49 strings remain 02Jun2003.
 # kostas:03Aug2003, 599 messages, updated translation.
 # Spiros Papadimitriou <sapadim+@cs.cmu.edu>, 1999.
 # Simos Xenitellis <simos@hellug.gr>, 1999, 2000, 2001, 2002.
@@ -314,10 +314,10 @@
 # Comment: Simos did 2 new/unfuzzy 8.
 # Comment: Simos did 6 new/unfuzzy 8.
 # Comment: Simos did 2 new/unfuzzy 5.
-# Rename of module to mate-panel.
+# Rename of module to ukui-panel.
 # Comment: Kostas unfuzzy 1
 # Nikos:29Aug2003, review tranlation
-# kostas: 30Oct2003, update translation for Mate 2.6
+# kostas: 30Oct2003, update translation for Ukui 2.6
 # kostas: 12Nov2003, fixes
 # kostas:27Jan2004, update
 
@@ -325,17 +325,17 @@
 
 
 ========== en@shaw.po ==========
-# Shavian translation of mate-panel.
-# Copyright (c) 2009-2010 the MATE Foundation.
+# Shavian translation of ukui-panel.
+# Copyright (c) 2009-2010 the UKUI Foundation.
 # Thomas Thurman <tthurman@gnome.org>, 2010.
 
 
 
 
 ========== en_CA.po ==========
-# English/Canada translation of mate-panel.
-# Copyright (C) 2004-2006 Adam Weinberger and the MATE Foundation
-# This file is distributed under the same licence as the mate-panel package.
+# English/Canada translation of ukui-panel.
+# Copyright (C) 2004-2006 Adam Weinberger and the UKUI Foundation
+# This file is distributed under the same licence as the ukui-panel package.
 # Adam Weinberger <adamw@gnome.org>, 2004, 2005, 2006.
 # 
 # 
@@ -344,7 +344,7 @@
 
 
 ========== en_GB.po ==========
-# English (British) translation of mate-core
+# English (British) translation of ukui-core
 # Copyright (C) 1999-2000 Free Software Foundation, Inc.
 # Robert Brady <robert@susu.org.uk>, 1999-2000.
 # Gareth Owen <gowen72@yahoo.com>, David Lodge <dave@cirt.net>, 2004.
@@ -356,9 +356,9 @@
 
 
 ========== eo.po ==========
-# Esperanto translation of mate-panel.
+# Esperanto translation of ukui-panel.
 # Copyright (C) 2003-2010 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Joël BRICH <joel.brich@laposte.net>, 2003.
 # Aisano, Benno Schulenberg, Ed Glez, Emmanuel Gil Peyrot, J. Pablo Fernández,
 # Joop Eggen, Kim Ribeiro, Kitlei Róbert, Lucas Larson, M., Michael MORONI,
@@ -370,8 +370,8 @@
 
 
 ========== es.po ==========
-# translation of mate-panel.HEAD.po to Español
-# translation of mate-panel to Spanish
+# translation of ukui-panel.HEAD.po to Español
+# translation of ukui-panel to Spanish
 # Copyright © 1998-2003, 2006, 2007, 2008 Free Software Foundation, Inc.
 #
 # Miguel de Icaza,computo,622-4680 <miguel@metropolis.nuclecu.unam.mx> 1998.
@@ -393,12 +393,12 @@
 
 
 ========== et.po ==========
-# MATE paneeli eesti keele tõlge.
-# Estonian translation of MATE panel.
+# UKUI paneeli eesti keele tõlge.
+# Estonian translation of UKUI panel.
 #
 # Copyright (C) 1999, 2001-2006 Free Software Foundation, Inc.
-# Copyright (C) 2007-2010, The MATE Project.
-# This file is distributed under the same license as the mate-panel package.
+# Copyright (C) 2007-2010, The UKUI Project.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Lauris Kaplinski, 1999.
 # Ilmar Kerm <ikerm@hot.ee>, 2001, 2002.
@@ -423,7 +423,7 @@
 
 
 ========== fa.po ==========
-# Persian translation of mate-panel.
+# Persian translation of ukui-panel.
 # Copyright (C) 2003, 2004, 2005, 2008 Sharif FarsiWeb, Inc.
 # Roozbeh Pournader <roozbeh@gmail.com>, 2003, 2005, 2008.
 # Meelad Zakaria <meelad@farsiweb.info>, 2004, 2005.
@@ -435,7 +435,7 @@
 
 
 ========== fi.po ==========
-# Finnish messages for mate-panel
+# Finnish messages for ukui-panel
 # Copyright (C) 2002-2009 Free Software Foundation, Inc.
 # Suomennos: http://gnome.fi/
 # Ville Hautamäki <villeh@cs.joensuu.fi>, 1998, 2000
@@ -450,9 +450,9 @@
 
 
 ========== fr.po ==========
-# French translation of mate-panel.
+# French translation of ukui-panel.
 # Copyright (C) 1998-2010 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Vincent Renardias <vincent@ldsol.com>, 1998-2000.
 # Joaquim Fellmann <joaquim@hrnet.fr>, 2000.
@@ -472,7 +472,7 @@
 
 
 ========== fur.po ==========
-# Friulian Translation of mate-panel.
+# Friulian Translation of ukui-panel.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
@@ -482,9 +482,9 @@
 
 
 ========== fy.po ==========
-# Frisian translation for mate-panel
+# Frisian translation for ukui-panel
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Dooitze de Jong <dooitzedejong@gmail.com>, 2010.
 # Sense Hofstede <sense@ubuntu.com>, 2010.
 #
@@ -493,9 +493,9 @@
 
 
 ========== ga.po ==========
-# Irish translations for mate-panel package.
+# Irish translations for ukui-panel package.
 # Copyright (C) 2000-2009 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Seán Ó Ceallaigh <s_oceallaigh@yahoo.com>, 2000.
 # Paul Duffy <dubhthach@frink.nuigalway.ie>, 2003.
 # David O'Callaghan <david.ocallaghan@cs.tcd.ie>, 2003.
@@ -507,8 +507,8 @@
 
 
 ========== gl.po ==========
-# translation of mate-panel.master.po to Galician
-# Galician translation of mate-panel.
+# translation of ukui-panel.master.po to Galician
+# Galician translation of ukui-panel.
 # Copyright (C) 1999-2004 Jesús Bravo Álvarez
 #
 # First Version: 2002-06-02 18:57+0200
@@ -529,7 +529,7 @@
 
 
 ========== gu.po ==========
-# translation of mate-panel.master.gu.po to Gujarati
+# translation of ukui-panel.master.gu.po to Gujarati
 # Ankit Patel <ankit644@yahoo.com>, 2005, 2006.
 # Ankit Patel <ankit@redhat.com>, 2007, 2009.
 # Sweta Kothari <sweta2782@yahoo.co.in>, 2008.
@@ -539,9 +539,9 @@
 
 
 ========== gv.po ==========
-# Manx translation for mate-panel
+# Manx translation for ukui-panel
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 
@@ -554,9 +554,9 @@
 
 
 ========== he.po ==========
-# translation of mate-panel.HEAD.he.po to Hebrew
-# translation of mate-panel.mate-2-10.he.po to
-# translation of mate-panel.mate-2-10.he.po to Hebrew
+# translation of ukui-panel.HEAD.he.po to Hebrew
+# translation of ukui-panel.ukui-2-10.he.po to
+# translation of ukui-panel.ukui-2-10.he.po to Hebrew
 # Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER.
 # Gil 'Dolfin' Osher <dolfin@rpg.org.il>, 2002-2004.
 # Yuval Tanny <tanai@int.gov.il>, 2005.
@@ -581,7 +581,7 @@
 
 
 ========== hr.po ==========
-# Translation of mate-panel to Croatiann
+# Translation of ukui-panel to Croatiann
 # Copyright (C) Croatiann team
 # Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Denis Lackovic <delacko@fly.srk.fer.hr>,Kresimir Kalafatic <>,Marija Lucevnjak <marija.lucevnjak@inet.hr>,Nikola Planinac <>,pr pr <delacko@192.168.0.1>,Robert Sedak <robert.sedak@sk.t-com.hr>,Tanja Minarik <tanja@finte.net>,
 
@@ -589,25 +589,25 @@
 
 
 ========== hu.po ==========
-# Hungarian translation of mate-panel.
+# Hungarian translation of ukui-panel.
 # Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
-# Szabolcs Ban <shooby at mate dot hu>, 1998, 1999, 2000, 2001.
-# Emese Kovacs <emese at mate dot hu>, 2000, 2001, 2002.
+# Szabolcs Ban <shooby at ukui dot hu>, 1998, 1999, 2000, 2001.
+# Emese Kovacs <emese at ukui dot hu>, 2000, 2001, 2002.
 # Tamas Vamosi <tvamosi at suselinux dot hu>, 2002.
-# Andras Timar <timar at mate dot hu>, 2001, 2002, 2003.
-# Gabor Sari <saga at mate dot hu>, 2003.
-# Laszlo Dvornik <dvornik at mate dot hu>, 2004.
-# Gabor Kelemen <kelemeng at mate dot hu>, 2004, 2005, 2006, 2007, 2008, 2009, 2010.
-# Mate ORY <orymate at gmail d0t com>, 2006.
+# Andras Timar <timar at ukui dot hu>, 2001, 2002, 2003.
+# Gabor Sari <saga at ukui dot hu>, 2003.
+# Laszlo Dvornik <dvornik at ukui dot hu>, 2004.
+# Gabor Kelemen <kelemeng at ukui dot hu>, 2004, 2005, 2006, 2007, 2008, 2009, 2010.
+# Ukui ORY <oryukui at gmail d0t com>, 2006.
 # Nyitrai István <sianis at gmail dot com>, 2008.
 
 
 
 
 ========== hy.po ==========
-# translation of mate-panel.HEAD.hy.po to armenian
+# translation of ukui-panel.HEAD.hy.po to armenian
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 # Norayr Chilingaryan <asprayama@yahoo.com>, 2004, 2005.
@@ -619,7 +619,7 @@
 
 
 ========== id.po ==========
-# translation of mate-panel.master.po to Indonesian
+# translation of ukui-panel.master.po to Indonesian
 # Mohammad DAMT <mdamt@bisnisweb.com>
 # Erwin Sanjaya <erwin@boens.net>
 #
@@ -637,7 +637,7 @@
 
 
 ========== is.po ==========
-# Icelandic translation of Mate.
+# Icelandic translation of Ukui.
 # Copyright (C) 2008 Free Software Foundation, Inc.
 # Tryggvi Björgvinsson <tryggvib@hi.is>, 2008
 # Anna Jonna Ármannsdóttir <annajonna@gmail.com>, 2008.
@@ -647,8 +647,8 @@
 
 
 ========== it.po ==========
-# Italian Translation for mate-panel
-# This file is distributed under the same license as mate-panel package
+# Italian Translation for ukui-panel
+# This file is distributed under the same license as ukui-panel package
 # Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
 # Christopher R. Gabriel <cgabriel@pluto.linux.it>
 # Alessio Frusciante <algol@firenze.linux.it>, 2003
@@ -659,7 +659,7 @@
 
 
 ========== ja.po ==========
-# mate-panel ja.po.
+# ukui-panel ja.po.
 # Copyright (C) 1998-2010 Free Software Foundation, Inc.
 # Yukihiro Nakai <Nakai@abricot.co.jp>, 1998.
 # Yasuyuki Furukawa <yasu@on.cs.keio.ac.jp>, 1999.
@@ -680,18 +680,18 @@
 
 
 ========== ka.po ==========
-# Georgian translation of mate-panel.
+# Georgian translation of ukui-panel.
 # Copyright (C) 1998-2008 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Vladimer Sichinava ვლადიმერ სიჭინავა <vsichi@gnome.org>, 2007, 2008.
 
 
 
 
 ========== kk.po ==========
-# Kazakh translation of mate-panel.
+# Kazakh translation of ukui-panel.
 # Copyright (C) 2010 HZ
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2010.
 #
 
@@ -699,8 +699,8 @@
 
 
 ========== kn.po ==========
-# translation of mate-panel.master.kn.po to Kannada
-# translation of mate-panel.HEAD.kn.po to
+# translation of ukui-panel.master.kn.po to Kannada
+# translation of ukui-panel.HEAD.kn.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
@@ -710,8 +710,8 @@
 
 
 ========== ko.po ==========
-# mate-panel
-# This file is distributed under the same license as the mate-panel package
+# ukui-panel
+# This file is distributed under the same license as the ukui-panel package
 #
 # Sung-Hyun Nam <namsh@kldp.org>, 2000.
 # Young-Ho Cha <ganadist@chollian.net>, 2000, 2001, 2006, 2007.
@@ -725,7 +725,7 @@
 
 
 ========== ku.po ==========
-# translation of mate-panel.po to Kurdish
+# translation of ukui-panel.po to Kurdish
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER.
 #
@@ -736,8 +736,8 @@
 
 ========== ky.po ==========
 # translation of ky.po to Kirghiz
-# Translation of mate-panel to Kirghiz
-# This file is distributed under the same license as the mate-panel package.
+# Translation of ukui-panel to Kirghiz
+# This file is distributed under the same license as the ukui-panel package.
 # Copyright (C) 2003, 2004, 2005.
 # Timur Jamakeev <ztimur@gmail.com>, 2005.
 #
@@ -756,7 +756,7 @@
 
 
 ========== li.po ==========
-# mate-core nl.po
+# ukui-core nl.po
 # Copyright (C) 1998 Free Software Foundation, Inc.
 # Mathieu van Woerkom <mathieu@brabants.org>,2003.
 # 
@@ -766,7 +766,7 @@
 
 ========== lt.po ==========
 # translation of lt.po to Lithuanian
-# Lithuanian translation of mate-panel
+# Lithuanian translation of ukui-panel
 # Copyright (C) 2000-2009 Free Software Foundation, Inc.
 # Gediminas Paulauskas <menesis@delfi.lt>, 2000-2002.
 # Vaidotas Zemlys <mpiktas@delfi.lt>, 2003.
@@ -780,7 +780,7 @@
 
 ========== lv.po ==========
 # translation of lv.po to Latvian
-# mate-panel for Latvian.
+# ukui-panel for Latvian.
 # Copyright (C) 2000, 2006, 2007, 2009 Free Software Foundation, Inc.
 # Pēteris Krišjānis <peterisk@apollo.lv>, 2000.
 # Artis Trops <hornet@navigators.lv>, 2000.
@@ -791,8 +791,8 @@
 
 
 ========== mai.po ==========
-# translation of mate-panel.HEAD.po to Maithili
-# Copyright (C) 2006 The MATE Foundation
+# translation of ukui-panel.HEAD.po to Maithili
+# Copyright (C) 2006 The UKUI Foundation
 # This file is distributed under the same license as the PACKAGE package.
 # BOSS GNU/Linux <bosslinux@cdac.in>, 2008.
 
@@ -800,8 +800,8 @@
 
 
 ========== mg.po ==========
-# MALAGASY TRANSLATION OF MATE-PANEL.
-# Copyright (C) 2007 THE MATE-PANEL'S COPYRIGHT HOLDER
+# MALAGASY TRANSLATION OF UKUI-PANEL.
+# Copyright (C) 2007 THE UKUI-PANEL'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Fano Rajaonarisoa <dikatenyfano@gmail.com>, 2006.
 # Thierry Randrianiriana <randrianiriana@gmail.com>, 2007-2010.
@@ -810,9 +810,9 @@
 
 
 ========== mi.po ==========
-# English translation of mate-desktop.
+# English translation of ukui-desktop.
 # Copyright (C) 2004 Free Software Foundation
-# This file is distributed under the same license as the mate-desktop package.
+# This file is distributed under the same license as the ukui-desktop package.
 # John C Barstow <jbarstow@cvs.gnome.org>, 2004.
 #
 
@@ -820,10 +820,10 @@
 
 
 ========== mk.po ==========
-# translation of mate-panel.HEAD.mk.po to Macedonian
-# translation of mate-panel.HEAD.mk.po to
-# translation of mate-panel.HEAD.mk.po to
-# translation of mate-panel.HEAD.mk.po to
+# translation of ukui-panel.HEAD.mk.po to Macedonian
+# translation of ukui-panel.HEAD.mk.po to
+# translation of ukui-panel.HEAD.mk.po to
+# translation of ukui-panel.HEAD.mk.po to
 # Copyright (C) 2002,2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 #
 # Дамјан Георгиевски, 2002.
@@ -840,8 +840,8 @@
 
 ========== ml.po ==========
 # translation of ml.po to
-# This file is distributed under the same license as mate-panel package.
-# Copyright (C) 2003,2006-2007,2009-2010 mate-panel'S COPYRIGHT HOLDER.
+# This file is distributed under the same license as ukui-panel package.
+# Copyright (C) 2003,2006-2007,2009-2010 ukui-panel'S COPYRIGHT HOLDER.
 #
 # FSF-India <locale@gnu.org.in>, 2003.
 # Ani Peter <apeter@redhat.com>, 2006, 2007.
@@ -852,9 +852,9 @@
 
 ========== mn.po ==========
 # translation of mn.po to Mongolian
-# translation of mate-panel.HEAD.po to Mongolian
-# translation of mate-panel.mate-2-4.po to Mongolian
-# translation of mate-panel.po to mongolian
+# translation of ukui-panel.HEAD.po to Mongolian
+# translation of ukui-panel.ukui-2-4.po to Mongolian
+# translation of ukui-panel.po to mongolian
 # This file is distributed under the same license as the PACKAGE package.
 # Sukhochir <sukhochir@csms.edu.mn>
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
@@ -877,7 +877,7 @@
 
 
 ========== ms.po ==========
-# mate-panel Bahasa Melayu (ms)
+# ukui-panel Bahasa Melayu (ms)
 # Melihat Sistem kehakiman masa kini, Saya tak hairan
 # kalau saya disabitkan dengan kesalahan mendera isteri
 # ketika saya masih BUJANG
@@ -889,7 +889,7 @@
 
 
 ========== nb.po ==========
-# Norwegian translation of mate-panel (bokmål dialect).
+# Norwegian translation of ukui-panel (bokmål dialect).
 # Copyright (C) 1998-2003 Free Software Foundation, Inc.
 # Kjartan Maraas <kmaraas@gnome.org>, 1998-2010.
 # Øivind Hoel <oivind.hoel@gmail.com>, 2006
@@ -899,9 +899,9 @@
 
 
 ========== nds.po ==========
-# Low German translation for mate-panel.
-# Copyright (C) 2009 mate-panel's COPYRIGHT HOLDER
-# This file is distributed under the same license as the mate-panel package.
+# Low German translation for ukui-panel.
+# Copyright (C) 2009 ukui-panel's COPYRIGHT HOLDER
+# This file is distributed under the same license as the ukui-panel package.
 # Nils-Christoph Fiedler <fiedler@medienkompanie.de>, 2009.
 #
 
@@ -909,7 +909,7 @@
 
 
 ========== ne.po ==========
-# translation of mate-panel.HEAD.ne.po to Nepali
+# translation of ukui-panel.HEAD.ne.po to Nepali
 # Nepali Translation Project.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -920,9 +920,9 @@
 
 
 ========== nl.po ==========
-# Dutch translation for mate-panel
+# Dutch translation for ukui-panel
 #
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Dirk-Jan C. Binnema <djcb@dds.nl>, 1998, 1999.
 # Dennis Smit <synap@area101.penguin.nl>, 2000.
@@ -932,7 +932,7 @@
 # Ronald Hummelink <ronald@hummelink.xs4all.nl>, 2002.
 # Tino Meinen <a.t.meinen@chello.nl>, 2002. 2006, 2007.
 # Reinout van Schouwen <reinout@cs.vu.nl>, 2002-2006
-# Daniel van Eeden <matenl@myname.nl>, 2008
+# Daniel van Eeden <ukuinl@myname.nl>, 2008
 # Wouter Bolsterlee <wbolster@gnome.org>, 2006–2010
 #
 # desktop - bureaublad
@@ -943,7 +943,7 @@
 
 
 ========== nn.po ==========
-# translation of mate-panel to Norwegian Nynorsk
+# translation of ukui-panel to Norwegian Nynorsk
 # Copyright (C) 1998-2000, 2003, 2004, 2006, 2008 Free Software Foundation, Inc.
 #
 # Christian Fredrik Kalager Schaller <Uraeus@linuxrising.org>, 2000-2001.
@@ -959,9 +959,9 @@
 
 
 ========== nso.po ==========
-# Northern Sotho translation of mate-panel.
+# Northern Sotho translation of ukui-panel.
 # Copyright (C) 2004 Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Zuza Software Foundation <info@translate.org.za>, 2004
 #
@@ -971,9 +971,9 @@
 
 ========== oc.po ==========
 # Translation of oc.po to Occitan
-# Occitan translation of mate-panel.
+# Occitan translation of ukui-panel.
 # Copyright (C) 2007 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2007.
 
@@ -981,10 +981,10 @@
 
 
 ========== or.po ==========
-# translation of mate-panel.master.or.po to Oriya
-# Oriya translation of mate-panel.HEAD.pot..
+# translation of ukui-panel.master.or.po to Oriya
+# Oriya translation of ukui-panel.HEAD.pot..
 # Copyright (C) 2004, 2006, 2008, 2009, Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package
+# This file is distributed under the same license as the ukui-panel package
 # $Id: or.po,v 1.13 2006/09/05 10:10:06 sbehera Exp $
 #
 # Sakti/Gita <sakti_bhubaneswar1@rediffmail.com>, 2004.
@@ -996,7 +996,7 @@
 
 
 ========== pa.po ==========
-# translation of mate-panel.HEAD.po to Punjabi
+# translation of ukui-panel.HEAD.po to Punjabi
 # Amanpreet Singh Alam (amanlinux@netscape.net)
 # KBST Punjab  (kbstpunjab@netscape.net)
 #
@@ -1034,9 +1034,9 @@
 
 
 ========== pt.po ==========
-# mate-panel's Portuguese translation
-# Copyright © 1999, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 mate-panel
-# Distributed under the same licence as the mate-panel package
+# ukui-panel's Portuguese translation
+# Copyright © 1999, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 ukui-panel
+# Distributed under the same licence as the ukui-panel package
 # Nuno Ferreira <nmrf@rnl.ist.utl.pt>, 1999.
 # Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010.
 #
@@ -1045,9 +1045,9 @@
 
 
 ========== pt_BR.po ==========
-# Brazilian Portuguese translation of mate-panel.
+# Brazilian Portuguese translation of ukui-panel.
 # Copyright (C) 1999-2007 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Elvis Pfützenreuter <epx@netville.com.br>
 # Sandro Nunes Henrique <sandro@conectiva.com.br>
 # Rodrigo Stulzer Lopes <rodrigo@conectiva.com.br>
@@ -1072,7 +1072,7 @@
 
 
 ========== ro.po ==========
-# Romanian translation for mate-panel
+# Romanian translation for ukui-panel
 # Copyright (C) 2000 - 2004 Free Software Foundation, Inc.
 # Marius Andreiana <marius galuna.ro>, 2000, 2002, 2003.
 # Mișu Moldovan <dumol@gnome.ro>, 2003, 2004.
@@ -1086,7 +1086,7 @@
 
 
 ========== ru.po ==========
-# translation of mate-panel to Russian
+# translation of ukui-panel to Russian
 # Copyright (C) 1998-2003, 2004, 2005, 2006, 2007, 2010 Free Software Foundation, Inc.
 #
 # Max Valianskiy <maxcom@vinchi.ru>, 1998-1999.
@@ -1101,9 +1101,9 @@
 
 
 ========== rw.po ==========
-# translation of mate-panel to Kinyarwanda.
+# translation of ukui-panel to Kinyarwanda.
 # Copyright (C) 2005 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Steve Murphy <murf@e-tools.com>, 2005
 # Steve performed initial rough translation from compendium built from translations provided by the following translators:
 # Philibert Ndandali  <ndandali@yahoo.fr>, 2005.
@@ -1129,9 +1129,9 @@
 
 
 ========== sk.po ==========
-# Slovak translation for mate-panel.
+# Slovak translation for ukui-panel.
 # Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>, 2002.
 # Stanislav Visnovsky <visnov@suse.cz>, 2003.
 # Stanislav Visnovsky <visnovsky@kde.org>, 2003, 2004.
@@ -1144,22 +1144,22 @@
 
 
 ========== sl.po ==========
-# Slovenian translations for mate-panel.
+# Slovenian translations for ukui-panel.
 # Copyright (C) 2002-2007 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Andraž Tori <andraz.tori1@guest.arnes.si>, 2002.
 # Matic Žgur <mr.zgur@gmail.com>, 2006.
-# Matej Urbančič <mateju@svn.gnome.org>, 2007 - 2010.
+# Ukuij Urbančič <ukuiju@svn.gnome.org>, 2007 - 2010.
 #
 
 
 
 
 ========== sq.po ==========
-# Përkthimi i mesazheve të mate-panel në shqip.
+# Përkthimi i mesazheve të ukui-panel në shqip.
 # Copyright (C) 2003-2007, 2008 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Elian Myftiu <elian@alblinux.net>, 2003-2007.
 # Laurent Dhima <laurenti@alblinux.net>, 2008.
@@ -1168,10 +1168,10 @@
 
 
 ========== sr.po ==========
-# Serbian translation of mate-panel
+# Serbian translation of ukui-panel
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004, 2005, 2006, 2007, 2008, 2009.
 #
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Maintainer: Данило Шеган <danilo@gnome.org>
 # Reviewed on 2004-02-25 by: Данило Шеган <danilo@gnome.org> and Bojan Suzic <bojans@teol.net>
@@ -1184,10 +1184,10 @@
 
 
 ========== sr@ije.po ==========
-# Serbian translation of mate-panel
+# Serbian translation of ukui-panel
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004.
 #
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Maintainer: Данило Шеган <dsegan@gmx.net>
 # Reviewed on 2004-02-25 by: Данило Шеган <dsegan@gmx.net> and Bojan Suzic <bojans@teol.net>
@@ -1197,10 +1197,10 @@
 
 
 ========== sr@latin.po ==========
-# Serbian translation of mate-panel
+# Serbian translation of ukui-panel
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004, 2005, 2006, 2007, 2008, 2009.
 #
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Maintainer: Danilo Šegan <danilo@gnome.org>
 # Reviewed on 2004-02-25 by: Danilo Šegan <danilo@gnome.org> and Bojan Suzic <bojans@teol.net>
@@ -1213,7 +1213,7 @@
 
 
 ========== sv.po ==========
-# Swedish messages for mate-panel.
+# Swedish messages for ukui-panel.
 # Copyright (C) 1998-2010 Free Software Foundation, Inc.
 # Martin Wahlen <mva@sbbs.se>, 1998.
 # Anders Carlsson <anders.carlsson@tordata.se>, 1999.
@@ -1228,9 +1228,9 @@
 
 
 ========== ta.po ==========
-# translation of mate-panel.master.ta.po to Tamil
+# translation of ukui-panel.master.ta.po to Tamil
 # translation of ta.po to
-# Tamil translation of Mate-Panel messages.
+# Tamil translation of Ukui-Panel messages.
 # Copyright (C) 2001, 2004, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
 #
 # Dinesh Nadarajah <dinesh_list@sbcglobal.net>, 2004.
@@ -1246,9 +1246,9 @@
 
 ========== te.po ==========
 # translation of te.po to Telugu
-# Telugu translation of mate-panel
+# Telugu translation of ukui-panel
 # Copyright (C) 2005 Free Software Foundation, Andhra Pradesh.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Prajasakti Localisation Team <localisation@prajasakti.com>, 2005.
 # Krishna Babu K <kkrothap@redhat.com>, 2007, 2008, 2009, 2010.
@@ -1257,9 +1257,9 @@
 
 
 ========== th.po ==========
-# Thai translation of mate-panel.
+# Thai translation of ukui-panel.
 # Copyright (C) 2004-2010 Free Software Foundation, Inc.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Supphachoke Suntiwichaya <mrchoke@opentle.org>, 2003.
 # Chatchawarn Hansakunbuntheung <chatchawarnh@nectec.or.th>, 2003, 2004.
@@ -1273,7 +1273,7 @@
 
 
 ========== tr.po ==========
-# translation of mate-panel to Turkish
+# translation of ukui-panel to Turkish
 #
 # Copyright (C) 2001-2005, 2008 Free Software Foundation, Inc.
 #
@@ -1287,9 +1287,9 @@
 
 
 ========== ug.po ==========
-# Uighur translation for mate-panel
+# Uighur translation for ukui-panel
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Sahran <sahran@live.com>, 2010.
 #
 
@@ -1297,7 +1297,7 @@
 
 
 ========== uk.po ==========
-# Ukrainian translation of mate-core module
+# Ukrainian translation of ukui-core module
 # Copyright (C) 1999-2002 Free Software Foundation, Inc.
 # Yuri Syrota <rasta@renome.rovno.ua>, 1999-2002.
 # Maxim Dziumanenko <dziumanenko@gmail.com>, 2002-2008
@@ -1328,7 +1328,7 @@
 
 
 ========== vi.po ==========
-# Vietnamese Translation for MATE Panel.
+# Vietnamese Translation for UKUI Panel.
 # Copyright © 2009 Free Software Foundation, Inc.
 # Nguyễn Thái Ngọc Duy <pclouds@gmail.com> 2002-2004,2007-2008.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2009.
@@ -1340,7 +1340,7 @@
 ========== wa.po ==========
 # Traduction into the walloon language.
 #
-# Si vos voloz donner on côp di spale pol ratoûrnaedje di Mate (ou des
+# Si vos voloz donner on côp di spale pol ratoûrnaedje di Ukui (ou des
 # ôtes libes programes) sicrijhoz-mu a l' adresse emile
 # <srtxg@chanae.alphanet.ch>; nos avons co bråmint di l' ovraedje a fé.
 #
@@ -1355,9 +1355,9 @@
 
 
 ========== xh.po ==========
-# Xhosa translation of mate-panel
+# Xhosa translation of ukui-panel
 # Copyright (C) 2005 Canonical Ltd.
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 # Translation by Canonical Ltd <translations@canonical.com> with thanks to
 # Translation World CC in South Africa, 2005.
 #
@@ -1380,7 +1380,7 @@
 
 
 ========== zh_CN.po ==========
-# translation of mate-panel.po to zh_CN
+# translation of ukui-panel.po to zh_CN
 # Dillion Chen <dillon.chen@turbolinux.com.cn>
 #   Updated and QA by Wang Jian <lark@linux.net.cn>
 #   Updated and QA by Jiang Xiong <jxiong@gwu.edu>, 2001
@@ -1399,14 +1399,14 @@
 
 
 ========== zh_HK.po ==========
-# Chinese (Hong Kong) translation of mate-panel.
+# Chinese (Hong Kong) translation of ukui-panel.
 # Copyright (C) 1999-2007 Free Software Foundation, Inc.
-# mate-core:
+# ukui-core:
 # Yuan-Chung Cheng <platin@linux.org.tw>, 1999.
 # Jing-Jong SHYUE <shyue@sonoma.com.tw>, 2000.
 # Chih-Wei Huang <cwhuang@linux.org.tw>, 2000.
 # Abel Cheung <abel@oaka.org>, 2001-2002.
-# mate-panel:
+# ukui-panel:
 # Kevin Kee <kevin@oaka.org>, 2004
 # Abel Cheung <abel@oaka.org>, 2002-2004.
 # Woodman Tuen <wmtuen@gmail.com>, 2005-07
@@ -1418,14 +1418,14 @@
 
 
 ========== zh_TW.po ==========
-# Chinese (Taiwan) translation of mate-panel.
+# Chinese (Taiwan) translation of ukui-panel.
 # Copyright (C) 1999-2007 Free Software Foundation, Inc.
-# mate-core:
+# ukui-core:
 # Yuan-Chung Cheng <platin@linux.org.tw>, 1999.
 # Jing-Jong SHYUE <shyue@sonoma.com.tw>, 2000.
 # Chih-Wei Huang <cwhuang@linux.org.tw>, 2000.
 # Abel Cheung <abel@oaka.org>, 2001-2002.
-# mate-panel:
+# ukui-panel:
 # Kevin Kee <kevin@oaka.org>, 2004
 # Abel Cheung <abel@oaka.org>, 2002-2004.
 # Woodman Tuen <wmtuen@gmail.com>, 2005-07
@@ -1437,9 +1437,9 @@
 
 
 ========== zu.po ==========
-# Zulu translation of mate-panel.
+# Zulu translation of ukui-panel.
 # Copyright (C) 2004 Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the mate-panel package.
+# This file is distributed under the same license as the ukui-panel package.
 #
 # Zuza Software Foundation <info@translate.org.za>, 2004
 #

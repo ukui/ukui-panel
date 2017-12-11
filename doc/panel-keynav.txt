@@ -30,19 +30,19 @@ focusable widgets in the applet can be traversed using the arrow keys.
 - Tab should move focus from within an applet to the next object on the panel
 
 This is implemented by defining an action signal "move_focus_out_of_applet"
-on MatePanelApplet and binding Tab  and Shift+Tab to this action. 
+on UkuiPanelApplet and binding Tab  and Shift+Tab to this action. 
 
 When focus is in an applet the event is passed to the focus widget then its 
 children until a toplevel is reached unless the event is handled. This is 
 done in gtk_window_key_press_event(). The original implemementation  for 
-"move_focus_out_of_applet" had the action signal defined on MatePanelAppletFrame 
+"move_focus_out_of_applet" had the action signal defined on UkuiPanelAppletFrame 
 but as a GtkSocket always reports a key press event as being handled when 
 the GtkPlug is in a different process, the event has not passed to the 
-MatePanelAppletFrame.
+UkuiPanelAppletFrame.
 
 The implementation for "moving_focus_out_of_applet" sets a flag 
-moving_focus_out so that the function mate_panel_applet_focus() which is 
-MatePanelApplet's default signal handler for focus signal will not attempt to
+moving_focus_out so that the function ukui_panel_applet_focus() which is 
+UkuiPanelApplet's default signal handler for focus signal will not attempt to
 move the focus within the applet if this flag is set.
 
 
@@ -64,10 +64,10 @@ We need a mechanism that will make visible which panel has focus. We also
 need to do this without impacting current behaviour.
 
 We set the state of a PanelWidget to GTK_STATE_SELECTED whan focus is in a
-PanelWidget. We provide a default panel rc file mate-panelrc, which is 
+PanelWidget. We provide a default panel rc file ukui-panelrc, which is 
 installed in $(datadir). This rc file sets the default default color for
 SELECTED for any widget which is a descended from a PanelWidget or
-MatePanelApplet to be the same as the NORMAL colour. 
+UkuiPanelApplet to be the same as the NORMAL colour. 
 
 If there is a requirement to make panel focus indication visible, the 
 following lines added to ~/.gtkrc-2.0 will make a selected panel prelight 
@@ -80,5 +80,5 @@ style "prelight-selected"
 }
 
 widget_class "*PanelWidget*" style "prelight-selected"
-widget_class "*MatePanelApplet*" style "prelight-selected"
+widget_class "*UkuiPanelApplet*" style "prelight-selected"
 

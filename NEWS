@@ -1,4 +1,4 @@
-### mate-panel 1.19.3
+### ukui-panel 1.19.3
 
   * Translations update
   * wncklet: stop segfaults, warnings on removing in-process switcher, window-list
@@ -6,17 +6,17 @@
   * Fish: stop all warnings on removing when built in-process
   * Clock: fix removal warnings when in-process applet removed
   * clock: stop segfault on removing applet when built in-process
-  * libmate-panel-applet: fix typos in id->factory_id rename
-  * libmate-panel-applet: Only declare _panel_applet_shlib_factory() when needed
-  * libmate-panel-applet: fix error in unregistering dbus object
-  * libmate-panel-applet: fix build warning
-  * libmate-panel-applet: fix introspection
-  * libmate-panel-applet: unown bus name and unregister dbus object
-  * libmate-panel-applet GTK 3.14/3.16: fix custom bg w alpha
-  * libmate-panel-applet: include dummy variable in factory for certian applets
-  * libmate-panel-applet: fix bg rendering for in-process applets
+  * libukui-panel-applet: fix typos in id->factory_id rename
+  * libukui-panel-applet: Only declare _panel_applet_shlib_factory() when needed
+  * libukui-panel-applet: fix error in unregistering dbus object
+  * libukui-panel-applet: fix build warning
+  * libukui-panel-applet: fix introspection
+  * libukui-panel-applet: unown bus name and unregister dbus object
+  * libukui-panel-applet GTK 3.14/3.16: fix custom bg w alpha
+  * libukui-panel-applet: include dummy variable in factory for certian applets
+  * libukui-panel-applet: fix bg rendering for in-process applets
   * libpanel-applet/panel-applet.h: Rename id to factory_id for factory
-  * limatepanel-applet: add panel-applet-private.h
+  * liukuipanel-applet: add panel-applet-private.h
   * don't use GtkPlug/GtkSocket for in process applets
   * make it possible to get applet widget
   * libpanel-applet: add panel_applet_factory_get_applet_widget
@@ -34,7 +34,7 @@
   * avoid deprecated gdk_display_get_screen
   * don't use deprecated gtk_show_uri
 
-### mate-panel 1.19.2
+### ukui-panel 1.19.2
 
   * Translations update
   * avoid deprecated gdk_screen_get_number
@@ -45,7 +45,7 @@
   * clock: fix hovering over timezone text, causes panel to scale beyond screen limit
   * GTK 3.18+ fix transparent default panel bg
 
-### mate-panel 1.19.1
+### ukui-panel 1.19.1
 
   * Translations update
   * menu: restore focus after drag-n-dropping menuitem outside
@@ -65,7 +65,7 @@
   * action-button: disconnect from GSettings when applet is removed
   * remove a needless glib check
 
-### mate-panel 1.19.0
+### ukui-panel 1.19.0
 
   * Translations update
   * status-notifier: fix crash on unknown signal name
@@ -75,7 +75,7 @@
   * Run dialog: Add option to reverse history view
   * Run dialog: Fix wrong history len with max size 1
   * Run dialog: Allow changing history size
-  * doc: drop ancient MateConf references
+  * doc: drop ancient UkuiConf references
   * Run dialog: Fix wrong history order
   * status-notifier: Do not hide passive items
   * update copyright year to 2017
@@ -96,12 +96,12 @@
   * status-notifier: Plug a memory leak
   * notification area: Fix memory leak sorting items
 
-### mate-panel 1.18.0
+### ukui-panel 1.18.0
 
   * NEWS: use consistent, project wide, markdown-like formatting
     to make generating release announcements easier
-  * Build: require libmate-menu >= 1.10 and dconf >= 0.13.4
-  * Build: require libmateweather and libmate-desktop >= 1.17
+  * Build: require libukui-menu >= 1.10 and dconf >= 0.13.4
+  * Build: require libukuiweather and libukui-desktop >= 1.17
   * Move to GTK+3 (require GTK+ >= 3.14), drop GTK+2 code and
     --with-gtk build option
   * Launchers: add desktop actions support for additional launch
@@ -114,7 +114,7 @@
   * Some code cleanups
   * Translations update
 
-### mate-panel 1.16.1
+### ukui-panel 1.16.1
 
   * Clock applet: mark current day in the calendar
   * Clock applet: update tooltip only when new text is different
@@ -124,30 +124,30 @@
   * GTK+3: fix showing icon at mouse cursor on launcher drag-n-drop
   * GTK+3: fix a heap of runtime warnings
 
-### mate-panel 1.16.0
+### ukui-panel 1.16.0
 
-  * Use GtkAboutDialog instead of MateAboutDialog
+  * Use GtkAboutDialog instead of UkuiAboutDialog
   * GTK+3: use GtkColorButton/GtkColorChooser in properties dialog
   * GTK+3: fix a lot of deprecations
   * Some more fixes and cleanups
   * Translations update
 
-### mate-panel 1.14.2
+### ukui-panel 1.14.2
 
   * Some fixes for opensuse.layout
   * Some more fixes and cleanups
   * Translations update
   * Make distcheck use currently selected GTK+ version
 
-### mate-panel 1.14.1
+### ukui-panel 1.14.1
 
   * Fix missing focus for panel widgets (needed for Orca to work)
   * Some more fixes and cleanups
   * Translations update
 
-### mate-panel 1.14.0
+### ukui-panel 1.14.0
 
-  * Drop MateConf migration script
+  * Drop UkuiConf migration script
   * Add separate "Delete" button in reload applet dialog, and
     make "Don't Reload" button do what it says (it won't delete
     applet permanently now)
@@ -165,7 +165,7 @@
   * Translations update
   * Add Changelog generation
 
-### mate-panel 1.12.2
+### ukui-panel 1.12.2
 
   * Drawer applet: fix occasional stretching of drawer's panel
     over the entire screen
@@ -173,12 +173,12 @@
   * GTK+3: fix infinite loop with some themes
   * Some more fixes
 
-### mate-panel 1.12.1
+### ukui-panel 1.12.1
 
   * GTK+3: fix background in some themes
   * Some more fixes
 
-### mate-panel 1.12.0
+### ukui-panel 1.12.0
 
   * Require xrandr 1.3
   * Add option to enable/disable week numbers in calendar
@@ -189,7 +189,7 @@
   * Multiple GTK+3 fixes
   * Some more fixes and cleanups
 
-### mate-panel 1.10.1
+### ukui-panel 1.10.1
 
   * Fish and clock applets: help fixes
   * Drawer applet: fix opening after adding applets to it
@@ -198,7 +198,7 @@
   * Some code cleanup
   * Translations updates
 
-### mate-panel 1.10.0
+### ukui-panel 1.10.0
 
   * Gtk3, Fix deprecated use of gdk pointer api
   * Gtk3, Port all GtkStyle to GtkStyleContext
@@ -216,20 +216,20 @@
   * Use gtk icon cache instead of custom one
   * Several small fixes by monsta
 
-### mate-panel 1.8.0
+### ukui-panel 1.8.0
 
-  * Added support for multiple layouts, stored in $(datadir)/mate-panel/layouts
+  * Added support for multiple layouts, stored in $(datadir)/ukui-panel/layouts
   * Added --layout parameter
   * Add hook to support run dialog and main menu opening with metacity
   * Switch to libwnck
-  * Use yelp-tools instead of mate-doc-utils
+  * Use yelp-tools instead of ukui-doc-utils
 
-### mate-panel 1.6.0
+### ukui-panel 1.6.0
 
   * add --run-dialog option to open run dialog
   * migration to gsettings
   * panel-menu-button: supports changed notify for new "has-arrow" key
   * clock applet: removed evolution support
   * default layout: default panel layout is loaded from
-    $(datadir)/mate-panel/panel-default-layout.mate. You can ovverride it by
-    providing $(datadir)/mate-panel/panel-default-layout.dist.
+    $(datadir)/ukui-panel/panel-default-layout.ukui. You can ovverride it by
+    providing $(datadir)/ukui-panel/panel-default-layout.dist.

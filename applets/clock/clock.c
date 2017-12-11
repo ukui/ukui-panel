@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*- */
 /*
- * clock.c: the MATE clock applet
+ * clock.c: the UKUI clock applet
  *
  * Copyright (C) 1997-2003 Free Software Foundation, Inc.
  *
@@ -42,8 +42,8 @@
 #include <math.h>
 #include <locale.h>
 
-#include <mate-panel-applet.h>
-#include <mate-panel-applet-gsettings.h>
+#include <ukui-panel-applet.h>
+#include <ukui-panel-applet-gsettings.h>
 
 #include <glib/gi18n.h>
 
@@ -52,9 +52,9 @@
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
 
-#include <libmateweather/mateweather-prefs.h>
-#include <libmateweather/location-entry.h>
-#include <libmateweather/timezone-menu.h>
+#include <libukuiweather/ukuiweather-prefs.h>
+#include <libukuiweather/location-entry.h>
+#include <libukuiweather/timezone-menu.h>
 
 #include "clock.h"
 
@@ -121,8 +121,8 @@ struct _ClockData {
         GtkWidget *prefs_location_edit_button;
         GtkWidget *prefs_location_remove_button;
 
-        MateWeatherLocationEntry *location_entry;
-        MateWeatherTimezoneMenu *zone_combo;
+        UkuiWeatherLocationEntry *location_entry;
+        UkuiWeatherTimezoneMenu *zone_combo;
 
         GtkWidget *time_settings_button;
         GtkWidget *calendar;
@@ -159,7 +159,7 @@ struct _ClockData {
         time_t             current_time;
         char              *timeformat;
         guint              timeout;
-        MatePanelAppletOrient  orient;
+        UkuiPanelAppletOrient  orient;
         int                size;
         GtkAllocation      old_allocation;
 
@@ -207,8 +207,8 @@ static void display_about_dialog      (GtkAction  *action,
                                        ClockData  *cd);
 static void position_calendar_popup   (ClockData  *cd);
 static void update_orient (ClockData *cd);
-static void applet_change_orient (MatePanelApplet       *applet,
-                                  MatePanelAppletOrient  orient,
+static void applet_change_orient (UkuiPanelApplet       *applet,
+                                  UkuiPanelAppletOrient  orient,
                                   ClockData         *cd);
 
 static void edit_hide (GtkWidget *unused, ClockData *cd);
@@ -376,7 +376,7 @@ get_itime (time_t current_time)
 /* adapted from panel-toplevel.c */
 static int
 calculate_minimum_height (GtkWidget        *widget,
-                          MatePanelAppletOrient orientation)
+                          UkuiPanelAppletOrient orientation)
 {
         GtkStateFlags    state;
         GtkStyleContext *style_context;
@@ -414,8 +414,8 @@ calculate_minimum_height (GtkWidget        *widget,
                                      NULL);
 #endif
 
-        if (orientation == MATE_PANEL_APPLET_ORIENT_UP
-            || orientation == MATE_PANEL_APPLET_ORIENT_DOWN) {
+        if (orientation == UKUI_PANEL_APPLET_ORIENT_UP
+            || orientation == UKUI_PANEL_APPLET_ORIENT_DOWN) {
                 thickness = padding.top + padding.bottom;
         } else {
                 thickness = padding.left + padding.right;
@@ -837,10 +837,10 @@ create_calendar (ClockData *cd)
         GtkWidget *window;
         char      *prefs_path;
 
-        prefs_path = mate_panel_applet_get_preferences_path (MATE_PANEL_APPLET (cd->applet));
+        prefs_path = ukui_panel_applet_get_preferences_path (UKUI_PANEL_APPLET (cd->applet));
         window = calendar_window_new (&cd->current_time,
                                       prefs_path,
-                                      cd->orient == MATE_PANEL_APPLET_ORIENT_UP);
+                                      cd->orient == UKUI_PANEL_APPLET_ORIENT_UP);
         g_free (prefs_path);
 
         calendar_window_set_show_weeks (CALENDAR_WINDOW (window),
@@ -859,7 +859,7 @@ create_calendar (ClockData *cd)
 
         /*Name this window so the default theme can be overridden in panel theme,
         otherwise default GtkWindow bg will be pulled in and override transparency */
-        gtk_widget_set_name(window, "MatePanelPopupWindow");
+        gtk_widget_set_name(window, "UkuiPanelPopupWindow");
 
         /* Make transparency possible in the theme */
         GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(window));
@@ -936,7 +936,7 @@ position_calendar_popup (ClockData *cd)
          * I expected.
          */
         switch (cd->orient) {
-        case MATE_PANEL_APPLET_ORIENT_RIGHT:
+        case UKUI_PANEL_APPLET_ORIENT_RIGHT:
                 x += button_w;
                 if ((y + h) > monitor.y + monitor.height)
                         y -= (y + h) - (monitor.y + monitor.height);
@@ -947,7 +947,7 @@ position_calendar_popup (ClockData *cd)
                         gravity = GDK_GRAVITY_NORTH_WEST;
 
                 break;
-        case MATE_PANEL_APPLET_ORIENT_LEFT:
+        case UKUI_PANEL_APPLET_ORIENT_LEFT:
                 x -= w;
                 if ((y + h) > monitor.y + monitor.height)
                         y -= (y + h) - (monitor.y + monitor.height);
@@ -958,7 +958,7 @@ position_calendar_popup (ClockData *cd)
                         gravity = GDK_GRAVITY_NORTH_EAST;
 
                 break;
-        case MATE_PANEL_APPLET_ORIENT_DOWN:
+        case UKUI_PANEL_APPLET_ORIENT_DOWN:
                 y += button_h;
                 if ((x + w) > monitor.x + monitor.width)
                         x -= (x + w) - (monitor.x + monitor.width);
@@ -966,7 +966,7 @@ position_calendar_popup (ClockData *cd)
                 gravity = GDK_GRAVITY_NORTH_WEST;
 
                 break;
-        case MATE_PANEL_APPLET_ORIENT_UP:
+        case UKUI_PANEL_APPLET_ORIENT_UP:
                 y -= h;
                 if ((x + w) > monitor.x + monitor.width)
                         x -= (x + w) - (monitor.x + monitor.width);
@@ -1474,14 +1474,14 @@ create_clock_widget (ClockData *cd)
 
         cd->props = NULL;
         cd->orient = -1;
-        cd->size = mate_panel_applet_get_size (MATE_PANEL_APPLET (cd->applet));
+        cd->size = ukui_panel_applet_get_size (UKUI_PANEL_APPLET (cd->applet));
 
         update_panel_weather (cd);
 
         /* Refresh the clock so that it paints its first state */
         refresh_clock_timeout (cd);
-        applet_change_orient (MATE_PANEL_APPLET (cd->applet),
-                              mate_panel_applet_get_orient (MATE_PANEL_APPLET (cd->applet)),
+        applet_change_orient (UKUI_PANEL_APPLET (cd->applet),
+                              ukui_panel_applet_get_orient (UKUI_PANEL_APPLET (cd->applet)),
                               cd);
 }
 
@@ -1498,10 +1498,10 @@ update_orient (ClockData *cd)
         min_width = calculate_minimum_width (cd->panel_button, text);
         gtk_widget_get_allocation (cd->panel_button, &allocation);
 
-        if (cd->orient == MATE_PANEL_APPLET_ORIENT_LEFT &&
+        if (cd->orient == UKUI_PANEL_APPLET_ORIENT_LEFT &&
             min_width > allocation.width)
                 new_angle = 270;
-        else if (cd->orient == MATE_PANEL_APPLET_ORIENT_RIGHT &&
+        else if (cd->orient == UKUI_PANEL_APPLET_ORIENT_RIGHT &&
                  min_width > allocation.width)
                 new_angle = 90;
         else
@@ -1517,8 +1517,8 @@ update_orient (ClockData *cd)
 
 /* this is when the panel orientation changes */
 static void
-applet_change_orient (MatePanelApplet       *applet,
-                      MatePanelAppletOrient  orient,
+applet_change_orient (UkuiPanelApplet       *applet,
+                      UkuiPanelAppletOrient  orient,
                       ClockData         *cd)
 {
         GtkOrientation o;
@@ -1529,16 +1529,16 @@ applet_change_orient (MatePanelApplet       *applet,
         cd->orient = orient;
 
         switch (cd->orient) {
-        case MATE_PANEL_APPLET_ORIENT_RIGHT:
+        case UKUI_PANEL_APPLET_ORIENT_RIGHT:
                 o = GTK_ORIENTATION_VERTICAL;
                 break;
-        case MATE_PANEL_APPLET_ORIENT_LEFT:
+        case UKUI_PANEL_APPLET_ORIENT_LEFT:
                 o = GTK_ORIENTATION_VERTICAL;
                 break;
-        case MATE_PANEL_APPLET_ORIENT_DOWN:
+        case UKUI_PANEL_APPLET_ORIENT_DOWN:
                 o = GTK_ORIENTATION_HORIZONTAL;
                 break;
-        case MATE_PANEL_APPLET_ORIENT_UP:
+        case UKUI_PANEL_APPLET_ORIENT_UP:
                 o = GTK_ORIENTATION_HORIZONTAL;
                 break;
         default:
@@ -1569,8 +1569,8 @@ panel_button_change_pixel_size (GtkWidget     *widget,
         cd->old_allocation.width  = allocation->width;
         cd->old_allocation.height = allocation->height;
 
-        if (cd->orient == MATE_PANEL_APPLET_ORIENT_LEFT ||
-            cd->orient == MATE_PANEL_APPLET_ORIENT_RIGHT)
+        if (cd->orient == UKUI_PANEL_APPLET_ORIENT_LEFT ||
+            cd->orient == UKUI_PANEL_APPLET_ORIENT_RIGHT)
                 new_size = allocation->width;
         else
                 new_size = allocation->height;
@@ -2229,7 +2229,7 @@ cities_changed (GSettings    *settings,
 
         context = g_markup_parse_context_new (&location_parser, 0, &data, NULL);
 
-        cur = mate_panel_applet_settings_get_gslist (settings, key);
+        cur = ukui_panel_applet_settings_get_gslist (settings, key);
 
         while (cur) {
                 const char *str = cur->data;
@@ -2353,7 +2353,7 @@ show_week_changed (GSettings    *settings,
 static void
 setup_gsettings (ClockData *cd)
 {
-        cd->settings = mate_panel_applet_settings_new (MATE_PANEL_APPLET (cd->applet), CLOCK_SCHEMA);
+        cd->settings = ukui_panel_applet_settings_new (UKUI_PANEL_APPLET (cd->applet), CLOCK_SCHEMA);
 
         /* hack to allow users to set custom format in dconf-editor */
         gint format;
@@ -2438,7 +2438,7 @@ load_gsettings (ClockData *cd)
 }
 
 static gboolean
-fill_clock_applet (MatePanelApplet *applet)
+fill_clock_applet (UkuiPanelApplet *applet)
 {
         ClockData      *cd;
         GtkActionGroup *action_group;
@@ -2447,7 +2447,7 @@ fill_clock_applet (MatePanelApplet *applet)
         char           *filename;
         GError         *error;
 
-        mate_panel_applet_set_flags (applet, MATE_PANEL_APPLET_EXPAND_MINOR);
+        ukui_panel_applet_set_flags (applet, UKUI_PANEL_APPLET_EXPAND_MINOR);
 
         cd = g_new0 (ClockData, 1);
         cd->fixed_width = -1;
@@ -2493,7 +2493,7 @@ fill_clock_applet (MatePanelApplet *applet)
                           G_CALLBACK (panel_button_change_pixel_size),
                           cd);
 
-        mate_panel_applet_set_background_widget (MATE_PANEL_APPLET (cd->applet),
+        ukui_panel_applet_set_background_widget (UKUI_PANEL_APPLET (cd->applet),
                                             GTK_WIDGET (cd->applet));
 
         action_group = gtk_action_group_new ("ClockApplet Menu Actions");
@@ -2503,11 +2503,11 @@ fill_clock_applet (MatePanelApplet *applet)
                                       G_N_ELEMENTS (clock_menu_actions),
                                       cd);
         ui_path = g_build_filename (CLOCK_MENU_UI_DIR, "clock-menu.xml", NULL);
-        mate_panel_applet_setup_menu_from_file (MATE_PANEL_APPLET (cd->applet),
+        ukui_panel_applet_setup_menu_from_file (UKUI_PANEL_APPLET (cd->applet),
                                            ui_path, action_group);
         g_free (ui_path);
 
-        if (mate_panel_applet_get_locked_down (MATE_PANEL_APPLET (cd->applet))) {
+        if (ukui_panel_applet_get_locked_down (UKUI_PANEL_APPLET (cd->applet))) {
                 action = gtk_action_group_get_action (action_group, "ClockPreferences");
                 gtk_action_set_visible (action, FALSE);
 
@@ -2574,7 +2574,7 @@ save_cities_store (ClockData *cd)
         }
 
         locs = g_list_reverse (locs);
-        mate_panel_applet_settings_set_glist (cd->settings, KEY_CITIES, locs);
+        ukui_panel_applet_settings_set_glist (cd->settings, KEY_CITIES, locs);
         g_list_free_full (locs, g_free);
 }
 
@@ -2593,11 +2593,11 @@ run_prefs_edit_save (GtkButton *button, ClockData *cd)
         const gchar *timezone, *weather_code;
         gchar *city, *name;
 
-        MateWeatherLocation *gloc;
+        UkuiWeatherLocation *gloc;
         gfloat lat = 0;
         gfloat lon = 0;
 
-        timezone = mateweather_timezone_menu_get_tzid (cd->zone_combo);
+        timezone = ukuiweather_timezone_menu_get_tzid (cd->zone_combo);
         if (!timezone) {
                 edit_hide (NULL, cd);
                 return;
@@ -2607,13 +2607,13 @@ run_prefs_edit_save (GtkButton *button, ClockData *cd)
         weather_code = NULL;
         name = NULL;
 
-        gloc = mateweather_location_entry_get_location (cd->location_entry);
+        gloc = ukuiweather_location_entry_get_location (cd->location_entry);
         if (gloc) {
-                city = mateweather_location_get_city_name (gloc);
-                weather_code = mateweather_location_get_code (gloc);
+                city = ukuiweather_location_get_city_name (gloc);
+                weather_code = ukuiweather_location_get_code (gloc);
         }
 
-        if (mateweather_location_entry_has_custom_text (cd->location_entry)) {
+        if (ukuiweather_location_entry_has_custom_text (cd->location_entry)) {
                 name = gtk_editable_get_chars (GTK_EDITABLE (cd->location_entry), 0, -1);
         }
 
@@ -2699,10 +2699,10 @@ static void
 fill_timezone_combo_from_location (ClockData *cd, ClockLocation *loc)
 {
         if (loc != NULL) {
-                mateweather_timezone_menu_set_tzid (cd->zone_combo,
+                ukuiweather_timezone_menu_set_tzid (cd->zone_combo,
                                                  clock_location_get_timezone (loc));
         } else {
-                mateweather_timezone_menu_set_tzid (cd->zone_combo, NULL);
+                ukuiweather_timezone_menu_set_tzid (cd->zone_combo, NULL);
         }
 }
 
@@ -2715,7 +2715,7 @@ location_update_ok_sensitivity (ClockData *cd)
 
         ok_button = _clock_get_widget (cd, "edit-location-ok-button");
 
-        timezone = mateweather_timezone_menu_get_tzid (cd->zone_combo);
+        timezone = ukuiweather_timezone_menu_get_tzid (cd->zone_combo);
         name = gtk_editable_get_chars (GTK_EDITABLE (cd->location_entry), 0, -1);
 
         if (timezone && name && name[0] != '\0') {
@@ -2730,27 +2730,27 @@ location_update_ok_sensitivity (ClockData *cd)
 static void
 location_changed (GObject *object, GParamSpec *param, ClockData *cd)
 {
-        MateWeatherLocationEntry *entry = MATEWEATHER_LOCATION_ENTRY (object);
-        MateWeatherLocation *gloc;
-        MateWeatherTimezone *zone;
+        UkuiWeatherLocationEntry *entry = UKUIWEATHER_LOCATION_ENTRY (object);
+        UkuiWeatherLocation *gloc;
+        UkuiWeatherTimezone *zone;
         gboolean latlon_valid;
         double latitude = 0.0, longitude = 0.0;
 
-        gloc = mateweather_location_entry_get_location (entry);
+        gloc = ukuiweather_location_entry_get_location (entry);
 
-        latlon_valid = gloc && mateweather_location_has_coords (gloc);
+        latlon_valid = gloc && ukuiweather_location_has_coords (gloc);
         if (latlon_valid)
-                mateweather_location_get_coords (gloc, &latitude, &longitude);
+                ukuiweather_location_get_coords (gloc, &latitude, &longitude);
         update_coords (cd, latlon_valid, latitude, longitude);
 
-        zone = gloc ? mateweather_location_get_timezone (gloc) : NULL;
+        zone = gloc ? ukuiweather_location_get_timezone (gloc) : NULL;
         if (zone)
-                mateweather_timezone_menu_set_tzid (cd->zone_combo, mateweather_timezone_get_tzid (zone));
+                ukuiweather_timezone_menu_set_tzid (cd->zone_combo, ukuiweather_timezone_get_tzid (zone));
         else
-                mateweather_timezone_menu_set_tzid (cd->zone_combo, NULL);
+                ukuiweather_timezone_menu_set_tzid (cd->zone_combo, NULL);
 
         if (gloc)
-                mateweather_location_unref (gloc);
+                ukuiweather_location_unref (gloc);
 }
 
 static void
@@ -2774,8 +2774,8 @@ edit_clear (ClockData *cd)
         GtkWidget *lon_combo = _clock_get_widget (cd, "edit-location-longitude-combo");
 
         /* clear out the old data */
-        mateweather_location_entry_set_location (cd->location_entry, NULL);
-        mateweather_timezone_menu_set_tzid (cd->zone_combo, NULL);
+        ukuiweather_location_entry_set_location (cd->location_entry, NULL);
+        ukuiweather_timezone_menu_set_tzid (cd->zone_combo, NULL);
 
         gtk_entry_set_text (GTK_ENTRY (lat_entry), "");
         gtk_entry_set_text (GTK_ENTRY (lon_entry), "");
@@ -2837,7 +2837,7 @@ static void
 prefs_help (GtkWidget *widget, ClockData *cd)
 {
         clock_utils_display_help (cd->prefs_window,
-                                  "mate-clock", "clock-settings");
+                                  "ukui-clock", "clock-settings");
 }
 
 static void
@@ -2911,7 +2911,7 @@ edit_tree_row (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpoint
 
         gtk_tree_model_get (model, iter, COL_CITY_LOC, &loc, -1);
 
-        mateweather_location_entry_set_city (cd->location_entry,
+        ukuiweather_location_entry_set_city (cd->location_entry,
                                           clock_location_get_city (loc),
                                           clock_location_get_weather_code (loc));
         name = clock_location_get_name (loc);
@@ -3100,7 +3100,7 @@ fill_prefs_window (ClockData *cd)
 
         for (i = 0; temperatures[i] != -1; i++)
                 gtk_list_store_insert_with_values (store, &iter, -1,
-                                                   0, mateweather_prefs_get_temp_display_name (temperatures[i]),
+                                                   0, ukuiweather_prefs_get_temp_display_name (temperatures[i]),
                                                    -1);
 
         if (cd->temperature_unit > 0)
@@ -3119,7 +3119,7 @@ fill_prefs_window (ClockData *cd)
 
         for (i = 0; speeds[i] != -1; i++)
                 gtk_list_store_insert_with_values (store, &iter, -1,
-                                                   0, mateweather_prefs_get_speed_display_name (speeds[i]),
+                                                   0, ukuiweather_prefs_get_speed_display_name (speeds[i]),
                                                    -1);
 
         if (cd->speed_unit > 0)
@@ -3143,7 +3143,7 @@ ensure_prefs_window_is_created (ClockData *cd)
         GtkWidget *location_name_label;
         GtkWidget *timezone_label;
         GtkTreeSelection *selection;
-        MateWeatherLocation *world;
+        UkuiWeatherLocation *world;
 
         if (cd->prefs_window)
                 return;
@@ -3203,10 +3203,10 @@ ensure_prefs_window_is_created (ClockData *cd)
 
         edit_ok_button = _clock_get_widget (cd, "edit-location-ok-button");
 
-        world = mateweather_location_new_world (FALSE);
+        world = ukuiweather_location_new_world (FALSE);
 
         location_box = _clock_get_widget (cd, "edit-location-name-box");
-        cd->location_entry = MATEWEATHER_LOCATION_ENTRY (mateweather_location_entry_new (world));
+        cd->location_entry = UKUIWEATHER_LOCATION_ENTRY (ukuiweather_location_entry_new (world));
         gtk_widget_show (GTK_WIDGET (cd->location_entry));
         gtk_container_add (GTK_CONTAINER (location_box), GTK_WIDGET (cd->location_entry));
         gtk_label_set_mnemonic_widget (GTK_LABEL (location_name_label),
@@ -3218,7 +3218,7 @@ ensure_prefs_window_is_created (ClockData *cd)
                           G_CALLBACK (location_name_changed), cd);
 
         zone_box = _clock_get_widget (cd, "edit-location-timezone-box");
-        cd->zone_combo = MATEWEATHER_TIMEZONE_MENU (mateweather_timezone_menu_new (world));
+        cd->zone_combo = UKUIWEATHER_TIMEZONE_MENU (ukuiweather_timezone_menu_new (world));
         gtk_widget_show (GTK_WIDGET (cd->zone_combo));
         gtk_container_add (GTK_CONTAINER (zone_box), GTK_WIDGET (cd->zone_combo));
         gtk_label_set_mnemonic_widget (GTK_LABEL (timezone_label),
@@ -3227,7 +3227,7 @@ ensure_prefs_window_is_created (ClockData *cd)
         g_signal_connect (G_OBJECT (cd->zone_combo), "notify::tzid",
                           G_CALLBACK (location_timezone_changed), cd);
 
-        mateweather_location_unref (world);
+        ukuiweather_location_unref (world);
 
         g_signal_connect (G_OBJECT (edit_cancel_button), "clicked",
                           G_CALLBACK (edit_hide), cd);
@@ -3275,7 +3275,7 @@ static void
 display_help_dialog (GtkAction *action,
                      ClockData *cd)
 {
-        clock_utils_display_help (cd->applet, "mate-clock", NULL);
+        clock_utils_display_help (cd->applet, "ukui-clock", NULL);
 }
 
 static void display_about_dialog(GtkAction* action, ClockData* cd)
@@ -3292,7 +3292,7 @@ static void display_about_dialog(GtkAction* action, ClockData* cd)
         };
 
         char copyright[] = \
-                "Copyright \xc2\xa9 2012-2017 MATE developers\n"
+                "Copyright \xc2\xa9 2012-2017 UKUI developers\n"
                 "Copyright \xc2\xa9 1998-2004 Free Software Foundation, Inc.";
 
         gtk_show_about_dialog(NULL,
@@ -3304,12 +3304,12 @@ static void display_about_dialog(GtkAction* action, ClockData* cd)
                 "logo-icon-name", CLOCK_ICON,
                 "translator-credits", _("translator-credits"),
                 "version", VERSION,
-                "website", "http://mate-desktop.org/",
+                "website", "http://ukui-desktop.org/",
                 NULL);
 }
 
 static gboolean
-clock_factory (MatePanelApplet *applet,
+clock_factory (UkuiPanelApplet *applet,
                const char  *iid,
                gpointer     data)
 {
@@ -3322,13 +3322,13 @@ clock_factory (MatePanelApplet *applet,
 }
 
 #ifdef CLOCK_INPROCESS
-MATE_PANEL_APPLET_IN_PROCESS_FACTORY ("ClockAppletFactory",
+UKUI_PANEL_APPLET_IN_PROCESS_FACTORY ("ClockAppletFactory",
                                  PANEL_TYPE_APPLET,
                                  "ClockApplet",
                                  clock_factory,
                                  NULL)
 #else
-MATE_PANEL_APPLET_OUT_PROCESS_FACTORY ("ClockAppletFactory",
+UKUI_PANEL_APPLET_OUT_PROCESS_FACTORY ("ClockAppletFactory",
                                   PANEL_TYPE_APPLET,
                                   "ClockApplet",
                                   clock_factory,

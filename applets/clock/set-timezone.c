@@ -86,9 +86,9 @@ refresh_can_do (const gchar *action, CanDoFunc callback)
                 return;
 
 	proxy = dbus_g_proxy_new_for_name (bus,
-					   "org.mate.SettingsDaemon.DateTimeMechanism",
+					   "org.ukui.SettingsDaemon.DateTimeMechanism",
 					   "/",
-					   "org.mate.SettingsDaemon.DateTimeMechanism");
+					   "org.ukui.SettingsDaemon.DateTimeMechanism");
 
 	dbus_g_proxy_begin_call_with_timeout (proxy,
 					      action,
@@ -213,9 +213,9 @@ set_time_async (SetTimeCallbackData *data)
                 return;
 
 	proxy = dbus_g_proxy_new_for_name (bus,
-					   "org.mate.SettingsDaemon.DateTimeMechanism",
+					   "org.ukui.SettingsDaemon.DateTimeMechanism",
 					   "/",
-					   "org.mate.SettingsDaemon.DateTimeMechanism");
+					   "org.ukui.SettingsDaemon.DateTimeMechanism");
 
 	data->ref_count++;
 	if (strcmp (data->call, "SetTime") == 0)

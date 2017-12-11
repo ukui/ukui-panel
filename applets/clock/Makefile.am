@@ -37,20 +37,20 @@ CLOCK_SOURCES = 		\
 
 CLOCK_CPPFLAGS =						\
 	$(AM_CPPFLAGS)						\
-	$(LIBMATE_PANEL_APPLET_CFLAGS)				\
+	$(LIBUKUI_PANEL_APPLET_CFLAGS)				\
 	$(CLOCK_CFLAGS)						\
-	-I$(srcdir)/../../libmate-panel-applet			\
-	-I$(top_builddir)/libmate-panel-applet			\
-	-DMATELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"	\
+	-I$(srcdir)/../../libukui-panel-applet			\
+	-I$(top_builddir)/libukui-panel-applet			\
+	-DUKUILOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"	\
 	-DBUILDERDIR=\""$(uidir)"\"				\
 	-DCLOCK_MENU_UI_DIR=\""$(xmluidir)"\"			\
-	-DICONDIR=\""$(datadir)/mate-panel/pixmaps"\"		\
-	-DMATEWEATHER_I_KNOW_THIS_IS_UNSTABLE
+	-DICONDIR=\""$(datadir)/ukui-panel/pixmaps"\"		\
+	-DUKUIWEATHER_I_KNOW_THIS_IS_UNSTABLE
 
 CLOCK_LDADD =						\
-	../../libmate-panel-applet/libmate-panel-applet-4.la	\
+	../../libukui-panel-applet/libukui-panel-applet-4.la	\
 	$(CLOCK_LIBS)					\
-	$(LIBMATE_PANEL_APPLET_LIBS)				\
+	$(LIBUKUI_PANEL_APPLET_LIBS)				\
 	libsystem-timezone.la				\
 	-lm
 
@@ -125,9 +125,9 @@ BUILT_SOURCES =					\
 	clock-typebuiltins.c			\
 	clock-typebuiltins.h
 
-appletdir       = $(datadir)/mate-panel/applets
-applet_in_files = org.mate.panel.ClockApplet.mate-panel-applet.in
-applet_DATA     = $(applet_in_files:.mate-panel-applet.in=.mate-panel-applet)
+appletdir       = $(datadir)/ukui-panel/applets
+applet_in_files = org.ukui.panel.ClockApplet.ukui-panel-applet.in
+applet_DATA     = $(applet_in_files:.ukui-panel-applet.in=.ukui-panel-applet)
 
 $(applet_in_files): $(applet_in_files).in Makefile
 	$(AM_V_GEN)sed \
@@ -136,33 +136,33 @@ $(applet_in_files): $(applet_in_files).in Makefile
 		-e "s|\@VERSION\@|$(PACKAGE_VERSION)|" \
 		$< > $@
 
-@PANEL_INTLTOOL_MATE_PANEL_APPLET_RULE@
+@PANEL_INTLTOOL_UKUI_PANEL_APPLET_RULE@
 
 if !CLOCK_INPROCESS
 servicedir       = $(datadir)/dbus-1/services
-service_in_files = org.mate.panel.applet.ClockAppletFactory.service.in
+service_in_files = org.ukui.panel.applet.ClockAppletFactory.service.in
 service_DATA     = $(service_in_files:.service.in=.service)
 
-org.mate.panel.applet.ClockAppletFactory.service: $(service_in_files)
+org.ukui.panel.applet.ClockAppletFactory.service: $(service_in_files)
 	$(AM_V_GEN)sed \
 		-e "s|\@LOCATION\@|$(APPLET_LOCATION)|" \
 		$< > $@
 endif
 
-uidir		= $(datadir)/mate-panel/ui
+uidir		= $(datadir)/ukui-panel/ui
 ui_DATA		= clock.ui
 
-xmluidir 	= $(datadir)/mate-panel/ui
+xmluidir 	= $(datadir)/ukui-panel/ui
 xmlui_DATA	= clock-menu.xml
 
-clock_gschemas_in = org.mate.panel.applet.clock.gschema.xml.in
+clock_gschemas_in = org.ukui.panel.applet.clock.gschema.xml.in
 gsettings_SCHEMAS = $(clock_gschemas_in:.xml.in=.xml)
 
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
 EXTRA_DIST =						\
-	org.mate.panel.ClockApplet.mate-panel-applet.in.in	\
+	org.ukui.panel.ClockApplet.ukui-panel-applet.in.in	\
 	$(clock_gschemas_in)				\
 	$(xmlui_DATA)					\
 	$(ui_DATA)					\

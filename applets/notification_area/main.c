@@ -24,7 +24,7 @@
 #include <config.h>
 #include <string.h>
 
-#include <mate-panel-applet.h>
+#include <ukui-panel-applet.h>
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
@@ -36,7 +36,7 @@
 # include "libstatus-notifier-watcher/gf-status-notifier-watcher.h"
 #endif
 
-#define NOTIFICATION_AREA_ICON "mate-panel-notification-area"
+#define NOTIFICATION_AREA_ICON "ukui-panel-notification-area"
 
 struct _NaTrayAppletPrivate
 {
@@ -51,8 +51,8 @@ G_DEFINE_TYPE (NaTrayApplet, na_tray_applet, PANEL_TYPE_APPLET)
 
 static void (*parent_class_realize) (GtkWidget *widget);
 static void (*parent_class_style_updated) (GtkWidget *widget);
-static void (*parent_class_change_background)(MatePanelApplet* panel_applet, MatePanelAppletBackgroundType type, GdkRGBA* color, cairo_pattern_t* pattern);
-static void (*parent_class_change_orient)(MatePanelApplet       *panel_applet, MatePanelAppletOrient  orient);
+static void (*parent_class_change_background)(UkuiPanelApplet* panel_applet, UkuiPanelAppletBackgroundType type, GdkRGBA* color, cairo_pattern_t* pattern);
+static void (*parent_class_change_orient)(UkuiPanelApplet       *panel_applet, UkuiPanelAppletOrient  orient);
 
 
 #ifdef PROVIDE_WATCHER_SERVICE
@@ -65,7 +65,7 @@ static GfStatusNotifierWatcher *
 sn_watcher_service_ref (void)
 {
   GSettings *settings;
-  settings = g_settings_new ("org.mate.panel");
+  settings = g_settings_new ("org.ukui.panel");
 
   if (g_settings_get_boolean (settings, "enable-sni-support") == TRUE)
     {
@@ -86,15 +86,15 @@ sn_watcher_service_ref (void)
 
 
 static GtkOrientation
-get_gtk_orientation_from_applet_orient (MatePanelAppletOrient orient)
+get_gtk_orientation_from_applet_orient (UkuiPanelAppletOrient orient)
 {
   switch (orient)
     {
-    case MATE_PANEL_APPLET_ORIENT_LEFT:
-    case MATE_PANEL_APPLET_ORIENT_RIGHT:
+    case UKUI_PANEL_APPLET_ORIENT_LEFT:
+    case UKUI_PANEL_APPLET_ORIENT_RIGHT:
       return GTK_ORIENTATION_VERTICAL;
-    case MATE_PANEL_APPLET_ORIENT_UP:
-    case MATE_PANEL_APPLET_ORIENT_DOWN:
+    case UKUI_PANEL_APPLET_ORIENT_UP:
+    case UKUI_PANEL_APPLET_ORIENT_DOWN:
     default:
       return GTK_ORIENTATION_HORIZONTAL;
     }
@@ -108,7 +108,7 @@ static void help_cb(GtkAction* action, NaTrayApplet* applet)
 {
 	GError* error = NULL;
 	char* uri;
-	#define NA_HELP_DOC "mate-user-guide"
+	#define NA_HELP_DOC "ukui-user-guide"
 
 	uri = g_strdup_printf("help:%s/%s", NA_HELP_DOC, "panels-notification-area");
 #if GTK_CHECK_VERSION (3, 22, 0)
@@ -167,7 +167,7 @@ static void about_cb(GtkAction* action, NaTrayApplet* applet)
 		"Copyright \xc2\xa9 2002 Red Hat, Inc.\n"
 		"Copyright \xc2\xa9 2003-2006 Vincent Untz\n"
 		"Copyright \xc2\xa9 2011 Perberos\n"
-		"Copyright \xc2\xa9 2012-2017 MATE developers";
+		"Copyright \xc2\xa9 2012-2017 UKUI developers";
 
 	gtk_show_about_dialog(NULL,
 		"program-name", _("Notification Area"),
@@ -205,7 +205,7 @@ na_tray_applet_realize (GtkWidget *widget)
   gtk_action_group_set_translation_domain(action_group, GETTEXT_PACKAGE);
   gtk_action_group_add_actions(action_group, menu_actions, G_N_ELEMENTS(menu_actions), applet);
   ui_path = g_build_filename(NOTIFICATION_AREA_MENU_UI_DIR, "notification-area-menu.xml", NULL);
-  mate_panel_applet_setup_menu_from_file(MATE_PANEL_APPLET(applet), ui_path, action_group);
+  ukui_panel_applet_setup_menu_from_file(UKUI_PANEL_APPLET(applet), ui_path, action_group);
   g_free(ui_path);
   g_object_unref(action_group);
 }
@@ -244,7 +244,7 @@ na_tray_applet_style_updated (GtkWidget *widget)
 }
 
 static void
-na_tray_applet_change_background(MatePanelApplet* panel_applet, MatePanelAppletBackgroundType type, GdkRGBA* color, cairo_pattern_t* pattern)
+na_tray_applet_change_background(UkuiPanelApplet* panel_applet, UkuiPanelAppletBackgroundType type, GdkRGBA* color, cairo_pattern_t* pattern)
 {
   NaTrayApplet *applet = NA_TRAY_APPLET (panel_applet);
 
@@ -257,8 +257,8 @@ na_tray_applet_change_background(MatePanelApplet* panel_applet, MatePanelAppletB
 }
 
 static void
-na_tray_applet_change_orient (MatePanelApplet       *panel_applet,
-                              MatePanelAppletOrient  orient)
+na_tray_applet_change_orient (UkuiPanelApplet       *panel_applet,
+                              UkuiPanelAppletOrient  orient)
 {
   NaTrayApplet *applet = NA_TRAY_APPLET (panel_applet);
 
@@ -325,7 +325,7 @@ na_tray_applet_class_init (NaTrayAppletClass *class)
 {
   GObjectClass     *object_class = G_OBJECT_CLASS (class);
   GtkWidgetClass   *widget_class = GTK_WIDGET_CLASS (class);
-  MatePanelAppletClass *applet_class = MATE_PANEL_APPLET_CLASS (class);
+  UkuiPanelAppletClass *applet_class = UKUI_PANEL_APPLET_CLASS (class);
 
   object_class->dispose = na_tray_applet_dispose;
 
@@ -369,7 +369,7 @@ na_tray_applet_class_init (NaTrayAppletClass *class)
 static void
 na_tray_applet_init (NaTrayApplet *applet)
 {
-  MatePanelAppletOrient orient;
+  UkuiPanelAppletOrient orient;
   AtkObject *atko;
 
   applet->priv = G_TYPE_INSTANCE_GET_PRIVATE (applet, NA_TYPE_TRAY_APPLET,
@@ -379,7 +379,7 @@ na_tray_applet_init (NaTrayApplet *applet)
   applet->priv->sn_watcher = sn_watcher_service_ref ();
 #endif
 
-  orient = mate_panel_applet_get_orient (MATE_PANEL_APPLET (applet));
+  orient = ukui_panel_applet_get_orient (UKUI_PANEL_APPLET (applet));
   applet->priv->box = na_box_new (get_gtk_orientation_from_applet_orient (orient));
 
   gtk_container_add (GTK_CONTAINER (applet), GTK_WIDGET (applet->priv->box));
@@ -388,8 +388,8 @@ na_tray_applet_init (NaTrayApplet *applet)
   atko = gtk_widget_get_accessible (GTK_WIDGET (applet));
   atk_object_set_name (atko, _("Panel Notification Area"));
 
-  mate_panel_applet_set_flags (MATE_PANEL_APPLET (applet),
-                          MATE_PANEL_APPLET_HAS_HANDLE|MATE_PANEL_APPLET_EXPAND_MINOR);
+  ukui_panel_applet_set_flags (UKUI_PANEL_APPLET (applet),
+                          UKUI_PANEL_APPLET_HAS_HANDLE|UKUI_PANEL_APPLET_EXPAND_MINOR);
 
 #if !GTK_CHECK_VERSION (3, 20, 0)
   force_no_focus_padding (GTK_WIDGET (applet));
@@ -397,7 +397,7 @@ na_tray_applet_init (NaTrayApplet *applet)
 }
 
 static gboolean
-applet_factory (MatePanelApplet *applet,
+applet_factory (UkuiPanelApplet *applet,
                 const gchar *iid,
                 gpointer     user_data)
 {
@@ -415,13 +415,13 @@ applet_factory (MatePanelApplet *applet,
 }
 
 #ifdef NOTIFICATION_AREA_INPROCESS
-	MATE_PANEL_APPLET_IN_PROCESS_FACTORY ("NotificationAreaAppletFactory",
+	UKUI_PANEL_APPLET_IN_PROCESS_FACTORY ("NotificationAreaAppletFactory",
 				 NA_TYPE_TRAY_APPLET,
 				 "NotificationArea",
 				 applet_factory,
 				 NULL)
 #else
-	MATE_PANEL_APPLET_OUT_PROCESS_FACTORY ("NotificationAreaAppletFactory",
+	UKUI_PANEL_APPLET_OUT_PROCESS_FACTORY ("NotificationAreaAppletFactory",
 				  NA_TYPE_TRAY_APPLET,
 				  "NotificationArea",
 				  applet_factory,

@@ -14,8 +14,8 @@
 
 #include <string.h>
 
-#include <mate-panel-applet.h>
-#include <mate-panel-applet-gsettings.h>
+#include <ukui-panel-applet.h>
+#include <ukui-panel-applet-gsettings.h>
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
@@ -23,14 +23,14 @@
 #include <libwnck/libwnck.h>
 #include <gio/gio.h>
 
-#define MATE_DESKTOP_USE_UNSTABLE_API
-#include <libmate-desktop/mate-desktop-utils.h>
+#define UKUI_DESKTOP_USE_UNSTABLE_API
+#include <libukui-desktop/ukui-desktop-utils.h>
 
 #include "wncklet.h"
 #include "window-list.h"
 
-#define WINDOW_LIST_ICON "mate-panel-window-list"
-#define WINDOW_LIST_SCHEMA "org.mate.panel.applet.window-list"
+#define WINDOW_LIST_ICON "ukui-panel-window-list"
+#define WINDOW_LIST_SCHEMA "org.ukui.panel.applet.window-list"
 
 typedef struct {
 	GtkWidget* applet;
@@ -85,7 +85,7 @@ static void response_cb(GtkWidget* widget, int id, TasklistData* tasklist)
 {
 	if (id == GTK_RESPONSE_HELP)
 	{
-		wncklet_display_help(widget, "mate-user-guide", "windowlist-prefs", WINDOW_LIST_ICON);
+		wncklet_display_help(widget, "ukui-user-guide", "windowlist-prefs", WINDOW_LIST_ICON);
 	}
 	else
 	{
@@ -93,23 +93,23 @@ static void response_cb(GtkWidget* widget, int id, TasklistData* tasklist)
 	}
 }
 
-static void applet_realized(MatePanelApplet* applet, TasklistData* tasklist)
+static void applet_realized(UkuiPanelApplet* applet, TasklistData* tasklist)
 {
 	tasklist->icon_theme = gtk_icon_theme_get_for_screen(gtk_widget_get_screen(tasklist->applet));
 }
 
-static void applet_change_orient(MatePanelApplet* applet, MatePanelAppletOrient orient, TasklistData* tasklist)
+static void applet_change_orient(UkuiPanelApplet* applet, UkuiPanelAppletOrient orient, TasklistData* tasklist)
 {
 	GtkOrientation new_orient;
 
 	switch (orient)
 	{
-		case MATE_PANEL_APPLET_ORIENT_LEFT:
-		case MATE_PANEL_APPLET_ORIENT_RIGHT:
+		case UKUI_PANEL_APPLET_ORIENT_LEFT:
+		case UKUI_PANEL_APPLET_ORIENT_RIGHT:
 			new_orient = GTK_ORIENTATION_VERTICAL;
 			break;
-		case MATE_PANEL_APPLET_ORIENT_UP:
-		case MATE_PANEL_APPLET_ORIENT_DOWN:
+		case UKUI_PANEL_APPLET_ORIENT_UP:
+		case UKUI_PANEL_APPLET_ORIENT_DOWN:
 		default:
 			new_orient = GTK_ORIENTATION_HORIZONTAL;
 			break;
@@ -126,7 +126,7 @@ static void applet_change_orient(MatePanelApplet* applet, MatePanelAppletOrient 
 	tasklist_update(tasklist);
 }
 
-static void applet_change_background(MatePanelApplet* applet, MatePanelAppletBackgroundType type, GdkColor* color, cairo_pattern_t* pattern, TasklistData* tasklist)
+static void applet_change_background(UkuiPanelApplet* applet, UkuiPanelAppletBackgroundType type, GdkColor* color, cairo_pattern_t* pattern, TasklistData* tasklist)
 {
 	switch (type)
 	{
@@ -138,7 +138,7 @@ static void applet_change_background(MatePanelApplet* applet, MatePanelAppletBac
 	}
 }
 
-static void applet_change_pixel_size(MatePanelApplet* applet, gint size, TasklistData* tasklist)
+static void applet_change_pixel_size(UkuiPanelApplet* applet, gint size, TasklistData* tasklist)
 {
 	if (tasklist->size == size)
 		return;
@@ -151,7 +151,7 @@ static void applet_change_pixel_size(MatePanelApplet* applet, gint size, Tasklis
 /* TODO: this is sad, should be used a function to retrieve  applications from
  *  .desktop or some like that. */
 static const char* system_monitors[] = {
-	"mate-system-monitor",
+	"ukui-system-monitor",
 	"gnome-system-monitor",
 };
 
@@ -296,7 +296,7 @@ static void move_unminimized_windows_changed(GSettings* settings, gchar* key, Ta
 
 static void setup_gsettings(TasklistData* tasklist)
 {
-	tasklist->settings = mate_panel_applet_settings_new (MATE_PANEL_APPLET (tasklist->applet), WINDOW_LIST_SCHEMA);
+	tasklist->settings = ukui_panel_applet_settings_new (UKUI_PANEL_APPLET (tasklist->applet), WINDOW_LIST_SCHEMA);
 
 	g_signal_connect (tasklist->settings,
 					  "changed::display-all-workspaces",
@@ -321,7 +321,7 @@ static void applet_size_allocate(GtkWidget *widget, GtkAllocation *allocation, T
 
 	g_assert(len % 2 == 0);
 
-	mate_panel_applet_set_size_hints(MATE_PANEL_APPLET(tasklist->applet), size_hints, len, 0);
+	ukui_panel_applet_set_size_hints(UKUI_PANEL_APPLET(tasklist->applet), size_hints, len, 0);
 }
 
 static GdkPixbuf* icon_loader_func(const char* icon, int size, unsigned int flags, void* data)
@@ -370,7 +370,7 @@ static GdkPixbuf* icon_loader_func(const char* icon, int size, unsigned int flag
 	return retval;
 }
 
-gboolean window_list_applet_fill(MatePanelApplet* applet)
+gboolean window_list_applet_fill(UkuiPanelApplet* applet)
 {
 	TasklistData* tasklist;
 	GtkActionGroup* action_group;
@@ -386,7 +386,7 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 	provider = gtk_css_provider_new ();
 	screen = gdk_screen_get_default ();
 	gtk_css_provider_load_from_data (provider,
-										".mate-panel-menu-bar button,\n"
+										".ukui-panel-menu-bar button,\n"
 										" #tasklist-button {\n"
 										" padding: 0px;\n"
 										" margin: 0px;\n }",
@@ -396,7 +396,7 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 										GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	g_object_unref (provider);
 #endif
-	mate_panel_applet_set_flags(MATE_PANEL_APPLET(tasklist->applet), MATE_PANEL_APPLET_EXPAND_MAJOR | MATE_PANEL_APPLET_EXPAND_MINOR | MATE_PANEL_APPLET_HAS_HANDLE);
+	ukui_panel_applet_set_flags(UKUI_PANEL_APPLET(tasklist->applet), UKUI_PANEL_APPLET_EXPAND_MAJOR | UKUI_PANEL_APPLET_EXPAND_MINOR | UKUI_PANEL_APPLET_HAS_HANDLE);
 
 	setup_gsettings(tasklist);
 
@@ -406,16 +406,16 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 
 	tasklist->move_unminimized_windows = g_settings_get_boolean (tasklist->settings, "move-unminimized-windows");
 
-	tasklist->size = mate_panel_applet_get_size(applet);
+	tasklist->size = ukui_panel_applet_get_size(applet);
 
-	switch (mate_panel_applet_get_orient(applet))
+	switch (ukui_panel_applet_get_orient(applet))
 	{
-		case MATE_PANEL_APPLET_ORIENT_LEFT:
-		case MATE_PANEL_APPLET_ORIENT_RIGHT:
+		case UKUI_PANEL_APPLET_ORIENT_LEFT:
+		case UKUI_PANEL_APPLET_ORIENT_RIGHT:
 			tasklist->orientation = GTK_ORIENTATION_VERTICAL;
 			break;
-		case MATE_PANEL_APPLET_ORIENT_UP:
-		case MATE_PANEL_APPLET_ORIENT_DOWN:
+		case UKUI_PANEL_APPLET_ORIENT_UP:
+		case UKUI_PANEL_APPLET_ORIENT_DOWN:
 		default:
 			tasklist->orientation = GTK_ORIENTATION_HORIZONTAL;
 			break;
@@ -443,7 +443,7 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 	g_signal_connect(G_OBJECT(tasklist->applet), "change_size", G_CALLBACK(applet_change_pixel_size), tasklist);
 	g_signal_connect(G_OBJECT(tasklist->applet), "change_background", G_CALLBACK(applet_change_background), tasklist);
 
-	mate_panel_applet_set_background_widget(MATE_PANEL_APPLET(tasklist->applet), GTK_WIDGET(tasklist->applet));
+	ukui_panel_applet_set_background_widget(UKUI_PANEL_APPLET(tasklist->applet), GTK_WIDGET(tasklist->applet));
 
 	action_group = gtk_action_group_new("Tasklist Applet Actions");
 	gtk_action_group_set_translation_domain(action_group, GETTEXT_PACKAGE);
@@ -451,7 +451,7 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 
 
 	/* disable the item of system monitor, if not exists.
-	 * example, mate-system-monitor, o gnome-system-monitor */
+	 * example, ukui-system-monitor, o gnome-system-monitor */
 	char* programpath;
 	int i;
 
@@ -477,10 +477,10 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 	
 
 	ui_path = g_build_filename(WNCK_MENU_UI_DIR, "window-list-menu.xml", NULL);
-	mate_panel_applet_setup_menu_from_file(MATE_PANEL_APPLET(tasklist->applet), ui_path, action_group);
+	ukui_panel_applet_setup_menu_from_file(UKUI_PANEL_APPLET(tasklist->applet), ui_path, action_group);
 	g_free(ui_path);
 
-	if (mate_panel_applet_get_locked_down(MATE_PANEL_APPLET(tasklist->applet)))
+	if (ukui_panel_applet_get_locked_down(UKUI_PANEL_APPLET(tasklist->applet)))
 	{
 		GtkAction* action;
 
@@ -508,7 +508,7 @@ static void call_system_monitor(GtkAction* action, TasklistData* tasklist)
 		{
 			g_free(programpath);
 
-			mate_gdk_spawn_command_line_on_screen(gtk_widget_get_screen(tasklist->applet),
+			ukui_gdk_spawn_command_line_on_screen(gtk_widget_get_screen(tasklist->applet),
 				      system_monitors[i],
 				      NULL);
 			return;
@@ -519,7 +519,7 @@ static void call_system_monitor(GtkAction* action, TasklistData* tasklist)
 
 static void display_help_dialog(GtkAction* action, TasklistData* tasklist)
 {
-	wncklet_display_help(tasklist->applet, "mate-user-guide", "windowlist", WINDOW_LIST_ICON);
+	wncklet_display_help(tasklist->applet, "ukui-user-guide", "windowlist", WINDOW_LIST_ICON);
 }
 
 static void display_about_dialog(GtkAction* action, TasklistData* tasklist)
@@ -538,7 +538,7 @@ static void display_about_dialog(GtkAction* action, TasklistData* tasklist)
 	};
 
 	char copyright[] = \
-		"Copyright \xc2\xa9 2012-2017 MATE developers\n"
+		"Copyright \xc2\xa9 2012-2017 UKUI developers\n"
 		"Copyright \xc2\xa9 2011 Perberos\n"
 		"Copyright \xc2\xa9 2002 Red Hat, Inc.";
 
@@ -552,7 +552,7 @@ static void display_about_dialog(GtkAction* action, TasklistData* tasklist)
 		"logo-icon-name", WINDOW_LIST_ICON,
 		"translator-credits", _("translator-credits"),
 		"version", VERSION,
-		"website", "http://www.mate-desktop.org/",
+		"website", "http://www.ukui-desktop.org/",
 		NULL);
 }
 

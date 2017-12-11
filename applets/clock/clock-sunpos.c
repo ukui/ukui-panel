@@ -29,13 +29,13 @@
 /* Calculated with the methods and figures from "Practical Astronomy With Your
  * Calculator, version 3" by Peter Duffet-Smith.
  */
-/* Table 6.  Details of the Sun's apparent matecorba at epoch 1990.0 */
+/* Table 6.  Details of the Sun's apparent ukuicorba at epoch 1990.0 */
 
 #define EPOCH          2447891.5  /* days */    /* epoch 1990 */
 #define UNIX_EPOCH     2440586.5  /* days */    /* epoch 1970 */
 #define EPSILON_G      279.403303 /* degrees */ /* ecliptic longitude at epoch 1990.0 */
 #define MU_G           282.768422 /* degrees */ /* ecliptic longitude at perigee */
-#define ECCENTRICITY   0.016713                 /* eccentricity of matecorba */
+#define ECCENTRICITY   0.016713                 /* eccentricity of ukuicorba */
 #define R_0            149598500  /* km */      /* semi-major axis */
 #define THETA_0        0.533128   /* degrees */ /* angular diameter at r = r_0 */
 #define MEAN_OBLIQUITY 23.440592  /* degrees */ /* mean obliquity of earth's axis at epoch 1990.0 */
@@ -68,7 +68,7 @@ solve_keplers_equation (gdouble e,
 {
   gdouble d, E;
 
-  /* start with an initial estimate */
+  /* start with an initial estiukui */
   E = M;
   
   d = E - e * sin (E) - M;

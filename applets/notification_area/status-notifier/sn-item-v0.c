@@ -314,7 +314,7 @@ update (SnItemV0 *v0)
     atk_object_set_name (accessible, v0->id);
 
   /* TODO: hide "Passive" items with a setting? */
-  /*Special case mate-polkit*/
+  /*Special case ukui-polkit*/
   if (g_strcmp0 (v0->status, "password-dialog") != 0){
     visible = g_strcmp0 (v0->status, "Passive") != 0;
     gtk_widget_set_visible (GTK_WIDGET (v0), visible);

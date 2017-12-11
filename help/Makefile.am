@@ -1,3 +1,3 @@
-SUBDIRS = mate-clock mate-fish
+SUBDIRS = ukui-clock ukui-fish
 
 -include $(top_srcdir)/git.mk

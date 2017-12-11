@@ -28,7 +28,7 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <mate-panel-applet.h>
+#include <ukui-panel-applet.h>
 
 #ifdef __cplusplus
 extern "C" {

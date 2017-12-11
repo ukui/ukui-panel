@@ -40,17 +40,17 @@
 #include <gdk/gdkkeysyms.h>
 #include <gio/gio.h>
 
-#include <mate-panel-applet.h>
-#include <mate-panel-applet-gsettings.h>
+#include <ukui-panel-applet.h>
+#include <ukui-panel-applet-gsettings.h>
 
 #define FISH_APPLET(o) \
 	(G_TYPE_CHECK_INSTANCE_CAST((o), fish_applet_get_type(), FishApplet))
 #define FISH_IS_APPLET(o) \
 	(G_TYPE_CHECK_INSTANCE_TYPE((o), FISH_TYPE_APPLET))
 
-#define FISH_ICON "mate-panel-fish"
+#define FISH_ICON "ukui-panel-fish"
 
-#define FISH_SCHEMA      "org.mate.panel.applet.fish"
+#define FISH_SCHEMA      "org.ukui.panel.applet.fish"
 #define FISH_NAME_KEY    "name"
 #define FISH_IMAGE_KEY   "image"
 #define FISH_COMMAND_KEY "command"
@@ -58,11 +58,11 @@
 #define FISH_SPEED_KEY   "speed"
 #define FISH_ROTATE_KEY  "rotate"
 
-#define LOCKDOWN_SCHEMA                       "org.mate.lockdown"
+#define LOCKDOWN_SCHEMA                       "org.ukui.lockdown"
 #define LOCKDOWN_DISABLE_COMMAND_LINE_KEY     "disable-command-line"
 
 typedef struct {
-	MatePanelApplet        applet;
+	UkuiPanelApplet        applet;
 
 	GSettings         *settings;
 	GSettings         *lockdown_settings;
@@ -74,7 +74,7 @@ typedef struct {
 	gdouble            speed;
 	gboolean           rotate;
 
-	MatePanelAppletOrient  orientation;
+	UkuiPanelAppletOrient  orientation;
 
 	GtkWidget         *frame;
 	GtkWidget         *drawing_area;
@@ -110,7 +110,7 @@ typedef struct {
 } FishApplet;
 
 typedef struct {
-	MatePanelAppletClass klass;
+	UkuiPanelAppletClass klass;
 } FishAppletClass;
 
 
@@ -145,7 +145,7 @@ static void show_help(FishApplet* fish, const char* link_id)
 {
 	GError *error = NULL;
 	char   *uri;
-#define FISH_HELP_DOC "mate-fish"
+#define FISH_HELP_DOC "ukui-fish"
 
 	if (link_id)
 		uri = g_strdup_printf ("help:%s/%s", FISH_HELP_DOC, link_id);
@@ -560,7 +560,7 @@ static void display_about_dialog(GtkAction* action, FishApplet* fish)
 	char* descr;
 	char copyright[] = \
 		"Copyright \xc2\xa9 1998-2002 Free Software Foundation, Inc.\n"
-		"Copyright \xc2\xa9 2012-2017 MATE developers";
+		"Copyright \xc2\xa9 2012-2017 UKUI developers";
 
 	authors[0] = g_strdup_printf(author_format, fish->name);
 	authors[1] = _("(with minor help from George)");
@@ -577,7 +577,7 @@ static void display_about_dialog(GtkAction* action, FishApplet* fish)
 		"logo-icon-name", FISH_ICON,
 		"translator-credits", _("translator-credits"),
 		"version", VERSION, // "3.4.7.4ac19"
-		"website", "http://mate-desktop.org/",
+		"website", "http://ukui-desktop.org/",
 		NULL);
 
 	g_free(descr);
@@ -1245,8 +1245,8 @@ static void rotate_changed_notify(GSettings* settings, gchar* key, FishApplet* f
 		return;
 	fish->rotate = value;
 
-	if (fish->orientation == MATE_PANEL_APPLET_ORIENT_LEFT ||
-	    fish->orientation == MATE_PANEL_APPLET_ORIENT_RIGHT)
+	if (fish->orientation == UKUI_PANEL_APPLET_ORIENT_LEFT ||
+	    fish->orientation == UKUI_PANEL_APPLET_ORIENT_RIGHT)
 		update_pixmap (fish);
 
 	if (fish->rotate_toggle &&
@@ -1269,9 +1269,9 @@ static void fish_disable_commande_line_notify(GSettings* settings, gchar* key, F
 
 static void setup_gsettings(FishApplet* fish)
 {
-	MatePanelApplet *applet = (MatePanelApplet *) fish;
+	UkuiPanelApplet *applet = (UkuiPanelApplet *) fish;
 
-	fish->settings = mate_panel_applet_settings_new (applet, FISH_SCHEMA);
+	fish->settings = ukui_panel_applet_settings_new (applet, FISH_SCHEMA);
 	fish->lockdown_settings = g_settings_new (LOCKDOWN_SCHEMA);
 
 	g_signal_connect (fish->settings,
@@ -1368,8 +1368,8 @@ static void update_pixmap(FishApplet* fish)
 		return;
 
 	if (fish->rotate &&
-	    (fish->orientation == MATE_PANEL_APPLET_ORIENT_LEFT ||
-	     fish->orientation == MATE_PANEL_APPLET_ORIENT_RIGHT))
+	    (fish->orientation == UKUI_PANEL_APPLET_ORIENT_LEFT ||
+	     fish->orientation == UKUI_PANEL_APPLET_ORIENT_RIGHT))
 		rotate = TRUE;
 
 	pixbuf_width  = gdk_pixbuf_get_width  (fish->pixbuf);
@@ -1377,8 +1377,8 @@ static void update_pixmap(FishApplet* fish)
 
 	prev_requisition = fish->requisition;
 
-	if (fish->orientation == MATE_PANEL_APPLET_ORIENT_UP ||
-	    fish->orientation == MATE_PANEL_APPLET_ORIENT_DOWN) {
+	if (fish->orientation == UKUI_PANEL_APPLET_ORIENT_UP ||
+	    fish->orientation == UKUI_PANEL_APPLET_ORIENT_DOWN) {
 		height = allocation.height;
 		width  = pixbuf_width * ((gdouble) height / pixbuf_height);
 		fish->requisition.width = width / fish->n_frames;
@@ -1437,7 +1437,7 @@ static void update_pixmap(FishApplet* fish)
 	}
 
 	if (rotate) {
-		if (fish->orientation == MATE_PANEL_APPLET_ORIENT_RIGHT) {
+		if (fish->orientation == UKUI_PANEL_APPLET_ORIENT_RIGHT) {
 			cairo_matrix_translate (&matrix, pixbuf_width - 1, 0);
 			cairo_matrix_rotate (&matrix, M_PI * 0.5);
 		} else {
@@ -1481,9 +1481,9 @@ static gboolean fish_applet_draw(GtkWidget* widget, cairo_t *cr, FishApplet* fis
 	src_y = 0;
 
 	if (fish->rotate) {
-		if (fish->orientation == MATE_PANEL_APPLET_ORIENT_RIGHT)
+		if (fish->orientation == UKUI_PANEL_APPLET_ORIENT_RIGHT)
 			src_y += ((height * (fish->n_frames - 1 - fish->current_frame)) / fish->n_frames);
-		else if (fish->orientation == MATE_PANEL_APPLET_ORIENT_LEFT)
+		else if (fish->orientation == UKUI_PANEL_APPLET_ORIENT_LEFT)
 			src_y += ((height * fish->current_frame) / fish->n_frames);
 		else
 			src_x += ((width * fish->current_frame) / fish->n_frames);
@@ -1521,7 +1521,7 @@ static void fish_applet_unrealize(GtkWidget* widget, FishApplet* fish)
 	fish->surface = NULL;
 }
 
-static void fish_applet_change_orient(MatePanelApplet* applet, MatePanelAppletOrient orientation)
+static void fish_applet_change_orient(UkuiPanelApplet* applet, UkuiPanelAppletOrient orientation)
 {
 	FishApplet *fish = (FishApplet *) applet;
 
@@ -1698,11 +1698,11 @@ static const GtkActionEntry fish_menu_verbs[] = {
 
 static gboolean fish_applet_fill(FishApplet* fish)
 {
-	MatePanelApplet* applet = (MatePanelApplet*) fish;
+	UkuiPanelApplet* applet = (UkuiPanelApplet*) fish;
 	GtkActionGroup* action_group;
 	gchar* ui_path;
 
-	fish->orientation = mate_panel_applet_get_orient (applet);
+	fish->orientation = ukui_panel_applet_get_orient (applet);
 
 	setup_gsettings (fish);
 
@@ -1736,10 +1736,10 @@ static gboolean fish_applet_fill(FishApplet* fish)
 				      G_N_ELEMENTS (fish_menu_verbs),
 				      fish);
 	ui_path = g_build_filename (FISH_MENU_UI_DIR, "fish-menu.xml", NULL);
-	mate_panel_applet_setup_menu_from_file (applet, ui_path, action_group);
+	ukui_panel_applet_setup_menu_from_file (applet, ui_path, action_group);
 	g_free (ui_path);
 
-	if (mate_panel_applet_get_locked_down (applet)) {
+	if (ukui_panel_applet_get_locked_down (applet)) {
 		GtkAction *action;
 
 		action = gtk_action_group_get_action (action_group, "FishPreferences");
@@ -1756,7 +1756,7 @@ static gboolean fish_applet_fill(FishApplet* fish)
 	return TRUE;
 }
 
-static gboolean fishy_factory(MatePanelApplet* applet, const char* iid, gpointer data)
+static gboolean fishy_factory(UkuiPanelApplet* applet, const char* iid, gpointer data)
 {
 	gboolean retval = FALSE;
 
@@ -1837,7 +1837,7 @@ static void fish_applet_instance_init(FishApplet* fish, FishAppletClass* klass)
 	fish->speed    = 0.0;
 	fish->rotate   = FALSE;
 
-	fish->orientation = MATE_PANEL_APPLET_ORIENT_UP;
+	fish->orientation = UKUI_PANEL_APPLET_ORIENT_UP;
 
 	fish->frame         = NULL;
 	fish->drawing_area  = NULL;
@@ -1877,14 +1877,14 @@ static void fish_applet_instance_init(FishApplet* fish, FishAppletClass* klass)
 
 	fish->april_fools = FALSE;
 
-	mate_panel_applet_set_flags (MATE_PANEL_APPLET (fish), MATE_PANEL_APPLET_EXPAND_MINOR);
+	ukui_panel_applet_set_flags (UKUI_PANEL_APPLET (fish), UKUI_PANEL_APPLET_EXPAND_MINOR);
 
-	mate_panel_applet_set_background_widget(MATE_PANEL_APPLET(fish), GTK_WIDGET(fish));
+	ukui_panel_applet_set_background_widget(UKUI_PANEL_APPLET(fish), GTK_WIDGET(fish));
 }
 
 static void fish_applet_class_init(FishAppletClass* klass)
 {
-	MatePanelAppletClass* applet_class = (MatePanelAppletClass*) klass;
+	UkuiPanelAppletClass* applet_class = (UkuiPanelAppletClass*) klass;
 	GObjectClass *gobject_class        = (GObjectClass *) klass;
 
 	parent_class = g_type_class_peek_parent(klass);
@@ -1903,7 +1903,7 @@ static GType fish_applet_get_type(void)
 	if (!type)
 	{
 		static const GTypeInfo info = {
-			sizeof(MatePanelAppletClass),
+			sizeof(UkuiPanelAppletClass),
 			NULL, NULL,
 			(GClassInitFunc) fish_applet_class_init,
 			NULL, NULL,
@@ -1920,7 +1920,7 @@ static GType fish_applet_get_type(void)
 }
 
 #ifdef FISH_INPROCESS
-	MATE_PANEL_APPLET_IN_PROCESS_FACTORY("FishAppletFactory", fish_applet_get_type(), "That-stupid-fish", fishy_factory, NULL)
+	UKUI_PANEL_APPLET_IN_PROCESS_FACTORY("FishAppletFactory", fish_applet_get_type(), "That-stupid-fish", fishy_factory, NULL)
 #else
-	MATE_PANEL_APPLET_OUT_PROCESS_FACTORY("FishAppletFactory", fish_applet_get_type(), "That-stupid-fish", fishy_factory, NULL)
+	UKUI_PANEL_APPLET_OUT_PROCESS_FACTORY("FishAppletFactory", fish_applet_get_type(), "That-stupid-fish", fishy_factory, NULL)
 #endif

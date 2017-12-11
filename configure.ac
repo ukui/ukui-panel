@@ -1,11 +1,11 @@
-AC_INIT([mate-panel], [1.19.3], [https://github.com/mate-desktop/mate-panel/issues],
-    [mate-panel], [http://www.mate-desktop.org])
+AC_INIT([ukui-panel], [1.19.3], [https://github.com/ukui-desktop/ukui-panel/issues],
+    [ukui-panel], [http://www.ukui-desktop.org])
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-xz tar-ustar -Wno-portability check-news])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 AC_CONFIG_MACRO_DIR([m4])
-MATE_COMMON_INIT
+UKUI_COMMON_INIT
 
 # Before making a release, the LT_VERSION string should be modified.
 # The string is of the form C:R:A.
@@ -15,11 +15,11 @@ MATE_COMMON_INIT
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
 
-LIB_MATE_PANEL_APPLET_LT_VERSION=1:1:0
-AC_SUBST(LIB_MATE_PANEL_APPLET_LT_VERSION)
+LIB_UKUI_PANEL_APPLET_LT_VERSION=1:1:0
+AC_SUBST(LIB_UKUI_PANEL_APPLET_LT_VERSION)
 
 AM_MAINTAINER_MODE
-MATE_MAINTAINER_MODE_DEFINES
+UKUI_MAINTAINER_MODE_DEFINES
 
 IT_PROG_INTLTOOL([0.50.1])
 
@@ -36,14 +36,14 @@ AC_DEFINE([GLIB_VERSION_MIN_REQUIRED], [GLIB_VERSION_2_36],
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
 AC_PATH_PROG([GDBUS_CODEGEN], [gdbus-codegen])
 
-MATE_COMPILE_WARNINGS(maximum)
+UKUI_COMPILE_WARNINGS(maximum)
 
 # Check for introspection
 GOBJECT_INTROSPECTION_CHECK([0.6.7])
 
 m4_pattern_allow([AM_V_GEN])dnl Make autoconf not complain about the rule below
-PANEL_INTLTOOL_MATE_PANEL_APPLET_RULE='%.mate-panel-applet: %.mate-panel-applet.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; $(AM_V_GEN) LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< [$]@'
-AC_SUBST([PANEL_INTLTOOL_MATE_PANEL_APPLET_RULE])
+PANEL_INTLTOOL_UKUI_PANEL_APPLET_RULE='%.ukui-panel-applet: %.ukui-panel-applet.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; $(AM_V_GEN) LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< [$]@'
+AC_SUBST([PANEL_INTLTOOL_UKUI_PANEL_APPLET_RULE])
 
 AC_ARG_ENABLE(deprecation_flags,
               [AC_HELP_STRING([--enable-deprecation-flags],
@@ -57,11 +57,11 @@ fi
 
 LT_LIB_M
 
-LIBMATE_DESKTOP_REQUIRED=1.17.0
+LIBUKUI_DESKTOP_REQUIRED=1.17.0
 GDK_PIXBUF_REQUIRED=2.7.1
 PANGO_REQUIRED=1.15.4
 GLIB_REQUIRED=2.36
-LIBMATE_MENU_REQUIRED=1.10.0
+LIBUKUI_MENU_REQUIRED=1.10.0
 CAIRO_REQUIRED=1.0.0
 DBUS_GLIB_REQUIRED=0.80
 DCONF_REQUIRED=0.13.4
@@ -75,25 +75,25 @@ dnl pkg-config dependency checks
 PKG_CHECK_MODULES(EGG_SMCLIENT, ice sm gtk+-3.0)
 
 PKG_CHECK_MODULES(GMODULE, gmodule-2.0,[GMODULE_ADD="gmodule-2.0"],[GMODULE_ADD=""])
-PKG_CHECK_MODULES(PANEL, $GMODULE_ADD gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED pango >= $PANGO_REQUIRED gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED gio-unix-2.0 >= $GLIB_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED gio-2.0 >= $GLIB_REQUIRED libmate-menu >= $LIBMATE_MENU_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED)
+PKG_CHECK_MODULES(PANEL, $GMODULE_ADD gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED pango >= $PANGO_REQUIRED gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED gio-unix-2.0 >= $GLIB_REQUIRED ukui-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED gio-2.0 >= $GLIB_REQUIRED libukui-menu >= $LIBUKUI_MENU_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED)
 AC_SUBST(PANEL_CFLAGS)
 AC_SUBST(PANEL_LIBS)
 
 PKG_CHECK_MODULES(DCONF, dconf >= $DCONF_REQUIRED)
 
-PKG_CHECK_MODULES(LIBMATE_PANEL_APPLET, gtk+-3.0 >= $GTK_REQUIRED gio-2.0 >= $GLIB_REQUIRED gio-unix-2.0 >= $GLIB_REQUIRED)
-AC_SUBST(LIBMATE_PANEL_APPLET_CFLAGS)
-AC_SUBST(LIBMATE_PANEL_APPLET_LIBS)
+PKG_CHECK_MODULES(LIBUKUI_PANEL_APPLET, gtk+-3.0 >= $GTK_REQUIRED gio-2.0 >= $GLIB_REQUIRED gio-unix-2.0 >= $GLIB_REQUIRED)
+AC_SUBST(LIBUKUI_PANEL_APPLET_CFLAGS)
+AC_SUBST(LIBUKUI_PANEL_APPLET_LIBS)
 
-PKG_CHECK_MODULES(FISH, gtk+-3.0 >= $GTK_REQUIRED cairo >= $CAIRO_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED)
+PKG_CHECK_MODULES(FISH, gtk+-3.0 >= $GTK_REQUIRED cairo >= $CAIRO_REQUIRED ukui-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED)
 AC_SUBST(FISH_CFLAGS)
 AC_SUBST(FISH_LIBS)
 
-PKG_CHECK_MODULES(NOTIFICATION_AREA, gtk+-3.0 >= $GTK_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED)
+PKG_CHECK_MODULES(NOTIFICATION_AREA, gtk+-3.0 >= $GTK_REQUIRED ukui-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED)
 AC_SUBST(NOTIFICATION_AREA_CFLAGS)
 AC_SUBST(NOTIFICATION_AREA_LIBS)
 
-PKG_CHECK_MODULES(WNCKLET, gtk+-3.0 >= $GTK_REQUIRED libwnck-3.0 >= $LIBWNCK_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED)
+PKG_CHECK_MODULES(WNCKLET, gtk+-3.0 >= $GTK_REQUIRED libwnck-3.0 >= $LIBWNCK_REQUIRED ukui-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED)
 AC_SUBST(WNCKLET_CFLAGS)
 AC_SUBST(WNCKLET_LIBS)
 
@@ -104,7 +104,7 @@ PKG_CHECK_MODULES(TZ, gio-2.0 >= $GLIB_REQUIRED)
 AC_SUBST(TZ_CFLAGS)
 AC_SUBST(TZ_LIBS)
 
-PKG_CHECK_MODULES(CLOCK, pango >= $PANGO_REQUIRED gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED gio-2.0 >= $GLIB_REQUIRED librsvg-2.0 >= $LIBRSVG_REQUIRED dbus-glib-1 mateweather >= $WEATHER_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED)
+PKG_CHECK_MODULES(CLOCK, pango >= $PANGO_REQUIRED gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED gio-2.0 >= $GLIB_REQUIRED librsvg-2.0 >= $LIBRSVG_REQUIRED dbus-glib-1 ukuiweather >= $WEATHER_REQUIRED ukui-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED)
 AC_SUBST(CLOCK_CFLAGS)
 AC_SUBST(CLOCK_LIBS)
 
@@ -206,15 +206,15 @@ if test "x$have_randr" = "xyes"; then
 fi
 
 dnl Modules dir
-AC_SUBST([modulesdir],"\$(libdir)/mate-panel/modules")
+AC_SUBST([modulesdir],"\$(libdir)/ukui-panel/modules")
 
 dnl Applets dir
-AC_SUBST([appletsdir],"\$(datadir)/mate-panel/applets")
+AC_SUBST([appletsdir],"\$(datadir)/ukui-panel/applets")
 
 
 dnl  Language Support
 
-GETTEXT_PACKAGE=mate-panel
+GETTEXT_PACKAGE=ukui-panel
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Define the gettext package to be used])
 AC_SUBST(GETTEXT_PACKAGE)
 
@@ -257,10 +257,10 @@ AC_SUBST(REBUILD)
 AC_OUTPUT([
 Makefile
 data/Makefile
-data/org.mate.panel.gschema.xml
-data/org.mate.panel.menubar.gschema.xml
-data/org.mate.panel.object.gschema.xml
-data/org.mate.panel.toplevel.gschema.xml
+data/org.ukui.panel.gschema.xml
+data/org.ukui.panel.menubar.gschema.xml
+data/org.ukui.panel.object.gschema.xml
+data/org.ukui.panel.toplevel.gschema.xml
 icons/Makefile
 icons/16x16/Makefile
 icons/22x22/Makefile
@@ -268,34 +268,34 @@ icons/24x24/Makefile
 icons/32x32/Makefile
 icons/48x48/Makefile
 icons/scalable/Makefile
-mate-panel/Makefile
-mate-panel/libegg/Makefile
-mate-panel/libmate-panel-applet-private/Makefile
-mate-panel/libpanel-util/Makefile
-mate-panel/mate-panel.desktop.in
-libmate-panel-applet/libmatepanelapplet-4.0.pc
-libmate-panel-applet/libmatepanelapplet-4.0-uninstalled.pc
-libmate-panel-applet/Makefile
+ukui-panel/Makefile
+ukui-panel/libegg/Makefile
+ukui-panel/libukui-panel-applet-private/Makefile
+ukui-panel/libpanel-util/Makefile
+ukui-panel/ukui-panel.desktop.in
+libukui-panel-applet/libukuipanelapplet-4.0.pc
+libukui-panel-applet/libukuipanelapplet-4.0-uninstalled.pc
+libukui-panel-applet/Makefile
 po/Makefile.in
 applets/Makefile
 applets/clock/Makefile
-applets/clock/org.mate.panel.applet.clock.gschema.xml
+applets/clock/org.ukui.panel.applet.clock.gschema.xml
 applets/clock/pixmaps/Makefile
 applets/fish/Makefile
-applets/fish/org.mate.panel.applet.fish.gschema.xml
+applets/fish/org.ukui.panel.applet.fish.gschema.xml
 applets/notification_area/Makefile
 applets/notification_area/libstatus-notifier-watcher/Makefile
 applets/notification_area/status-notifier/Makefile
 applets/notification_area/system-tray/Makefile
 applets/wncklet/Makefile
-applets/wncklet/org.mate.panel.applet.window-list.gschema.xml
-applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml
+applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml
+applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml
 doc/Makefile
 doc/reference/Makefile
-doc/reference/mate-panel-applet/Makefile
+doc/reference/ukui-panel-applet/Makefile
 help/Makefile
-help/mate-clock/Makefile
-help/mate-fish/Makefile
+help/ukui-clock/Makefile
+help/ukui-fish/Makefile
 man/Makefile
 ])
 
@@ -314,8 +314,8 @@ dnl - Show summary
 dnl ---------------------------------------------------------------------------
 
 echo "
-              mate-panel $VERSION
-              `echo mate-panel $VERSION | sed "s/./=/g"`
+              ukui-panel $VERSION
+              `echo ukui-panel $VERSION | sed "s/./=/g"`
 
         prefix:                        ${prefix}
         exec_prefix:                   ${exec_prefix}

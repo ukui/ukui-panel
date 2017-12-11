@@ -373,7 +373,7 @@ sn_dbus_menu_constructed (GObject *object)
   /* Set menu and it's toplevel window to follow panel theme */
   context = gtk_widget_get_style_context (GTK_WIDGET(toplevel));
   gtk_style_context_add_class(context,"gnome-panel-menu-bar");
-  gtk_style_context_add_class(context,"mate-panel-menu-bar");
+  gtk_style_context_add_class(context,"ukui-panel-menu-bar");
 
   menu->name_id = g_bus_watch_name (G_BUS_TYPE_SESSION, menu->bus_name,
                                     G_BUS_NAME_WATCHER_FLAGS_NONE,

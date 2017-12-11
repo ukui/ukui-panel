@@ -6,12 +6,12 @@
 # Juanita Nell <homeqj@vodamail.co.za>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: MATE Desktop Environment\n"
+"Project-Id-Version: UKUI Desktop Environment\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-26 11:42+0300\n"
 "PO-Revision-Date: 2017-09-19 11:04+0000\n"
 "Last-Translator: monsta <monsta@inbox.ru>\n"
-"Language-Team: Afrikaans (http://www.transifex.com/mate/MATE/language/af/)\n"
+"Language-Team: Afrikaans (http://www.transifex.com/ukui/UKUI/language/af/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -167,10 +167,10 @@ msgstr "_Voorkeure"
 #: ../applets/notification_area/main.c:176
 #: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-list.c:187
 #: ../applets/wncklet/window-menu.c:100
-#: ../applets/wncklet/workspace-switcher.c:344 ../mate-panel/drawer.c:545
-#: ../mate-panel/panel-action-button.c:730
-#: ../mate-panel/panel-context-menu.c:265 ../mate-panel/panel-menu-bar.c:359
-#: ../mate-panel/panel-menu-button.c:666
+#: ../applets/wncklet/workspace-switcher.c:344 ../ukui-panel/drawer.c:545
+#: ../ukui-panel/panel-action-button.c:730
+#: ../ukui-panel/panel-context-menu.c:265 ../ukui-panel/panel-menu-bar.c:359
+#: ../ukui-panel/panel-menu-button.c:666
 msgid "_Help"
 msgstr "_Hulp"
 
@@ -211,7 +211,7 @@ msgid "City Time Zone"
 msgstr "Stad se tydsone"
 
 #: ../applets/clock/clock.c:3280
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:3
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:3
 msgid "Clock"
 msgstr "Horlosie"
 
@@ -224,7 +224,7 @@ msgstr "Die Horlosie wys die huidige tyd en datum"
 #: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:562
 #: ../applets/wncklet/window-menu.c:90
 #: ../applets/wncklet/workspace-switcher.c:604
-#: ../mate-panel/panel-context-menu.c:121
+#: ../ukui-panel/panel-context-menu.c:121
 msgid "translator-credits"
 msgstr "Zuza Sagtewarestigting (http://translate.org.za)\nFriedel Wolff"
 
@@ -329,7 +329,7 @@ msgid "Show _temperature"
 msgstr "Wys _temperatuur"
 
 #: ../applets/clock/clock.ui.h:26 ../applets/fish/fish.ui.h:2
-#: ../mate-panel/panel-properties-dialog.ui.h:11
+#: ../ukui-panel/panel-properties-dialog.ui.h:11
 msgid "General"
 msgstr "Algemeen"
 
@@ -411,7 +411,7 @@ msgid "%s, %s"
 msgstr "%s, %s"
 
 #. FMQ: it's broken to read from another module's translations; add some API
-#. to libmateweather.
+#. to libukuiweather.
 #: ../applets/clock/clock-location-tile.c:618
 #: ../applets/clock/clock-location-tile.c:627
 msgid "Unknown"
@@ -430,7 +430,7 @@ msgstr "Sonop: %s / Sononder: %s"
 
 #: ../applets/clock/clock-utils.c:95 ../applets/fish/fish.c:168
 #: ../applets/notification_area/main.c:121 ../applets/wncklet/wncklet.c:71
-#: ../mate-panel/libpanel-util/panel-show.c:234
+#: ../ukui-panel/libpanel-util/panel-show.c:234
 #, c-format
 msgid "Could not display help document '%s'"
 msgstr "Kon nie hulpdokument '%s' vertoon nie"
@@ -440,11 +440,11 @@ msgstr "Kon nie hulpdokument '%s' vertoon nie"
 msgid "Error displaying help document"
 msgstr "Fout met vertoon van hulpdokument"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:1
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:1
 msgid "Hour format"
 msgstr "Uurformaat"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:2
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:2
 msgid ""
 "This key specifies the hour format used by the clock applet. Possible values"
 " are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom\". If set"
@@ -456,107 +456,107 @@ msgid ""
 " the custom_format key."
 msgstr "Hierdie sleutel spesifiseer die uurformaat van die horlosie-miniprogram. Moontlike waardes is \"12-hour\", \"24-hour\", \"internet\", \"unix\" en \"custom\". Indien op \"internet\" gestel, sal die horlosie internettyd vertoon. Die internettydstelsel verdeel die dag in 1000 \".slae\". Daar is geen tydsones in hierdie stelsel nie, dus is die tyd wêreldwyd dieselfde. Indien op \"unix\" gestel, sal die horlosie die tyd in sekondes sedert Epog, d.w.s. 1970-01-01, vertoon. Indien op \"custom\" gestel, sal die horlosie die tyd vertoon volgens die formaat wat in die custom_format-sleutel gespesifiseer is."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:3
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:3
 msgid "Custom format of the clock"
 msgstr "Pasgemaakte formaat van die horlosie"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:4
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:4
 msgid ""
 "This key specifies the format used by the clock applet when the format key "
 "is set to \"custom\". You can use conversion specifiers understood by "
 "strftime() to obtain a specific format. See the strftime() manual for more "
 "information."
-msgstr "Hierdie sleutel spesifiseer die formaat wat deur die horlosie-miniprogram gebruik word wanneer die formateer-sleutel na \"custom\" gestel is. Jy kan omskakelingsmerkers spesifiseer wat deur strftime() geïnterpreteer kan word om 'n spesifieke formaat te bekom. Seen die handleiding vir strftime() vir meer inligting."
+msgstr "Hierdie sleutel spesifiseer die formaat wat deur die horlosie-miniprogram gebruik word wanneer die forukuier-sleutel na \"custom\" gestel is. Jy kan omskakelingsmerkers spesifiseer wat deur strftime() geïnterpreteer kan word om 'n spesifieke formaat te bekom. Seen die handleiding vir strftime() vir meer inligting."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:5
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:5
 msgid "Show time with seconds"
 msgstr "Wys die tyd saam met die sekondes"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:6
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:6
 msgid "If true, display seconds in time."
 msgstr "Indien as waar gemerk, vertoon die sekondes in die tyd."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:7
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:7
 msgid "Show date in clock"
 msgstr "Wys die datum in die horlosie"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:8
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Indien as waar gemerk, vertoon die datum in die horlosie saam met die tyd."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:9
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:9
 msgid "Show date in tooltip"
 msgstr "Wys die datum in die wyserwenk"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:10
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:10
 msgid "If true, show date in a tooltip when the pointer is over the clock."
 msgstr "Indien as waar gemerk, wys die datum in 'n wyserwenk wanneer die wyser oor die horlosie is."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:11
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:11
 msgid "Show weather in clock"
 msgstr "Wys die weer in die horlosie"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:12
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:12
 msgid "If true, display a weather icon."
 msgstr "Indien as waar gemerk, vertoon 'n weerikoon."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:13
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:13
 msgid "Show temperature in clock"
 msgstr "Wys die temperatuur in die horlosie"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:14
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:14
 msgid "If true, show the temperature next to the weather icon."
 msgstr "Indien as waar gemerk, wys die temperatuur langs die weerikoon."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:15
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:15
 msgid "Show week numbers in calendar"
 msgstr "Vertoon weeknommmers in kalender"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:16
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:16
 msgid "If true, show week numbers in the calendar."
 msgstr "Indien as waar gemerk, wys weeknommers in die kalender."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:17
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:17
 msgid "Expand list of locations"
 msgstr "Vou liggingslys oop"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:18
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:18
 msgid "If true, expand the list of locations in the calendar window."
 msgstr "Indien as waar gemerk, vou die liggingslys oop in die kalendervenster."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:19
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:19
 msgid "List of locations"
 msgstr "Lys van liggings"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:20
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:20
 msgid "A list of locations to display in the calendar window."
 msgstr "'n Lys van liggings om in die kalendervenster te wys."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:21
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:21
 msgid "Temperature unit"
 msgstr "Temperatuur-eenheid"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:22
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:22
 msgid "The unit to use when showing temperatures."
 msgstr "Die eenheid om te gebruik om temperature te wys."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:23
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:23
 msgid "Speed unit"
 msgstr "Spoedeenheid"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:24
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:24
 msgid "The unit to use when showing wind speed."
 msgstr "Die eenheid om te gebruik om windspoed te wys."
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:1
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:1
 msgid "Clock Applet Factory"
 msgstr ""
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:2
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:2
 msgid "Factory for clock applet"
 msgstr ""
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:4
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:4
 msgid "Get the current time and date"
 msgstr ""
 
@@ -592,7 +592,7 @@ msgid "(with minor help from George)"
 msgstr "(met 'n klein bietjie hulp van George)"
 
 #: ../applets/fish/fish.c:569
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:3
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:3
 msgid "Fish"
 msgstr "Vis"
 
@@ -672,7 +672,7 @@ msgstr "_Bevel om te loop wanneer gekliek word:"
 msgid "Animation"
 msgstr "Animasie"
 
-#: ../applets/fish/fish.ui.h:6 ../mate-panel/panel-properties-dialog.ui.h:14
+#: ../applets/fish/fish.ui.h:6 ../ukui-panel/panel-properties-dialog.ui.h:14
 msgid "    "
 msgstr "    "
 
@@ -704,77 +704,77 @@ msgstr "sekondes"
 msgid "_Rotate on vertical panels"
 msgstr "_Roteer op vertikale panele"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:1
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:1
 msgid "The fish's name"
 msgstr "Die vis se naam"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:2
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:2
 msgid ""
 "A fish without a name is a pretty dull fish. Bring your fish to life by "
 "naming him."
 msgstr "'n Vis sonder 'n naam is 'n redelike bleeksiel. Blaas lewe in jou vis deur hom 'n naam te gee."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:3
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:3
 msgid "The fish's animation pixmap"
 msgstr "Die vis se animasie-pixelkaart"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:4
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:4
 msgid ""
 "This key specifies the filename of the pixmap which will be used for the "
 "animation displayed in the fish applet relative to the pixmap directory."
 msgstr "Hierdie sleutel spesifiseer die lêernaam, relatief tot die pixelkaart-gids, van die pixelkaart wat gebruik sal word vir die animasie wat in die vis-miniprogram vertoon word."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:5
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:5
 msgid "Command to execute on click"
 msgstr "Bevel om te loop wanneer gekliek word"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:6
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:6
 msgid ""
 "This key specifies the command that will be tried to execute when the fish "
 "is clicked."
 msgstr "Hierdie sleutel spesifiseer die bevel wat probeer sal word om uit te voer wanneer die vis gekliek word."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:7
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:7
 msgid "Frames in fish's animation"
 msgstr "Rame in vis se animasie"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:8
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:8
 msgid ""
 "This key specifies the number of frames that will be displayed in the fish's"
 " animation."
 msgstr "Hierdie sleutel spesifiseer die aantal rame wat in die vis se animasie vertoon sal word."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:9
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:9
 msgid "Pause per frame"
 msgstr "Pouse per raam"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:10
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:10
 msgid "This key specifies the number of seconds each frame will be displayed."
 msgstr "Hierdie sleutel spesifiseer hoe lank elke raam vertoon sal word in sekondes."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:11
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:11
 msgid "Rotate on vertical panels"
 msgstr "Roteer op vertikale panele"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:12
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:12
 msgid ""
 "If true, the fish's animation will be displayed rotated on vertical panels."
 msgstr "Indien as waar gemerk, sal die vis se animasie roterend op vertikale panele vertoon word."
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:1
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:1
 msgid "Wanda Factory"
 msgstr ""
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:2
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:2
 msgid "From Whence That Stupid Fish Came"
 msgstr ""
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:4
-msgid "Display a swimming fish or another animated creature"
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:4
+msgid "Display a swimming fish or another aniukuid creature"
 msgstr ""
 
 #: ../applets/notification_area/main.c:164
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:3
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:3
 msgid "Notification Area"
 msgstr "Meldingsarea"
 
@@ -782,130 +782,130 @@ msgstr "Meldingsarea"
 msgid "Panel Notification Area"
 msgstr "Paneelmeldingsarea"
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:1
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:1
 msgid "Notification Area Factory"
 msgstr ""
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:2
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:2
 msgid "Factory for notification area"
 msgstr ""
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:4
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:4
 msgid "Area where notification icons appear"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:1
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:1
 msgid "Show windows from all workspaces"
 msgstr "Vertoon vensters van alle werkruimtes"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:2
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:2
 msgid ""
 "If true, the window list will show windows from all workspaces. Otherwise it"
 " will only display windows from the current workspace."
 msgstr "Indien as waar gemerk, sal die vensterlys alle vensters van alle werkruimtes vertoon. Andersins word slegs vensters van die huidige werkruimte vertoon."
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:3
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:3
 msgid "When to group windows"
 msgstr "Wanneer om vensters te groepeer"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:4
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:4
 msgid ""
 "Decides when to group windows from the same application on the window list. "
 "Possible values are \"never\", \"auto\" and \"always\"."
 msgstr "Besluit wanneer om vensters van dieselfde toepassing in die vensterlys te groepeer. Moontlike waardes is \"never\", \"auto\" en \"always\"."
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:5
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:5
 msgid "Move windows to current workspace when unminimized"
 msgstr "Skuif vensters na huidige werkruimte wanneer hulle onverklein word"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:6
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:6
 msgid ""
 "If true, then when unminimizing a window, move it to the current workspace. "
 "Otherwise, switch to the workspace of the window."
 msgstr "Indien as waar gemerk, word 'n venster onverklein word, word dit na die huidige werkruimte geskuif. Andersins word die venster se werkruimte gebruik."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:1
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:1
 msgid "Display workspace names"
 msgstr "Vertoon alle werkruimtename"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:2
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:2
 msgid ""
 "If true, the workspaces in the workspace switcher will display the names of "
 "the workspaces. Otherwise they will display the windows on the workspace. "
 "This setting only works when the window manager is Marco."
 msgstr "Indien as waar gemerk, sal die werkruimtes in die werkruimte-wisselaar die name van die werkruimtes vertoon. Andersins sal die vensters op die werkruimte vertoon word. Hierdie instelling werk slegs as Marco as vensterbestuurder gebruik word."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:3
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:3
 msgid "Display all workspaces"
 msgstr "Vertoon alle werkruimtes"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:4
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:4
 msgid ""
 "If true, the workspace switcher will show all workspaces. Otherwise it will "
 "only show the current workspace."
 msgstr "Indien as waar gemerk, sal die werkruimte-wisselaar alle werkruimtes vertoon. Andersins, sal slegs die huidige werkruimte vertoon word."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:5
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:5
 msgid "Rows in workspace switcher"
 msgstr "Rye in werkruimte-skakelaar"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:6
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:6
 msgid ""
 "This key specifies how many rows (for horizontal layout) or columns (for "
 "vertical layout) the workspace switcher shows the workspaces in. This key is"
 " only relevant if the display_all_workspaces key is true."
 msgstr "Hierdie sleutel spesifiseer hoeveel rye (vir horisontale uitleg) of kolomme (vir vertikale uitleg) die werkruimte-wisselaar gebruik om die werkruimtes te vertoon. Hierdie sleutel is slegs relevant as die display_all_workspaces-sleutel as waar gemerk is."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:7
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:7
 msgid "Wrap around on scroll"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:8
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:8
 msgid ""
 "If true, the workspace switcher will allow wrap-around, which means "
 "switching from the first to the last workspace and vice versa via scrolling."
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:1
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:1
 msgid "Window Navigation Applet Factory"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:2
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:2
 msgid "Factory for the window navigation related applets"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:3
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:3
 #: ../applets/wncklet/window-menu.c:83 ../applets/wncklet/window-menu.c:255
 msgid "Window Selector"
 msgstr "Vensterselekteerder"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:4
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:4
 msgid "Switch between open windows using a menu"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:5
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:5
 #: ../applets/wncklet/workspace-switcher.c:597
 msgid "Workspace Switcher"
 msgstr "Werkruimtewisselaar"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:6
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:6
 msgid "Switch between workspaces"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:7
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:7
 #: ../applets/wncklet/window-list.c:555
 msgid "Window List"
 msgstr "Vensterlys"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:8
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:8
 msgid "Switch between open windows using buttons"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:9
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:9
 msgid "Show Desktop"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:10
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:10
 msgid "Hide application windows and show the desktop"
 msgstr ""
 
@@ -1057,432 +1057,432 @@ msgstr ""
 msgid "Workspaces"
 msgstr "Werk spasie"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.gschema.xml.in.h:1
 msgid "Default panel layout"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.gschema.xml.in.h:2
 msgid "The default panels layout to use when panels are created or resetted."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.gschema.xml.in.h:3
 msgid "Enable program list in \"Run Application\" dialog"
 msgstr "Aktiveer programlys in \"Laat loop toepassing\"-dialoog"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.gschema.xml.in.h:4
 msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is made available. Whether or not the listing is expanded when the "
 "dialog is shown is controlled by the show_program_list key."
 msgstr "Indien as waar gemerk, word die lys van \"Bekende Toepassings\" in die \"Laat loop toepassing\"-dialoog beskikbaar gestel. Of die lys uitgevou word of nie wanneer die dialoog vertoon word, word beheer deur die show_program_list-sleutel."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.gschema.xml.in.h:5
 msgid "Expand program list in \"Run Application\" dialog"
 msgstr "Vou programlys uit in \"Laat loop toepassing\"-dialoog"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.gschema.xml.in.h:6
 msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is expanded when the dialog is opened. This key is only relevant if "
 "the enable_program_list key is true."
 msgstr "Indien as waar gemerk, word die lys van \"Bekende Toepassings\" in die \"Laat loop toepassing\"-dialoog uitgevou wanneer die dialoog geopen word. Hierdie sleutel is slegs relevant as die enable_program_list-sleutel as waar gemerk is."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.gschema.xml.in.h:7
 msgid "Enable autocompletion in \"Run Application\" dialog"
 msgstr "Gee toestemming vir automatiese voltooing in \"Run Application\" dialoog"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.gschema.xml.in.h:8
 msgid ""
 "If true, autocompletion in the \"Run Application\" dialog is made available."
 msgstr "As waar, word automatiese voltooing in die \"Run Application\" dialoog beskikbaar gestel."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.gschema.xml.in.h:9
 msgid "History for \"Run Application\" dialog"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.gschema.xml.in.h:10
 msgid ""
 "This is the list of commands used in \"Run Application\" dialog. The "
 "commands are sorted descendingly by recency (e.g., most recent command comes"
 " first)."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.gschema.xml.in.h:11
 msgid "Maximum history size for \"Run Application\" dialog"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.gschema.xml.in.h:12
 msgid ""
 "Controls the maximum size of the history of the \"Run Application\" dialog. "
 "A value of 0 will disable the history."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.gschema.xml.in.h:13
 msgid "Reverse the history of the \"Run Application\" dialog"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.gschema.xml.in.h:14
 msgid ""
 "Displays the history in reverse. Provides a consistent view for terminal "
 "users as the up key will select the most recent entry."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.gschema.xml.in.h:15
 msgid "Panel ID list"
 msgstr "Paneel-ID-lys"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.gschema.xml.in.h:16
 msgid ""
 "A list of panel IDs. Each ID identifies an individual toplevel panel. The "
 "settings for each of these panels are stored in /apps/panel/toplevels/$(id)."
 msgstr "'n Lys van paneel ID's. Elke ID identifiseer 'n individuele topvlak paneel. Die spesifikasies vir elk van die panele word gestoor in /apps/panel/toplevels/$(id)."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.gschema.xml.in.h:17
 msgid "Panel object ID list"
 msgstr "Paneelobjek-ID-lys"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.gschema.xml.in.h:18
 msgid ""
 "A list of panel object IDs. Each ID identifies an individual panel object "
 "(e.g. a launcher, action button or menu button/bar). The settings for each "
 "of these objects are stored in /apps/panel/objects/$(id)."
 msgstr "'n Lys van paneel voorwerp IDs. Elke ID identifiseer 'n individuele paneel voorwerp (bv. instaleerder, aksie knoppie of menu knoppie/lyn). Die spesifikasies vir elk van die voorwerpe is gestoor in /apps/panel/objects/$(id)."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.gschema.xml.in.h:19
 msgid "Enable tooltips"
 msgstr "Aktiveer wyserwenke"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.gschema.xml.in.h:20
 msgid "If true, tooltips are shown for objects in panels."
 msgstr "Indien as waar gemerk, word wyserwenke vir objekte in panele vertoon."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:21
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
 msgid "Enable animations"
 msgstr "Aktiveer animasies"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.gschema.xml.in.h:22
 msgid "Autoclose drawer"
 msgstr "Outosluit-laai"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.gschema.xml.in.h:23
 msgid ""
 "If true, a drawer will automatically be closed when the user clicks a "
 "launcher in it."
 msgstr "Indien as waar gemerk, sal 'n laai outomaties gesluit word wanneer die gebruiker 'n laaier daarin kliek."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.gschema.xml.in.h:24
 msgid "Confirm panel removal"
 msgstr "Bevestig paneelverwydering"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.gschema.xml.in.h:25
 msgid ""
 "If true, a dialog is shown asking for confirmation if the user wants to "
 "remove a panel."
 msgstr "Indien as waar gemerk, word 'n dialoog vertoon wat vra vir bevestiging dat die gebruiker 'n paneel wil verwyder."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.gschema.xml.in.h:26
 msgid "Highlight launchers on mouseover"
 msgstr "Verlig laaiers by muishang"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.gschema.xml.in.h:27
 msgid ""
 "If true, a launcher is highlighted when the user moves the pointer over it."
 msgstr "Indien as waar gemerk, sal 'n laaier verlig word wanneer die gebruiker die wyser daaroor beweeg."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.gschema.xml.in.h:28
 msgid "Complete panel lockdown"
 msgstr "Algehele paneelsluiting"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.gschema.xml.in.h:29
 msgid ""
 "If true, the panel will not allow any changes to the configuration of the "
 "panel. Individual applets may need to be locked down separately however. The"
 " panel must be restarted for this to take effect."
 msgstr "Indien as waar gemerk, sal die paneel nie enige wysigings aan die opstelling van die paneel toelaat nie. Dit mag egter nodig wees om individuele miniprogramme afsonderlik te sluit. Die paneel moet herbegin word sodat hierdie geaktiveer word."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.gschema.xml.in.h:30
 msgid "Applet IIDs to disable from loading"
 msgstr "Miniprogram-IID's wat gedeaktiveer moet word sodat dit nie laai nie"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.gschema.xml.in.h:31
 msgid ""
 "A list of applet IIDs that the panel will ignore. This way you can disable "
 "certain applets from loading or showing up in the menu. For example to "
-"disable the mini-commander applet add 'OAFIID:MATE_MiniCommanderApplet' to "
+"disable the mini-commander applet add 'OAFIID:UKUI_MiniCommanderApplet' to "
 "this list. The panel must be restarted for this to take effect."
-msgstr "'n Lys van miniprogram-IID's wat die paneel sal ignoreer. Op dié manier kan jy sekere miniprogramme deaktiveer sodat dit nie laai of in die kieslys vertoon word nie. Om die minibevelvoerder-miniprogram byvoorbeeld te deaktiveer, voeg OAFIID:MATE_MiniCommanderApplet' by hierdie lys. Die paneel moet herbegin word sodat hierdie geaktiveer word."
+msgstr "'n Lys van miniprogram-IID's wat die paneel sal ignoreer. Op dié manier kan jy sekere miniprogramme deaktiveer sodat dit nie laai of in die kieslys vertoon word nie. Om die minibevelvoerder-miniprogram byvoorbeeld te deaktiveer, voeg OAFIID:UKUI_MiniCommanderApplet' by hierdie lys. Die paneel moet herbegin word sodat hierdie geaktiveer word."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.gschema.xml.in.h:32
 msgid "Disable Force Quit"
 msgstr "Deaktiveer Geforseerde Sluiting"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.gschema.xml.in.h:33
 msgid ""
 "If true, the panel will not allow a user to force an application to quit by "
 "removing access to the force quit button."
 msgstr "Indien as waar gemerk, sal die paneel nie 'n gebruiker toelaat om 'n toepassing te forseer om af te sluit nie, deur toegang tot die forseerafsluiting-knoppie te verwyder."
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:1
 msgid "Show applications menu"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:2
 msgid "If true, show applications item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:3
 msgid "Show places menu"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:4
 msgid "If true, show places item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:5
 msgid "Show desktop menu"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:6
 msgid "If true, show desktop item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:7
 msgid "Show icon"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:8
 msgid "If true, show icon in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:9
 msgid "Icon to show in menu bar"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:10
 msgid "Set the theme icon name to use in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:11
 msgid "Menu bar icon size"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:12
 msgid ""
 "Set the size of an icon used in menu bar. The panel must be restarted for "
 "this to take effect."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:13
 msgid "Menu items icon size"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:14
 msgid ""
 "Set the size of icons used in the menu. The panel must be restarted for this"
 " to take effect."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:15
 msgid "Threshold of menu items before submenu is created"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:16
 msgid ""
 "Maximum number of menu items (i.e. bookmarks) that are displayed without "
 "being put in a submenu."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:1
 msgid "Panel object type"
 msgstr "Paneelobjeksoort"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:2
 msgid "The type of this panel object."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:3
 msgid "Toplevel panel containing object"
 msgstr "Topvlakpaneel wat objek bevat"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:4
 msgid "The identifier of the toplevel panel which contains this object."
 msgstr "Die identifiseerder van die topvlakpaneel wat hierdie objek bevat."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:5
 msgid "Object's position on the panel"
 msgstr "Objek se posisie op die paneel"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:6
 msgid ""
 "The position of this panel object. The position is specified by the number "
 "of pixels from the left (or top if vertical) panel edge."
 msgstr "Die posisie van hierdie paneelobjek. Die posisie word gespesifiseer deur die aantal pixels van die linkerkantste (of boonste indien vertikaal) paneelrand."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:7
 msgid "Interpret position relative to bottom/right edge"
 msgstr "Interpreteer posisie relatief tot onderste/regterkantste rand"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:8
 msgid ""
 "If true, the position of the object is interpreted relative to the right (or"
 " bottom if vertical) edge of the panel."
 msgstr "Indien as waar gemerk, word die posisie van die objek geïnterpreteer relatief tot die regterkantse (of onderste indien vertikaal) kant van die paneel."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:9
 msgid "Lock the object to the panel"
 msgstr "Sluit die objek aan die paneel vas"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:10
 msgid ""
 "If true, the user may not move the applet without first unlocking the object"
 " using the \"Unlock\" menuitem."
 msgstr "Indien as waar gemerk, mag die gebruiker nie die miniprogram verskuif sonder om eers die objek met die \"Ontsluit\"-kieslysitem te ontsluit nie."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:11
 msgid "Applet IID"
 msgstr "Applet IID"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:12
 msgid ""
 "The implementation ID of the applet - e.g. "
 "\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
-"object_type key is \"external-applet\" (or the deprecated \"matecomponent-"
+"object_type key is \"external-applet\" (or the deprecated \"ukuicomponent-"
 "applet\")."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:13
 msgid "Panel attached to drawer"
 msgstr "Paneel aangeheg aan laai"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:14
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
 "relevant if the object_type key is \"drawer-object\"."
 msgstr "Die identifiseerder van die paneel wat aan hierdie laai vasgeheg is. Hierdie sleutel is slegs relevant as die object_type-sleutel \"drawer-object\" is."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:15
 msgid "Tooltip displayed for drawer or menu"
 msgstr "Wyserwenk vertoon vir laai of kieslys"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:16
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
 "only relevant if the object_type key is \"drawer-object\" or \"menu-"
 "object\"."
 msgstr "Die teks wat in 'n wyserwenk vir hierdie laai of hierdie kieslys vertoon moet word. Hierdie sleutel is slegs relevant as die object_type-sleutel \"drawer-object\" of \"menu-object\" is."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:17
 msgid "Use custom icon for object's button"
 msgstr "Gebruik pasgemaakte ikoon vir objek se knoppie"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:18
 msgid ""
 "If true, the custom_icon key is used as a custom icon for the button. If "
 "false, the custom_icon key is ignored. This key is only relevant if the "
 "object_type key is \"menu-object\" or \"drawer-object\"."
 msgstr "Indien as waar gemerk, word die custom_icon-sleutel gebruik as pasgemaakte ikoon vir die knoppie. Indien as vals gemerk, word die custom_icon-sleutel geïgnoreer. Hierdie sleutel is slegs relevant as die object_type-sleutel \"menu-object\" of \"drawer-object\" is."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:19
 msgid "Icon used for object's button"
 msgstr "Ikoon gebruik vir objek se knoppie"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:20
 msgid ""
 "The location of the image file used as the icon for the object's button. "
 "This key is only relevant if the object_type key is \"drawer-object\" or "
 "\"menu-object\" and the use_custom_icon key is true."
 msgstr "Die ligging van die beeldlêer wat as die ikoon vir die objek se knoppie gebruik word. Hierdie sleutel is slegs relevant as die object_type-sleutel \"drawer-object\" of \"menu-object\" is en die use_custom_icon-sleutel as waar gemerk is."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:21
 msgid "Use custom path for menu contents"
 msgstr "Gebruik pasgemaakte pad vir kieslysinhoud"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:22
 msgid ""
 "If true, the menu_path key is used as the path from which the menu contents "
 "should be constructed. If false, the menu_path key is ignored. This key is "
 "only relevant if the object_type key is \"menu-object\"."
 msgstr "Indien as waar gemerk, word die menu_path-sleutel gebruik as die pad van waar die kieslysinhoud opgebou moet word. Indien as vals gemerk, word die menu_path-sleutel geïgnoreer. Hierdie sleutel is slegs relevant as die object_type-sleutel \"menu-object\" is."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:23
 msgid "Menu content path"
 msgstr "Kieslysinhoudpad"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:24
 msgid ""
 "The path from which the menu contents is contructed. This key is only "
 "relevant if the use_menu_path key is true and the object_type key is \"menu-"
 "object\"."
 msgstr "Die pad van waar die kieslysinhoud opgebou is. Hierdie sleutel is slegs relevant as die use_menu_path-sleutel as waar gemerk is en die object_type-sleutel \"menu-object\" is."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:25
 msgid "Draw arrow in menu button"
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:26
 msgid ""
 "If true, an arrow is drawn over the menu button icon. If false, menu button "
 "has only the icon."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:27
 msgid "Launcher location"
 msgstr "Laaierligging"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:28
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
 "relevant if the object_type key is \"launcher-object\"."
 msgstr "Die ligging van die .desktop-lêer wat die laaier beskryf. Hierdie sleutel is slegs relevant as die object_type-sleutel \"launcher-object\" is."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:29
 msgid "Action button type"
 msgstr "Aksieknoppie-soort"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:30
 msgid ""
 "The action type this button represents. Possible values are \"lock\", "
 "\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
 "relevant if the object_type key is \"action-applet\"."
 msgstr "Die aksiesoort wat hierdie knoppie verteenwoordig. Moontlike waardes is \"lock\", \"logout\", \"run\", \"search\" en \"screenshot\". Hierdie sleutel is slegs relevant as die object_type-sleutel \"action-applet\" is."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:1
 msgid "Name to identify panel"
 msgstr "Naam om paneel te identifiseer"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:2
 msgid ""
 "This is a human readable name which you can use to identify a panel. Its "
 "main purpose is to serve as the panel's window title which is useful when "
 "navigating between panels."
 msgstr "Hierdie is 'n mensleesbare naam wat jy kan gebruik om 'n paneel mee te identifiseer. Die hoofdoel daarvan is om as die paneel se venstertitel te dien wat nuttig is wanneer daar tussen panele genavigeer word."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:3
 msgid "X screen where the panel is displayed"
 msgstr "X-skerm waar die paneel vertoon word"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:4
 msgid ""
 "With a multi-screen setup, you may have panels on each individual screen. "
 "This key identifies the current screen the panel is displayed on."
 msgstr "In 'n veelskermopstelling kan jy panele op elke individuele skerm hê. Hierdie sleutel identifiseer die huidige skerm waarop die paneel vertoon word."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:5
 msgid "Xinerama monitor where the panel is displayed"
 msgstr "Xinerama-monitor waar die paneel vertoon word"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
 msgid ""
 "In a Xinerama setup, you may have panels on each individual monitor. This "
 "key identifies the current monitor the panel is displayed on."
 msgstr "In 'n Xinerama-opstelling kan jy panele op elke individuele monitor hê. Hierdie sleutel identifiseer die huidige monitor waarop die paneel vertoon word."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
 msgid "Expand to occupy entire screen width"
 msgstr "Vou uit om hele skermwydte op te neem"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
 msgid ""
 "If true, the panel will occupy the entire screen width (height if this is a "
 "vertical panel). In this mode the panel can only be placed at a screen edge."
@@ -1490,11 +1490,11 @@ msgid ""
 "launchers and buttons on the panel."
 msgstr "Indien as waar gemerk, sal die paneel die hele skermwydte opneem (hoogte indien dit 'n vertikale paneel is). In hierdie modus kan die paneel slegs aan die rand van die skerm geplaas word. Indien as vals gemerk, sal die paneel net groot genoeg wees om die miniprogramme, laaiers en knoppies op die paneel te kan hou."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
 msgid "Panel orientation"
 msgstr "Paneeloriëntering"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
 msgid ""
 "The orientation of the panel. Possible values are \"top\", \"bottom\", "
 "\"left\", \"right\". In expanded mode the key specifies which screen edge "
@@ -1506,11 +1506,11 @@ msgid ""
 "panel."
 msgstr "Die oriëntering van die paneel. Moontlike waardes is \"top\", \"bottom\", \"left\", \"right\". In uitgevou-modus spesifiseer die sleutel aan watter skermkant die paneel is. In onuitgevou-modus is die verskil tussen \"top\" en \"bottom\" minder belangrik - beide dui aan dat hierdie 'n horisontale paneel is - maar dit gee nogtans 'n nuttige wenk oor hoe sommige paneelobjekte hulle moet gedra. Op 'n \"top\"-paneel sal die kieslysknoppie byvoorbeeld onder die paneel uitspring, maar op 'n \"bottom\"-paneel sal die kieslys bokant die paneel uitspring."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
 msgid "Panel size"
 msgstr "Paneelgrootte"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
 msgid ""
 "The height (width for a vertical panel) of the panel. The panel will "
 "determine at runtime a minimum size based on the font size and other "
@@ -1518,33 +1518,33 @@ msgid ""
 "(or width)."
 msgstr "Die hoogte (wydte vir 'n vertikale paneel) van die paneel. Die paneel sal tydens looptyd 'n minimum grootte bepaal gebaseer op die fontgrootte en ander aanwysers. Die maksimum grootte word vasgestel by een kwart van die skermhoogte (of -wydte)."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
 msgid "X co-ordinate of panel"
 msgstr "X-koördinaat van paneel"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
 msgid ""
 "The location of the panel along the x-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
 msgstr "Die ligging van die paneel op die x-as. Hierdie sleutel is slegs relevant in onuitgevou-modus. In uitgevou-modus word hierdie sleutel geïgnoreer en die paneel word aan die rand van die skerm geplaas, soos gespesifiseer deur die oriënteringsleutel."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
 msgid "Y co-ordinate of panel"
 msgstr "Y-koördinaat van paneel"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
 msgid ""
 "The location of the panel along the y-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
 msgstr "Die ligging van die paneel op die y-as. Hierdie sleutel is slegs relevant in onuitgevou-modus. In uitgevou-modus word hierdie sleutel geïgnoreer en die paneel word aan die rand van die skerm geplaas, soos gespesifiseer deur die oriënteringsleutel."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
 msgid "X co-ordinate of panel, starting from the right of the screen"
 msgstr "X ko-ordinate van die paneel, beginende regs van die skerm"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
 msgid ""
 "The location of the panel along the x-axis, starting from the right of the "
 "screen. If set to -1, the value is ignored and the value of the x key is "
@@ -1554,11 +1554,11 @@ msgid ""
 "the orientation key."
 msgstr "Die plasing van die paneel langs die x-axis, beginende regs van die skerm. As spesifikasie -1 is, word die waarde geignoreer en die waarde van die x sleutel word gebruik. As die waarde groter is as 0, dan word die waarde van die x sleutel geignoreer. Hierdie sleutel is slegs relevant in 'n nie-opgeblaasde status. In 'n opgeblaasde status word hierdie sleutel geignoreer en word die paneel geplaas teen die kant van die skerm soos gespesifiseer deur die orientasie sleutel."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
 msgid "Y co-ordinate of panel, starting from the bottom of the screen"
 msgstr "Y ko-ordinate van die paneel, beginende regs van die skerm"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
 msgid ""
 "The location of the panel along the y-axis, starting from the bottom of the "
 "screen. If set to -1, the value is ignored and the value of the y key is "
@@ -1568,11 +1568,11 @@ msgid ""
 "the orientation key."
 msgstr "Die plasing van die paneel langs die y-axis, beginende onder van die skerm. As spesifikasie -1 is, word die waarde geignoreer en die waarde van die y sleutel word gebruik. As die waarde groter is as 0, dan word die waarde van die y sleutel geignoreer. Hierdie sleutel is slegs relevant in 'n nie-opgeblaasde status. In 'n opgeblaasde status word hierdie sleutel geignoreer en word die paneel geplaas teen die kant van die skerm soos gespesifiseer deur die orientasie sleutel."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
 msgid "Center panel on x-axis"
 msgstr "Sentreer paneel op x-as"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
 msgid ""
 "If true, the x and x_right keys are ignored and the panel is placed at the "
 "center of the x-axis of the screen. If the panel is resized it will remain "
@@ -1580,11 +1580,11 @@ msgid ""
 "and x_right keys specify the location of the panel."
 msgstr "As waar is sal die x en x_regs sleutels geignoreer word en die paneel in die middel van die skerm, op die x-axis geplaas word. Die paneel sal daar bly ten spyte van groote verstelling - bv. die paneel sal groter word aan albei kante. As vals is sal die x en x_regs sleutel die plasing van die paneel spesifiseer."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
 msgid "Center panel on y-axis"
 msgstr "Sentreer paneel op y-as"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
 msgid ""
 "If true, the y and y_bottom keys are ignored and the panel is placed at the "
 "center of the y-axis of the screen. If the panel is resized it will remain "
@@ -1592,92 +1592,92 @@ msgid ""
 "and y_bottom keys specify the location of the panel."
 msgstr "As waar is sal die y en y_onder sleutels geignorer word en die paneel in die middel van die skerm op die y-axis geplaas word. Die paneel sal daar bly ten spyte van groote verstelling - bv. die paneel sal groter word aan albei kante. As vals is sal die y en y_onder sleulet die plasing van die paneel spesifiseer."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
 msgid "Automatically hide panel into corner"
 msgstr "Verberg paneel outomaties in hoek"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
 msgid ""
 "If true, the panel is automatically hidden into a corner of the screen when "
 "the pointer leaves the panel area. Moving the pointer to that corner again "
 "will cause the panel to re-appear."
 msgstr "Indien as waar gemerk, word die paneel outomaties in 'n hoek van die skerm verberg wanneer die wyser die paneelarea verlaat. Deur die wyser na daardie hoek te neem sal die paneel weer verskyn."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
 msgid ""
-"If true, hiding and un-hiding of this panel will be animated rather than "
+"If true, hiding and un-hiding of this panel will be aniukuid rather than "
 "happening instantly."
 msgstr "Indien as waar gemerk, sal die verberging en ontverberging van hierdie paneel geanimeer wees in plaas daarvan dat dit in 'n kits gebeur."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
 msgid "Enable hide buttons"
 msgstr "Aktiveer verbergknoppies"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
 msgid ""
 "If true, buttons will be placed on each side of the panel which may be used "
 "to move the panel to edge of the screen, leaving only a button showing."
 msgstr "Indien as waar gemerk, sal die knoppies aan elke kant van die paneel geplaas word wat gebruik kan word om die paneel na die kant van die skerm te verskuif, wat net 'n knoppie sal laat vertoon."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
 msgid "Enable arrows on hide buttons"
 msgstr "Aktiveer pyle op verbergknoppies"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
 msgid ""
 "If true, arrows will be placed on the hide buttons. This key is only "
 "relevant if the enable_buttons key is true."
 msgstr "Indien as waar gemerk, sal die pyle op die verbergknoppies geplaas word. Hierdie sleutel is slegs relevant as die enable_buttons-sleutel as waar gemerk is."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
 msgid "Panel autohide delay"
 msgstr "Paneeloutoverbergvertraging"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:34
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
 msgid ""
 "Specifies the number of milliseconds delay after the pointer leaves the "
 "panel area before the panel is automatically hidden. This key is only "
 "relevant if the auto_hide key is true."
 msgstr "Spesifiseer die aantal millisekondes vertraging nadat die wyser die paneelarea verlaat voordat die paneel outomaties verberg word. Hierdie sleutel is slegs relevant as die auto_hide-sleutel as waar gemerk is."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:35
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
 msgid "Panel autounhide delay"
 msgstr "Paneelouto-ontverbergvertraging"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:36
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
 msgid ""
 "Specifies the number of milliseconds delay after the pointer enters the "
 "panel area before the panel is automatically re-shown. This key is only "
 "relevant if the auto_hide key is true."
 msgstr "Spesifiseer die aantal millisekondes vertraging nadat die wyser die paneelarea betree voordat die paneel outomaties hervertoon word. Hierdie sleutel is slegs relevant as die auto_hide-sleutel as waar gemerk is."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:37
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
 msgid "Visible pixels when hidden"
 msgstr "Sigbare pixels wanneer verberg"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:38
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
 msgid ""
 "Specifies the number of pixels visible when the panel is automatically "
 "hidden into a corner. This key is only relevant if the auto_hide key is "
 "true."
 msgstr "Spesifiseer die aantal pixels sigbaar wanneer die paneel outomaties in 'n hoek verberg word. Hierdie sleutel is slegs relevant as die auto_hide-sleutel as waar gemerk is."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:39
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
 msgid "Animation speed"
 msgstr "Animasiespoed"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:40
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
 msgid ""
 "The speed in which panel animations should occur. Possible values are "
 "\"slow\", \"medium\" and \"fast\". This key is only relevant if the "
 "enable_animations key is true."
 msgstr "Die spoed waarteen die paneelanimasies moet plaasvind. Moontlike waardes is \"slow\", \"medium\" en \"fast\". Hierdie sleutel is slegs relevant as die enable_animations-sleutel as waar gemerk is."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:41
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
 msgid "Background type"
 msgstr "Agtergrondsoort"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:42
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
 msgid ""
 "Which type of background should be used for this panel. Possible values are "
 "\"none\" - the default GTK+ widget background will be used, \"color\" - the "
@@ -1685,126 +1685,126 @@ msgid ""
 "specified by the image key will be used as background."
 msgstr ""
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:43
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
 msgid "Background color"
 msgstr "Agtergrondkleur"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:44
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
 msgid "Specifies the background color for the panel in #RGB format."
 msgstr "Spesifiseer die agtergrondkleur vir die paneel in #RGB-formaat."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:45
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
 msgid "Background color opacity"
 msgstr "Agtergrondkleurondeursigtigheid"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:46
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
 msgid ""
 "Specifies the opacity of the background color format. If the color is not "
 "completely opaque (a value of less than 65535), the color will be composited"
 " onto the desktop background image."
 msgstr "Spesifiseer die ondeursigtigheid van die agtergrondkleurformaat. As die kleur nie heeltemal ondeursigtig is nie ('n waarde van minder as 65535) sal die kleur op die werksarea-agtergrondbeeld geplak word."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:47
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
 msgid "Background image"
 msgstr "Agtergrondbeeld"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:48
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
 msgid ""
 "Specifies the file to be used for the background image. If the image "
 "contains an alpha channel it will be composited onto the desktop background "
 "image."
 msgstr "Spesifiseer die lêer wat vir die agtergrondbeeld gebruik moet word. As die beeld 'n alfakanaal bevat, sal dit op die werkarea-agtergrondbeeld geplak word."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:49
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
 msgid "Fit image to panel"
 msgstr "Pas beeld by paneel"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:50
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
 msgid ""
 "If true, the image will be scaled (retaining the aspect ratio of the image) "
 "to the panel height (if horizontal)."
 msgstr "Indien as waar gemerk, sal die beeld tot die paneelhoogte geskaleer word (indien horisontaal) (die aspekratio van die beeld sal behoue bly)."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:51
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
 msgid "Stretch image to panel"
 msgstr "Rek beeld na paneel"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:52
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
 msgid ""
 "If true, the image will be scaled to the panel dimensions. The aspect ratio "
 "of the image will not be maintained."
 msgstr "Indien as waar gemerk, sal die beeld tot die paneeldimensie geskaleer word. Die aspekratio van die beeld sal nie behoue bly nie."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:53
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
 msgid "Rotate image on vertical panels"
 msgstr "Roteer beeld op vertikale panele"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:54
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
 msgid ""
 "If true, the background image will be rotated when the panel is oriented "
 "vertically."
 msgstr "Indien as waar gemerk, sal die agtergrondbeeld geroteer word wanneer die paneel vertikaal georiënteer word."
 
-#: ../mate-panel/libegg/eggdesktopfile.c:165
+#: ../ukui-panel/libegg/eggdesktopfile.c:165
 #, c-format
 msgid "File is not a valid .desktop file"
 msgstr "Lêer is nie 'n geldige .desktop-lêer nie"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:188
+#: ../ukui-panel/libegg/eggdesktopfile.c:188
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
 msgstr "Nieherkende \"desktop\"-lêerweergawe '%s'"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:957
+#: ../ukui-panel/libegg/eggdesktopfile.c:957
 #, c-format
 msgid "Starting %s"
 msgstr "Begin tans %s"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1098
+#: ../ukui-panel/libegg/eggdesktopfile.c:1098
 #, c-format
 msgid "Application does not accept documents on command line"
 msgstr "Toepassing aanvaar nie dokumente op die opdraglyn nie"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1166
+#: ../ukui-panel/libegg/eggdesktopfile.c:1166
 #, c-format
 msgid "Unrecognized launch option: %d"
 msgstr "Nieherkende lanseerkeuse: %d"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1365
+#: ../ukui-panel/libegg/eggdesktopfile.c:1365
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr "Kan nie verby dokument URIs kom vir 'n 'Type=Link' desktop inskrywing"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1386
+#: ../ukui-panel/libegg/eggdesktopfile.c:1386
 #, c-format
 msgid "Not a launchable item"
 msgstr "Nie 'n loopbare item nie"
 
-#: ../mate-panel/libegg/eggsmclient.c:226
+#: ../ukui-panel/libegg/eggsmclient.c:226
 msgid "Disable connection to session manager"
 msgstr "Deaktiveer konneksie na sessiebestuurder"
 
-#: ../mate-panel/libegg/eggsmclient.c:229
+#: ../ukui-panel/libegg/eggsmclient.c:229
 msgid "Specify file containing saved configuration"
 msgstr "Spesifiseer lêer wat gestoorde konfigurasie bevat"
 
-#: ../mate-panel/libegg/eggsmclient.c:229
+#: ../ukui-panel/libegg/eggsmclient.c:229
 msgid "FILE"
 msgstr "LÊER"
 
-#: ../mate-panel/libegg/eggsmclient.c:232
+#: ../ukui-panel/libegg/eggsmclient.c:232
 msgid "Specify session management ID"
 msgstr "Spesifiseer sessiebestuurs-ID"
 
-#: ../mate-panel/libegg/eggsmclient.c:232
+#: ../ukui-panel/libegg/eggsmclient.c:232
 msgid "ID"
 msgstr "ID"
 
-#: ../mate-panel/libegg/eggsmclient.c:253
+#: ../ukui-panel/libegg/eggsmclient.c:253
 msgid "Session management options:"
 msgstr "Sessiebestuurskeuses:"
 
-#: ../mate-panel/libegg/eggsmclient.c:254
+#: ../ukui-panel/libegg/eggsmclient.c:254
 msgid "Show session management options"
 msgstr "Wys keuses vir sessiebestuur"
 
@@ -1813,588 +1813,588 @@ msgstr "Wys keuses vir sessiebestuur"
 #. * the following bug gets fixed:
 #. * http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #. FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=165132
-#: ../mate-panel/libpanel-util/panel-error.c:76
-#: ../mate-panel/panel-applet-frame.c:827
-#: ../mate-panel/panel-applet-frame.c:1003
+#: ../ukui-panel/libpanel-util/panel-error.c:76
+#: ../ukui-panel/panel-applet-frame.c:827
+#: ../ukui-panel/panel-applet-frame.c:1003
 msgid "Error"
 msgstr "Fout"
 
-#: ../mate-panel/libpanel-util/panel-icon-chooser.c:381
+#: ../ukui-panel/libpanel-util/panel-icon-chooser.c:381
 msgid "Choose an icon"
 msgstr "Kies 'n ikoon"
 
-#: ../mate-panel/libpanel-util/panel-launch.c:45
+#: ../ukui-panel/libpanel-util/panel-launch.c:45
 #, c-format
 msgid "Could not launch '%s'"
 msgstr "Kon nie '%s' lanseer nie"
 
-#: ../mate-panel/libpanel-util/panel-launch.c:48 ../mate-panel/launcher.c:162
+#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:162
 msgid "Could not launch application"
 msgstr "Kon nie toepassing begin nie"
 
-#: ../mate-panel/libpanel-util/panel-show.c:44
+#: ../ukui-panel/libpanel-util/panel-show.c:44
 #, c-format
 msgid "Could not open location '%s'"
 msgstr "Kon nie ligging '%s' oopmaak nie"
 
-#: ../mate-panel/libpanel-util/panel-show.c:158
+#: ../ukui-panel/libpanel-util/panel-show.c:158
 msgid "No application to handle search folders is installed."
 msgstr "Geen program is beskikbaar om geinstaleerde leêrs te soek nie."
 
-#: ../mate-panel/applet.c:466
+#: ../ukui-panel/applet.c:466
 msgid "???"
 msgstr "???"
 
-#: ../mate-panel/applet.c:545 ../libmate-panel-applet/mate-panel-applet.c:139
+#: ../ukui-panel/applet.c:545 ../libukui-panel-applet/ukui-panel-applet.c:139
 msgid "_Remove From Panel"
 msgstr "_Verwyder van paneel"
 
-#: ../mate-panel/applet.c:556 ../libmate-panel-applet/mate-panel-applet.c:142
+#: ../ukui-panel/applet.c:556 ../libukui-panel-applet/ukui-panel-applet.c:142
 msgid "_Move"
 msgstr "_Skuif"
 
-#: ../mate-panel/applet.c:573 ../libmate-panel-applet/mate-panel-applet.c:148
+#: ../ukui-panel/applet.c:573 ../libukui-panel-applet/ukui-panel-applet.c:148
 msgid "Loc_k To Panel"
 msgstr "Sl_uit vas aan die paneel"
 
-#: ../mate-panel/applet.c:1384
+#: ../ukui-panel/applet.c:1384
 msgid "Cannot find an empty spot"
 msgstr "Kan nie oop spasie vind nie"
 
-#: ../mate-panel/drawer.c:346 ../mate-panel/panel-addto.c:175
-#: ../mate-panel/panel-toplevel.c:1615
+#: ../ukui-panel/drawer.c:346 ../ukui-panel/panel-addto.c:175
+#: ../ukui-panel/panel-toplevel.c:1615
 msgid "Drawer"
 msgstr "Laai"
 
-#: ../mate-panel/drawer.c:533
+#: ../ukui-panel/drawer.c:533
 msgid "_Add to Drawer..."
 msgstr "_Voeg by laai..."
 
-#: ../mate-panel/drawer.c:539 ../mate-panel/launcher.c:556
-#: ../mate-panel/panel-action-button.c:192
-#: ../mate-panel/panel-context-menu.c:196
+#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:556
+#: ../ukui-panel/panel-action-button.c:192
+#: ../ukui-panel/panel-context-menu.c:196
 msgid "_Properties"
 msgstr "_Eienskappe"
 
-#: ../mate-panel/mate-desktop-item-edit.c:27
+#: ../ukui-panel/ukui-desktop-item-edit.c:27
 msgid "Create new file in the given directory"
 msgstr "Skep nuwe lêer in die gegewe gids"
 
-#: ../mate-panel/mate-desktop-item-edit.c:28
+#: ../ukui-panel/ukui-desktop-item-edit.c:28
 msgid "[FILE...]"
 msgstr "[LÊER...]"
 
-#: ../mate-panel/mate-desktop-item-edit.c:106
+#: ../ukui-panel/ukui-desktop-item-edit.c:106
 msgid "- Edit .desktop files"
 msgstr "- Redigeer .desktop-lêers"
 
-#: ../mate-panel/mate-desktop-item-edit.c:144
-#: ../mate-panel/mate-desktop-item-edit.c:197 ../mate-panel/launcher.c:928
+#: ../ukui-panel/ukui-desktop-item-edit.c:144
+#: ../ukui-panel/ukui-desktop-item-edit.c:197 ../ukui-panel/launcher.c:928
 msgid "Create Launcher"
 msgstr "Skep Laaier"
 
-#: ../mate-panel/mate-desktop-item-edit.c:168
-#: ../mate-panel/mate-desktop-item-edit.c:191
+#: ../ukui-panel/ukui-desktop-item-edit.c:168
+#: ../ukui-panel/ukui-desktop-item-edit.c:191
 msgid "Directory Properties"
 msgstr "Gidseienskappe"
 
-#: ../mate-panel/mate-desktop-item-edit.c:174 ../mate-panel/launcher.c:775
+#: ../ukui-panel/ukui-desktop-item-edit.c:174 ../ukui-panel/launcher.c:775
 msgid "Launcher Properties"
 msgstr "Laaier-eienskappe"
 
-#: ../mate-panel/mate-panel.desktop.in.in.h:1 ../mate-panel/main.c:136
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:136
 msgid "Panel"
 msgstr "Paneel"
 
-#: ../mate-panel/mate-panel.desktop.in.in.h:2
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:2
 msgid ""
 "Launch other applications and provide various utilities to manage windows, "
 "show the time, etc."
 msgstr "Lanseer ander toepassings en verskaf verskeie nutsprogramme om vensters te bestuur, die tyd te wys, ens."
 
-#: ../mate-panel/launcher.c:120
+#: ../ukui-panel/launcher.c:120
 msgid "Could not show this URL"
 msgstr "Kon nie hierdie URL wys nie"
 
-#: ../mate-panel/launcher.c:121
+#: ../ukui-panel/launcher.c:121
 msgid "No URL was specified."
 msgstr "Geen URL is gespesifiseer nie."
 
-#: ../mate-panel/launcher.c:214
+#: ../ukui-panel/launcher.c:214
 msgid "Could not use dropped item"
 msgstr "Kon nie gelosde item gebruik nie"
 
-#: ../mate-panel/launcher.c:440
+#: ../ukui-panel/launcher.c:440
 #, c-format
 msgid "No URI provided for panel launcher desktop file\n"
 msgstr "Geen URI is vir die paneellaaier-werkarealêer gespesifiseer nie\n"
 
-#: ../mate-panel/launcher.c:465
+#: ../ukui-panel/launcher.c:465
 #, c-format
 msgid "Unable to open desktop file %s for panel launcher\n"
 msgstr ""
 
-#: ../mate-panel/launcher.c:533
+#: ../ukui-panel/launcher.c:533
 msgid "_Launch"
 msgstr "_Lanseer"
 
-#: ../mate-panel/launcher.c:869
+#: ../ukui-panel/launcher.c:869
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
 msgstr "Sleutel %s is nie bepaal nie, kan nie instaleerder laai nie⏎\n"
 
-#: ../mate-panel/launcher.c:997 ../mate-panel/panel-ditem-editor.c:1330
-#: ../mate-panel/panel-ditem-editor.c:1364
-#: ../mate-panel/panel-ditem-editor.c:1395
+#: ../ukui-panel/launcher.c:997 ../ukui-panel/panel-ditem-editor.c:1330
+#: ../ukui-panel/panel-ditem-editor.c:1364
+#: ../ukui-panel/panel-ditem-editor.c:1395
 msgid "Could not save launcher"
 msgstr "Kon nie instaleerder save nie"
 
-#: ../mate-panel/main.c:47
+#: ../ukui-panel/main.c:47
 msgid "Replace a currently running panel"
 msgstr "Vervang 'n huidige besige paneel"
 
-#. this feature was request in #mate irc channel
-#: ../mate-panel/main.c:49
+#. this feature was request in #ukui irc channel
+#: ../ukui-panel/main.c:49
 msgid "Reset the panel configuration to default"
 msgstr "Herstel paneel spesifikasie na default"
 
 #. open run dialog
-#: ../mate-panel/main.c:51
+#: ../ukui-panel/main.c:51
 msgid "Execute the run dialog"
 msgstr ""
 
 #. default panels layout
-#: ../mate-panel/main.c:53
+#: ../ukui-panel/main.c:53
 msgid "Set the default panel layout"
 msgstr ""
 
-#: ../mate-panel/menu.c:527
+#: ../ukui-panel/menu.c:527
 msgid "Add this launcher to _panel"
 msgstr "Voeg die instaleerder by die _paneel"
 
-#: ../mate-panel/menu.c:534
+#: ../ukui-panel/menu.c:534
 msgid "Add this launcher to _desktop"
 msgstr "Plaas dié instaleerder op die _desktop"
 
-#: ../mate-panel/menu.c:546
+#: ../ukui-panel/menu.c:546
 msgid "_Entire menu"
 msgstr "H_ele kieslys"
 
-#: ../mate-panel/menu.c:551
+#: ../ukui-panel/menu.c:551
 msgid "Add this as _drawer to panel"
 msgstr "Voeg die by as 'n _laai by die paneel"
 
-#: ../mate-panel/menu.c:558
+#: ../ukui-panel/menu.c:558
 msgid "Add this as _menu to panel"
 msgstr "Voeg by as _kieslys vir die paneel"
 
-#: ../mate-panel/panel-action-button.c:180
+#: ../ukui-panel/panel-action-button.c:180
 msgid "_Activate Screensaver"
 msgstr "_Aktiveer skermbeskermer"
 
-#: ../mate-panel/panel-action-button.c:186
+#: ../ukui-panel/panel-action-button.c:186
 msgid "_Lock Screen"
 msgstr "_Sluit skerm"
 
-#: ../mate-panel/panel-action-button.c:314
+#: ../ukui-panel/panel-action-button.c:314
 msgid "Could not connect to server"
 msgstr "Kon nie aan bediener verbind nie"
 
-#: ../mate-panel/panel-action-button.c:345
+#: ../ukui-panel/panel-action-button.c:345
 msgid "Lock Screen"
 msgstr "Sluit skerm"
 
-#: ../mate-panel/panel-action-button.c:346
+#: ../ukui-panel/panel-action-button.c:346
 msgid "Protect your computer from unauthorized use"
 msgstr "Beskerm jou rekenaar teen ongemagtigde gebruik"
 
 #. when changing one of those two strings, don't forget to
 #. * update the ones in panel-menu-items.c (look for
 #. * "1" (msgctxt: "panel:showusername"))
-#: ../mate-panel/panel-action-button.c:360
+#: ../ukui-panel/panel-action-button.c:360
 msgid "Log Out..."
 msgstr "Meld af..."
 
-#: ../mate-panel/panel-action-button.c:361
+#: ../ukui-panel/panel-action-button.c:361
 msgid "Log out of this session to log in as a different user"
 msgstr "Meld af van hierdie sessie om aan te meld as 'n ander gebruiker"
 
-#: ../mate-panel/panel-action-button.c:370
+#: ../ukui-panel/panel-action-button.c:370
 msgid "Run Application..."
 msgstr "Laat loop toepassing..."
 
-#: ../mate-panel/panel-action-button.c:371
+#: ../ukui-panel/panel-action-button.c:371
 msgid "Run an application by typing a command or choosing from a list"
 msgstr "Laat 'n toepassing loop deur 'n bevel in te tik of van 'n lys te kies"
 
-#: ../mate-panel/panel-action-button.c:380
+#: ../ukui-panel/panel-action-button.c:380
 msgid "Search for Files..."
 msgstr "Soek lêers..."
 
-#: ../mate-panel/panel-action-button.c:381
+#: ../ukui-panel/panel-action-button.c:381
 msgid "Locate documents and folders on this computer by name or content"
 msgstr "Vind dokumente en gidse om hierdie rekenaar volgens naam of inhoud"
 
-#: ../mate-panel/panel-action-button.c:389
-#: ../mate-panel/panel-force-quit.c:251
+#: ../ukui-panel/panel-action-button.c:389
+#: ../ukui-panel/panel-force-quit.c:251
 msgid "Force Quit"
 msgstr "Forseer afluiting"
 
-#: ../mate-panel/panel-action-button.c:390
+#: ../ukui-panel/panel-action-button.c:390
 msgid "Force a misbehaving application to quit"
 msgstr "Forseer 'n onhebbelike toepassing om te sluit"
 
 #. FIXME icon
-#: ../mate-panel/panel-action-button.c:399
+#: ../ukui-panel/panel-action-button.c:399
 msgid "Connect to Server..."
 msgstr "Verbind aan bediener..."
 
-#: ../mate-panel/panel-action-button.c:400
+#: ../ukui-panel/panel-action-button.c:400
 msgid "Connect to a remote computer or shared disk"
 msgstr "Verbind aan 'n afgeleë rekenaar of gedeelde skyf"
 
-#: ../mate-panel/panel-action-button.c:408
+#: ../ukui-panel/panel-action-button.c:408
 msgid "Shut Down..."
 msgstr "Skakel af..."
 
-#: ../mate-panel/panel-action-button.c:409
+#: ../ukui-panel/panel-action-button.c:409
 msgid "Shut down the computer"
 msgstr "Skakel die rekenaar af"
 
-#: ../mate-panel/panel-addto.c:116
+#: ../ukui-panel/panel-addto.c:116
 msgid "Custom Application Launcher"
 msgstr "Spesifieke Program Instaleerder"
 
-#: ../mate-panel/panel-addto.c:117
+#: ../ukui-panel/panel-addto.c:117
 msgid "Create a new launcher"
 msgstr "Skep 'n nuwe instaleerder"
 
-#: ../mate-panel/panel-addto.c:127
+#: ../ukui-panel/panel-addto.c:127
 msgid "Application Launcher..."
 msgstr "Program Instaleerder..."
 
-#: ../mate-panel/panel-addto.c:128
+#: ../ukui-panel/panel-addto.c:128
 msgid "Copy a launcher from the applications menu"
 msgstr "Kopieer 'n lanseerder van die toepassings-kieslys"
 
-#: ../mate-panel/panel-addto.c:142 ../mate-panel/panel-menu-button.c:1094
+#: ../ukui-panel/panel-addto.c:142 ../ukui-panel/panel-menu-button.c:1094
 msgid "Main Menu"
 msgstr "Hoofkieslys"
 
-#: ../mate-panel/panel-addto.c:143
-msgid "The main MATE menu"
-msgstr "Die hoof-MATE-kieslys"
+#: ../ukui-panel/panel-addto.c:143
+msgid "The main UKUI menu"
+msgstr "Die hoof-UKUI-kieslys"
 
-#: ../mate-panel/panel-addto.c:153
+#: ../ukui-panel/panel-addto.c:153
 msgid "Menu Bar"
 msgstr "Kieslysbalk"
 
-#: ../mate-panel/panel-addto.c:154
+#: ../ukui-panel/panel-addto.c:154
 msgid "A custom menu bar"
 msgstr "'n Pasgemaakte kieslysbalk"
 
-#: ../mate-panel/panel-addto.c:164
+#: ../ukui-panel/panel-addto.c:164
 msgid "Separator"
 msgstr "Skeier"
 
-#: ../mate-panel/panel-addto.c:165
+#: ../ukui-panel/panel-addto.c:165
 msgid "A separator to organize the panel items"
 msgstr "'n Skeier om paneelitems te organiseer"
 
-#: ../mate-panel/panel-addto.c:176
+#: ../ukui-panel/panel-addto.c:176
 msgid "A pop out drawer to store other items in"
 msgstr "'n Pop-Up laai om ander items in te stoor"
 
-#: ../mate-panel/panel-addto.c:257
+#: ../ukui-panel/panel-addto.c:257
 msgid "(empty)"
 msgstr "(leeg)"
 
-#: ../mate-panel/panel-addto.c:988
+#: ../ukui-panel/panel-addto.c:988
 #, c-format
 msgid "Find an _item to add to \"%s\":"
 msgstr "Vind 'n _item om by \"%s\" te voeg:"
 
-#: ../mate-panel/panel-addto.c:992
+#: ../ukui-panel/panel-addto.c:992
 #, c-format
 msgid "Add to Drawer"
 msgstr "Voeg by laai"
 
-#: ../mate-panel/panel-addto.c:994
+#: ../ukui-panel/panel-addto.c:994
 msgid "Find an _item to add to the drawer:"
 msgstr "Vind 'n _item om by die laai te voeg:"
 
-#: ../mate-panel/panel-addto.c:996
+#: ../ukui-panel/panel-addto.c:996
 #, c-format
 msgid "Add to Panel"
 msgstr "Voeg by Paneel"
 
-#: ../mate-panel/panel-addto.c:998
+#: ../ukui-panel/panel-addto.c:998
 msgid "Find an _item to add to the panel:"
 msgstr "Vind 'n _item om by die paneel te voeg"
 
-#: ../mate-panel/panel-applet-frame.c:788
+#: ../ukui-panel/panel-applet-frame.c:788
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
 msgstr "\"%s\" het onverwags afgesluit"
 
-#: ../mate-panel/panel-applet-frame.c:790
+#: ../ukui-panel/panel-applet-frame.c:790
 msgid "Panel object has quit unexpectedly"
 msgstr "Paneel voorwerp het onverwags op gehou "
 
-#: ../mate-panel/panel-applet-frame.c:797
+#: ../ukui-panel/panel-applet-frame.c:797
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
 msgstr "As jy 'n paneel voorwerp herlaai, sal dit automaties weer by die paneel gevoeg word."
 
-#: ../mate-panel/panel-applet-frame.c:804
+#: ../ukui-panel/panel-applet-frame.c:804
 msgid "D_elete"
 msgstr ""
 
-#: ../mate-panel/panel-applet-frame.c:805
-#: ../mate-panel/panel-applet-frame.c:810
+#: ../ukui-panel/panel-applet-frame.c:805
+#: ../ukui-panel/panel-applet-frame.c:810
 msgid "_Don't Reload"
 msgstr "M_oenie herlaai nie"
 
-#: ../mate-panel/panel-applet-frame.c:806
-#: ../mate-panel/panel-applet-frame.c:811
+#: ../ukui-panel/panel-applet-frame.c:806
+#: ../ukui-panel/panel-applet-frame.c:811
 msgid "_Reload"
 msgstr "_Herlaai"
 
-#: ../mate-panel/panel-applet-frame.c:966
+#: ../ukui-panel/panel-applet-frame.c:966
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
 msgstr "Die paneel het 'n probleem ondervind tydens die laai van \"%s\"."
 
-#: ../mate-panel/panel-applet-frame.c:982
+#: ../ukui-panel/panel-applet-frame.c:982
 msgid "Do you want to delete the applet from your configuration?"
 msgstr "Wil jy die mini-program uit jou opstelling skrap?"
 
-#: ../mate-panel/panel-context-menu.c:89
+#: ../ukui-panel/panel-context-menu.c:89
 msgid "And many, many others..."
 msgstr "En nog baie, baie meer..."
 
-#: ../mate-panel/panel-context-menu.c:112
-msgid "The MATE Panel"
-msgstr "Die MATE-paneel"
+#: ../ukui-panel/panel-context-menu.c:112
+msgid "The UKUI Panel"
+msgstr "Die UKUI-paneel"
 
-#: ../mate-panel/panel-context-menu.c:116
+#: ../ukui-panel/panel-context-menu.c:116
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
 msgstr "Hierdie program is verantwoordelik vir die lansering van ander toepassings en verskaf nuttige nutsgoed."
 
-#: ../mate-panel/panel-context-menu.c:120
-msgid "About the MATE Panel"
-msgstr "Aangaande die MATE-paneel"
+#: ../ukui-panel/panel-context-menu.c:120
+msgid "About the UKUI Panel"
+msgstr "Aangaande die UKUI-paneel"
 
-#: ../mate-panel/panel-context-menu.c:151
+#: ../ukui-panel/panel-context-menu.c:151
 msgid "Cannot delete this panel"
 msgstr "Kan nie hierdie paneel skrap nie"
 
-#: ../mate-panel/panel-context-menu.c:152
+#: ../ukui-panel/panel-context-menu.c:152
 msgid "You must always have at least one panel."
 msgstr "Mens moet altyd ten minste een paneel hê."
 
-#: ../mate-panel/panel-context-menu.c:185
+#: ../ukui-panel/panel-context-menu.c:185
 msgid "_Add to Panel..."
 msgstr "_Voeg by paneel..."
 
-#: ../mate-panel/panel-context-menu.c:206
+#: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"
 msgstr "_Skrap hierdie paneel"
 
-#: ../mate-panel/panel-context-menu.c:221
+#: ../ukui-panel/panel-context-menu.c:221
 msgid "_New Panel"
 msgstr "_Nuwe paneel"
 
-#: ../mate-panel/panel-context-menu.c:273
+#: ../ukui-panel/panel-context-menu.c:273
 msgid "A_bout Panels"
 msgstr "Aa_ngaande panele"
 
-#: ../mate-panel/panel-ditem-editor.c:114
+#: ../ukui-panel/panel-ditem-editor.c:114
 msgid "Application"
 msgstr "Toepassing"
 
-#: ../mate-panel/panel-ditem-editor.c:116
+#: ../ukui-panel/panel-ditem-editor.c:116
 msgid "Application in Terminal"
 msgstr "Toepassing in terminaal"
 
-#: ../mate-panel/panel-ditem-editor.c:118
+#: ../ukui-panel/panel-ditem-editor.c:118
 msgid "Location"
 msgstr "Ligging"
 
 #. Type
-#: ../mate-panel/panel-ditem-editor.c:610
+#: ../ukui-panel/panel-ditem-editor.c:610
 msgid "_Type:"
 msgstr "_Tipe:"
 
 #. Name
-#: ../mate-panel/panel-ditem-editor.c:617
+#: ../ukui-panel/panel-ditem-editor.c:617
 msgid "_Name:"
 msgstr "_Naam:"
 
-#: ../mate-panel/panel-ditem-editor.c:642
+#: ../ukui-panel/panel-ditem-editor.c:642
 msgid "_Browse..."
 msgstr "_Blaai..."
 
 #. Comment
-#: ../mate-panel/panel-ditem-editor.c:649
+#: ../ukui-panel/panel-ditem-editor.c:649
 msgid "Co_mment:"
 msgstr "Ko_mmentaar:"
 
-#: ../mate-panel/panel-ditem-editor.c:981
+#: ../ukui-panel/panel-ditem-editor.c:981
 msgid "Choose an application..."
 msgstr "Kies 'n toepassing..."
 
-#: ../mate-panel/panel-ditem-editor.c:985
+#: ../ukui-panel/panel-ditem-editor.c:985
 msgid "Choose a file..."
 msgstr "Kies 'n lêer..."
 
-#: ../mate-panel/panel-ditem-editor.c:1150
-#: ../mate-panel/panel-ditem-editor.c:1159
+#: ../ukui-panel/panel-ditem-editor.c:1150
+#: ../ukui-panel/panel-ditem-editor.c:1159
 msgid "Comm_and:"
 msgstr "Opdr_ag:"
 
-#: ../mate-panel/panel-ditem-editor.c:1168
+#: ../ukui-panel/panel-ditem-editor.c:1168
 msgid "_Location:"
 msgstr "_Ligging:"
 
-#: ../mate-panel/panel-ditem-editor.c:1331
+#: ../ukui-panel/panel-ditem-editor.c:1331
 msgid "The name of the launcher is not set."
 msgstr "Die instaleerder naam is nie gespesifiseer nie."
 
-#: ../mate-panel/panel-ditem-editor.c:1335
+#: ../ukui-panel/panel-ditem-editor.c:1335
 msgid "Could not save directory properties"
 msgstr "Kon nie gidseienskappe stoor nie"
 
-#: ../mate-panel/panel-ditem-editor.c:1336
+#: ../ukui-panel/panel-ditem-editor.c:1336
 msgid "The name of the directory is not set."
 msgstr "Die naam van die gids is nie gestel nie."
 
-#: ../mate-panel/panel-ditem-editor.c:1352
+#: ../ukui-panel/panel-ditem-editor.c:1352
 msgid "The command of the launcher is not set."
 msgstr "Die opdrag vir die instaleerder is nie gespesifiseer nie."
 
-#: ../mate-panel/panel-ditem-editor.c:1355
+#: ../ukui-panel/panel-ditem-editor.c:1355
 msgid "The location of the launcher is not set."
 msgstr "Die plek van die instaleerder is nie gespesifiseer nie."
 
-#: ../mate-panel/panel-ditem-editor.c:1432
+#: ../ukui-panel/panel-ditem-editor.c:1432
 msgid "Could not display help document"
 msgstr "Kon nie hulpdokument vertoon nie"
 
-#: ../mate-panel/panel-force-quit.c:80
+#: ../ukui-panel/panel-force-quit.c:80
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
 msgstr "Kliek op 'n venster om die toepassing te dwing om te sluit. Druk <ESC> om te kanselleer."
 
-#: ../mate-panel/panel-force-quit.c:234
+#: ../ukui-panel/panel-force-quit.c:234
 msgid "Force this application to exit?"
 msgstr "Forseer hierdie toepassing om af te sluit?"
 
-#: ../mate-panel/panel-force-quit.c:237
+#: ../ukui-panel/panel-force-quit.c:237
 msgid ""
 "If you choose to force an application to exit, unsaved changes in any open "
 "documents in it might get lost."
 msgstr "As jy 'n program forseer om toe te maak, sal enige dokumentasie inligting, wat nie gesave is nie, verlore wees."
 
-#: ../mate-panel/panel-menu-bar.c:99
+#: ../ukui-panel/panel-menu-bar.c:99
 msgid "Browse and run installed applications"
 msgstr "Blaai en lanseer geïnstalleerde programme"
 
-#: ../mate-panel/panel-menu-bar.c:100
+#: ../ukui-panel/panel-menu-bar.c:100
 msgid "Access documents, folders and network places"
 msgstr "Verkry toegang tot dokumente, gidse en plekke op die netwerk"
 
-#: ../mate-panel/panel-menu-bar.c:101
+#: ../ukui-panel/panel-menu-bar.c:101
 msgid "Change desktop appearance and behavior, get help, or log out"
 msgstr "Verander die werkskerm se voorkoms en gedrag, verkry hulp, of meld af"
 
-#: ../mate-panel/panel-menu-bar.c:168
+#: ../ukui-panel/panel-menu-bar.c:168
 msgid "Applications"
 msgstr "Toepassings"
 
-#: ../mate-panel/panel-menu-bar.c:364 ../mate-panel/panel-menu-button.c:672
+#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:672
 msgid "_Edit Menus"
 msgstr "R_edigeer kieslyste"
 
-#: ../mate-panel/panel-menu-items.c:473
+#: ../ukui-panel/panel-menu-items.c:473
 msgid "Bookmarks"
 msgstr "Boekmerke"
 
 #. Translators: %s is a URI
-#: ../mate-panel/panel-menu-items.c:496 ../mate-panel/panel.c:549
+#: ../ukui-panel/panel-menu-items.c:496 ../ukui-panel/panel.c:549
 #, c-format
 msgid "Open '%s'"
 msgstr "Open '%s'"
 
-#: ../mate-panel/panel-menu-items.c:567
+#: ../ukui-panel/panel-menu-items.c:567
 #, c-format
 msgid "Unable to scan %s for media changes"
 msgstr "Kan nie %s deursoek vir mediaveranderinge nie"
 
-#: ../mate-panel/panel-menu-items.c:610
+#: ../ukui-panel/panel-menu-items.c:610
 #, c-format
 msgid "Rescan %s"
 msgstr "Deursoek %s weer"
 
-#: ../mate-panel/panel-menu-items.c:647
+#: ../ukui-panel/panel-menu-items.c:647
 #, c-format
 msgid "Unable to mount %s"
 msgstr "Kon nie %s heg nie"
 
-#: ../mate-panel/panel-menu-items.c:710
+#: ../ukui-panel/panel-menu-items.c:710
 #, c-format
 msgid "Mount %s"
 msgstr "Heg %s"
 
-#: ../mate-panel/panel-menu-items.c:918
+#: ../ukui-panel/panel-menu-items.c:918
 msgid "Removable Media"
 msgstr "Verwyderbare media"
 
-#: ../mate-panel/panel-menu-items.c:1005
+#: ../ukui-panel/panel-menu-items.c:1005
 msgid "Network Places"
 msgstr "Plekke op die netwerk"
 
-#: ../mate-panel/panel-menu-items.c:1044
+#: ../ukui-panel/panel-menu-items.c:1044
 msgid "Open your personal folder"
 msgstr "Open u persoonlike gids"
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
 #. * environment).
-#: ../mate-panel/panel-menu-items.c:1063
+#: ../ukui-panel/panel-menu-items.c:1063
 msgctxt "Desktop Folder"
 msgid "Desktop"
 msgstr "Werkskerm"
 
-#: ../mate-panel/panel-menu-items.c:1064
+#: ../ukui-panel/panel-menu-items.c:1064
 msgid "Open the contents of your desktop in a folder"
 msgstr "Open die inhoud van die werkskerm in 'n gids"
 
-#: ../mate-panel/panel-menu-items.c:1080
+#: ../ukui-panel/panel-menu-items.c:1080
 msgid "Computer"
 msgstr ""
 
-#: ../mate-panel/panel-menu-items.c:1085
+#: ../ukui-panel/panel-menu-items.c:1085
 msgid ""
 "Browse all local and remote disks and folders accessible from this computer"
 msgstr ""
 
-#: ../mate-panel/panel-menu-items.c:1098
+#: ../ukui-panel/panel-menu-items.c:1098
 msgid "Network"
 msgstr ""
 
-#: ../mate-panel/panel-menu-items.c:1099
+#: ../ukui-panel/panel-menu-items.c:1099
 msgid "Browse bookmarked and local network locations"
 msgstr ""
 
-#: ../mate-panel/panel-menu-items.c:1497
+#: ../ukui-panel/panel-menu-items.c:1497
 msgid "Places"
 msgstr "Plekke"
 
-#: ../mate-panel/panel-menu-items.c:1525
+#: ../ukui-panel/panel-menu-items.c:1525
 msgid "System"
 msgstr "Stelsel"
 
@@ -2402,7 +2402,7 @@ msgstr "Stelsel"
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
 #. * but "1" if "Log Out %s" doesn't make any sense in your
 #. * language (where %s is a username).
-#: ../mate-panel/panel-menu-items.c:1610
+#: ../ukui-panel/panel-menu-items.c:1610
 msgctxt "panel:showusername"
 msgid "1"
 msgstr "1"
@@ -2411,405 +2411,405 @@ msgstr "1"
 #. * panel-action-button.c
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../mate-panel/panel-menu-items.c:1622
+#: ../ukui-panel/panel-menu-items.c:1622
 #, c-format
 msgid "Log Out %s..."
 msgstr "Meld af as %s..."
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../mate-panel/panel-menu-items.c:1626
+#: ../ukui-panel/panel-menu-items.c:1626
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
 msgstr "Meld af as %s van hierdie sessie om as 'n ander gebruiker aan te meld"
 
-#: ../mate-panel/panel-properties-dialog.c:120
-#: ../mate-panel/panel-test-applets.c:58
+#: ../ukui-panel/panel-properties-dialog.c:120
+#: ../ukui-panel/panel-test-applets.c:58
 msgctxt "Orientation"
 msgid "Top"
 msgstr "Bo"
 
-#: ../mate-panel/panel-properties-dialog.c:121
-#: ../mate-panel/panel-test-applets.c:59
+#: ../ukui-panel/panel-properties-dialog.c:121
+#: ../ukui-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Bottom"
 msgstr "Onder"
 
-#: ../mate-panel/panel-properties-dialog.c:122
-#: ../mate-panel/panel-test-applets.c:60
+#: ../ukui-panel/panel-properties-dialog.c:122
+#: ../ukui-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Left"
 msgstr "Links"
 
-#: ../mate-panel/panel-properties-dialog.c:123
-#: ../mate-panel/panel-test-applets.c:61
+#: ../ukui-panel/panel-properties-dialog.c:123
+#: ../ukui-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Right"
 msgstr "Regs"
 
-#: ../mate-panel/panel-properties-dialog.c:819
+#: ../ukui-panel/panel-properties-dialog.c:819
 msgid "Drawer Properties"
 msgstr "Laai-eienskappe"
 
-#: ../mate-panel/panel-properties-dialog.c:939
-#: ../mate-panel/panel-run-dialog.c:1970
+#: ../ukui-panel/panel-properties-dialog.c:939
+#: ../ukui-panel/panel-run-dialog.c:1970
 #, c-format
 msgid "Unable to load file '%s': %s."
 msgstr "Kon nie lêer '%s' laai nie: %s."
 
-#: ../mate-panel/panel-properties-dialog.c:945
+#: ../ukui-panel/panel-properties-dialog.c:945
 msgid "Could not display properties dialog"
 msgstr "Kon nie die dialoog met eienskappe wys nie"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:1
+#: ../ukui-panel/panel-properties-dialog.ui.h:1
 msgid "Panel Properties"
 msgstr "Paneeleienskappe"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:2
+#: ../ukui-panel/panel-properties-dialog.ui.h:2
 msgid "Some of these properties are locked down"
 msgstr "Sommige van hierdie eienskappe is gesluit"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:3
+#: ../ukui-panel/panel-properties-dialog.ui.h:3
 msgid "_Icon:"
 msgstr "_Ikoon:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:4
+#: ../ukui-panel/panel-properties-dialog.ui.h:4
 msgid "pixels"
 msgstr "pixels"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:5
-#: ../mate-panel/panel-test-applets.ui.h:5
+#: ../ukui-panel/panel-properties-dialog.ui.h:5
+#: ../ukui-panel/panel-test-applets.ui.h:5
 msgid "_Orientation:"
 msgstr "_Oriëntering:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:6
-#: ../mate-panel/panel-test-applets.ui.h:3
+#: ../ukui-panel/panel-properties-dialog.ui.h:6
+#: ../ukui-panel/panel-test-applets.ui.h:3
 msgid "_Size:"
 msgstr "_Grootte:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:7
+#: ../ukui-panel/panel-properties-dialog.ui.h:7
 msgid "E_xpand"
 msgstr "Uit_vou"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:8
+#: ../ukui-panel/panel-properties-dialog.ui.h:8
 msgid "_Autohide"
 msgstr "_Outoverberg"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:9
+#: ../ukui-panel/panel-properties-dialog.ui.h:9
 msgid "Show hide _buttons"
 msgstr "Vertoon verberg_knoppies"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:10
+#: ../ukui-panel/panel-properties-dialog.ui.h:10
 msgid "Arro_ws on hide buttons"
 msgstr "Py_le op verbergknoppies"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:12
+#: ../ukui-panel/panel-properties-dialog.ui.h:12
 msgid "_None (use system theme)"
 msgstr "_Geen (gebruik stelseltema)"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:13
+#: ../ukui-panel/panel-properties-dialog.ui.h:13
 msgid "Solid c_olor"
 msgstr "Soliede kl_eur"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:15
+#: ../ukui-panel/panel-properties-dialog.ui.h:15
 msgid "Pick a color"
 msgstr "Kies 'n kleur"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:16
+#: ../ukui-panel/panel-properties-dialog.ui.h:16
 msgid "<small>Transparent</small>"
 msgstr "<small>Deursigtig</small>"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:17
+#: ../ukui-panel/panel-properties-dialog.ui.h:17
 msgid "Co_lor:"
 msgstr "Kl_eur:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:18
+#: ../ukui-panel/panel-properties-dialog.ui.h:18
 msgid "S_tyle:"
 msgstr "S_tyl:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:19
+#: ../ukui-panel/panel-properties-dialog.ui.h:19
 msgid "<small>Opaque</small>"
 msgstr "<small>Ondeursigtig</small>"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:20
+#: ../ukui-panel/panel-properties-dialog.ui.h:20
 msgid "Background _image:"
 msgstr "Agtergrond_beeld:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:21
+#: ../ukui-panel/panel-properties-dialog.ui.h:21
 msgid "Select background"
 msgstr "Kies agtergrond"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:22
+#: ../ukui-panel/panel-properties-dialog.ui.h:22
 msgid "Background"
 msgstr "Agtergrond"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:23
+#: ../ukui-panel/panel-properties-dialog.ui.h:23
 msgid "Image Background Details"
 msgstr "Beeldagtergrondbesonderhede"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:24
+#: ../ukui-panel/panel-properties-dialog.ui.h:24
 msgid "_Tile"
 msgstr "_Teël"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:25
+#: ../ukui-panel/panel-properties-dialog.ui.h:25
 msgid "_Scale"
 msgstr "_Skaal"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:26
+#: ../ukui-panel/panel-properties-dialog.ui.h:26
 msgid "St_retch"
 msgstr "R_ek"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:27
+#: ../ukui-panel/panel-properties-dialog.ui.h:27
 msgid "Rotate image when panel is _vertical"
 msgstr "Roteer beeld wanneer paneel _vertikaal is"
 
-#: ../mate-panel/panel-recent.c:78 ../mate-panel/panel-recent.c:88
+#: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
 msgid "Could not open recently used document \"%s\""
 msgstr "Kan nie onlangs gebruikte dokument \"%s\" open nie"
 
-#: ../mate-panel/panel-recent.c:90
+#: ../ukui-panel/panel-recent.c:90
 #, c-format
 msgid "An unknown error occurred while trying to open \"%s\"."
 msgstr "'n Onbekende fout het voorgekom terwyl probeer is om \"%s\" te open."
 
-#: ../mate-panel/panel-recent.c:147
+#: ../ukui-panel/panel-recent.c:147
 msgid "Clear the Recent Documents list?"
 msgstr "Verwyder alles uit die Onlangse dokumente?"
 
-#: ../mate-panel/panel-recent.c:149
+#: ../ukui-panel/panel-recent.c:149
 msgid ""
 "If you clear the Recent Documents list, you clear the following:\n"
 "• All items from the Places → Recent Documents menu item.\n"
 "• All items from the recent documents list in all applications."
 msgstr "As jy die Recent Documents lys skoonvee, dan vee jy die volgende weg:⏎\n• Alle items van die Places → Recent Documents menu items.⏎\n• Alle items van die onlangse dokumente lys in alle programme."
 
-#: ../mate-panel/panel-recent.c:161
+#: ../ukui-panel/panel-recent.c:161
 msgid "Clear Recent Documents"
 msgstr "Maak Onlangse dokumente skoon"
 
-#: ../mate-panel/panel-recent.c:196
+#: ../ukui-panel/panel-recent.c:196
 msgid "Recent Documents"
 msgstr "Onlangse dokumente"
 
-#: ../mate-panel/panel-recent.c:235
+#: ../ukui-panel/panel-recent.c:235
 msgid "Clear Recent Documents..."
 msgstr "Maak Onlangse dokumente skoon..."
 
-#: ../mate-panel/panel-recent.c:237
+#: ../ukui-panel/panel-recent.c:237
 msgid "Clear all items from the recent documents list"
 msgstr "Verwyder alle items vanuit die lys van onlangse dokumente"
 
-#: ../mate-panel/panel-run-dialog.c:417
+#: ../ukui-panel/panel-run-dialog.c:417
 #, c-format
 msgid "Could not run command '%s'"
 msgstr "Kon nie bevel '%s' uitvoer nie"
 
-#: ../mate-panel/panel-run-dialog.c:457
+#: ../ukui-panel/panel-run-dialog.c:457
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
 msgstr "Kon nie '%s' van UTF-8 omskakel nie"
 
-#: ../mate-panel/panel-run-dialog.c:1204
+#: ../ukui-panel/panel-run-dialog.c:1204
 msgid "Choose a file to append to the command..."
 msgstr "Kies 'n lêer om by die bevel aan te hang..."
 
-#: ../mate-panel/panel-run-dialog.c:1582 ../mate-panel/panel-run-dialog.ui.h:9
+#: ../ukui-panel/panel-run-dialog.c:1582 ../ukui-panel/panel-run-dialog.ui.h:9
 msgid "Select an application to view its description."
 msgstr "Selekteer 'n toepassing om sy beskrywing te bekyk."
 
-#: ../mate-panel/panel-run-dialog.c:1620
+#: ../ukui-panel/panel-run-dialog.c:1620
 #, c-format
 msgid "Will run command: '%s'"
 msgstr "Sal bevel laat loop: '%s'"
 
-#: ../mate-panel/panel-run-dialog.c:1653
+#: ../ukui-panel/panel-run-dialog.c:1653
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
 msgstr "URI lys verval van run dialog verkeerde formaat (%d) of lengte (%d)⏎\n"
 
-#: ../mate-panel/panel-run-dialog.c:1975
+#: ../ukui-panel/panel-run-dialog.c:1975
 msgid "Could not display run dialog"
 msgstr "Kon nie run dialog wys nie"
 
-#: ../mate-panel/panel-run-dialog.ui.h:1
+#: ../ukui-panel/panel-run-dialog.ui.h:1
 msgid "Run Application"
 msgstr "Laat loop toepassing"
 
-#: ../mate-panel/panel-run-dialog.ui.h:2
+#: ../ukui-panel/panel-run-dialog.ui.h:2
 msgid "Command icon"
 msgstr "Bevelikoon"
 
-#: ../mate-panel/panel-run-dialog.ui.h:3
+#: ../ukui-panel/panel-run-dialog.ui.h:3
 msgid "The icon of the command to be run."
 msgstr "Die ikoon van die bevel wat laat loop moet word."
 
-#: ../mate-panel/panel-run-dialog.ui.h:4
+#: ../ukui-panel/panel-run-dialog.ui.h:4
 msgid "Run in _terminal"
 msgstr "Laat loop in _terminaal"
 
-#: ../mate-panel/panel-run-dialog.ui.h:5
+#: ../ukui-panel/panel-run-dialog.ui.h:5
 msgid "Select this box to run the command in a terminal window."
 msgstr "Merk hierdie kassie om die bevel in 'n terminaalvenster te laat loop."
 
-#: ../mate-panel/panel-run-dialog.ui.h:6
+#: ../ukui-panel/panel-run-dialog.ui.h:6
 msgid "Run with _file..."
 msgstr "Laat loop met _lêer..."
 
-#: ../mate-panel/panel-run-dialog.ui.h:7
+#: ../ukui-panel/panel-run-dialog.ui.h:7
 msgid ""
 "Click this button to browse for a file whose name to append to the command "
 "string."
 msgstr "Kliek hierdie knoppie om vir 'n lêer te blaai waarvan die naam aan die bevelstring aangehang moet word."
 
-#: ../mate-panel/panel-run-dialog.ui.h:8
+#: ../ukui-panel/panel-run-dialog.ui.h:8
 msgid "List of known applications"
 msgstr "Vertoon lys van bekende toepassings"
 
-#: ../mate-panel/panel-run-dialog.ui.h:10
+#: ../ukui-panel/panel-run-dialog.ui.h:10
 msgid "Show list of known _applications"
 msgstr "Vertoon lys van bekende _toepassings"
 
-#: ../mate-panel/panel-run-dialog.ui.h:11 ../mate-panel/panel-stock-icons.c:97
+#: ../ukui-panel/panel-run-dialog.ui.h:11 ../ukui-panel/panel-stock-icons.c:97
 msgid "_Run"
 msgstr "_Loop"
 
-#: ../mate-panel/panel-run-dialog.ui.h:12
+#: ../ukui-panel/panel-run-dialog.ui.h:12
 msgid ""
 "Click this button to run the selected application or the command in the "
 "command entry field."
 msgstr "Kliek hierdie knoppie om die geselekteerde toepassing of bevel in die bevelinskrywingsveld te laat loop."
 
-#: ../mate-panel/panel-stock-icons.c:98
+#: ../ukui-panel/panel-stock-icons.c:98
 msgid "_Force quit"
 msgstr "_Forseer afsluiting"
 
-#: ../mate-panel/panel-stock-icons.c:99
+#: ../ukui-panel/panel-stock-icons.c:99
 msgid "C_lear"
 msgstr "_Maak skoon"
 
-#: ../mate-panel/panel-stock-icons.c:100
+#: ../ukui-panel/panel-stock-icons.c:100
 msgid "D_on't Delete"
 msgstr "M_oenie skrap nie"
 
-#: ../mate-panel/panel-test-applets.c:39
+#: ../ukui-panel/panel-test-applets.c:39
 msgid "Specify an applet IID to load"
 msgstr "Spesifiseer 'n miniprogram-IID om te laai"
 
-#: ../mate-panel/panel-test-applets.c:40
+#: ../ukui-panel/panel-test-applets.c:40
 msgid ""
 "Specify a gsettings path in which the applet preferences should be stored"
 msgstr ""
 
-#: ../mate-panel/panel-test-applets.c:41
+#: ../ukui-panel/panel-test-applets.c:41
 msgid "Specify the initial size of the applet (xx-small, medium, large etc.)"
 msgstr "Spesifiseer die aanvanklike grootte van die miniprogram (xx-klein, medium, groot ens.)"
 
-#: ../mate-panel/panel-test-applets.c:42
+#: ../ukui-panel/panel-test-applets.c:42
 msgid ""
 "Specify the initial orientation of the applet (top, bottom, left or right)"
 msgstr "Spesifiseer die aanvanklike oriëntasie van die miniprogram (bokant, onderkant, links of regs)"
 
-#: ../mate-panel/panel-test-applets.c:66
+#: ../ukui-panel/panel-test-applets.c:66
 msgctxt "Size"
 msgid "XX Small"
 msgstr "XX Klein"
 
-#: ../mate-panel/panel-test-applets.c:67
+#: ../ukui-panel/panel-test-applets.c:67
 msgctxt "Size"
 msgid "X Small"
 msgstr "X Klein"
 
-#: ../mate-panel/panel-test-applets.c:68
+#: ../ukui-panel/panel-test-applets.c:68
 msgctxt "Size"
 msgid "Small"
 msgstr "Klein"
 
-#: ../mate-panel/panel-test-applets.c:69
+#: ../ukui-panel/panel-test-applets.c:69
 msgctxt "Size"
 msgid "Medium"
 msgstr "Medium"
 
-#: ../mate-panel/panel-test-applets.c:70
+#: ../ukui-panel/panel-test-applets.c:70
 msgctxt "Size"
 msgid "Large"
 msgstr "Groot"
 
-#: ../mate-panel/panel-test-applets.c:71
+#: ../ukui-panel/panel-test-applets.c:71
 msgctxt "Size"
 msgid "X Large"
 msgstr "X Groot"
 
-#: ../mate-panel/panel-test-applets.c:72
+#: ../ukui-panel/panel-test-applets.c:72
 msgctxt "Size"
 msgid "XX Large"
 msgstr "XX Groot"
 
-#: ../mate-panel/panel-test-applets.c:130
+#: ../ukui-panel/panel-test-applets.c:130
 #, c-format
 msgid "Failed to load applet %s"
 msgstr "Kon nie miniprogram %s laai nie"
 
 #. This is an utility to easily test various applets
-#: ../mate-panel/panel-test-applets.ui.h:2
+#: ../ukui-panel/panel-test-applets.ui.h:2
 msgid "Test applet utility"
 msgstr "Toets applet se nuttigheid"
 
-#: ../mate-panel/panel-test-applets.ui.h:4
+#: ../ukui-panel/panel-test-applets.ui.h:4
 msgid "_Applet:"
 msgstr "Miniprogr_am:"
 
-#: ../mate-panel/panel-test-applets.ui.h:6
+#: ../ukui-panel/panel-test-applets.ui.h:6
 msgid "_Prefs Path:"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1218
+#: ../ukui-panel/panel-toplevel.c:1218
 msgid "Hide Panel"
 msgstr "Verberg paneel"
 
 #. translators: these string will be shown in MetaCity's switch window
 #. * popup when you pass the focus to a panel
-#: ../mate-panel/panel-toplevel.c:1621 ../mate-panel/panel-toplevel.c:1631
+#: ../ukui-panel/panel-toplevel.c:1621 ../ukui-panel/panel-toplevel.c:1631
 msgid "Top Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1623
+#: ../ukui-panel/panel-toplevel.c:1623
 msgid "Bottom Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1625
+#: ../ukui-panel/panel-toplevel.c:1625
 msgid "Left Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1627
+#: ../ukui-panel/panel-toplevel.c:1627
 msgid "Right Panel"
 msgstr ""
 
-#: ../mate-panel/panel-util.c:347
+#: ../ukui-panel/panel-util.c:347
 #, c-format
 msgid "Icon '%s' not found"
 msgstr "Ikoon '%s' nie gevind nie"
 
-#: ../mate-panel/panel-util.c:465
+#: ../ukui-panel/panel-util.c:465
 #, c-format
 msgid "Could not execute '%s'"
 msgstr "Kon nie '%s' uitvoer nie"
 
-#: ../mate-panel/panel-util.c:693
+#: ../ukui-panel/panel-util.c:693
 msgid "file"
 msgstr "lêer"
 
-#: ../mate-panel/panel-util.c:866
+#: ../ukui-panel/panel-util.c:866
 msgid "Home Folder"
 msgstr "Tuisgids"
 
 #. Translators: this is the same string as the one found in
 #. * caja
-#: ../mate-panel/panel-util.c:878
+#: ../ukui-panel/panel-util.c:878
 msgid "File System"
 msgstr "Lêerstelsel"
 
-#: ../mate-panel/panel-util.c:1051
+#: ../ukui-panel/panel-util.c:1051
 msgid "Search"
 msgstr "Soek"
 
@@ -2817,31 +2817,31 @@ msgstr "Soek"
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
-#: ../mate-panel/panel-util.c:1097
+#: ../ukui-panel/panel-util.c:1097
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%2$s, %1$s"
 
-#: ../mate-panel/panel.c:482
+#: ../ukui-panel/panel.c:482
 #, c-format
 msgid "Open URL: %s"
 msgstr "Open URL: %s"
 
-#: ../mate-panel/panel.c:1332
+#: ../ukui-panel/panel.c:1332
 msgid "Delete this drawer?"
 msgstr "Skrap hierdie laai?"
 
-#: ../mate-panel/panel.c:1333
+#: ../ukui-panel/panel.c:1333
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
 msgstr "Wanneer 'n laai weg gegooi word, dan is die laai en sy⏎\nspesifikasies weg."
 
-#: ../mate-panel/panel.c:1336
+#: ../ukui-panel/panel.c:1336
 msgid "Delete this panel?"
 msgstr "Skrap hierdie paneel?"
 
-#: ../mate-panel/panel.c:1337
+#: ../ukui-panel/panel.c:1337
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."

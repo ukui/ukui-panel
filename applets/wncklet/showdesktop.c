@@ -73,18 +73,18 @@ static void show_desktop_changed_callback(WnckScreen* screen, ShowDesktopData* s
 
 /* this is when the panel orientation changes */
 
-static void applet_change_orient(MatePanelApplet* applet, MatePanelAppletOrient orient, ShowDesktopData* sdd)
+static void applet_change_orient(UkuiPanelApplet* applet, UkuiPanelAppletOrient orient, ShowDesktopData* sdd)
 {
 	GtkOrientation new_orient;
 
 	switch (orient)
 	{
-		case MATE_PANEL_APPLET_ORIENT_LEFT:
-		case MATE_PANEL_APPLET_ORIENT_RIGHT:
+		case UKUI_PANEL_APPLET_ORIENT_LEFT:
+		case UKUI_PANEL_APPLET_ORIENT_RIGHT:
 			new_orient = GTK_ORIENTATION_VERTICAL;
 			break;
-		case MATE_PANEL_APPLET_ORIENT_UP:
-		case MATE_PANEL_APPLET_ORIENT_DOWN:
+		case UKUI_PANEL_APPLET_ORIENT_UP:
+		case UKUI_PANEL_APPLET_ORIENT_DOWN:
 		default:
 			new_orient = GTK_ORIENTATION_HORIZONTAL;
 			break;
@@ -347,7 +347,7 @@ static gboolean button_drag_motion(GtkWidget* widget, GdkDragContext* context, g
 	return TRUE;
 }
 
-static void show_desktop_applet_realized(MatePanelApplet* applet, gpointer data)
+static void show_desktop_applet_realized(UkuiPanelApplet* applet, gpointer data)
 {
 	ShowDesktopData* sdd;
 	GdkScreen* screen;
@@ -381,7 +381,7 @@ static void theme_changed_callback(GtkIconTheme* icon_theme, ShowDesktopData* sd
 	update_icon (sdd);
 }
 
-gboolean show_desktop_applet_fill(MatePanelApplet* applet)
+gboolean show_desktop_applet_fill(UkuiPanelApplet* applet)
 {
 	ShowDesktopData* sdd;
 	GtkActionGroup* action_group;
@@ -389,7 +389,7 @@ gboolean show_desktop_applet_fill(MatePanelApplet* applet)
 	AtkObject* atk_obj;
 	GtkCssProvider *provider;
 
-	mate_panel_applet_set_flags(applet, MATE_PANEL_APPLET_EXPAND_MINOR);
+	ukui_panel_applet_set_flags(applet, UKUI_PANEL_APPLET_EXPAND_MINOR);
 
 	sdd = g_new0(ShowDesktopData, 1);
 
@@ -397,20 +397,20 @@ gboolean show_desktop_applet_fill(MatePanelApplet* applet)
 
 	sdd->image = gtk_image_new();
 
-	switch (mate_panel_applet_get_orient(applet))
+	switch (ukui_panel_applet_get_orient(applet))
 	{
-		case MATE_PANEL_APPLET_ORIENT_LEFT:
-		case MATE_PANEL_APPLET_ORIENT_RIGHT:
+		case UKUI_PANEL_APPLET_ORIENT_LEFT:
+		case UKUI_PANEL_APPLET_ORIENT_RIGHT:
 			sdd->orient = GTK_ORIENTATION_VERTICAL;
 			break;
-		case MATE_PANEL_APPLET_ORIENT_UP:
-		case MATE_PANEL_APPLET_ORIENT_DOWN:
+		case UKUI_PANEL_APPLET_ORIENT_UP:
+		case UKUI_PANEL_APPLET_ORIENT_DOWN:
 		default:
 			sdd->orient = GTK_ORIENTATION_HORIZONTAL;
 			break;
 	}
 
-	sdd->size = mate_panel_applet_get_size(MATE_PANEL_APPLET(sdd->applet));
+	sdd->size = ukui_panel_applet_get_size(UKUI_PANEL_APPLET(sdd->applet));
 
 	g_signal_connect(G_OBJECT(sdd->applet), "realize", G_CALLBACK(show_desktop_applet_realized), sdd);
 
@@ -461,13 +461,13 @@ gboolean show_desktop_applet_fill(MatePanelApplet* applet)
 	   initial oriantation, and we get that during the _add call */
 	g_signal_connect(G_OBJECT (sdd->applet), "change_orient", G_CALLBACK (applet_change_orient), sdd);
 
-	mate_panel_applet_set_background_widget(MATE_PANEL_APPLET (sdd->applet), GTK_WIDGET(sdd->applet));
+	ukui_panel_applet_set_background_widget(UKUI_PANEL_APPLET (sdd->applet), GTK_WIDGET(sdd->applet));
 
 	action_group = gtk_action_group_new("ShowDesktop Applet Actions");
 	gtk_action_group_set_translation_domain(action_group, GETTEXT_PACKAGE);
 	gtk_action_group_add_actions(action_group, show_desktop_menu_actions, G_N_ELEMENTS (show_desktop_menu_actions), sdd);
 	ui_path = g_build_filename(WNCK_MENU_UI_DIR, "showdesktop-menu.xml", NULL);
-	mate_panel_applet_setup_menu_from_file(MATE_PANEL_APPLET(sdd->applet), ui_path, action_group);
+	ukui_panel_applet_setup_menu_from_file(UKUI_PANEL_APPLET(sdd->applet), ui_path, action_group);
 	g_free(ui_path);
 	g_object_unref(action_group);
 
@@ -485,7 +485,7 @@ gboolean show_desktop_applet_fill(MatePanelApplet* applet)
 
 static void display_help_dialog(GtkAction* action, ShowDesktopData* sdd)
 {
-	wncklet_display_help(sdd->applet, "mate-user-guide", "gospanel-564", SHOW_DESKTOP_ICON);
+	wncklet_display_help(sdd->applet, "ukui-user-guide", "gospanel-564", SHOW_DESKTOP_ICON);
 }
 
 static void display_about_dialog(GtkAction* action, ShowDesktopData* sdd)
@@ -505,7 +505,7 @@ static void display_about_dialog(GtkAction* action, ShowDesktopData* sdd)
 	/* Translator credits */
 	//const char* translator_credits = _("translator-credits");
 	char copyright[] = \
-		"Copyright \xc2\xa9 2012-2017 MATE developers\n"
+		"Copyright \xc2\xa9 2012-2017 UKUI developers\n"
 		"Copyright \xc2\xa9 2011 Perberos\n"
 		"Copyright \xc2\xa9 2002 Red Hat, Inc.";
 
@@ -519,7 +519,7 @@ static void display_about_dialog(GtkAction* action, ShowDesktopData* sdd)
 		"logo-icon-name", SHOW_DESKTOP_ICON,
 		"translator-credits", _("translator-credits"),
 		"version", VERSION,
-		"website", "http://www.mate-desktop.org/",
+		"website", "http://www.ukui-desktop.org/",
 		NULL);
 }
 

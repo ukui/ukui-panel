@@ -3,17 +3,17 @@ size = scalable
 iconsdir = $(datadir)/icons/hicolor/$(size)/apps
 
 icons_DATA =					\
-	mate-panel-clock.svg			\
-	mate-panel-drawer.svg			\
-	mate-panel-fish.svg			\
-	mate-panel-force-quit.svg		\
-	mate-panel-launcher.svg		\
-	mate-panel-notification-area.svg	\
-	mate-panel-separator.svg		\
-	mate-panel.svg				\
-	mate-panel-window-list.svg		\
-	mate-panel-window-menu.svg		\
-	mate-panel-workspace-switcher.svg
+	ukui-panel-clock.svg			\
+	ukui-panel-drawer.svg			\
+	ukui-panel-fish.svg			\
+	ukui-panel-force-quit.svg		\
+	ukui-panel-launcher.svg		\
+	ukui-panel-notification-area.svg	\
+	ukui-panel-separator.svg		\
+	ukui-panel.svg				\
+	ukui-panel-window-list.svg		\
+	ukui-panel-window-menu.svg		\
+	ukui-panel-workspace-switcher.svg
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 

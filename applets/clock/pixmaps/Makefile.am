@@ -1,4 +1,4 @@
-icondir = $(datadir)/mate-panel/pixmaps
+icondir = $(datadir)/ukui-panel/pixmaps
 icon_DATA =				\
 	clock-calendar-icon.png		\
 	clock-face-large.svg		\

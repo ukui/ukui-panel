@@ -22,7 +22,7 @@
 #ifndef __NA_TRAY_APPLET_H__
 #define __NA_TRAY_APPLET_H__
 
-#include <mate-panel-applet.h>
+#include <ukui-panel-applet.h>
 
 G_BEGIN_DECLS
 
@@ -39,7 +39,7 @@ typedef struct _NaTrayAppletPrivate NaTrayAppletPrivate;
 
 struct _NaTrayApplet
 {
-  MatePanelApplet parent_object;
+  UkuiPanelApplet parent_object;
 
   /*< private >*/
   NaTrayAppletPrivate *priv;
@@ -47,7 +47,7 @@ struct _NaTrayApplet
 
 struct _NaTrayAppletClass
 {
-  MatePanelAppletClass parent_class;
+  UkuiPanelAppletClass parent_class;
 };
 
 GType na_tray_applet_get_type (void) G_GNUC_CONST;

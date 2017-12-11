@@ -10,13 +10,13 @@
 #define __WORKSPACE_SWITCHER_APPLET_H__
 
 #include <glib.h>
-#include <mate-panel-applet.h>
+#include <ukui-panel-applet.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-gboolean workspace_switcher_applet_fill(MatePanelApplet* applet);
+gboolean workspace_switcher_applet_fill(UkuiPanelApplet* applet);
 
 #ifdef __cplusplus
 }

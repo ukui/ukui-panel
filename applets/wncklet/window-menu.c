@@ -30,7 +30,7 @@
 #endif
 
 #include <string.h>
-#include <mate-panel-applet.h>
+#include <ukui-panel-applet.h>
 
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
@@ -41,18 +41,18 @@
 #include "wncklet.h"
 #include "window-menu.h"
 
-#define WINDOW_MENU_ICON "mate-panel-window-menu"
+#define WINDOW_MENU_ICON "ukui-panel-window-menu"
 
 typedef struct {
 	GtkWidget* applet;
 	GtkWidget* selector;
 	int size;
-	MatePanelAppletOrient orient;
+	UkuiPanelAppletOrient orient;
 } WindowMenu;
 
 static void window_menu_help(GtkAction* action, WindowMenu* window_menu)
 {
-	wncklet_display_help(window_menu->applet, "mate-user-guide", "panel-windowselector", WINDOW_MENU_ICON);
+	wncklet_display_help(window_menu->applet, "ukui-user-guide", "panel-windowselector", WINDOW_MENU_ICON);
 }
 
 static void window_menu_about(GtkAction* action, WindowMenu* window_menu)
@@ -73,7 +73,7 @@ static void window_menu_about(GtkAction* action, WindowMenu* window_menu)
 	};
 
 	char copyright[] = \
-		"Copyright \xc2\xa9 2012-2017 MATE developers\n"
+		"Copyright \xc2\xa9 2012-2017 UKUI developers\n"
 		"Copyright \xc2\xa9 2011 Perberos\n"
 		"Copyright \xc2\xa9 2003 Sun Microsystems, Inc.\n"
 		"Copyright \xc2\xa9 2001 Free Software Foundation, Inc.\n"
@@ -89,7 +89,7 @@ static void window_menu_about(GtkAction* action, WindowMenu* window_menu)
 		"logo-icon-name", WINDOW_MENU_ICON,
 		"translator-credits", _("translator-credits"),
 		"version", VERSION,
-		"website", "http://www.mate-desktop.org/",
+		"website", "http://www.ukui-desktop.org/",
 		NULL);
 }
 
@@ -166,19 +166,19 @@ static inline void force_no_focus_padding(GtkWidget* widget)
 }
 #endif
 
-static void window_menu_size_allocate(MatePanelApplet* applet, GtkAllocation* allocation, WindowMenu* window_menu)
+static void window_menu_size_allocate(UkuiPanelApplet* applet, GtkAllocation* allocation, WindowMenu* window_menu)
 {
-	MatePanelAppletOrient orient;
+	UkuiPanelAppletOrient orient;
 	GList* children;
 	GtkWidget* child;
 
-	orient = mate_panel_applet_get_orient(applet);
+	orient = ukui_panel_applet_get_orient(applet);
 
 	children = gtk_container_get_children(GTK_CONTAINER(window_menu->selector));
 	child = GTK_WIDGET(children->data);
 	g_list_free(children);
 
-	if (orient == MATE_PANEL_APPLET_ORIENT_LEFT || orient == MATE_PANEL_APPLET_ORIENT_RIGHT)
+	if (orient == UKUI_PANEL_APPLET_ORIENT_LEFT || orient == UKUI_PANEL_APPLET_ORIENT_RIGHT)
 	{
 		if (window_menu->size == allocation->width && orient == window_menu->orient)
 			return;
@@ -238,7 +238,7 @@ static gboolean filter_button_press(GtkWidget* widget, GdkEventButton* event, gp
 	return FALSE;
 }
 
-gboolean window_menu_applet_fill(MatePanelApplet* applet)
+gboolean window_menu_applet_fill(UkuiPanelApplet* applet)
 {
 	WindowMenu* window_menu;
 	GtkActionGroup* action_group;
@@ -254,9 +254,9 @@ gboolean window_menu_applet_fill(MatePanelApplet* applet)
 #endif
 	gtk_widget_set_tooltip_text(window_menu->applet, _("Window Selector"));
 
-	mate_panel_applet_set_flags(applet, MATE_PANEL_APPLET_EXPAND_MINOR);
-	window_menu->size = mate_panel_applet_get_size(applet);
-	window_menu->orient = mate_panel_applet_get_orient(applet);
+	ukui_panel_applet_set_flags(applet, UKUI_PANEL_APPLET_EXPAND_MINOR);
+	window_menu->size = ukui_panel_applet_get_size(applet);
+	window_menu->orient = ukui_panel_applet_get_orient(applet);
 
 	g_signal_connect(window_menu->applet, "destroy", G_CALLBACK(window_menu_destroy), window_menu);
 
@@ -264,14 +264,14 @@ gboolean window_menu_applet_fill(MatePanelApplet* applet)
 	gtk_action_group_set_translation_domain(action_group, GETTEXT_PACKAGE);
 	gtk_action_group_add_actions(action_group, window_menu_actions, G_N_ELEMENTS(window_menu_actions), window_menu);
 	ui_path = g_build_filename(WNCK_MENU_UI_DIR, "window-menu-menu.xml", NULL);
-	mate_panel_applet_setup_menu_from_file(applet, ui_path, action_group);
+	ukui_panel_applet_setup_menu_from_file(applet, ui_path, action_group);
 	g_free(ui_path);
 	g_object_unref(action_group);
 
 	window_menu->selector = wnck_selector_new();
 	gtk_container_add(GTK_CONTAINER(window_menu->applet), window_menu->selector);
 
-	mate_panel_applet_set_background_widget(MATE_PANEL_APPLET(window_menu->applet), GTK_WIDGET(window_menu->selector));
+	ukui_panel_applet_set_background_widget(UKUI_PANEL_APPLET(window_menu->applet), GTK_WIDGET(window_menu->selector));
 
 	g_signal_connect(window_menu->applet, "key_press_event", G_CALLBACK(window_menu_key_press_event), window_menu);
 	g_signal_connect(window_menu->applet, "size-allocate", G_CALLBACK(window_menu_size_allocate), window_menu);

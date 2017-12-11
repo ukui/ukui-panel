@@ -7,12 +7,12 @@
 # Sveinn í Felli <sv1@fellsnet.is>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: MATE Desktop Environment\n"
+"Project-Id-Version: UKUI Desktop Environment\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-26 11:42+0300\n"
 "PO-Revision-Date: 2017-09-19 11:04+0000\n"
 "Last-Translator: monsta <monsta@inbox.ru>\n"
-"Language-Team: Icelandic (http://www.transifex.com/mate/MATE/language/is/)\n"
+"Language-Team: Icelandic (http://www.transifex.com/ukui/UKUI/language/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -168,10 +168,10 @@ msgstr "_Stillingar"
 #: ../applets/notification_area/main.c:176
 #: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-list.c:187
 #: ../applets/wncklet/window-menu.c:100
-#: ../applets/wncklet/workspace-switcher.c:344 ../mate-panel/drawer.c:545
-#: ../mate-panel/panel-action-button.c:730
-#: ../mate-panel/panel-context-menu.c:265 ../mate-panel/panel-menu-bar.c:359
-#: ../mate-panel/panel-menu-button.c:666
+#: ../applets/wncklet/workspace-switcher.c:344 ../ukui-panel/drawer.c:545
+#: ../ukui-panel/panel-action-button.c:730
+#: ../ukui-panel/panel-context-menu.c:265 ../ukui-panel/panel-menu-bar.c:359
+#: ../ukui-panel/panel-menu-button.c:666
 msgid "_Help"
 msgstr "_Hjálp"
 
@@ -212,7 +212,7 @@ msgid "City Time Zone"
 msgstr "Tímasvæði borgar"
 
 #: ../applets/clock/clock.c:3280
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:3
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:3
 msgid "Clock"
 msgstr "Klukka"
 
@@ -225,7 +225,7 @@ msgstr "Klukkan sýnir núverandi tíma og dagsettningu"
 #: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:562
 #: ../applets/wncklet/window-menu.c:90
 #: ../applets/wncklet/workspace-switcher.c:604
-#: ../mate-panel/panel-context-menu.c:121
+#: ../ukui-panel/panel-context-menu.c:121
 msgid "translator-credits"
 msgstr "Tryggvi Björgvinsson <tryggvib@hi.is>\nAnna Jonna Ármannsdóttir <annajonna@gmail.com>"
 
@@ -330,7 +330,7 @@ msgid "Show _temperature"
 msgstr "Sýna_hitastig"
 
 #: ../applets/clock/clock.ui.h:26 ../applets/fish/fish.ui.h:2
-#: ../mate-panel/panel-properties-dialog.ui.h:11
+#: ../ukui-panel/panel-properties-dialog.ui.h:11
 msgid "General"
 msgstr "Almennt"
 
@@ -412,7 +412,7 @@ msgid "%s, %s"
 msgstr "%s, %s"
 
 #. FMQ: it's broken to read from another module's translations; add some API
-#. to libmateweather.
+#. to libukuiweather.
 #: ../applets/clock/clock-location-tile.c:618
 #: ../applets/clock/clock-location-tile.c:627
 msgid "Unknown"
@@ -431,7 +431,7 @@ msgstr "Sólarupprás: %s / Sólsetur: %s"
 
 #: ../applets/clock/clock-utils.c:95 ../applets/fish/fish.c:168
 #: ../applets/notification_area/main.c:121 ../applets/wncklet/wncklet.c:71
-#: ../mate-panel/libpanel-util/panel-show.c:234
+#: ../ukui-panel/libpanel-util/panel-show.c:234
 #, c-format
 msgid "Could not display help document '%s'"
 msgstr "Gat ekki birt hjálparskjalið ‚%s‘"
@@ -441,11 +441,11 @@ msgstr "Gat ekki birt hjálparskjalið ‚%s‘"
 msgid "Error displaying help document"
 msgstr "Villa við birtingu hjálparskjals"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:1
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:1
 msgid "Hour format"
 msgstr "Klukkustunda snið"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:2
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:2
 msgid ""
 "This key specifies the hour format used by the clock applet. Possible values"
 " are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom\". If set"
@@ -457,11 +457,11 @@ msgid ""
 " the custom_format key."
 msgstr "Þessi lykill skilgreinir stundasniðið sem klukkan notar. Möguleg gildi eru \"12-tíma\", \"24-tíma\", \"Internet\", \"Unix\" og \"sérsnið\". Ef stillt er á \"Internet\" sýnir klukkan Internet-tíma. Internet-tímakerfið skiptir deginum í 1000 \"slög\". Það eru engin tímabelti í þessu kerfi þannig að tíminn er sá sami um allan heim. Ef stillt er á \"Unix\" sýnir klukkan tímann sem sekúndur sem liðið hafa frá upphafi Unix-viðmiðunartíma, þ.e. 1. 1. 1970. Ef stillt er á \"sérsnið\" sýnir klukkan tímann samkvæmt því tímasniði sem er skilgreint með sérs_niðslyklinum."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:3
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:3
 msgid "Custom format of the clock"
 msgstr "Sérsnið klukku"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:4
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:4
 msgid ""
 "This key specifies the format used by the clock applet when the format key "
 "is set to \"custom\". You can use conversion specifiers understood by "
@@ -469,95 +469,95 @@ msgid ""
 "information."
 msgstr "Þessi lykill ákveður forsniðið sem verður notað af klukkusmáforritinu þegar forsniðslykillinn er stilltur sem \"sérsnið\". Þú getur notað umbreytingartilgreina sem strftime() skilur til þess að ná fram ákveðnu forsniði. Skoðaðu strftime() leiðbeiningarnar til þess að fá meiri upplýsingar."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:5
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:5
 msgid "Show time with seconds"
 msgstr "Sýna sekúndur í tíma"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:6
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:6
 msgid "If true, display seconds in time."
 msgstr "Ef þetta er valið eru sekúndur sýndar."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:7
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:7
 msgid "Show date in clock"
 msgstr "Sýna dagsetningu í klukku"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:8
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Ef þetta er valið er dagsetning sýnd með klukku, auk tímans."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:9
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:9
 msgid "Show date in tooltip"
 msgstr "Sýna dagsetningu sem ábendingu"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:10
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:10
 msgid "If true, show date in a tooltip when the pointer is over the clock."
 msgstr "Ef þetta er valið er dagsetning sýnd sem ábending þegar vísirinn er yfir klukkunni."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:11
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:11
 msgid "Show weather in clock"
 msgstr "Birta veður í klukku"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:12
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:12
 msgid "If true, display a weather icon."
 msgstr "Ef satt, þá verður veðurteikn birt."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:13
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:13
 msgid "Show temperature in clock"
 msgstr "Birta hitastig í klukku"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:14
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:14
 msgid "If true, show the temperature next to the weather icon."
 msgstr "Ef satt, þá verður hitastig sýnt við hlið veðurteikns."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:15
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:15
 msgid "Show week numbers in calendar"
 msgstr "Sýna vikunúmer í dagatali"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:16
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:16
 msgid "If true, show week numbers in the calendar."
 msgstr "Ef þetta er valið er vikunúmer sýnt í dagatali."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:17
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:17
 msgid "Expand list of locations"
 msgstr "Víkka lista af staðsetningum"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:18
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:18
 msgid "If true, expand the list of locations in the calendar window."
 msgstr "Ef satt, þá verður listi af staðsetningum í dagatalsglugga víkkaður."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:19
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:19
 msgid "List of locations"
 msgstr "Listi yfir staðsetningar"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:20
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:20
 msgid "A list of locations to display in the calendar window."
 msgstr "Listi yfir staðsetningar til að birta í dagatalsglugga"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:21
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:21
 msgid "Temperature unit"
 msgstr "Hitaeining"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:22
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:22
 msgid "The unit to use when showing temperatures."
 msgstr "Mælieiningin sem verður notuð til að sýna hitastig."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:23
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:23
 msgid "Speed unit"
 msgstr "Hraðaeining"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:24
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:24
 msgid "The unit to use when showing wind speed."
 msgstr "Mælieiningin sem verður notuð til að sýna vindhraða."
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:1
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:1
 msgid "Clock Applet Factory"
 msgstr "Smíði klukkuforritlinga"
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:2
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:2
 msgid "Factory for clock applet"
 msgstr "Verksmiðja fyrir klukkusmáforrit"
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:4
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:4
 msgid "Get the current time and date"
 msgstr "Ná í núverandi tíma og dagsettningu"
 
@@ -593,7 +593,7 @@ msgid "(with minor help from George)"
 msgstr "(með minniháttar hjálp frá George)"
 
 #: ../applets/fish/fish.c:569
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:3
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:3
 msgid "Fish"
 msgstr "Fiskur"
 
@@ -673,7 +673,7 @@ msgstr "Sk_ipun til að keyra þegar smellt er á:"
 msgid "Animation"
 msgstr "Hreyfimynd"
 
-#: ../applets/fish/fish.ui.h:6 ../mate-panel/panel-properties-dialog.ui.h:14
+#: ../applets/fish/fish.ui.h:6 ../ukui-panel/panel-properties-dialog.ui.h:14
 msgid "    "
 msgstr "    "
 
@@ -705,77 +705,77 @@ msgstr "sekúndur"
 msgid "_Rotate on vertical panels"
 msgstr "_Snúa á lóðréttri stiku"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:1
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:1
 msgid "The fish's name"
 msgstr "Nafn fisksins"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:2
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:2
 msgid ""
 "A fish without a name is a pretty dull fish. Bring your fish to life by "
 "naming him."
 msgstr "Fiskur með engu nafni er frekar daufur fiskur. Lífgaðu upp á hann með því að gefa honum nafn."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:3
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:3
 msgid "The fish's animation pixmap"
 msgstr "Hreyfimynd fisksins"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:4
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:4
 msgid ""
 "This key specifies the filename of the pixmap which will be used for the "
 "animation displayed in the fish applet relative to the pixmap directory."
 msgstr "Þessi lykill tilgreinir skrárnafn myndarinnar sem verður notuð fyrir hreyfimyndina sem birt er í fiskaforritinu með tilliti til myndamöppunar."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:5
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:5
 msgid "Command to execute on click"
 msgstr "Skipun til að keyra þegar smellt er"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:6
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:6
 msgid ""
 "This key specifies the command that will be tried to execute when the fish "
 "is clicked."
 msgstr "Þessi lykill tilgreinir skipunina sem verður reynt að framkvæma þegar smellt er á fiskinn"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:7
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:7
 msgid "Frames in fish's animation"
 msgstr "Rammar í hreyfimynd fisksins"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:8
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:8
 msgid ""
 "This key specifies the number of frames that will be displayed in the fish's"
 " animation."
 msgstr "Þessi lykill tilgreinir fjölda ramma sem verða birtir í hreyfimynd fisksins."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:9
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:9
 msgid "Pause per frame"
 msgstr "Hlé í hverjum ramma"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:10
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:10
 msgid "This key specifies the number of seconds each frame will be displayed."
 msgstr "Þessi lykill tilgreinir fjölda sekúndna sem hver rammi verður birtur."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:11
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:11
 msgid "Rotate on vertical panels"
 msgstr "Snúa á lóðréttum stikum"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:12
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:12
 msgid ""
 "If true, the fish's animation will be displayed rotated on vertical panels."
 msgstr "Ef þetta er valið er hreyfing fiskins sýnd sem sem snúningur á lóðréttum stikum."
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:1
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:1
 msgid "Wanda Factory"
 msgstr "Wanda smiðja"
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:2
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:2
 msgid "From Whence That Stupid Fish Came"
 msgstr "Hvaðan sá heimski fiskur kom"
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:4
-msgid "Display a swimming fish or another animated creature"
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:4
+msgid "Display a swimming fish or another aniukuid creature"
 msgstr "Sýna syndandi fisk eða annað dýr að hreyfast"
 
 #: ../applets/notification_area/main.c:164
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:3
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:3
 msgid "Notification Area"
 msgstr "Tilkynningasvæði"
 
@@ -783,130 +783,130 @@ msgstr "Tilkynningasvæði"
 msgid "Panel Notification Area"
 msgstr "Tilkynningasvæði stiku"
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:1
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:1
 msgid "Notification Area Factory"
 msgstr "Tilkynningasvæðis smiðja"
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:2
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:2
 msgid "Factory for notification area"
 msgstr "Verksmiðja fyrir tilkynningasvæði"
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:4
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:4
 msgid "Area where notification icons appear"
 msgstr "Svæðið þar sem tilkynningatáknmyndir birtast"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:1
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:1
 msgid "Show windows from all workspaces"
 msgstr "Sýna glugga frá öllum vinnusvæðum"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:2
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:2
 msgid ""
 "If true, the window list will show windows from all workspaces. Otherwise it"
 " will only display windows from the current workspace."
 msgstr "Ef valið, mun gluggalistinn sýna glugga frá öllum vinnusvæðum. Annars verða aðeins birtir gluggar frá núverandi vinnusvæði."
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:3
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:3
 msgid "When to group windows"
 msgstr "Hvenær safna skal gluggum saman"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:4
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:4
 msgid ""
 "Decides when to group windows from the same application on the window list. "
 "Possible values are \"never\", \"auto\" and \"always\"."
 msgstr "Tilgreinir hvenær safna eigi saman gluggum sama forrits í gluggalistanum. Möguleg gildi eru „aldrei‟, „sjálfvirkt‟ og „alltaf‟."
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:5
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:5
 msgid "Move windows to current workspace when unminimized"
 msgstr "Flytja glugga á núverandi vinnusvæði þegar hann er þaninn"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:6
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:6
 msgid ""
 "If true, then when unminimizing a window, move it to the current workspace. "
 "Otherwise, switch to the workspace of the window."
 msgstr "Ef valið, mun gluggi verða fluttur á núverandi vinnusvæði þegar hann er þaninn. Annars er skipt yfir vinnusvæði gluggans."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:1
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:1
 msgid "Display workspace names"
 msgstr "Birta heiti vinnusvæða"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:2
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:2
 msgid ""
 "If true, the workspaces in the workspace switcher will display the names of "
 "the workspaces. Otherwise they will display the windows on the workspace. "
 "This setting only works when the window manager is Marco."
 msgstr "Ef satt, þá munu vinnusvæðin í vinnusvæðaskiptaranum birta nafnið sitt. Annars munu þau birta gluggana í vinnusvæðinu. Þessi stilling virkar einungis ef gluggastjórinn er Marco."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:3
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:3
 msgid "Display all workspaces"
 msgstr "Sýna öll vinnusvæði"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:4
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:4
 msgid ""
 "If true, the workspace switcher will show all workspaces. Otherwise it will "
 "only show the current workspace."
 msgstr "Ef valið mun vinnusvæðaskiptirinn sýna öll vinnusvæði. Annars mun hann aðeins sýna núverandi vinnusvæði"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:5
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:5
 msgid "Rows in workspace switcher"
 msgstr "Raðir í vinnusvæðaskiptara"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:6
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:6
 msgid ""
 "This key specifies how many rows (for horizontal layout) or columns (for "
 "vertical layout) the workspace switcher shows the workspaces in. This key is"
 " only relevant if the display_all_workspaces key is true."
 msgstr "Þessi lykill tilgreinir hve margar raðir (fyrir lárétt snið) eða dálka (fyrir lóðrétt snið) vinnusvæðaskiptarinn sýnir vinnusvæðin á. Þetta skiptir aðeins máli ef valið er að sýna öll vinnusvæðin."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:7
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:7
 msgid "Wrap around on scroll"
 msgstr "Tengja enda við skrun"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:8
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:8
 msgid ""
 "If true, the workspace switcher will allow wrap-around, which means "
 "switching from the first to the last workspace and vice versa via scrolling."
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:1
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:1
 msgid "Window Navigation Applet Factory"
 msgstr "Gluggameðhöndlunar forritlings smiðja"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:2
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:2
 msgid "Factory for the window navigation related applets"
 msgstr "Smiðja fyrir gluggameðhöndlunar tengda forritlinga"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:3
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:3
 #: ../applets/wncklet/window-menu.c:83 ../applets/wncklet/window-menu.c:255
 msgid "Window Selector"
 msgstr "Glugga val"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:4
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:4
 msgid "Switch between open windows using a menu"
 msgstr "Skipta á milli opinna glugga með valmynd"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:5
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:5
 #: ../applets/wncklet/workspace-switcher.c:597
 msgid "Workspace Switcher"
 msgstr "Vinnusvæða skiptir"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:6
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:6
 msgid "Switch between workspaces"
 msgstr "Skipta á milli vinnusvæði"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:7
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:7
 #: ../applets/wncklet/window-list.c:555
 msgid "Window List"
 msgstr "Glugga listi"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:8
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:8
 msgid "Switch between open windows using buttons"
 msgstr "Skipta á milli opinna glugga með hnöppum"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:9
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:9
 msgid "Show Desktop"
 msgstr "Birta skjáborð"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:10
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:10
 msgid "Hide application windows and show the desktop"
 msgstr "Fela forritaglugga og sýna skjáborðið"
 
@@ -1058,432 +1058,432 @@ msgstr ""
 msgid "Workspaces"
 msgstr "Vinnusvæði"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.gschema.xml.in.h:1
 msgid "Default panel layout"
 msgstr "Sjálfgefin framsetning skjástiku"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.gschema.xml.in.h:2
 msgid "The default panels layout to use when panels are created or resetted."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.gschema.xml.in.h:3
 msgid "Enable program list in \"Run Application\" dialog"
 msgstr "Virkja forritalista í „Keyra forrit‟ svarglugganum"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.gschema.xml.in.h:4
 msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is made available. Whether or not the listing is expanded when the "
 "dialog is shown is controlled by the show_program_list key."
 msgstr "Ef valið, er listinn „Þekkt forrit‟ gerður aðgengilegur í  „Keyra forrit‟ svarglugganum þegar sá gluggi er opnaður. Hvort listinn er opnaður þegar gluggin er opnaður veltur á sýna_forrita_lista lyklinum."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.gschema.xml.in.h:5
 msgid "Expand program list in \"Run Application\" dialog"
 msgstr "Opna forritalista í „Keyra forrit‟ svarglugganum"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.gschema.xml.in.h:6
 msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is expanded when the dialog is opened. This key is only relevant if "
 "the enable_program_list key is true."
 msgstr "Ef valið, er listinn „Þekkt forrit‟ opnaður í  „Keyra forrit‟ svarglugganum þegar sá gluggi er opnaður. Þessi lykill er því aðeins virkur að virkja_forrita_lista lykillin hafi verið valinn."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.gschema.xml.in.h:7
 msgid "Enable autocompletion in \"Run Application\" dialog"
 msgstr "Virkja sjálfvirka fyllingu  „Keyra forrit‟ svarglugganum"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.gschema.xml.in.h:8
 msgid ""
 "If true, autocompletion in the \"Run Application\" dialog is made available."
 msgstr "Ef valið, er sjálfvirk fylling gerð aðgengileg í „Keyra forrit‟ svarglugganum."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.gschema.xml.in.h:9
 msgid "History for \"Run Application\" dialog"
 msgstr "Ferill fyrir „Keyra forrit‟ samskiptagluggann"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.gschema.xml.in.h:10
 msgid ""
 "This is the list of commands used in \"Run Application\" dialog. The "
 "commands are sorted descendingly by recency (e.g., most recent command comes"
 " first)."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.gschema.xml.in.h:11
 msgid "Maximum history size for \"Run Application\" dialog"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.gschema.xml.in.h:12
 msgid ""
 "Controls the maximum size of the history of the \"Run Application\" dialog. "
 "A value of 0 will disable the history."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.gschema.xml.in.h:13
 msgid "Reverse the history of the \"Run Application\" dialog"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.gschema.xml.in.h:14
 msgid ""
 "Displays the history in reverse. Provides a consistent view for terminal "
 "users as the up key will select the most recent entry."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.gschema.xml.in.h:15
 msgid "Panel ID list"
 msgstr "Listi yfir gluggakenni"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.gschema.xml.in.h:16
 msgid ""
 "A list of panel IDs. Each ID identifies an individual toplevel panel. The "
 "settings for each of these panels are stored in /apps/panel/toplevels/$(id)."
 msgstr "Listi yfir stikukenni. Hvert kenni auðkennir sérstaka stiku af efstu gráðu. Uppsetningin fyrir hverja af þessum stikum er geymd í /apps/panel/toplevels/$(id)."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.gschema.xml.in.h:17
 msgid "Panel object ID list"
 msgstr "Listi yfir stikuhlutakenni"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.gschema.xml.in.h:18
 msgid ""
 "A list of panel object IDs. Each ID identifies an individual panel object "
 "(e.g. a launcher, action button or menu button/bar). The settings for each "
 "of these objects are stored in /apps/panel/objects/$(id)."
 msgstr "Listi yfir hlutakenni stiku. Hvert kenni auðkennir sérstakan stikuhlut (t.d. ræsi, aðgerðahnapp, eða valmyndarhnapp/slá). Uppsetningin fyrir hvern af þessum hlutum er geymd í /apps/panel/objects/$(id)."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.gschema.xml.in.h:19
 msgid "Enable tooltips"
 msgstr "Virkja ábendingar"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.gschema.xml.in.h:20
 msgid "If true, tooltips are shown for objects in panels."
 msgstr "Ef valið verða ábendingar sýndar fyrir hluti á stikum."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:21
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
 msgid "Enable animations"
 msgstr "Virkja hreyfimyndir"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.gschema.xml.in.h:22
 msgid "Autoclose drawer"
 msgstr "Loka skúffu sjálfkrafa"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.gschema.xml.in.h:23
 msgid ""
 "If true, a drawer will automatically be closed when the user clicks a "
 "launcher in it."
 msgstr "Ef valið, þá lokast skúffa sjálfkrafa þegar notandi smellir á ræsi í henni."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.gschema.xml.in.h:24
 msgid "Confirm panel removal"
 msgstr "Staðfesta að fjarlægja stiku"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.gschema.xml.in.h:25
 msgid ""
 "If true, a dialog is shown asking for confirmation if the user wants to "
 "remove a panel."
 msgstr "Ef valið, er svargluggi birtur til að fá staðfestingu á að notandi vil eyða stiku."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.gschema.xml.in.h:26
 msgid "Highlight launchers on mouseover"
 msgstr "Auðkenna ræsa við músyfir"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.gschema.xml.in.h:27
 msgid ""
 "If true, a launcher is highlighted when the user moves the pointer over it."
 msgstr "Ef valið, er ræsirinn auðkenndur þegar notandi setur músarbendilinn yfir hann."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.gschema.xml.in.h:28
 msgid "Complete panel lockdown"
 msgstr "Algjör stikulæsing"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.gschema.xml.in.h:29
 msgid ""
 "If true, the panel will not allow any changes to the configuration of the "
 "panel. Individual applets may need to be locked down separately however. The"
 " panel must be restarted for this to take effect."
 msgstr "Ef valið, mun stikan ekki leyfa neinar breytingar á stillingum stikunnar. Vera kann að nauðsunlegt verið að læsa einstökum forrit sérstaklega. Endurræsa þarf stikuna svo þetta taki gildi."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.gschema.xml.in.h:30
 msgid "Applet IIDs to disable from loading"
 msgstr "Forritakenni sem á hindra í að hlaðast"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.gschema.xml.in.h:31
 msgid ""
 "A list of applet IIDs that the panel will ignore. This way you can disable "
 "certain applets from loading or showing up in the menu. For example to "
-"disable the mini-commander applet add 'OAFIID:MATE_MiniCommanderApplet' to "
+"disable the mini-commander applet add 'OAFIID:UKUI_MiniCommanderApplet' to "
 "this list. The panel must be restarted for this to take effect."
-msgstr "Listi yfir forritakenni sem stikan mun horfa framhjá. Á þennan hátt er hægt að hindra tiltekin forrit í að hlaðast eða birtast í valmyndum. Td til þess að hindra mini-commander forritið bætið ,OAFIID:MATE_MiniCommanderApple' við listan. Endurræsa þarf stikuna til þess að virkja þetta."
+msgstr "Listi yfir forritakenni sem stikan mun horfa framhjá. Á þennan hátt er hægt að hindra tiltekin forrit í að hlaðast eða birtast í valmyndum. Td til þess að hindra mini-commander forritið bætið ,OAFIID:UKUI_MiniCommanderApple' við listan. Endurræsa þarf stikuna til þess að virkja þetta."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.gschema.xml.in.h:32
 msgid "Disable Force Quit"
 msgstr "Gera lokunarþvingun óvirka"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.gschema.xml.in.h:33
 msgid ""
 "If true, the panel will not allow a user to force an application to quit by "
 "removing access to the force quit button."
 msgstr "Ef valið, mun stikan ekki leyfa notandanum að þvinga forrit til að hætta með þvi að fjarlægja aðgang að þvinga til að hætta hnappnum"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:1
 msgid "Show applications menu"
 msgstr "Birta forritavalmynd"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:2
 msgid "If true, show applications item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:3
 msgid "Show places menu"
 msgstr "Birta staðavalmynd"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:4
 msgid "If true, show places item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:5
 msgid "Show desktop menu"
 msgstr "Birta skjáborðsvalmynd"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:6
 msgid "If true, show desktop item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:7
 msgid "Show icon"
 msgstr "Birta táknmynd"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:8
 msgid "If true, show icon in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:9
 msgid "Icon to show in menu bar"
 msgstr "Táknmynd sem á að birta í valmyndasstiku"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:10
 msgid "Set the theme icon name to use in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:11
 msgid "Menu bar icon size"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:12
 msgid ""
 "Set the size of an icon used in menu bar. The panel must be restarted for "
 "this to take effect."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:13
 msgid "Menu items icon size"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:14
 msgid ""
 "Set the size of icons used in the menu. The panel must be restarted for this"
 " to take effect."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:15
 msgid "Threshold of menu items before submenu is created"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:16
 msgid ""
 "Maximum number of menu items (i.e. bookmarks) that are displayed without "
 "being put in a submenu."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:1
 msgid "Panel object type"
 msgstr "Tegund stikuhlutar"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:2
 msgid "The type of this panel object."
 msgstr "Tegund þessa stikuhlutar."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:3
 msgid "Toplevel panel containing object"
 msgstr "Efstastigs stika sem inniheldur hlut"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:4
 msgid "The identifier of the toplevel panel which contains this object."
 msgstr "Kennimerki efstastigs stikunnar sem inniheldur þessa hluti."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:5
 msgid "Object's position on the panel"
 msgstr "Staðsetning hlutar á stikunni"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:6
 msgid ""
 "The position of this panel object. The position is specified by the number "
 "of pixels from the left (or top if vertical) panel edge."
 msgstr "Staðsetning þessa stikuhlutar. Staðsetningin er tilgreind með fjölda díla frá vinstri brún stiku (eða toppnum ef hún er lóðrétt)"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:7
 msgid "Interpret position relative to bottom/right edge"
 msgstr "Gefa staðsetningu með botn eða hægri brún sem viðmiðun"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:8
 msgid ""
 "If true, the position of the object is interpreted relative to the right (or"
 " bottom if vertical) edge of the panel."
 msgstr "Ef valið, er staðsetning hlutar gefin með hægri brún stikunnar (eða botn ef hún er lóðrétt) sem viðmiðun."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:9
 msgid "Lock the object to the panel"
 msgstr "Læsa hlut við stiku"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:10
 msgid ""
 "If true, the user may not move the applet without first unlocking the object"
 " using the \"Unlock\" menuitem."
 msgstr "Ef valið, getur notandinn ekki fært foritling án þess að aflæsa hlutnum fyrst með því að nota „Aflæsa‟ valkostinn í valmyndinni."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:11
 msgid "Applet IID"
 msgstr "Auðkenni (IID) smáforrits"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:12
 msgid ""
 "The implementation ID of the applet - e.g. "
 "\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
-"object_type key is \"external-applet\" (or the deprecated \"matecomponent-"
+"object_type key is \"external-applet\" (or the deprecated \"ukuicomponent-"
 "applet\")."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:13
 msgid "Panel attached to drawer"
 msgstr "Stika tengd skúffu"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:14
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
 "relevant if the object_type key is \"drawer-object\"."
 msgstr "Kennimerki stikunnar sem er tengd þessarri skúffu. Þessi lykill er því aðeins virkur að hlutar_tegund sé „skúffuhlutur‟"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:15
 msgid "Tooltip displayed for drawer or menu"
 msgstr "Ábending birt fyrir skúffu eða valmynd"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:16
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
 "only relevant if the object_type key is \"drawer-object\" or \"menu-"
 "object\"."
 msgstr "Textinn sem birta á sem ábendingu fyrir þessa skúffu eða þessa valmynd. Þessi lykill skiptir því aðeins máli að hlutar_tegund sé „skúffu-hlutur‟ eða „valmyndar-hlutur‟."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:17
 msgid "Use custom icon for object's button"
 msgstr "Sérsniðin táknmynd fyrir hlutathnapp"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:18
 msgid ""
 "If true, the custom_icon key is used as a custom icon for the button. If "
 "false, the custom_icon key is ignored. This key is only relevant if the "
 "object_type key is \"menu-object\" or \"drawer-object\"."
 msgstr "Ef valið, er lykilinn fyrir sésniðina_táknmynd notaður sem sérsniðin táknmynd fyrir hnappin. Ef ekki, er horft framhjá lykilinum fyrir sésniðina_táknmynd. Þessi lykill er því aðeins virkur að tegund_hlutar sé „valmyndar hlutur‟ eða „skúffu hlutur‟."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:19
 msgid "Icon used for object's button"
 msgstr "Táknmynd fyrir hnapp hlutar"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:20
 msgid ""
 "The location of the image file used as the icon for the object's button. "
 "This key is only relevant if the object_type key is \"drawer-object\" or "
 "\"menu-object\" and the use_custom_icon key is true."
 msgstr "Staðsetning myndskrárinnar sem er notuð sem táknmynd fyrir hlutahnapp. Þessi lykill er því aðeins virkur að hlutar_tegund sé „skúffuhlutur‟ eða „valmyndarhlutur‟ og nota_sérsniðna_táknmynd sé valið."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:21
 msgid "Use custom path for menu contents"
 msgstr "Sésrniðin slóð fyrir innihald valmyndar"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:22
 msgid ""
 "If true, the menu_path key is used as the path from which the menu contents "
 "should be constructed. If false, the menu_path key is ignored. This key is "
 "only relevant if the object_type key is \"menu-object\"."
 msgstr "Ef valið, er lykillin valmyndar_slóð notðaur sem slóð á þann stað þar sem innihald valmyndar verður byggt upp. Ef ekki er horft fram hjá lyklinum. Þessi lykill er því aðeins virkur að tegund_hlutar sé „valmyndar hlutur‟."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:23
 msgid "Menu content path"
 msgstr "Slóð á innihald valmyndar"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:24
 msgid ""
 "The path from which the menu contents is contructed. This key is only "
 "relevant if the use_menu_path key is true and the object_type key is \"menu-"
 "object\"."
 msgstr "Slóðin þar sem innihald valmyndarinnar er byggt.  Þessi lykill er því aðeins virkur að nota_valmyndar_slóð sé valinn og hlutar_tegund sé „valmyndarhlutur‟."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:25
 msgid "Draw arrow in menu button"
 msgstr "Teikna ör í valmyndahnappi"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:26
 msgid ""
 "If true, an arrow is drawn over the menu button icon. If false, menu button "
 "has only the icon."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:27
 msgid "Launcher location"
 msgstr "Staðsetning ræsis"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:28
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
 "relevant if the object_type key is \"launcher-object\"."
 msgstr "Staðsetning .desktop skrárinnar sem lýsir ræsinum. Þessi lykill er því aðeins virkur að hlutar_tegund sé „ræsishlutur‟."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:29
 msgid "Action button type"
 msgstr "Aðgerðarhnappstegund"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:30
 msgid ""
 "The action type this button represents. Possible values are \"lock\", "
 "\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
 "relevant if the object_type key is \"action-applet\"."
 msgstr "Aðgerðartegundinn sem þessi hnappur stendur fyrir. Möguleg gildi eru „læsa‟, „útskrá‟, „keyra‟, „leita‟ og „skjámyndargrip‟. Þessi lykill er því aðeins virkur að hlutar_tegund sé „a'gerðarforritlingur‟"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:1
 msgid "Name to identify panel"
 msgstr "Heiti til að auðkenna stiku"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:2
 msgid ""
 "This is a human readable name which you can use to identify a panel. Its "
 "main purpose is to serve as the panel's window title which is useful when "
 "navigating between panels."
 msgstr "Þetta er læsilegt heiti til að auðkenna stikuna. Aðalmarkmiðið með því er að þjóna sem gluggatitill stikunnar sem getur verið þægilegt þegar flakkað er milli stika."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:3
 msgid "X screen where the panel is displayed"
 msgstr "X skjá sem stikan er birt á"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:4
 msgid ""
 "With a multi-screen setup, you may have panels on each individual screen. "
 "This key identifies the current screen the panel is displayed on."
 msgstr "Þegar margir skjáir eru tengdir getur verið að þú hafir stikur á mismunandi skjám. Þessi lykill auðkennir núverandi skjá sem stikan er birt á."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:5
 msgid "Xinerama monitor where the panel is displayed"
 msgstr "Xinerama skjár sem stikan er birt á"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
 msgid ""
 "In a Xinerama setup, you may have panels on each individual monitor. This "
 "key identifies the current monitor the panel is displayed on."
 msgstr "Í Xinerama uppsetningu getur verið að þú hafir stiku á sitthvorum skjánum. Þessi lykill auðkennir núverandi skjá sem stikan birtist á."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
 msgid "Expand to occupy entire screen width"
 msgstr "Þenja til að fylla alla breidd skjásins"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
 msgid ""
 "If true, the panel will occupy the entire screen width (height if this is a "
 "vertical panel). In this mode the panel can only be placed at a screen edge."
@@ -1491,11 +1491,11 @@ msgid ""
 "launchers and buttons on the panel."
 msgstr "Ef valið, mun stikan nýta alla breidd skjásins (hæð ef stikan er lóðrétt). Äi þessum ham er aðeins hægt að staðsetja stikuna á skjábrún. Ef ekki valið verður stikan aðeins nægilega stór til að þar sé pláss fyrir alla forritlinga, ræsa og hnappa stikunnar."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
 msgid "Panel orientation"
 msgstr "Snúningur stiku"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
 msgid ""
 "The orientation of the panel. Possible values are \"top\", \"bottom\", "
 "\"left\", \"right\". In expanded mode the key specifies which screen edge "
@@ -1507,11 +1507,11 @@ msgid ""
 "panel."
 msgstr "Snúningur stikunnar. Möguleg gildi eru „efst‟, „neðst‟, „vinstri‟ og „hægri‟. Í þöndum ham tilgreinir lykillin á hvaða brún skjásins stikan er. Í óþöndum ham er munurinn milli  „efst‟ og „neðst‟ ekki eins mikilvægur - bæði gefa til kynna að stikan er lárétt en gega samt vísbendingu um hvernig stikan ætti að hegða sér. T.d. á stiku sem er „efst‟ ætti valmyndarhnappur að birta valmyndina fyrir neðan stikuna en á stiku sem er „neðst‟ ættu valmyndir að birtast fyrir ofan stikuna."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
 msgid "Panel size"
 msgstr "Stærð stiku"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
 msgid ""
 "The height (width for a vertical panel) of the panel. The panel will "
 "determine at runtime a minimum size based on the font size and other "
@@ -1519,33 +1519,33 @@ msgid ""
 "(or width)."
 msgstr "Hæð (breidd á lóðréttri stiku) stikunnar. Stikan mun ákvarða við ræsingu lágmarkstærð byggða á leturstærð og öðrum vísbreytum. Hámarksstærð er fastsett sem fjórðungur af hæð skjásins (eða breidd)"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
 msgid "X co-ordinate of panel"
 msgstr "X-hnit stiku"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
 msgid ""
 "The location of the panel along the x-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
 msgstr "Staðsetning stikunnar á x-ásnum. Þessi lykil er aðeins viðeigandi í óþöndum ham. Í þöndum ham er horft fram hjá þessum lykli og stikan er sett á þá brún sem tilgreind er með snúningslyklinum."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
 msgid "Y co-ordinate of panel"
 msgstr "Y-hnit stiku"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
 msgid ""
 "The location of the panel along the y-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
 msgstr "Staðsetning stikunnar á y-ásnum. Þessi lykil er aðeins viðeigandi í óþöndum ham. Í þöndum ham er horft fram hjá þessum lykli og stikan er sett á þá brún sem tilgreind er með snúningslyklinum."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
 msgid "X co-ordinate of panel, starting from the right of the screen"
 msgstr "X hnit skjástikunnar, sem byrjar frá hægri hlið skjásins"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
 msgid ""
 "The location of the panel along the x-axis, starting from the right of the "
 "screen. If set to -1, the value is ignored and the value of the x key is "
@@ -1555,11 +1555,11 @@ msgid ""
 "the orientation key."
 msgstr "Staðsetning skjástikunnar eftir x-ás, sem byrjar frá hægri hluta skjásins. Ef það er skráð sem -1, þá verður gildið hunsað og gildið fyrir x lykilinn notað. Ef gildið er stærra en 0, þá verður gildi x lykilsins notað. Þessi lykill á einungis við í óútvíkkuðum ham. Í útvíkkuðum ham er þessi lykill hunsaður og skjástikan er staðsett á skjájaðri sem er tilgreindur með áttunarlykli."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
 msgid "Y co-ordinate of panel, starting from the bottom of the screen"
 msgstr "Y hnit skjástikunnar, sem byrjar frá botni skjásins"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
 msgid ""
 "The location of the panel along the y-axis, starting from the bottom of the "
 "screen. If set to -1, the value is ignored and the value of the y key is "
@@ -1569,11 +1569,11 @@ msgid ""
 "the orientation key."
 msgstr "Staðsetning skjástikunnar eftir y-ás, sem byrjar frá hægri hluta skjásins. Ef það er skráð sem -1, þá verður gildið hunsað og gildið fyrir y lykilinn notað. Ef gildið er stærra en 0, þá verður gildi y lykilsins notað. Þessi lykill á einungis við í óútvíkkuðum ham. Í útvíkkuðum ham er þessi lykill hunsaður og skjástikan er staðsett á skjájaðri sem er tilgreindur með áttunarlykli."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
 msgid "Center panel on x-axis"
 msgstr "Miðja stiku á x-ás"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
 msgid ""
 "If true, the x and x_right keys are ignored and the panel is placed at the "
 "center of the x-axis of the screen. If the panel is resized it will remain "
@@ -1581,11 +1581,11 @@ msgid ""
 "and x_right keys specify the location of the panel."
 msgstr "Ef satt, þá verður x og x_hægri lyklarnir hunsaðir og skjástikan staðsett í miðju x-ás skjásins. Ef stærð skjástikunnar er breytt mun hún halda þeirri stöðu - þ.e. skjástikan mun stækka á báða vegu. Ef ekki satt, þá mun x og x_hægri lyklarnir tilgreina staðsetningu skjástikunnar."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
 msgid "Center panel on y-axis"
 msgstr "Miðja stiku á y-ás"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
 msgid ""
 "If true, the y and y_bottom keys are ignored and the panel is placed at the "
 "center of the y-axis of the screen. If the panel is resized it will remain "
@@ -1593,92 +1593,92 @@ msgid ""
 "and y_bottom keys specify the location of the panel."
 msgstr "Ef satt, þá verður y og y_botn lyklarnir hunsaðir og skjástikan staðsett í miðju y-ás skjásins. Ef stærð skjástikunnar er breytt mun hún halda þeirri stöðu - þ.e. skjástikan mun stækka á báða vegu. Ef ekki satt, þá mun y og y_botn lyklarnir tilgreina staðsetningu skjástikunnar."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
 msgid "Automatically hide panel into corner"
 msgstr "Fela stiku sjálfkrafa inní horn"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
 msgid ""
 "If true, the panel is automatically hidden into a corner of the screen when "
 "the pointer leaves the panel area. Moving the pointer to that corner again "
 "will cause the panel to re-appear."
 msgstr "Ef valið, er stikan sjálfvirkt falin útí horni sjásins þegar músarbendlinn fer að stikusvæðinu. Hægt er að láta stikuna birtast aftur með því að færa músarbendilinn í hornið sem stikan er falin."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
 msgid ""
-"If true, hiding and un-hiding of this panel will be animated rather than "
+"If true, hiding and un-hiding of this panel will be aniukuid rather than "
 "happening instantly."
 msgstr "Ef valið, veður það sýnt sem hreyfimynd þegar stikan er falin og sótt úr felum í stað þess að það gerist í einu vetfangi."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
 msgid "Enable hide buttons"
 msgstr "Virkja felutakka"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
 msgid ""
 "If true, buttons will be placed on each side of the panel which may be used "
 "to move the panel to edge of the screen, leaving only a button showing."
 msgstr "Ef valið, verða hnappar staðsettir á hvorri hlið stikunnar sem hægt er að flytja stikuna út að brún skjásins þannig að einungis verði hnappur sjánlegur."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
 msgid "Enable arrows on hide buttons"
 msgstr "Nota örvar á felutökkum"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
 msgid ""
 "If true, arrows will be placed on the hide buttons. This key is only "
 "relevant if the enable_buttons key is true."
 msgstr "Ef valið, eru settar örvar í feluhnappana. Þessi lykil skiptir því aðeins máli að virkja_hnappa lykillin sé valinn"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
 msgid "Panel autohide delay"
 msgstr "Bið eftir stika sé falin sjálfvirkt"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:34
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
 msgid ""
 "Specifies the number of milliseconds delay after the pointer leaves the "
 "panel area before the panel is automatically hidden. This key is only "
 "relevant if the auto_hide key is true."
 msgstr "Tilgreinir biðtímann í millisekúndum eftir að músarbendill fer af stikusvæðinu þar til stikan er falin sjálfvirkt. Þessi lykill skiptir því aðeins máli að fela_sjálfvirkt lykillin sé valinn."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:35
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
 msgid "Panel autounhide delay"
 msgstr "Bið eftir að stikan komi sjálfvirkt úr felum"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:36
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
 msgid ""
 "Specifies the number of milliseconds delay after the pointer enters the "
 "panel area before the panel is automatically re-shown. This key is only "
 "relevant if the auto_hide key is true."
 msgstr "Tilgreinir biðtímann í millisekúndum eftir að músarbendill er settur á stikusvæðið þar til stikan birtist sjálfvirkt. Þessi lykill skiptir því aðeins máli að fela_sjálfvirkt lykillin sé valinn."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:37
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
 msgid "Visible pixels when hidden"
 msgstr "Sjáanlegir dílar þegar falin"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:38
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
 msgid ""
 "Specifies the number of pixels visible when the panel is automatically "
 "hidden into a corner. This key is only relevant if the auto_hide key is "
 "true."
 msgstr "Tilgreinir fjölda díla sem er sjáanlegur þegar stikan hefur verið falin sjálfvirkt í horninu. Þessi lykill skiptir því aðeins máli að fela_sjálfvirkt lykillin sé valinn."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:39
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
 msgid "Animation speed"
 msgstr "Hraði hreyfimynda"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:40
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
 msgid ""
 "The speed in which panel animations should occur. Possible values are "
 "\"slow\", \"medium\" and \"fast\". This key is only relevant if the "
 "enable_animations key is true."
 msgstr "Hraðinn sem hreyfingar stikunnar ættu að birtast á. Möguleg gildi eru „hægt‟, „meðal‟ og „hratt‟. Þessi lykill skiptir því aðeins máli að virkja_hreyfimyndir lykillinn sé valinn."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:41
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
 msgid "Background type"
 msgstr "Bakgrunnstegund"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:42
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
 msgid ""
 "Which type of background should be used for this panel. Possible values are "
 "\"none\" - the default GTK+ widget background will be used, \"color\" - the "
@@ -1686,126 +1686,126 @@ msgid ""
 "specified by the image key will be used as background."
 msgstr "Hvaða gerð bakgrunns ætti að vera notuð fyrir þessa slá. Möguleg gildi eru \"ekkert\" - sjálfgefni GTK+ tólabakgrunnur verður notaður. \"litur\" - litalykillinn verður notaður sem bakgrunnslitur eða \"mynd\" - tiltekna myndin í myndalyklinum verður notuð sem bakgrunnur."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:43
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
 msgid "Background color"
 msgstr "Bakgrunnslitur"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:44
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
 msgid "Specifies the background color for the panel in #RGB format."
 msgstr "Tilgreinir bakgrunnslit stikunnar á #RGB sniði"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:45
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
 msgid "Background color opacity"
 msgstr "Gegnsæi bakgrunnslitar"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:46
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
 msgid ""
 "Specifies the opacity of the background color format. If the color is not "
 "completely opaque (a value of less than 65535), the color will be composited"
 " onto the desktop background image."
 msgstr "Tilgreinir gegnsæi bakgruinnslitarsniðsins. Ef liturinn er ekki fullkomlega ógagnsær (gildi lægra en 65535) verður liturinn samsettur ofaná bakgrunnsmyndina."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:47
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
 msgid "Background image"
 msgstr "Bakgrunnsmynd"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:48
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
 msgid ""
 "Specifies the file to be used for the background image. If the image "
 "contains an alpha channel it will be composited onto the desktop background "
 "image."
 msgstr "Tilgreinir hvaða skrá verður notuð fyrir bakgrunnsmynd. Ef myndin inniheldur alfarás verður hún sett saman við bakgrunnsmyndina."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:49
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
 msgid "Fit image to panel"
 msgstr "Laga mynd að stiku"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:50
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
 msgid ""
 "If true, the image will be scaled (retaining the aspect ratio of the image) "
 "to the panel height (if horizontal)."
 msgstr "Ef valið, verður myndin sköluð (sniðhlutfallinu haldið) til að passa við hæð stikunnar (ef lárétt)"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:51
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
 msgid "Stretch image to panel"
 msgstr "Teygja mynd á stiku"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:52
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
 msgid ""
 "If true, the image will be scaled to the panel dimensions. The aspect ratio "
 "of the image will not be maintained."
 msgstr "Ef valiðm verður myndin sköluð til að passa við stærð stikunar. Sniðhlutfalli myndarinnar verður ekki haldið."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:53
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
 msgid "Rotate image on vertical panels"
 msgstr "Snúa myndum á lóðréttum stikum"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:54
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
 msgid ""
 "If true, the background image will be rotated when the panel is oriented "
 "vertically."
 msgstr "Ef valið, verður bakgrunnsmyndinni snúið ef stikunni er snúið lóðrétt."
 
-#: ../mate-panel/libegg/eggdesktopfile.c:165
+#: ../ukui-panel/libegg/eggdesktopfile.c:165
 #, c-format
 msgid "File is not a valid .desktop file"
 msgstr "Skráin er ekki gild .desktop skrá"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:188
+#: ../ukui-panel/libegg/eggdesktopfile.c:188
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
 msgstr "Óþekkt .desktop skrá, útgáfa '%s'"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:957
+#: ../ukui-panel/libegg/eggdesktopfile.c:957
 #, c-format
 msgid "Starting %s"
 msgstr "Ræsi %s"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1098
+#: ../ukui-panel/libegg/eggdesktopfile.c:1098
 #, c-format
 msgid "Application does not accept documents on command line"
 msgstr "Þetta forrit tekur ekki á móti skrám á skipanalínunni"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1166
+#: ../ukui-panel/libegg/eggdesktopfile.c:1166
 #, c-format
 msgid "Unrecognized launch option: %d"
 msgstr "Óþekktur ræsimöguleiki: %d"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1365
+#: ../ukui-panel/libegg/eggdesktopfile.c:1365
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr "Get ekki látið veffang ganga til 'Type=Link‘ skjáborðsfærslu"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1386
+#: ../ukui-panel/libegg/eggdesktopfile.c:1386
 #, c-format
 msgid "Not a launchable item"
 msgstr "Þetta er ekki ræsanlegur íhlutur"
 
-#: ../mate-panel/libegg/eggsmclient.c:226
+#: ../ukui-panel/libegg/eggsmclient.c:226
 msgid "Disable connection to session manager"
 msgstr "Afvirkja tengingu við setustjóra"
 
-#: ../mate-panel/libegg/eggsmclient.c:229
+#: ../ukui-panel/libegg/eggsmclient.c:229
 msgid "Specify file containing saved configuration"
 msgstr "Veldu skrá sem inniheldur vistaðar stillingar"
 
-#: ../mate-panel/libegg/eggsmclient.c:229
+#: ../ukui-panel/libegg/eggsmclient.c:229
 msgid "FILE"
 msgstr "SKRÁ"
 
-#: ../mate-panel/libegg/eggsmclient.c:232
+#: ../ukui-panel/libegg/eggsmclient.c:232
 msgid "Specify session management ID"
 msgstr "Tilgreindu auðkenni (ID) setustjórnunar"
 
-#: ../mate-panel/libegg/eggsmclient.c:232
+#: ../ukui-panel/libegg/eggsmclient.c:232
 msgid "ID"
 msgstr "Auðkenni (ID)"
 
-#: ../mate-panel/libegg/eggsmclient.c:253
+#: ../ukui-panel/libegg/eggsmclient.c:253
 msgid "Session management options:"
 msgstr "Valkostir setustýringar:"
 
-#: ../mate-panel/libegg/eggsmclient.c:254
+#: ../ukui-panel/libegg/eggsmclient.c:254
 msgid "Show session management options"
 msgstr "Sýna valkosti setustýringar"
 
@@ -1814,588 +1814,588 @@ msgstr "Sýna valkosti setustýringar"
 #. * the following bug gets fixed:
 #. * http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #. FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=165132
-#: ../mate-panel/libpanel-util/panel-error.c:76
-#: ../mate-panel/panel-applet-frame.c:827
-#: ../mate-panel/panel-applet-frame.c:1003
+#: ../ukui-panel/libpanel-util/panel-error.c:76
+#: ../ukui-panel/panel-applet-frame.c:827
+#: ../ukui-panel/panel-applet-frame.c:1003
 msgid "Error"
 msgstr "Villa"
 
-#: ../mate-panel/libpanel-util/panel-icon-chooser.c:381
+#: ../ukui-panel/libpanel-util/panel-icon-chooser.c:381
 msgid "Choose an icon"
 msgstr "Veldu táknmynd"
 
-#: ../mate-panel/libpanel-util/panel-launch.c:45
+#: ../ukui-panel/libpanel-util/panel-launch.c:45
 #, c-format
 msgid "Could not launch '%s'"
 msgstr "Gat ekki keyrt '%s'"
 
-#: ../mate-panel/libpanel-util/panel-launch.c:48 ../mate-panel/launcher.c:162
+#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:162
 msgid "Could not launch application"
 msgstr "Gat ekki ræst forrit"
 
-#: ../mate-panel/libpanel-util/panel-show.c:44
+#: ../ukui-panel/libpanel-util/panel-show.c:44
 #, c-format
 msgid "Could not open location '%s'"
 msgstr "Gat ekki opnað slóð '%s'"
 
-#: ../mate-panel/libpanel-util/panel-show.c:158
+#: ../ukui-panel/libpanel-util/panel-show.c:158
 msgid "No application to handle search folders is installed."
 msgstr "Það er ekkert forrit uppsett fyrir leit í möppum."
 
-#: ../mate-panel/applet.c:466
+#: ../ukui-panel/applet.c:466
 msgid "???"
 msgstr "???"
 
-#: ../mate-panel/applet.c:545 ../libmate-panel-applet/mate-panel-applet.c:139
+#: ../ukui-panel/applet.c:545 ../libukui-panel-applet/ukui-panel-applet.c:139
 msgid "_Remove From Panel"
 msgstr "_Fjarlægja af stiku"
 
-#: ../mate-panel/applet.c:556 ../libmate-panel-applet/mate-panel-applet.c:142
+#: ../ukui-panel/applet.c:556 ../libukui-panel-applet/ukui-panel-applet.c:142
 msgid "_Move"
 msgstr "_Færa"
 
-#: ../mate-panel/applet.c:573 ../libmate-panel-applet/mate-panel-applet.c:148
+#: ../ukui-panel/applet.c:573 ../libukui-panel-applet/ukui-panel-applet.c:148
 msgid "Loc_k To Panel"
 msgstr "Læ_sa við stiku"
 
-#: ../mate-panel/applet.c:1384
+#: ../ukui-panel/applet.c:1384
 msgid "Cannot find an empty spot"
 msgstr "Get ekki fundið laust svæði"
 
-#: ../mate-panel/drawer.c:346 ../mate-panel/panel-addto.c:175
-#: ../mate-panel/panel-toplevel.c:1615
+#: ../ukui-panel/drawer.c:346 ../ukui-panel/panel-addto.c:175
+#: ../ukui-panel/panel-toplevel.c:1615
 msgid "Drawer"
 msgstr "Skúffa"
 
-#: ../mate-panel/drawer.c:533
+#: ../ukui-panel/drawer.c:533
 msgid "_Add to Drawer..."
 msgstr "_Bæta í skúffu..."
 
-#: ../mate-panel/drawer.c:539 ../mate-panel/launcher.c:556
-#: ../mate-panel/panel-action-button.c:192
-#: ../mate-panel/panel-context-menu.c:196
+#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:556
+#: ../ukui-panel/panel-action-button.c:192
+#: ../ukui-panel/panel-context-menu.c:196
 msgid "_Properties"
 msgstr "_Eiginleikar"
 
-#: ../mate-panel/mate-desktop-item-edit.c:27
+#: ../ukui-panel/ukui-desktop-item-edit.c:27
 msgid "Create new file in the given directory"
 msgstr "Búa til nýja skrá í gefinni möppu"
 
-#: ../mate-panel/mate-desktop-item-edit.c:28
+#: ../ukui-panel/ukui-desktop-item-edit.c:28
 msgid "[FILE...]"
 msgstr "[SKRÁ...]"
 
-#: ../mate-panel/mate-desktop-item-edit.c:106
+#: ../ukui-panel/ukui-desktop-item-edit.c:106
 msgid "- Edit .desktop files"
 msgstr "- Breyta .desktop skrám"
 
-#: ../mate-panel/mate-desktop-item-edit.c:144
-#: ../mate-panel/mate-desktop-item-edit.c:197 ../mate-panel/launcher.c:928
+#: ../ukui-panel/ukui-desktop-item-edit.c:144
+#: ../ukui-panel/ukui-desktop-item-edit.c:197 ../ukui-panel/launcher.c:928
 msgid "Create Launcher"
 msgstr "Búa til ræsi"
 
-#: ../mate-panel/mate-desktop-item-edit.c:168
-#: ../mate-panel/mate-desktop-item-edit.c:191
+#: ../ukui-panel/ukui-desktop-item-edit.c:168
+#: ../ukui-panel/ukui-desktop-item-edit.c:191
 msgid "Directory Properties"
 msgstr "Eiginleikar möppu"
 
-#: ../mate-panel/mate-desktop-item-edit.c:174 ../mate-panel/launcher.c:775
+#: ../ukui-panel/ukui-desktop-item-edit.c:174 ../ukui-panel/launcher.c:775
 msgid "Launcher Properties"
 msgstr "Eiginleikar ræsis"
 
-#: ../mate-panel/mate-panel.desktop.in.in.h:1 ../mate-panel/main.c:136
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:136
 msgid "Panel"
 msgstr "Skjástika"
 
-#: ../mate-panel/mate-panel.desktop.in.in.h:2
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:2
 msgid ""
 "Launch other applications and provide various utilities to manage windows, "
 "show the time, etc."
 msgstr "Ræsa önnur forrit og bjóða upp á ýmis tól til þess að stjórna gluggum, sýna tímann, o.s.frv."
 
-#: ../mate-panel/launcher.c:120
+#: ../ukui-panel/launcher.c:120
 msgid "Could not show this URL"
 msgstr "Gat ekki sýnt þetta veffang"
 
-#: ../mate-panel/launcher.c:121
+#: ../ukui-panel/launcher.c:121
 msgid "No URL was specified."
 msgstr "Ekkert veffang var gefið."
 
-#: ../mate-panel/launcher.c:214
+#: ../ukui-panel/launcher.c:214
 msgid "Could not use dropped item"
 msgstr "Gat ekki notað slepptan hlut"
 
-#: ../mate-panel/launcher.c:440
+#: ../ukui-panel/launcher.c:440
 #, c-format
 msgid "No URI provided for panel launcher desktop file\n"
 msgstr "Ekkert URI var gefið fyrir skjáborðskrá stikuræsis\n"
 
-#: ../mate-panel/launcher.c:465
+#: ../ukui-panel/launcher.c:465
 #, c-format
 msgid "Unable to open desktop file %s for panel launcher\n"
 msgstr ""
 
-#: ../mate-panel/launcher.c:533
+#: ../ukui-panel/launcher.c:533
 msgid "_Launch"
 msgstr "_Ræsa"
 
-#: ../mate-panel/launcher.c:869
+#: ../ukui-panel/launcher.c:869
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
 msgstr "Lykill %s er ekki stilltur, get ekki keyrt upp ræsara\n"
 
-#: ../mate-panel/launcher.c:997 ../mate-panel/panel-ditem-editor.c:1330
-#: ../mate-panel/panel-ditem-editor.c:1364
-#: ../mate-panel/panel-ditem-editor.c:1395
+#: ../ukui-panel/launcher.c:997 ../ukui-panel/panel-ditem-editor.c:1330
+#: ../ukui-panel/panel-ditem-editor.c:1364
+#: ../ukui-panel/panel-ditem-editor.c:1395
 msgid "Could not save launcher"
 msgstr "Get ekki vistað ræsara"
 
-#: ../mate-panel/main.c:47
+#: ../ukui-panel/main.c:47
 msgid "Replace a currently running panel"
 msgstr "Skipta út stiku sem er í gangi"
 
-#. this feature was request in #mate irc channel
-#: ../mate-panel/main.c:49
+#. this feature was request in #ukui irc channel
+#: ../ukui-panel/main.c:49
 msgid "Reset the panel configuration to default"
 msgstr "Endursetja stikustillingar á sjálfgefið"
 
 #. open run dialog
-#: ../mate-panel/main.c:51
+#: ../ukui-panel/main.c:51
 msgid "Execute the run dialog"
 msgstr "Keyra forritakeyrsluglugga"
 
 #. default panels layout
-#: ../mate-panel/main.c:53
+#: ../ukui-panel/main.c:53
 msgid "Set the default panel layout"
 msgstr "Setja sjálfgefna framsetningu skjástiku"
 
-#: ../mate-panel/menu.c:527
+#: ../ukui-panel/menu.c:527
 msgid "Add this launcher to _panel"
 msgstr "Bæta þessum ræsi við _stikuna"
 
-#: ../mate-panel/menu.c:534
+#: ../ukui-panel/menu.c:534
 msgid "Add this launcher to _desktop"
 msgstr "Bæta þessum ræsi við s_kjáborðið"
 
-#: ../mate-panel/menu.c:546
+#: ../ukui-panel/menu.c:546
 msgid "_Entire menu"
 msgstr "Ö_ll valmyndinn"
 
-#: ../mate-panel/menu.c:551
+#: ../ukui-panel/menu.c:551
 msgid "Add this as _drawer to panel"
 msgstr "Bæta þessu  við sem s_kúffu á stikunni"
 
-#: ../mate-panel/menu.c:558
+#: ../ukui-panel/menu.c:558
 msgid "Add this as _menu to panel"
 msgstr "Bæta þessu við sem _valmynd á stikunni"
 
-#: ../mate-panel/panel-action-button.c:180
+#: ../ukui-panel/panel-action-button.c:180
 msgid "_Activate Screensaver"
 msgstr "_Virkja skjáhvílu"
 
-#: ../mate-panel/panel-action-button.c:186
+#: ../ukui-panel/panel-action-button.c:186
 msgid "_Lock Screen"
 msgstr "_Læsa skjá"
 
-#: ../mate-panel/panel-action-button.c:314
+#: ../ukui-panel/panel-action-button.c:314
 msgid "Could not connect to server"
 msgstr "Gat ekki tengst við þjón"
 
-#: ../mate-panel/panel-action-button.c:345
+#: ../ukui-panel/panel-action-button.c:345
 msgid "Lock Screen"
 msgstr "Læsa skjá"
 
-#: ../mate-panel/panel-action-button.c:346
+#: ../ukui-panel/panel-action-button.c:346
 msgid "Protect your computer from unauthorized use"
 msgstr "Verja tölvuna þína frá óheimiluðum aðgangi"
 
 #. when changing one of those two strings, don't forget to
 #. * update the ones in panel-menu-items.c (look for
 #. * "1" (msgctxt: "panel:showusername"))
-#: ../mate-panel/panel-action-button.c:360
+#: ../ukui-panel/panel-action-button.c:360
 msgid "Log Out..."
 msgstr "Útskrá..."
 
-#: ../mate-panel/panel-action-button.c:361
+#: ../ukui-panel/panel-action-button.c:361
 msgid "Log out of this session to log in as a different user"
 msgstr "Útská sig úr setunni til að skrá sig inn sem annan notanda"
 
-#: ../mate-panel/panel-action-button.c:370
+#: ../ukui-panel/panel-action-button.c:370
 msgid "Run Application..."
 msgstr "Keyra forrit..."
 
-#: ../mate-panel/panel-action-button.c:371
+#: ../ukui-panel/panel-action-button.c:371
 msgid "Run an application by typing a command or choosing from a list"
 msgstr "Ræsa forrit með því að slá inn skipun eða velja úr lista"
 
-#: ../mate-panel/panel-action-button.c:380
+#: ../ukui-panel/panel-action-button.c:380
 msgid "Search for Files..."
 msgstr "Leita að skrám..."
 
-#: ../mate-panel/panel-action-button.c:381
+#: ../ukui-panel/panel-action-button.c:381
 msgid "Locate documents and folders on this computer by name or content"
 msgstr "Staðsetja skrár og möppur á þessari tölvu eftir nafni eða innihaldi"
 
-#: ../mate-panel/panel-action-button.c:389
-#: ../mate-panel/panel-force-quit.c:251
+#: ../ukui-panel/panel-action-button.c:389
+#: ../ukui-panel/panel-force-quit.c:251
 msgid "Force Quit"
 msgstr "Þvinga til að hætta"
 
-#: ../mate-panel/panel-action-button.c:390
+#: ../ukui-panel/panel-action-button.c:390
 msgid "Force a misbehaving application to quit"
 msgstr "Þvinga forrit sem haga sér ekki vel til að hætta"
 
 #. FIXME icon
-#: ../mate-panel/panel-action-button.c:399
+#: ../ukui-panel/panel-action-button.c:399
 msgid "Connect to Server..."
 msgstr "Tengjast við þjón..."
 
-#: ../mate-panel/panel-action-button.c:400
+#: ../ukui-panel/panel-action-button.c:400
 msgid "Connect to a remote computer or shared disk"
 msgstr "Tengjast fjarlægri tölvu eða sameiginlegum disk"
 
-#: ../mate-panel/panel-action-button.c:408
+#: ../ukui-panel/panel-action-button.c:408
 msgid "Shut Down..."
 msgstr "Slökkva..."
 
-#: ../mate-panel/panel-action-button.c:409
+#: ../ukui-panel/panel-action-button.c:409
 msgid "Shut down the computer"
 msgstr "Slökkva á tölvunni"
 
-#: ../mate-panel/panel-addto.c:116
+#: ../ukui-panel/panel-addto.c:116
 msgid "Custom Application Launcher"
 msgstr "Sérsniðinn forritaræsari"
 
-#: ../mate-panel/panel-addto.c:117
+#: ../ukui-panel/panel-addto.c:117
 msgid "Create a new launcher"
 msgstr "Búa til nýjan ræsi"
 
-#: ../mate-panel/panel-addto.c:127
+#: ../ukui-panel/panel-addto.c:127
 msgid "Application Launcher..."
 msgstr "Forritaræsari..."
 
-#: ../mate-panel/panel-addto.c:128
+#: ../ukui-panel/panel-addto.c:128
 msgid "Copy a launcher from the applications menu"
 msgstr "Afrita ræsi úr forritavalmynd"
 
-#: ../mate-panel/panel-addto.c:142 ../mate-panel/panel-menu-button.c:1094
+#: ../ukui-panel/panel-addto.c:142 ../ukui-panel/panel-menu-button.c:1094
 msgid "Main Menu"
 msgstr "Aðal valmyndin"
 
-#: ../mate-panel/panel-addto.c:143
-msgid "The main MATE menu"
-msgstr "Aðal valmynd MATE"
+#: ../ukui-panel/panel-addto.c:143
+msgid "The main UKUI menu"
+msgstr "Aðal valmynd UKUI"
 
-#: ../mate-panel/panel-addto.c:153
+#: ../ukui-panel/panel-addto.c:153
 msgid "Menu Bar"
 msgstr "Valmyndarslá"
 
-#: ../mate-panel/panel-addto.c:154
+#: ../ukui-panel/panel-addto.c:154
 msgid "A custom menu bar"
 msgstr "Sérsniðin valmyndarslá"
 
-#: ../mate-panel/panel-addto.c:164
+#: ../ukui-panel/panel-addto.c:164
 msgid "Separator"
 msgstr "Skilrúm"
 
-#: ../mate-panel/panel-addto.c:165
+#: ../ukui-panel/panel-addto.c:165
 msgid "A separator to organize the panel items"
 msgstr "Skilrúm til að skipuleggja hluti á stiku"
 
-#: ../mate-panel/panel-addto.c:176
+#: ../ukui-panel/panel-addto.c:176
 msgid "A pop out drawer to store other items in"
 msgstr "Útdraganleg skúffa til að geyma aðra hluti í"
 
-#: ../mate-panel/panel-addto.c:257
+#: ../ukui-panel/panel-addto.c:257
 msgid "(empty)"
 msgstr "(tómt)"
 
-#: ../mate-panel/panel-addto.c:988
+#: ../ukui-panel/panel-addto.c:988
 #, c-format
 msgid "Find an _item to add to \"%s\":"
 msgstr "Finna _hlut til þess að bæta við \"%s\":"
 
-#: ../mate-panel/panel-addto.c:992
+#: ../ukui-panel/panel-addto.c:992
 #, c-format
 msgid "Add to Drawer"
 msgstr "Bæta í skúffu"
 
-#: ../mate-panel/panel-addto.c:994
+#: ../ukui-panel/panel-addto.c:994
 msgid "Find an _item to add to the drawer:"
 msgstr "Finna _hlut til þess að bæta við skúffu:"
 
-#: ../mate-panel/panel-addto.c:996
+#: ../ukui-panel/panel-addto.c:996
 #, c-format
 msgid "Add to Panel"
 msgstr "Bæta við stiku"
 
-#: ../mate-panel/panel-addto.c:998
+#: ../ukui-panel/panel-addto.c:998
 msgid "Find an _item to add to the panel:"
 msgstr "Finna _hlut til þess að bæta við skjástiku:"
 
-#: ../mate-panel/panel-applet-frame.c:788
+#: ../ukui-panel/panel-applet-frame.c:788
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
 msgstr "\"%s\" hefur hætt óvænt"
 
-#: ../mate-panel/panel-applet-frame.c:790
+#: ../ukui-panel/panel-applet-frame.c:790
 msgid "Panel object has quit unexpectedly"
 msgstr "Stikuhlutur hefur hætt óvænt"
 
-#: ../mate-panel/panel-applet-frame.c:797
+#: ../ukui-panel/panel-applet-frame.c:797
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
 msgstr "Ef þú endurhleður stikuhlut, verður honum sjálfkrafa bætt við aftur á stikuna."
 
-#: ../mate-panel/panel-applet-frame.c:804
+#: ../ukui-panel/panel-applet-frame.c:804
 msgid "D_elete"
 msgstr "_Eyða"
 
-#: ../mate-panel/panel-applet-frame.c:805
-#: ../mate-panel/panel-applet-frame.c:810
+#: ../ukui-panel/panel-applet-frame.c:805
+#: ../ukui-panel/panel-applet-frame.c:810
 msgid "_Don't Reload"
 msgstr "_Ekki endurhlaða"
 
-#: ../mate-panel/panel-applet-frame.c:806
-#: ../mate-panel/panel-applet-frame.c:811
+#: ../ukui-panel/panel-applet-frame.c:806
+#: ../ukui-panel/panel-applet-frame.c:811
 msgid "_Reload"
 msgstr "_Endurhlaða"
 
-#: ../mate-panel/panel-applet-frame.c:966
+#: ../ukui-panel/panel-applet-frame.c:966
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
 msgstr "Þessi stika hefur rekist á vandamál við að hlaða \"%s\"."
 
-#: ../mate-panel/panel-applet-frame.c:982
+#: ../ukui-panel/panel-applet-frame.c:982
 msgid "Do you want to delete the applet from your configuration?"
 msgstr "Viltu eyða forritlingnum frá stillingunum þínum?"
 
-#: ../mate-panel/panel-context-menu.c:89
+#: ../ukui-panel/panel-context-menu.c:89
 msgid "And many, many others..."
 msgstr "Og margir, margir aðrir..."
 
-#: ../mate-panel/panel-context-menu.c:112
-msgid "The MATE Panel"
-msgstr "MATE stikan"
+#: ../ukui-panel/panel-context-menu.c:112
+msgid "The UKUI Panel"
+msgstr "UKUI stikan"
 
-#: ../mate-panel/panel-context-menu.c:116
+#: ../ukui-panel/panel-context-menu.c:116
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
 msgstr "Þetta forrit sér um að ræsa annan hugbúnað auk þess sem það inniheldur gagnleg áhöld."
 
-#: ../mate-panel/panel-context-menu.c:120
-msgid "About the MATE Panel"
-msgstr "Um MATE stikuna"
+#: ../ukui-panel/panel-context-menu.c:120
+msgid "About the UKUI Panel"
+msgstr "Um UKUI stikuna"
 
-#: ../mate-panel/panel-context-menu.c:151
+#: ../ukui-panel/panel-context-menu.c:151
 msgid "Cannot delete this panel"
 msgstr "Gat ekki eytt þessari stiku"
 
-#: ../mate-panel/panel-context-menu.c:152
+#: ../ukui-panel/panel-context-menu.c:152
 msgid "You must always have at least one panel."
 msgstr "Þú verður alltaf að hafa í það eina stiku."
 
-#: ../mate-panel/panel-context-menu.c:185
+#: ../ukui-panel/panel-context-menu.c:185
 msgid "_Add to Panel..."
 msgstr "_Bæta á stiku..."
 
-#: ../mate-panel/panel-context-menu.c:206
+#: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"
 msgstr "_Eyða þessari stiku"
 
-#: ../mate-panel/panel-context-menu.c:221
+#: ../ukui-panel/panel-context-menu.c:221
 msgid "_New Panel"
 msgstr "_Ný stika"
 
-#: ../mate-panel/panel-context-menu.c:273
+#: ../ukui-panel/panel-context-menu.c:273
 msgid "A_bout Panels"
 msgstr "_Um stikur"
 
-#: ../mate-panel/panel-ditem-editor.c:114
+#: ../ukui-panel/panel-ditem-editor.c:114
 msgid "Application"
 msgstr "Forrit"
 
-#: ../mate-panel/panel-ditem-editor.c:116
+#: ../ukui-panel/panel-ditem-editor.c:116
 msgid "Application in Terminal"
 msgstr "Forrit í útstöð"
 
-#: ../mate-panel/panel-ditem-editor.c:118
+#: ../ukui-panel/panel-ditem-editor.c:118
 msgid "Location"
 msgstr "Staðsetning"
 
 #. Type
-#: ../mate-panel/panel-ditem-editor.c:610
+#: ../ukui-panel/panel-ditem-editor.c:610
 msgid "_Type:"
 msgstr "_Gerð:"
 
 #. Name
-#: ../mate-panel/panel-ditem-editor.c:617
+#: ../ukui-panel/panel-ditem-editor.c:617
 msgid "_Name:"
 msgstr "_Nafn:"
 
-#: ../mate-panel/panel-ditem-editor.c:642
+#: ../ukui-panel/panel-ditem-editor.c:642
 msgid "_Browse..."
 msgstr "_Flakka..."
 
 #. Comment
-#: ../mate-panel/panel-ditem-editor.c:649
+#: ../ukui-panel/panel-ditem-editor.c:649
 msgid "Co_mment:"
 msgstr "A_thugasemd:"
 
-#: ../mate-panel/panel-ditem-editor.c:981
+#: ../ukui-panel/panel-ditem-editor.c:981
 msgid "Choose an application..."
 msgstr "Veldu forrit..."
 
-#: ../mate-panel/panel-ditem-editor.c:985
+#: ../ukui-panel/panel-ditem-editor.c:985
 msgid "Choose a file..."
 msgstr "Veldu skrá..."
 
-#: ../mate-panel/panel-ditem-editor.c:1150
-#: ../mate-panel/panel-ditem-editor.c:1159
+#: ../ukui-panel/panel-ditem-editor.c:1150
+#: ../ukui-panel/panel-ditem-editor.c:1159
 msgid "Comm_and:"
 msgstr "_Skipun:"
 
-#: ../mate-panel/panel-ditem-editor.c:1168
+#: ../ukui-panel/panel-ditem-editor.c:1168
 msgid "_Location:"
 msgstr "_Staðsetning:"
 
-#: ../mate-panel/panel-ditem-editor.c:1331
+#: ../ukui-panel/panel-ditem-editor.c:1331
 msgid "The name of the launcher is not set."
 msgstr "Nafn ræsarans er ekki tilgreint."
 
-#: ../mate-panel/panel-ditem-editor.c:1335
+#: ../ukui-panel/panel-ditem-editor.c:1335
 msgid "Could not save directory properties"
 msgstr "Ekki var hægt að vista eigindi möppu"
 
-#: ../mate-panel/panel-ditem-editor.c:1336
+#: ../ukui-panel/panel-ditem-editor.c:1336
 msgid "The name of the directory is not set."
 msgstr "Heiti möppu hefur ekki verið valið"
 
-#: ../mate-panel/panel-ditem-editor.c:1352
+#: ../ukui-panel/panel-ditem-editor.c:1352
 msgid "The command of the launcher is not set."
 msgstr "Ræsinum hefur ekki verið gefin skipun"
 
-#: ../mate-panel/panel-ditem-editor.c:1355
+#: ../ukui-panel/panel-ditem-editor.c:1355
 msgid "The location of the launcher is not set."
 msgstr "Staðsetning ræsarans er ekki tilgreind."
 
-#: ../mate-panel/panel-ditem-editor.c:1432
+#: ../ukui-panel/panel-ditem-editor.c:1432
 msgid "Could not display help document"
 msgstr "Gat ekki birt hjálparskjal"
 
-#: ../mate-panel/panel-force-quit.c:80
+#: ../ukui-panel/panel-force-quit.c:80
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
 msgstr "Smelltu á gluggan til að þvinga forritið til að hætta. Þú getur hætt við með því að ýta á <ESC>."
 
-#: ../mate-panel/panel-force-quit.c:234
+#: ../ukui-panel/panel-force-quit.c:234
 msgid "Force this application to exit?"
 msgstr "Neyða þetta forrit til að hætta?"
 
-#: ../mate-panel/panel-force-quit.c:237
+#: ../ukui-panel/panel-force-quit.c:237
 msgid ""
 "If you choose to force an application to exit, unsaved changes in any open "
 "documents in it might get lost."
 msgstr "Ef þú neyðir forrit til að hætta þá geta tapast allar nýlegar óvistaðar breytingar á þeim skjölum sem það var að vinna með."
 
-#: ../mate-panel/panel-menu-bar.c:99
+#: ../ukui-panel/panel-menu-bar.c:99
 msgid "Browse and run installed applications"
 msgstr "Skoða og keyra uppsett forrit"
 
-#: ../mate-panel/panel-menu-bar.c:100
+#: ../ukui-panel/panel-menu-bar.c:100
 msgid "Access documents, folders and network places"
 msgstr "Nálgast sköl, möppur og netstaði"
 
-#: ../mate-panel/panel-menu-bar.c:101
+#: ../ukui-panel/panel-menu-bar.c:101
 msgid "Change desktop appearance and behavior, get help, or log out"
 msgstr "Breyta útliti umhverfisins og hegðun, nálgast hjálp eða afskrá sig"
 
-#: ../mate-panel/panel-menu-bar.c:168
+#: ../ukui-panel/panel-menu-bar.c:168
 msgid "Applications"
 msgstr "Forrit"
 
-#: ../mate-panel/panel-menu-bar.c:364 ../mate-panel/panel-menu-button.c:672
+#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:672
 msgid "_Edit Menus"
 msgstr "_Breyta valmyndum"
 
-#: ../mate-panel/panel-menu-items.c:473
+#: ../ukui-panel/panel-menu-items.c:473
 msgid "Bookmarks"
 msgstr "Bókmerki"
 
 #. Translators: %s is a URI
-#: ../mate-panel/panel-menu-items.c:496 ../mate-panel/panel.c:549
+#: ../ukui-panel/panel-menu-items.c:496 ../ukui-panel/panel.c:549
 #, c-format
 msgid "Open '%s'"
 msgstr "Opna '%s'"
 
-#: ../mate-panel/panel-menu-items.c:567
+#: ../ukui-panel/panel-menu-items.c:567
 #, c-format
 msgid "Unable to scan %s for media changes"
 msgstr "Gat ekki skannað %s eftir breytingum á miðlum"
 
-#: ../mate-panel/panel-menu-items.c:610
+#: ../ukui-panel/panel-menu-items.c:610
 #, c-format
 msgid "Rescan %s"
 msgstr "Endurskanna %s"
 
-#: ../mate-panel/panel-menu-items.c:647
+#: ../ukui-panel/panel-menu-items.c:647
 #, c-format
 msgid "Unable to mount %s"
 msgstr "Ófær um að festa %s"
 
-#: ../mate-panel/panel-menu-items.c:710
+#: ../ukui-panel/panel-menu-items.c:710
 #, c-format
 msgid "Mount %s"
 msgstr "Festa %s"
 
-#: ../mate-panel/panel-menu-items.c:918
+#: ../ukui-panel/panel-menu-items.c:918
 msgid "Removable Media"
 msgstr "Fjarlæganlegir miðlar"
 
-#: ../mate-panel/panel-menu-items.c:1005
+#: ../ukui-panel/panel-menu-items.c:1005
 msgid "Network Places"
 msgstr "Netstaðir"
 
-#: ../mate-panel/panel-menu-items.c:1044
+#: ../ukui-panel/panel-menu-items.c:1044
 msgid "Open your personal folder"
 msgstr "Opna persónulegu möppuna þína"
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
 #. * environment).
-#: ../mate-panel/panel-menu-items.c:1063
+#: ../ukui-panel/panel-menu-items.c:1063
 msgctxt "Desktop Folder"
 msgid "Desktop"
 msgstr "Skjáborð"
 
-#: ../mate-panel/panel-menu-items.c:1064
+#: ../ukui-panel/panel-menu-items.c:1064
 msgid "Open the contents of your desktop in a folder"
 msgstr "Opna innihald skjáborðsins í möppu"
 
-#: ../mate-panel/panel-menu-items.c:1080
+#: ../ukui-panel/panel-menu-items.c:1080
 msgid "Computer"
 msgstr "Tölva"
 
-#: ../mate-panel/panel-menu-items.c:1085
+#: ../ukui-panel/panel-menu-items.c:1085
 msgid ""
 "Browse all local and remote disks and folders accessible from this computer"
 msgstr "Flakka um alla staðværa og fjartengda diska (og möppur) sem aðgengilegir eru frá þessari tölvu"
 
-#: ../mate-panel/panel-menu-items.c:1098
+#: ../ukui-panel/panel-menu-items.c:1098
 msgid "Network"
 msgstr "Netkerfi"
 
-#: ../mate-panel/panel-menu-items.c:1099
+#: ../ukui-panel/panel-menu-items.c:1099
 msgid "Browse bookmarked and local network locations"
 msgstr "Flakka um bókamerktar og staðværar nettengingar"
 
-#: ../mate-panel/panel-menu-items.c:1497
+#: ../ukui-panel/panel-menu-items.c:1497
 msgid "Places"
 msgstr "Staðir"
 
-#: ../mate-panel/panel-menu-items.c:1525
+#: ../ukui-panel/panel-menu-items.c:1525
 msgid "System"
 msgstr "Kerfið"
 
@@ -2403,7 +2403,7 @@ msgstr "Kerfið"
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
 #. * but "1" if "Log Out %s" doesn't make any sense in your
 #. * language (where %s is a username).
-#: ../mate-panel/panel-menu-items.c:1610
+#: ../ukui-panel/panel-menu-items.c:1610
 msgctxt "panel:showusername"
 msgid "1"
 msgstr "1"
@@ -2412,405 +2412,405 @@ msgstr "1"
 #. * panel-action-button.c
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../mate-panel/panel-menu-items.c:1622
+#: ../ukui-panel/panel-menu-items.c:1622
 #, c-format
 msgid "Log Out %s..."
 msgstr "Útskrá %s..."
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../mate-panel/panel-menu-items.c:1626
+#: ../ukui-panel/panel-menu-items.c:1626
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
 msgstr "Útskrá %s úr þessari setu og skrá sig inn sem annan notenda"
 
-#: ../mate-panel/panel-properties-dialog.c:120
-#: ../mate-panel/panel-test-applets.c:58
+#: ../ukui-panel/panel-properties-dialog.c:120
+#: ../ukui-panel/panel-test-applets.c:58
 msgctxt "Orientation"
 msgid "Top"
 msgstr "Efst"
 
-#: ../mate-panel/panel-properties-dialog.c:121
-#: ../mate-panel/panel-test-applets.c:59
+#: ../ukui-panel/panel-properties-dialog.c:121
+#: ../ukui-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Bottom"
 msgstr "Neðst"
 
-#: ../mate-panel/panel-properties-dialog.c:122
-#: ../mate-panel/panel-test-applets.c:60
+#: ../ukui-panel/panel-properties-dialog.c:122
+#: ../ukui-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Left"
 msgstr "Vinstri"
 
-#: ../mate-panel/panel-properties-dialog.c:123
-#: ../mate-panel/panel-test-applets.c:61
+#: ../ukui-panel/panel-properties-dialog.c:123
+#: ../ukui-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Right"
 msgstr "Hægri"
 
-#: ../mate-panel/panel-properties-dialog.c:819
+#: ../ukui-panel/panel-properties-dialog.c:819
 msgid "Drawer Properties"
 msgstr "Eigindi skúffu"
 
-#: ../mate-panel/panel-properties-dialog.c:939
-#: ../mate-panel/panel-run-dialog.c:1970
+#: ../ukui-panel/panel-properties-dialog.c:939
+#: ../ukui-panel/panel-run-dialog.c:1970
 #, c-format
 msgid "Unable to load file '%s': %s."
 msgstr "Gat ekki hlaðið skrá '%s': %s."
 
-#: ../mate-panel/panel-properties-dialog.c:945
+#: ../ukui-panel/panel-properties-dialog.c:945
 msgid "Could not display properties dialog"
 msgstr "Gat ekki birt eiginleikagluggann"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:1
+#: ../ukui-panel/panel-properties-dialog.ui.h:1
 msgid "Panel Properties"
 msgstr "Eiginleikar stiku"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:2
+#: ../ukui-panel/panel-properties-dialog.ui.h:2
 msgid "Some of these properties are locked down"
 msgstr "Sumir eiginleikarnir er læstir"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:3
+#: ../ukui-panel/panel-properties-dialog.ui.h:3
 msgid "_Icon:"
 msgstr "Táknm_ynd:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:4
+#: ../ukui-panel/panel-properties-dialog.ui.h:4
 msgid "pixels"
 msgstr "mynddílar"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:5
-#: ../mate-panel/panel-test-applets.ui.h:5
+#: ../ukui-panel/panel-properties-dialog.ui.h:5
+#: ../ukui-panel/panel-test-applets.ui.h:5
 msgid "_Orientation:"
 msgstr "_Snúningur:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:6
-#: ../mate-panel/panel-test-applets.ui.h:3
+#: ../ukui-panel/panel-properties-dialog.ui.h:6
+#: ../ukui-panel/panel-test-applets.ui.h:3
 msgid "_Size:"
 msgstr "_Stærð:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:7
+#: ../ukui-panel/panel-properties-dialog.ui.h:7
 msgid "E_xpand"
 msgstr "Þ_enja"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:8
+#: ../ukui-panel/panel-properties-dialog.ui.h:8
 msgid "_Autohide"
 msgstr "_Fela sjálfvirkt"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:9
+#: ../ukui-panel/panel-properties-dialog.ui.h:9
 msgid "Show hide _buttons"
 msgstr "Sýna _feluhnappa"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:10
+#: ../ukui-panel/panel-properties-dialog.ui.h:10
 msgid "Arro_ws on hide buttons"
 msgstr "Ör_var á feluhnöppum"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:12
+#: ../ukui-panel/panel-properties-dialog.ui.h:12
 msgid "_None (use system theme)"
 msgstr "E_kkert (nota kerfis þema)"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:13
+#: ../ukui-panel/panel-properties-dialog.ui.h:13
 msgid "Solid c_olor"
 msgstr "Heill l_itur"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:15
+#: ../ukui-panel/panel-properties-dialog.ui.h:15
 msgid "Pick a color"
 msgstr "Veldu lit"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:16
+#: ../ukui-panel/panel-properties-dialog.ui.h:16
 msgid "<small>Transparent</small>"
 msgstr "<small>Gegnsæ</small>"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:17
+#: ../ukui-panel/panel-properties-dialog.ui.h:17
 msgid "Co_lor:"
 msgstr "L_itur:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:18
+#: ../ukui-panel/panel-properties-dialog.ui.h:18
 msgid "S_tyle:"
 msgstr "S_tíll:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:19
+#: ../ukui-panel/panel-properties-dialog.ui.h:19
 msgid "<small>Opaque</small>"
 msgstr "<small>Matt</small>"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:20
+#: ../ukui-panel/panel-properties-dialog.ui.h:20
 msgid "Background _image:"
 msgstr "Bakgrunns _mynd:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:21
+#: ../ukui-panel/panel-properties-dialog.ui.h:21
 msgid "Select background"
 msgstr "Veldu bakgrunn"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:22
+#: ../ukui-panel/panel-properties-dialog.ui.h:22
 msgid "Background"
 msgstr "Bakgrunnslitur"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:23
+#: ../ukui-panel/panel-properties-dialog.ui.h:23
 msgid "Image Background Details"
 msgstr "Myndar bakgrunns upplýsingar"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:24
+#: ../ukui-panel/panel-properties-dialog.ui.h:24
 msgid "_Tile"
 msgstr "_Flísaleggja"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:25
+#: ../ukui-panel/panel-properties-dialog.ui.h:25
 msgid "_Scale"
 msgstr "_Kvarða"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:26
+#: ../ukui-panel/panel-properties-dialog.ui.h:26
 msgid "St_retch"
 msgstr "T_eygja"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:27
+#: ../ukui-panel/panel-properties-dialog.ui.h:27
 msgid "Rotate image when panel is _vertical"
 msgstr "Snúa mynd þegar stikan er ló_ðrétt"
 
-#: ../mate-panel/panel-recent.c:78 ../mate-panel/panel-recent.c:88
+#: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
 msgid "Could not open recently used document \"%s\""
 msgstr "Gat ekki opnað nýlega notað skjal \"%s\""
 
-#: ../mate-panel/panel-recent.c:90
+#: ../ukui-panel/panel-recent.c:90
 #, c-format
 msgid "An unknown error occurred while trying to open \"%s\"."
 msgstr "Óþekkt villa kom upp þegar reynt var að opna \"%s\"."
 
-#: ../mate-panel/panel-recent.c:147
+#: ../ukui-panel/panel-recent.c:147
 msgid "Clear the Recent Documents list?"
 msgstr "Hreinsa lista nýlegra skjala?"
 
-#: ../mate-panel/panel-recent.c:149
+#: ../ukui-panel/panel-recent.c:149
 msgid ""
 "If you clear the Recent Documents list, you clear the following:\n"
 "• All items from the Places → Recent Documents menu item.\n"
 "• All items from the recent documents list in all applications."
 msgstr "Ef þú hreinsar listann fyrir nýleg skjöl, hreinsar þú eftirfarandi:\n• Alla hluti úr Staðir → Nýleg skjöl valmyndaratriðinu.\n• Alla hluti úr listanum yfir nýleg skjöl í öllum forritum."
 
-#: ../mate-panel/panel-recent.c:161
+#: ../ukui-panel/panel-recent.c:161
 msgid "Clear Recent Documents"
 msgstr "Hreinsa nýleg skjöl"
 
-#: ../mate-panel/panel-recent.c:196
+#: ../ukui-panel/panel-recent.c:196
 msgid "Recent Documents"
 msgstr "Nýleg skjöl"
 
-#: ../mate-panel/panel-recent.c:235
+#: ../ukui-panel/panel-recent.c:235
 msgid "Clear Recent Documents..."
 msgstr "Hreinsa lista yfir nýleg skjöl..."
 
-#: ../mate-panel/panel-recent.c:237
+#: ../ukui-panel/panel-recent.c:237
 msgid "Clear all items from the recent documents list"
 msgstr "Hreinsa alla hluta úr lista nýlegara skjala"
 
-#: ../mate-panel/panel-run-dialog.c:417
+#: ../ukui-panel/panel-run-dialog.c:417
 #, c-format
 msgid "Could not run command '%s'"
 msgstr "Gat ekki keyrt skipun '%s'"
 
-#: ../mate-panel/panel-run-dialog.c:457
+#: ../ukui-panel/panel-run-dialog.c:457
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
 msgstr "Gat ekki breytt '%s' frá UTF-8"
 
-#: ../mate-panel/panel-run-dialog.c:1204
+#: ../ukui-panel/panel-run-dialog.c:1204
 msgid "Choose a file to append to the command..."
 msgstr "Veldu skrá til að bæta við skipunina..."
 
-#: ../mate-panel/panel-run-dialog.c:1582 ../mate-panel/panel-run-dialog.ui.h:9
+#: ../ukui-panel/panel-run-dialog.c:1582 ../ukui-panel/panel-run-dialog.ui.h:9
 msgid "Select an application to view its description."
 msgstr "Veldu forrit til að sjá lýsinguna á því"
 
-#: ../mate-panel/panel-run-dialog.c:1620
+#: ../ukui-panel/panel-run-dialog.c:1620
 #, c-format
 msgid "Will run command: '%s'"
 msgstr "Mun keyra skipun '%s'"
 
-#: ../mate-panel/panel-run-dialog.c:1653
+#: ../ukui-panel/panel-run-dialog.c:1653
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
 msgstr "URI listi sem fellur niður í keyra glugganum er af röngu sniði (%d) eða lengd (%d)\n"
 
-#: ../mate-panel/panel-run-dialog.c:1975
+#: ../ukui-panel/panel-run-dialog.c:1975
 msgid "Could not display run dialog"
 msgstr "Gat ekki sýnt keyra gluggan"
 
-#: ../mate-panel/panel-run-dialog.ui.h:1
+#: ../ukui-panel/panel-run-dialog.ui.h:1
 msgid "Run Application"
 msgstr "Keyra forrit"
 
-#: ../mate-panel/panel-run-dialog.ui.h:2
+#: ../ukui-panel/panel-run-dialog.ui.h:2
 msgid "Command icon"
 msgstr "Skipanatáknmynd"
 
-#: ../mate-panel/panel-run-dialog.ui.h:3
+#: ../ukui-panel/panel-run-dialog.ui.h:3
 msgid "The icon of the command to be run."
 msgstr "Táknmynd skipunarinar sem á að keyra."
 
-#: ../mate-panel/panel-run-dialog.ui.h:4
+#: ../ukui-panel/panel-run-dialog.ui.h:4
 msgid "Run in _terminal"
 msgstr "Keyra á _skjáhermi"
 
-#: ../mate-panel/panel-run-dialog.ui.h:5
+#: ../ukui-panel/panel-run-dialog.ui.h:5
 msgid "Select this box to run the command in a terminal window."
 msgstr "Veldu þennan valkost ef þú vilt keyra skipunina í skjáhermi."
 
-#: ../mate-panel/panel-run-dialog.ui.h:6
+#: ../ukui-panel/panel-run-dialog.ui.h:6
 msgid "Run with _file..."
 msgstr "Keyra með _skrá..."
 
-#: ../mate-panel/panel-run-dialog.ui.h:7
+#: ../ukui-panel/panel-run-dialog.ui.h:7
 msgid ""
 "Click this button to browse for a file whose name to append to the command "
 "string."
 msgstr "Smelltu á þennan hnapp til að vafra eftir skrá til að bæta við skipunarstrenginn."
 
-#: ../mate-panel/panel-run-dialog.ui.h:8
+#: ../ukui-panel/panel-run-dialog.ui.h:8
 msgid "List of known applications"
 msgstr "Listi yfir þekkt forrit"
 
-#: ../mate-panel/panel-run-dialog.ui.h:10
+#: ../ukui-panel/panel-run-dialog.ui.h:10
 msgid "Show list of known _applications"
 msgstr "Sýna lista yfir þekkt _forrit"
 
-#: ../mate-panel/panel-run-dialog.ui.h:11 ../mate-panel/panel-stock-icons.c:97
+#: ../ukui-panel/panel-run-dialog.ui.h:11 ../ukui-panel/panel-stock-icons.c:97
 msgid "_Run"
 msgstr "_Keyra"
 
-#: ../mate-panel/panel-run-dialog.ui.h:12
+#: ../ukui-panel/panel-run-dialog.ui.h:12
 msgid ""
 "Click this button to run the selected application or the command in the "
 "command entry field."
 msgstr "Smelltu á þennan hnapp til að keyra valið forrit eða skipun í skipunarreitnum."
 
-#: ../mate-panel/panel-stock-icons.c:98
+#: ../ukui-panel/panel-stock-icons.c:98
 msgid "_Force quit"
 msgstr "_Þvinga til að hætta"
 
-#: ../mate-panel/panel-stock-icons.c:99
+#: ../ukui-panel/panel-stock-icons.c:99
 msgid "C_lear"
 msgstr "Hr_einsa"
 
-#: ../mate-panel/panel-stock-icons.c:100
+#: ../ukui-panel/panel-stock-icons.c:100
 msgid "D_on't Delete"
 msgstr "Ekk_i eyða"
 
-#: ../mate-panel/panel-test-applets.c:39
+#: ../ukui-panel/panel-test-applets.c:39
 msgid "Specify an applet IID to load"
 msgstr "Tilgreinið forritlingskenni til að hlaða"
 
-#: ../mate-panel/panel-test-applets.c:40
+#: ../ukui-panel/panel-test-applets.c:40
 msgid ""
 "Specify a gsettings path in which the applet preferences should be stored"
 msgstr ""
 
-#: ../mate-panel/panel-test-applets.c:41
+#: ../ukui-panel/panel-test-applets.c:41
 msgid "Specify the initial size of the applet (xx-small, medium, large etc.)"
 msgstr "Tilgreinið upphafsstærð forritlings (mm-lítið, meðal, stórt o.s.frv.)"
 
-#: ../mate-panel/panel-test-applets.c:42
+#: ../ukui-panel/panel-test-applets.c:42
 msgid ""
 "Specify the initial orientation of the applet (top, bottom, left or right)"
 msgstr "Tilgreinið upphfssnúning forritlings (efst, neðst, vinstri eða hægri)"
 
-#: ../mate-panel/panel-test-applets.c:66
+#: ../ukui-panel/panel-test-applets.c:66
 msgctxt "Size"
 msgid "XX Small"
 msgstr "Rosalega lítið"
 
-#: ../mate-panel/panel-test-applets.c:67
+#: ../ukui-panel/panel-test-applets.c:67
 msgctxt "Size"
 msgid "X Small"
 msgstr "Mjög lítið"
 
-#: ../mate-panel/panel-test-applets.c:68
+#: ../ukui-panel/panel-test-applets.c:68
 msgctxt "Size"
 msgid "Small"
 msgstr "Lítil"
 
-#: ../mate-panel/panel-test-applets.c:69
+#: ../ukui-panel/panel-test-applets.c:69
 msgctxt "Size"
 msgid "Medium"
 msgstr "Miðlungs"
 
-#: ../mate-panel/panel-test-applets.c:70
+#: ../ukui-panel/panel-test-applets.c:70
 msgctxt "Size"
 msgid "Large"
 msgstr "Stór"
 
-#: ../mate-panel/panel-test-applets.c:71
+#: ../ukui-panel/panel-test-applets.c:71
 msgctxt "Size"
 msgid "X Large"
 msgstr "Mjög stórt"
 
-#: ../mate-panel/panel-test-applets.c:72
+#: ../ukui-panel/panel-test-applets.c:72
 msgctxt "Size"
 msgid "XX Large"
 msgstr "Rosalega stórt"
 
-#: ../mate-panel/panel-test-applets.c:130
+#: ../ukui-panel/panel-test-applets.c:130
 #, c-format
 msgid "Failed to load applet %s"
 msgstr "Tókst ekki að ræsa forritling %s"
 
 #. This is an utility to easily test various applets
-#: ../mate-panel/panel-test-applets.ui.h:2
+#: ../ukui-panel/panel-test-applets.ui.h:2
 msgid "Test applet utility"
 msgstr "Hjálparforrit til að prófa forritlinga"
 
-#: ../mate-panel/panel-test-applets.ui.h:4
+#: ../ukui-panel/panel-test-applets.ui.h:4
 msgid "_Applet:"
 msgstr "_Forritlingur"
 
-#: ../mate-panel/panel-test-applets.ui.h:6
+#: ../ukui-panel/panel-test-applets.ui.h:6
 msgid "_Prefs Path:"
 msgstr "_Kjörstillingamappa:"
 
-#: ../mate-panel/panel-toplevel.c:1218
+#: ../ukui-panel/panel-toplevel.c:1218
 msgid "Hide Panel"
 msgstr "Fela stiku"
 
 #. translators: these string will be shown in MetaCity's switch window
 #. * popup when you pass the focus to a panel
-#: ../mate-panel/panel-toplevel.c:1621 ../mate-panel/panel-toplevel.c:1631
+#: ../ukui-panel/panel-toplevel.c:1621 ../ukui-panel/panel-toplevel.c:1631
 msgid "Top Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1623
+#: ../ukui-panel/panel-toplevel.c:1623
 msgid "Bottom Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1625
+#: ../ukui-panel/panel-toplevel.c:1625
 msgid "Left Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1627
+#: ../ukui-panel/panel-toplevel.c:1627
 msgid "Right Panel"
 msgstr ""
 
-#: ../mate-panel/panel-util.c:347
+#: ../ukui-panel/panel-util.c:347
 #, c-format
 msgid "Icon '%s' not found"
 msgstr "Táknmynd ,%s' fannst ekki"
 
-#: ../mate-panel/panel-util.c:465
+#: ../ukui-panel/panel-util.c:465
 #, c-format
 msgid "Could not execute '%s'"
 msgstr "Gat ekki keyrt '%s'"
 
-#: ../mate-panel/panel-util.c:693
+#: ../ukui-panel/panel-util.c:693
 msgid "file"
 msgstr "skrá"
 
-#: ../mate-panel/panel-util.c:866
+#: ../ukui-panel/panel-util.c:866
 msgid "Home Folder"
 msgstr "Heimamappa"
 
 #. Translators: this is the same string as the one found in
 #. * caja
-#: ../mate-panel/panel-util.c:878
+#: ../ukui-panel/panel-util.c:878
 msgid "File System"
 msgstr "Skráarkerfi"
 
-#: ../mate-panel/panel-util.c:1051
+#: ../ukui-panel/panel-util.c:1051
 msgid "Search"
 msgstr "Leita"
 
@@ -2818,31 +2818,31 @@ msgstr "Leita"
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
-#: ../mate-panel/panel-util.c:1097
+#: ../ukui-panel/panel-util.c:1097
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: ../mate-panel/panel.c:482
+#: ../ukui-panel/panel.c:482
 #, c-format
 msgid "Open URL: %s"
 msgstr "Opna veffang: %s"
 
-#: ../mate-panel/panel.c:1332
+#: ../ukui-panel/panel.c:1332
 msgid "Delete this drawer?"
 msgstr "Eyða þessari skúffu?"
 
-#: ../mate-panel/panel.c:1333
+#: ../ukui-panel/panel.c:1333
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
 msgstr "Þegar skúffu er eytt, þá tapast skúffan og stillingar hennar."
 
-#: ../mate-panel/panel.c:1336
+#: ../ukui-panel/panel.c:1336
 msgid "Delete this panel?"
 msgstr "Eyða þessari stiku?"
 
-#: ../mate-panel/panel.c:1337
+#: ../ukui-panel/panel.c:1337
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."

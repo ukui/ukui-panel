@@ -30,13 +30,13 @@
 #define __WINDOW_MENU_H__
 
 #include <glib.h>
-#include <mate-panel-applet.h>
+#include <ukui-panel-applet.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-gboolean window_menu_applet_fill(MatePanelApplet* applet);
+gboolean window_menu_applet_fill(UkuiPanelApplet* applet);
 
 #ifdef __cplusplus
 }

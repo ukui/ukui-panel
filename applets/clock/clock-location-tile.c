@@ -613,8 +613,8 @@ weather_info_setup_tooltip (WeatherInfo *info, ClockLocation *location, GtkToolt
         temp = g_strdup (weather_info_get_temp (info));
         apparent = g_strdup (weather_info_get_apparent (info));
         if (strcmp (apparent, temp) != 0 &&
-            /* FMQ: it's broken to read from another module's translations; add some API to libmateweather. */
-            strcmp (apparent, dgettext ("mate-applets-2.0", "Unknown")) != 0)
+            /* FMQ: it's broken to read from another module's translations; add some API to libukuiweather. */
+            strcmp (apparent, dgettext ("ukui-applets-2.0", "Unknown")) != 0)
                 /* Translators: The two strings are temperatures. */
                 line2 = g_strdup_printf (_("%s, feels like %s"), temp, apparent);
         else
@@ -623,7 +623,7 @@ weather_info_setup_tooltip (WeatherInfo *info, ClockLocation *location, GtkToolt
         g_free (apparent);
 
         wind = weather_info_get_wind (info);
-        if (strcmp (apparent, dgettext ("mate-applets-2.0", "Unknown")) != 0)
+        if (strcmp (apparent, dgettext ("ukui-applets-2.0", "Unknown")) != 0)
                 line3 = g_strdup_printf ("%s\n", wind);
         else
                 line3 = g_strdup ("");

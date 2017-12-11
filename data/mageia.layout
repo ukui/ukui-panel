@@ -23,7 +23,7 @@ locked=true
 
 [Object terminal]
 object-type=launcher
-launcher-location=/usr/share/applications/mate-terminal.desktop
+launcher-location=/usr/share/applications/ukui-terminal.desktop
 toplevel-id=top
 position=20
 locked=true

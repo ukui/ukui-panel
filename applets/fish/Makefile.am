@@ -1,10 +1,10 @@
 AM_CPPFLAGS = \
-	$(LIBMATE_PANEL_APPLET_CFLAGS) \
+	$(LIBUKUI_PANEL_APPLET_CFLAGS) \
 	$(FISH_CFLAGS) \
 	-I$(srcdir) \
-	-I$(srcdir)/../../libmate-panel-applet \
-	-I$(top_builddir)/libmate-panel-applet \
-	-DMATELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	-I$(srcdir)/../../libukui-panel-applet \
+	-I$(top_builddir)/libukui-panel-applet \
+	-DUKUILOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DFISH_ICONDIR=\""$(fishbitmapsdir)"\" \
 	-DFISH_BUILDERDIR=\""$(uidir)"\" \
 	-DFISH_MENU_UI_DIR=\""$(xmluidir)"\" \
@@ -15,9 +15,9 @@ AM_CFLAGS = $(WARN_CFLAGS)
 FISH_SOURCES = fish.c
 
 FISH_LDADD = \
-	../../libmate-panel-applet/libmate-panel-applet-4.la \
+	../../libukui-panel-applet/libukui-panel-applet-4.la \
 	$(FISH_LIBS) \
-	$(LIBMATE_PANEL_APPLET_LIBS)
+	$(LIBUKUI_PANEL_APPLET_LIBS)
 
 if FISH_INPROCESS
 APPLET_IN_PROCESS = true
@@ -39,9 +39,9 @@ fish_applet_LDADD = $(FISH_LDADD)
 fish_applet_CFLAGS = $(AM_CFLAGS)
 endif
 
-appletdir       = $(datadir)/mate-panel/applets
-applet_in_files = org.mate.panel.FishApplet.mate-panel-applet.in
-applet_DATA     = $(applet_in_files:.mate-panel-applet.in=.mate-panel-applet)
+appletdir       = $(datadir)/ukui-panel/applets
+applet_in_files = org.ukui.panel.FishApplet.ukui-panel-applet.in
+applet_DATA     = $(applet_in_files:.ukui-panel-applet.in=.ukui-panel-applet)
 
 $(applet_in_files): $(applet_in_files).in Makefile
 	$(AM_V_GEN)sed \
@@ -50,20 +50,20 @@ $(applet_in_files): $(applet_in_files).in Makefile
 		-e "s|\@VERSION\@|$(PACKAGE_VERSION)|" \
 		$< > $@
 
-@PANEL_INTLTOOL_MATE_PANEL_APPLET_RULE@
+@PANEL_INTLTOOL_UKUI_PANEL_APPLET_RULE@
 
 if !FISH_INPROCESS
 servicedir       = $(datadir)/dbus-1/services
-service_in_files = org.mate.panel.applet.FishAppletFactory.service.in
+service_in_files = org.ukui.panel.applet.FishAppletFactory.service.in
 service_DATA     = $(service_in_files:.service.in=.service)
 
-org.mate.panel.applet.FishAppletFactory.service: $(service_in_files)
+org.ukui.panel.applet.FishAppletFactory.service: $(service_in_files)
 	$(AM_V_GEN)sed \
 		-e "s|\@LOCATION\@|$(APPLET_LOCATION)|" \
 		$< > $@
 endif
 
-fishbitmapsdir = $(datadir)/mate-panel/pixmaps
+fishbitmapsdir = $(datadir)/ukui-panel/pixmaps
 fishbitmaps_DATA = \
 	wanda.png \
 	fishanim.png \
@@ -71,13 +71,13 @@ fishbitmaps_DATA = \
 	footguy.png \
 	monkey.png
 
-uidir = $(datadir)/mate-panel/ui
+uidir = $(datadir)/ukui-panel/ui
 ui_DATA = fish.ui
 
-xmluidir = $(datadir)/mate-panel/ui
+xmluidir = $(datadir)/ukui-panel/ui
 xmlui_DATA = fish-menu.xml
 
-fish_gschemas_in = org.mate.panel.applet.fish.gschema.xml.in
+fish_gschemas_in = org.ukui.panel.applet.fish.gschema.xml.in
 gsettings_SCHEMAS = $(fish_gschemas_in:.xml.in=.xml)
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
@@ -85,7 +85,7 @@ gsettings_SCHEMAS = $(fish_gschemas_in:.xml.in=.xml)
 EXTRA_DIST = \
 	wanda.svg \
 	$(fishbitmaps_DATA) \
-	org.mate.panel.FishApplet.mate-panel-applet.in.in \
+	org.ukui.panel.FishApplet.ukui-panel-applet.in.in \
 	$(service_in_files) \
 	$(ui_DATA) \
 	$(xmlui_DATA) \

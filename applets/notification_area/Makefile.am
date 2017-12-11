@@ -8,11 +8,11 @@ noinst_PROGRAMS = testtray
 
 AM_CPPFLAGS =							\
 	$(NOTIFICATION_AREA_CFLAGS)				\
-	$(LIBMATE_PANEL_APPLET_CFLAGS)				\
+	$(LIBUKUI_PANEL_APPLET_CFLAGS)				\
 	-I$(srcdir)						\
-	-I$(srcdir)/../../libmate-panel-applet			\
-	-I$(top_builddir)/libmate-panel-applet			\
-	-DMATELOCALEDIR=\""$(datadir)/locale"\"		\
+	-I$(srcdir)/../../libukui-panel-applet			\
+	-I$(top_builddir)/libukui-panel-applet			\
+	-DUKUILOCALEDIR=\""$(datadir)/locale"\"		\
 	-DG_LOG_DOMAIN=\""notification-area-applet"\"		\
 	-DNOTIFICATION_AREA_MENU_UI_DIR=\""$(uidir)"\"		\
 	-DPROVIDE_WATCHER_SERVICE=1				\
@@ -36,10 +36,10 @@ libtray_la_LIBADD =							\
 NOTIFICATION_AREA_SOURCES = main.c main.h
 
 NOTIFICATION_AREA_LDADD =				\
-	../../libmate-panel-applet/libmate-panel-applet-4.la	\
+	../../libukui-panel-applet/libukui-panel-applet-4.la	\
 	libtray.la \
 	$(NOTIFICATION_AREA_LIBS)			\
-	$(LIBMATE_PANEL_APPLET_LIBS)
+	$(LIBUKUI_PANEL_APPLET_LIBS)
 
 
 testtray_SOURCES = testtray.c
@@ -67,9 +67,9 @@ notification_area_applet_LDADD = $(NOTIFICATION_AREA_LDADD)
 notification_area_applet_CFLAGS = $(AM_CFLAGS)
 endif
 
-appletdir       = $(datadir)/mate-panel/applets
-applet_in_files = org.mate.panel.NotificationAreaApplet.mate-panel-applet.in
-applet_DATA     = $(applet_in_files:.mate-panel-applet.in=.mate-panel-applet)
+appletdir       = $(datadir)/ukui-panel/applets
+applet_in_files = org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in
+applet_DATA     = $(applet_in_files:.ukui-panel-applet.in=.ukui-panel-applet)
 
 $(applet_in_files): $(applet_in_files).in Makefile
 	$(AM_V_GEN)sed \
@@ -78,24 +78,24 @@ $(applet_in_files): $(applet_in_files).in Makefile
 		-e "s|\@VERSION\@|$(PACKAGE_VERSION)|" \
 		$< > $@
 
-@PANEL_INTLTOOL_MATE_PANEL_APPLET_RULE@
+@PANEL_INTLTOOL_UKUI_PANEL_APPLET_RULE@
 
 if !NOTIFICATION_AREA_INPROCESS
 servicedir       = $(datadir)/dbus-1/services
-service_in_files = org.mate.panel.applet.NotificationAreaAppletFactory.service.in
+service_in_files = org.ukui.panel.applet.NotificationAreaAppletFactory.service.in
 service_DATA     = $(service_in_files:.service.in=.service)
 
-org.mate.panel.applet.NotificationAreaAppletFactory.service: $(service_in_files)
+org.ukui.panel.applet.NotificationAreaAppletFactory.service: $(service_in_files)
 	$(AM_V_GEN)sed \
 		-e "s|\@LOCATION\@|$(APPLET_LOCATION)|" \
 		$< > $@
 endif
 
-uidir = $(datadir)/mate-panel/ui
+uidir = $(datadir)/ukui-panel/ui
 ui_DATA = notification-area-menu.xml
 
 EXTRA_DIST =								\
-	org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in	\
+	org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in	\
 	$(ui_DATA)							\
 	$(service_in_files)
 

@@ -10,12 +10,12 @@
 # Patrik Nilsson <asavartzeth@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: MATE Desktop Environment\n"
+"Project-Id-Version: UKUI Desktop Environment\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-26 11:42+0300\n"
 "PO-Revision-Date: 2017-09-19 11:04+0000\n"
 "Last-Translator: monsta <monsta@inbox.ru>\n"
-"Language-Team: Swedish (http://www.transifex.com/mate/MATE/language/sv/)\n"
+"Language-Team: Swedish (http://www.transifex.com/ukui/UKUI/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -171,10 +171,10 @@ msgstr "_Inställningar"
 #: ../applets/notification_area/main.c:176
 #: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-list.c:187
 #: ../applets/wncklet/window-menu.c:100
-#: ../applets/wncklet/workspace-switcher.c:344 ../mate-panel/drawer.c:545
-#: ../mate-panel/panel-action-button.c:730
-#: ../mate-panel/panel-context-menu.c:265 ../mate-panel/panel-menu-bar.c:359
-#: ../mate-panel/panel-menu-button.c:666
+#: ../applets/wncklet/workspace-switcher.c:344 ../ukui-panel/drawer.c:545
+#: ../ukui-panel/panel-action-button.c:730
+#: ../ukui-panel/panel-context-menu.c:265 ../ukui-panel/panel-menu-bar.c:359
+#: ../ukui-panel/panel-menu-button.c:666
 msgid "_Help"
 msgstr "_Hjälp"
 
@@ -215,7 +215,7 @@ msgid "City Time Zone"
 msgstr "Stadens tidszon"
 
 #: ../applets/clock/clock.c:3280
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:3
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:3
 msgid "Clock"
 msgstr "Klocka"
 
@@ -228,7 +228,7 @@ msgstr "Klockan visar aktuell tid och datum"
 #: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:562
 #: ../applets/wncklet/window-menu.c:90
 #: ../applets/wncklet/workspace-switcher.c:604
-#: ../mate-panel/panel-context-menu.c:121
+#: ../ukui-panel/panel-context-menu.c:121
 msgid "translator-credits"
 msgstr "Daniel Nylander\nChristian Rose\nMartin Norbäck\nAndreas Hydén\nJohan Dahlin\nAnders Carlsson\nMartin Wahlén\n\nSkicka synpunkter på översättningen till\ntp-sv@listor.tp-sv.se"
 
@@ -333,7 +333,7 @@ msgid "Show _temperature"
 msgstr "Visa _temperatur"
 
 #: ../applets/clock/clock.ui.h:26 ../applets/fish/fish.ui.h:2
-#: ../mate-panel/panel-properties-dialog.ui.h:11
+#: ../ukui-panel/panel-properties-dialog.ui.h:11
 msgid "General"
 msgstr "Allmänt"
 
@@ -415,7 +415,7 @@ msgid "%s, %s"
 msgstr "%s, %s"
 
 #. FMQ: it's broken to read from another module's translations; add some API
-#. to libmateweather.
+#. to libukuiweather.
 #: ../applets/clock/clock-location-tile.c:618
 #: ../applets/clock/clock-location-tile.c:627
 msgid "Unknown"
@@ -434,7 +434,7 @@ msgstr "Soluppgång: %s / Solnedgång: %s"
 
 #: ../applets/clock/clock-utils.c:95 ../applets/fish/fish.c:168
 #: ../applets/notification_area/main.c:121 ../applets/wncklet/wncklet.c:71
-#: ../mate-panel/libpanel-util/panel-show.c:234
+#: ../ukui-panel/libpanel-util/panel-show.c:234
 #, c-format
 msgid "Could not display help document '%s'"
 msgstr "Kunde inte visa hjälpdokumentet \"%s\""
@@ -444,11 +444,11 @@ msgstr "Kunde inte visa hjälpdokumentet \"%s\""
 msgid "Error displaying help document"
 msgstr "Fel vid visning av hjälpdokumentet"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:1
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:1
 msgid "Hour format"
 msgstr "Timformat"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:2
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:2
 msgid ""
 "This key specifies the hour format used by the clock applet. Possible values"
 " are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom\". If set"
@@ -458,109 +458,109 @@ msgid ""
 "clock will display time in seconds since Epoch, i.e. 1970-01-01. If set to "
 "\"custom\", the clock will display time according to the format specified in"
 " the custom_format key."
-msgstr "Denna nyckel anger timformatet som används av klockpanelprogrammet. Möjliga värden är \"12-hour\" (12-timmars), \"24-hour\" (24-timmars), \"internet\", \"unix\" och \"custom\" (anpassat). Om detta är satt till \"internet\" kommer klockan att visa Internettid. Internettidssystemet delar in dagen i 1000 \".beats\" (slag). Det finns inga tidszoner i detta system, så tiden är densamma i hela världen. Om detta är satt till \"unix\" kommer klockan att visa tiden i sekunder sedan epoken, dvs. 1970-01-01. Om detta är satt till \"custom\" kommer klockan att visa tiden enligt det format som är angivet i nyckeln custom_format."
+msgstr "Denna nyckel anger timforukuit som används av klockpanelprogrammet. Möjliga värden är \"12-hour\" (12-timmars), \"24-hour\" (24-timmars), \"internet\", \"unix\" och \"custom\" (anpassat). Om detta är satt till \"internet\" kommer klockan att visa Internettid. Internettidssystemet delar in dagen i 1000 \".beats\" (slag). Det finns inga tidszoner i detta system, så tiden är densamma i hela världen. Om detta är satt till \"unix\" kommer klockan att visa tiden i sekunder sedan epoken, dvs. 1970-01-01. Om detta är satt till \"custom\" kommer klockan att visa tiden enligt det format som är angivet i nyckeln custom_format."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:3
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:3
 msgid "Custom format of the clock"
 msgstr "Anpassat format för klockan"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:4
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:4
 msgid ""
 "This key specifies the format used by the clock applet when the format key "
 "is set to \"custom\". You can use conversion specifiers understood by "
 "strftime() to obtain a specific format. See the strftime() manual for more "
 "information."
-msgstr "Denna nyckel anger formatet som används av klockpanelprogrammet då formatnyckeln är inställd till \"custom\". Du kan använda de konverteringsspecifierare som förstås av strftime() för att få ett specifikt format. Se manualsidan för strftime() för mer information."
+msgstr "Denna nyckel anger forukuit som används av klockpanelprogrammet då formatnyckeln är inställd till \"custom\". Du kan använda de konverteringsspecifierare som förstås av strftime() för att få ett specifikt format. Se manualsidan för strftime() för mer information."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:5
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:5
 msgid "Show time with seconds"
 msgstr "Visa tid med sekunder"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:6
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:6
 msgid "If true, display seconds in time."
 msgstr "Om detta är sant visas sekunder i tiden."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:7
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:7
 msgid "Show date in clock"
 msgstr "Visa datum i klockan"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:8
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Om detta är sant visas datum i klockan, utöver tiden."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:9
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:9
 msgid "Show date in tooltip"
 msgstr "Visa datum som verktygstips"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:10
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:10
 msgid "If true, show date in a tooltip when the pointer is over the clock."
 msgstr "Om detta är sant visas datum i ett verktygstips när muspekaren är över klockan."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:11
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:11
 msgid "Show weather in clock"
 msgstr "Visa väder i klockan"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:12
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:12
 msgid "If true, display a weather icon."
 msgstr "Om detta är sant visas en väderikon."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:13
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:13
 msgid "Show temperature in clock"
 msgstr "Visa temperatur i klockan"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:14
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:14
 msgid "If true, show the temperature next to the weather icon."
 msgstr "Om detta är sant visas temperaturen bredvid väderikonen."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:15
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:15
 msgid "Show week numbers in calendar"
 msgstr "Visa veckonummer i kalendern"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:16
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:16
 msgid "If true, show week numbers in the calendar."
 msgstr "Om detta är sant visas veckonummer i kalendern."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:17
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:17
 msgid "Expand list of locations"
 msgstr "Fäll ut listan över platser"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:18
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:18
 msgid "If true, expand the list of locations in the calendar window."
 msgstr "Om detta är sant fälls listan över platser ut i kalenderfönstret."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:19
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:19
 msgid "List of locations"
 msgstr "Lista över platser"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:20
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:20
 msgid "A list of locations to display in the calendar window."
 msgstr "En lista över platser att visa i kalenderfönstret."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:21
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:21
 msgid "Temperature unit"
 msgstr "Temperaturenhet"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:22
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:22
 msgid "The unit to use when showing temperatures."
 msgstr "Enheten att använda vid visning av temperaturer."
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:23
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:23
 msgid "Speed unit"
 msgstr "Hastighetsenhet"
 
-#: ../applets/clock/org.mate.panel.applet.clock.gschema.xml.in.h:24
+#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:24
 msgid "The unit to use when showing wind speed."
 msgstr "Enheten att använda vid visning av vindhastighet."
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:1
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:1
 msgid "Clock Applet Factory"
 msgstr ""
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:2
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:2
 msgid "Factory for clock applet"
 msgstr ""
 
-#: ../applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.in.in.h:4
+#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:4
 msgid "Get the current time and date"
 msgstr "Hämta nuvarande tid och datum"
 
@@ -596,7 +596,7 @@ msgid "(with minor help from George)"
 msgstr "(med lite hjälp från George)"
 
 #: ../applets/fish/fish.c:569
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:3
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:3
 msgid "Fish"
 msgstr "Fisk"
 
@@ -676,7 +676,7 @@ msgstr "Ko_mmando som ska köras vid klick:"
 msgid "Animation"
 msgstr "Animering"
 
-#: ../applets/fish/fish.ui.h:6 ../mate-panel/panel-properties-dialog.ui.h:14
+#: ../applets/fish/fish.ui.h:6 ../ukui-panel/panel-properties-dialog.ui.h:14
 msgid "    "
 msgstr "    "
 
@@ -708,77 +708,77 @@ msgstr "sekunder"
 msgid "_Rotate on vertical panels"
 msgstr "_Rotera i vertikala paneler"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:1
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:1
 msgid "The fish's name"
 msgstr "Fiskens namn"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:2
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:2
 msgid ""
 "A fish without a name is a pretty dull fish. Bring your fish to life by "
 "naming him."
 msgstr "En fisk utan ett namn är en ganska tråkig fisk. Gör din fisk levande genom att namnge den."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:3
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:3
 msgid "The fish's animation pixmap"
 msgstr "Fiskens animationsbildfil"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:4
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:4
 msgid ""
 "This key specifies the filename of the pixmap which will be used for the "
 "animation displayed in the fish applet relative to the pixmap directory."
 msgstr "Denna nyckel anger filnamnet för den bild som kommer att användas som den animation som visas i fiskpanelprogrammet relativt bildkatalogen."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:5
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:5
 msgid "Command to execute on click"
 msgstr "Kommando att köra vid klick"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:6
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:6
 msgid ""
 "This key specifies the command that will be tried to execute when the fish "
 "is clicked."
 msgstr "Denna nyckel anger det kommando som ska försökas utföras när man klickar på fisken."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:7
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:7
 msgid "Frames in fish's animation"
 msgstr "Antalet bildrutor i fiskens animation"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:8
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:8
 msgid ""
 "This key specifies the number of frames that will be displayed in the fish's"
 " animation."
 msgstr "Denna nyckel anger antalet bildrutor som kommer att visas i fiskens animation."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:9
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:9
 msgid "Pause per frame"
 msgstr "Paus per bildruta"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:10
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:10
 msgid "This key specifies the number of seconds each frame will be displayed."
 msgstr "Denna nyckel anger antalet sekunder som varje ram kommer att visas."
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:11
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:11
 msgid "Rotate on vertical panels"
 msgstr "Rotera i vertikala paneler"
 
-#: ../applets/fish/org.mate.panel.applet.fish.gschema.xml.in.h:12
+#: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:12
 msgid ""
 "If true, the fish's animation will be displayed rotated on vertical panels."
 msgstr "Om detta är sant kommer fiskens animation att visas roterad på vertikala paneler."
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:1
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:1
 msgid "Wanda Factory"
 msgstr ""
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:2
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:2
 msgid "From Whence That Stupid Fish Came"
 msgstr ""
 
-#: ../applets/fish/org.mate.panel.FishApplet.mate-panel-applet.in.in.h:4
-msgid "Display a swimming fish or another animated creature"
+#: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:4
+msgid "Display a swimming fish or another aniukuid creature"
 msgstr "Visa en simning fisk eller annan animerad varelse"
 
 #: ../applets/notification_area/main.c:164
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:3
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:3
 msgid "Notification Area"
 msgstr "Notifieringsyta"
 
@@ -786,130 +786,130 @@ msgstr "Notifieringsyta"
 msgid "Panel Notification Area"
 msgstr "Panelnotifieringsyta"
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:1
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:1
 msgid "Notification Area Factory"
 msgstr ""
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:2
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:2
 msgid "Factory for notification area"
 msgstr ""
 
-#: ../applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.in.in.h:4
+#: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:4
 msgid "Area where notification icons appear"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:1
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:1
 msgid "Show windows from all workspaces"
 msgstr "Visa fönster från alla arbetsytor"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:2
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:2
 msgid ""
 "If true, the window list will show windows from all workspaces. Otherwise it"
 " will only display windows from the current workspace."
 msgstr "Om detta är sant kommer fönsterlistan att visa fönster från alla arbetsytor. Annars kommer den endast att visa fönster från den aktuella arbetsytan."
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:3
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:3
 msgid "When to group windows"
 msgstr "När fönster ska grupperas"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:4
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:4
 msgid ""
 "Decides when to group windows from the same application on the window list. "
 "Possible values are \"never\", \"auto\" and \"always\"."
 msgstr "Avgör när fönster från samma program ska grupperas i fönsterlistan. Giltiga värden är \"never\" (aldrig), \"auto\" (auto) och \"always\" (alltid)."
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:5
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:5
 msgid "Move windows to current workspace when unminimized"
 msgstr "Flytta fönster till den aktuella arbetsytan vid återställning"
 
-#: ../applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in.h:6
+#: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:6
 msgid ""
 "If true, then when unminimizing a window, move it to the current workspace. "
 "Otherwise, switch to the workspace of the window."
 msgstr "Om detta är sant kommer återställning av ett fönster att flytta det till den aktuella arbetsytan. Byt annars till fönstrets arbetsyta."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:1
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:1
 msgid "Display workspace names"
 msgstr "Visa namn på arbetsytor"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:2
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:2
 msgid ""
 "If true, the workspaces in the workspace switcher will display the names of "
 "the workspaces. Otherwise they will display the windows on the workspace. "
 "This setting only works when the window manager is Marco."
 msgstr "Om detta är sant kommer arbetsytorna i arbetsyteväxlaren att visa namnen på arbetsytorna. Annars kommer fönstren på arbetsytorna att visas. Denna inställning fungerar endast när fönsterhanteraren Marco används."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:3
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:3
 msgid "Display all workspaces"
 msgstr "Visa alla arbetsytor"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:4
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:4
 msgid ""
 "If true, the workspace switcher will show all workspaces. Otherwise it will "
 "only show the current workspace."
 msgstr "Om detta är sant kommer arbetsyteväxlaren att visa alla arbetsytor. Annars kommer endast den aktuella arbetsytan att visas."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:5
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:5
 msgid "Rows in workspace switcher"
 msgstr "Rader i arbetsyteväxlaren"
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:6
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:6
 msgid ""
 "This key specifies how many rows (for horizontal layout) or columns (for "
 "vertical layout) the workspace switcher shows the workspaces in. This key is"
 " only relevant if the display_all_workspaces key is true."
 msgstr "Denna nyckel anger hur många rader (för horisontell layout) eller kolumner (för vertikal layout) som arbetsyteväxlaren visar arbetsytorna i. Denna nyckel är endast relevant om nyckeln display_all_workspaces är sann."
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:7
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:7
 msgid "Wrap around on scroll"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in.h:8
+#: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:8
 msgid ""
 "If true, the workspace switcher will allow wrap-around, which means "
 "switching from the first to the last workspace and vice versa via scrolling."
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:1
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:1
 msgid "Window Navigation Applet Factory"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:2
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:2
 msgid "Factory for the window navigation related applets"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:3
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:3
 #: ../applets/wncklet/window-menu.c:83 ../applets/wncklet/window-menu.c:255
 msgid "Window Selector"
 msgstr "Fönsterväljare"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:4
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:4
 msgid "Switch between open windows using a menu"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:5
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:5
 #: ../applets/wncklet/workspace-switcher.c:597
 msgid "Workspace Switcher"
 msgstr "Arbetsyteväxlare"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:6
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:6
 msgid "Switch between workspaces"
 msgstr "Växla mellan arbetsytor"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:7
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:7
 #: ../applets/wncklet/window-list.c:555
 msgid "Window List"
 msgstr "Fönsterlista"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:8
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:8
 msgid "Switch between open windows using buttons"
 msgstr ""
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:9
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:9
 msgid "Show Desktop"
 msgstr "Visa skrivbordet"
 
-#: ../applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.in.in.h:10
+#: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:10
 msgid "Hide application windows and show the desktop"
 msgstr ""
 
@@ -1061,432 +1061,432 @@ msgstr ""
 msgid "Workspaces"
 msgstr "Arbetsytor"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.gschema.xml.in.h:1
 msgid "Default panel layout"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.gschema.xml.in.h:2
 msgid "The default panels layout to use when panels are created or resetted."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.gschema.xml.in.h:3
 msgid "Enable program list in \"Run Application\" dialog"
 msgstr "Aktivera programlista i dialogfönstret \"Kör program\""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.gschema.xml.in.h:4
 msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is made available. Whether or not the listing is expanded when the "
 "dialog is shown is controlled by the show_program_list key."
 msgstr "Om detta är sant görs listan \"Kända program\" i dialogfönstret \"Kör program\" tillgänglig. Huruvida listan fälls ut eller inte när dialogfönstret visas styrs av nyckeln show_program_list."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.gschema.xml.in.h:5
 msgid "Expand program list in \"Run Application\" dialog"
 msgstr "Fäll ut programlista i dialogfönstret \"Kör program\""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.gschema.xml.in.h:6
 msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is expanded when the dialog is opened. This key is only relevant if "
 "the enable_program_list key is true."
 msgstr "Om detta är sant fälls listan \"Kända program\" i dialogfönstret \"Kör program\" ut när dialogfönstret öppnas. Denna nyckel är endast relevant om nyckeln enable_program_list är sann."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.gschema.xml.in.h:7
 msgid "Enable autocompletion in \"Run Application\" dialog"
 msgstr "Aktivera automatisk komplettering i dialogfönstret \"Kör program\""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.gschema.xml.in.h:8
 msgid ""
 "If true, autocompletion in the \"Run Application\" dialog is made available."
 msgstr "Om detta är sant görs automatisk komplettering tillgängligt i dialogfönstret \"Kör program\"."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.gschema.xml.in.h:9
 msgid "History for \"Run Application\" dialog"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.gschema.xml.in.h:10
 msgid ""
 "This is the list of commands used in \"Run Application\" dialog. The "
 "commands are sorted descendingly by recency (e.g., most recent command comes"
 " first)."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.gschema.xml.in.h:11
 msgid "Maximum history size for \"Run Application\" dialog"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.gschema.xml.in.h:12
 msgid ""
 "Controls the maximum size of the history of the \"Run Application\" dialog. "
 "A value of 0 will disable the history."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.gschema.xml.in.h:13
 msgid "Reverse the history of the \"Run Application\" dialog"
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.gschema.xml.in.h:14
 msgid ""
 "Displays the history in reverse. Provides a consistent view for terminal "
 "users as the up key will select the most recent entry."
 msgstr ""
 
-#: ../data/org.mate.panel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.gschema.xml.in.h:15
 msgid "Panel ID list"
 msgstr "Lista med panel-id"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.gschema.xml.in.h:16
 msgid ""
 "A list of panel IDs. Each ID identifies an individual toplevel panel. The "
 "settings for each of these panels are stored in /apps/panel/toplevels/$(id)."
 msgstr "En lista med panel-id. Varje id identifierar en individuell toppnivåpanel. Inställningarna för var och en av dessa paneler lagras i /apps/panel/toplevels/$(id)."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.gschema.xml.in.h:17
 msgid "Panel object ID list"
 msgstr "Lista med panelobjekt-id"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.gschema.xml.in.h:18
 msgid ""
 "A list of panel object IDs. Each ID identifies an individual panel object "
 "(e.g. a launcher, action button or menu button/bar). The settings for each "
 "of these objects are stored in /apps/panel/objects/$(id)."
 msgstr "En lista med panelobjekt-id. Varje id identifierar ett individuellt panelobjekt (t.ex. en programstartare, åtgärdsknapp eller menyknapp/menyrad). Inställningarna för vart och ett av dessa objekt lagras i /apps/panel/objects/$(id)."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.gschema.xml.in.h:19
 msgid "Enable tooltips"
 msgstr "Aktivera verktygstips"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.gschema.xml.in.h:20
 msgid "If true, tooltips are shown for objects in panels."
 msgstr "Om detta är sant visas verktygstips för objekt i paneler."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:21
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
 msgid "Enable animations"
 msgstr "Aktivera animationer"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.gschema.xml.in.h:22
 msgid "Autoclose drawer"
 msgstr "Stäng låda automatiskt"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.gschema.xml.in.h:23
 msgid ""
 "If true, a drawer will automatically be closed when the user clicks a "
 "launcher in it."
 msgstr "Om detta är sant kommer en låda att automatiskt stängas när användaren klickar på en programstartare i den."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.gschema.xml.in.h:24
 msgid "Confirm panel removal"
 msgstr "Bekräfta borttagning av panel"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.gschema.xml.in.h:25
 msgid ""
 "If true, a dialog is shown asking for confirmation if the user wants to "
 "remove a panel."
 msgstr "Om detta är sant visas en dialogruta som frågar efter bekräftelse när användaren vill ta bort en panel."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.gschema.xml.in.h:26
 msgid "Highlight launchers on mouseover"
 msgstr "Lys upp programstartare vid musövergång"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.gschema.xml.in.h:27
 msgid ""
 "If true, a launcher is highlighted when the user moves the pointer over it."
 msgstr "Om detta är sant lyses en programstartare upp när användaren flyttar muspekaren över den."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.gschema.xml.in.h:28
 msgid "Complete panel lockdown"
 msgstr "Lås panelen helt"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.gschema.xml.in.h:29
 msgid ""
 "If true, the panel will not allow any changes to the configuration of the "
 "panel. Individual applets may need to be locked down separately however. The"
 " panel must be restarted for this to take effect."
 msgstr "Om detta är sant kommer panelen inte att tillåta några ändringar i konfigurationen av panelen. Enskilda panelprogram måste däremot låsas separat. Panelen måste startas om för att detta ska börja gälla."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.gschema.xml.in.h:30
 msgid "Applet IIDs to disable from loading"
 msgstr "Panelprograms-IID att förhindra från inläsning"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.gschema.xml.in.h:31
 msgid ""
 "A list of applet IIDs that the panel will ignore. This way you can disable "
 "certain applets from loading or showing up in the menu. For example to "
-"disable the mini-commander applet add 'OAFIID:MATE_MiniCommanderApplet' to "
+"disable the mini-commander applet add 'OAFIID:UKUI_MiniCommanderApplet' to "
 "this list. The panel must be restarted for this to take effect."
-msgstr "En lista med panelprograms-IID som panelprogrammet kommer att ignorera. På detta sätt kan du förhindra vissa panelprogram från att läsas in eller att visas i menyn. För att till exempel inaktivera panelprogrammet \"mini-commander\" kan du lägga till \"OAFIID:MATE_MiniCommanderApplet\" i denna lista. Panelen måste startas om för att detta ska börja gälla."
+msgstr "En lista med panelprograms-IID som panelprogrammet kommer att ignorera. På detta sätt kan du förhindra vissa panelprogram från att läsas in eller att visas i menyn. För att till exempel inaktivera panelprogrammet \"mini-commander\" kan du lägga till \"OAFIID:UKUI_MiniCommanderApplet\" i denna lista. Panelen måste startas om för att detta ska börja gälla."
 
-#: ../data/org.mate.panel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.gschema.xml.in.h:32
 msgid "Disable Force Quit"
 msgstr "Inaktivera framtvingat avslut"
 
-#: ../data/org.mate.panel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.gschema.xml.in.h:33
 msgid ""
 "If true, the panel will not allow a user to force an application to quit by "
 "removing access to the force quit button."
 msgstr "Om detta är sant kommer panelen inte att tillåta att en användare tvingar ett program att avsluta genom att ta bort åtkomsten till knappen tvinga avslutande."
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:1
 msgid "Show applications menu"
 msgstr "Visa applikationsmeny"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:2
 msgid "If true, show applications item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:3
 msgid "Show places menu"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:4
 msgid "If true, show places item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:5
 msgid "Show desktop menu"
 msgstr "Visa skrivbordsmeny"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:6
 msgid "If true, show desktop item in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:7
 msgid "Show icon"
 msgstr "Visa ikon"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:8
 msgid "If true, show icon in menu bar."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:9
 msgid "Icon to show in menu bar"
 msgstr "Ikon att visa i menyrad"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:10
 msgid "Set the theme icon name to use in menu bar."
 msgstr "Ställ in tema ikon namn som ska användas i menyrad."
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:11
 msgid "Menu bar icon size"
 msgstr "Menyrad ikonstorlek"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:12
 msgid ""
 "Set the size of an icon used in menu bar. The panel must be restarted for "
 "this to take effect."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:13
 msgid "Menu items icon size"
 msgstr "Menyobjekt ikon storlek"
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:14
 msgid ""
 "Set the size of icons used in the menu. The panel must be restarted for this"
 " to take effect."
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:15
 msgid "Threshold of menu items before submenu is created"
 msgstr ""
 
-#: ../data/org.mate.panel.menubar.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.menubar.gschema.xml.in.h:16
 msgid ""
 "Maximum number of menu items (i.e. bookmarks) that are displayed without "
 "being put in a submenu."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:1
 msgid "Panel object type"
 msgstr "Panelobjekttyp"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:2
 msgid "The type of this panel object."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:3
 msgid "Toplevel panel containing object"
 msgstr "Toppnivåpanel som innehåller objekt"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:4
 msgid "The identifier of the toplevel panel which contains this object."
 msgstr "Identifieraren för den toppnivåpanel som innehåller detta objekt."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:5
 msgid "Object's position on the panel"
 msgstr "Objektets position på panelen"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:6
 msgid ""
 "The position of this panel object. The position is specified by the number "
 "of pixels from the left (or top if vertical) panel edge."
 msgstr "Positionen för detta panelobjekt. Positionen anges som antalet bildpunkter från vänstra (eller översta om vertikal) panelkanten."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:7
 msgid "Interpret position relative to bottom/right edge"
 msgstr "Tolka positionen relativt nedre/högra kanten"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:8
 msgid ""
 "If true, the position of the object is interpreted relative to the right (or"
 " bottom if vertical) edge of the panel."
 msgstr "Om detta är sant tolkas positionen för objektet relativt den högra (eller nedre om vertikalt) panelkanten."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:9
 msgid "Lock the object to the panel"
 msgstr "Lås objektet på panelen"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:10
 msgid ""
 "If true, the user may not move the applet without first unlocking the object"
 " using the \"Unlock\" menuitem."
 msgstr "Om detta är sant kan användaren inte flytta panelprogrammet utan att först låsa upp objektet genom att använda menyobjektet \"Lås upp\"."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:11
 msgid "Applet IID"
 msgstr "Applet-IID"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:12
 msgid ""
 "The implementation ID of the applet - e.g. "
 "\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
-"object_type key is \"external-applet\" (or the deprecated \"matecomponent-"
+"object_type key is \"external-applet\" (or the deprecated \"ukuicomponent-"
 "applet\")."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:13
 msgid "Panel attached to drawer"
 msgstr "Panel fäst vid låda"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:14
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
 "relevant if the object_type key is \"drawer-object\"."
 msgstr "Identifieraren för panelen som är fäst vid denna låda. Denna nyckel är endast relevant om nyckeln object_type är \"drawer-object\" (lådobjekt)."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:15
 msgid "Tooltip displayed for drawer or menu"
 msgstr "Verktygstips som visas för låda eller meny"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:16
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
 "only relevant if the object_type key is \"drawer-object\" or \"menu-"
 "object\"."
 msgstr "Texten att visa i ett verktygstips för denna låda eller denna meny. Denna nyckel är endast relevant om nyckeln object_type är \"drawer-object\" (lådobjekt) eller \"menu-object\" (menyobjekt)."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:17
 msgid "Use custom icon for object's button"
 msgstr "Använd anpassad ikon för objektets knapp"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:18
 msgid ""
 "If true, the custom_icon key is used as a custom icon for the button. If "
 "false, the custom_icon key is ignored. This key is only relevant if the "
 "object_type key is \"menu-object\" or \"drawer-object\"."
 msgstr "Om detta är sant kommer nyckeln custom_icon att användas som en anpassad ikon för knappen. Om detta är falskt kommer nyckeln custom_icon att ignoreras. Denna inställning är endast relevant om nyckeln object_type är \"menu-object\" eller \"drawer-object\"."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:19
 msgid "Icon used for object's button"
 msgstr "Ikon som används för objektets knapp"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:20
 msgid ""
 "The location of the image file used as the icon for the object's button. "
 "This key is only relevant if the object_type key is \"drawer-object\" or "
 "\"menu-object\" and the use_custom_icon key is true."
 msgstr "Platsen för den bildfil som används som ikon för objektets knapp. Denna nyckel är endast relevant om nyckeln object_type är \"drawer-object\" (lådobjekt) eller \"menu-object\" och nyckeln use_custom_icon är sann."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:21
 msgid "Use custom path for menu contents"
 msgstr "Använd anpassad sökväg för menyinnehållet"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:22
 msgid ""
 "If true, the menu_path key is used as the path from which the menu contents "
 "should be constructed. If false, the menu_path key is ignored. This key is "
 "only relevant if the object_type key is \"menu-object\"."
 msgstr "Om detta är sant används nyckeln menu_path som den sökväg från vilken menyinnehållet ska konstrueras. Om falskt ignoreras nyckeln menu_path. Denna nyckel är endast relevant om nyckeln object_type är \"menu-object\" (menyobjekt)."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:23
 msgid "Menu content path"
 msgstr "Sökväg för menyinnehåll"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:24
 msgid ""
 "The path from which the menu contents is contructed. This key is only "
 "relevant if the use_menu_path key is true and the object_type key is \"menu-"
 "object\"."
 msgstr "Sökvägen från vilken menyinnehållet konstrueras. Nyckeln är endast relevant om nyckeln use_menu_path är sann och nyckeln object_type är \"menu-object\" (menyobjekt)."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:25
 msgid "Draw arrow in menu button"
 msgstr "Rita en pil i menyknappen"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:26
 msgid ""
 "If true, an arrow is drawn over the menu button icon. If false, menu button "
 "has only the icon."
 msgstr ""
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:27
 msgid "Launcher location"
 msgstr "Plats för programstartare"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:28
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
 "relevant if the object_type key is \"launcher-object\"."
 msgstr "Platsen för den .desktop-fil som beskriver programstartaren. Denna nyckel är endast relevant om nyckeln object_type är \"launcher-object\" (startarobjekt)."
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:29
 msgid "Action button type"
 msgstr "Åtgärdsknapptyp"
 
-#: ../data/org.mate.panel.object.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.object.gschema.xml.in.h:30
 msgid ""
 "The action type this button represents. Possible values are \"lock\", "
 "\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
 "relevant if the object_type key is \"action-applet\"."
 msgstr "Åtgärdstypen som denna knapp representerar. Möjliga värden är \"lock\" (lås), \"logout\" (utloggning), \"run\" (kör), \"search\" (sök) och \"screenshot\" (skärmdump). Denna nyckel är endast relevant om nyckeln object_type är \"action-applet\" (åtgärdspanelprogram)."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:1
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:1
 msgid "Name to identify panel"
 msgstr "Namn att identifiera panelen med"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:2
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:2
 msgid ""
 "This is a human readable name which you can use to identify a panel. Its "
 "main purpose is to serve as the panel's window title which is useful when "
 "navigating between panels."
 msgstr "Detta är ett lättläsligt namn som du kan använda för att identifiera en panel. Dess huvuduppgift är att tjäna som panelens fönstertitel, vilket är användbart vid navigering mellan paneler."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:3
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:3
 msgid "X screen where the panel is displayed"
 msgstr "X-skärmen som panelen visas på"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:4
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:4
 msgid ""
 "With a multi-screen setup, you may have panels on each individual screen. "
 "This key identifies the current screen the panel is displayed on."
 msgstr "Med en flerskärmskonfiguration kan du ha paneler på varje enskild skärm. Denna nyckel identifierar den aktuella skärm som panelen visas på."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:5
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:5
 msgid "Xinerama monitor where the panel is displayed"
 msgstr "Xinerama-bildskärmen som panelen visas på"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
 msgid ""
 "In a Xinerama setup, you may have panels on each individual monitor. This "
 "key identifies the current monitor the panel is displayed on."
 msgstr "I en Xinerama-konfiguration kan du ha paneler på varje enskild bildskärm. Denna nyckel identifierar den aktuella bildskärm som panelen visas på."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
 msgid "Expand to occupy entire screen width"
 msgstr "Expandera så att hela skärmbredden tas i anspråk"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
 msgid ""
 "If true, the panel will occupy the entire screen width (height if this is a "
 "vertical panel). In this mode the panel can only be placed at a screen edge."
@@ -1494,11 +1494,11 @@ msgid ""
 "launchers and buttons on the panel."
 msgstr "Om detta är sant kommer panelen att ta hela skärmbredden i anspråk (skärmhöjden om det är en vertikal panel). I detta läge kan panelen endast placeras på en skärmkant. Om falskt kommer panelen endast att vara tillräckligt stor för att panelprogrammen, programstartarna och knapparna ska få plats på panelen."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
 msgid "Panel orientation"
 msgstr "Panelorientering"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
 msgid ""
 "The orientation of the panel. Possible values are \"top\", \"bottom\", "
 "\"left\", \"right\". In expanded mode the key specifies which screen edge "
@@ -1510,11 +1510,11 @@ msgid ""
 "panel."
 msgstr "Orienteringen för panelen. Möjliga värden är \"top\" (överkant), \"bottom\" (nederkant), \"left\" (vänsterkant), \"right\" (högerkant). I expanderat läge anger värdet vilken skärmkant som panelen finns på. I oexpanderat läge är skillnaden mellan \"top\" och \"bottom\" mindre viktig - båda indikerar att detta är en horisontell panel - men ger fortfarande en användbar indikering för hur en del panelobjekt ska bete sig. Till exempel kommer en menyknapp på en överkantspanel visa sin meny nedanför panelen, medan den på en nederkantspanel kommer att visas ovanför panelen."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
 msgid "Panel size"
 msgstr "Panelstorlek"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
 msgid ""
 "The height (width for a vertical panel) of the panel. The panel will "
 "determine at runtime a minimum size based on the font size and other "
@@ -1522,33 +1522,33 @@ msgid ""
 "(or width)."
 msgstr "Höjden (bredden för en vertikal panel) för panelen. Panelen kommer vid körning att avgöra en maximal storlek baserad på typsnittsstorlek och andra indikatorer. Den maximala storleken är låst till en fjärdedel av skärmhöjden (eller skärmbredden)."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
 msgid "X co-ordinate of panel"
 msgstr "X-koordinaten för panelen"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
 msgid ""
 "The location of the panel along the x-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
 msgstr "Platsen för panelen längs x-axeln. Nyckeln är endast relevant i oexpanderat läge. I expanderat läge ignoreras nyckeln och panelen placeras på den skärmkant som anges av nyckeln orientering."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
 msgid "Y co-ordinate of panel"
 msgstr "Y-koordinaten för panelen"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
 msgid ""
 "The location of the panel along the y-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
 msgstr "Platsen för panelen längs y-axeln. Nyckeln är endast relevant i oexpanderat läge. I expanderat läge ignoreras nyckeln och panelen placeras på den skärmkant som anges av nyckeln orientering."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
 msgid "X co-ordinate of panel, starting from the right of the screen"
 msgstr "X-koordinat för panelen, med början från skärmens högra sida"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
 msgid ""
 "The location of the panel along the x-axis, starting from the right of the "
 "screen. If set to -1, the value is ignored and the value of the x key is "
@@ -1558,11 +1558,11 @@ msgid ""
 "the orientation key."
 msgstr "Platsen för panelen längs x-axeln med början från skärmens högra sida. Om inställd till -1 kommer värdet att ignoreras och värdet för x-nyckeln att användas. Om värdet är större än 0 kommer värdet för x-nyckeln att ignoreras. Nyckeln är endast relevant i oexpanderat läge. I expanderat läge ignoreras nyckeln och panelen placeras på den skärmkant som anges av nyckeln orientation."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
 msgid "Y co-ordinate of panel, starting from the bottom of the screen"
 msgstr "Y-koordinat för panelen, med början från skärmens nederkant"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
 msgid ""
 "The location of the panel along the y-axis, starting from the bottom of the "
 "screen. If set to -1, the value is ignored and the value of the y key is "
@@ -1572,11 +1572,11 @@ msgid ""
 "the orientation key."
 msgstr "Platsen för panelen längs y-axeln med början från skärmens nederkant. Om inställd till -1 kommer värdet att ignoreras och värdet för y-nyckeln att användas. Om värdet är större än 0 kommer värdet för y-nyckeln att ignoreras. Nyckeln är endast relevant i oexpanderat läge. I expanderat läge ignoreras nyckeln och panelen placeras på den skärmkant som anges av nyckeln orientation."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
 msgid "Center panel on x-axis"
 msgstr "Centrera panelen på x-axeln"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
 msgid ""
 "If true, the x and x_right keys are ignored and the panel is placed at the "
 "center of the x-axis of the screen. If the panel is resized it will remain "
@@ -1584,11 +1584,11 @@ msgid ""
 "and x_right keys specify the location of the panel."
 msgstr "Om detta är sant kommer nycklarna x och x_right att ignoreras och panelen att placeras i mitten på skärmens x-axel. Om panelens storlek ändras kommer den att finnas kvar på den positionen, det vill säga att panelen kommer att växa på båda sidor. Om falskt kommer nycklarna x och x_right ange platsen för panelen."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
 msgid "Center panel on y-axis"
 msgstr "Centrera panelen på y-axeln"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
 msgid ""
 "If true, the y and y_bottom keys are ignored and the panel is placed at the "
 "center of the y-axis of the screen. If the panel is resized it will remain "
@@ -1596,92 +1596,92 @@ msgid ""
 "and y_bottom keys specify the location of the panel."
 msgstr "Om detta är sant kommer nycklarna y och y_bottom att ignoreras och panelen att placeras i mitten på skärmens y-axel. Om panelens storlek ändras kommer den att finnas kvar på den positionen, det vill säga att panelen kommer att växa på båda sidor. Om falskt kommer nycklarna y och y_bottom ange platsen för panelen."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
 msgid "Automatically hide panel into corner"
 msgstr "Dölj automatiskt panelen i hörnet"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
 msgid ""
 "If true, the panel is automatically hidden into a corner of the screen when "
 "the pointer leaves the panel area. Moving the pointer to that corner again "
 "will cause the panel to re-appear."
 msgstr "Om detta är sant kommer panelen att automatiskt döljas i ett hörn på skärmen när pekaren lämnar panelytan. Att flytta pekaren till det hörnet kommer att göra att panelen åter visas."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
 msgid ""
-"If true, hiding and un-hiding of this panel will be animated rather than "
+"If true, hiding and un-hiding of this panel will be aniukuid rather than "
 "happening instantly."
 msgstr "Om detta är sant kommer döljande och visning av denna panel att animeras istället för att ske ögonblickligen."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
 msgid "Enable hide buttons"
 msgstr "Aktivera döljknappar"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
 msgid ""
 "If true, buttons will be placed on each side of the panel which may be used "
 "to move the panel to edge of the screen, leaving only a button showing."
 msgstr "Om detta är sant kommer knappar som kan användas för att flytta panelen till kanten på skärmen, och som endast lämnar en knapp synlig, att placeras på var sida om panelen."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
 msgid "Enable arrows on hide buttons"
 msgstr "Aktivera pilar på döljknappar"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
 msgid ""
 "If true, arrows will be placed on the hide buttons. This key is only "
 "relevant if the enable_buttons key is true."
 msgstr "Om detta är sant kommer pilar att placeras på döljknapparna. Denna inställning är endast meningsfull om nyckeln enable_buttons är sann."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
 msgid "Panel autohide delay"
 msgstr "Fördröjning för automatisk döljning av panel"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:34
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
 msgid ""
 "Specifies the number of milliseconds delay after the pointer leaves the "
 "panel area before the panel is automatically hidden. This key is only "
 "relevant if the auto_hide key is true."
 msgstr "Anger fördröjningen i antal millisekunder efter det att muspekaren har lämnat panelytan innan panelen automatiskt döljs. Denna inställning är endast relevant om nyckeln auto_hide är sann."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:35
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
 msgid "Panel autounhide delay"
 msgstr "Fördröjning för automatisk visning av panel"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:36
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
 msgid ""
 "Specifies the number of milliseconds delay after the pointer enters the "
 "panel area before the panel is automatically re-shown. This key is only "
 "relevant if the auto_hide key is true."
 msgstr "Anger fördröjningen i antal millisekunder efter det att muspekaren har kommit in på panelytan innan panelen automatiskt visas igen. Denna inställning är endast relevant om nyckeln auto_hide är sann."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:37
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
 msgid "Visible pixels when hidden"
 msgstr "Synliga bildpunkter då panelen är dold"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:38
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
 msgid ""
 "Specifies the number of pixels visible when the panel is automatically "
 "hidden into a corner. This key is only relevant if the auto_hide key is "
 "true."
 msgstr "Anger antalet synliga bildpunkter om panelen automatiskt döljs i ett hörn. Denna inställning är endast relevant om nyckeln auto_hide är sann."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:39
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
 msgid "Animation speed"
 msgstr "Animeringshastighet"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:40
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
 msgid ""
 "The speed in which panel animations should occur. Possible values are "
 "\"slow\", \"medium\" and \"fast\". This key is only relevant if the "
 "enable_animations key is true."
 msgstr "Hastigheten med vilken animeringar ska ske. Möjliga värden är \"slow\" (långsam), \"medium\" (mellan) och \"fast\" (snabb). Denna inställning är endast relevant om nyckeln enable_animations är sann."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:41
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
 msgid "Background type"
 msgstr "Bakgrundstyp"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:42
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
 msgid ""
 "Which type of background should be used for this panel. Possible values are "
 "\"none\" - the default GTK+ widget background will be used, \"color\" - the "
@@ -1689,126 +1689,126 @@ msgid ""
 "specified by the image key will be used as background."
 msgstr ""
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:43
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
 msgid "Background color"
 msgstr "Bakgrundsfärg"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:44
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
 msgid "Specifies the background color for the panel in #RGB format."
 msgstr "Anger bakgrundsfärgen för panelen i RGB-format."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:45
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
 msgid "Background color opacity"
 msgstr "Genomskinlighet för bakgrundsfärg"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:46
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
 msgid ""
 "Specifies the opacity of the background color format. If the color is not "
 "completely opaque (a value of less than 65535), the color will be composited"
 " onto the desktop background image."
-msgstr "Anger genomskinligheten för bakgrundsfärg formatet. Om färgen inte är helt genomskinlig (ett värde mindre än 65535) kommer färgen att kompositeras ovanpå skrivbordsbakgrundsbilden."
+msgstr "Anger genomskinligheten för bakgrundsfärg forukuit. Om färgen inte är helt genomskinlig (ett värde mindre än 65535) kommer färgen att kompositeras ovanpå skrivbordsbakgrundsbilden."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:47
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
 msgid "Background image"
 msgstr "Bakgrundsbild"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:48
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
 msgid ""
 "Specifies the file to be used for the background image. If the image "
 "contains an alpha channel it will be composited onto the desktop background "
 "image."
 msgstr "Anger filen som ska användas som bakgrundsbild. Om bilden inenhåller en alfakanal kommer den att kompositeras ovanpå skrivbordets bakgrundsbild."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:49
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
 msgid "Fit image to panel"
 msgstr "Passa in bilden på panelen"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:50
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
 msgid ""
 "If true, the image will be scaled (retaining the aspect ratio of the image) "
 "to the panel height (if horizontal)."
 msgstr "Om detta är sant kommer bilden att skalas (samtidigt som bildproportionerna bevaras) till panelhöjden (om horisontell)."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:51
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
 msgid "Stretch image to panel"
 msgstr "Sträck ut bild till panelen"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:52
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
 msgid ""
 "If true, the image will be scaled to the panel dimensions. The aspect ratio "
 "of the image will not be maintained."
 msgstr "Om detta är sant kommer bilden att skalas till paneldimensionerna. Bildens proportioner kommer inte att bevaras."
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:53
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
 msgid "Rotate image on vertical panels"
 msgstr "Rotera bild på vertikala paneler"
 
-#: ../data/org.mate.panel.toplevel.gschema.xml.in.h:54
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
 msgid ""
 "If true, the background image will be rotated when the panel is oriented "
 "vertically."
 msgstr "Om detta är sant kommer bakgrundsbilden att roteras då panelen är vertikalt orienterad."
 
-#: ../mate-panel/libegg/eggdesktopfile.c:165
+#: ../ukui-panel/libegg/eggdesktopfile.c:165
 #, c-format
 msgid "File is not a valid .desktop file"
 msgstr "Filen är inte en giltig .desktop-fil"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:188
+#: ../ukui-panel/libegg/eggdesktopfile.c:188
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
 msgstr "Okänd Version \"%s\" i skrivbordsfilen"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:957
+#: ../ukui-panel/libegg/eggdesktopfile.c:957
 #, c-format
 msgid "Starting %s"
 msgstr "Startar %s"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1098
+#: ../ukui-panel/libegg/eggdesktopfile.c:1098
 #, c-format
 msgid "Application does not accept documents on command line"
 msgstr "Programmet accepterar inte dokument på kommandoraden"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1166
+#: ../ukui-panel/libegg/eggdesktopfile.c:1166
 #, c-format
 msgid "Unrecognized launch option: %d"
 msgstr "Okänd startflagga: %d"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1365
+#: ../ukui-panel/libegg/eggdesktopfile.c:1365
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr "Kan inte skicka dokument-URI:er till en \"Type=Link\"-skrivbordspost"
 
-#: ../mate-panel/libegg/eggdesktopfile.c:1386
+#: ../ukui-panel/libegg/eggdesktopfile.c:1386
 #, c-format
 msgid "Not a launchable item"
 msgstr "Inte ett startbart objekt"
 
-#: ../mate-panel/libegg/eggsmclient.c:226
+#: ../ukui-panel/libegg/eggsmclient.c:226
 msgid "Disable connection to session manager"
 msgstr "Inaktivera anslutning till sessionshanterare"
 
-#: ../mate-panel/libegg/eggsmclient.c:229
+#: ../ukui-panel/libegg/eggsmclient.c:229
 msgid "Specify file containing saved configuration"
 msgstr "Ange fil som innehåller sparad konfiguration"
 
-#: ../mate-panel/libegg/eggsmclient.c:229
+#: ../ukui-panel/libegg/eggsmclient.c:229
 msgid "FILE"
 msgstr "FIL"
 
-#: ../mate-panel/libegg/eggsmclient.c:232
+#: ../ukui-panel/libegg/eggsmclient.c:232
 msgid "Specify session management ID"
 msgstr "Ange id för sessionshantering"
 
-#: ../mate-panel/libegg/eggsmclient.c:232
+#: ../ukui-panel/libegg/eggsmclient.c:232
 msgid "ID"
 msgstr "ID"
 
-#: ../mate-panel/libegg/eggsmclient.c:253
+#: ../ukui-panel/libegg/eggsmclient.c:253
 msgid "Session management options:"
 msgstr "Flaggor för sessionshantering:"
 
-#: ../mate-panel/libegg/eggsmclient.c:254
+#: ../ukui-panel/libegg/eggsmclient.c:254
 msgid "Show session management options"
 msgstr "Visa flaggor för sessionshantering"
 
@@ -1817,588 +1817,588 @@ msgstr "Visa flaggor för sessionshantering"
 #. * the following bug gets fixed:
 #. * http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #. FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=165132
-#: ../mate-panel/libpanel-util/panel-error.c:76
-#: ../mate-panel/panel-applet-frame.c:827
-#: ../mate-panel/panel-applet-frame.c:1003
+#: ../ukui-panel/libpanel-util/panel-error.c:76
+#: ../ukui-panel/panel-applet-frame.c:827
+#: ../ukui-panel/panel-applet-frame.c:1003
 msgid "Error"
 msgstr "Fel"
 
-#: ../mate-panel/libpanel-util/panel-icon-chooser.c:381
+#: ../ukui-panel/libpanel-util/panel-icon-chooser.c:381
 msgid "Choose an icon"
 msgstr "Välj en ikon"
 
-#: ../mate-panel/libpanel-util/panel-launch.c:45
+#: ../ukui-panel/libpanel-util/panel-launch.c:45
 #, c-format
 msgid "Could not launch '%s'"
 msgstr "Kunde inte starta \"%s\""
 
-#: ../mate-panel/libpanel-util/panel-launch.c:48 ../mate-panel/launcher.c:162
+#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:162
 msgid "Could not launch application"
 msgstr "Kunde inte starta program"
 
-#: ../mate-panel/libpanel-util/panel-show.c:44
+#: ../ukui-panel/libpanel-util/panel-show.c:44
 #, c-format
 msgid "Could not open location '%s'"
 msgstr "Kunde inte öppna platsen \"%s\""
 
-#: ../mate-panel/libpanel-util/panel-show.c:158
+#: ../ukui-panel/libpanel-util/panel-show.c:158
 msgid "No application to handle search folders is installed."
 msgstr "Inget program för att hantera sökmappar är installerat."
 
-#: ../mate-panel/applet.c:466
+#: ../ukui-panel/applet.c:466
 msgid "???"
 msgstr "???"
 
-#: ../mate-panel/applet.c:545 ../libmate-panel-applet/mate-panel-applet.c:139
+#: ../ukui-panel/applet.c:545 ../libukui-panel-applet/ukui-panel-applet.c:139
 msgid "_Remove From Panel"
 msgstr "_Ta bort från panelen"
 
-#: ../mate-panel/applet.c:556 ../libmate-panel-applet/mate-panel-applet.c:142
+#: ../ukui-panel/applet.c:556 ../libukui-panel-applet/ukui-panel-applet.c:142
 msgid "_Move"
 msgstr "_Flytta"
 
-#: ../mate-panel/applet.c:573 ../libmate-panel-applet/mate-panel-applet.c:148
+#: ../ukui-panel/applet.c:573 ../libukui-panel-applet/ukui-panel-applet.c:148
 msgid "Loc_k To Panel"
 msgstr "Lå_s till panel"
 
-#: ../mate-panel/applet.c:1384
+#: ../ukui-panel/applet.c:1384
 msgid "Cannot find an empty spot"
 msgstr "Kan inte hitta ett ledigt ställe"
 
-#: ../mate-panel/drawer.c:346 ../mate-panel/panel-addto.c:175
-#: ../mate-panel/panel-toplevel.c:1615
+#: ../ukui-panel/drawer.c:346 ../ukui-panel/panel-addto.c:175
+#: ../ukui-panel/panel-toplevel.c:1615
 msgid "Drawer"
 msgstr "Låda"
 
-#: ../mate-panel/drawer.c:533
+#: ../ukui-panel/drawer.c:533
 msgid "_Add to Drawer..."
 msgstr "_Lägg till i låda..."
 
-#: ../mate-panel/drawer.c:539 ../mate-panel/launcher.c:556
-#: ../mate-panel/panel-action-button.c:192
-#: ../mate-panel/panel-context-menu.c:196
+#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:556
+#: ../ukui-panel/panel-action-button.c:192
+#: ../ukui-panel/panel-context-menu.c:196
 msgid "_Properties"
 msgstr "_Egenskaper"
 
-#: ../mate-panel/mate-desktop-item-edit.c:27
+#: ../ukui-panel/ukui-desktop-item-edit.c:27
 msgid "Create new file in the given directory"
 msgstr "Skapa ny fil i den angivna katalogen"
 
-#: ../mate-panel/mate-desktop-item-edit.c:28
+#: ../ukui-panel/ukui-desktop-item-edit.c:28
 msgid "[FILE...]"
 msgstr "[FIL...]"
 
-#: ../mate-panel/mate-desktop-item-edit.c:106
+#: ../ukui-panel/ukui-desktop-item-edit.c:106
 msgid "- Edit .desktop files"
 msgstr "- Redigera .desktop-filer"
 
-#: ../mate-panel/mate-desktop-item-edit.c:144
-#: ../mate-panel/mate-desktop-item-edit.c:197 ../mate-panel/launcher.c:928
+#: ../ukui-panel/ukui-desktop-item-edit.c:144
+#: ../ukui-panel/ukui-desktop-item-edit.c:197 ../ukui-panel/launcher.c:928
 msgid "Create Launcher"
 msgstr "Skapa programstartare"
 
-#: ../mate-panel/mate-desktop-item-edit.c:168
-#: ../mate-panel/mate-desktop-item-edit.c:191
+#: ../ukui-panel/ukui-desktop-item-edit.c:168
+#: ../ukui-panel/ukui-desktop-item-edit.c:191
 msgid "Directory Properties"
 msgstr "Katalogegenskaper"
 
-#: ../mate-panel/mate-desktop-item-edit.c:174 ../mate-panel/launcher.c:775
+#: ../ukui-panel/ukui-desktop-item-edit.c:174 ../ukui-panel/launcher.c:775
 msgid "Launcher Properties"
 msgstr "Egenskaper för programstartaren"
 
-#: ../mate-panel/mate-panel.desktop.in.in.h:1 ../mate-panel/main.c:136
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:136
 msgid "Panel"
 msgstr "Panel"
 
-#: ../mate-panel/mate-panel.desktop.in.in.h:2
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:2
 msgid ""
 "Launch other applications and provide various utilities to manage windows, "
 "show the time, etc."
 msgstr "Starta andra program och tillhandahålla olika verktyg för att hantera fönster, visa tiden, etc."
 
-#: ../mate-panel/launcher.c:120
+#: ../ukui-panel/launcher.c:120
 msgid "Could not show this URL"
 msgstr "Kunde inte visa den här url:en"
 
-#: ../mate-panel/launcher.c:121
+#: ../ukui-panel/launcher.c:121
 msgid "No URL was specified."
 msgstr "Ingen url angavs."
 
-#: ../mate-panel/launcher.c:214
+#: ../ukui-panel/launcher.c:214
 msgid "Could not use dropped item"
 msgstr "Kunde inte använda kastade objekt"
 
-#: ../mate-panel/launcher.c:440
+#: ../ukui-panel/launcher.c:440
 #, c-format
 msgid "No URI provided for panel launcher desktop file\n"
 msgstr "Ingen URI tillhandahållen för desktop-fil för panelstartare\n"
 
-#: ../mate-panel/launcher.c:465
+#: ../ukui-panel/launcher.c:465
 #, c-format
 msgid "Unable to open desktop file %s for panel launcher\n"
 msgstr ""
 
-#: ../mate-panel/launcher.c:533
+#: ../ukui-panel/launcher.c:533
 msgid "_Launch"
 msgstr "_Starta"
 
-#: ../mate-panel/launcher.c:869
+#: ../ukui-panel/launcher.c:869
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
 msgstr "Nyckeln %s är inte inställd, kan inte läsa in programstartare\n"
 
-#: ../mate-panel/launcher.c:997 ../mate-panel/panel-ditem-editor.c:1330
-#: ../mate-panel/panel-ditem-editor.c:1364
-#: ../mate-panel/panel-ditem-editor.c:1395
+#: ../ukui-panel/launcher.c:997 ../ukui-panel/panel-ditem-editor.c:1330
+#: ../ukui-panel/panel-ditem-editor.c:1364
+#: ../ukui-panel/panel-ditem-editor.c:1395
 msgid "Could not save launcher"
 msgstr "Kunde inte spara programstartare"
 
-#: ../mate-panel/main.c:47
+#: ../ukui-panel/main.c:47
 msgid "Replace a currently running panel"
 msgstr "Ersätt en för närvarande körande panel"
 
-#. this feature was request in #mate irc channel
-#: ../mate-panel/main.c:49
+#. this feature was request in #ukui irc channel
+#: ../ukui-panel/main.c:49
 msgid "Reset the panel configuration to default"
 msgstr ""
 
 #. open run dialog
-#: ../mate-panel/main.c:51
+#: ../ukui-panel/main.c:51
 msgid "Execute the run dialog"
 msgstr ""
 
 #. default panels layout
-#: ../mate-panel/main.c:53
+#: ../ukui-panel/main.c:53
 msgid "Set the default panel layout"
 msgstr ""
 
-#: ../mate-panel/menu.c:527
+#: ../ukui-panel/menu.c:527
 msgid "Add this launcher to _panel"
 msgstr "Lägg till den här programstartaren på _panelen"
 
-#: ../mate-panel/menu.c:534
+#: ../ukui-panel/menu.c:534
 msgid "Add this launcher to _desktop"
 msgstr "Lägg till den här programstartaren på _skrivbordet"
 
-#: ../mate-panel/menu.c:546
+#: ../ukui-panel/menu.c:546
 msgid "_Entire menu"
 msgstr "_Hela menyn"
 
-#: ../mate-panel/menu.c:551
+#: ../ukui-panel/menu.c:551
 msgid "Add this as _drawer to panel"
 msgstr "Lägg till detta som en _låda på panelen"
 
-#: ../mate-panel/menu.c:558
+#: ../ukui-panel/menu.c:558
 msgid "Add this as _menu to panel"
 msgstr "Lägg till detta som en _meny på panelen"
 
-#: ../mate-panel/panel-action-button.c:180
+#: ../ukui-panel/panel-action-button.c:180
 msgid "_Activate Screensaver"
 msgstr "_Aktivera skärmsläckare"
 
-#: ../mate-panel/panel-action-button.c:186
+#: ../ukui-panel/panel-action-button.c:186
 msgid "_Lock Screen"
 msgstr "_Lås skärmen"
 
-#: ../mate-panel/panel-action-button.c:314
+#: ../ukui-panel/panel-action-button.c:314
 msgid "Could not connect to server"
 msgstr "Kunde inte ansluta till server"
 
-#: ../mate-panel/panel-action-button.c:345
+#: ../ukui-panel/panel-action-button.c:345
 msgid "Lock Screen"
 msgstr "Lås skärmen"
 
-#: ../mate-panel/panel-action-button.c:346
+#: ../ukui-panel/panel-action-button.c:346
 msgid "Protect your computer from unauthorized use"
 msgstr "Skydda din dator mot obehörig användning"
 
 #. when changing one of those two strings, don't forget to
 #. * update the ones in panel-menu-items.c (look for
 #. * "1" (msgctxt: "panel:showusername"))
-#: ../mate-panel/panel-action-button.c:360
+#: ../ukui-panel/panel-action-button.c:360
 msgid "Log Out..."
 msgstr "Logga ut..."
 
-#: ../mate-panel/panel-action-button.c:361
+#: ../ukui-panel/panel-action-button.c:361
 msgid "Log out of this session to log in as a different user"
 msgstr "Logga ut från denna session för att logga in som en annan användare"
 
-#: ../mate-panel/panel-action-button.c:370
+#: ../ukui-panel/panel-action-button.c:370
 msgid "Run Application..."
 msgstr "Kör program..."
 
-#: ../mate-panel/panel-action-button.c:371
+#: ../ukui-panel/panel-action-button.c:371
 msgid "Run an application by typing a command or choosing from a list"
 msgstr "Kör ett program genom att ange ett kommando eller välj från en lista"
 
-#: ../mate-panel/panel-action-button.c:380
+#: ../ukui-panel/panel-action-button.c:380
 msgid "Search for Files..."
 msgstr "Sök filer..."
 
-#: ../mate-panel/panel-action-button.c:381
+#: ../ukui-panel/panel-action-button.c:381
 msgid "Locate documents and folders on this computer by name or content"
 msgstr "Sök efter dokument och mappar på den här datorn efter namn eller innehåll"
 
-#: ../mate-panel/panel-action-button.c:389
-#: ../mate-panel/panel-force-quit.c:251
+#: ../ukui-panel/panel-action-button.c:389
+#: ../ukui-panel/panel-force-quit.c:251
 msgid "Force Quit"
 msgstr "Tvinga avslut"
 
-#: ../mate-panel/panel-action-button.c:390
+#: ../ukui-panel/panel-action-button.c:390
 msgid "Force a misbehaving application to quit"
 msgstr "Tvinga ett program som beter sig fel att avsluta"
 
 #. FIXME icon
-#: ../mate-panel/panel-action-button.c:399
+#: ../ukui-panel/panel-action-button.c:399
 msgid "Connect to Server..."
 msgstr "Anslut till server..."
 
-#: ../mate-panel/panel-action-button.c:400
+#: ../ukui-panel/panel-action-button.c:400
 msgid "Connect to a remote computer or shared disk"
 msgstr "Anslut till en fjärrserver eller utdelad disk"
 
-#: ../mate-panel/panel-action-button.c:408
+#: ../ukui-panel/panel-action-button.c:408
 msgid "Shut Down..."
 msgstr "Stäng av..."
 
-#: ../mate-panel/panel-action-button.c:409
+#: ../ukui-panel/panel-action-button.c:409
 msgid "Shut down the computer"
 msgstr "Stäng av datorn"
 
-#: ../mate-panel/panel-addto.c:116
+#: ../ukui-panel/panel-addto.c:116
 msgid "Custom Application Launcher"
 msgstr "Anpassad programstartare"
 
-#: ../mate-panel/panel-addto.c:117
+#: ../ukui-panel/panel-addto.c:117
 msgid "Create a new launcher"
 msgstr "Skapa en ny programstartare"
 
-#: ../mate-panel/panel-addto.c:127
+#: ../ukui-panel/panel-addto.c:127
 msgid "Application Launcher..."
 msgstr "Programstartare..."
 
-#: ../mate-panel/panel-addto.c:128
+#: ../ukui-panel/panel-addto.c:128
 msgid "Copy a launcher from the applications menu"
 msgstr "Kopiera en programstartare från programmenyn"
 
-#: ../mate-panel/panel-addto.c:142 ../mate-panel/panel-menu-button.c:1094
+#: ../ukui-panel/panel-addto.c:142 ../ukui-panel/panel-menu-button.c:1094
 msgid "Main Menu"
 msgstr "Huvudmeny"
 
-#: ../mate-panel/panel-addto.c:143
-msgid "The main MATE menu"
-msgstr "MATE-huvudmenyn"
+#: ../ukui-panel/panel-addto.c:143
+msgid "The main UKUI menu"
+msgstr "UKUI-huvudmenyn"
 
-#: ../mate-panel/panel-addto.c:153
+#: ../ukui-panel/panel-addto.c:153
 msgid "Menu Bar"
 msgstr "Menyrad"
 
-#: ../mate-panel/panel-addto.c:154
+#: ../ukui-panel/panel-addto.c:154
 msgid "A custom menu bar"
 msgstr "En anpassad menyrad"
 
-#: ../mate-panel/panel-addto.c:164
+#: ../ukui-panel/panel-addto.c:164
 msgid "Separator"
 msgstr "Avgränsare"
 
-#: ../mate-panel/panel-addto.c:165
+#: ../ukui-panel/panel-addto.c:165
 msgid "A separator to organize the panel items"
 msgstr "En avgränsare för att organisera panelobjekten"
 
-#: ../mate-panel/panel-addto.c:176
+#: ../ukui-panel/panel-addto.c:176
 msgid "A pop out drawer to store other items in"
 msgstr "En popuplåda som andra objekt kan lagras i"
 
-#: ../mate-panel/panel-addto.c:257
+#: ../ukui-panel/panel-addto.c:257
 msgid "(empty)"
 msgstr "(tom)"
 
-#: ../mate-panel/panel-addto.c:988
+#: ../ukui-panel/panel-addto.c:988
 #, c-format
 msgid "Find an _item to add to \"%s\":"
 msgstr "Sök ett _objekt att lägga till i \"%s\":"
 
-#: ../mate-panel/panel-addto.c:992
+#: ../ukui-panel/panel-addto.c:992
 #, c-format
 msgid "Add to Drawer"
 msgstr "Lägg till i låda"
 
-#: ../mate-panel/panel-addto.c:994
+#: ../ukui-panel/panel-addto.c:994
 msgid "Find an _item to add to the drawer:"
 msgstr "Sök ett _objekt att lägga till i lådan:"
 
-#: ../mate-panel/panel-addto.c:996
+#: ../ukui-panel/panel-addto.c:996
 #, c-format
 msgid "Add to Panel"
 msgstr "Lägg till i panel"
 
-#: ../mate-panel/panel-addto.c:998
+#: ../ukui-panel/panel-addto.c:998
 msgid "Find an _item to add to the panel:"
 msgstr "Sök ett _objekt att lägga till i panelen:"
 
-#: ../mate-panel/panel-applet-frame.c:788
+#: ../ukui-panel/panel-applet-frame.c:788
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
 msgstr "\"%s\" har oväntat avslutats"
 
-#: ../mate-panel/panel-applet-frame.c:790
+#: ../ukui-panel/panel-applet-frame.c:790
 msgid "Panel object has quit unexpectedly"
 msgstr "Panelobjekt har oväntat avslutats"
 
-#: ../mate-panel/panel-applet-frame.c:797
+#: ../ukui-panel/panel-applet-frame.c:797
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
 msgstr "Om du läser om ett panelobjekt kommer det att automatiskt läggas tillbaka på panelen."
 
-#: ../mate-panel/panel-applet-frame.c:804
+#: ../ukui-panel/panel-applet-frame.c:804
 msgid "D_elete"
 msgstr "_Radera"
 
-#: ../mate-panel/panel-applet-frame.c:805
-#: ../mate-panel/panel-applet-frame.c:810
+#: ../ukui-panel/panel-applet-frame.c:805
+#: ../ukui-panel/panel-applet-frame.c:810
 msgid "_Don't Reload"
 msgstr "Läs _inte om"
 
-#: ../mate-panel/panel-applet-frame.c:806
-#: ../mate-panel/panel-applet-frame.c:811
+#: ../ukui-panel/panel-applet-frame.c:806
+#: ../ukui-panel/panel-applet-frame.c:811
 msgid "_Reload"
 msgstr "_Läs om"
 
-#: ../mate-panel/panel-applet-frame.c:966
+#: ../ukui-panel/panel-applet-frame.c:966
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
 msgstr "Det uppstod ett problem i panelen vid inläsning av \"%s\"."
 
-#: ../mate-panel/panel-applet-frame.c:982
+#: ../ukui-panel/panel-applet-frame.c:982
 msgid "Do you want to delete the applet from your configuration?"
 msgstr "Vill du ta bort panelprogrammet från din konfiguration?"
 
-#: ../mate-panel/panel-context-menu.c:89
+#: ../ukui-panel/panel-context-menu.c:89
 msgid "And many, many others..."
 msgstr "Och många, många andra..."
 
-#: ../mate-panel/panel-context-menu.c:112
-msgid "The MATE Panel"
-msgstr "MATE-panelen"
+#: ../ukui-panel/panel-context-menu.c:112
+msgid "The UKUI Panel"
+msgstr "UKUI-panelen"
 
-#: ../mate-panel/panel-context-menu.c:116
+#: ../ukui-panel/panel-context-menu.c:116
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
 msgstr "Detta program ansvarar för att starta andra program och tillhandahålla användbara verktyg."
 
-#: ../mate-panel/panel-context-menu.c:120
-msgid "About the MATE Panel"
-msgstr "Om MATE-panelen"
+#: ../ukui-panel/panel-context-menu.c:120
+msgid "About the UKUI Panel"
+msgstr "Om UKUI-panelen"
 
-#: ../mate-panel/panel-context-menu.c:151
+#: ../ukui-panel/panel-context-menu.c:151
 msgid "Cannot delete this panel"
 msgstr "Kan inte ta bort denna panel"
 
-#: ../mate-panel/panel-context-menu.c:152
+#: ../ukui-panel/panel-context-menu.c:152
 msgid "You must always have at least one panel."
 msgstr "Du måste alltid ha åtminstone en panel."
 
-#: ../mate-panel/panel-context-menu.c:185
+#: ../ukui-panel/panel-context-menu.c:185
 msgid "_Add to Panel..."
 msgstr "_Lägg till i panelen..."
 
-#: ../mate-panel/panel-context-menu.c:206
+#: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"
 msgstr "_Ta bort denna panel"
 
-#: ../mate-panel/panel-context-menu.c:221
+#: ../ukui-panel/panel-context-menu.c:221
 msgid "_New Panel"
 msgstr "_Ny panel"
 
-#: ../mate-panel/panel-context-menu.c:273
+#: ../ukui-panel/panel-context-menu.c:273
 msgid "A_bout Panels"
 msgstr "_Om paneler"
 
-#: ../mate-panel/panel-ditem-editor.c:114
+#: ../ukui-panel/panel-ditem-editor.c:114
 msgid "Application"
 msgstr "Program"
 
-#: ../mate-panel/panel-ditem-editor.c:116
+#: ../ukui-panel/panel-ditem-editor.c:116
 msgid "Application in Terminal"
 msgstr "Program i terminal"
 
-#: ../mate-panel/panel-ditem-editor.c:118
+#: ../ukui-panel/panel-ditem-editor.c:118
 msgid "Location"
 msgstr "Plats"
 
 #. Type
-#: ../mate-panel/panel-ditem-editor.c:610
+#: ../ukui-panel/panel-ditem-editor.c:610
 msgid "_Type:"
 msgstr "_Typ:"
 
 #. Name
-#: ../mate-panel/panel-ditem-editor.c:617
+#: ../ukui-panel/panel-ditem-editor.c:617
 msgid "_Name:"
 msgstr "_Namn:"
 
-#: ../mate-panel/panel-ditem-editor.c:642
+#: ../ukui-panel/panel-ditem-editor.c:642
 msgid "_Browse..."
 msgstr "_Bläddra..."
 
 #. Comment
-#: ../mate-panel/panel-ditem-editor.c:649
+#: ../ukui-panel/panel-ditem-editor.c:649
 msgid "Co_mment:"
 msgstr "Ko_mmentar:"
 
-#: ../mate-panel/panel-ditem-editor.c:981
+#: ../ukui-panel/panel-ditem-editor.c:981
 msgid "Choose an application..."
 msgstr "Välj ett program..."
 
-#: ../mate-panel/panel-ditem-editor.c:985
+#: ../ukui-panel/panel-ditem-editor.c:985
 msgid "Choose a file..."
 msgstr "Välj en fil..."
 
-#: ../mate-panel/panel-ditem-editor.c:1150
-#: ../mate-panel/panel-ditem-editor.c:1159
+#: ../ukui-panel/panel-ditem-editor.c:1150
+#: ../ukui-panel/panel-ditem-editor.c:1159
 msgid "Comm_and:"
 msgstr "Komm_ando:"
 
-#: ../mate-panel/panel-ditem-editor.c:1168
+#: ../ukui-panel/panel-ditem-editor.c:1168
 msgid "_Location:"
 msgstr "_Plats:"
 
-#: ../mate-panel/panel-ditem-editor.c:1331
+#: ../ukui-panel/panel-ditem-editor.c:1331
 msgid "The name of the launcher is not set."
 msgstr "Namnet på programstartaren är inte inställt."
 
-#: ../mate-panel/panel-ditem-editor.c:1335
+#: ../ukui-panel/panel-ditem-editor.c:1335
 msgid "Could not save directory properties"
 msgstr "Kunde inte spara katalogegenskaper"
 
-#: ../mate-panel/panel-ditem-editor.c:1336
+#: ../ukui-panel/panel-ditem-editor.c:1336
 msgid "The name of the directory is not set."
 msgstr "Namnet på katalogen är inte inställt."
 
-#: ../mate-panel/panel-ditem-editor.c:1352
+#: ../ukui-panel/panel-ditem-editor.c:1352
 msgid "The command of the launcher is not set."
 msgstr "Kommandot för programstartaren är inte inställt."
 
-#: ../mate-panel/panel-ditem-editor.c:1355
+#: ../ukui-panel/panel-ditem-editor.c:1355
 msgid "The location of the launcher is not set."
 msgstr "Platsen för programstartaren är inte inställt."
 
-#: ../mate-panel/panel-ditem-editor.c:1432
+#: ../ukui-panel/panel-ditem-editor.c:1432
 msgid "Could not display help document"
 msgstr "Kunde inte visa hjälpdokumentet"
 
-#: ../mate-panel/panel-force-quit.c:80
+#: ../ukui-panel/panel-force-quit.c:80
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
 msgstr "Klicka på ett fönster för att tvinga programmet att avsluta. För att avbryta trycker du <ESC>."
 
-#: ../mate-panel/panel-force-quit.c:234
+#: ../ukui-panel/panel-force-quit.c:234
 msgid "Force this application to exit?"
 msgstr "Tvinga programmet att avsluta?"
 
-#: ../mate-panel/panel-force-quit.c:237
+#: ../ukui-panel/panel-force-quit.c:237
 msgid ""
 "If you choose to force an application to exit, unsaved changes in any open "
 "documents in it might get lost."
 msgstr "Om du väljer att tvinga ett program att avsluta så kan osparade ändringar i öppnade dokument gå förlorade."
 
-#: ../mate-panel/panel-menu-bar.c:99
+#: ../ukui-panel/panel-menu-bar.c:99
 msgid "Browse and run installed applications"
 msgstr "Bläddra och kör installerade program"
 
-#: ../mate-panel/panel-menu-bar.c:100
+#: ../ukui-panel/panel-menu-bar.c:100
 msgid "Access documents, folders and network places"
 msgstr "Kom åt dokument, mappar och nätverksplatser"
 
-#: ../mate-panel/panel-menu-bar.c:101
+#: ../ukui-panel/panel-menu-bar.c:101
 msgid "Change desktop appearance and behavior, get help, or log out"
 msgstr "Ändra skrivbordsutseende och beteende, få hjälp eller logga ut"
 
-#: ../mate-panel/panel-menu-bar.c:168
+#: ../ukui-panel/panel-menu-bar.c:168
 msgid "Applications"
 msgstr "Program"
 
-#: ../mate-panel/panel-menu-bar.c:364 ../mate-panel/panel-menu-button.c:672
+#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:672
 msgid "_Edit Menus"
 msgstr "_Redigera menyer"
 
-#: ../mate-panel/panel-menu-items.c:473
+#: ../ukui-panel/panel-menu-items.c:473
 msgid "Bookmarks"
 msgstr "Bokmärken"
 
 #. Translators: %s is a URI
-#: ../mate-panel/panel-menu-items.c:496 ../mate-panel/panel.c:549
+#: ../ukui-panel/panel-menu-items.c:496 ../ukui-panel/panel.c:549
 #, c-format
 msgid "Open '%s'"
 msgstr "Öppna \"%s\""
 
-#: ../mate-panel/panel-menu-items.c:567
+#: ../ukui-panel/panel-menu-items.c:567
 #, c-format
 msgid "Unable to scan %s for media changes"
 msgstr "Kunde inte söka av %s efter mediabyten"
 
-#: ../mate-panel/panel-menu-items.c:610
+#: ../ukui-panel/panel-menu-items.c:610
 #, c-format
 msgid "Rescan %s"
 msgstr "Sök av %s igen"
 
-#: ../mate-panel/panel-menu-items.c:647
+#: ../ukui-panel/panel-menu-items.c:647
 #, c-format
 msgid "Unable to mount %s"
 msgstr "Kunde inte montera %s"
 
-#: ../mate-panel/panel-menu-items.c:710
+#: ../ukui-panel/panel-menu-items.c:710
 #, c-format
 msgid "Mount %s"
 msgstr "Montera %s"
 
-#: ../mate-panel/panel-menu-items.c:918
+#: ../ukui-panel/panel-menu-items.c:918
 msgid "Removable Media"
 msgstr "Flyttbara media"
 
-#: ../mate-panel/panel-menu-items.c:1005
+#: ../ukui-panel/panel-menu-items.c:1005
 msgid "Network Places"
 msgstr "Nätverksplatser"
 
-#: ../mate-panel/panel-menu-items.c:1044
+#: ../ukui-panel/panel-menu-items.c:1044
 msgid "Open your personal folder"
 msgstr "Öppna din personliga mapp"
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
 #. * environment).
-#: ../mate-panel/panel-menu-items.c:1063
+#: ../ukui-panel/panel-menu-items.c:1063
 msgctxt "Desktop Folder"
 msgid "Desktop"
 msgstr "Skrivbord"
 
-#: ../mate-panel/panel-menu-items.c:1064
+#: ../ukui-panel/panel-menu-items.c:1064
 msgid "Open the contents of your desktop in a folder"
 msgstr "Öppna innehållet på ditt skrivbord in en mapp"
 
-#: ../mate-panel/panel-menu-items.c:1080
+#: ../ukui-panel/panel-menu-items.c:1080
 msgid "Computer"
 msgstr "Dator"
 
-#: ../mate-panel/panel-menu-items.c:1085
+#: ../ukui-panel/panel-menu-items.c:1085
 msgid ""
 "Browse all local and remote disks and folders accessible from this computer"
 msgstr ""
 
-#: ../mate-panel/panel-menu-items.c:1098
+#: ../ukui-panel/panel-menu-items.c:1098
 msgid "Network"
 msgstr "Nätverk"
 
-#: ../mate-panel/panel-menu-items.c:1099
+#: ../ukui-panel/panel-menu-items.c:1099
 msgid "Browse bookmarked and local network locations"
 msgstr ""
 
-#: ../mate-panel/panel-menu-items.c:1497
+#: ../ukui-panel/panel-menu-items.c:1497
 msgid "Places"
 msgstr "Platser"
 
-#: ../mate-panel/panel-menu-items.c:1525
+#: ../ukui-panel/panel-menu-items.c:1525
 msgid "System"
 msgstr "System"
 
@@ -2406,7 +2406,7 @@ msgstr "System"
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
 #. * but "1" if "Log Out %s" doesn't make any sense in your
 #. * language (where %s is a username).
-#: ../mate-panel/panel-menu-items.c:1610
+#: ../ukui-panel/panel-menu-items.c:1610
 msgctxt "panel:showusername"
 msgid "1"
 msgstr "1"
@@ -2415,405 +2415,405 @@ msgstr "1"
 #. * panel-action-button.c
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../mate-panel/panel-menu-items.c:1622
+#: ../ukui-panel/panel-menu-items.c:1622
 #, c-format
 msgid "Log Out %s..."
 msgstr "Logga ut %s..."
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../mate-panel/panel-menu-items.c:1626
+#: ../ukui-panel/panel-menu-items.c:1626
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
 msgstr "Logga ut %s från denna session för att logga in som en annan användare"
 
-#: ../mate-panel/panel-properties-dialog.c:120
-#: ../mate-panel/panel-test-applets.c:58
+#: ../ukui-panel/panel-properties-dialog.c:120
+#: ../ukui-panel/panel-test-applets.c:58
 msgctxt "Orientation"
 msgid "Top"
 msgstr "Överst"
 
-#: ../mate-panel/panel-properties-dialog.c:121
-#: ../mate-panel/panel-test-applets.c:59
+#: ../ukui-panel/panel-properties-dialog.c:121
+#: ../ukui-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Bottom"
 msgstr "Nederst"
 
-#: ../mate-panel/panel-properties-dialog.c:122
-#: ../mate-panel/panel-test-applets.c:60
+#: ../ukui-panel/panel-properties-dialog.c:122
+#: ../ukui-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Left"
 msgstr "Vänster"
 
-#: ../mate-panel/panel-properties-dialog.c:123
-#: ../mate-panel/panel-test-applets.c:61
+#: ../ukui-panel/panel-properties-dialog.c:123
+#: ../ukui-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Right"
 msgstr "Höger"
 
-#: ../mate-panel/panel-properties-dialog.c:819
+#: ../ukui-panel/panel-properties-dialog.c:819
 msgid "Drawer Properties"
 msgstr "Lådegenskaper"
 
-#: ../mate-panel/panel-properties-dialog.c:939
-#: ../mate-panel/panel-run-dialog.c:1970
+#: ../ukui-panel/panel-properties-dialog.c:939
+#: ../ukui-panel/panel-run-dialog.c:1970
 #, c-format
 msgid "Unable to load file '%s': %s."
 msgstr "Misslyckades med att läsa in filen \"%s\": %s."
 
-#: ../mate-panel/panel-properties-dialog.c:945
+#: ../ukui-panel/panel-properties-dialog.c:945
 msgid "Could not display properties dialog"
 msgstr "Kunde inte visa egenskapsdialogen"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:1
+#: ../ukui-panel/panel-properties-dialog.ui.h:1
 msgid "Panel Properties"
 msgstr "Panelegenskaper"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:2
+#: ../ukui-panel/panel-properties-dialog.ui.h:2
 msgid "Some of these properties are locked down"
 msgstr "En del av dessa egenskaper är låsta"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:3
+#: ../ukui-panel/panel-properties-dialog.ui.h:3
 msgid "_Icon:"
 msgstr "_Ikon:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:4
+#: ../ukui-panel/panel-properties-dialog.ui.h:4
 msgid "pixels"
 msgstr "bildpunkter"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:5
-#: ../mate-panel/panel-test-applets.ui.h:5
+#: ../ukui-panel/panel-properties-dialog.ui.h:5
+#: ../ukui-panel/panel-test-applets.ui.h:5
 msgid "_Orientation:"
 msgstr "_Orientering:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:6
-#: ../mate-panel/panel-test-applets.ui.h:3
+#: ../ukui-panel/panel-properties-dialog.ui.h:6
+#: ../ukui-panel/panel-test-applets.ui.h:3
 msgid "_Size:"
 msgstr "_Storlek:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:7
+#: ../ukui-panel/panel-properties-dialog.ui.h:7
 msgid "E_xpand"
 msgstr "F_äll ut"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:8
+#: ../ukui-panel/panel-properties-dialog.ui.h:8
 msgid "_Autohide"
 msgstr "_Dölj automatiskt"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:9
+#: ../ukui-panel/panel-properties-dialog.ui.h:9
 msgid "Show hide _buttons"
 msgstr "Visa dölj_knappar"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:10
+#: ../ukui-panel/panel-properties-dialog.ui.h:10
 msgid "Arro_ws on hide buttons"
 msgstr "P_ilar på döljknappar"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:12
+#: ../ukui-panel/panel-properties-dialog.ui.h:12
 msgid "_None (use system theme)"
 msgstr "_Ingen (använd systemtemat)"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:13
+#: ../ukui-panel/panel-properties-dialog.ui.h:13
 msgid "Solid c_olor"
 msgstr "Enf_ärgad"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:15
+#: ../ukui-panel/panel-properties-dialog.ui.h:15
 msgid "Pick a color"
 msgstr "Välj en färg"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:16
+#: ../ukui-panel/panel-properties-dialog.ui.h:16
 msgid "<small>Transparent</small>"
 msgstr "<small>Genomskinlig</small>"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:17
+#: ../ukui-panel/panel-properties-dialog.ui.h:17
 msgid "Co_lor:"
 msgstr "F_ärg:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:18
+#: ../ukui-panel/panel-properties-dialog.ui.h:18
 msgid "S_tyle:"
 msgstr "S_til:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:19
+#: ../ukui-panel/panel-properties-dialog.ui.h:19
 msgid "<small>Opaque</small>"
 msgstr "<small>Opak</small>"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:20
+#: ../ukui-panel/panel-properties-dialog.ui.h:20
 msgid "Background _image:"
 msgstr "Bakgrunds_bild:"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:21
+#: ../ukui-panel/panel-properties-dialog.ui.h:21
 msgid "Select background"
 msgstr "Välj bakgrund"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:22
+#: ../ukui-panel/panel-properties-dialog.ui.h:22
 msgid "Background"
 msgstr "Bakgrund"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:23
+#: ../ukui-panel/panel-properties-dialog.ui.h:23
 msgid "Image Background Details"
 msgstr "Bildbakgrundsdetaljer"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:24
+#: ../ukui-panel/panel-properties-dialog.ui.h:24
 msgid "_Tile"
 msgstr "_Upprepa"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:25
+#: ../ukui-panel/panel-properties-dialog.ui.h:25
 msgid "_Scale"
 msgstr "_Skala"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:26
+#: ../ukui-panel/panel-properties-dialog.ui.h:26
 msgid "St_retch"
 msgstr "St_räck ut"
 
-#: ../mate-panel/panel-properties-dialog.ui.h:27
+#: ../ukui-panel/panel-properties-dialog.ui.h:27
 msgid "Rotate image when panel is _vertical"
 msgstr "Rotera bild när panelen är _vertikal"
 
-#: ../mate-panel/panel-recent.c:78 ../mate-panel/panel-recent.c:88
+#: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
 msgid "Could not open recently used document \"%s\""
 msgstr "Kunde inte öppna tidigare använda dokumentet \"%s\""
 
-#: ../mate-panel/panel-recent.c:90
+#: ../ukui-panel/panel-recent.c:90
 #, c-format
 msgid "An unknown error occurred while trying to open \"%s\"."
 msgstr "Ett okänt fel inträffade vid försök att öppna \"%s\"."
 
-#: ../mate-panel/panel-recent.c:147
+#: ../ukui-panel/panel-recent.c:147
 msgid "Clear the Recent Documents list?"
 msgstr "Töm listan över senaste dokument?"
 
-#: ../mate-panel/panel-recent.c:149
+#: ../ukui-panel/panel-recent.c:149
 msgid ""
 "If you clear the Recent Documents list, you clear the following:\n"
 "• All items from the Places → Recent Documents menu item.\n"
 "• All items from the recent documents list in all applications."
 msgstr "Om du tömmer listan över senaste dokument, tömmer du följande:\n• Alla objekt från menyobjektet Platser → Senaste dokument.\n• Alla objekt från listan över senaste dokument i alla program."
 
-#: ../mate-panel/panel-recent.c:161
+#: ../ukui-panel/panel-recent.c:161
 msgid "Clear Recent Documents"
 msgstr "Töm senaste dokument"
 
-#: ../mate-panel/panel-recent.c:196
+#: ../ukui-panel/panel-recent.c:196
 msgid "Recent Documents"
 msgstr "Senaste dokument"
 
-#: ../mate-panel/panel-recent.c:235
+#: ../ukui-panel/panel-recent.c:235
 msgid "Clear Recent Documents..."
 msgstr "Töm senaste dokument..."
 
-#: ../mate-panel/panel-recent.c:237
+#: ../ukui-panel/panel-recent.c:237
 msgid "Clear all items from the recent documents list"
 msgstr "Töm alla objekt i listan över senaste dokument"
 
-#: ../mate-panel/panel-run-dialog.c:417
+#: ../ukui-panel/panel-run-dialog.c:417
 #, c-format
 msgid "Could not run command '%s'"
 msgstr "Kunde inte köra kommandot \"%s\""
 
-#: ../mate-panel/panel-run-dialog.c:457
+#: ../ukui-panel/panel-run-dialog.c:457
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
 msgstr "Kunde inte konvertera \"%s\" från UTF-8"
 
-#: ../mate-panel/panel-run-dialog.c:1204
+#: ../ukui-panel/panel-run-dialog.c:1204
 msgid "Choose a file to append to the command..."
 msgstr "Välj en fil att lägga till efter kommandot..."
 
-#: ../mate-panel/panel-run-dialog.c:1582 ../mate-panel/panel-run-dialog.ui.h:9
+#: ../ukui-panel/panel-run-dialog.c:1582 ../ukui-panel/panel-run-dialog.ui.h:9
 msgid "Select an application to view its description."
 msgstr "Markera ett program för att visa dess beskrivning."
 
-#: ../mate-panel/panel-run-dialog.c:1620
+#: ../ukui-panel/panel-run-dialog.c:1620
 #, c-format
 msgid "Will run command: '%s'"
 msgstr "Kommer att köra kommandot: \"%s\""
 
-#: ../mate-panel/panel-run-dialog.c:1653
+#: ../ukui-panel/panel-run-dialog.c:1653
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
 msgstr "URI-listan som släpptes på kördialogen hade felaktigt format (%d) eller felaktig längd (%d)\n"
 
-#: ../mate-panel/panel-run-dialog.c:1975
+#: ../ukui-panel/panel-run-dialog.c:1975
 msgid "Could not display run dialog"
 msgstr "Kunde inte visa kördialogen"
 
-#: ../mate-panel/panel-run-dialog.ui.h:1
+#: ../ukui-panel/panel-run-dialog.ui.h:1
 msgid "Run Application"
 msgstr "Kör program"
 
-#: ../mate-panel/panel-run-dialog.ui.h:2
+#: ../ukui-panel/panel-run-dialog.ui.h:2
 msgid "Command icon"
 msgstr "Kommandoikon"
 
-#: ../mate-panel/panel-run-dialog.ui.h:3
+#: ../ukui-panel/panel-run-dialog.ui.h:3
 msgid "The icon of the command to be run."
 msgstr "Ikonen för kommandot att köra."
 
-#: ../mate-panel/panel-run-dialog.ui.h:4
+#: ../ukui-panel/panel-run-dialog.ui.h:4
 msgid "Run in _terminal"
 msgstr "Kör i _terminal"
 
-#: ../mate-panel/panel-run-dialog.ui.h:5
+#: ../ukui-panel/panel-run-dialog.ui.h:5
 msgid "Select this box to run the command in a terminal window."
 msgstr "Välj denna ruta för att köra kommandot i ett terminalfönster."
 
-#: ../mate-panel/panel-run-dialog.ui.h:6
+#: ../ukui-panel/panel-run-dialog.ui.h:6
 msgid "Run with _file..."
 msgstr "Kör med _fil..."
 
-#: ../mate-panel/panel-run-dialog.ui.h:7
+#: ../ukui-panel/panel-run-dialog.ui.h:7
 msgid ""
 "Click this button to browse for a file whose name to append to the command "
 "string."
 msgstr "Klicka på denna knapp för att bläddra efter en fil vars namn ska läggas till efter kommandosträngen."
 
-#: ../mate-panel/panel-run-dialog.ui.h:8
+#: ../ukui-panel/panel-run-dialog.ui.h:8
 msgid "List of known applications"
 msgstr "Lista med kända program"
 
-#: ../mate-panel/panel-run-dialog.ui.h:10
+#: ../ukui-panel/panel-run-dialog.ui.h:10
 msgid "Show list of known _applications"
 msgstr "Visa lista med kända _program"
 
-#: ../mate-panel/panel-run-dialog.ui.h:11 ../mate-panel/panel-stock-icons.c:97
+#: ../ukui-panel/panel-run-dialog.ui.h:11 ../ukui-panel/panel-stock-icons.c:97
 msgid "_Run"
 msgstr "_Kör"
 
-#: ../mate-panel/panel-run-dialog.ui.h:12
+#: ../ukui-panel/panel-run-dialog.ui.h:12
 msgid ""
 "Click this button to run the selected application or the command in the "
 "command entry field."
 msgstr "Klicka på denna knapp för att köra det valda programmet eller kommandot i kommandofältet."
 
-#: ../mate-panel/panel-stock-icons.c:98
+#: ../ukui-panel/panel-stock-icons.c:98
 msgid "_Force quit"
 msgstr "_Tvinga avslut"
 
-#: ../mate-panel/panel-stock-icons.c:99
+#: ../ukui-panel/panel-stock-icons.c:99
 msgid "C_lear"
 msgstr "T_öm"
 
-#: ../mate-panel/panel-stock-icons.c:100
+#: ../ukui-panel/panel-stock-icons.c:100
 msgid "D_on't Delete"
 msgstr "Ta i_nte bort"
 
-#: ../mate-panel/panel-test-applets.c:39
+#: ../ukui-panel/panel-test-applets.c:39
 msgid "Specify an applet IID to load"
 msgstr "Ange ett panelprograms-IID att läsa in"
 
-#: ../mate-panel/panel-test-applets.c:40
+#: ../ukui-panel/panel-test-applets.c:40
 msgid ""
 "Specify a gsettings path in which the applet preferences should be stored"
 msgstr ""
 
-#: ../mate-panel/panel-test-applets.c:41
+#: ../ukui-panel/panel-test-applets.c:41
 msgid "Specify the initial size of the applet (xx-small, medium, large etc.)"
 msgstr "Ange den ursprungliga storleken för panelprogrammet (jätteliten, mellan, stor osv)"
 
-#: ../mate-panel/panel-test-applets.c:42
+#: ../ukui-panel/panel-test-applets.c:42
 msgid ""
 "Specify the initial orientation of the applet (top, bottom, left or right)"
 msgstr "Ange den ursprungliga orienteringen för panelprogrammet (överkant, nederkant, vänster eller höger)"
 
-#: ../mate-panel/panel-test-applets.c:66
+#: ../ukui-panel/panel-test-applets.c:66
 msgctxt "Size"
 msgid "XX Small"
 msgstr "Jätteliten"
 
-#: ../mate-panel/panel-test-applets.c:67
+#: ../ukui-panel/panel-test-applets.c:67
 msgctxt "Size"
 msgid "X Small"
 msgstr "Mindre"
 
-#: ../mate-panel/panel-test-applets.c:68
+#: ../ukui-panel/panel-test-applets.c:68
 msgctxt "Size"
 msgid "Small"
 msgstr "Liten"
 
-#: ../mate-panel/panel-test-applets.c:69
+#: ../ukui-panel/panel-test-applets.c:69
 msgctxt "Size"
 msgid "Medium"
 msgstr "Mellan"
 
-#: ../mate-panel/panel-test-applets.c:70
+#: ../ukui-panel/panel-test-applets.c:70
 msgctxt "Size"
 msgid "Large"
 msgstr "Stor"
 
-#: ../mate-panel/panel-test-applets.c:71
+#: ../ukui-panel/panel-test-applets.c:71
 msgctxt "Size"
 msgid "X Large"
 msgstr "Större"
 
-#: ../mate-panel/panel-test-applets.c:72
+#: ../ukui-panel/panel-test-applets.c:72
 msgctxt "Size"
 msgid "XX Large"
 msgstr "Jättestor"
 
-#: ../mate-panel/panel-test-applets.c:130
+#: ../ukui-panel/panel-test-applets.c:130
 #, c-format
 msgid "Failed to load applet %s"
 msgstr "Misslyckades med att läsa in panelprogrammet %s"
 
 #. This is an utility to easily test various applets
-#: ../mate-panel/panel-test-applets.ui.h:2
+#: ../ukui-panel/panel-test-applets.ui.h:2
 msgid "Test applet utility"
 msgstr "Testverktyg för panelprogram"
 
-#: ../mate-panel/panel-test-applets.ui.h:4
+#: ../ukui-panel/panel-test-applets.ui.h:4
 msgid "_Applet:"
 msgstr "_Panelprogram:"
 
-#: ../mate-panel/panel-test-applets.ui.h:6
+#: ../ukui-panel/panel-test-applets.ui.h:6
 msgid "_Prefs Path:"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1218
+#: ../ukui-panel/panel-toplevel.c:1218
 msgid "Hide Panel"
 msgstr "Dölj panel"
 
 #. translators: these string will be shown in MetaCity's switch window
 #. * popup when you pass the focus to a panel
-#: ../mate-panel/panel-toplevel.c:1621 ../mate-panel/panel-toplevel.c:1631
+#: ../ukui-panel/panel-toplevel.c:1621 ../ukui-panel/panel-toplevel.c:1631
 msgid "Top Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1623
+#: ../ukui-panel/panel-toplevel.c:1623
 msgid "Bottom Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1625
+#: ../ukui-panel/panel-toplevel.c:1625
 msgid "Left Panel"
 msgstr ""
 
-#: ../mate-panel/panel-toplevel.c:1627
+#: ../ukui-panel/panel-toplevel.c:1627
 msgid "Right Panel"
 msgstr ""
 
-#: ../mate-panel/panel-util.c:347
+#: ../ukui-panel/panel-util.c:347
 #, c-format
 msgid "Icon '%s' not found"
 msgstr "Ikonen \"%s\" hittades inte"
 
-#: ../mate-panel/panel-util.c:465
+#: ../ukui-panel/panel-util.c:465
 #, c-format
 msgid "Could not execute '%s'"
 msgstr "Kunde inte köra \"%s\""
 
-#: ../mate-panel/panel-util.c:693
+#: ../ukui-panel/panel-util.c:693
 msgid "file"
 msgstr "fil"
 
-#: ../mate-panel/panel-util.c:866
+#: ../ukui-panel/panel-util.c:866
 msgid "Home Folder"
 msgstr "Hemmapp"
 
 #. Translators: this is the same string as the one found in
 #. * caja
-#: ../mate-panel/panel-util.c:878
+#: ../ukui-panel/panel-util.c:878
 msgid "File System"
 msgstr "Filsystem"
 
-#: ../mate-panel/panel-util.c:1051
+#: ../ukui-panel/panel-util.c:1051
 msgid "Search"
 msgstr "Sök"
 
@@ -2821,31 +2821,31 @@ msgstr "Sök"
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
-#: ../mate-panel/panel-util.c:1097
+#: ../ukui-panel/panel-util.c:1097
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: ../mate-panel/panel.c:482
+#: ../ukui-panel/panel.c:482
 #, c-format
 msgid "Open URL: %s"
 msgstr "Öppna URL: %s"
 
-#: ../mate-panel/panel.c:1332
+#: ../ukui-panel/panel.c:1332
 msgid "Delete this drawer?"
 msgstr "Ta bort denna låda?"
 
-#: ../mate-panel/panel.c:1333
+#: ../ukui-panel/panel.c:1333
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
 msgstr "När en låda tas bort förloras lådan och dess\ninställningar."
 
-#: ../mate-panel/panel.c:1336
+#: ../ukui-panel/panel.c:1336
 msgid "Delete this panel?"
 msgstr "Ta bort denna panel?"
 
-#: ../mate-panel/panel.c:1337
+#: ../ukui-panel/panel.c:1337
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."

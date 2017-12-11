@@ -14,8 +14,8 @@
 
 #include <string.h>
 
-#include <mate-panel-applet.h>
-#include <mate-panel-applet-gsettings.h>
+#include <ukui-panel-applet.h>
+#include <ukui-panel-applet-gsettings.h>
 
 #include <stdlib.h>
 
@@ -25,7 +25,7 @@
 #include <libwnck/libwnck.h>
 #include <gio/gio.h>
 
-#include <libmate-desktop/mate-gsettings.h>
+#include <libukui-desktop/ukui-gsettings.h>
 
 #include "workspace-switcher.h"
 
@@ -35,15 +35,15 @@
 #define MAX_REASONABLE_ROWS 16
 #define DEFAULT_ROWS 1
 
-#define WORKSPACE_SWITCHER_SCHEMA "org.mate.panel.applet.workspace-switcher"
+#define WORKSPACE_SWITCHER_SCHEMA "org.ukui.panel.applet.workspace-switcher"
 
 #define NEVER_SENSITIVE "never_sensitive"
-#define MARCO_GENERAL_SCHEMA "org.mate.Marco.general"
+#define MARCO_GENERAL_SCHEMA "org.ukui.Marco.general"
 #define NUM_WORKSPACES "num-workspaces"
-#define MARCO_WORKSPACES_SCHEMA "org.mate.Marco.workspace-names"
+#define MARCO_WORKSPACES_SCHEMA "org.ukui.Marco.workspace-names"
 #define WORKSPACE_NAME "name-1"
 
-#define WORKSPACE_SWITCHER_ICON "mate-panel-workspace-switcher"
+#define WORKSPACE_SWITCHER_ICON "ukui-panel-workspace-switcher"
 
 typedef enum {
 	PAGER_WM_MARCO,
@@ -158,7 +158,7 @@ static void window_manager_changed(WnckScreen* screen, PagerData* pager)
 	pager_update(pager);
 }
 
-static void applet_realized(MatePanelApplet* applet, PagerData* pager)
+static void applet_realized(UkuiPanelApplet* applet, PagerData* pager)
 {
 	pager->screen = wncklet_get_screen(GTK_WIDGET(applet));
 
@@ -166,24 +166,24 @@ static void applet_realized(MatePanelApplet* applet, PagerData* pager)
 	wncklet_connect_while_alive(pager->screen, "window_manager_changed", G_CALLBACK(window_manager_changed), pager, pager->applet);
 }
 
-static void applet_unrealized(MatePanelApplet* applet, PagerData* pager)
+static void applet_unrealized(UkuiPanelApplet* applet, PagerData* pager)
 {
 	pager->screen = NULL;
 	pager->wm = PAGER_WM_UNKNOWN;
 }
 
-static void applet_change_orient(MatePanelApplet* applet, MatePanelAppletOrient orient, PagerData* pager)
+static void applet_change_orient(UkuiPanelApplet* applet, UkuiPanelAppletOrient orient, PagerData* pager)
 {
 	GtkOrientation new_orient;
 
 	switch (orient)
 	{
-		case MATE_PANEL_APPLET_ORIENT_LEFT:
-		case MATE_PANEL_APPLET_ORIENT_RIGHT:
+		case UKUI_PANEL_APPLET_ORIENT_LEFT:
+		case UKUI_PANEL_APPLET_ORIENT_RIGHT:
 			new_orient = GTK_ORIENTATION_VERTICAL;
 			break;
-		case MATE_PANEL_APPLET_ORIENT_UP:
-		case MATE_PANEL_APPLET_ORIENT_DOWN:
+		case UKUI_PANEL_APPLET_ORIENT_UP:
+		case UKUI_PANEL_APPLET_ORIENT_DOWN:
 		default:
 			new_orient = GTK_ORIENTATION_HORIZONTAL;
 			break;
@@ -199,7 +199,7 @@ static void applet_change_orient(MatePanelApplet* applet, MatePanelAppletOrient 
 		gtk_label_set_text(GTK_LABEL(pager->label_row_col), pager->orientation == GTK_ORIENTATION_HORIZONTAL ? _("rows") : _("columns"));
 }
 
-static void applet_change_background(MatePanelApplet* applet, MatePanelAppletBackgroundType type, GdkColor* color, cairo_pattern_t *pattern, PagerData* pager)
+static void applet_change_background(UkuiPanelApplet* applet, UkuiPanelAppletBackgroundType type, GdkColor* color, cairo_pattern_t *pattern, PagerData* pager)
 {
         GtkStyleContext *new_context;
         gtk_widget_reset_style (GTK_WIDGET (pager->pager));
@@ -214,7 +214,7 @@ static void applet_change_background(MatePanelApplet* applet, MatePanelAppletBac
 /* Replacement for the default scroll handler that also cares about the wrapping property.
  * Alternative: Add behaviour to libwnck (to the WnckPager widget).
  */
-static gboolean applet_scroll(MatePanelApplet* applet, GdkEventScroll* event, PagerData* pager)
+static gboolean applet_scroll(UkuiPanelApplet* applet, GdkEventScroll* event, PagerData* pager)
 {
 	GdkScrollDirection absolute_direction;
 	int index;
@@ -430,7 +430,7 @@ static void wrap_workspaces_changed(GSettings* settings, gchar* key, PagerData* 
 
 static void setup_gsettings(PagerData* pager)
 {
-	pager->settings = mate_panel_applet_settings_new (MATE_PANEL_APPLET (pager->applet), WORKSPACE_SWITCHER_SCHEMA);
+	pager->settings = ukui_panel_applet_settings_new (UKUI_PANEL_APPLET (pager->applet), WORKSPACE_SWITCHER_SCHEMA);
 
 	g_signal_connect (pager->settings,
 					  "changed::num-rows",
@@ -451,7 +451,7 @@ static void setup_gsettings(PagerData* pager)
 
 }
 
-gboolean workspace_switcher_applet_fill(MatePanelApplet* applet)
+gboolean workspace_switcher_applet_fill(UkuiPanelApplet* applet)
 {
 	PagerData* pager;
 	GtkActionGroup* action_group;
@@ -463,7 +463,7 @@ gboolean workspace_switcher_applet_fill(MatePanelApplet* applet)
 
 	pager->applet = GTK_WIDGET(applet);
 
-	mate_panel_applet_set_flags(MATE_PANEL_APPLET(pager->applet), MATE_PANEL_APPLET_EXPAND_MINOR);
+	ukui_panel_applet_set_flags(UKUI_PANEL_APPLET(pager->applet), UKUI_PANEL_APPLET_EXPAND_MINOR);
 
 	setup_gsettings(pager);
 
@@ -486,14 +486,14 @@ gboolean workspace_switcher_applet_fill(MatePanelApplet* applet)
 
 	pager->display_all = g_settings_get_boolean(pager->settings, "display-all-workspaces");
 
-	switch (mate_panel_applet_get_orient(applet))
+	switch (ukui_panel_applet_get_orient(applet))
 	{
-		case MATE_PANEL_APPLET_ORIENT_LEFT:
-		case MATE_PANEL_APPLET_ORIENT_RIGHT:
+		case UKUI_PANEL_APPLET_ORIENT_LEFT:
+		case UKUI_PANEL_APPLET_ORIENT_RIGHT:
 			pager->orientation = GTK_ORIENTATION_VERTICAL;
 			break;
-		case MATE_PANEL_APPLET_ORIENT_UP:
-		case MATE_PANEL_APPLET_ORIENT_DOWN:
+		case UKUI_PANEL_APPLET_ORIENT_UP:
+		case UKUI_PANEL_APPLET_ORIENT_DOWN:
 		default:
 			pager->orientation = GTK_ORIENTATION_HORIZONTAL;
 			break;
@@ -535,16 +535,16 @@ gboolean workspace_switcher_applet_fill(MatePanelApplet* applet)
 
 	gtk_widget_show(pager->applet);
 
-	mate_panel_applet_set_background_widget(MATE_PANEL_APPLET(pager->applet), GTK_WIDGET(pager->applet));
+	ukui_panel_applet_set_background_widget(UKUI_PANEL_APPLET(pager->applet), GTK_WIDGET(pager->applet));
 
 	action_group = gtk_action_group_new("WorkspaceSwitcher Applet Actions");
 	gtk_action_group_set_translation_domain(action_group, GETTEXT_PACKAGE);
 	gtk_action_group_add_actions(action_group, pager_menu_actions, G_N_ELEMENTS(pager_menu_actions), pager);
 	ui_path = g_build_filename(WNCK_MENU_UI_DIR, "workspace-switcher-menu.xml", NULL);
-	mate_panel_applet_setup_menu_from_file(MATE_PANEL_APPLET(pager->applet), ui_path, action_group);
+	ukui_panel_applet_setup_menu_from_file(UKUI_PANEL_APPLET(pager->applet), ui_path, action_group);
 	g_free(ui_path);
 
-	if (mate_panel_applet_get_locked_down(MATE_PANEL_APPLET(pager->applet)))
+	if (ukui_panel_applet_get_locked_down(UKUI_PANEL_APPLET(pager->applet)))
 	{
 		GtkAction *action;
 
@@ -560,7 +560,7 @@ gboolean workspace_switcher_applet_fill(MatePanelApplet* applet)
 
 static void display_help_dialog(GtkAction* action, PagerData* pager)
 {
-	wncklet_display_help(pager->applet, "mate-user-guide", "overview-workspaces", WORKSPACE_SWITCHER_ICON);
+	wncklet_display_help(pager->applet, "ukui-user-guide", "overview-workspaces", WORKSPACE_SWITCHER_ICON);
 }
 
 static void display_about_dialog(GtkAction* action, PagerData* pager)
@@ -580,7 +580,7 @@ static void display_about_dialog(GtkAction* action, PagerData* pager)
 	};
 
 	char copyright[] = \
-		"Copyright \xc2\xa9 2012-2017 MATE developers\n"
+		"Copyright \xc2\xa9 2012-2017 UKUI developers\n"
 		"Copyright \xc2\xa9 2011 Perberos\n"
 		"Copyright \xc2\xa9 2002 Red Hat, Inc.";
 
@@ -594,7 +594,7 @@ static void display_about_dialog(GtkAction* action, PagerData* pager)
 		"logo-icon-name", WORKSPACE_SWITCHER_ICON,
 		"translator-credits", _("translator-credits"),
 		"version", VERSION,
-		"website", "http://www.mate-desktop.org/",
+		"website", "http://www.ukui-desktop.org/",
 		NULL);
 }
 
@@ -734,7 +734,7 @@ static gboolean delete_event(GtkWidget* widget, gpointer data)
 static void response_cb(GtkWidget* widget, int id, PagerData* pager)
 {
 	if (id == GTK_RESPONSE_HELP)
-		wncklet_display_help(widget, "mate-user-guide", "overview-workspaces", WORKSPACE_SWITCHER_ICON);
+		wncklet_display_help(widget, "ukui-user-guide", "overview-workspaces", WORKSPACE_SWITCHER_ICON);
 	else
 		gtk_widget_destroy(widget);
 }
@@ -806,9 +806,9 @@ static void setup_dialog(GtkBuilder* builder, PagerData* pager)
 	GSettings *marco_general_settings = NULL;
 	GSettings *marco_workspaces_settings = NULL;
 
-	if (mate_gsettings_schema_exists(MARCO_GENERAL_SCHEMA))
+	if (ukui_gsettings_schema_exists(MARCO_GENERAL_SCHEMA))
 		marco_general_settings = g_settings_new (MARCO_GENERAL_SCHEMA);
-	if (mate_gsettings_schema_exists(MARCO_WORKSPACES_SCHEMA))
+	if (ukui_gsettings_schema_exists(MARCO_WORKSPACES_SCHEMA))
 		marco_workspaces_settings = g_settings_new (MARCO_WORKSPACES_SCHEMA);
 
 	pager->workspaces_frame = WID("workspaces_frame");

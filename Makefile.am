@@ -1,6 +1,6 @@
 SUBDIRS =			\
-	mate-panel		\
-	libmate-panel-applet		\
+	ukui-panel		\
+	libukui-panel-applet		\
 	applets			\
 	doc			\
 	help			\

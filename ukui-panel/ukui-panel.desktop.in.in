@@ -1,0 +1,19 @@
+[Desktop Entry]
+Type=Application
+_Name=Panel
+_Comment=Launch other applications and provide various utilities to manage windows, show the time, etc.
+Icon=ukui-panel
+Exec=ukui-panel
+StartupNotify=true
+Terminal=false
+X-UKUI-Bugzilla-Bugzilla=UKUI
+X-UKUI-Bugzilla-Product=ukui-panel
+X-UKUI-Bugzilla-Component=general
+X-UKUI-Bugzilla-Version=@VERSION@
+Categories=GTK;System;Core;
+OnlyShowIn=UKUI;
+NoDisplay=true
+X-UKUI-AutoRestart=true
+X-UKUI-Autostart-Phase=Panel
+X-UKUI-Provides=panel
+X-UKUI-Autostart-Notify=true

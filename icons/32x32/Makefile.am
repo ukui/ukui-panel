@@ -3,30 +3,30 @@ size = 32x32
 iconsdir = $(datadir)/icons/hicolor/$(size)/apps
 
 icons_DATA =					\
-	mate-panel-clock.png			\
-	mate-panel-drawer.png			\
-	mate-panel-fish.png			\
-	mate-panel-force-quit.png		\
-	mate-panel-launcher.png		\
-	mate-panel-notification-area.png	\
-	mate-panel-separator.png		\
-	mate-panel.png				\
-	mate-panel-window-list.png		\
-	mate-panel-window-menu.png		\
-	mate-panel-workspace-switcher.png
+	ukui-panel-clock.png			\
+	ukui-panel-drawer.png			\
+	ukui-panel-fish.png			\
+	ukui-panel-force-quit.png		\
+	ukui-panel-launcher.png		\
+	ukui-panel-notification-area.png	\
+	ukui-panel-separator.png		\
+	ukui-panel.png				\
+	ukui-panel-window-list.png		\
+	ukui-panel-window-menu.png		\
+	ukui-panel-workspace-switcher.png
 
 icons_SOURCE =					\
-	mate-panel-clock.svg			\
-	mate-panel-drawer.svg			\
-	mate-panel-fish.svg			\
-	mate-panel-force-quit.svg		\
-	mate-panel-launcher.svg		\
-	mate-panel-notification-area.svg	\
-	mate-panel-separator.svg		\
-	mate-panel.svg				\
-	mate-panel-window-list.svg		\
-	mate-panel-window-menu.svg		\
-	mate-panel-workspace-switcher.svg
+	ukui-panel-clock.svg			\
+	ukui-panel-drawer.svg			\
+	ukui-panel-fish.svg			\
+	ukui-panel-force-quit.svg		\
+	ukui-panel-launcher.svg		\
+	ukui-panel-notification-area.svg	\
+	ukui-panel-separator.svg		\
+	ukui-panel.svg				\
+	ukui-panel-window-list.svg		\
+	ukui-panel-window-menu.svg		\
+	ukui-panel-workspace-switcher.svg
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 

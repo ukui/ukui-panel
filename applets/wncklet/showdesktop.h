@@ -25,13 +25,13 @@
 #define _SHOWDESKTOP_H_
 
 #include <glib.h>
-#include <mate-panel-applet.h>
+#include <ukui-panel-applet.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-gboolean show_desktop_applet_fill(MatePanelApplet* applet);
+gboolean show_desktop_applet_fill(UkuiPanelApplet* applet);
 
 #ifdef __cplusplus
 }

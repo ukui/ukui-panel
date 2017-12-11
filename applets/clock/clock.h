@@ -31,8 +31,8 @@
 extern "C" {
 #endif
 
-#define CLOCK_ICON "mate-panel-clock"
-#define CLOCK_SCHEMA "org.mate.panel.applet.clock"
+#define CLOCK_ICON "ukui-panel-clock"
+#define CLOCK_SCHEMA "org.ukui.panel.applet.clock"
 
 #ifdef __cplusplus
 }

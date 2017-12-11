@@ -5,7 +5,7 @@ AM_CPPFLAGS =							\
 	$(NOTIFICATION_AREA_CFLAGS)				\
 	-I$(srcdir)						\
 	-I$(srcdir)/..						\
-	-DMATELOCALEDIR=\""$(datadir)/locale"\"			\
+	-DUKUILOCALEDIR=\""$(datadir)/locale"\"			\
 	-DG_LOG_DOMAIN=\""notification-area-applet"\"		\
 	$(DISABLE_DEPRECATED_CFLAGS)
 

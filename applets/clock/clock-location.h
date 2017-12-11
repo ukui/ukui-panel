@@ -4,7 +4,7 @@
 #include <time.h>
 #include <glib.h>
 #include <glib-object.h>
-#include <libmateweather/weather.h>
+#include <libukuiweather/weather.h>
 
 #ifdef __cplusplus
 extern "C" {
