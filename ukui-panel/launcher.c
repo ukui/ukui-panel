@@ -530,9 +530,9 @@ create_launcher (const char *location)
 			   G_CALLBACK (drag_drop_cb), launcher);
 	g_signal_connect (launcher->button, "drag_leave",
 			   G_CALLBACK (drag_leave_cb), launcher);
+*/
 	g_signal_connect_swapped (launcher->button, "clicked",
 				  G_CALLBACK (clicked_cb), launcher);
-*/
 	launcher->destroy_handler =
 			g_signal_connect (launcher->button, "destroy",
 					  G_CALLBACK (destroy_launcher),
