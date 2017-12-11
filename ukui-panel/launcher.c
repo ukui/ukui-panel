@@ -2,6 +2,7 @@
  * UKUI panel launcher module.
  * (C) 1997,1998,1999,2000 The Free Software Foundation
  * (C) 2000 Eazel, Inc.
+ * (C) 2017, Tianjin KYLIN Information Technology Co., Ltd.
  *
  * Authors: Miguel de Icaza
  *          Federico Mena
@@ -521,7 +522,7 @@ create_launcher (const char *location)
 
 	g_signal_connect (launcher->button, "drag_data_get",
 			   G_CALLBACK (drag_data_get_cb), launcher);
-	g_signal_connect (launcher->button, "drag_data_received",
+/*	g_signal_connect (launcher->button, "drag_data_received",
 			   G_CALLBACK (drag_data_received_cb), launcher);
 	g_signal_connect (launcher->button, "drag_motion",
 			   G_CALLBACK (drag_motion_cb), launcher);
@@ -531,7 +532,7 @@ create_launcher (const char *location)
 			   G_CALLBACK (drag_leave_cb), launcher);
 	g_signal_connect_swapped (launcher->button, "clicked",
 				  G_CALLBACK (clicked_cb), launcher);
-
+*/
 	launcher->destroy_handler =
 			g_signal_connect (launcher->button, "destroy",
 					  G_CALLBACK (destroy_launcher),

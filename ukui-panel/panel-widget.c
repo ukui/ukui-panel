@@ -1,6 +1,7 @@
 /* Ukui panel: panel widget
  * (C) 1997,1998,1999,2000 the Free Software Foundation
  * (C) 2000 Eazel, Inc.
+ * (C) 2017, Tianjin KYLIN Information Technology Co., Ltd.
  *
  * Authors:  George Lebl
  */
@@ -2642,6 +2643,11 @@ panel_widget_add (PanelWidget *panel,
 		  int          pos,
 		  gboolean     insert_at_pos)
 {
+	AppletInfo* info;
+	GList 	*list, *list1;
+	int 	i, num, k=0;
+	AppletData *ad1,*ad2;
+	info = g_object_get_data (G_OBJECT (applet), "applet_info");
 	AppletData *ad = NULL;
 
 	g_return_val_if_fail (PANEL_IS_WIDGET (panel), -1);
@@ -2671,6 +2677,22 @@ panel_widget_add (PanelWidget *panel,
 		}
 	}
 
+	list = get_applet_list_pos (panel, 0);
+	num = (pos-52)/37 + 1;
+	while (list) {
+		ad1 = list->data;
+		if (list->next != NULL && k != 0) {
+			ad1->pos = 50+k;
+		}
+		if (k == num) {
+    			pos=ad1->pos;
+    			ad1->pos=num+50;
+		}
+		i = ad1->pos;
+		list = list->next;
+		k=k+1;	
+	}
+
 	if(pos==-1) return -1;
 
 	if (ad == NULL) {
@@ -2697,14 +2719,17 @@ panel_widget_add (PanelWidget *panel,
 		g_list_insert_sorted(panel->applet_list,ad,
 				     (GCompareFunc)applet_data_compare);
 
+
+
 	/*this will get done right on size allocate!*/
-	if(panel->orient == GTK_ORIENTATION_HORIZONTAL)
+	if(panel->orient == GTK_ORIENTATION_HORIZONTAL){
 		gtk_fixed_put(GTK_FIXED(panel),applet,
 			      pos,0);
-	else
+	}
+	else{
 		gtk_fixed_put(GTK_FIXED(panel),applet,
 			      0,pos);
-
+	}
 
 	gtk_widget_queue_resize(GTK_WIDGET(panel));
 
