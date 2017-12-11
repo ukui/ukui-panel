@@ -43,6 +43,11 @@ const gchar     *ukui_panel_applet_info_get_name                        (UkuiPan
 const gchar     *ukui_panel_applet_info_get_description                 (UkuiPanelAppletInfo *info);
 const gchar     *ukui_panel_applet_info_get_icon                        (UkuiPanelAppletInfo *info);
 const gchar * const *ukui_panel_applet_info_get_old_ids                 (UkuiPanelAppletInfo *info);
+int              WriteAppletInfo                                        (char    *action,
+								  	 char    *launcher_location);
+void             StrReplace                                             (char	 *strSrc,
+									 char   *strFind,
+									 char   *strReplace);
 
 #ifdef __cplusplus
 }

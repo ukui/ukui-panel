@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2010 Carlos Garcia Campos <carlosgc@gnome.org>
  * Copyright (C) 2010 Vincent Untz <vuntz@gnome.org>
+ * Copyright (C) 2017, Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -23,6 +24,10 @@
 #include <config.h>
 
 #include "panel-applet-info.h"
+#include <glib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 struct _UkuiPanelAppletInfo {
 	gchar  *iid;
@@ -110,4 +115,120 @@ const gchar * const *
 ukui_panel_applet_info_get_old_ids (UkuiPanelAppletInfo *info)
 {
 	return (const gchar * const *) info->old_ids;
+}
+void StrReplace (char	*strSrc, 
+		 char 	*strFind, 
+		 char 	*strReplace)
+{
+	char 	*q;
+	int	i,j;
+	while (*strSrc != '\0') {
+		if (*strSrc == *strFind) {
+			if (strncmp (strSrc,strFind,strlen (strFind)) == 0 ) {
+				i = strlen (strFind);
+				j = strlen (strReplace);
+				q = strSrc + i;
+				while ((*strSrc ++= *strReplace++) != '\0');
+				while ((*strSrc ++= *q++) != '\0');
+			}
+			else {
+				 strSrc++;
+			}
+		}
+		else {
+			strSrc++;
+		}
+	}
+}
+
+int WriteAppletInfo (char	*action,
+		     char	*launcher_location)
+{
+	int flen;
+	FILE *fp;
+	GKeyFile *keyfile;
+	GKeyFileFlags flags;
+	GError *error = NULL;
+	char	*home,
+		*Name,
+		*state,
+		*filename,
+		*Language,
+		*file_content="",
+		*desktopFile,
+		home_applet[100],
+		config_desktop_filename[100],
+		autostart_desktop_filename[100],
+		applications_desktop_filename[100];
+	state = action;
+	filename = launcher_location;
+
+	home = getenv ("HOME");
+	keyfile = g_key_file_new ();
+	Language = getenv ("GDM_LANG");
+
+	if (filename[0] == '/') {
+		desktopFile = launcher_location;
+	} 
+	else { 
+		sprintf (autostart_desktop_filename, "/etc/xdg/autostart/%s", filename);
+		sprintf (applications_desktop_filename, "/usr/share/applications/%s", filename);
+		sprintf (applications_desktop_filename, "/usr/share/applications/%s", filename);
+		sprintf (applications_desktop_filename, "/usr/share/applications/%s", filename);
+		sprintf (config_desktop_filename, "%s/.config/ukui/panel2.d/default/launchers/%s", home,filename);
+	}
+
+	if (Language == NULL) {
+		Language = "";
+	}
+
+	if (!access (applications_desktop_filename, 0)) {
+		desktopFile = applications_desktop_filename;
+	} else if (!access (config_desktop_filename, 0)) {
+		desktopFile = config_desktop_filename;
+	} else if (!access (autostart_desktop_filename,0)) {
+		desktopFile = autostart_desktop_filename;
+	}
+
+	if (!g_key_file_load_from_file (keyfile, desktopFile, flags, &error)) {
+		printf("g_key_file_load_from_file error!\n");
+		return -1;
+	}
+
+	sprintf (home_applet, "%s/.applet", home);
+	Name = g_key_file_get_locale_string (keyfile, "Desktop Entry","Name", NULL, NULL);
+
+	if ((fp = fopen(home_applet,"r")) != NULL) {
+		fseek (fp, 0L, SEEK_END);
+		flen = ftell (fp);
+		file_content = (char *) malloc (flen+1);
+		if (file_content == NULL) {
+			fclose (fp);  
+			return -1;
+		}  
+		fseek (fp, 0L, SEEK_SET);
+		fread (file_content, flen, 1, fp);
+		file_content[flen] = 0; 
+		fclose (fp);
+	}
+
+	if (!strcmp (state,"add")) {
+		if (strstr (file_content, Name) == NULL ){
+			if ((fp = fopen(home_applet,"a+")) != NULL) {
+				fprintf (fp, "%s", Name);
+				fclose (fp);
+			}
+		}
+	}
+
+	if (!strcmp (state, "delete")) {
+		if (strstr (file_content, Name) != NULL ){
+			StrReplace (file_content, Name, "");				
+			if ((fp = fopen(home_applet, "w")) != NULL) {
+				fprintf (fp, "%s", file_content);
+				fclose (fp);
+			}
+		}
+	}
+	return 0;
 }

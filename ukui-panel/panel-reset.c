@@ -35,6 +35,7 @@ void
 panel_reset()
 {
 	GSettings *settings;
+	char    *home, home_applet[100];
 
 	settings = g_settings_new (PANEL_SCHEMA);
 	g_settings_set_strv (settings, PANEL_OBJECT_ID_LIST_KEY, NULL);
@@ -42,6 +43,11 @@ panel_reset()
 	g_settings_set_strv (settings, PANEL_TOPLEVEL_ID_LIST_KEY, NULL);
 	g_settings_sync ();
 
+	home = getenv ("HOME");
+	sprintf (home_applet, "%s/.applet", home);
+	if (!access (home_applet, 0)) {
+		remove(home_applet);
+	}
 	g_object_unref (settings);
 }
 

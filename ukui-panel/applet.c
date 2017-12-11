@@ -212,11 +212,20 @@ static void
 applet_remove_callback (GtkWidget  *widget,
 			AppletInfo *info)
 {
+	char        *path,*launcher_location;
 
 	if (info->type == PANEL_OBJECT_DRAWER)
 		drawer_query_deletion (info->data);
-	else
+	else {
+		GSettings   *settings;
+		path = g_strdup_printf ("%s%s/", PANEL_OBJECT_PATH, info->id);
+		settings = g_settings_new_with_path (PANEL_OBJECT_SCHEMA, path);
+		launcher_location = g_settings_get_string (settings, PANEL_OBJECT_LAUNCHER_LOCATION_KEY);
+		if (strstr(launcher_location, "desktop")) {
+			WriteAppletInfo ("delete", launcher_location);
+		}
 		panel_profile_delete_object (info);
+	}
 }
 
 static inline GdkScreen *
@@ -941,11 +950,13 @@ ukui_panel_applet_stop_loading (const char *id)
 static gboolean
 ukui_panel_applet_load_idle_handler (gpointer dummy)
 {
-	PanelObjectType    applet_type;
-	UkuiPanelAppletToLoad *applet = NULL;
-	PanelToplevel     *toplevel = NULL;
-	PanelWidget       *panel_widget;
 	GSList            *l;
+	GSettings         *settings;
+	PanelObjectType    applet_type;
+	PanelWidget       *panel_widget;
+	PanelToplevel     *toplevel = NULL;
+	UkuiPanelAppletToLoad *applet = NULL;
+	char              *launcher_location, *path;
 
 	if (!ukui_panel_applets_to_load) {
 		ukui_panel_applet_have_load_idle = FALSE;
@@ -1018,6 +1029,12 @@ ukui_panel_applet_load_idle_handler (gpointer dummy)
 						   applet->id);
 		break;
 	case PANEL_OBJECT_LAUNCHER:
+		path = g_strdup_printf ("%s%s/", PANEL_OBJECT_PATH, applet->id);
+		settings = g_settings_new_with_path (PANEL_OBJECT_SCHEMA, path);
+		launcher_location = g_settings_get_string (settings, PANEL_OBJECT_LAUNCHER_LOCATION_KEY);
+		if (strstr (launcher_location, "desktop")) {
+			WriteAppletInfo ("add", launcher_location);
+		}
 		launcher_load_from_gsettings (panel_widget,
 					  applet->locked,
 					  applet->position,
