@@ -1,6 +1,7 @@
 layoutdir   = $(datadir)/ukui-panel/layouts
 layout_DATA = \
 	default.layout \
+	ukui.layout \
 	fedora.layout \
 	linuxmint.layout \
 	mageia.layout \

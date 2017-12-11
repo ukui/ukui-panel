@@ -104,7 +104,8 @@ main (int argc, char **argv)
 	{
 		GSettings *settings;
 		settings = g_settings_new (PANEL_SCHEMA);
-		g_settings_set_string (settings, PANEL_DEFAULT_LAYOUT, layout);
+//		g_settings_set_string (settings, PANEL_DEFAULT_LAYOUT, layout);
+		g_settings_set_string (settings, PANEL_UKUI_LAYOUT, layout);
 		g_object_unref (settings);
 		g_message ("Panel layout set to '%s'", layout);
 		/* exit, except if reset argument is given */

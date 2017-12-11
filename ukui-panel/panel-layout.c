@@ -98,7 +98,8 @@ panel_layout_filename ()
     gchar *filename;
 
     settings = g_settings_new (PANEL_SCHEMA);
-    layout = g_settings_get_string (settings, PANEL_DEFAULT_LAYOUT);
+//    layout = g_settings_get_string (settings, PANEL_DEFAULT_LAYOUT);
+    layout = g_settings_get_string (settings, PANEL_UKUI_LAYOUT);
     filename = g_strdup_printf (PANEL_LAYOUTS_DIR "%s.layout", layout);
     g_free (layout);
     g_object_unref (settings);

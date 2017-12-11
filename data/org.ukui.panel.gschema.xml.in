@@ -1,9 +1,9 @@
 <schemalist gettext-domain="@GETTEXT_PACKAGE@">
   <schema id="org.ukui.panel" path="/org/ukui/panel/general/">
-    <key name="default-layout" type="s">
-      <default>'default'</default>
-      <summary>Default panel layout</summary>
-      <description>The default panels layout to use when panels are created or resetted.</description>
+    <key name="ukui-layout" type="s">
+      <default>'ukui'</default>
+      <summary>Ukui panel layout</summary>
+      <description>The Ukui panels layout to use when panels are created or resetted.</description>
     </key>
     <key name="enable-program-list" type="b">
       <default>true</default>
