@@ -25,7 +25,7 @@
 #include <libwnck/libwnck.h>
 #include <gio/gio.h>
 
-#include <libukui-desktop/ukui-gsettings.h>
+#include <libmate-desktop/mate-gsettings.h>
 
 #include "workspace-switcher.h"
 
@@ -806,9 +806,9 @@ static void setup_dialog(GtkBuilder* builder, PagerData* pager)
 	GSettings *marco_general_settings = NULL;
 	GSettings *marco_workspaces_settings = NULL;
 
-	if (ukui_gsettings_schema_exists(MARCO_GENERAL_SCHEMA))
+	if (mate_gsettings_schema_exists(MARCO_GENERAL_SCHEMA))
 		marco_general_settings = g_settings_new (MARCO_GENERAL_SCHEMA);
-	if (ukui_gsettings_schema_exists(MARCO_WORKSPACES_SCHEMA))
+	if (mate_gsettings_schema_exists(MARCO_WORKSPACES_SCHEMA))
 		marco_workspaces_settings = g_settings_new (MARCO_WORKSPACES_SCHEMA);
 
 	pager->workspaces_frame = WID("workspaces_frame");

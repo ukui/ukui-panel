@@ -33,9 +33,9 @@
 #include <glib/gi18n.h>
 #include <gio/gio.h>
 
-#define UKUI_DESKTOP_USE_UNSTABLE_API
-#include <libukui-desktop/ukui-desktop-utils.h>
-#include <libukui-desktop/ukui-gsettings.h>
+#define MATE_DESKTOP_USE_UNSTABLE_API
+#include <libmate-desktop/mate-desktop-utils.h>
+#include <libmate-desktop/mate-gsettings.h>
 
 #include <libpanel-util/panel-error.h>
 #include <libpanel-util/panel-launch.h>
@@ -212,7 +212,7 @@ panel_action_logout (GtkWidget *widget)
 	PanelSessionManager *manager;
 	gboolean             prompt = TRUE;
 
-	if (ukui_gsettings_schema_exists (UKUI_SESSION_SCHEMA)) {
+	if (mate_gsettings_schema_exists (UKUI_SESSION_SCHEMA)) {
 		GSettings *msm_settings;
 		msm_settings = g_settings_new (UKUI_SESSION_SCHEMA);
 		prompt = g_settings_get_boolean (msm_settings, UKUI_SESSION_LOGOUT_PROMPT_KEY);
@@ -304,7 +304,7 @@ panel_action_connect_server (GtkWidget *widget)
 	else
 		command = g_strdup ("nemo-connect-server");
 
-	ukui_gdk_spawn_command_line_on_screen (screen, command, &error);
+	mate_gdk_spawn_command_line_on_screen (screen, command, &error);
 	g_free (command);
 
 	if (error) {

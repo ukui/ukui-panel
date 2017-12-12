@@ -23,8 +23,8 @@
 #include <libwnck/libwnck.h>
 #include <gio/gio.h>
 
-#define UKUI_DESKTOP_USE_UNSTABLE_API
-#include <libukui-desktop/ukui-desktop-utils.h>
+#define MATE_DESKTOP_USE_UNSTABLE_API
+#include <libmate-desktop/mate-desktop-utils.h>
 
 #include "wncklet.h"
 #include "window-list.h"
@@ -508,7 +508,7 @@ static void call_system_monitor(GtkAction* action, TasklistData* tasklist)
 		{
 			g_free(programpath);
 
-			ukui_gdk_spawn_command_line_on_screen(gtk_widget_get_screen(tasklist->applet),
+			mate_gdk_spawn_command_line_on_screen(gtk_widget_get_screen(tasklist->applet),
 				      system_monitors[i],
 				      NULL);
 			return;

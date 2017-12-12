@@ -39,7 +39,7 @@
 #include <string.h>
 #include <glib/gi18n.h>
 #include <gio/gio.h>
-#include <libukui-desktop/ukui-gsettings.h>
+#include <libmate-desktop/mate-gsettings.h>
 
 #include <libpanel-util/panel-error.h>
 #include <libpanel-util/panel-glib.h>
@@ -1354,7 +1354,7 @@ panel_place_menu_item_init (PanelPlaceMenuItem *menuitem)
 
 	menuitem->priv = PANEL_PLACE_MENU_ITEM_GET_PRIVATE (menuitem);
 
-	if (ukui_gsettings_schema_exists (CAJA_DESKTOP_SCHEMA)) {
+	if (mate_gsettings_schema_exists (CAJA_DESKTOP_SCHEMA)) {
 		menuitem->priv->caja_desktop_settings = g_settings_new (CAJA_DESKTOP_SCHEMA);
 		g_signal_connect (menuitem->priv->caja_desktop_settings,
 				  "changed::" CAJA_DESKTOP_HOME_ICON_NAME_KEY,
@@ -1368,7 +1368,7 @@ panel_place_menu_item_init (PanelPlaceMenuItem *menuitem)
 	else
 		menuitem->priv->caja_desktop_settings = NULL;
 
-	if (ukui_gsettings_schema_exists (CAJA_PREFS_SCHEMA)) {
+	if (mate_gsettings_schema_exists (CAJA_PREFS_SCHEMA)) {
 		menuitem->priv->caja_prefs_settings = g_settings_new (CAJA_PREFS_SCHEMA);
 		g_signal_connect (menuitem->priv->caja_prefs_settings,
 				  "changed::" CAJA_PREFS_DESKTOP_IS_HOME_DIR_KEY,

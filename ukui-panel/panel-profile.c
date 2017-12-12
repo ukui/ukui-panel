@@ -34,8 +34,8 @@
 #include <gdk/gdkx.h>
 
 #include <libpanel-util/panel-list.h>
-#include <libukui-desktop/ukui-dconf.h>
-#include <libukui-desktop/ukui-gsettings.h>
+#include <libmate-desktop/mate-dconf.h>
+#include <libmate-desktop/mate-gsettings.h>
 
 #include "applet.h"
 #include "panel.h"
@@ -148,7 +148,7 @@ panel_profile_find_new_id (PanelGSettingsKeyType type)
 			break;
 	}
 
-	existing_ids = ukui_dconf_list_subdirs (dir, TRUE);
+	existing_ids = mate_dconf_list_subdirs (dir, TRUE);
 
 	for (i = 0; !retval; i++) {
 		retval = g_strdup_printf ("%s-%d", prefix, i);
@@ -873,7 +873,7 @@ panel_profile_add_to_list (PanelGSettingsKeyType  type,
 	char *new_id = id ? g_strdup (id) : panel_profile_find_new_id (type);
 
     if (new_id != NULL) {
-		ukui_gsettings_append_strv (profile_settings,
+		mate_gsettings_append_strv (profile_settings,
 		                            key_from_type (type),
 		                            new_id);
 		g_free (new_id);
@@ -884,7 +884,7 @@ void
 panel_profile_remove_from_list (PanelGSettingsKeyType  type,
 								const char        *id)
 {
-	ukui_gsettings_remove_all_from_strv (profile_settings,
+	mate_gsettings_remove_all_from_strv (profile_settings,
 	                                     key_from_type (type),
 	                                     id);
 }
@@ -1331,18 +1331,18 @@ panel_profile_delete_dir (PanelGSettingsKeyType  type,
 	if (type == PANEL_GSETTINGS_TOPLEVELS) {
 		gchar *subdir;
 		subdir = g_strdup_printf (PANEL_TOPLEVEL_PATH "%s/background/", id);
-		ukui_dconf_recursive_reset (subdir, NULL);
+		mate_dconf_recursive_reset (subdir, NULL);
 		g_free (subdir);
 	}
 	else if (type == PANEL_GSETTINGS_OBJECTS) {
 		gchar *subdir;
 		subdir = g_strdup_printf (PANEL_TOPLEVEL_PATH "%s/prefs/", id);
-		ukui_dconf_recursive_reset (subdir, NULL);
+		mate_dconf_recursive_reset (subdir, NULL);
 		g_free (subdir);
 	}
 
 	if (dir != NULL) {
-		ukui_dconf_recursive_reset (dir, NULL);
+		mate_dconf_recursive_reset (dir, NULL);
 		g_free (dir);
 	}
 }
@@ -1463,7 +1463,7 @@ panel_profile_toplevel_id_list_notify (GSettings *settings,
 
 	toplevel_ids_strv = g_settings_get_strv (settings, key);
 
-	toplevel_ids = ukui_gsettings_strv_to_gslist ((const gchar **) toplevel_ids_strv);
+	toplevel_ids = mate_gsettings_strv_to_gslist ((const gchar **) toplevel_ids_strv);
 	toplevel_ids = panel_g_slist_make_unique (toplevel_ids,
 						  (GCompareFunc) g_strcmp0,
 						  FALSE);
@@ -1507,7 +1507,7 @@ panel_profile_object_id_list_update (gchar **objects)
 	GSList *sublist = NULL, *l;
 	GSList *object_ids;
 
-	object_ids = ukui_gsettings_strv_to_gslist ((const gchar **) objects);
+	object_ids = mate_gsettings_strv_to_gslist ((const gchar **) objects);
 	object_ids = panel_g_slist_make_unique (object_ids,
 						(GCompareFunc) g_strcmp0,
 						FALSE);

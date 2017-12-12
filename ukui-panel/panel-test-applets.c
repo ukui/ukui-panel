@@ -15,7 +15,7 @@
 #include <gio/gio.h>
 
 #include <libpanel-util/panel-cleanup.h>
-#include <libukui-desktop/ukui-dconf.h>
+#include <libmate-desktop/mate-dconf.h>
 
 #include <libukui-panel-applet-private/panel-applet-container.h>
 #include <libukui-panel-applet-private/panel-applets-manager-dbus.h>
@@ -312,7 +312,7 @@ setup_options (void)
 		g_free (unique_key);
 		unique_key = g_strdup_printf ("ukui-panel-test-applet-%d", i);
 		unique_key_found = TRUE;
-		dconf_paths = ukui_dconf_list_subdirs ("/tmp/", TRUE);
+		dconf_paths = mate_dconf_list_subdirs ("/tmp/", TRUE);
 		for (j = 0; dconf_paths[j] != NULL; j++)
 		{
 			if (g_strcmp0(unique_key, dconf_paths[j]) == 0) {

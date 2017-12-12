@@ -30,7 +30,7 @@
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include <libukui-desktop/ukui-gsettings.h>
+#include <libmate-desktop/mate-gsettings.h>
 #include <ukuimenu-tree.h>
 
 #include <libpanel-util/panel-keyfile.h>
@@ -63,7 +63,7 @@ static inline gboolean desktop_is_home_dir(void)
 	gboolean retval = FALSE;
 	GSettings *settings;
 
-	if (ukui_gsettings_schema_exists (CAJA_PREFS_SCHEMA)) {
+	if (mate_gsettings_schema_exists (CAJA_PREFS_SCHEMA)) {
 		settings = g_settings_new (CAJA_PREFS_SCHEMA);
 		retval = g_settings_get_boolean (settings, CAJA_PREFS_DESKTOP_IS_HOME_DIR_KEY);
 		g_object_unref (settings);

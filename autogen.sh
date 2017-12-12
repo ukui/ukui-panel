@@ -12,7 +12,7 @@ PKG_NAME="ukui-panel"
     exit 1
 }
 
-which ukui-autogen || {
+which mate-autogen || {
     echo "You need to install ukui-common from the UKUI Git"
     exit 1
 }
@@ -21,4 +21,4 @@ REQUIRED_AUTOMAKE_VERSION=1.9
 USE_UKUI2_MACROS=1
 USE_COMMON_DOC_BUILD=yes
 
-. ukui-autogen
+. mate-autogen

@@ -42,8 +42,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <ukuimenu-tree.h>
 
-#define UKUI_DESKTOP_USE_UNSTABLE_API
-#include <libukui-desktop/ukui-desktop-utils.h>
+#define MATE_DESKTOP_USE_UNSTABLE_API
+#include <libmate-desktop/mate-desktop-utils.h>
 
 #include <libpanel-util/panel-error.h>
 #include <libpanel-util/panel-glib.h>
@@ -399,7 +399,7 @@ panel_run_dialog_launch_command (PanelRunDialog *dialog,
 	screen = gtk_window_get_screen (GTK_WINDOW (dialog->run_dialog));
 
 	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dialog->terminal_checkbox)))
-		ukui_desktop_prepend_terminal_to_vector (&argc, &argv);
+		mate_desktop_prepend_terminal_to_vector (&argc, &argv);
 
 	display = gdk_screen_get_display (screen);
 	display_name = g_strdup (gdk_display_get_name (display));
