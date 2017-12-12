@@ -24,7 +24,7 @@
 
 #include <config.h>
 
-#include "panel-properties-dialog.h"
+#include "panel-settings-dialog.h"
 
 #include <string.h>
 #include <glib/gi18n.h>
@@ -563,6 +563,7 @@ panel_properties_dialog_response (PanelPropertiesDialog *dialog,
 				  int                    response,
 				  GtkWidget             *properties_dialog)
 {
+	printf("panel_properties_dialog_response\n");
 	char *help_id;
 
 	switch (response) {
@@ -586,6 +587,7 @@ panel_properties_dialog_response (PanelPropertiesDialog *dialog,
 static void
 panel_properties_dialog_destroy (PanelPropertiesDialog *dialog)
 {
+	printf("panel_properties_dialog_destroy\n");
 	panel_toplevel_pop_autohide_disabler (PANEL_TOPLEVEL (dialog->toplevel));
 	g_object_set_qdata (G_OBJECT (dialog->toplevel),
 			    panel_properties_dialog_quark,
@@ -838,7 +840,7 @@ panel_properties_dialog_new (PanelToplevel *toplevel,
 
 	dialog->toplevel = toplevel;
 
-	dialog->properties_dialog = PANEL_GTK_BUILDER_GET (gui, "panel_properties_dialog");
+	dialog->properties_dialog = PANEL_GTK_BUILDER_GET (gui, "panel_settings_dialog");
 	g_signal_connect_swapped (dialog->properties_dialog, "response",
 				  G_CALLBACK (panel_properties_dialog_response), dialog);
 	g_signal_connect_swapped (dialog->properties_dialog, "destroy",
@@ -937,7 +939,7 @@ panel_settings_dialog_present (PanelToplevel *toplevel)
 		char *secondary;
 
 		secondary = g_strdup_printf (_("Unable to load file '%s': %s."),
-					     BUILDERDIR"/panel-properties-dialog.ui",
+					     BUILDERDIR"/panel-settings-dialog.ui",
 					     error->message);
 		panel_error_dialog (GTK_WINDOW (toplevel),
 				    gtk_window_get_screen (GTK_WINDOW (toplevel)),
