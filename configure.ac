@@ -1,4 +1,4 @@
-AC_INIT([ukui-panel], [1.19.3], [https://github.com/ukui-desktop/ukui-panel/issues],
+AC_INIT([ukui-panel], [1.0.0], [https://github.com/ukui-desktop/ukui-panel/issues],
     [ukui-panel], [http://www.ukui-desktop.org])
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-xz tar-ustar -Wno-portability check-news])
@@ -19,7 +19,7 @@ LIB_UKUI_PANEL_APPLET_LT_VERSION=1:1:0
 AC_SUBST(LIB_UKUI_PANEL_APPLET_LT_VERSION)
 
 AM_MAINTAINER_MODE
-UKUI_MAINTAINER_MODE_DEFINES
+MATE_MAINTAINER_MODE_DEFINES
 
 IT_PROG_INTLTOOL([0.50.1])
 
@@ -36,7 +36,7 @@ AC_DEFINE([GLIB_VERSION_MIN_REQUIRED], [GLIB_VERSION_2_36],
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
 AC_PATH_PROG([GDBUS_CODEGEN], [gdbus-codegen])
 
-UKUI_COMPILE_WARNINGS(maximum)
+MATE_COMPILE_WARNINGS(maximum)
 
 # Check for introspection
 GOBJECT_INTROSPECTION_CHECK([0.6.7])
