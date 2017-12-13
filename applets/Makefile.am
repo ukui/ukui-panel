@@ -1,5 +1,4 @@
 SUBDIRS =			\
-	clock			\
 	fish			\
 	notification_area	\
 	wncklet

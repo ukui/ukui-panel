@@ -101,7 +101,7 @@
   * NEWS: use consistent, project wide, markdown-like formatting
     to make generating release announcements easier
   * Build: require libukui-menu >= 1.10 and dconf >= 0.13.4
-  * Build: require libukuiweather and libmate-desktop >= 1.17
+  * Build: require libmate-desktop >= 1.17
   * Move to GTK+3 (require GTK+ >= 3.14), drop GTK+2 code and
     --with-gtk build option
   * Launchers: add desktop actions support for additional launch
