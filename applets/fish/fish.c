@@ -58,7 +58,7 @@
 #define FISH_SPEED_KEY   "speed"
 #define FISH_ROTATE_KEY  "rotate"
 
-#define LOCKDOWN_SCHEMA                       "org.ukui.lockdown"
+#define LOCKDOWN_SCHEMA                       "org.mate.lockdown"
 #define LOCKDOWN_DISABLE_COMMAND_LINE_KEY     "disable-command-line"
 
 typedef struct {
