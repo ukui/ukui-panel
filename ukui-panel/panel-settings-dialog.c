@@ -75,6 +75,7 @@ typedef struct {
 	GtkWidget     *opacity_scale;
 	GtkWidget     *opacity_label;
 	GtkWidget     *opacity_legend;
+	GtkWidget     *lock_toggle;
 
 	GtkWidget     *writability_warn_general;
 	GtkWidget     *writability_warn_background;
@@ -161,6 +162,29 @@ panel_properties_dialog_setup_orientation_combo_sensitivty (PanelPropertiesDialo
 		gtk_widget_set_sensitive (dialog->orientation_combo, expand);
 		gtk_widget_set_sensitive (dialog->orientation_label, expand);
 	}
+}
+
+panel_settings_toggle_lock_toggle (PanelPropertiesDialog *dialog,
+				   GtkToggleButton       *toggle)
+{
+	if (gtk_toggle_button_get_active (toggle)) {
+		gtk_combo_box_set_button_sensitivity (dialog->orientation_combo, GTK_SENSITIVITY_OFF);
+	}
+	else {
+		gtk_combo_box_set_button_sensitivity (dialog->orientation_combo, GTK_SENSITIVITY_ON);
+	}
+
+	
+}
+
+static void
+panel_properties_dialog_setup_lock_toggle (PanelPropertiesDialog *dialog,
+					     GtkBuilder            *gui)
+{
+	dialog->lock_toggle = PANEL_GTK_BUILDER_GET (gui, "lock_toggle");	
+	g_signal_connect_swapped (dialog->lock_toggle, "toggled",
+				  G_CALLBACK (panel_settings_toggle_lock_toggle),
+				  dialog);
 }
 
 static void
@@ -862,6 +886,7 @@ panel_properties_dialog_new (PanelToplevel *toplevel,
 	panel_properties_dialog_setup_autohide_toggle    (dialog, gui);
 	panel_properties_dialog_setup_hidebuttons_toggle (dialog, gui);
 	panel_properties_dialog_setup_arrows_toggle      (dialog, gui);
+	panel_properties_dialog_setup_lock_toggle        (dialog, gui);
 
 	g_signal_connect_swapped (dialog->expand_toggle, "toggled",
 				  G_CALLBACK (panel_properties_dialog_setup_orientation_combo_sensitivty), dialog);
