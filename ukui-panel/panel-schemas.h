@@ -80,7 +80,7 @@
 #define UKUI_SESSION_SCHEMA                   "org.ukui.session"
 #define UKUI_SESSION_LOGOUT_PROMPT_KEY        "logout-prompt"
 
-#define LOCKDOWN_SCHEMA                       "org.ukui.lockdown"
+#define LOCKDOWN_SCHEMA                       "org.mate.lockdown"
 #define LOCKDOWN_DISABLE_COMMAND_LINE_KEY     "disable-command-line"
 #define LOCKDOWN_DISABLE_LOCK_SCREEN_KEY      "disable-lock-screen"
 #define LOCKDOWN_DISABLE_LOG_OUT_KEY          "disable-log-out"
