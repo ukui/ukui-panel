@@ -42,6 +42,9 @@
 #include "panel-globals.h"
 #include "panel-icon-names.h"
 
+#define DEFAULT_SIZE 40
+#define MEDIUM_SIZE  60 
+#define LARGE_SIZE   80
 typedef struct {
 	PanelToplevel *toplevel;
 	GSettings     *settings;
@@ -76,6 +79,9 @@ typedef struct {
 	GtkWidget     *opacity_label;
 	GtkWidget     *opacity_legend;
 	GtkWidget     *lock_toggle;
+	GtkWidget     *default_height_size_radio;
+	GtkWidget     *medium_height_size_radio;
+	GtkWidget     *large_height_size_radio;
 
 	GtkWidget     *writability_warn_general;
 	GtkWidget     *writability_warn_background;
@@ -519,7 +525,65 @@ panel_properties_dialog_background_toggled (PanelPropertiesDialog *dialog,
 
 	panel_profile_set_background_type (dialog->toplevel, background_type);
 }
-				
+
+static void
+panel_settings_dialog_height_size_toggled (PanelPropertiesDialog *dialog,
+					   GtkWidget             *radio)
+{
+	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (radio)))
+		return;
+
+	if (radio == dialog->default_height_size_radio){
+		panel_profile_set_toplevel_size (dialog->toplevel,40);
+	}
+	else if (radio == dialog->medium_height_size_radio){
+		panel_profile_set_toplevel_size (dialog->toplevel,60);
+	}
+
+	else if (radio == dialog->large_height_size_radio){
+		panel_profile_set_toplevel_size (dialog->toplevel,80);
+	}
+}
+
+static void
+panel_properties_dialog_setup_taskbar_height_size_radios (PanelPropertiesDialog *dialog,
+						 GtkBuilder            *gui)
+{
+	int                  profile_size;
+	GtkWidget           *active_radio;
+
+	profile_size = panel_profile_get_toplevel_size (dialog->toplevel);
+	dialog->large_height_size_radio      = PANEL_GTK_BUILDER_GET (gui,"large_height_size_radio");
+	dialog->medium_height_size_radio     = PANEL_GTK_BUILDER_GET (gui,"medium_height_size_radio");
+	dialog->default_height_size_radio    = PANEL_GTK_BUILDER_GET (gui, "default_height_size_radio");
+
+	switch (profile_size) {
+	case DEFAULT_SIZE:
+		active_radio = dialog->default_height_size_radio;
+		break;
+	case MEDIUM_SIZE:
+		active_radio = dialog->medium_height_size_radio;
+		break;
+	case LARGE_SIZE:
+		active_radio = dialog->large_height_size_radio;
+		break;
+	default:
+		active_radio = NULL;
+		g_assert_not_reached ();
+	}
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (active_radio), TRUE);
+
+	g_signal_connect_swapped (dialog->large_height_size_radio, "toggled",
+				  G_CALLBACK (panel_settings_dialog_height_size_toggled),
+				  dialog);
+	g_signal_connect_swapped (dialog->medium_height_size_radio, "toggled",
+				  G_CALLBACK (panel_settings_dialog_height_size_toggled),
+				  dialog);
+	g_signal_connect_swapped (dialog->default_height_size_radio, "toggled",
+				  G_CALLBACK (panel_settings_dialog_height_size_toggled),
+				  dialog);
+}
+
 static void
 panel_properties_dialog_setup_background_radios (PanelPropertiesDialog *dialog,
 						 GtkBuilder            *gui)
@@ -915,6 +979,7 @@ panel_properties_dialog_new (PanelToplevel *toplevel,
 	panel_properties_dialog_setup_image_chooser     (dialog, gui);
 	panel_properties_dialog_setup_opacity_scale     (dialog, gui);
 	panel_properties_dialog_setup_background_radios (dialog, gui);
+	panel_properties_dialog_setup_taskbar_height_size_radios (dialog, gui);
 
 	g_signal_connect (dialog->background_settings,
 			  "changed",
