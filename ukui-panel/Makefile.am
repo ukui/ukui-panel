@@ -229,7 +229,8 @@ ui_DATA = \
 	panel-properties-dialog.ui \
 	panel-settings-dialog.ui \
 	panel-run-dialog.ui \
-	panel-test-applets.ui
+	panel-test-applets.ui \
+	notification-area.ui
 
 desktopdir = $(datadir)/applications
 desktop_in_files = ukui-panel.desktop.in

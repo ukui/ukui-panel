@@ -2897,3 +2897,7 @@ msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."
 msgstr "删除面板时，面板及其设置\n都会丢失。"
+
+#: ../ukui-panel/panel-settings-dialog.c:583
+msgid "<a href=''>Customize icons appear on the taskbar</a>"
+msgstr "<a href=''>自定义哪些图标显示在任务栏上</a>"

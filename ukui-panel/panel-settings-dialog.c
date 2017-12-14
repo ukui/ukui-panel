@@ -82,6 +82,7 @@ typedef struct {
 	GtkWidget     *default_height_size_radio;
 	GtkWidget     *medium_height_size_radio;
 	GtkWidget     *large_height_size_radio;
+	GtkWidget     *manage_icons_label;
 
 	GtkWidget     *writability_warn_general;
 	GtkWidget     *writability_warn_background;
@@ -546,6 +547,94 @@ panel_settings_dialog_height_size_toggled (PanelPropertiesDialog *dialog,
 }
 
 static void
+panel_settings_dialog_manage_icons_label_activate_link (PanelPropertiesDialog *dialog,
+							GtkLabel *label)
+{
+	printf("1---\n");
+	GtkBuilder            *gui;
+	GError                *error;
+	PanelPropertiesDialog *panel_settings_dialog;
+	gui = gtk_builder_new ();
+	gtk_builder_set_translation_domain (gui, GETTEXT_PACKAGE);
+	gtk_builder_add_from_file (gui,
+				   BUILDERDIR "/notification-area.ui",
+				   &error);
+        if (error) {
+		char *secondary;
+
+		secondary = g_strdup_printf (_("Unable to load file '%s': %s."),
+					     BUILDERDIR"/notification-area.ui",
+					     error->message);
+		panel_error_dialog (GTK_WINDOW (dialog->toplevel),
+				    gtk_window_get_screen (GTK_WINDOW (dialog->toplevel)),
+				    "cannot_display_notification_area_dialog", TRUE,
+				    _("Could not notification area dialog"),
+				    secondary);
+		g_free (secondary);
+		g_error_free (error);
+		g_object_unref (gui);
+
+//		return;
+	}
+	printf("12---\n");
+
+//	dialog = panel_properties_dialog_new (toplevel, gui);
+	panel_settings_dialog=PANEL_GTK_BUILDER_GET (gui, "notification_area");
+	printf("13---\n");
+	gtk_widget_show (panel_settings_dialog);
+	printf("14---\n");
+
+	g_object_unref (gui);
+
+}
+
+static void
+panel_settings_dialog_manage_icons_label_activate_current_link (PanelPropertiesDialog *dialog,
+							GtkLabel *label)
+{
+	printf("2---\n");
+}
+
+static void
+panel_settings_dialog_manage_icons_label_move_cursor (PanelPropertiesDialog *dialog,
+							GtkLabel *label)
+{
+	printf("3---\n");
+}
+
+static void
+panel_settings_dialog_manage_icons_label_populate_popup (PanelPropertiesDialog *dialog,
+							GtkLabel *label)
+{
+	printf("4---\n");
+}
+
+static void
+panel_settings_dialog_setup_manage_icons_label(PanelPropertiesDialog *dialog,
+						 GtkBuilder            *gui)
+{
+	printf("panel_settingss_dialog_setup_manage_icons_label--\n");
+	const gchar *text =
+		_("<a href=''>Customize icons appear on the taskbar</a>");
+	dialog->manage_icons_label      = PANEL_GTK_BUILDER_GET (gui,"manage_icons_label");
+	gtk_label_set_markup (dialog->manage_icons_label, text);
+
+	g_signal_connect_swapped (dialog->manage_icons_label, "activate-link",
+				  G_CALLBACK (panel_settings_dialog_manage_icons_label_activate_link),
+				  dialog);
+	g_signal_connect_swapped (dialog->manage_icons_label, "activate-current-link",
+				  G_CALLBACK (panel_settings_dialog_manage_icons_label_activate_current_link),
+				  dialog);
+	g_signal_connect_swapped (dialog->manage_icons_label, "move-cursor",
+				  G_CALLBACK (panel_settings_dialog_manage_icons_label_move_cursor),
+				  dialog);
+	g_signal_connect_swapped (dialog->manage_icons_label, "populate-popup",
+				  G_CALLBACK (panel_settings_dialog_manage_icons_label_populate_popup),
+				  dialog);
+
+}
+
+static void
 panel_properties_dialog_setup_taskbar_height_size_radios (PanelPropertiesDialog *dialog,
 						 GtkBuilder            *gui)
 {
@@ -975,11 +1064,12 @@ panel_properties_dialog_new (PanelToplevel *toplevel,
 			  G_CALLBACK (panel_properties_dialog_toplevel_notify),
 			  dialog);
 
-	panel_properties_dialog_setup_color_button      (dialog, gui);
-	panel_properties_dialog_setup_image_chooser     (dialog, gui);
-	panel_properties_dialog_setup_opacity_scale     (dialog, gui);
-	panel_properties_dialog_setup_background_radios (dialog, gui);
-	panel_properties_dialog_setup_taskbar_height_size_radios (dialog, gui);
+	panel_properties_dialog_setup_color_button      		(dialog, gui);
+	panel_properties_dialog_setup_image_chooser     		(dialog, gui);
+	panel_properties_dialog_setup_opacity_scale     		(dialog, gui);
+	panel_properties_dialog_setup_background_radios 		(dialog, gui);
+	panel_properties_dialog_setup_taskbar_height_size_radios 	(dialog, gui);
+	panel_settings_dialog_setup_manage_icons_label      		(dialog, gui);
 
 	g_signal_connect (dialog->background_settings,
 			  "changed",
