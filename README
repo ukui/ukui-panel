@@ -15,11 +15,7 @@ several applets:
     List, the Window Selector, the Notification Area, the Clock and the
     infamous 'Wanda the Fish'.
 
-You may download updates to the package from:
-
-   http://pub.ukui-desktop.org/releases/
-
-ukui-panel is a fork of gnome-panel.
+ukui-panel is a fork of mate-panel.
 
 Installation
 ============
@@ -34,7 +30,7 @@ How to report bugs
 
 Bugs should be reported to the UKUI bug tracking system:
 
-   https://github.com/ukui-desktop/ukui-panel/issues
+   https://github.com/ukui/ukui-panel/issues
 
 You will need to create an account for yourself.
 
