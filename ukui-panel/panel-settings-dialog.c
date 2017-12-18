@@ -545,6 +545,106 @@ panel_settings_dialog_height_size_toggled (PanelPropertiesDialog *dialog,
 		panel_profile_set_toplevel_size (dialog->toplevel,80);
 	}
 }
+static void
+cell_edited (GtkCellRendererText *cell,
+             const gchar         *path_string,
+             const gchar         *new_text,
+             gpointer             data)
+{
+  gint i;
+
+  GtkTreeModel *model = (GtkTreeModel *)data;
+  GtkTreePath *path = gtk_tree_path_new_from_string (path_string);
+  GtkTreeIter iter;
+
+  gint column = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column"));
+
+  gtk_tree_model_get_iter (model, &iter, path);
+
+  i = gtk_tree_path_get_indices (path)[0];
+  gtk_list_store_set (data, &iter, 2,
+                      new_text, -1);
+
+  gtk_tree_path_free (path);
+}
+
+static void
+panel_settings_dialog_setup_notifcation_area_treeview (PanelPropertiesDialog *dialog,
+					     GtkBuilder            *gui)
+{
+	int i = 0 ;
+	int n = 100;
+	char text[32] = {0};
+	GtkWidget *notification_area_treeview;
+	GtkTreeViewColumn* column;
+	GtkCellRenderer* cell;
+	GtkListStore* store, *store1;
+	GtkTreeIter iter;
+	GtkTreeIter iter1;
+	GtkWidget *scrolledwindow;
+
+	scrolledwindow=PANEL_GTK_BUILDER_GET 			(gui, "scrolledwindow");
+	notification_area_treeview=PANEL_GTK_BUILDER_GET 	(gui, "notification_area_treeview");
+
+	column = gtk_tree_view_column_new();
+	gtk_tree_view_append_column(notification_area_treeview, column);
+	
+ 	cell = gtk_cell_renderer_text_new();
+	gtk_tree_view_column_pack_start(column, cell, TRUE);
+	gtk_tree_view_column_set_attributes(column, cell, "text", 0, NULL);
+
+	column = gtk_tree_view_column_new();
+	gtk_tree_view_append_column(notification_area_treeview, column);
+
+ 	cell = gtk_cell_renderer_text_new();
+	gtk_tree_view_column_pack_start(column, cell, TRUE);
+	gtk_tree_view_column_set_attributes(column, cell, "text", 1, NULL);
+
+	column = gtk_tree_view_column_new();
+	gtk_tree_view_append_column(notification_area_treeview, column);
+
+	char *show="显示";
+	char *hide="隐藏";
+	store = gtk_list_store_new(3, 
+				   G_TYPE_STRING,
+				   G_TYPE_INT,
+				   G_TYPE_STRING);
+	gtk_tree_view_set_model(notification_area_treeview, GTK_TREE_MODEL(store));
+
+	for(i = 0; i < 5; i ++){
+		sprintf(text, "text%d", i);
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter, 0, "aa",
+						 1, i,
+						 2, hide, -1);
+	}
+
+	store1 = gtk_list_store_new(3, 
+				   G_TYPE_STRING,
+				   G_TYPE_INT,
+				   G_TYPE_STRING);
+
+	gtk_list_store_append(store1, &iter);
+	gtk_list_store_set(store1, &iter, 0, show,-1);
+	gtk_list_store_append(store1, &iter);
+	gtk_list_store_set(store1, &iter, 0, hide,-1);
+
+	cell = gtk_cell_renderer_combo_new ();
+	g_object_set (cell,
+			"model", GTK_TREE_MODEL(store1),
+			"text-column",0,
+			"has-entry", FALSE,
+			"editable", TRUE,
+			NULL);
+	g_signal_connect (cell, "edited",
+			G_CALLBACK (cell_edited),store);
+	gtk_tree_view_insert_column_with_attributes(notification_area_treeview,
+						    -1, "", cell,
+						    "text", 2,
+						    NULL);
+	gtk_widget_show (notification_area_treeview);
+
+}
 
 static void
 panel_settings_dialog_manage_icons_label_activate_link (PanelPropertiesDialog *dialog,
@@ -578,8 +678,8 @@ panel_settings_dialog_manage_icons_label_activate_link (PanelPropertiesDialog *d
 	}
 	printf("12---\n");
 
-//	dialog = panel_properties_dialog_new (toplevel, gui);
-	panel_settings_dialog=PANEL_GTK_BUILDER_GET (gui, "notification_area");
+	panel_settings_dialog=PANEL_GTK_BUILDER_GET 			(gui, "notification_area");
+	panel_settings_dialog_setup_notifcation_area_treeview		(dialog, gui);
 	printf("13---\n");
 	gtk_widget_show (panel_settings_dialog);
 	printf("14---\n");
