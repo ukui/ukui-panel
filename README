@@ -12,8 +12,8 @@ several applets:
     Documentation for the API is available with gtk-doc.
 
   + the applets supplied here include the Workspace Switcher, the Window
-    List, the Window Selector, the Notification Area, the Clock and the
-    infamous 'Wanda the Fish'.
+    List, the Window Selector, the Notification Area and the infamous
+    'Wanda the Fish'.
 
 ukui-panel is a fork of mate-panel.
 

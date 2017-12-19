@@ -1,11 +1,11 @@
-AC_INIT([ukui-panel], [1.0.0], [https://github.com/ukui-desktop/ukui-panel/issues],
-    [ukui-panel], [http://www.ukui-desktop.org])
+AC_INIT([ukui-panel], [1.1.0], [https://github.com/ukui/ukui-panel/issues],
+    [ukui-panel], [http://www.ukui.org])
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-xz tar-ustar -Wno-portability check-news])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 AC_CONFIG_MACRO_DIR([m4])
-UKUI_COMMON_INIT
+MATE_COMMON_INIT
 
 # Before making a release, the LT_VERSION string should be modified.
 # The string is of the form C:R:A.
@@ -57,7 +57,7 @@ fi
 
 LT_LIB_M
 
-LIBUKUI_DESKTOP_REQUIRED=1.17.0
+LIBMATE_DESKTOP_REQUIRED=1.17.0
 GDK_PIXBUF_REQUIRED=2.7.1
 PANGO_REQUIRED=1.15.4
 GLIB_REQUIRED=2.36
@@ -75,7 +75,7 @@ dnl pkg-config dependency checks
 PKG_CHECK_MODULES(EGG_SMCLIENT, ice sm gtk+-3.0)
 
 PKG_CHECK_MODULES(GMODULE, gmodule-2.0,[GMODULE_ADD="gmodule-2.0"],[GMODULE_ADD=""])
-PKG_CHECK_MODULES(PANEL, $GMODULE_ADD gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED pango >= $PANGO_REQUIRED gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED gio-unix-2.0 >= $GLIB_REQUIRED mate-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED gio-2.0 >= $GLIB_REQUIRED libukui-menu >= $LIBUKUI_MENU_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED)
+PKG_CHECK_MODULES(PANEL, $GMODULE_ADD gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED pango >= $PANGO_REQUIRED gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED gio-unix-2.0 >= $GLIB_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED gio-2.0 >= $GLIB_REQUIRED libukui-menu >= $LIBUKUI_MENU_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED)
 AC_SUBST(PANEL_CFLAGS)
 AC_SUBST(PANEL_LIBS)
 
@@ -85,15 +85,15 @@ PKG_CHECK_MODULES(LIBUKUI_PANEL_APPLET, gtk+-3.0 >= $GTK_REQUIRED gio-2.0 >= $GL
 AC_SUBST(LIBUKUI_PANEL_APPLET_CFLAGS)
 AC_SUBST(LIBUKUI_PANEL_APPLET_LIBS)
 
-PKG_CHECK_MODULES(FISH, gtk+-3.0 >= $GTK_REQUIRED cairo >= $CAIRO_REQUIRED mate-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED)
+PKG_CHECK_MODULES(FISH, gtk+-3.0 >= $GTK_REQUIRED cairo >= $CAIRO_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED)
 AC_SUBST(FISH_CFLAGS)
 AC_SUBST(FISH_LIBS)
 
-PKG_CHECK_MODULES(NOTIFICATION_AREA, gtk+-3.0 >= $GTK_REQUIRED mate-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED)
+PKG_CHECK_MODULES(NOTIFICATION_AREA, gtk+-3.0 >= $GTK_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED)
 AC_SUBST(NOTIFICATION_AREA_CFLAGS)
 AC_SUBST(NOTIFICATION_AREA_LIBS)
 
-PKG_CHECK_MODULES(WNCKLET, gtk+-3.0 >= $GTK_REQUIRED libwnck-3.0 >= $LIBWNCK_REQUIRED mate-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED)
+PKG_CHECK_MODULES(WNCKLET, gtk+-3.0 >= $GTK_REQUIRED libwnck-3.0 >= $LIBWNCK_REQUIRED mate-desktop-2.0 >= $LIBMATE_DESKTOP_REQUIRED)
 AC_SUBST(WNCKLET_CFLAGS)
 AC_SUBST(WNCKLET_LIBS)
 
@@ -104,10 +104,6 @@ PKG_CHECK_MODULES(TZ, gio-2.0 >= $GLIB_REQUIRED)
 AC_SUBST(TZ_CFLAGS)
 AC_SUBST(TZ_LIBS)
 
-PKG_CHECK_MODULES(CLOCK, pango >= $PANGO_REQUIRED gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED gio-2.0 >= $GLIB_REQUIRED librsvg-2.0 >= $LIBRSVG_REQUIRED dbus-glib-1 mate-desktop-2.0 >= $LIBUKUI_DESKTOP_REQUIRED)
-AC_SUBST(CLOCK_CFLAGS)
-AC_SUBST(CLOCK_LIBS)
-
 DBUS_REQUIRED=1.1.2
 
 # Make it possible to compile the applets in-process
@@ -116,14 +112,12 @@ PANEL_INPROCESS_ALL=
 PANEL_INPROCESS_APPLETS=
 AC_ARG_WITH(in-process-applets,
 	AC_HELP_STRING([--with-in-process-applets=APPLETS],
-		[comma-separated list of applets to compile in-process (possible values: none, clock, fish, notification-area, wncklet, all) @<:@default=none@:>@]),
+		[comma-separated list of applets to compile in-process (possible values: none, fish, notification-area, wncklet, all) @<:@default=none@:>@]),
 	[for i in `echo $withval | tr , ' '`; do
 		if test $i = "none"; then
 			PANEL_INPROCESS_NONE=1
 		else if test $i = "all"; then
 			PANEL_INPROCESS_ALL=1
-		else if test $i = "clock"; then
-			PANEL_INPROCESS_APPLETS="$PANEL_INPROCESS_APPLETS $i"
 		else if test $i = "fish"; then
 			PANEL_INPROCESS_APPLETS="$PANEL_INPROCESS_APPLETS $i"
 		else if test $i = "notification-area"; then
@@ -137,17 +131,13 @@ AC_ARG_WITH(in-process-applets,
 	[])
 
 if test -n "$PANEL_INPROCESS_ALL"; then
-	PANEL_INPROCESS_APPLETS="clock fish notification-area wncklet"
+	PANEL_INPROCESS_APPLETS="fish notification-area wncklet"
 fi
 if test -n "$PANEL_INPROCESS_NONE"; then
 	PANEL_INPROCESS_APPLETS=""
 fi
 for i in $PANEL_INPROCESS_APPLETS; do
-	if test $i = "clock"; then
-		CLOCK_COMPILE_INPROCESS=1
-		AC_DEFINE([CLOCK_INPROCESS], 1,
-		[Defined when compiling the clock applet in-process])
-	else if test $i = "fish"; then
+	if test $i = "fish"; then
 		FISH_COMPILE_INPROCESS=1
 		AC_DEFINE([FISH_INPROCESS], 1,
 		[Defined when compiling the fish applet in-process])
@@ -165,7 +155,6 @@ if test "x$PANEL_INPROCESS_APPLETS" = "x"; then
 	PANEL_INPROCESS_APPLETS="(none)"
 fi
 
-AM_CONDITIONAL(CLOCK_INPROCESS, test -n "$CLOCK_COMPILE_INPROCESS")
 AM_CONDITIONAL(FISH_INPROCESS, test -n "$FISH_COMPILE_INPROCESS")
 AM_CONDITIONAL(NOTIFICATION_AREA_INPROCESS, test -n "$NOTIFICATION_AREA_COMPILE_INPROCESS")
 AM_CONDITIONAL(WNCKLET_INPROCESS, test -n "$WNCKLET_COMPILE_INPROCESS")
@@ -278,9 +267,6 @@ libukui-panel-applet/libukuipanelapplet-4.0-uninstalled.pc
 libukui-panel-applet/Makefile
 po/Makefile.in
 applets/Makefile
-applets/clock/Makefile
-applets/clock/org.ukui.panel.applet.clock.gschema.xml
-applets/clock/pixmaps/Makefile
 applets/fish/Makefile
 applets/fish/org.ukui.panel.applet.fish.gschema.xml
 applets/notification_area/Makefile
@@ -294,7 +280,6 @@ doc/Makefile
 doc/reference/Makefile
 doc/reference/ukui-panel-applet/Makefile
 help/Makefile
-help/ukui-clock/Makefile
 help/ukui-fish/Makefile
 man/Makefile
 ])
