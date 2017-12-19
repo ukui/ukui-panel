@@ -1,14 +1,6 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 [encoding: UTF-8]
-applets/clock/calendar-window.c
-applets/clock/clock.c
-[type: gettext/glade]applets/clock/clock.ui
-applets/clock/clock-location.c
-applets/clock/clock-location-tile.c
-applets/clock/clock-utils.c
-[type: gettext/gsettings]applets/clock/org.ukui.panel.applet.clock.gschema.xml.in
-[type: gettext/ini]applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in
 applets/fish/fish.c
 [type: gettext/glade]applets/fish/fish.ui
 [type: gettext/gsettings]applets/fish/org.ukui.panel.applet.fish.gschema.xml.in
