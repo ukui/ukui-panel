@@ -126,7 +126,7 @@ AC_ARG_WITH(in-process-applets,
 			PANEL_INPROCESS_APPLETS="$PANEL_INPROCESS_APPLETS $i"
 		else
 			echo "applet $i not recognized, ignoring..."
-		fi; fi; fi; fi; fi; fi
+		fi; fi; fi; fi; fi
 	done],
 	[])
 
@@ -149,7 +149,7 @@ for i in $PANEL_INPROCESS_APPLETS; do
 		WNCKLET_COMPILE_INPROCESS=1
 		AC_DEFINE([WNCKLET_INPROCESS], 1,
 		[Defined when compiling the wncklet applet in-process])
-	fi; fi; fi; fi
+	fi; fi; fi
 done
 if test "x$PANEL_INPROCESS_APPLETS" = "x"; then
 	PANEL_INPROCESS_APPLETS="(none)"
