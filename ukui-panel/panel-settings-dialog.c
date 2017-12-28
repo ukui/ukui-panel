@@ -551,7 +551,10 @@ cell_edited (GtkCellRendererText *cell,
              const gchar         *new_text,
              gpointer             data)
 {
-  gint i;
+  gint		i;
+  int 		num;
+  GSettings 	*settings;
+  const gchar 	*show = "显示", *hide = "隐藏";
 
   GtkTreeModel *model = (GtkTreeModel *)data;
   GtkTreePath *path = gtk_tree_path_new_from_string (path_string);
@@ -564,7 +567,14 @@ cell_edited (GtkCellRendererText *cell,
   i = gtk_tree_path_get_indices (path)[0];
   gtk_list_store_set (data, &iter, 2,
                       new_text, -1);
-
+  num = i+1;
+  char *path1 = g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", num);
+  settings = g_settings_new_with_path( "org.ukui.panel.indicator.tray", path1);
+  if (strcmp (new_text,show) == 0 ){
+  	g_settings_set_boolean (settings,"show",TRUE);
+  } else{
+  	g_settings_set_boolean (settings,"show",FALSE);
+  }
   gtk_tree_path_free (path);
 }
 
@@ -589,12 +599,12 @@ panel_settings_dialog_setup_notifcation_area_treeview (PanelPropertiesDialog *di
 	column = gtk_tree_view_column_new();
 	gtk_tree_view_append_column(notification_area_treeview, column);
 	
- 	cell = gtk_cell_renderer_text_new();
-	gtk_tree_view_column_pack_start(column, cell, TRUE);
-	gtk_tree_view_column_set_attributes(column, cell, "text", 0, NULL);
+	cell = gtk_cell_renderer_pixbuf_new ();
+	gtk_tree_view_column_pack_start (column, cell, TRUE);
+	gtk_tree_view_column_set_attributes (column, cell, "pixbuf", 0, NULL);
 
-	column = gtk_tree_view_column_new();
-	gtk_tree_view_append_column(notification_area_treeview, column);
+	column = gtk_tree_view_column_new ();
+	gtk_tree_view_append_column (notification_area_treeview, column);
 
  	cell = gtk_cell_renderer_text_new();
 	gtk_tree_view_column_pack_start(column, cell, TRUE);
@@ -606,38 +616,78 @@ panel_settings_dialog_setup_notifcation_area_treeview (PanelPropertiesDialog *di
 	char *show="显示";
 	char *hide="隐藏";
 	store = gtk_list_store_new(3, 
+				   GDK_TYPE_PIXBUF,
 				   G_TYPE_STRING,
-				   G_TYPE_INT,
 				   G_TYPE_STRING);
 	gtk_tree_view_set_model(notification_area_treeview, GTK_TREE_MODEL(store));
 
-	for(i = 0; i < 5; i ++){
-		sprintf(text, "text%d", i);
-		gtk_list_store_append(store, &iter);
-		gtk_list_store_set(store, &iter, 0, "aa",
-						 1, i,
-						 2, hide, -1);
+	int num = 1, number;
+	GSettings *settings;
+	char *path,*applet_name,*applet_icon;
+	path = g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", num);
+	settings = g_settings_new_with_path( "org.ukui.panel.indicator.tray", path);
+	number = g_settings_get_int (settings, "number");
+	while( number != 0) {
+		num=num+1;
+		path=g_strdup_printf ("%s%d/","/org/ukui/panel/indicator/tray",num);
+		settings = g_settings_new_with_path("org.ukui.panel.indicator.tray",path);
+		number=g_settings_get_int(settings, "number");
 	}
 
-	store1 = gtk_list_store_new(3, 
-				   G_TYPE_STRING,
-				   G_TYPE_INT,
-				   G_TYPE_STRING);
+	num=num-1;
+	int k;
+	GdkPixbuf       *icon;
+	GError          *error = NULL;
+	GtkIconTheme	*icon_theme = gtk_icon_theme_get_default ();
 
-	gtk_list_store_append(store1, &iter);
-	gtk_list_store_set(store1, &iter, 0, show,-1);
-	gtk_list_store_append(store1, &iter);
-	gtk_list_store_set(store1, &iter, 0, hide,-1);
+	for(int i = 0; i < num; i ++){
+		k = i + 1;
+		path = g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", k);
+		settings = 		g_settings_new_with_path ("org.ukui.panel.indicator.tray", path);
+		applet_name = 		g_settings_get_string (settings, "applet-name");
+		applet_icon = 		g_settings_get_string (settings, "applet-icon");
+		gboolean show_value = 	g_settings_get_boolean (settings, "show");
+		icon = 			gtk_icon_theme_load_icon (icon_theme,
+				    		 	applet_icon,
+				    		 	16,
+				    		 	0,
+				    		 	NULL);
+//		if(applet_name != NULL && strcmp(applet_name,"ukui") != 0){
+		sprintf (text, "text%d", i);
+		gtk_list_store_append (store, &iter);
+		if (show_value){
+			gtk_list_store_set (store, &iter, 0, icon,
+						 1, applet_name,
+						 2, show, -1);
+		}else {
+			gtk_list_store_set (store, &iter, 0, icon,
+						 1, applet_name,
+						 2, hide, -1);
+		}
+
+//		}
+	}
+
+	store1 = gtk_list_store_new (3, 
+				     G_TYPE_STRING,
+				     G_TYPE_INT,
+				     G_TYPE_STRING);
+
+	gtk_list_store_append (store1, &iter);
+	gtk_list_store_set (store1, &iter, 0, show,-1);
+	gtk_list_store_append (store1, &iter);
+	gtk_list_store_set (store1, &iter, 0, hide,-1);
 
 	cell = gtk_cell_renderer_combo_new ();
 	g_object_set (cell,
-			"model", GTK_TREE_MODEL(store1),
-			"text-column",0,
-			"has-entry", FALSE,
-			"editable", TRUE,
-			NULL);
+		      "model", GTK_TREE_MODEL(store1),
+		      "text-column", 0,
+		      "has-entry", FALSE,
+		      "editable", TRUE,
+		      NULL);
 	g_signal_connect (cell, "edited",
 			G_CALLBACK (cell_edited),store);
+
 	gtk_tree_view_insert_column_with_attributes(notification_area_treeview,
 						    -1, "", cell,
 						    "text", 2,
@@ -650,7 +700,6 @@ static void
 panel_settings_dialog_manage_icons_label_activate_link (PanelPropertiesDialog *dialog,
 							GtkLabel *label)
 {
-	printf("1---\n");
 	GtkBuilder            *gui;
 	GError                *error;
 	PanelPropertiesDialog *panel_settings_dialog;
@@ -676,37 +725,13 @@ panel_settings_dialog_manage_icons_label_activate_link (PanelPropertiesDialog *d
 
 //		return;
 	}
-	printf("12---\n");
 
 	panel_settings_dialog=PANEL_GTK_BUILDER_GET 			(gui, "notification_area");
 	panel_settings_dialog_setup_notifcation_area_treeview		(dialog, gui);
-	printf("13---\n");
 	gtk_widget_show (panel_settings_dialog);
-	printf("14---\n");
 
 	g_object_unref (gui);
 
-}
-
-static void
-panel_settings_dialog_manage_icons_label_activate_current_link (PanelPropertiesDialog *dialog,
-							GtkLabel *label)
-{
-	printf("2---\n");
-}
-
-static void
-panel_settings_dialog_manage_icons_label_move_cursor (PanelPropertiesDialog *dialog,
-							GtkLabel *label)
-{
-	printf("3---\n");
-}
-
-static void
-panel_settings_dialog_manage_icons_label_populate_popup (PanelPropertiesDialog *dialog,
-							GtkLabel *label)
-{
-	printf("4---\n");
 }
 
 static void
@@ -722,16 +747,6 @@ panel_settings_dialog_setup_manage_icons_label(PanelPropertiesDialog *dialog,
 	g_signal_connect_swapped (dialog->manage_icons_label, "activate-link",
 				  G_CALLBACK (panel_settings_dialog_manage_icons_label_activate_link),
 				  dialog);
-	g_signal_connect_swapped (dialog->manage_icons_label, "activate-current-link",
-				  G_CALLBACK (panel_settings_dialog_manage_icons_label_activate_current_link),
-				  dialog);
-	g_signal_connect_swapped (dialog->manage_icons_label, "move-cursor",
-				  G_CALLBACK (panel_settings_dialog_manage_icons_label_move_cursor),
-				  dialog);
-	g_signal_connect_swapped (dialog->manage_icons_label, "populate-popup",
-				  G_CALLBACK (panel_settings_dialog_manage_icons_label_populate_popup),
-				  dialog);
-
 }
 
 static void

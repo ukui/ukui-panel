@@ -63,6 +63,7 @@
                   <object class="GtkTreeView" id="notification_area_treeview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="headers_visible">False</property>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection"/>
                     </child>

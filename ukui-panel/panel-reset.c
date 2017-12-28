@@ -48,6 +48,7 @@ panel_reset()
 	if (!access (home_applet, 0)) {
 		remove(home_applet);
 	}
+	system("dconf reset -f /org/ukui/panel/indicator/");
 	g_object_unref (settings);
 }
 
