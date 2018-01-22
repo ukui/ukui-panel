@@ -551,8 +551,12 @@ cell_edited (GtkCellRendererText *cell,
              const gchar         *new_text,
              gpointer             data)
 {
-  gint		i;
-  int 		num;
+  int 		 i=1,
+		 number;
+  char 		*path2, 
+		*applet_name,
+		*applet_name_value;
+
   GSettings 	*settings;
   const gchar 	*show = "显示", *hide = "隐藏";
 
@@ -564,17 +568,36 @@ cell_edited (GtkCellRendererText *cell,
 
   gtk_tree_model_get_iter (model, &iter, path);
 
-  i = gtk_tree_path_get_indices (path)[0];
   gtk_list_store_set (data, &iter, 2,
                       new_text, -1);
-  num = i+1;
-  char *path1 = g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", num);
-  settings = g_settings_new_with_path( "org.ukui.panel.indicator.tray", path1);
-  if (strcmp (new_text,show) == 0 ){
-  	g_settings_set_boolean (settings,"show",TRUE);
-  } else{
-  	g_settings_set_boolean (settings,"show",FALSE);
+
+  gtk_tree_model_get(model, &iter,1,&applet_name_value);
+
+  while(i<100){
+
+  	path2 = g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", i);
+
+  	settings = g_settings_new_with_path( "org.ukui.panel.indicator.tray", path2);
+
+	applet_name=g_settings_get_string (settings,"applet-name");
+
+	number=g_settings_get_int (settings,"number");
+
+	if (strcmp (applet_name_value,applet_name) == 0 && number!=0 && number!=-1){
+
+  		if (strcmp (new_text,show) == 0 ){
+  			g_settings_set_boolean (settings,"show",TRUE);
+  		} else{
+  			g_settings_set_boolean (settings,"show",FALSE);
+ 	 	}
+
+	}
+
+	if (number == 0) 
+		break;
+  	i++;
   }
+
   gtk_tree_path_free (path);
 }
 
@@ -644,25 +667,29 @@ panel_settings_dialog_setup_notifcation_area_treeview (PanelPropertiesDialog *di
 		k = i + 1;
 		path = g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", k);
 		settings = 		g_settings_new_with_path ("org.ukui.panel.indicator.tray", path);
-		applet_name = 		g_settings_get_string (settings, "applet-name");
-		applet_icon = 		g_settings_get_string (settings, "applet-icon");
-		gboolean show_value = 	g_settings_get_boolean (settings, "show");
-		icon = 			gtk_icon_theme_load_icon (icon_theme,
-				    		 	applet_icon,
-				    		 	16,
-				    		 	0,
-				    		 	NULL);
+		number=g_settings_get_int(settings, "number");
+
+	  	if(number!=-1){
+			applet_name = 		g_settings_get_string (settings, "applet-name");
+			applet_icon = 		g_settings_get_string (settings, "applet-icon");
+			gboolean show_value = 	g_settings_get_boolean (settings, "show");
+			icon = 			gtk_icon_theme_load_icon (icon_theme,
+				    		 		applet_icon,
+				    		 		16,
+				    		 		0,
+				    		 		NULL);
 //		if(applet_name != NULL && strcmp(applet_name,"ukui") != 0){
-		sprintf (text, "text%d", i);
-		gtk_list_store_append (store, &iter);
-		if (show_value){
-			gtk_list_store_set (store, &iter, 0, icon,
-						 1, applet_name,
-						 2, show, -1);
-		}else {
-			gtk_list_store_set (store, &iter, 0, icon,
-						 1, applet_name,
-						 2, hide, -1);
+			sprintf (text, "text%d", i);
+			gtk_list_store_append (store, &iter);
+			if (show_value){
+				gtk_list_store_set (store, &iter, 0, icon,
+							 1, applet_name,
+							 2, show, -1);
+			}else {
+				gtk_list_store_set (store, &iter, 0, icon,
+							 1, applet_name,
+							 2, hide, -1);
+			}
 		}
 
 //		}
