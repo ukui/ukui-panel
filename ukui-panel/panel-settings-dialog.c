@@ -45,6 +45,8 @@
 #define DEFAULT_SIZE 40
 #define MEDIUM_SIZE  60 
 #define LARGE_SIZE   80
+int add = 0;
+char *Applet_Name = "name";
 typedef struct {
 	PanelToplevel *toplevel;
 	GSettings     *settings;
@@ -601,6 +603,95 @@ cell_edited (GtkCellRendererText *cell,
   gtk_tree_path_free (path);
 }
 
+static gboolean
+tray_widget_show_notify (GSettings             *settings,
+			 gchar                 *key,
+			 GtkListStore          *store)
+{
+	GSettings             *settings1;
+
+	if (strcpy (key,"number")){
+		int 			k, number;
+		GtkTreeIter 		iter;
+		char 			*path, *applet_name, *applet_icon;
+		char 			*show="显示";
+		char 			*hide="隐藏";
+		GdkPixbuf       	*icon;
+		GError          	*error = NULL;
+		GtkIconTheme		*icon_theme = gtk_icon_theme_get_default ();
+
+		number = 		g_settings_get_int(settings, "number");
+		applet_name = 		g_settings_get_string (settings, "applet-name");
+		applet_icon = 		g_settings_get_string (settings, "applet-icon");
+
+//	gtk_list_store_clear(store);
+	  	if(number==-1 || number==0 ){
+			if(add == 1){
+				gboolean show_value = 	g_settings_get_boolean (settings, "show");
+				icon = 			gtk_icon_theme_load_icon (icon_theme,
+				 	 	  		 		 applet_icon,
+				    				 		 16,
+				    		 				 0,
+				    		 				 NULL);
+//		if(applet_name != NULL && strcmp(applet_name,"ukui") != 0){
+				gtk_list_store_append (store, &iter);
+				if ( show_value ){
+					gtk_list_store_set (store, &iter, 0, icon,
+							 		  1, applet_name,
+							 		  2, show, -1);
+				}else {
+					gtk_list_store_set (store, &iter, 0, icon,
+							 		  1, applet_name,
+							 		  2, hide, -1);
+				}
+//		}
+			add = 0;
+			Applet_Name = applet_name;
+			} else{
+				gtk_list_store_clear(store);
+				for(int i = 0; i < 100; i ++){
+					k = i + 1;
+					path = 			g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", k);
+					settings1 = 		g_settings_new_with_path ("org.ukui.panel.indicator.tray", path);
+					number=			g_settings_get_int(settings1, "number");
+
+	  				if(number!=-1 && number!=0){
+						applet_name = 		g_settings_get_string (settings1, "applet-name");
+						applet_icon = 		g_settings_get_string (settings1, "applet-icon");
+						gboolean show_value = 	g_settings_get_boolean (settings1, "show");
+						icon = 			gtk_icon_theme_load_icon (icon_theme,
+				    		 						  applet_icon,
+				    		 						  16,
+				    		 						  0,
+				    		 						  NULL);
+//		if(applet_name != NULL && strcmp(applet_name,"ukui") != 0){
+						gtk_list_store_append (store, &iter);
+						if ( show_value ){
+							gtk_list_store_set (store, &iter, 0, icon,
+							 			   	  1, applet_name,
+							 			  	  2, show, -1);
+						}else {
+							gtk_list_store_set (store, &iter, 0, icon,
+							 				  1, applet_name,
+							 				  2, hide, -1);
+						}
+					}
+
+//		}
+				}
+
+			}
+		}
+		else{
+			if(strcmp( Applet_Name, applet_name ) != 0){
+				add=1;
+			}
+		}
+	return FALSE;
+
+	}
+}
+
 static void
 panel_settings_dialog_setup_notifcation_area_treeview (PanelPropertiesDialog *dialog,
 					     GtkBuilder            *gui)
@@ -643,6 +734,22 @@ panel_settings_dialog_setup_notifcation_area_treeview (PanelPropertiesDialog *di
 				   G_TYPE_STRING,
 				   G_TYPE_STRING);
 	gtk_tree_view_set_model(notification_area_treeview, GTK_TREE_MODEL(store));
+
+//添加
+	int 		 j = 1;
+	char 		*path1;
+	GSettings 	*settings1;
+	while (j<100){
+		path1 = 	g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", j);
+		settings1 = 	g_settings_new_with_path ("org.ukui.panel.indicator.tray", path1);
+
+		g_signal_connect (settings1,
+				  "changed::" "number",
+				  G_CALLBACK (tray_widget_show_notify),
+				  store);
+		j++;
+	}
+
 
 	int num = 1, number;
 	GSettings *settings;
