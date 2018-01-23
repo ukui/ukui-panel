@@ -171,7 +171,8 @@ static const GtkActionEntry tasklist_menu_actions[] = {
 		NULL,
 		NULL,
 		G_CALLBACK(display_properties_dialog)
-	},
+	}
+/*	
 	{
 		"TasklistHelp",
 		GTK_STOCK_HELP,
@@ -188,6 +189,7 @@ static const GtkActionEntry tasklist_menu_actions[] = {
 		NULL,
 		G_CALLBACK(display_about_dialog)
 	}
+*/	
 };
 
 static void tasklist_properties_update_content_radio(TasklistData* tasklist)

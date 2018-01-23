@@ -949,7 +949,7 @@ msgstr "您的窗口管理器不支持显示桌面按钮，或者您未运行桌
 
 #: ../applets/wncklet/window-list.c:171
 msgid "_System Monitor"
-msgstr "系统监视器;(_S)"
+msgstr "系统监视器(_S)"
 
 #: ../applets/wncklet/window-list.c:557
 msgid ""

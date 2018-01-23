@@ -328,7 +328,7 @@ panel_context_menu_create (PanelWidget *panel)
 
 	if (!panel_lockdown_get_locked_down ())
 		panel_context_menu_build_edition (panel, retval);
-
+/*
 	menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Help"));
 	image = gtk_image_new_from_icon_name ("help-browser", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
@@ -346,7 +346,7 @@ panel_context_menu_create (PanelWidget *panel)
 	g_signal_connect (menuitem, "activate",
 			  G_CALLBACK (panel_context_menu_show_about_dialog),
 			  NULL);
-	
+*/	
 	//FIXME: can we get rid of this? (needed by menu_get_panel())
 	g_object_set_data (G_OBJECT (retval), "menu_panel", panel);
 
