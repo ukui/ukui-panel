@@ -1,4 +1,4 @@
-AC_INIT([ukui-panel], [1.1.1], [https://github.com/ukui/ukui-panel/issues],
+AC_INIT([ukui-panel], [1.1.2], [https://github.com/ukui/ukui-panel/issues],
     [ukui-panel], [http://www.ukui.org])
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-xz tar-ustar -Wno-portability check-news])

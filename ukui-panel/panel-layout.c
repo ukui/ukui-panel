@@ -22,6 +22,8 @@
  *
  * Authors:
  *      Stefano Karapetsas <stefano@karapetsas.com>
+ * Modified by:
+ *      quankang <quankang@kylinos.cn>
  */
 
 #include <config.h>

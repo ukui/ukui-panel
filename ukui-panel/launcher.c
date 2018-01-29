@@ -6,6 +6,8 @@
  *
  * Authors: Miguel de Icaza
  *          Federico Mena
+ * Modified by:
+ *      quankang <quankang@kylinos.cn>
  * CORBAized by George Lebl
  * de-CORBAized by George Lebl
  *

@@ -4,6 +4,8 @@
  * (C) 2017, Tianjin KYLIN Information Technology Co., Ltd.
  *
  * Authors:  George Lebl
+ * Modified by:
+ *      quankang <quankang@kylinos.cn>
  */
 #include <config.h>
 #include <stdio.h>
