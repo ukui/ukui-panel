@@ -837,6 +837,7 @@ panel_settings_dialog_manage_icons_label_activate_link (PanelPropertiesDialog *d
 	GtkBuilder            *gui;
 	GError                *error;
 	PanelPropertiesDialog *panel_settings_dialog;
+	error = NULL;
 	gui = gtk_builder_new ();
 	gtk_builder_set_translation_domain (gui, GETTEXT_PACKAGE);
 	gtk_builder_add_from_file (gui,
