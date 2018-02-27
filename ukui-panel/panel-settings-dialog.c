@@ -176,10 +176,17 @@ panel_properties_dialog_setup_orientation_combo_sensitivty (PanelPropertiesDialo
 panel_settings_toggle_lock_toggle (PanelPropertiesDialog *dialog,
 				   GtkToggleButton       *toggle)
 {
+	char          *path;
+	GSettings     *settings;
+	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+
 	if (gtk_toggle_button_get_active (toggle)) {
+		g_settings_set_boolean(settings, "lock-taskbar",TRUE);
 		gtk_combo_box_set_button_sensitivity (dialog->orientation_combo, GTK_SENSITIVITY_OFF);
 	}
 	else {
+		g_settings_set_boolean(settings, "lock-taskbar",FALSE);
 		gtk_combo_box_set_button_sensitivity (dialog->orientation_combo, GTK_SENSITIVITY_ON);
 	}
 
@@ -190,7 +197,27 @@ static void
 panel_properties_dialog_setup_lock_toggle (PanelPropertiesDialog *dialog,
 					     GtkBuilder            *gui)
 {
+	char          *path;
+	GSettings     *settings;
+
 	dialog->lock_toggle = PANEL_GTK_BUILDER_GET (gui, "lock_toggle");	
+	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+	gboolean lock_taskbar = g_settings_get_boolean(settings, "lock-taskbar");
+
+	if (lock_taskbar){
+		gtk_toggle_button_set_active(dialog->lock_toggle,TRUE);
+	} else{
+		gtk_toggle_button_set_active(dialog->lock_toggle,FALSE);
+	}
+
+	if (gtk_toggle_button_get_active (dialog->lock_toggle)) {
+		gtk_combo_box_set_button_sensitivity (dialog->orientation_combo, GTK_SENSITIVITY_OFF);
+	}
+	else {
+		gtk_combo_box_set_button_sensitivity (dialog->orientation_combo, GTK_SENSITIVITY_ON);
+	}
+
 	g_signal_connect_swapped (dialog->lock_toggle, "toggled",
 				  G_CALLBACK (panel_settings_toggle_lock_toggle),
 				  dialog);
