@@ -2211,9 +2211,26 @@ msgstr "任务栏设置(_S)"
 msgid "_Add to Panel..."
 msgstr "添加到面板(_A)..."
 
+#: ../ukui-panel/panel-context-menu.c:201
+msgid "Reset this panel?"
+msgstr "重置当前面板?"
+
+#: ../ukui-panel/panel-context-menu.c:202
+msgid "When a panel is reset,all \n"
+		"custom settings are lost."
+msgstr "当面板重置时，所有 \n自定义设置丢失。"
+
 #: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"
 msgstr "删除该面板(_D)"
+
+#: ../ukui-panel/panel-context-menu.c:215
+msgid "_Cancel"
+msgstr "取消(_C)"
+
+#: ../ukui-panel/panel-context-menu.c:216
+msgid "_Reset Panel"
+msgstr "重置该面板(_R)"
 
 #: ../ukui-panel/panel-context-menu.c:221
 msgid "_New Panel"
