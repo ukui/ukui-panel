@@ -15,14 +15,14 @@ object-type=launcher
 launcher-location=peony-browser.desktop
 toplevel-id=bottom
 position=51
-locked=true
+locked=false
 
 [Object browser]
 object-type=launcher
 launcher-location=firefox.desktop
 position=52
 toplevel-id=bottom
-locked=true
+locked=false
 
 [Object window-list]
 object-type=applet

@@ -884,11 +884,13 @@ ukui_panel_applet_menu_popup (UkuiPanelApplet *applet,
 	context = gtk_widget_get_style_context (GTK_WIDGET(toplevel));
 	gtk_style_context_add_class(context,"gnome-panel-menu-bar");
 	gtk_style_context_add_class(context,"ukui-panel-menu-bar");
+/*	
 	gtk_menu_popup (GTK_MENU (menu),
 			NULL, NULL,
 			(GtkMenuPositionFunc) ukui_panel_applet_position_menu,
 			applet,
 			button, time);
+*/			
 }
 
 static gboolean
@@ -1841,6 +1843,7 @@ ukui_panel_applet_init (UkuiPanelApplet *applet)
 
 	applet->priv->panel_action_group = gtk_action_group_new ("PanelActions");
 	gtk_action_group_set_translation_domain (applet->priv->panel_action_group, GETTEXT_PACKAGE);
+/*	
 	gtk_action_group_add_actions (applet->priv->panel_action_group,
 				      menu_entries,
 				      G_N_ELEMENTS (menu_entries),
@@ -1849,7 +1852,7 @@ ukui_panel_applet_init (UkuiPanelApplet *applet)
 					     menu_toggle_entries,
 					     G_N_ELEMENTS (menu_toggle_entries),
 					     applet);
-
+*/
 	applet->priv->ui_manager = gtk_ui_manager_new ();
 	gtk_ui_manager_insert_action_group (applet->priv->ui_manager,
 					    applet->priv->panel_action_group, 1);
