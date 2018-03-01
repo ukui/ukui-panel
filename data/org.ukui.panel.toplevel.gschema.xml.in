@@ -60,6 +60,11 @@
       <summary>Center panel on y-axis</summary>
       <description>If true, the y and y_bottom keys are ignored and the panel is placed at the center of the y-axis of the screen. If the panel is resized it will remain at that position - i.e. the panel will grow on both sides. If false, the y and y_bottom keys specify the location of the panel.</description>
     </key>
+    <key name="transparent" type="b">
+      <default>false</default>
+      <summary>Taskbar background transparent</summary>
+      <description>If true, the panel is transparent.</description>
+    </key>
     <key name="lock-taskbar" type="b">
       <default>false</default>
       <summary>Lock the taskbar</summary>

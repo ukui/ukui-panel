@@ -2631,6 +2631,10 @@ msgstr "自定义哪些图标显示在任务栏上"
 msgid "Panel Settings"
 msgstr "任务栏设置"
 
+#: ../ukui-panel/panel-settings-dialog.ui.h:11
+msgid "Taskbar background transparent"
+msgstr "任务栏背景透明度"
+
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
 msgid "Could not open recently used document \"%s\""

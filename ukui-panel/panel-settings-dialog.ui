@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 
+<!-- Generated with glade 3.20.2 
 
 * ukui-panel - panel-settings-dialog
 
@@ -195,6 +195,9 @@
       <action-widget response="-11">helpbutton2</action-widget>
       <action-widget response="-7">closebutton2</action-widget>
     </action-widgets>
+    <child>
+      <placeholder/>
+    </child>
   </object>
   <object class="GtkDialog" id="panel_settings_dialog">
     <property name="width_request">407</property>
@@ -242,6 +245,20 @@
                 <property name="orientation">vertical</property>
                 <property name="spacing">15</property>
                 <child>
+                  <object class="GtkCheckButton" id="opacity_scale">
+                    <property name="label" translatable="yes">Taskbar background transparent</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="lock_toggle">
                     <property name="label" translatable="yes">Lock the taskbar</property>
                     <property name="visible">True</property>
@@ -252,7 +269,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">0</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -266,7 +283,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
@@ -299,7 +316,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">2</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </object>
@@ -457,6 +474,9 @@
           </packing>
         </child>
       </object>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </object>
 </interface>

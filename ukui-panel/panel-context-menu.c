@@ -253,7 +253,7 @@ panel_context_menu_build_edition (PanelWidget *panel_widget,
 
 	if (!panel_profile_id_lists_are_writable ())
 		gtk_widget_set_sensitive (menuitem, FALSE);
-*/
+
 	menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Properties"));
 	image = gtk_image_new_from_icon_name ("document-properties",
 					      GTK_ICON_SIZE_MENU);
@@ -263,7 +263,7 @@ panel_context_menu_build_edition (PanelWidget *panel_widget,
 	g_signal_connect_swapped (menuitem, "activate",
 				  G_CALLBACK (panel_properties_dialog_present), 
 				  panel_widget->toplevel);
-
+*/
 	menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Reset Panel"));
 	image = gtk_image_new_from_stock (GTK_STOCK_REVERT_TO_SAVED, GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);

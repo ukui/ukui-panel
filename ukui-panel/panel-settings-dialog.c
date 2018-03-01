@@ -173,6 +173,7 @@ panel_properties_dialog_setup_orientation_combo_sensitivty (PanelPropertiesDialo
 	}
 }
 
+static void
 panel_settings_toggle_lock_toggle (PanelPropertiesDialog *dialog,
 				   GtkToggleButton       *toggle)
 {
@@ -492,15 +493,126 @@ panel_properties_dialog_opacity_changed (PanelPropertiesDialog *dialog)
 }
 
 static void
+panel_properties_dialog_upd_sensitivity (PanelPropertiesDialog *dialog,
+					 PanelBackgroundType    background_type)
+{
+	gtk_widget_set_sensitive (dialog->color_widgets,
+				  background_type == PANEL_BACK_COLOR);
+	gtk_widget_set_sensitive (dialog->image_widgets,
+				  background_type == PANEL_BACK_IMAGE);
+}
+
+GdkColor
+get_border_color (char *color_name)
+{
+        GdkColor color;
+
+        GObject *gs = (GObject *)gtk_settings_get_default ();
+        GValue color_scheme_value = G_VALUE_INIT;
+        g_value_init (&color_scheme_value, G_TYPE_STRING);
+        g_object_get_property (gs, "gtk-color-scheme", &color_scheme_value);
+        gchar *color_scheme = (char *)g_value_get_string (&color_scheme_value);
+        gchar color_spec[16] = { 0 };
+        char *needle = strstr(color_scheme, color_name);
+        if (needle) {
+                while (1) {
+                        if (color_spec[0] != '#') {
+                                color_spec[0] = *needle;
+                                needle++;
+                                continue;
+                        }
+
+                        if ((*needle >= 0x30 && *needle <= 0x39) ||
+                            (*needle >= 0x41 && *needle <= 0x46) ||
+                            (*needle >= 0x61 && *needle <= 0x66)) {
+                                color_spec[strlen(color_spec)] = *needle;
+                                needle++;
+                        } else {
+                                break;
+                        }
+                }
+                gdk_color_parse (color_spec, &color);
+        } else {
+                gdk_color_parse ("#3B9DC5", &color);
+        }
+
+        return color;
+}
+
+
+static void
+panel_settings_toggle_opacity_scale_toggle (PanelPropertiesDialog *dialog,
+                                   GtkToggleButton       *toggle)
+{
+	guint16 opacity;
+        char          *path;
+        GSettings     *settings;	
+
+        path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+        settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);	
+
+	if (gtk_toggle_button_get_active (toggle)){
+		g_settings_set_boolean(settings, "transparent",TRUE);
+		PanelBackgroundType background_type = PANEL_BACK_NONE;
+		background_type = PANEL_BACK_COLOR;
+        	panel_profile_set_background_type (dialog->toplevel, background_type);		
+
+		opacity = (80.000000 / 100) * 65535;
+		panel_profile_set_background_opacity (dialog->toplevel, opacity);
+	} else {
+		g_settings_set_boolean(settings, "transparent",FALSE);
+		PanelBackgroundType background_type = PANEL_BACK_NONE;
+		background_type = PANEL_BACK_NONE;
+	        panel_profile_set_background_type (dialog->toplevel, background_type);		
+	}
+}
+
+static void
 panel_properties_dialog_setup_opacity_scale (PanelPropertiesDialog *dialog,
 					     GtkBuilder            *gui)
 {
-	guint16 opacity;
-	gdouble percentage;
+	char 				*color_str;
+        char          			*path;
+	guint16 			 opacity;
+        GSettings     			*settings;
+
+	GdkColor color = get_border_color ("ukuiside_color");
+	color_str=gdk_color_to_string(&color);
+	printf("color_str=%s\n",color_str);
+	g_settings_set_string (dialog->toplevel->background_settings, "color", color_str);
 
 	dialog->opacity_scale = PANEL_GTK_BUILDER_GET (gui, "opacity_scale");
 	g_return_if_fail (dialog->opacity_scale != NULL);
-	dialog->opacity_label = PANEL_GTK_BUILDER_GET (gui, "opacity_label");
+
+
+        path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+        settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+        gboolean transparent = g_settings_get_boolean(settings, "transparent");		
+
+        if (transparent){
+                gtk_toggle_button_set_active(dialog->opacity_scale,TRUE);
+        } else{
+                gtk_toggle_button_set_active(dialog->opacity_scale,FALSE);
+        }	
+
+	if (gtk_toggle_button_get_active (dialog->opacity_scale)){
+		PanelBackgroundType background_type = PANEL_BACK_NONE;
+		background_type = PANEL_BACK_COLOR;
+        	panel_profile_set_background_type (dialog->toplevel, background_type);		
+
+		opacity = (80.000000 / 100) * 65535;
+		panel_profile_set_background_opacity (dialog->toplevel, opacity);
+	} else {
+		PanelBackgroundType background_type = PANEL_BACK_NONE;
+		background_type = PANEL_BACK_NONE;
+        	panel_profile_set_background_type (dialog->toplevel, background_type);		
+	}
+
+	g_signal_connect_swapped (dialog->opacity_scale, "toggled",
+				  G_CALLBACK (panel_settings_toggle_opacity_scale_toggle),
+				  dialog);
+
+/*	dialog->opacity_label = PANEL_GTK_BUILDER_GET (gui, "opacity_label");
 	g_return_if_fail (dialog->opacity_label != NULL);
 	dialog->opacity_legend = PANEL_GTK_BUILDER_GET (gui, "opacity_legend");
 	g_return_if_fail (dialog->opacity_legend != NULL);
@@ -521,16 +633,7 @@ panel_properties_dialog_setup_opacity_scale (PanelPropertiesDialog *dialog,
 		gtk_widget_set_sensitive (dialog->opacity_legend, FALSE);
 		gtk_widget_show (dialog->writability_warn_background);
 	}
-}
-
-static void
-panel_properties_dialog_upd_sensitivity (PanelPropertiesDialog *dialog,
-					 PanelBackgroundType    background_type)
-{
-	gtk_widget_set_sensitive (dialog->color_widgets,
-				  background_type == PANEL_BACK_COLOR);
-	gtk_widget_set_sensitive (dialog->image_widgets,
-				  background_type == PANEL_BACK_IMAGE);
+*/	
 }
 
 static void
@@ -1162,7 +1265,7 @@ panel_properties_dialog_update_background_color (PanelPropertiesDialog *dialog,
 
 	if (!gdk_rgba_equal (&old_color, &new_color))
 		gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (dialog->color_button),
-					    &new_color);
+					    &new_color);					    
 }
 
 static void
