@@ -662,9 +662,27 @@ _ukui_panel_applet_frame_update_size_hints (UkuiPanelAppletFrame *frame,
 	if (frame->priv->has_handle) {
 		gint extra_size = HANDLE_SIZE + 1;
 		gint i;
+	
+		                GdkScreen* screen;
+                gint       screen_width;
+                gint       screen_height;
+                screen = gtk_window_get_screen(GTK_WINDOW(frame->priv->panel->toplevel));
+                gdk_window_get_geometry (gdk_screen_get_root_window (screen), NULL, NULL,
+                                 &screen_width, &screen_height);
 
-		for (i = 0; i < n_elements; i++)
+		int value = 0;
+		value = screen_width - 195 -200;
+
+		for (i = 0; i < n_elements; i++) {
+
 			size_hints[i] += extra_size;
+
+			if (size_hints[i] > value) {
+
+				size_hints[i]=value;	
+
+			}
+		}
 	}
 
 	/* It takes the ownership of size-hints array */
