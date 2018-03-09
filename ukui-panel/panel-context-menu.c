@@ -53,6 +53,11 @@
 #include "panel-icon-names.h"
 #include "panel-reset.h"
 
+static const char* system_monitors[] = {
+        "ukui-system-monitor",
+        "gnome-system-monitor",
+};
+
 static void
 panel_context_menu_show_help (GtkWidget *w,
 			      gpointer data)
@@ -60,7 +65,27 @@ panel_context_menu_show_help (GtkWidget *w,
 	panel_show_help (gtk_widget_get_screen (w),
 			 "ukui-user-guide", "gospanel-1", NULL);
 }
+static void
+call_system_monitor (GtkWidget *menuitem)
+{
+        char *programpath;
+        int i;
 
+        for (i = 0; i < G_N_ELEMENTS(system_monitors); i += 1)
+        {
+                programpath = g_find_program_in_path(system_monitors[i]);
+
+                if (programpath != NULL)
+                {
+                        g_free(programpath);
+
+                        mate_gdk_spawn_command_line_on_screen(gtk_widget_get_screen(menuitem),
+                                      system_monitors[i],
+                                      NULL);
+                        return;
+                }
+        }		
+}
 static void
 panel_context_menu_show_about_dialog (GtkWidget *menuitem)
 {
@@ -339,6 +364,16 @@ panel_context_menu_create (PanelWidget *panel)
 	gtk_menu_shell_append (GTK_MENU_SHELL (retval), menuitem);
 	g_signal_connect (menuitem, "activate",
 			  G_CALLBACK (panel_context_menu_show_help), NULL);
+*/	
+	menuitem = gtk_image_menu_item_new_with_mnemonic (_("_System Monitor"));
+	image = gtk_image_new_from_icon_name ("utilities-system-monitor",
+					      GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+	gtk_widget_show (menuitem);
+	gtk_menu_shell_append (GTK_MENU_SHELL (retval), menuitem);
+	g_signal_connect (menuitem, "activate",
+			  G_CALLBACK (call_system_monitor),
+			  NULL);
 
 	menuitem = gtk_image_menu_item_new_with_mnemonic (_("A_bout Panels"));
 	image = gtk_image_new_from_icon_name ("help-about",
@@ -349,7 +384,6 @@ panel_context_menu_create (PanelWidget *panel)
 	g_signal_connect (menuitem, "activate",
 			  G_CALLBACK (panel_context_menu_show_about_dialog),
 			  NULL);
-*/	
 	//FIXME: can we get rid of this? (needed by menu_get_panel())
 	g_object_set_data (G_OBJECT (retval), "menu_panel", panel);
 
