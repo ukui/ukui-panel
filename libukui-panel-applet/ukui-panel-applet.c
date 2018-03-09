@@ -868,7 +868,9 @@ ukui_panel_applet_menu_popup (UkuiPanelApplet *applet,
 			 guint        button,
 			 guint32      time)
 {
-	GtkWidget *menu;
+	GtkWidget      *menu;
+	int             menu_x = 0;
+	int             menu_y = 0;
 
 	menu = gtk_ui_manager_get_widget (applet->priv->ui_manager,
 					  "/UkuiPanelAppletPopup");
@@ -884,12 +886,17 @@ ukui_panel_applet_menu_popup (UkuiPanelApplet *applet,
 	context = gtk_widget_get_style_context (GTK_WIDGET(toplevel));
 	gtk_style_context_add_class(context,"gnome-panel-menu-bar");
 	gtk_style_context_add_class(context,"ukui-panel-menu-bar");
-	
-	gtk_menu_popup (GTK_MENU (menu),
-			NULL, NULL,
-			(GtkMenuPositionFunc) ukui_panel_applet_position_menu,
-			applet,
-			button, time);
+
+	gdk_window_get_origin (gtk_widget_get_window (applet),
+			&menu_x, &menu_y);
+
+	if (menu_x == 0){
+	    gtk_menu_popup (GTK_MENU (menu),
+			    NULL, NULL,
+			    (GtkMenuPositionFunc) ukui_panel_applet_position_menu,
+			    applet,
+			    button, time);
+	}
 }
 
 static gboolean
