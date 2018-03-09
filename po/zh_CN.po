@@ -2634,7 +2634,7 @@ msgstr "任务栏设置"
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:11
 msgid "Taskbar background transparent"
-msgstr "任务栏背景透明度"
+msgstr "任务栏背景透明"
 
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
