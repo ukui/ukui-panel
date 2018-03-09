@@ -129,9 +129,9 @@ typedef struct {
 
 static OrientationComboItem orientation_items [] = {
 	{ NC_("Orientation", "Top"),    PANEL_ORIENTATION_TOP    },
-	{ NC_("Orientation", "Bottom"), PANEL_ORIENTATION_BOTTOM },
-	{ NC_("Orientation", "Left"),   PANEL_ORIENTATION_LEFT   },
-	{ NC_("Orientation", "Right"),  PANEL_ORIENTATION_RIGHT  }
+	{ NC_("Orientation", "Bottom"), PANEL_ORIENTATION_BOTTOM }
+//	{ NC_("Orientation", "Left"),   PANEL_ORIENTATION_LEFT   },
+//	{ NC_("Orientation", "Right"),  PANEL_ORIENTATION_RIGHT  }
 };
 
 static void
