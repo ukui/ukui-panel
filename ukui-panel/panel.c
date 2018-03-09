@@ -1199,11 +1199,53 @@ panel_widget_setup(PanelWidget *panel)
 			  NULL);
 }
 
+GdkColor
+get_border_color1 (char *color_name)
+{
+        GdkColor color;
+
+        GObject *gs = (GObject *)gtk_settings_get_default ();
+        GValue color_scheme_value = G_VALUE_INIT;
+        g_value_init (&color_scheme_value, G_TYPE_STRING);
+        g_object_get_property (gs, "gtk-color-scheme", &color_scheme_value);
+        gchar *color_scheme = (char *)g_value_get_string (&color_scheme_value);
+        gchar color_spec[16] = { 0 };
+        char *needle = strstr(color_scheme, color_name);
+        if (needle) {
+                while (1) {
+                        if (color_spec[0] != '#') {
+                                color_spec[0] = *needle;
+                                needle++;
+                                continue;
+                        }
+
+                        if ((*needle >= 0x30 && *needle <= 0x39) ||
+                            (*needle >= 0x41 && *needle <= 0x46) ||
+                            (*needle >= 0x61 && *needle <= 0x66)) {
+                                color_spec[strlen(color_spec)] = *needle;
+                                needle++;
+                        } else {
+                                break;
+                        }
+                }
+                gdk_color_parse (color_spec, &color);
+        } else {
+                gdk_color_parse ("#3B9DC5", &color);
+        }
+
+        return color;
+}
+
 PanelData *
 panel_setup (PanelToplevel *toplevel)
 {
-	PanelWidget *panel_widget;
-	PanelData   *pd;
+	PanelWidget 			*panel_widget;
+	PanelData   			*pd;
+	char                            *path;
+	GSettings                       *settings;
+	guint16                          opacity;
+	char                            *color_str;
+
 
 	g_return_val_if_fail (PANEL_IS_TOPLEVEL (toplevel), NULL);
 
@@ -1246,6 +1288,27 @@ panel_setup (PanelToplevel *toplevel)
 				  G_CALLBACK (panel_orient_change), panel_widget);
  
 	g_signal_connect (toplevel, "destroy", G_CALLBACK (panel_destroy), pd);
+
+        GdkColor color = get_border_color1 ("ukuiside_color");
+        color_str=gdk_color_to_string(&color);
+        g_settings_set_string (toplevel->background_settings, "color", color_str);
+
+	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+	gboolean transparent = g_settings_get_boolean(settings, "transparent");
+
+	if (transparent){
+		PanelBackgroundType background_type = PANEL_BACK_NONE;
+                background_type = PANEL_BACK_COLOR;
+                panel_profile_set_background_type (toplevel, background_type);
+
+                opacity = (80.000000 / 100) * 65535;
+                panel_profile_set_background_opacity (toplevel, opacity);
+	} else {
+		PanelBackgroundType background_type = PANEL_BACK_NONE;
+                background_type = PANEL_BACK_NONE;
+                panel_profile_set_background_type (toplevel, background_type);
+        }
 
 	return pd;
 }
