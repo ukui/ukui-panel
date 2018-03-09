@@ -70,6 +70,11 @@
       <summary>Lock the taskbar</summary>
       <description>If true, the panel is automatically locked.</description>
     </key>
+    <key name="hide-workspace" type="b">
+      <default>true</default>
+      <summary>Hide workspace</summary>
+      <description>If true, the workspace is hidden.</description>
+    </key>
     <key name="auto-hide" type="b">
       <default>false</default>
       <summary>Automatically hide panel into corner</summary>

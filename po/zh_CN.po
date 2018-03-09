@@ -2636,6 +2636,10 @@ msgstr "任务栏设置"
 msgid "Taskbar background transparent"
 msgstr "任务栏背景透明"
 
+#: ../ukui-panel/panel-settings-dialog.ui.h:12
+msgid "Hide workspace"
+msgstr "隐藏工作区"
+
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
 msgid "Could not open recently used document \"%s\""

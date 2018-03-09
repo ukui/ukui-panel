@@ -31,6 +31,14 @@ toplevel-id=bottom
 position=56
 locked=true
 
+[Object workspace-switcher]
+object-type=applet
+applet-iid=WnckletFactory::WorkspaceSwitcherApplet
+toplevel-id=bottom
+position=11
+panel-right-stick=true
+locked=true
+
 [Object indicators]
 object-type=applet
 applet-iid=UkuiIndicatorsAppletFactory::UkuiIndicatorsApplet

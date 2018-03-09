@@ -450,6 +450,18 @@ static void setup_gsettings(PagerData* pager)
 					  pager);
 
 }
+static void
+panel_properties_dialog_toplevel_notify (GSettings             *settings,
+                                         gchar                 *key,
+                                         PagerData	       *pager)
+{
+	gboolean hide_workspace = g_settings_get_boolean(settings, "hide-workspace");
+	if (hide_workspace){
+		gtk_widget_hide (pager->applet);
+	} else{	
+		gtk_widget_show (pager->applet);
+	}
+}
 
 gboolean workspace_switcher_applet_fill(UkuiPanelApplet* applet)
 {
@@ -551,8 +563,24 @@ gboolean workspace_switcher_applet_fill(UkuiPanelApplet* applet)
 		action = gtk_action_group_get_action(action_group, "PagerPreferences");
 		gtk_action_set_visible(action, FALSE);
 	}
-
 	g_object_unref(action_group);
+
+        char          *path;
+        GSettings     *settings;
+        path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+        settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+	
+	gboolean hide_workspace = g_settings_get_boolean(settings, "hide-workspace");
+	if (hide_workspace){
+		gtk_widget_hide (pager->applet);
+	} else{	
+		gtk_widget_show (pager->applet);
+	}
+
+        g_signal_connect (settings,
+                          "changed",
+                          G_CALLBACK (panel_properties_dialog_toplevel_notify),
+                          pager);		
 
 	return TRUE;
 }

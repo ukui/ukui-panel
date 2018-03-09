@@ -81,6 +81,7 @@ typedef struct {
 	GtkWidget     *opacity_label;
 	GtkWidget     *opacity_legend;
 	GtkWidget     *lock_toggle;
+	GtkWidget     *hide_workspace;
 	GtkWidget     *default_height_size_radio;
 	GtkWidget     *medium_height_size_radio;
 	GtkWidget     *large_height_size_radio;
@@ -174,6 +175,23 @@ panel_properties_dialog_setup_orientation_combo_sensitivty (PanelPropertiesDialo
 }
 
 static void
+panel_settings_toggle_hide_workspace_toggle (PanelPropertiesDialog *dialog,
+				   GtkToggleButton       *toggle)
+{
+	char          *path;
+	GSettings     *settings;
+	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+
+	if (gtk_toggle_button_get_active (toggle)) {
+		g_settings_set_boolean(settings, "hide-workspace",TRUE);
+	}
+	else {
+		g_settings_set_boolean(settings, "hide-workspace",FALSE);
+	}
+}
+
+static void
 panel_settings_toggle_lock_toggle (PanelPropertiesDialog *dialog,
 				   GtkToggleButton       *toggle)
 {
@@ -192,6 +210,29 @@ panel_settings_toggle_lock_toggle (PanelPropertiesDialog *dialog,
 	}
 
 	
+}
+
+static void
+panel_properties_dialog_setup_hide_workspace (PanelPropertiesDialog *dialog,
+                                             GtkBuilder            *gui)
+{
+	char          *path;
+	GSettings     *settings;
+
+	dialog->hide_workspace = PANEL_GTK_BUILDER_GET (gui, "hide_workspace");
+	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+	gboolean hide_workspace = g_settings_get_boolean(settings, "hide-workspace");
+	
+	if (hide_workspace){
+                gtk_toggle_button_set_active(dialog->hide_workspace,TRUE);
+        } else{
+                gtk_toggle_button_set_active(dialog->hide_workspace,FALSE);
+        }
+
+	g_signal_connect_swapped (dialog->hide_workspace, "toggled",
+				  G_CALLBACK (panel_settings_toggle_hide_workspace_toggle),
+				  dialog);
 }
 
 static void
@@ -1420,6 +1461,7 @@ panel_properties_dialog_new (PanelToplevel *toplevel,
 	panel_properties_dialog_setup_hidebuttons_toggle (dialog, gui);
 	panel_properties_dialog_setup_arrows_toggle      (dialog, gui);
 	panel_properties_dialog_setup_lock_toggle        (dialog, gui);
+	panel_properties_dialog_setup_hide_workspace     (dialog, gui);
 
 	g_signal_connect_swapped (dialog->expand_toggle, "toggled",
 				  G_CALLBACK (panel_properties_dialog_setup_orientation_combo_sensitivty), dialog);

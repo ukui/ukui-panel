@@ -884,13 +884,12 @@ ukui_panel_applet_menu_popup (UkuiPanelApplet *applet,
 	context = gtk_widget_get_style_context (GTK_WIDGET(toplevel));
 	gtk_style_context_add_class(context,"gnome-panel-menu-bar");
 	gtk_style_context_add_class(context,"ukui-panel-menu-bar");
-/*	
+	
 	gtk_menu_popup (GTK_MENU (menu),
 			NULL, NULL,
 			(GtkMenuPositionFunc) ukui_panel_applet_position_menu,
 			applet,
 			button, time);
-*/			
 }
 
 static gboolean
