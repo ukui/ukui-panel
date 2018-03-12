@@ -159,7 +159,7 @@ static const GtkActionEntry tasklist_menu_actions[] = {
 	{
 		"TasklistSystemMonitor",
 		"utilities-system-monitor",
-		N_("_System Monitor"),
+		N_("_Monitor"),
 		NULL,
 		NULL,
 		G_CALLBACK(call_system_monitor)

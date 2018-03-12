@@ -365,7 +365,7 @@ panel_context_menu_create (PanelWidget *panel)
 	g_signal_connect (menuitem, "activate",
 			  G_CALLBACK (panel_context_menu_show_help), NULL);
 */	
-	menuitem = gtk_image_menu_item_new_with_mnemonic (_("_System Monitor"));
+	menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Monitor"));
 	image = gtk_image_new_from_icon_name ("utilities-system-monitor",
 					      GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
