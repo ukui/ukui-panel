@@ -2647,7 +2647,7 @@ panel_widget_add (PanelWidget *panel,
 {
 	AppletInfo* info;
 	GList 	*list, *list1;
-	int 	i, num, k=0;
+	int 	i, num, k=0, len=0;
 	AppletData *ad1,*ad2;
 	info = g_object_get_data (G_OBJECT (applet), "applet_info");
 	AppletData *ad = NULL;
@@ -2679,6 +2679,13 @@ panel_widget_add (PanelWidget *panel,
 		}
 	}
 
+	list1=get_applet_list_pos (panel, 0);
+	while (list1) {
+		len=len+1;
+		list1 = list1->next;
+	}
+	len=len-3;
+
 	list = get_applet_list_pos (panel, 0);
 	num = (pos-52)/37 + 1;
 	while (list) {
@@ -2689,8 +2696,13 @@ panel_widget_add (PanelWidget *panel,
 			}
 		}
 		if (k == num) {
-    			pos=ad1->pos;
-    			ad1->pos=num+50;
+			if(ad1->pos >= 70) {
+			       pos=50+len;
+//		       	       ad1->pos=num+50;	       
+			} else {
+    				pos=ad1->pos;
+    				ad1->pos=num+50;
+			}
 		}
 		i = ad1->pos;
 		list = list->next;

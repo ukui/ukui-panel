@@ -28,7 +28,7 @@ locked=false
 object-type=applet
 applet-iid=WnckletFactory::WindowListApplet
 toplevel-id=bottom
-position=56
+position=70
 locked=true
 
 [Object workspace-switcher]
