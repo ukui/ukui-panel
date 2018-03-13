@@ -2684,7 +2684,9 @@ panel_widget_add (PanelWidget *panel,
 	while (list) {
 		ad1 = list->data;
 		if (list->next != NULL && k != 0) {
-			ad1->pos = 50+k;
+			if (!ad1->locked){
+				ad1->pos = 50+k;
+			}
 		}
 		if (k == num) {
     			pos=ad1->pos;
