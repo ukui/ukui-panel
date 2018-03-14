@@ -914,10 +914,10 @@ panel_settings_dialog_setup_notifcation_area_treeview (PanelPropertiesDialog *di
 		path1 = 	g_strdup_printf ("%s%d/", "/org/ukui/panel/indicator/tray", j);
 		settings1 = 	g_settings_new_with_path ("org.ukui.panel.indicator.tray", path1);
 
-		g_signal_connect (settings1,
-				  "changed::" "number",
-				  G_CALLBACK (tray_widget_show_notify),
-				  store);
+//		g_signal_connect (settings1,
+//				  "changed::" "number",
+//				  G_CALLBACK (tray_widget_show_notify),
+//				  store);
 		j++;
 	}
 
