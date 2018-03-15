@@ -372,8 +372,49 @@ static GdkPixbuf* icon_loader_func(const char* icon, int size, unsigned int flag
 	return retval;
 }
 
-gboolean window_list_applet_fill(UkuiPanelApplet* applet)
+static void
+window_list_applet_size_change_notify (GSettings             *settings,
+                                       gchar                 *key,
+                                       UkuiPanelApplet	     *applet)
 {
+	int panel_size = g_settings_get_int (settings, "size");
+	switch (panel_size)
+	{
+		case 40:
+			wnck_set_default_mini_icon_size (16);
+			break;
+		case 60:
+			wnck_set_default_mini_icon_size (32);
+			break;
+		case 80:
+			wnck_set_default_mini_icon_size (48);
+			break;
+	}
+}
+
+gboolean window_list_applet_fill(UkuiPanelApplet* applet)
+{ 	
+	GSettings *panel_settings = g_settings_new_with_path("org.ukui.panel.toplevel", "/org/ukui/panel/toplevels/bottom/");
+        g_signal_connect (panel_settings,
+                          "changed",
+                          G_CALLBACK (window_list_applet_size_change_notify),
+                          applet);
+	
+	int panel_size = g_settings_get_int (panel_settings, "size");
+	switch (panel_size)
+	{
+		case 40:
+			wnck_set_default_mini_icon_size (16);
+			break;
+		case 60:
+			wnck_set_default_mini_icon_size (32);
+			break;
+		case 80:
+			wnck_set_default_mini_icon_size (48);
+			break;
+	}
+
+
 	TasklistData* tasklist;
 	GtkActionGroup* action_group;
 	gchar* ui_path;
