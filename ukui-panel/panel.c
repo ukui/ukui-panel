@@ -1289,9 +1289,13 @@ panel_setup (PanelToplevel *toplevel)
  
 	g_signal_connect (toplevel, "destroy", G_CALLBACK (panel_destroy), pd);
 
-        GdkColor color = get_border_color1 ("ukuiside_color");
+	GdkColor 		color;
+	GtkStyle 		*style = gtk_rc_get_style(pd->panel);
+	gtk_style_lookup_color (style,"panel_normal_bg_color",&color);
+
         color_str=gdk_color_to_string(&color);
         g_settings_set_string (toplevel->background_settings, "color", color_str);
+
 
 	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
 	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
@@ -1306,8 +1310,11 @@ panel_setup (PanelToplevel *toplevel)
                 panel_profile_set_background_opacity (toplevel, opacity);
 	} else {
 		PanelBackgroundType background_type = PANEL_BACK_NONE;
-                background_type = PANEL_BACK_NONE;
+                background_type = PANEL_BACK_COLOR;
                 panel_profile_set_background_type (toplevel, background_type);
+
+                opacity = (100.000000 / 100) * 65535;
+                panel_profile_set_background_opacity (toplevel, opacity);
         }
 
 	return pd;

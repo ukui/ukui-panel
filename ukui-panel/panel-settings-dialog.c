@@ -603,8 +603,11 @@ panel_settings_toggle_opacity_scale_toggle (PanelPropertiesDialog *dialog,
 	} else {
 		g_settings_set_boolean(settings, "transparent",FALSE);
 		PanelBackgroundType background_type = PANEL_BACK_NONE;
-		background_type = PANEL_BACK_NONE;
+		background_type = PANEL_BACK_COLOR;
 	        panel_profile_set_background_type (dialog->toplevel, background_type);		
+
+		opacity = (100.000000 / 100) * 65535;
+		panel_profile_set_background_opacity (dialog->toplevel, opacity);
 	}
 }
 
@@ -617,9 +620,12 @@ panel_properties_dialog_setup_opacity_scale (PanelPropertiesDialog *dialog,
 	guint16 			 opacity;
         GSettings     			*settings;
 
-	GdkColor color = get_border_color ("ukuiside_color");
+//	GdkColor color = get_border_color ("panel_normal_bg_color");
+	GdkColor color;
+	GtkStyle *style=gtk_rc_get_style(dialog->toplevel);
+	gtk_style_lookup_color (style,"panel_normal_bg_color",&color);
+
 	color_str=gdk_color_to_string(&color);
-	printf("color_str=%s\n",color_str);
 	g_settings_set_string (dialog->toplevel->background_settings, "color", color_str);
 
 	dialog->opacity_scale = PANEL_GTK_BUILDER_GET (gui, "opacity_scale");
@@ -645,8 +651,11 @@ panel_properties_dialog_setup_opacity_scale (PanelPropertiesDialog *dialog,
 		panel_profile_set_background_opacity (dialog->toplevel, opacity);
 	} else {
 		PanelBackgroundType background_type = PANEL_BACK_NONE;
-		background_type = PANEL_BACK_NONE;
+		background_type = PANEL_BACK_COLOR;
         	panel_profile_set_background_type (dialog->toplevel, background_type);		
+
+		opacity = (100.000000 / 100) * 65535;
+		panel_profile_set_background_opacity (dialog->toplevel, opacity);
 	}
 
 	g_signal_connect_swapped (dialog->opacity_scale, "toggled",
