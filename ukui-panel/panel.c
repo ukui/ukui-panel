@@ -1291,9 +1291,20 @@ panel_setup (PanelToplevel *toplevel)
 
 	GdkColor 		color;
 	GtkStyle 		*style = gtk_rc_get_style(pd->panel);
-	gtk_style_lookup_color (style,"panel_normal_bg_color",&color);
+	if (gtk_style_lookup_color (style,"panel_normal_bg_color",&color)){
+		color_str=gdk_color_to_string(&color);
+	} else {
+		char 				*color;
+	        GSettings                       *settings2;
+        	settings2 			= g_settings_new("org.mate.interface");
+        	color				= g_settings_get_string(settings2, "gtk-theme");
 
-        color_str=gdk_color_to_string(&color);
+        	if (!strcmp(color,"ukui-blue")){
+                	color_str="#15678f";
+       	 	}else{
+                	color_str="#15678f";
+        	}
+	}
         g_settings_set_string (toplevel->background_settings, "color", color_str);
 
 
