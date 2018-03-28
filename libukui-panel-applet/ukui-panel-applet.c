@@ -596,6 +596,7 @@ ukui_panel_applet_menu_update_actions (UkuiPanelApplet *applet)
 
 	g_object_set (ukui_panel_applet_menu_get_action (applet, "Lock"),
 		      "visible", !locked_down, NULL);
+/*	
 	g_object_set (ukui_panel_applet_menu_get_action (applet, "Move"),
 		      "sensitive", !locked,
 		      "visible", !locked_down,
@@ -604,6 +605,7 @@ ukui_panel_applet_menu_update_actions (UkuiPanelApplet *applet)
 		      "sensitive", !locked,
 		      "visible", !locked_down,
 		      NULL);
+*/		      
 }
 
 static void
@@ -1854,11 +1856,11 @@ ukui_panel_applet_init (UkuiPanelApplet *applet)
 				      menu_entries,
 				      G_N_ELEMENTS (menu_entries),
 				      applet);
+*/
 	gtk_action_group_add_toggle_actions (applet->priv->panel_action_group,
 					     menu_toggle_entries,
 					     G_N_ELEMENTS (menu_toggle_entries),
 					     applet);
-*/
 	applet->priv->ui_manager = gtk_ui_manager_new ();
 	gtk_ui_manager_insert_action_group (applet->priv->ui_manager,
 					    applet->priv->panel_action_group, 1);
