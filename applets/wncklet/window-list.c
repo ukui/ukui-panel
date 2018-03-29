@@ -395,7 +395,7 @@ window_list_applet_size_change_notify (GSettings             *settings,
 }
 
 gboolean window_list_applet_fill(UkuiPanelApplet* applet)
-{ 	
+{ 
 	GSettings *panel_settings = g_settings_new_with_path("org.ukui.panel.toplevel", "/org/ukui/panel/toplevels/bottom/");
         g_signal_connect (panel_settings,
                           "changed",
@@ -422,7 +422,7 @@ gboolean window_list_applet_fill(UkuiPanelApplet* applet)
 	gchar* ui_path;
 #if GTK_CHECK_VERSION (3, 20, 0)
 	GtkCssProvider  *provider;
-	GdkScreen *screen;
+	GdkScreen *screen,*screen1;
 #endif
 	tasklist = g_new0(TasklistData, 1);
 
@@ -534,6 +534,13 @@ gboolean window_list_applet_fill(UkuiPanelApplet* applet)
 	}
 
 	g_object_unref(action_group);
+
+        GtkStyleProvider *provider1 = NULL;
+        provider1 = gtk_css_provider_new ();
+        screen1 = gdk_screen_get_default ();
+        gtk_style_context_add_provider_for_screen (screen1, GTK_STYLE_PROVIDER (provider1), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        gtk_css_provider_load_from_file(provider1, g_file_new_for_path("/usr/share/ukui-panel/style/ukui-panel.css"), NULL);
+        gtk_widget_set_name (GTK_WIDGET(tasklist->applet),"PanelApplet");
 
 	gtk_widget_show(tasklist->applet);
 

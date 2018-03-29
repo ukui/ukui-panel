@@ -236,6 +236,9 @@ desktopdir = $(datadir)/applications
 desktop_in_files = ukui-panel.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 
+styledir = $(datadir)/ukui-panel/style
+style_DATA=ukui-panel.css
+
 @INTLTOOL_DESKTOP_RULE@
 
 EXTRA_DIST = \
