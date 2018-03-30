@@ -132,10 +132,10 @@ static const gchar panel_menu_ui[] =
 	"  <popup name=\"UkuiPanelAppletPopup\" action=\"PopupAction\">\n"
 	"    <placeholder name=\"AppletItems\"/>\n"
 	"    <separator/>\n"
-	"    <menuitem name=\"RemoveItem\" action=\"Remove\"/>\n"
-	"    <menuitem name=\"MoveItem\" action=\"Move\"/>\n"
+//	"    <menuitem name=\"RemoveItem\" action=\"Remove\"/>\n"
+//	"    <menuitem name=\"MoveItem\" action=\"Move\"/>\n"
 	"    <separator/>\n"
-	"    <menuitem name=\"LockItem\" action=\"Lock\"/>\n"
+//	"    <menuitem name=\"LockItem\" action=\"Lock\"/>\n"
 	"  </popup>\n"
 	"</ui>\n";
 
