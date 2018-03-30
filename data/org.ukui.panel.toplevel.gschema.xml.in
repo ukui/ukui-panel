@@ -10,6 +10,11 @@
       <summary>X screen where the panel is displayed</summary>
       <description>With a multi-screen setup, you may have panels on each individual screen. This key identifies the current screen the panel is displayed on.</description>
     </key>
+    <key name="position" type="i">
+      <default>0</default>
+      <summary>Show blank starting position</summary>
+      <description>Windows-list get blank starting position</description>
+    </key>
     <key name="monitor" type="i">
       <default>0</default>
       <summary>Xinerama monitor where the panel is displayed</summary>

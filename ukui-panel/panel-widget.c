@@ -1400,6 +1400,7 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 	int i;
 	int old_size;
 	gboolean ltr;
+	int panel_size;
 
 	g_return_if_fail(PANEL_IS_WIDGET(widget));
 	g_return_if_fail(allocation!=NULL);
@@ -1416,7 +1417,7 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 					allocation->y,
 					allocation->width, 
 					allocation->height);
-
+	panel_size=allocation->width;
 	if(panel->orient == GTK_ORIENTATION_HORIZONTAL)
 		panel->size = allocation->width;
 	else
@@ -1494,7 +1495,6 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 					ad->cells = chreq.width;
 				else
 					ad->cells = chreq.height;
-
 				ad->min_cells = ad->cells;
 			} else {
 				ad->cells = ad->size_hints [ad->size_hints_len - 1];
@@ -1551,6 +1551,7 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 			}
 		}
 
+		int num=1;
 		for(list = panel->applet_list;
 		    list!=NULL;
 		    list = g_list_next(list)) {
@@ -1580,7 +1581,21 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 			challoc.width = MAX(challoc.width, 1);
 			challoc.height = MAX(challoc.height, 1);
 			
+			int size=panel_size - 11;
+			int size1=panel_size - 12;
+			if (num == 5 ) {
+		                char          *path;
+                                GSettings     *settings;
+                                path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+                                settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+
+				if (ad->constrained != size && ad->constrained != size1  && ad->constrained !=0){
+					g_settings_set_int(settings, "position",ad->constrained);
+				}
+			}
+
 			gtk_widget_size_allocate(ad->applet,&challoc);
+			num=num+1;
 		}
 	}
 
