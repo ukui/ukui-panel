@@ -540,7 +540,7 @@ gboolean window_list_applet_fill(UkuiPanelApplet* applet)
         screen1 = gdk_screen_get_default ();
         gtk_style_context_add_provider_for_screen (screen1, GTK_STYLE_PROVIDER (provider1), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
         gtk_css_provider_load_from_file(provider1, g_file_new_for_path("/usr/share/ukui-panel/style/ukui-panel.css"), NULL);
-        gtk_widget_set_name (GTK_WIDGET(tasklist->applet),"PanelApplet");
+//        gtk_widget_set_name (GTK_WIDGET(tasklist->applet),"PanelApplet");
 
 	gtk_widget_show(tasklist->applet);
 

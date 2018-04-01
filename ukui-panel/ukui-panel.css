@@ -5,24 +5,44 @@
 */
 }
 /*窗口列表*/
-#PanelApplet *{
-/*    
-    background-color: transparent;
-*/
-    padding: 0px;
-    margin: 0px;
-    border-width: 0.2px;
-    border-color: #ffffff;
-}
 /*
+button {
+    background-color: transparent;
+    border-color: rgba(255,255,255,0.4);
+    border-width: 1px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
 button:hover *{
-    border-color: rgba(255, 255, 255, 0.5);
-    border-width: 0.2px;
+    border-color: rgba(255,255,255,0.5);
+    border-width: 1px;
     background-color: rgba(255, 255, 255, 0.3);
 }
-button:active *{
-    background-color:background-color: rgba(255, 255, 255, 0.1);
+button:checked *{
+    border-color: rgba(255,255,255,0.3);
+    border-width: 1px;
+    background-color: rgba(0,0,0,0.1);
+*    background-color: red;
 }
+*/
+#tasklist-button {
+    background-color: transparent;
+    border-color: rgba(255,255,255,0.4);
+    border-width: 1px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+#tasklist-button:hover {
+    border-color: rgba(255,255,255,0.5);
+    border-width: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    background-image: image(rgba(255, 255, 255, 0.3));
+}
+#tasklist-button:checked {
+    border-color: rgba(255,255,255,0.3);
+    border-width: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    background-image: image(rgba(0, 0, 0, 0.1));
+}
+/*
 *panel的框架，没用上
 #PanelFrame *{
     background-color: #DC143C;
