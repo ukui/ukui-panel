@@ -1551,7 +1551,16 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 			}
 		}
 
-		int num=1;
+		int total=-1;
+		for(list = panel->applet_list;
+			list!=NULL;
+			list = g_list_next(list)) {
+			    total=total+1;
+		}
+
+		int launcher_nums = total-5;
+		int num = 1;
+
 		for(list = panel->applet_list;
 		    list!=NULL;
 		    list = g_list_next(list)) {
@@ -1583,7 +1592,7 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 			
 			int size=panel_size - 11;
 			int size1=panel_size - 12;
-			if (num == 5 ) {
+			if (num == total ) {
 		                char          *path;
                                 GSettings     *settings;
                                 path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
@@ -1591,6 +1600,7 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 
 				if (ad->constrained != size && ad->constrained != size1  && ad->constrained !=0){
 					g_settings_set_int(settings, "position",ad->constrained);
+					g_settings_set_int(settings, "launcher-nums",launcher_nums);
 				}
 			}
 

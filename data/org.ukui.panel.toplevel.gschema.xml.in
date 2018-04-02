@@ -15,6 +15,11 @@
       <summary>Show blank starting position</summary>
       <description>Windows-list get blank starting position</description>
     </key>
+    <key name="launcher-nums" type="i">
+      <default>0</default>
+      <summary>Number of new inserted launcher applets</summary>
+      <description>Number of new inserted launcher applets</description>
+    </key>
     <key name="monitor" type="i">
       <default>0</default>
       <summary>Xinerama monitor where the panel is displayed</summary>

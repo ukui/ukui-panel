@@ -678,7 +678,7 @@ _ukui_panel_applet_frame_update_size_hints (UkuiPanelAppletFrame *frame,
 	        settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
 
 		if (g_settings_get_int(settings, "position") !=0){
-                    value=g_settings_get_int(settings, "position")-180;
+                    value=g_settings_get_int(settings, "position")-180-g_settings_get_int(settings, "launcher-nums")*40;
 		}
 		for (i = 0; i < n_elements; i++) {
 
