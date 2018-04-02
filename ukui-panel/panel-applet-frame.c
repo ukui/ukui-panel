@@ -678,19 +678,22 @@ _ukui_panel_applet_frame_update_size_hints (UkuiPanelAppletFrame *frame,
 	        settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
 
 		if (g_settings_get_int(settings, "position") !=0){
-                    value=g_settings_get_int(settings, "position")-180-g_settings_get_int(settings, "launcher-nums")*40;
+                    value=g_settings_get_int(settings, "position");
 		}
 		for (i = 0; i < n_elements; i++) {
 
 			size_hints[i] += extra_size;
 
-			if (value == 0){
+			if (value <= 0){
 				value = screen_width - 195 -200;
 			}
-			if (size_hints[i] > value) {
+			else {
+				if (size_hints[i] > value && value > 400) {
 
-				size_hints[i] = value;	
+                                        value=value-180-g_settings_get_int(settings, "launcher-nums")*40;
+					size_hints[i] = value;
 
+				}
 			}
 		}
 	}

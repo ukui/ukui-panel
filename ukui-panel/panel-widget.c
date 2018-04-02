@@ -1592,7 +1592,7 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 			
 			int size=panel_size - 11;
 			int size1=panel_size - 12;
-			if (num == total ) {
+			if (num == total && total >=5 ) {
 		                char          *path;
                                 GSettings     *settings;
                                 path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
