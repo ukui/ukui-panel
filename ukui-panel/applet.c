@@ -1033,12 +1033,16 @@ ukui_panel_applet_load_idle_handler (gpointer dummy)
 		settings = g_settings_new_with_path (PANEL_OBJECT_SCHEMA, path);
 		launcher_location = g_settings_get_string (settings, PANEL_OBJECT_LAUNCHER_LOCATION_KEY);
 		if (strstr (launcher_location, "desktop")) {
-			WriteAppletInfo ("add", launcher_location);
+			if (WriteAppletInfo ("add", launcher_location) == 0){
+				launcher_load_from_gsettings (panel_widget,
+					                applet->locked,
+					                applet->position,
+					                applet->id);
+			}
+			else {
+				return;
+			}
 		}
-		launcher_load_from_gsettings (panel_widget,
-					  applet->locked,
-					  applet->position,
-					  applet->id);
 		break;
 	case PANEL_OBJECT_ACTION:
 		panel_action_button_load_from_gsettings (

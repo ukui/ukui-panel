@@ -45,10 +45,11 @@ const gchar     *ukui_panel_applet_info_get_icon                        (UkuiPan
 const gchar * const *ukui_panel_applet_info_get_old_ids                 (UkuiPanelAppletInfo *info);
 int              WriteAppletInfo                                        (char    *action,
 								  	 char    *launcher_location);
+/*
 void             StrReplace                                             (char	 *strSrc,
 									 char   *strFind,
 									 char   *strReplace);
-
+*/
 #ifdef __cplusplus
 }
 #endif

@@ -116,6 +116,7 @@ ukui_panel_applet_info_get_old_ids (UkuiPanelAppletInfo *info)
 {
 	return (const gchar * const *) info->old_ids;
 }
+/*
 void StrReplace (char	*strSrc, 
 		 char 	*strFind, 
 		 char 	*strReplace)
@@ -139,6 +140,43 @@ void StrReplace (char	*strSrc,
 			strSrc++;
 		}
 	}
+}
+*/
+
+static char * StrReplace(char const * const original, char const * const pattern, char const * const replacement) 
+{
+  size_t const replen = strlen(replacement);
+  size_t const patlen = strlen(pattern);
+  size_t const orilen = strlen(original);
+
+  size_t patcnt = 0;
+  const char * oriptr;
+  const char * patloc;
+
+  for (oriptr = original; (patloc = strstr(oriptr, pattern)); oriptr = patloc + patlen)
+  {
+    patcnt++;
+  }
+
+  {
+    size_t const retlen = orilen + patcnt * (replen - patlen);
+    char * const returned = (char *) malloc( sizeof(char) * (retlen + 1) );
+
+    if (returned != NULL)
+    {
+      char * retptr = returned;
+      for (oriptr = original; (patloc = strstr(oriptr, pattern)); oriptr = patloc + patlen)
+      {
+        size_t const skplen = patloc - oriptr;
+        strncpy(retptr, oriptr, skplen);
+        retptr += skplen;
+        strncpy(retptr, replacement, replen);
+        retptr += replen;
+      }
+      strcpy(retptr, oriptr);
+    }
+    return returned;
+  }
 }
 
 int WriteAppletInfo (char	*action,
@@ -214,18 +252,22 @@ int WriteAppletInfo (char	*action,
 
 	if (!strcmp (state,"add")) {
 		if (strstr (file_content, Name) == NULL ){
+			printf("return 0\n");
 			if ((fp = fopen(home_applet,"a+")) != NULL) {
 				fprintf (fp, "%s", Name);
 				fclose (fp);
 			}
 		}
+		else {
+			printf("return 1\n");
+			return 1;
+		}
 	}
 
 	if (!strcmp (state, "delete")) {
 		if (strstr (file_content, Name) != NULL ){
-			StrReplace (file_content, Name, "");				
 			if ((fp = fopen(home_applet, "w")) != NULL) {
-				fprintf (fp, "%s", file_content);
+				fprintf (fp, "%s", StrReplace (file_content, Name, ""));
 				fclose (fp);
 			}
 		}
