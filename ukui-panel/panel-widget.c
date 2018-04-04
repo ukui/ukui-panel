@@ -2738,6 +2738,9 @@ panel_widget_add (PanelWidget *panel,
 
 	if (ad == NULL) {
 		ad = g_new (AppletData, 1);
+		if (pos < 70){
+			g_settings_set_int (info->settings, "position", pos-1);
+		}
 		ad->applet = applet;
 		ad->cells = 1;
 		ad->min_cells = 1;
