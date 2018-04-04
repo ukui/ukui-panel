@@ -1128,7 +1128,7 @@ panel_launcher_create_copy (PanelToplevel *toplevel,
 
 	filename = panel_launcher_get_filename (new_location);
 	if (strstr (filename, "desktop")) {
-		WriteAppletInfo ("delete", filename);
+		WriteAppletInfo ("delete", filename, "after");
 	}
 	panel_launcher_create (toplevel, position, filename);
 	g_free (new_location);

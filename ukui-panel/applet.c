@@ -222,7 +222,7 @@ applet_remove_callback (GtkWidget  *widget,
 		settings = g_settings_new_with_path (PANEL_OBJECT_SCHEMA, path);
 		launcher_location = g_settings_get_string (settings, PANEL_OBJECT_LAUNCHER_LOCATION_KEY);
 		if (strstr(launcher_location, "desktop")) {
-			WriteAppletInfo ("delete", launcher_location);
+			WriteAppletInfo ("delete", launcher_location, "after");
 		}
 		panel_profile_delete_object (info);
 	}
@@ -948,7 +948,7 @@ ukui_panel_applet_stop_loading (const char *id)
 }
 
 static gboolean
-ukui_panel_applet_load_idle_handler (gpointer dummy)
+ukui_panel_applet_load_idle_handler (char *data)
 {
 	GSList            *l;
 	GSettings         *settings;
@@ -1033,13 +1033,14 @@ ukui_panel_applet_load_idle_handler (gpointer dummy)
 		settings = g_settings_new_with_path (PANEL_OBJECT_SCHEMA, path);
 		launcher_location = g_settings_get_string (settings, PANEL_OBJECT_LAUNCHER_LOCATION_KEY);
 		if (strstr (launcher_location, "desktop")) {
-			if (WriteAppletInfo ("add", launcher_location) == 0){
+			if (WriteAppletInfo ("add", launcher_location, data) == 0){
 				launcher_load_from_gsettings (panel_widget,
 					                applet->locked,
 					                applet->position,
 					                applet->id);
 			}
 			else {
+				 panel_profile_remove_from_list (PANEL_GSETTINGS_OBJECTS, applet->id);
 				return;
 			}
 		}
@@ -1143,12 +1144,14 @@ ukui_panel_applet_load_queued_applets (gboolean initial_load)
 		/* on panel startup, we don't care about redraws of the
 		 * toplevels since they are hidden, so we give a higher
 		 * priority to loading of applets */
-		if (initial_load)
+		if (initial_load){
 			g_idle_add_full (G_PRIORITY_HIGH_IDLE,
 					 ukui_panel_applet_load_idle_handler,
-					 NULL, NULL);
-		else
-			g_idle_add (ukui_panel_applet_load_idle_handler, NULL);
+					 "init", NULL);
+		}
+		else{
+			g_idle_add (ukui_panel_applet_load_idle_handler, "after");
+		}
 
 		ukui_panel_applet_have_load_idle = TRUE;
 	}

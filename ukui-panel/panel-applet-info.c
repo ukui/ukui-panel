@@ -180,7 +180,8 @@ static char * StrReplace(char const * const original, char const * const pattern
 }
 
 int WriteAppletInfo (char	*action,
-		     char	*launcher_location)
+		     char	*launcher_location,
+		     char	*data)
 {
 	int flen;
 	FILE *fp;
@@ -252,15 +253,15 @@ int WriteAppletInfo (char	*action,
 
 	if (!strcmp (state,"add")) {
 		if (strstr (file_content, Name) == NULL ){
-			printf("return 0\n");
 			if ((fp = fopen(home_applet,"a+")) != NULL) {
 				fprintf (fp, "%s", Name);
 				fclose (fp);
 			}
 		}
 		else {
-			printf("return 1\n");
-			return 1;
+			if (!strcmp(data,"after")){
+				return 1;
+			}
 		}
 	}
 

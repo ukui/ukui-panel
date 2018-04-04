@@ -44,7 +44,8 @@ const gchar     *ukui_panel_applet_info_get_description                 (UkuiPan
 const gchar     *ukui_panel_applet_info_get_icon                        (UkuiPanelAppletInfo *info);
 const gchar * const *ukui_panel_applet_info_get_old_ids                 (UkuiPanelAppletInfo *info);
 int              WriteAppletInfo                                        (char    *action,
-								  	 char    *launcher_location);
+								         char    *launcher_location,
+									 char 	 *data);
 /*
 void             StrReplace                                             (char	 *strSrc,
 									 char   *strFind,
