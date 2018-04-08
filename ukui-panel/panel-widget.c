@@ -2671,8 +2671,8 @@ panel_widget_add (PanelWidget *panel,
 		  gboolean     insert_at_pos)
 {
 	AppletInfo* info;
-	GList 	*list, *list1;
-	int 	i, num, k=0, len=0;
+	GList 	*list, *list1, *list2;
+	int 	i, num, k=0, len=0, k1 = 0,value = 51;
 	AppletData *ad1,*ad2;
 	info = g_object_get_data (G_OBJECT (applet), "applet_info");
 	AppletData *ad = NULL;
@@ -2737,10 +2737,12 @@ panel_widget_add (PanelWidget *panel,
 	if(pos==-1) return -1;
 
 	if (ad == NULL) {
+
 		ad = g_new (AppletData, 1);
 		if (pos < 70){
-			g_settings_set_int (info->settings, "position", pos-1);
+				g_settings_set_int (info->settings, "position", pos);
 		}
+
 		ad->applet = applet;
 		ad->cells = 1;
 		ad->min_cells = 1;
@@ -2783,6 +2785,20 @@ panel_widget_add (PanelWidget *panel,
 	
 	/*NOTE: forbidden list is not updated on addition, use the
 	function above for the panel*/
+
+	//Sort for position
+	list2=get_applet_list_pos (panel, 0);
+
+	while (list2) {
+		ad1 = list2->data;
+		if (k1 != 0 && ad1->pos <70){
+			ad1->pos = value+k1;
+			info = g_object_get_data (G_OBJECT (ad1->applet), "applet_info");
+			g_settings_set_int (info->settings, "position", ad1->pos);
+		}
+		k1=k1+1;
+		list2 = list2->next;
+	}
 
 	return pos;
 }
