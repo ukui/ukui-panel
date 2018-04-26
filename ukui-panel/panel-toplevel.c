@@ -1507,12 +1507,12 @@ static gboolean panel_toplevel_update_struts(PanelToplevel* toplevel, gboolean e
 			strut_end = MIN (y + height, monitor_y + monitor_height) - 1;
 		}
 	}
-
+/*
 	if (orientation != toplevel->priv->orientation) {
 		toplevel->priv->orientation = orientation;
 		g_object_notify (G_OBJECT (toplevel), "orientation");
 	}
-
+*/
 	if (toplevel->priv->auto_hide && strut > 0)
 		strut = panel_toplevel_get_effective_auto_hide_size (toplevel);
 
