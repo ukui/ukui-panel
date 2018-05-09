@@ -753,7 +753,7 @@ cell_edited (GtkCellRendererText *cell,
   gtk_list_store_set (data, &iter, 2,
                       new_text, -1);
 
-  gtk_tree_model_get(model, &iter,1,&applet_name_value);
+  gtk_tree_model_get(model, &iter,1,&applet_name_value,-1);
 
   while(i<100){
 
