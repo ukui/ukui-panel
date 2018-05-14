@@ -17,6 +17,11 @@
     </key>
     <key name="launcher-nums" type="i">
       <default>0</default>
+      <summary>Number of new inserted tray applets</summary>
+      <description>Number of new inserted tray applets</description>
+    </key>
+    <key name="applet-nums" type="i">
+      <default>0</default>
       <summary>Number of new inserted launcher applets</summary>
       <description>Number of new inserted launcher applets</description>
     </key>

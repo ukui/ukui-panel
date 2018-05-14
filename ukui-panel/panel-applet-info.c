@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <libmate-desktop/mate-gsettings.h>
 
 struct _UkuiPanelAppletInfo {
 	gchar  *iid;
@@ -183,14 +184,16 @@ int WriteAppletInfo (char	*action,
 		     char	*launcher_location,
 		     char	*data)
 {
-	int flen;
+	int flen, num;
 	FILE *fp;
 	GKeyFile *keyfile;
 	GKeyFileFlags flags;
 	GError *error = NULL;
+        GSettings *settings1;
 	char	*home,
 		*Name,
 		*state,
+		*path1,
 		*filename,
 		*Language,
 		*file_content="",
@@ -199,6 +202,8 @@ int WriteAppletInfo (char	*action,
 		config_desktop_filename[100],
 		autostart_desktop_filename[100],
 		applications_desktop_filename[100];
+
+
 	state = action;
 	filename = launcher_location;
 
@@ -251,11 +256,19 @@ int WriteAppletInfo (char	*action,
 		fclose (fp);
 	}
 
+        path1 = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+        settings1 = g_settings_new_with_path ("org.ukui.panel.toplevel",path1);
+        num = g_settings_get_int(settings1, "applet-nums");
+
 	if (!strcmp (state,"add")) {
 		if (strstr (file_content, Name) == NULL ){
 			if ((fp = fopen(home_applet,"a+")) != NULL) {
 				fprintf (fp, "%s", Name);
 				fclose (fp);
+
+                                num = num+1;
+                                g_settings_set_int(settings1, "applet-nums",num);
+
 			}
 		}
 		else {
@@ -270,6 +283,10 @@ int WriteAppletInfo (char	*action,
 			if ((fp = fopen(home_applet, "w")) != NULL) {
 				fprintf (fp, "%s", StrReplace (file_content, Name, ""));
 				fclose (fp);
+
+                                num = num-1;
+                                g_settings_set_int(settings1, "applet-nums",num);
+
 			}
 		}
 	}

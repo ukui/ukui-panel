@@ -690,7 +690,7 @@ _ukui_panel_applet_frame_update_size_hints (UkuiPanelAppletFrame *frame,
 			else {
 				if (size_hints[i] > (value-200) && value > 400) {
 
-					size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-100;
+					size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-100 - (g_settings_get_int(settings, "applet-nums")-2)*40;
 
 				}
 			}

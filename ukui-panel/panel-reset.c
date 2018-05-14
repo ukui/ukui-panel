@@ -34,8 +34,10 @@
 void
 panel_reset()
 {
-	GSettings *settings;
+	GSettings *settings, *settings1;
 	char    *home, home_applet[100];
+        int            num;
+        char          *path1;
 
 	settings = g_settings_new (PANEL_SCHEMA);
 	g_settings_set_strv (settings, PANEL_OBJECT_ID_LIST_KEY, NULL);
@@ -49,6 +51,11 @@ panel_reset()
 		remove(home_applet);
 	}
 	system("dconf reset -f /org/ukui/panel/indicator/");
+
+        path1 = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+        settings1 = g_settings_new_with_path ("org.ukui.panel.toplevel",path1);
+        g_settings_set_int(settings1, "applet-nums",0);
+
 	g_object_unref (settings);
 }
 
