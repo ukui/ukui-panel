@@ -1600,7 +1600,7 @@ panel_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 
 				if (ad->constrained != size && ad->constrained != size1  && ad->constrained !=0){
 					g_settings_set_int(settings, "position",ad->constrained);
-					g_settings_set_int(settings, "launcher-nums",launcher_nums);
+//					g_settings_set_int(settings, "launcher-nums",launcher_nums);
 				}
 			}
 
