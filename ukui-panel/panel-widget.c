@@ -2670,6 +2670,12 @@ panel_widget_add (PanelWidget *panel,
 		  int          pos,
 		  gboolean     insert_at_pos)
 {
+	GdkScreen* screen;
+        gint       screen_width;
+        gint       screen_height;
+        screen = gtk_window_get_screen(GTK_WINDOW(panel->toplevel));
+        gdk_window_get_geometry (gdk_screen_get_root_window (screen), NULL, NULL,&screen_width, &screen_height);
+
 	AppletInfo* info;
 	GList 	*list, *list1, *list2;
 	int 	i, num, k=0, len=0, k1 = 0,value = 51;
@@ -2733,7 +2739,6 @@ panel_widget_add (PanelWidget *panel,
 		list = list->next;
 		k=k+1;	
 	}
-
 	if(pos==-1) return -1;
 
 	if (ad == NULL) {
@@ -2747,6 +2752,8 @@ panel_widget_add (PanelWidget *panel,
 		ad->cells = 1;
 		ad->min_cells = 1;
 		ad->pos = pos;
+		if (pos>70 && pos < (screen_width-11) )
+			ad->pos = 69;
 		ad->constrained = pos;
 		ad->drag_off = 0;
 		ad->size_constrained = FALSE;
