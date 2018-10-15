@@ -2671,10 +2671,10 @@ panel_widget_add (PanelWidget *panel,
 		  gboolean     insert_at_pos)
 {
 	GdkScreen* screen;
-        gint       screen_width;
-        gint       screen_height;
-        screen = gtk_window_get_screen(GTK_WINDOW(panel->toplevel));
-        gdk_window_get_geometry (gdk_screen_get_root_window (screen), NULL, NULL,&screen_width, &screen_height);
+	gint       screen_width;
+	gint       screen_height;
+	screen = gtk_window_get_screen(GTK_WINDOW(panel->toplevel));
+	gdk_window_get_geometry (gdk_screen_get_root_window (screen), NULL, NULL,&screen_width, &screen_height);
 
 	AppletInfo* info;
 	GList 	*list, *list1, *list2;
@@ -2693,7 +2693,7 @@ panel_widget_add (PanelWidget *panel,
 
 	if (!insert_at_pos || pos < 0) {
 		if (panel->packed) {
-			if (get_applet_list_pos (panel, pos)) 
+			if (get_applet_list_pos (panel, pos))
 				/*this is a slight hack so that this applet
 				  is inserted AFTER an applet with this pos
 				  number*/
@@ -2702,7 +2702,7 @@ panel_widget_add (PanelWidget *panel,
 			int newpos = panel_widget_find_empty_pos (panel, pos);
 			if (newpos >= 0)
 				pos = newpos;
-			else if (get_applet_list_pos (panel, pos)) 
+			else if (get_applet_list_pos (panel, pos))
 				/*this is a slight hack so that this applet
 				  is inserted AFTER an applet with this pos
 				  number*/
@@ -2729,7 +2729,7 @@ panel_widget_add (PanelWidget *panel,
 		if (k == num) {
 			if(ad1->pos >= 70) {
 			       pos=50+len;
-//		       	       ad1->pos=num+50;	       
+//		       	       ad1->pos=num+50;
 			} else {
     				pos=ad1->pos;
     				ad1->pos=num+50;
@@ -2737,7 +2737,7 @@ panel_widget_add (PanelWidget *panel,
 		}
 		i = ad1->pos;
 		list = list->next;
-		k=k+1;	
+		k=k+1;
 	}
 	if(pos==-1) return -1;
 
@@ -2761,9 +2761,8 @@ panel_widget_add (PanelWidget *panel,
 		ad->expand_minor = FALSE;
 		ad->locked = locked;
 		ad->size_hints = NULL;
-		g_object_set_data (G_OBJECT (applet),
-				   UKUI_PANEL_APPLET_DATA, ad);
-		
+		g_object_set_data (G_OBJECT (applet), UKUI_PANEL_APPLET_DATA, ad);
+
 		/*this is a completely new applet, which was not yet bound*/
 		bind_top_applet_events (applet);
 	}
