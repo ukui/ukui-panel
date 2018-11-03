@@ -2218,8 +2218,9 @@ msgstr "Redefinir este painel?"
 
 #: ../ukui-panel/panel-context-menu.c:202
 msgid "When a panel is reset,all \n"
-                "custom settings are lost."
-msgstr "Quando um painel é redefinido, todas as configurações personalizadas são perdidas."
+		"custom settings are lost."
+msgstr "Quando um painel é redefinido,\n"
+       " todas as configurações personalizadas são perdidas."
 
 #: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"

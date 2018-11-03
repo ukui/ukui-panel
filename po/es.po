@@ -2219,8 +2219,9 @@ msgstr "Restablecer este panel?"
 
 #: ../ukui-panel/panel-context-menu.c:202
 msgid "When a panel is reset,all \n"
-               "custom settings are lost."
-msgstr "Cuando se restablece un panel, se pierden todas las configuraciones personalizadas."
+		"custom settings are lost."
+msgstr "Cuando se restablece un panel,\n"
+       " se pierden todas las configuraciones personalizadas."
 
 #: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"

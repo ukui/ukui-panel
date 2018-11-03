@@ -2218,8 +2218,9 @@ msgstr "Сбросить эту панель?"
 
 #: ../ukui-panel/panel-context-menu.c:202
 msgid "When a panel is reset,all \n"
-                "custom settings are lost."
-msgstr "Когда панель сбрасывается, все \ n пользовательские настройки теряются."
+		"custom settings are lost."
+msgstr "Когда панель сбрасывается, все \n"
+       " пользовательские настройки теряются."
 
 #: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"
