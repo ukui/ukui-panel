@@ -948,8 +948,9 @@ msgid ""
 msgstr "Votre gestionnaire de fenêtres ne prend pas en charge le bouton d'affichage du bureau, ou vous n'avez pas de gestionnaire de fenêtres en cours de fonctionnement."
 
 #: ../applets/wncklet/window-list.c:171
-msgid "_System Monitor"
-msgstr "Moniteur _système"
+#: ../ukui-panel/panel-context-menu.c:343
+msgid "_Monitor"
+msgstr "_Moniteur"
 
 #: ../applets/wncklet/window-list.c:557
 msgid ""
@@ -2203,13 +2204,34 @@ msgstr "Impossible de supprimer ce tableau de bord"
 msgid "You must always have at least one panel."
 msgstr "Vous devez toujours avoir au moins un tableau de bord."
 
+#: ../ukui-panel/panel-context-menu.c:184
+msgid "_Settings"
+msgstr "_réglages"
+
 #: ../ukui-panel/panel-context-menu.c:185
 msgid "_Add to Panel..."
 msgstr "A_jouter au tableau de bord..."
 
+#: ../ukui-panel/panel-context-menu.c:201
+msgid "Reset this panel?"
+msgstr "Réinitialiser ce panneau?"
+
+#: ../ukui-panel/panel-context-menu.c:202
+msgid "When a panel is reset,all \n"
+               "custom settings are lost."
+msgstr "Lorsqu'un panneau est réinitialisé, tous les paramètres personnalisés sont \ n perdus."
+
 #: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"
 msgstr "_Supprimer ce tableau de bord"
+
+#: ../ukui-panel/panel-context-menu.c:215
+msgid "_Cancel"
+msgstr "_Annuler"
+
+#: ../ukui-panel/panel-context-menu.c:216
+msgid "_Reset Panel"
+msgstr "_Réinitialiser le panneau"
 
 #: ../ukui-panel/panel-context-menu.c:221
 msgid "_New Panel"
@@ -2570,6 +2592,54 @@ msgstr "É_tiré"
 msgid "Rotate image when panel is _vertical"
 msgstr "Pivote l'image lorsque le tableau de bord est _vertical"
 
+#: ../ukui-panel/panel-settings-dialog.ui.h:1
+msgid "Lock the taskbar"
+msgstr "Verrouiller la barre des tâches"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:2
+msgid "Hide the taskbar"
+msgstr "Masquer la barre des tâches"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:3
+msgid "The taskbar position on the screen："
+msgstr "La position de la barre des tâches sur l'écran:"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:4
+msgid "Change taskbar height and icon size"
+msgstr "Changer la hauteur de la barre des tâches et la taille de l'icône"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:5
+msgid "Default-100%"
+msgstr "Défaut-100%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:6
+msgid "Medium-150%"
+msgstr "Moyen-150%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:7
+msgid "Large-200%"
+msgstr "Grand-200%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:8
+msgid "Notification area"
+msgstr "Zone de notification"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:9
+msgid "Customize icons appear on the taskbar"
+msgstr "Les icônes de personnalisation apparaissent dans la barre des tâches."
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:10
+msgid "Panel Settings"
+msgstr "Paramètres du panneau"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:11
+msgid "Taskbar background transparent"
+msgstr "Fond de la barre des tâches transparent"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:12
+msgid "Hide workspace"
+msgstr "Masquer l'espace de travail"
+
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
 msgid "Could not open recently used document \"%s\""
@@ -2853,3 +2923,7 @@ msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."
 msgstr "Lorsqu'un tableau de bord est supprimé, le tableau de bord\net ses réglages sont perdus."
+
+#: ../ukui-panel/panel-settings-dialog.c:583
+msgid "<a href=''>Customize icons appear on the taskbar</a>"
+msgstr "<a href=''>Les icônes de personnalisation apparaissent dans la barre des tâches.</a>"

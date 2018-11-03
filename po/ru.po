@@ -948,8 +948,9 @@ msgid ""
 msgstr "Либо менеджер окон не поддерживает кнопку расчистки рабочего стола, либо менеджер окон не запущен вовсе."
 
 #: ../applets/wncklet/window-list.c:171
-msgid "_System Monitor"
-msgstr "С_истемный монитор"
+#: ../ukui-panel/panel-context-menu.c:343
+msgid "_Monitor"
+msgstr "_Монитор"
 
 #: ../applets/wncklet/window-list.c:557
 msgid ""
@@ -2203,13 +2204,34 @@ msgstr "Не удалось удалить эту панель"
 msgid "You must always have at least one panel."
 msgstr "У вас всегда должна быть хотя бы одна панель."
 
+#: ../ukui-panel/panel-context-menu.c:184
+msgid "_Settings"
+msgstr "_настройки"
+
 #: ../ukui-panel/panel-context-menu.c:185
 msgid "_Add to Panel..."
 msgstr "_Добавить на панель…"
 
+#: ../ukui-panel/panel-context-menu.c:201
+msgid "Reset this panel?"
+msgstr "Сбросить эту панель?"
+
+#: ../ukui-panel/panel-context-menu.c:202
+msgid "When a panel is reset,all \n"
+                "custom settings are lost."
+msgstr "Когда панель сбрасывается, все \ n пользовательские настройки теряются."
+
 #: ../ukui-panel/panel-context-menu.c:206
 msgid "_Delete This Panel"
 msgstr "_Удалить эту панель"
+
+#: ../ukui-panel/panel-context-menu.c:215
+msgid "_Cancel"
+msgstr "_отменить"
+
+#: ../ukui-panel/panel-context-menu.c:216
+msgid "_Reset Panel"
+msgstr "панель _сброса"
 
 #: ../ukui-panel/panel-context-menu.c:221
 msgid "_New Panel"
@@ -2570,6 +2592,54 @@ msgstr "Раст_ягивать"
 msgid "Rotate image when panel is _vertical"
 msgstr "Поворачивать изображение на _вертикальных панелях"
 
+#: ../ukui-panel/panel-settings-dialog.ui.h:1
+msgid "Lock the taskbar"
+msgstr "Заблокировать панель задач"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:2
+msgid "Hide the taskbar"
+msgstr "Скрыть панель задач"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:3
+msgid "The taskbar position on the screen："
+msgstr "Позиция панели задач на экране:"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:4
+msgid "Change taskbar height and icon size"
+msgstr "Изменение высоты панели задач и размера значка"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:5
+msgid "Default-100%"
+msgstr "По умолчанию - 100%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:6
+msgid "Medium-150%"
+msgstr "Средний - 150%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:7
+msgid "Large-200%"
+msgstr "Большой-200%"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:8
+msgid "Notification area"
+msgstr "Область уведомлений"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:9
+msgid "Customize icons appear on the taskbar"
+msgstr "На панели задач отображаются настраиваемые значки"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:10
+msgid "Panel Settings"
+msgstr "Настройки панели"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:11
+msgid "Taskbar background transparent"
+msgstr "Фоновая подсветка панели задач"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:12
+msgid "Hide workspace"
+msgstr "Скрыть рабочее пространство"
+
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
 msgid "Could not open recently used document \"%s\""
@@ -2853,3 +2923,7 @@ msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."
 msgstr "Если удалить панель, все её параметры\nбудут утеряны."
+
+#: ../ukui-panel/panel-settings-dialog.c:583
+msgid "<a href=''>Customize icons appear on the taskbar</a>"
+msgstr "<a href=''>На панели задач отображаются настраиваемые значки</a>"
