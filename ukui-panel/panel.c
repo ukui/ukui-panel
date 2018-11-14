@@ -1236,6 +1236,71 @@ get_border_color1 (char *color_name)
         return color;
 }
 
+static gboolean
+theme_change_notify (GSettings             *settings,
+                         gchar                 *key,
+                         PanelToplevel 	       *toplevel )
+{
+	char                            *color_str, *color, *path;
+        GSettings                       *settings2;
+        settings2                       = g_settings_new("org.gnome.desktop.wm.preferences");
+        color                           = g_settings_get_string(settings2, "theme");
+	/*
+	GtkCssProvider *gtk_css_provider = gtk_css_provider_get_named (color, NULL);
+	char *gtk_css_provider_value=gtk_css_provider_to_string (gtk_css_provider);
+	*/
+
+        GdkColor                color1;
+        GtkStyle                *style = gtk_rc_get_style(toplevel);
+        gtk_style_lookup_color (style,"panel_normal_bg_color",&color1);
+        color_str=gdk_color_to_string(&color1);
+
+        char color_hex[30]={0};
+        char color_hex_red[4]={0};
+        char color_hex_green[4]={0};
+        char color_hex_blue[4]={0};
+
+        sprintf(color_hex_red,"%d",color1.red/257);
+        sprintf(color_hex_green,"%d",color1.green/257);
+        sprintf(color_hex_blue,"%d",color1.blue/257);
+
+	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+	gboolean transparent = g_settings_get_boolean(settings, "transparent");
+
+//	PanelBackgroundType background_type =PANEL_BACK_COLOR;
+//	panel_profile_set_background_type (toplevel, background_type);
+
+	if (transparent){
+		if (!strcmp(color,"ukui-blue")){
+			color_str="rgba(21, 103, 143, 0.8)";
+		}else if(!strcmp(color,"ukui-black")){
+			color_str="rgba(8, 10, 12, 0.8)";
+		}else{
+			color_str="rgba(21, 103, 143, 0.8)";
+		}
+		/*
+                sprintf(color_hex,"rgba(%s, %s, %s, 0.8)",color_hex_red,color_hex_green,color_hex_blue);
+		printf("color_hex=%s\n",color_hex);
+		color_str= color_hex;
+		*/
+	} else{
+	        if (!strcmp(color,"ukui-blue")){
+			color_str="rgb(21, 103, 143)";
+		}else if(!strcmp(color,"ukui-black")){
+			color_str="rgb(8, 10, 12)";
+	        }else{
+			color_str="rgb(21, 103, 143)";
+		}
+		/*
+		sprintf(color_hex,"rgba(%s, %s, %s)",color_hex_red,color_hex_green,color_hex_blue);
+		printf("color_hex=%s\n",color_hex);
+		color_str= color_hex;
+		*/
+	}
+	g_settings_set_string (toplevel->background_settings, "color", color_str);
+}
+
 PanelData *
 panel_setup (PanelToplevel *toplevel)
 {
@@ -1289,6 +1354,20 @@ panel_setup (PanelToplevel *toplevel)
  
 	g_signal_connect (toplevel, "destroy", G_CALLBACK (panel_destroy), pd);
 
+	GdkColor                color1;
+	GtkStyle                *style = gtk_rc_get_style(pd->panel);
+	gtk_style_lookup_color (style,"panel_normal_bg_color",&color1);
+	color_str=gdk_color_to_string(&color1);
+
+        char color_hex[30]={0};
+	char color_hex_red[4]={0};
+	char color_hex_green[4]={0};
+	char color_hex_blue[4]={0};
+
+        sprintf(color_hex_red,"%d",color1.red/257);
+        sprintf(color_hex_green,"%d",color1.green/257);
+        sprintf(color_hex_blue,"%d",color1.blue/257);
+/*
 	GdkColor 		color;
 	GtkStyle 		*style = gtk_rc_get_style(pd->panel);
 	if (gtk_style_lookup_color (style,"panel_normal_bg_color",&color)){
@@ -1296,17 +1375,25 @@ panel_setup (PanelToplevel *toplevel)
 	} else {
 		char 				*color;
 	        GSettings                       *settings2;
-        	settings2 			= g_settings_new("org.mate.interface");
-        	color				= g_settings_get_string(settings2, "gtk-theme");
+		settings2 			= g_settings_new("org.gnome.desktop.wm.preferences");
+		color				= g_settings_get_string(settings2, "theme");
 
         	if (!strcmp(color,"ukui-blue")){
                 	color_str="#15678f";
+		}else if(!strcmp(color,"ukui-black")){
+			color_str="#080a0c";
        	 	}else{
                 	color_str="#15678f";
         	}
 	}
-        g_settings_set_string (toplevel->background_settings, "color", color_str);
 
+	char            *path1;
+	GSettings       *settings1;
+	settings1                       = g_settings_new("org.gnome.desktop.wm.preferences");
+        g_signal_connect (settings1,
+                          "changed::" "theme",
+                          G_CALLBACK (theme_change_notify),
+                          toplevel);
 
 	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
 	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
@@ -1327,6 +1414,53 @@ panel_setup (PanelToplevel *toplevel)
                 opacity = (100.000000 / 100) * 65535;
                 panel_profile_set_background_opacity (toplevel, opacity);
         }
+*/
+	PanelBackgroundType background_type =PANEL_BACK_COLOR;
+	panel_profile_set_background_type (toplevel, background_type);
+
+        char            *path1;
+        GSettings       *settings1;
+        settings1                       = g_settings_new("org.gnome.desktop.wm.preferences");
+        g_signal_connect (settings1,
+                            "changed::" "theme",
+                            G_CALLBACK (theme_change_notify),
+                            toplevel);
+	char                            *color;
+        GSettings                       *settings2;
+        settings2                       = g_settings_new("org.gnome.desktop.wm.preferences");
+        color                           = g_settings_get_string(settings2, "theme");
+
+	path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+	settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+	gboolean transparent = g_settings_get_boolean(settings, "transparent");
+
+	if (transparent){
+		/*
+	        if (!strcmp(color,"ukui-blue")){
+		        color_str="rgba(21, 103, 143, 0.8)";
+	        }else if(!strcmp(color,"ukui-black")){
+		        color_str="rgba(8, 10, 12, 0.8)";
+	        }else{
+                        color_str="rgba(21, 103, 143, 0.8)";
+		}
+		*/
+		sprintf(color_hex,"rgba(%s, %s, %s, 0.8)",color_hex_red,color_hex_green,color_hex_blue);
+	} else{
+		color_str= color_hex;
+		/*
+	        if (!strcmp(color,"ukui-blue")){
+                        color_str="rgb(21, 103, 143)";
+	        }else if(!strcmp(color,"ukui-black")){
+                        color_str="rgb(8, 10, 12)";
+	        }else{
+                        color_str="rgb(21, 103, 143)";
+                }
+		*/
+                sprintf(color_hex,"rgba(%s, %s, %s)",color_hex_red,color_hex_green,color_hex_blue);
+		color_str= color_hex;
+	}
+
+        g_settings_set_string (toplevel->background_settings, "color", color_str);
 
 	return pd;
 }
