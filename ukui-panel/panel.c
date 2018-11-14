@@ -1445,8 +1445,8 @@ panel_setup (PanelToplevel *toplevel)
 		}
 		*/
 		sprintf(color_hex,"rgba(%s, %s, %s, 0.8)",color_hex_red,color_hex_green,color_hex_blue);
-	} else{
 		color_str= color_hex;
+	} else{
 		/*
 	        if (!strcmp(color,"ukui-blue")){
                         color_str="rgb(21, 103, 143)";
@@ -1460,6 +1460,7 @@ panel_setup (PanelToplevel *toplevel)
 		color_str= color_hex;
 	}
 
+	printf("color_str=%s\n",color_str);
         g_settings_set_string (toplevel->background_settings, "color", color_str);
 
 	return pd;
