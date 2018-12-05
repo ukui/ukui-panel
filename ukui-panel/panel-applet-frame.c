@@ -659,6 +659,8 @@ _ukui_panel_applet_frame_update_size_hints (UkuiPanelAppletFrame *frame,
 				       gint             *size_hints,
 				       guint             n_elements)
 {
+	char          *path;
+	GSettings     *settings;
 	if (frame->priv->has_handle) {
 		gint extra_size = HANDLE_SIZE + 1;
 		gint i;
@@ -689,9 +691,15 @@ _ukui_panel_applet_frame_update_size_hints (UkuiPanelAppletFrame *frame,
 			}
 			else {
 				if (size_hints[i] > (value-200) && value > 400) {
-
-					size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-100 - (g_settings_get_int(settings, "applet-nums")-2)*40;
-
+					path = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
+					settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
+					gboolean hide_workspace = g_settings_get_boolean(settings, "hide-workspace");
+					if (hide_workspace){
+						size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-50 - (g_settings_get_int(settings, "applet-nums")-2)*40 + 30;
+					} 
+					else {
+						size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-50 - (g_settings_get_int(settings, "applet-nums")-2)*40 - 40;
+					}
 				}
 			}
 		}
