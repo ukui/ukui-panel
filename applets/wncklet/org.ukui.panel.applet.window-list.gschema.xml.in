@@ -11,7 +11,7 @@
       <description>If true, the window list will show windows from all workspaces. Otherwise it will only display windows from the current workspace.</description>
     </key>
     <key name="group-windows" enum="org.ukui.panel.applet.window-list.GroupingType">
-      <default>'never'</default>
+      <default>'auto'</default>
       <summary>When to group windows</summary>
       <description>Decides when to group windows from the same application on the window list. Possible values are "never", "auto" and "always".</description>
     </key>
