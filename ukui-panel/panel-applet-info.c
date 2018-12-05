@@ -263,7 +263,7 @@ int WriteAppletInfo (char	*action,
 	if (!strcmp (state,"add")) {
 		if (strstr (file_content, Name) == NULL ){
 			if ((fp = fopen(home_applet,"a+")) != NULL) {
-				fprintf (fp, "%s", Name);
+				fprintf (fp, "%s\n", Name);
 				fclose (fp);
 
                                 num = num+1;
@@ -289,6 +289,7 @@ int WriteAppletInfo (char	*action,
 
 			}
 		}
+		system("sed -i /^[[:space:]]*$/d ~/.applet");
 	}
 	return 0;
 }

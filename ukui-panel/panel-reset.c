@@ -54,7 +54,7 @@ panel_reset()
 
         path1 = g_strdup_printf ("%s/","/org/ukui/panel/toplevels/bottom");
         settings1 = g_settings_new_with_path ("org.ukui.panel.toplevel",path1);
-        g_settings_set_int(settings1, "applet-nums",2);
+        g_settings_set_int(settings1, "applet-nums",0);
 	g_settings_set_boolean(settings1, "transparent",TRUE);
 
 	g_object_unref (settings);

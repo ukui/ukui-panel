@@ -695,10 +695,10 @@ _ukui_panel_applet_frame_update_size_hints (UkuiPanelAppletFrame *frame,
 					settings = g_settings_new_with_path ("org.ukui.panel.toplevel",path);
 					gboolean hide_workspace = g_settings_get_boolean(settings, "hide-workspace");
 					if (hide_workspace){
-						size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-50 - (g_settings_get_int(settings, "applet-nums")-2)*40 + 30;
+						size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-50 - (g_settings_get_int(settings, "applet-nums"))*40 + 30;
 					} 
 					else {
-						size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-50 - (g_settings_get_int(settings, "applet-nums")-2)*40 - 40;
+						size_hints[i] = screen_width - 195 -g_settings_get_int(settings, "launcher-nums")*30-50 - (g_settings_get_int(settings, "applet-nums"))*40 - 40;
 					}
 				}
 			}
