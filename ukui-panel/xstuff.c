@@ -40,6 +40,8 @@ static gboolean xstuff_display_is_dead = FALSE;
 #define ZOOM_STEPS  14
 #define ZOOM_DELAY 10
 
+int timeout_times=0;
+
 typedef struct {
 	int size;
 	int size_start;
@@ -49,13 +51,7 @@ typedef struct {
 	GdkPixbuf *pixbuf;
 	guint timeout_id;
 } CompositedZoomData;
-
-static gboolean
-zoom_timeout (GtkWidget *window)
-{
-	gtk_widget_queue_draw (window);
-	return TRUE;
-}
+CompositedZoomData *zoom;
 
 static gboolean
 idle_destroy (gpointer data)
@@ -66,17 +62,41 @@ idle_destroy (gpointer data)
 }
 
 static gboolean
+zoom_timeout (GtkWidget *window)
+{
+	gtk_widget_queue_draw (window);
+	timeout_times += 1;
+	if (timeout_times > 50){
+		if (zoom->timeout_id)
+                        g_source_remove (zoom->timeout_id);
+
+                zoom->timeout_id = 0;
+
+                gtk_widget_hide (window);
+                g_idle_add (idle_destroy, window);
+
+                g_object_unref (zoom->pixbuf);
+                zoom->pixbuf = NULL;
+
+                g_slice_free (CompositedZoomData, zoom);
+		timeout_times = 0;
+	}
+	return TRUE;
+}
+
+static gboolean
 zoom_draw (GtkWidget *widget,
 	     cairo_t *cr,
 	     gpointer        user_data)
 {
-	CompositedZoomData *zoom;
 
 	zoom = user_data;
 
 	if (zoom->size >= zoom->size_end) {
+		timeout_times = 0;
 		if (zoom->timeout_id)
 			g_source_remove (zoom->timeout_id);
+
 		zoom->timeout_id = 0;
 
 		gtk_widget_hide (widget);
@@ -87,6 +107,7 @@ zoom_draw (GtkWidget *widget,
 
 		g_slice_free (CompositedZoomData, zoom);
 	} else {
+		timeout_times += 1;
 		GdkPixbuf *scaled;
 		int width, height;
 		int x = 0, y = 0;
