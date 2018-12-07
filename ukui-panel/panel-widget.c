@@ -2752,8 +2752,8 @@ panel_widget_add (PanelWidget *panel,
 		ad->cells = 1;
 		ad->min_cells = 1;
 		ad->pos = pos;
-		if (pos>70 && pos < (screen_width-11) )
-			ad->pos = 69;
+//		if (pos>70 && pos < (screen_width-11) )
+//			ad->pos = 69;
 		ad->constrained = pos;
 		ad->drag_off = 0;
 		ad->size_constrained = FALSE;
