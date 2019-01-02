@@ -333,6 +333,8 @@ panel_profile_set_toplevel_orientation (PanelToplevel    *toplevel,
 	if(orientation == PANEL_ORIENTATION_LEFT || orientation == PANEL_ORIENTATION_RIGHT) {
 		GSettings * narea =  g_settings_new_with_path("org.ukui.panel.object", "/org/ukui/panel/objects/indicators/");
 		g_settings_set_boolean(narea,PANEL_OBJECT_PANEL_RIGHT_STICK_KEY, False);
+		GSettings * workspace_area =  g_settings_new_with_path("org.ukui.panel.object", "/org/ukui/panel/objects/workspace-switcher/");
+		g_settings_set_boolean(workspace_area,PANEL_OBJECT_PANEL_RIGHT_STICK_KEY, False);
 	}
 	g_settings_set_enum (toplevel->settings, "orientation", orientation);
 }
