@@ -58,6 +58,9 @@ static const GOptionEntry options[] = {
 int
 main (int argc, char **argv)
 {
+	GSettings                       *settings;
+	settings                       = g_settings_new_with_path("org.ukui.panel.object","/org/ukui/panel/objects/window-list/");
+	g_settings_set_int(settings,"position",70);
 	char           *desktopfile;
 	GOptionContext *context;
 	GError         *error;

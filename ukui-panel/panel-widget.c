@@ -2801,6 +2801,9 @@ panel_widget_add (PanelWidget *panel,
 			ad1->pos = value+k1;
 			info = g_object_get_data (G_OBJECT (ad1->applet), "applet_info");
 			g_settings_set_int (info->settings, "position", ad1->pos);
+			if (!strcmp ("WnckletFactory::WindowListApplet",g_settings_get_string (info->settings, "applet-iid"))){
+				g_settings_set_int (info->settings, "position", 70);
+			}
 		}
 		k1=k1+1;
 		list2 = list2->next;
