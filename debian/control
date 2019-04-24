@@ -1,0 +1,150 @@
+Source: ukui-panel
+Section: x11
+Priority: optional
+Maintainer: Kylin Team <team+kylin@tracker.debian.org>
+Uploaders: Aron Xu <aron@debian.org>,
+           handsome_feng <jianfengli@ubuntukylin.com>,
+Build-Depends: debhelper (>= 12),
+               dpkg-dev (>= 1.16.1.1),
+               gir1.2-freedesktop,
+               gobject-introspection,
+               gtk-doc-tools,
+               intltool,
+               libatk1.0-dev,
+               libcairo2-dev,
+               libdbus-1-dev,
+               libdbus-glib-1-dev,
+               libdconf-dev,
+               libgirepository1.0-dev,
+               libglib2.0-dev,
+               libgtk-3-dev,
+               libice-dev,
+               libmate-desktop-dev (>= 1.18),
+               libukui-menu-dev (>= 1.0.0),
+               libpango1.0-dev,
+               librsvg2-dev,
+               libsm-dev,
+               libsoup2.4-dev,
+               libwnck-3-dev,
+               libx11-dev,
+               libxau-dev,
+               libxrandr-dev,
+               lsb-release,
+               mate-common (>= 1.18),
+               yelp-tools,
+Standards-Version: 4.3.0
+Homepage: http://www.ukui.org/
+Vcs-Git: https://github.com/ukui/ukui-panel.git
+Vcs-Browser: https://github.com/ukui/ukui-panel
+
+Package: ukui-panel
+Architecture: any
+Depends: libukui-panel-applet-4-1 (= ${binary:Version}),
+         mate-desktop,
+         ukui-menus,
+         ukui-panel-common (= ${source:Version}),
+         ukui-polkit | mate-polkit,
+         menu-xdg,
+         gnome-system-monitor,
+         ${misc:Depends},
+         ${shlibs:Depends},
+Description: launcher and docking facility for UKUI
+ The UKUI Panel is an essential part of the UKUI Desktop, providing
+ toolbar-like “panels” which can be attached to the sides of your desktop.
+ They are used to launch applications and embed a number of other
+ functions, such as quick launch icons, the clock, the notification area,
+ volume controls and the battery charge indicator, and utilities ranging
+ from weather forecast to system monitoring.
+
+Package: ukui-panel-common
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends},
+Description: launcher and docking facility for UKUI (common files)
+ The UKUI Panel is an essential part of the UKUI Desktop, providing
+ toolbar-like “panels” which can be attached to the sides of your desktop.
+ They are used to launch applications and embed a number of other
+ functions, such as quick launch icons, the clock, the notification area,
+ volume controls and the battery charge indicator, and utilities ranging
+ from weather forecast to system monitoring.
+ .
+ This package contains the architecture independent files.
+
+Package: libukui-panel-applet-4-1
+Section: libs
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+Provides: libukui-panel-applet4-1,
+          libukuipanelapplet,
+Description: library for UKUI Panel applets
+ The UKUI Panel is an essential part of the UKUI Desktop, providing
+ toolbar-like “panels” which can be attached to the sides of your desktop.
+ They are used to launch applications and embed a number of other
+ functions, such as quick launch icons, the clock, the notification area,
+ volume controls and the battery charge indicator, and utilities ranging
+ from weather forecast to system monitoring.
+ .
+ This package contains the UKUI Panel applet library.
+
+Package: libukui-panel-applet-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: libglib2.0-dev,
+         libgtk-3-dev,
+         libukui-panel-applet-4-1 (= ${binary:Version}),
+         gir1.2-ukuipanelapplet-4.0 (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Provides: libukuipanelapplet-dev,
+Conflicts: libukuipanelapplet-dev,
+Description: library for UKUI Panel applets (development files)
+ The UKUI Panel is an essential part of the UKUI Desktop, providing
+ toolbar-like “panels” which can be attached to the sides of your desktop.
+ They are used to launch applications and embed a number of other
+ functions, such as quick launch icons, the clock, the notification area,
+ volume controls and the battery charge indicator, and utilities ranging
+ from weather forecast to system monitoring.
+ .
+ This package contains the development files of the UKUI panel applet
+ library.
+
+Package: libukui-panel-applet-doc
+Section: doc
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends},
+Provides: libukuipanelapplet-doc,
+Conflicts: libukuipanelapplet-doc,
+Description: library for UKUI Panel applets (documentation files)
+ The UKUI Panel is an essential part of the UKUI Desktop, providing
+ toolbar-like “panels” which can be attached to the sides of your desktop.
+ They are used to launch applications and embed a number of other
+ functions, such as quick launch icons, the clock, the notification area,
+ volume controls and the battery charge indicator, and utilities ranging
+ from weather forecast to system monitoring.
+ .
+ This package contains the documentation files of the UKUI panel applet
+ library.
+
+Package: gir1.2-ukuipanelapplet-4.0
+Section: introspection
+Architecture: any
+Multi-Arch: same
+Depends: ${gir:Depends},
+         ${misc:Depends},
+         ${shlibs:Depends},
+Description: GObject introspection data for UKUI panel
+ The UKUI Panel is an essential part of the UKUI Desktop, providing
+ toolbar-like “panels” which can be attached to the sides of your desktop.
+ They are used to launch applications and embed a number of other
+ functions, such as quick launch icons, the clock, the notification area,
+ volume controls and the battery charge indicator, and utilities ranging
+ from weather forecast to system monitoring.
+ .
+ This package contains introspection data for UKUI panel.
+ .
+ It can be used by packages using the GIRepository format to generate
+ dynamic bindings.
