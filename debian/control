@@ -32,7 +32,7 @@ Build-Depends: debhelper (>= 12),
                lsb-release,
                mate-common (>= 1.18),
                yelp-tools,
-Standards-Version: 4.3.0
+Standards-Version: 4.4.0
 Homepage: http://www.ukui.org/
 Vcs-Git: https://github.com/ukui/ukui-panel.git
 Vcs-Browser: https://github.com/ukui/ukui-panel
@@ -43,7 +43,7 @@ Depends: libukui-panel-applet-4-1 (= ${binary:Version}),
          mate-desktop,
          ukui-menus,
          ukui-panel-common (= ${source:Version}),
-         ukui-polkit | mate-polkit,
+         ukui-polkit,
          menu-xdg,
          gnome-system-monitor,
          ${misc:Depends},

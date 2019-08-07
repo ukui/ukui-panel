@@ -3,8 +3,11 @@ ukui-panel (1.1.6-1) unstable; urgency=medium
   * Change the default grouping type of window-list.
   * Fix that window-list disappears after multi restart.
   * Update the copyright.
+  * debian/control:
+    - Bump standards-version to 4.4.0.
+    - Drop mate-polkit.
 
- -- handsome_feng <jianfengli@ubuntukylin.com>  Sat, 06 Jul 2019 14:23:54 +0800
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Wed, 07 Aug 2019 11:25:09 +0800
 
 ukui-panel (1.1.5-1) unstable; urgency=medium
 
