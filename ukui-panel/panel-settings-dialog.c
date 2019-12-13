@@ -740,7 +740,7 @@ cell_edited (GtkCellRendererText *cell,
 		*applet_name_value;
 
   GSettings 	*settings;
-  const gchar 	*show = "显示", *hide = "隐藏";
+  const gchar 	*show = _("show"), *hide = _("hide");
 
   GtkTreeModel *model = (GtkTreeModel *)data;
   GtkTreePath *path = gtk_tree_path_new_from_string (path_string);
@@ -794,8 +794,8 @@ tray_widget_show_notify (GSettings             *settings,
 		int 			k, number;
 		GtkTreeIter 		iter;
 		char 			*path, *applet_name, *applet_icon;
-		char 			*show="显示";
-		char 			*hide="隐藏";
+		char 			*show=_("show");
+		char 			*hide=_("hide");
 		GdkPixbuf       	*icon;
 		GError          	*error = NULL;
 		GtkIconTheme		*icon_theme = gtk_icon_theme_get_default ();
@@ -907,8 +907,8 @@ panel_settings_dialog_setup_notifcation_area_treeview (PanelPropertiesDialog *di
 	column = gtk_tree_view_column_new();
 	gtk_tree_view_append_column(notification_area_treeview, column);
 
-	char *show="显示";
-	char *hide="隐藏";
+	char *show=_("show");
+	char *hide=_("hide");
 	store = gtk_list_store_new(3, 
 				   GDK_TYPE_PIXBUF,
 				   G_TYPE_STRING,

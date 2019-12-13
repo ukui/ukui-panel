@@ -1,584 +1,58 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: UKUI Desktop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-26 11:42+0300\n"
+"POT-Creation-Date: 2019-12-13 17:34+0800\n"
 "PO-Revision-Date: 2017-09-19 11:04+0000\n"
 "Last-Translator: monsta <monsta@inbox.ru>\n"
 "Language-Team: Persian (http://www.transifex.com/ukui/UKUI/language/fa/)\n"
+"Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fa\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../applets/clock/calendar-window.c:248 ../applets/clock/clock.ui.h:27
-msgid "Locations"
-msgstr "مکان‌ها"
-
-#: ../applets/clock/calendar-window.c:248
-msgid "Edit"
-msgstr "ویرایش"
-
-#: ../applets/clock/calendar-window.c:474
-msgid "Calendar"
-msgstr "تقویم"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format (eg, like
-#. * in the US: 8:10 am). The %p expands to am/pm.
-#: ../applets/clock/clock.c:455
-msgid "%l:%M:%S %p"
-msgstr "%OH:%OM:%OS"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format (eg, like
-#. * in the US: 8:10 am). The %p expands to am/pm.
-#: ../applets/clock/clock.c:455 ../applets/clock/clock-location-tile.c:513
-msgid "%l:%M %p"
-msgstr "%OH:%OM"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format (eg, like
-#. * in France: 20:10).
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 24-hours
-#. * format (eg, like in France: 20:10).
-#: ../applets/clock/clock.c:460 ../applets/clock/clock.c:1613
-msgid "%H:%M:%S"
-msgstr "%OH:%OM:%OS"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 24-hours
-#. * format (eg, like in France: 20:10).
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format
-#. * (eg, like in France: 20:10).
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format (eg, like
-#. * in France: 20:10).
-#: ../applets/clock/clock.c:460 ../applets/clock/clock.c:1619
-#: ../applets/clock/clock-location-tile.c:473
-#: ../applets/clock/clock-location-tile.c:520
-msgid "%H:%M"
-msgstr "%OH:%OM"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the date. Replace %e with %d if, when
-#. * the day of the month as a decimal number is a single digit,
-#. * it should begin with a 0 in your locale (e.g. "May 01"
-#. * instead of "May  1").
-#: ../applets/clock/clock.c:471
-msgid "%a %b %e"
-msgstr "%A %Oe %B"
-
-#. translators: reverse the order of these arguments
-#. *              if the time should come before the
-#. *              date on a clock in your locale.
-#: ../applets/clock/clock.c:478
-#, c-format
-msgid ""
-"%1$s\n"
-"%2$s"
-msgstr "%2$s\n%1$s"
-
-#. translators: reverse the order of these arguments
-#. *              if the time should come before the
-#. *              date on a clock in your locale.
-#: ../applets/clock/clock.c:486
-#, c-format
-msgid "%1$s, %2$s"
-msgstr "‏%2$s، %1$s"
-
-#. Show date in tooltip.
-#. Translators: This is a strftime format string.
-#. * It is used to display a date. Please leave "%%s" as it is:
-#. * it will be used to insert the timezone name later.
-#: ../applets/clock/clock.c:659
-msgid "%A %B %d (%%s)"
-msgstr "%A %Oe %B (%%s)"
-
-#: ../applets/clock/clock.c:685
-msgid "Click to hide month calendar"
-msgstr "برای مخفی کردن تقویم ماه کلیک کنید"
-
-#: ../applets/clock/clock.c:687
-msgid "Click to view month calendar"
-msgstr "برای نمایش تقویم ماه کلیک کنید"
-
-#: ../applets/clock/clock.c:1451
-msgid "Computer Clock"
-msgstr "ساعت کامپیوتر"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 12-hours
-#. * format with a leading 0 if needed (eg, like
-#. * in the US: 08:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock.c:1598
-msgid "%I:%M:%S %p"
-msgstr "%OH:%OM:%OS"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 12-hours
-#. * format with a leading 0 if needed (eg, like
-#. * in the US: 08:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock.c:1606
-msgid "%I:%M %p"
-msgstr "%OH:%OM"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display a date in the full format (so that people can
-#. * copy and paste it elsewhere).
-#: ../applets/clock/clock.c:1652
-msgid "%A, %B %d %Y"
-msgstr "%A، %Oe %B %Oy"
-
-#: ../applets/clock/clock.c:1683
-msgid "Set System Time..."
-msgstr "تنظیم زمان سیستم..."
-
-#: ../applets/clock/clock.c:1684
-msgid "Set System Time"
-msgstr "تنظیم زمان سیستم"
-
-#: ../applets/clock/clock.c:1699
-msgid "Failed to set the system time"
-msgstr "تنظیم زمان سیستم شکست خورد"
-
-#: ../applets/clock/clock.c:1897 ../applets/fish/fish.c:1673
-#: ../applets/wncklet/window-list.c:179
-#: ../applets/wncklet/workspace-switcher.c:336
-msgid "_Preferences"
-msgstr "_ترجیحات"
-
-#: ../applets/clock/clock.c:1900 ../applets/fish/fish.c:1676
-#: ../applets/notification_area/main.c:176
-#: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-list.c:187
-#: ../applets/wncklet/window-menu.c:100
-#: ../applets/wncklet/workspace-switcher.c:344 ../ukui-panel/drawer.c:545
-#: ../ukui-panel/panel-action-button.c:730
-#: ../ukui-panel/panel-context-menu.c:265 ../ukui-panel/panel-menu-bar.c:359
-#: ../ukui-panel/panel-menu-button.c:666
-msgid "_Help"
-msgstr "_راهنما"
-
-#: ../applets/clock/clock.c:1903 ../applets/fish/fish.c:1679
-#: ../applets/notification_area/main.c:179
-#: ../applets/wncklet/showdesktop.c:243 ../applets/wncklet/window-list.c:195
-#: ../applets/wncklet/window-menu.c:108
-#: ../applets/wncklet/workspace-switcher.c:352
-msgid "_About"
-msgstr "_درباره"
-
-#: ../applets/clock/clock.c:1906
-msgid "Copy _Time"
-msgstr "نسخه‌برداری از _زمان"
-
-#: ../applets/clock/clock.c:1909
-msgid "Copy _Date"
-msgstr "نسخه‌برداری از _تاریخ"
-
-#: ../applets/clock/clock.c:1912
-msgid "Ad_just Date & Time"
-msgstr "تن_ظیم تاریخ و زمان"
-
-#: ../applets/clock/clock.c:2855
-msgid "Choose Location"
-msgstr ""
-
-#: ../applets/clock/clock.c:2934
-msgid "Edit Location"
-msgstr ""
-
-#: ../applets/clock/clock.c:3061
-msgid "City Name"
-msgstr "نام شهر"
-
-#: ../applets/clock/clock.c:3065
-msgid "City Time Zone"
-msgstr "منطقه‌ی زمانی شهر"
-
-#: ../applets/clock/clock.c:3280
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:3
-msgid "Clock"
-msgstr "ساعت"
-
-#: ../applets/clock/clock.c:3282
-msgid "The Clock displays the current time and date"
-msgstr "ساعت زمان و تاریخ فعلی را نمایش می‌دهد"
-
-#: ../applets/clock/clock.c:3286 ../applets/fish/fish.c:575
-#: ../applets/notification_area/main.c:170
-#: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:562
-#: ../applets/wncklet/window-menu.c:90
-#: ../applets/wncklet/workspace-switcher.c:604
-#: ../ukui-panel/panel-context-menu.c:121
-msgid "translator-credits"
-msgstr "روزبه پورنادر <roozbeh@gmail.com>\nمیلاد زکریا <meelad@farsiweb.info>\nمسعود احمدزاده <masoud@bamdad.org>\nالناز سربر <elnaz@farsiweb.info>"
-
-#. Languages that have a single word that translates as either "state" or
-#. "province" should use that instead of "region".
-#: ../applets/clock/clock.ui.h:2
-msgid ""
-"<small><i>Type a city, region, or country name and then select a match from "
-"the pop-up.</i></small>"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:3
-msgid "_Timezone:"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:4
-msgid "_Location Name:"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:5
-msgid "<i>(optional)</i>"
-msgstr "<i>(اختیاری)</i>"
-
-#: ../applets/clock/clock.ui.h:6
-msgid "L_ongitude:"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:7
-msgid "L_atitude:"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:8
-msgid "Time & Date"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:9
-msgid "_Time:"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:10
-msgid "Current Time:"
-msgstr "زمان فعلی"
-
-#: ../applets/clock/clock.ui.h:11
-msgid "_Set System Time"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:12
-msgid "East"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:13
-msgid "West"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:14
-msgid "North"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:15
-msgid "South"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:16
-msgid "Clock Preferences"
-msgstr "ترجیحات ساعت"
-
-#: ../applets/clock/clock.ui.h:17
-msgid "Clock Format"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:18
-msgid "_12 hour format"
-msgstr "قالب _۱۲ ساعتی"
-
-#: ../applets/clock/clock.ui.h:19
-msgid "_24 hour format"
-msgstr "قالب _۲۴ ساعتی"
-
-#: ../applets/clock/clock.ui.h:20
-msgid "Panel Display"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:21
-msgid "Show the _date"
-msgstr "نمایش _تاریخ"
-
-#: ../applets/clock/clock.ui.h:22
-msgid "Show seco_nds"
-msgstr "نمایش _ثانیه"
-
-#: ../applets/clock/clock.ui.h:23
-msgid "Show wee_k numbers in calendar"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:24
-msgid "Show _weather"
-msgstr "نمایش آب‌و_هوا"
-
-#: ../applets/clock/clock.ui.h:25
-msgid "Show _temperature"
-msgstr "نمایش _دما"
-
-#: ../applets/clock/clock.ui.h:26 ../applets/fish/fish.ui.h:2
-#: ../ukui-panel/panel-properties-dialog.ui.h:11
-msgid "General"
-msgstr "عمومی"
-
-#: ../applets/clock/clock.ui.h:28
-msgid "Display"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:29
-msgid "_Visibility unit:"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:30
-msgid "_Pressure unit:"
-msgstr "واحد _فشار:"
-
-#: ../applets/clock/clock.ui.h:31
-msgid "_Wind speed unit:"
-msgstr "واحد سرعت _باد:"
-
-#: ../applets/clock/clock.ui.h:32
-msgid "_Temperature unit:"
-msgstr "واحد _دما:"
-
-#: ../applets/clock/clock.ui.h:33
-msgid "Weather"
-msgstr "آب‌وهوا"
-
-#: ../applets/clock/clock.ui.h:34
-msgid "Time _Settings"
-msgstr "_تنظیمات زمان"
-
-#: ../applets/clock/clock-location-tile.c:183
-msgid "Failed to set the system timezone"
-msgstr ""
-
-#: ../applets/clock/clock-location-tile.c:231
-msgid "<small>Set...</small>"
-msgstr ""
-
-#: ../applets/clock/clock-location-tile.c:232
-msgid "<small>Set</small>"
-msgstr ""
-
-#: ../applets/clock/clock-location-tile.c:314
-msgid ""
-"Set location as current location and use its timezone for this computer"
-msgstr ""
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format
-#. * (eg, like in the US: 8:10 am), when the local
-#. * weekday differs from the weekday at the location
-#. * (the %A expands to the weekday). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock-location-tile.c:450
-msgid "%l:%M <small>%p (%A)</small>"
-msgstr "%OI:%OM <small>%p (%A)</small>"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format
-#. * (eg, like in France: 20:10), when the local
-#. * weekday differs from the weekday at the location
-#. * (the %A expands to the weekday).
-#: ../applets/clock/clock-location-tile.c:458
-msgid "%H:%M <small>(%A)</small>"
-msgstr "%OH:%OM <small>(%A)</small>"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format
-#. * (eg, like in the US: 8:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock-location-tile.c:467
-msgid "%l:%M <small>%p</small>"
-msgstr "%OI:%OM <small>%p</small>"
-
-#: ../applets/clock/clock-location-tile.c:606
-#, c-format
-msgid "%s, %s"
-msgstr "%s،‏ %s"
-
-#. FMQ: it's broken to read from another module's translations; add some API
-#. to libukuiweather.
-#: ../applets/clock/clock-location-tile.c:618
-#: ../applets/clock/clock-location-tile.c:627
-msgid "Unknown"
-msgstr "ناشناخته"
-
-#. Translators: The two strings are temperatures.
-#: ../applets/clock/clock-location-tile.c:620
-#, c-format
-msgid "%s, feels like %s"
-msgstr ""
-
-#: ../applets/clock/clock-location-tile.c:643
-#, c-format
-msgid "Sunrise: %s / Sunset: %s"
-msgstr "طلوع: %s / غروب: %s"
-
-#: ../applets/clock/clock-utils.c:95 ../applets/fish/fish.c:168
-#: ../applets/notification_area/main.c:121 ../applets/wncklet/wncklet.c:71
-#: ../ukui-panel/libpanel-util/panel-show.c:234
+#: ../applets/fish/fish.c:171 ../applets/notification_area/main.c:130
+#: ../applets/wncklet/wncklet.c:74 ../ukui-panel/libpanel-util/panel-show.c:236
 #, c-format
 msgid "Could not display help document '%s'"
 msgstr ""
 
-#: ../applets/clock/clock-utils.c:124 ../applets/fish/fish.c:194
-#: ../applets/notification_area/main.c:135 ../applets/wncklet/wncklet.c:88
+#: ../applets/fish/fish.c:197 ../applets/notification_area/main.c:144
+#: ../applets/wncklet/wncklet.c:91
 msgid "Error displaying help document"
 msgstr ""
 
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:1
-msgid "Hour format"
-msgstr "قالب ساعت"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:2
-msgid ""
-"This key specifies the hour format used by the clock applet. Possible values"
-" are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom\". If set"
-" to \"internet\", the clock will display Internet time. The Internet time "
-"system divides the day into 1000 \".beats\". There are no time zones in this"
-" system, so time is the same all over the world. If set to \"unix\", the "
-"clock will display time in seconds since Epoch, i.e. 1970-01-01. If set to "
-"\"custom\", the clock will display time according to the format specified in"
-" the custom_format key."
-msgstr "این کلید قالب‌بندی ساعت مورد استفاده‌ی برنامک ساعت را مشخص می‌کند. مقادیر ممکن عبارتند از «۱۲ ساعتی»، «۲۴ ساعتی»، «اینترنتی»، «یونیکسی» و «سفارشی». اگر روی «اینترنتی» تنظیم شود، ساعت وقت اینترنت را نشان خواهد داد. سیستم زمانی اینترنت روز را به ۱۰۰۰ «ضرب» تقسیم می‌کند. در این سیستم منطقه‌ی زمانی وجود ندارد، در نتیجه وقت در همه‌جای دنیا یکسان است. اگر کلید روی «یونیکسی» تنظیم شود، ساعت وقت را به صورت ثانیه‌های سپری شده از آغاز تاریخ نمایش خواهد داد، مثلاْ 1970-01-01. اگر روی «سفارشی» تنظیم شود، ساعت زمان را مطابق با قالب‌بندی مشخص شده در کلید costum_format نمایش خواهد داد."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:3
-msgid "Custom format of the clock"
-msgstr "قالب سفارشی ساعت"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:4
-msgid ""
-"This key specifies the format used by the clock applet when the format key "
-"is set to \"custom\". You can use conversion specifiers understood by "
-"strftime() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:5
-msgid "Show time with seconds"
-msgstr "نمایش وقت با ثانیه"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:6
-msgid "If true, display seconds in time."
-msgstr "اگر درست باشد، ثانیه در وقت نمایش داده می‌شود."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:7
-msgid "Show date in clock"
-msgstr "نمایش تاریخ در ساعت"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr "اگر درست باشد، علاوه بر زمان، تاریخ هم در وقت نمایش داده می‌شود."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:9
-msgid "Show date in tooltip"
-msgstr "نمایش تاریخ در راهنمای آنی"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:10
-msgid "If true, show date in a tooltip when the pointer is over the clock."
-msgstr "اگر درست باشد، وقتی نشان‌گر روی ساعت رفت، تاریخ در یک راهنمای آنی نمایش داده می‌شود."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:11
-msgid "Show weather in clock"
-msgstr "نمایش آب‌وهوا در ساعت"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:12
-msgid "If true, display a weather icon."
-msgstr "اگر درست باشد، شمایلی برای آب‌وهوا نمایش داده می‌شود."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:13
-msgid "Show temperature in clock"
-msgstr "نمایش دما در ساعت"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:14
-msgid "If true, show the temperature next to the weather icon."
-msgstr "اگر درست باشد، دما در کنار شمایل آب‌وهوا نمایش داده می‌شود."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:15
-msgid "Show week numbers in calendar"
-msgstr "نمایش عدد هفته‌ها در تقویم"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:16
-msgid "If true, show week numbers in the calendar."
-msgstr "اگر درست باشد، عدد هفته‌ها در تقویم نمایش داده می‌شود."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:17
-msgid "Expand list of locations"
-msgstr ""
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:18
-msgid "If true, expand the list of locations in the calendar window."
-msgstr ""
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:19
-msgid "List of locations"
-msgstr "فهرست مکان‌ها"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:20
-msgid "A list of locations to display in the calendar window."
-msgstr ""
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:21
-msgid "Temperature unit"
-msgstr "واحد دما"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:22
-msgid "The unit to use when showing temperatures."
-msgstr "واحدی که برای نمایش دما استفاده می‌شود."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:23
-msgid "Speed unit"
-msgstr "واحد سرعت"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:24
-msgid "The unit to use when showing wind speed."
-msgstr "واحدی که برای نمایش سرعت باد استفاده می‌شود."
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:1
-msgid "Clock Applet Factory"
-msgstr ""
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:2
-msgid "Factory for clock applet"
-msgstr ""
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:4
-msgid "Get the current time and date"
-msgstr ""
-
-#: ../applets/fish/fish.c:264
+#: ../applets/fish/fish.c:267
 #, c-format
 msgid ""
 "Warning:  The command appears to be something actually useful.\n"
 "Since this is a useless applet, you may not want to do this.\n"
 "We strongly advise you against using %s for anything\n"
 "which would make the applet \"practical\" or useful."
-msgstr "اخطار: به نظر می‌رسد این فرمان واقعاً چیز به‌دردبخودی است.\nاز آنجا که این برنامک به هیچ دردی نمی‌خورد، شاید واقعاً نمی‌خواهید این کار را بکنید.\nما اکیداً توصیه می‌کنیم از %s برای هر کاری که این برنامک را تبدیل به \nچیزی «کارآمد» یا سودمند می‌کند، خودداری کنید."
+msgstr ""
+"اخطار: به نظر می‌رسد این فرمان واقعاً چیز به‌دردبخودی است.\n"
+"از آنجا که این برنامک به هیچ دردی نمی‌خورد، شاید واقعاً نمی‌خواهید این کار را "
+"بکنید.\n"
+"ما اکیداً توصیه می‌کنیم از %s برای هر کاری که این برنامک را تبدیل به \n"
+"چیزی «کارآمد» یا سودمند می‌کند، خودداری کنید."
 
-#: ../applets/fish/fish.c:436
+#: ../applets/fish/fish.c:439
 msgid "Images"
 msgstr "تصاویر"
 
-#: ../applets/fish/fish.c:542 ../applets/fish/fish.c:586
-#: ../applets/fish/fish.c:692
+#: ../applets/fish/fish.c:545 ../applets/fish/fish.c:589
+#: ../applets/fish/fish.c:695
 #, no-c-format
 msgid "%s the Fish"
 msgstr "ماهی %s"
 
-#: ../applets/fish/fish.c:543
+#: ../applets/fish/fish.c:546
 #, c-format
 msgid ""
 "%s has no use what-so-ever. It only takes up disk space and compilation "
@@ -586,78 +60,122 @@ msgid ""
 "Anybody found using it should be promptly sent for a psychiatric evaluation."
 msgstr ""
 
-#: ../applets/fish/fish.c:563
+#: ../applets/fish/fish.c:566
 msgid "(with minor help from George)"
 msgstr "(با کمکی جزئی از طرف جرج)"
 
-#: ../applets/fish/fish.c:569
+#: ../applets/fish/fish.c:572
 #: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:3
 msgid "Fish"
 msgstr "ماهی"
 
-#: ../applets/fish/fish.c:587
+#: ../applets/fish/fish.c:578 ../applets/notification_area/main.c:179
+#: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:605
+#: ../applets/wncklet/window-menu.c:90
+#: ../applets/wncklet/workspace-switcher.c:623
+#: ../ukui-panel/panel-context-menu.c:151
+msgid "translator-credits"
+msgstr ""
+"روزبه پورنادر <roozbeh@gmail.com>\n"
+"میلاد زکریا <meelad@farsiweb.info>\n"
+"مسعود احمدزاده <masoud@bamdad.org>\n"
+"الناز سربر <elnaz@farsiweb.info>"
+
+#: ../applets/fish/fish.c:590
 #, c-format
 msgid "%s the Fish, a contemporary oracle"
 msgstr "‏%s، ماهی گنوم، یک غیب‌گوی معاصر"
 
-#: ../applets/fish/fish.c:653
+#: ../applets/fish/fish.c:656
 msgid "Unable to locate the command to execute"
 msgstr "پیدا کردن فرمان برای اجرا مقدور نیست"
 
-#: ../applets/fish/fish.c:697
+#: ../applets/fish/fish.c:700
 #, no-c-format
 msgid "%s the Fish Says:"
 msgstr "%s، ماهی گنوم می‌گوید:‏"
 
-#: ../applets/fish/fish.c:760
+#: ../applets/fish/fish.c:763
 #, c-format
 msgid ""
 "Unable to read output from command\n"
 "\n"
 "Details: %s"
-msgstr "خواندن خروجی فرمان مقدور نیست\n\nجزئیات: %s"
+msgstr ""
+"خواندن خروجی فرمان مقدور نیست\n"
+"\n"
+"جزئیات: %s"
 
-#: ../applets/fish/fish.c:836
+#: ../applets/fish/fish.c:840
 msgid "_Speak again"
 msgstr "دوباره سخن بگو_"
 
-#: ../applets/fish/fish.c:923
+#: ../applets/fish/fish.c:927
 #, c-format
 msgid "The configured command is not working and has been replaced by: %s"
 msgstr " جایگزین آن شده است %s فرمان پیکربندی شده کار نمی‌کند و "
 
-#: ../applets/fish/fish.c:955
+#: ../applets/fish/fish.c:960
 #, c-format
 msgid ""
 "Unable to execute '%s'\n"
 "\n"
 "Details: %s"
-msgstr "اجرای «%s» مقدور نیست\n'\nجزئیات: %s"
+msgstr ""
+"اجرای «%s» مقدور نیست\n"
+"'\n"
+"جزئیات: %s"
 
-#: ../applets/fish/fish.c:971
+#: ../applets/fish/fish.c:976
 #, c-format
 msgid ""
 "Unable to read from '%s'\n"
 "\n"
 "Details: %s"
-msgstr "خواندن از «%s» مقدور نیست\n\nجزئیات: %s"
+msgstr ""
+"خواندن از «%s» مقدور نیست\n"
+"\n"
+"جزئیات: %s"
 
-#: ../applets/fish/fish.c:1529
+#: ../applets/fish/fish.c:1544
 msgid "The water needs changing"
 msgstr "آب نیاز به تعویض دارد!"
 
-#: ../applets/fish/fish.c:1531
+#: ../applets/fish/fish.c:1546
 msgid "Look at today's date!"
 msgstr "به تاریخ امروز نگاه کنید!"
 
-#: ../applets/fish/fish.c:1614
+#: ../applets/fish/fish.c:1629
 #, c-format
 msgid "%s the Fish, the fortune teller"
 msgstr "%s ماهی گنوم، فال‌بین"
 
+#: ../applets/fish/fish.c:1688 ../applets/wncklet/window-list.c:172
+#: ../applets/wncklet/workspace-switcher.c:327
+msgid "_Preferences"
+msgstr "_ترجیحات"
+
+#: ../applets/fish/fish.c:1691 ../applets/notification_area/main.c:185
+#: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-menu.c:100
+#: ../applets/wncklet/workspace-switcher.c:335 ../ukui-panel/drawer.c:545
+#: ../ukui-panel/panel-action-button.c:737 ../ukui-panel/panel-menu-bar.c:359
+#: ../ukui-panel/panel-menu-button.c:669
+msgid "_Help"
+msgstr "_راهنما"
+
+#: ../applets/fish/fish.c:1694 ../applets/notification_area/main.c:188
+#: ../applets/wncklet/showdesktop.c:243 ../applets/wncklet/window-menu.c:108
+#: ../applets/wncklet/workspace-switcher.c:343
+msgid "_About"
+msgstr "_درباره"
+
 #: ../applets/fish/fish.ui.h:1
 msgid "Fish Preferences"
 msgstr "ترجیحات ماهی"
+
+#: ../applets/fish/fish.ui.h:2 ../ukui-panel/panel-properties-dialog.ui.h:11
+msgid "General"
+msgstr "عمومی"
 
 #: ../applets/fish/fish.ui.h:3
 msgid "_Name of fish:"
@@ -721,7 +239,9 @@ msgstr "نقشه‌ی نقطه‌ای پویانمایی ماهی"
 msgid ""
 "This key specifies the filename of the pixmap which will be used for the "
 "animation displayed in the fish applet relative to the pixmap directory."
-msgstr "این کلید نام پرونده‌ی نقشه‌نقطه‌ای را که برای پویانمایی نمایش داده شده در برنامک ماهی به کار می‌رود به طور نسبی به شاخه‌ی نقشه‌نقطه‌ای‌ها مشخص می‌کند."
+msgstr ""
+"این کلید نام پرونده‌ی نقشه‌نقطه‌ای را که برای پویانمایی نمایش داده شده در "
+"برنامک ماهی به کار می‌رود به طور نسبی به شاخه‌ی نقشه‌نقطه‌ای‌ها مشخص می‌کند."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:5
 msgid "Command to execute on click"
@@ -731,7 +251,8 @@ msgstr "فرمانی که با کلیک کردن اجرا می‌شود"
 msgid ""
 "This key specifies the command that will be tried to execute when the fish "
 "is clicked."
-msgstr "این کلید فرمانی را مشخص می‌کند که وقتی روی ماهی کلیک می‌شود اجرا خواهد شد."
+msgstr ""
+"این کلید فرمانی را مشخص می‌کند که وقتی روی ماهی کلیک می‌شود اجرا خواهد شد."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:7
 msgid "Frames in fish's animation"
@@ -739,9 +260,11 @@ msgstr "چارچوب در پویانمایی ماهی"
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:8
 msgid ""
-"This key specifies the number of frames that will be displayed in the fish's"
-" animation."
-msgstr "این کلید تعداد چارچوب‌هایی را مشخص می‌کند که در پویانمایی ماهی نمایش داده خواهند شد."
+"This key specifies the number of frames that will be displayed in the fish's "
+"animation."
+msgstr ""
+"این کلید تعداد چارچوب‌هایی را مشخص می‌کند که در پویانمایی ماهی نمایش داده "
+"خواهند شد."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:9
 msgid "Pause per frame"
@@ -749,7 +272,8 @@ msgstr "مکث در هر چارچوب"
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:10
 msgid "This key specifies the number of seconds each frame will be displayed."
-msgstr "این کلید تعداد ثانیه‌هایی را مشخص می‌کند که هر چارچوب نمایش داده خواهد شد."
+msgstr ""
+"این کلید تعداد ثانیه‌هایی را مشخص می‌کند که هر چارچوب نمایش داده خواهد شد."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:11
 msgid "Rotate on vertical panels"
@@ -758,7 +282,9 @@ msgstr "دوران در تابلوهای عمودی"
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:12
 msgid ""
 "If true, the fish's animation will be displayed rotated on vertical panels."
-msgstr "اگر درست باشد، پویانمایی ماهی در تابلوهای عمودی به صورت دوران یافته نمایش داده می‌شود."
+msgstr ""
+"اگر درست باشد، پویانمایی ماهی در تابلوهای عمودی به صورت دوران یافته نمایش "
+"داده می‌شود."
 
 #: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:1
 msgid "Wanda Factory"
@@ -772,12 +298,13 @@ msgstr ""
 msgid "Display a swimming fish or another aniukuid creature"
 msgstr ""
 
-#: ../applets/notification_area/main.c:164
+#: ../applets/notification_area/main.c:173
 #: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:3
+#: ../ukui-panel/notification-area.ui.h:1
 msgid "Notification Area"
 msgstr "ناحیه‌ی اعلان"
 
-#: ../applets/notification_area/main.c:380
+#: ../applets/notification_area/main.c:389
 msgid "Panel Notification Area"
 msgstr "ناحیه‌ی اعلان تابلو"
 
@@ -799,9 +326,11 @@ msgstr "نمایش پنجره‌های همه‌ی فضاهای کاری"
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:2
 msgid ""
-"If true, the window list will show windows from all workspaces. Otherwise it"
-" will only display windows from the current workspace."
-msgstr "اگر درست باشد، فهرست پنجره‌ها، پنجره‌های همه‌ی فضاهای کاری را نشان خواهد داد. در غیر این صورت فقط پنجره‌های فضای کاری فعلی را نمایش می‌دهد."
+"If true, the window list will show windows from all workspaces. Otherwise it "
+"will only display windows from the current workspace."
+msgstr ""
+"اگر درست باشد، فهرست پنجره‌ها، پنجره‌های همه‌ی فضاهای کاری را نشان خواهد داد. "
+"در غیر این صورت فقط پنجره‌های فضای کاری فعلی را نمایش می‌دهد."
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:3
 msgid "When to group windows"
@@ -811,7 +340,9 @@ msgstr "زمان گروه شدن پنجره‌ها"
 msgid ""
 "Decides when to group windows from the same application on the window list. "
 "Possible values are \"never\", \"auto\" and \"always\"."
-msgstr "تصمیم می‌گیرد که کی پنجره‌های متعلق به یک برنامه را در فهرست پنجره‌ها گروه کند. مقادیر ممکن عبارتند از «هیچ‌وقت»، «خودکار» و «همیشه»."
+msgstr ""
+"تصمیم می‌گیرد که کی پنجره‌های متعلق به یک برنامه را در فهرست پنجره‌ها گروه کند. "
+"مقادیر ممکن عبارتند از «هیچ‌وقت»، «خودکار» و «همیشه»."
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:5
 msgid "Move windows to current workspace when unminimized"
@@ -821,7 +352,9 @@ msgstr "انتقال پنجره‌ها به فضای کاری فعلی هنگا�
 msgid ""
 "If true, then when unminimizing a window, move it to the current workspace. "
 "Otherwise, switch to the workspace of the window."
-msgstr "اگر درست باشد، موقع ناحداقل کردن یک پنجره، آن را به فضای کاری فعلی منتقل می‌کند. در غیر این صورت، فضای کاری را به فضای حاوی پنجره تعویض خواهد کرد."
+msgstr ""
+"اگر درست باشد، موقع ناحداقل کردن یک پنجره، آن را به فضای کاری فعلی منتقل "
+"می‌کند. در غیر این صورت، فضای کاری را به فضای حاوی پنجره تعویض خواهد کرد."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:1
 msgid "Display workspace names"
@@ -842,7 +375,9 @@ msgstr "نمایش همه‌ی فضاهای کاری"
 msgid ""
 "If true, the workspace switcher will show all workspaces. Otherwise it will "
 "only show the current workspace."
-msgstr "اگر درست باشد، تعویض‌کننده‌ی فضای کاری همه‌ی فضاهای کاری را نشان خواهد داد. در غیر این صورت فقط فضای کاری فعلی را نشان می‌دهد."
+msgstr ""
+"اگر درست باشد، تعویض‌کننده‌ی فضای کاری همه‌ی فضاهای کاری را نشان خواهد داد. در "
+"غیر این صورت فقط فضای کاری فعلی را نشان می‌دهد."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:5
 msgid "Rows in workspace switcher"
@@ -851,9 +386,12 @@ msgstr "ردیف‌های تعویش‌کننده‌ی فضای کاری"
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:6
 msgid ""
 "This key specifies how many rows (for horizontal layout) or columns (for "
-"vertical layout) the workspace switcher shows the workspaces in. This key is"
-" only relevant if the display_all_workspaces key is true."
-msgstr "این کلید مشخص می‌کند تعویض‌کننده‌ی فضای کاری، فضاهای کاری را در چند ردیف (برای طرح‌های افقی) یا ستون (برای طرح‌های عمودی) نشان می‌دهد. این کلید فقط در صورتی کار می‌کند که display_all_workspaces درست باشد."
+"vertical layout) the workspace switcher shows the workspaces in. This key is "
+"only relevant if the display_all_workspaces key is true."
+msgstr ""
+"این کلید مشخص می‌کند تعویض‌کننده‌ی فضای کاری، فضاهای کاری را در چند ردیف (برای "
+"طرح‌های افقی) یا ستون (برای طرح‌های عمودی) نشان می‌دهد. این کلید فقط در صورتی "
+"کار می‌کند که display_all_workspaces درست باشد."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:7
 msgid "Wrap around on scroll"
@@ -883,7 +421,7 @@ msgid "Switch between open windows using a menu"
 msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:5
-#: ../applets/wncklet/workspace-switcher.c:597
+#: ../applets/wncklet/workspace-switcher.c:616
 msgid "Workspace Switcher"
 msgstr "تعویض‌کننده‌ی فضای کاری"
 
@@ -892,7 +430,7 @@ msgid "Switch between workspaces"
 msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:7
-#: ../applets/wncklet/window-list.c:555
+#: ../applets/wncklet/window-list.c:598
 msgid "Window List"
 msgstr "فهرست پنجره‌ها"
 
@@ -935,19 +473,32 @@ msgstr "با این دکمه می‌توانید همه‌ی پنجره‌ها �
 
 #: ../applets/wncklet/showdesktop.c:541
 msgid ""
-"Your window manager does not support the show desktop button, or you are not"
-" running a window manager."
-msgstr "مدیر پنجره‌ی شما از دکمه‌ی نمایش رومیزی پشتیبانی نمی‌کند، یا شما مدیر پنجره‌ی در حال اجرا ندارید."
+"Your window manager does not support the show desktop button, or you are not "
+"running a window manager."
+msgstr ""
+"مدیر پنجره‌ی شما از دکمه‌ی نمایش رومیزی پشتیبانی نمی‌کند، یا شما مدیر پنجره‌ی در "
+"حال اجرا ندارید."
 
-#: ../applets/wncklet/window-list.c:171
-msgid "_System Monitor"
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Help"));
+#. image = gtk_image_new_from_icon_name ("help-browser", GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (retval), menuitem);
+#. g_signal_connect (menuitem, "activate",
+#. G_CALLBACK (panel_context_menu_show_help), NULL);
+#.
+#: ../applets/wncklet/window-list.c:164 ../ukui-panel/panel-context-menu.c:368
+msgid "_Monitor"
 msgstr ""
 
-#: ../applets/wncklet/window-list.c:557
+#: ../applets/wncklet/window-list.c:600
 msgid ""
-"The Window List shows a list of all windows in a set of buttons and lets you"
-" browse them."
-msgstr "فهرست پنجره‌ها فهرستی از همه‌ی پنجره‌ها را در یک سری دکمه نشان می‌دهد تا بتوانید آنها را مرور کنید."
+"The Window List shows a list of all windows in a set of buttons and lets you "
+"browse them."
+msgstr ""
+"فهرست پنجره‌ها فهرستی از همه‌ی پنجره‌ها را در یک سری دکمه نشان می‌دهد تا بتوانید "
+"آنها را مرور کنید."
 
 #: ../applets/wncklet/window-list.ui.h:1
 msgid "Window List Preferences"
@@ -997,24 +548,28 @@ msgstr "بازگرداندن به فضای کاری _بومی"
 msgid ""
 "The Window Selector shows a list of all windows in a menu and lets you "
 "browse them."
-msgstr "انتخاب‌گر پنجره فهرستی از همه‌ی پنجره‌ها را در یک منو نشان می‌دهد و به شما اجازه می‌دهد آنها را مرور کنید."
+msgstr ""
+"انتخاب‌گر پنجره فهرستی از همه‌ی پنجره‌ها را در یک منو نشان می‌دهد و به شما اجازه "
+"می‌دهد آنها را مرور کنید."
 
-#: ../applets/wncklet/workspace-switcher.c:198
-#: ../applets/wncklet/workspace-switcher.c:899
+#: ../applets/wncklet/workspace-switcher.c:199
+#: ../applets/wncklet/workspace-switcher.c:918
 #: ../applets/wncklet/workspace-switcher.ui.h:4
 msgid "rows"
 msgstr "ردیف"
 
-#: ../applets/wncklet/workspace-switcher.c:198
-#: ../applets/wncklet/workspace-switcher.c:899
+#: ../applets/wncklet/workspace-switcher.c:199
+#: ../applets/wncklet/workspace-switcher.c:918
 msgid "columns"
 msgstr "ستون"
 
-#: ../applets/wncklet/workspace-switcher.c:599
+#: ../applets/wncklet/workspace-switcher.c:618
 msgid ""
 "The Workspace Switcher shows you a small version of your workspaces that "
 "lets you manage your windows."
-msgstr "تعویض‌کننده‌ی فضای کاری نسخه‌ی کوچکی از فضای کاری شما را نشانتان می‌دهد که به شما اجازه می‌دهد پنجره‌هایتان را مدیریت کنید."
+msgstr ""
+"تعویض‌کننده‌ی فضای کاری نسخه‌ی کوچکی از فضای کاری شما را نشانتان می‌دهد که به "
+"شما اجازه می‌دهد پنجره‌هایتان را مدیریت کنید."
 
 #: ../applets/wncklet/workspace-switcher.ui.h:1
 msgid "Workspace Switcher Preferences"
@@ -1057,11 +612,11 @@ msgid "Workspaces"
 msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:1
-msgid "Default panel layout"
+msgid "Ukui panel layout"
 msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:2
-msgid "The default panels layout to use when panels are created or resetted."
+msgid "The Ukui panels layout to use when panels are created or resetted."
 msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:3
@@ -1073,7 +628,10 @@ msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is made available. Whether or not the listing is expanded when the "
 "dialog is shown is controlled by the show_program_list key."
-msgstr "اگر درست باشد، فهرست «برنامه‌های شناخته‌شده» در محاوره‌ی «اجرای برنامه» قابل دسترسی می‌شود. این که فهرست هنگام نشان دادن محاوره باز شود یا نه با کلید show_program_list کنترل می‌شود."
+msgstr ""
+"اگر درست باشد، فهرست «برنامه‌های شناخته‌شده» در محاوره‌ی «اجرای برنامه» قابل "
+"دسترسی می‌شود. این که فهرست هنگام نشان دادن محاوره باز شود یا نه با کلید "
+"show_program_list کنترل می‌شود."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:5
 msgid "Expand program list in \"Run Application\" dialog"
@@ -1084,7 +642,10 @@ msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is expanded when the dialog is opened. This key is only relevant if "
 "the enable_program_list key is true."
-msgstr "اگر درست باشد، وقتی محاوره‌ی «اجرای برنامه» باز می‌شود، فهرست «برنامه‌های شناخته شده» در آن باز می‌شود. این کلید فقط وقتی کار می‌کند که کلید enable_program_list درست باشد."
+msgstr ""
+"اگر درست باشد، وقتی محاوره‌ی «اجرای برنامه» باز می‌شود، فهرست «برنامه‌های "
+"شناخته شده» در آن باز می‌شود. این کلید فقط وقتی کار می‌کند که کلید "
+"enable_program_list درست باشد."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:7
 msgid "Enable autocompletion in \"Run Application\" dialog"
@@ -1093,7 +654,8 @@ msgstr "به کار انداختن تکمیل خودکار در محاوره‌�
 #: ../data/org.ukui.panel.gschema.xml.in.h:8
 msgid ""
 "If true, autocompletion in the \"Run Application\" dialog is made available."
-msgstr "اگر درست باشد، تکمیل خودکار در محاوره‌ی «اجرای برنامه» قابل دسترسی می‌شود."
+msgstr ""
+"اگر درست باشد، تکمیل خودکار در محاوره‌ی «اجرای برنامه» قابل دسترسی می‌شود."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:9
 msgid "History for \"Run Application\" dialog"
@@ -1102,8 +664,8 @@ msgstr ""
 #: ../data/org.ukui.panel.gschema.xml.in.h:10
 msgid ""
 "This is the list of commands used in \"Run Application\" dialog. The "
-"commands are sorted descendingly by recency (e.g., most recent command comes"
-" first)."
+"commands are sorted descendingly by recency (e.g., most recent command comes "
+"first)."
 msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:11
@@ -1134,7 +696,10 @@ msgstr "فهرست شناسه‌ی تابلو"
 msgid ""
 "A list of panel IDs. Each ID identifies an individual toplevel panel. The "
 "settings for each of these panels are stored in /apps/panel/toplevels/$(id)."
-msgstr "فهرستی از شناسه‌های تابلو. هر شناسه‌ یک تابلوی‌ سطح بالای جداگانه را مشخص می‌کند. تنظیمات هر کدام از این تابلو‌ها در ‎/apps/panel/toplevels/$(id)‎ نگهداری می‌شود."
+msgstr ""
+"فهرستی از شناسه‌های تابلو. هر شناسه‌ یک تابلوی‌ سطح بالای جداگانه را مشخص "
+"می‌کند. تنظیمات هر کدام از این تابلو‌ها در ‎/apps/panel/toplevels/$(id)‎ نگهداری "
+"می‌شود."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:17
 msgid "Panel object ID list"
@@ -1142,10 +707,13 @@ msgstr "فهرست شناسه‌ی اشیاء تابلو"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:18
 msgid ""
-"A list of panel object IDs. Each ID identifies an individual panel object "
-"(e.g. a launcher, action button or menu button/bar). The settings for each "
-"of these objects are stored in /apps/panel/objects/$(id)."
-msgstr "فهرستی از شناسه‌های اشیاء تابلو. هر شناسه‌ یک شی‌ء تابلوی جداگانه را مشخص می‌کند. تنظیمات هر کدام از این شیء‌ها در ‎/apps/panel/objects/$(id)‎ نگهداری می‌شود."
+"A list of panel object IDs. Each ID identifies an individual panel object (e."
+"g. a launcher, action button or menu button/bar). The settings for each of "
+"these objects are stored in /apps/panel/objects/$(id)."
+msgstr ""
+"فهرستی از شناسه‌های اشیاء تابلو. هر شناسه‌ یک شی‌ء تابلوی جداگانه را مشخص "
+"می‌کند. تنظیمات هر کدام از این شیء‌ها در ‎/apps/panel/objects/$(id)‎ نگهداری "
+"می‌شود."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:19
 msgid "Enable tooltips"
@@ -1156,7 +724,7 @@ msgid "If true, tooltips are shown for objects in panels."
 msgstr "اگر درست باشد، راهنمای آنی برای اشیاء در پنجره نشان داده می‌شود.‏"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:21
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
 msgid "Enable animations"
 msgstr "به کار انداختن پویانمایی‌ها"
 
@@ -1168,7 +736,9 @@ msgstr "بستن خودکار کشو"
 msgid ""
 "If true, a drawer will automatically be closed when the user clicks a "
 "launcher in it."
-msgstr "اگر درست باشد، کشوها وقتی کاربر روی راه‌اندازی در آنها کلیک کند به طور خودکار بسته خواهند شد."
+msgstr ""
+"اگر درست باشد، کشوها وقتی کاربر روی راه‌اندازی در آنها کلیک کند به طور خودکار "
+"بسته خواهند شد."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:24
 msgid "Confirm panel removal"
@@ -1178,7 +748,9 @@ msgstr "تصدیق حذف تابلو"
 msgid ""
 "If true, a dialog is shown asking for confirmation if the user wants to "
 "remove a panel."
-msgstr "اگر درست باشد، اگر کاربر بخواهد تابلویی را حذف کند محاوره‌ای برای تصدیق نشان داده می‌شود."
+msgstr ""
+"اگر درست باشد، اگر کاربر بخواهد تابلویی را حذف کند محاوره‌ای برای تصدیق نشان "
+"داده می‌شود."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:26
 msgid "Highlight launchers on mouseover"
@@ -1187,7 +759,9 @@ msgstr "پررنگ کردن راه‌اندازها وقتی موشی از رو�
 #: ../data/org.ukui.panel.gschema.xml.in.h:27
 msgid ""
 "If true, a launcher is highlighted when the user moves the pointer over it."
-msgstr "اگر درست باشد، راه‌اندازها وقتی کاربر نشان‌گر را روی آنها حرکت می‌دهد پررنگ می‌شوند."
+msgstr ""
+"اگر درست باشد، راه‌اندازها وقتی کاربر نشان‌گر را روی آنها حرکت می‌دهد پررنگ "
+"می‌شوند."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:28
 msgid "Complete panel lockdown"
@@ -1196,9 +770,12 @@ msgstr "قفل کردن کامل تابلو"
 #: ../data/org.ukui.panel.gschema.xml.in.h:29
 msgid ""
 "If true, the panel will not allow any changes to the configuration of the "
-"panel. Individual applets may need to be locked down separately however. The"
-" panel must be restarted for this to take effect."
-msgstr "اگر درست باشد، تابلو اجازه‌ی هیچ تغییری را در پیکربندی تابلو نخواهد داد. با این حال ممکن است لازم باشد تک تک برنامه‌ها جداگانه قفل شوند. برای اثر کردن، تابلو باید دوباره راه‌اندازی شود."
+"panel. Individual applets may need to be locked down separately however. The "
+"panel must be restarted for this to take effect."
+msgstr ""
+"اگر درست باشد، تابلو اجازه‌ی هیچ تغییری را در پیکربندی تابلو نخواهد داد. با "
+"این حال ممکن است لازم باشد تک تک برنامه‌ها جداگانه قفل شوند. برای اثر کردن، "
+"تابلو باید دوباره راه‌اندازی شود."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:30
 msgid "Applet IIDs to disable from loading"
@@ -1220,7 +797,17 @@ msgstr "از کار انداختن ترک اجباری"
 msgid ""
 "If true, the panel will not allow a user to force an application to quit by "
 "removing access to the force quit button."
-msgstr "اگر درست باشد، تابلو با حذف دسترسی به دکمه‌ی ترک اجباری به کاربر اجازه نمی‌دهد که برنامه‌ای را وادار به ترک کند."
+msgstr ""
+"اگر درست باشد، تابلو با حذف دسترسی به دکمه‌ی ترک اجباری به کاربر اجازه نمی‌دهد "
+"که برنامه‌ای را وادار به ترک کند."
+
+#: ../data/org.ukui.panel.gschema.xml.in.h:34
+msgid "Enable SNI support"
+msgstr ""
+
+#: ../data/org.ukui.panel.gschema.xml.in.h:35
+msgid "If true, the panel provides support for SNI."
+msgstr ""
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:1
 msgid "Show applications menu"
@@ -1278,8 +865,8 @@ msgstr ""
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:14
 msgid ""
-"Set the size of icons used in the menu. The panel must be restarted for this"
-" to take effect."
+"Set the size of icons used in the menu. The panel must be restarted for this "
+"to take effect."
 msgstr ""
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:15
@@ -1316,7 +903,9 @@ msgstr "موقعیت شیء در تابلو"
 msgid ""
 "The position of this panel object. The position is specified by the number "
 "of pixels from the left (or top if vertical) panel edge."
-msgstr "موقعیت این شیء تابلو. موقعیت با تعداد نقطه‌ها از لبه‌ی چپ (یا اگر عمودی باشد لبه‌ی بالای) تابلو مشخص می‌شود."
+msgstr ""
+"موقعیت این شیء تابلو. موقعیت با تعداد نقطه‌ها از لبه‌ی چپ (یا اگر عمودی باشد "
+"لبه‌ی بالای) تابلو مشخص می‌شود."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:7
 msgid "Interpret position relative to bottom/right edge"
@@ -1324,9 +913,11 @@ msgstr "تفسیر موقعیت به صورت نسبی از لبه‌ی پایی
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:8
 msgid ""
-"If true, the position of the object is interpreted relative to the right (or"
-" bottom if vertical) edge of the panel."
-msgstr "اگر درست باشد، موقعیت شیء به طور نسبی از لبه‌ی راست (یا اگر عمودی باشد از لبه‌ی پایین) تابلو تفسیر می‌شود. "
+"If true, the position of the object is interpreted relative to the right (or "
+"bottom if vertical) edge of the panel."
+msgstr ""
+"اگر درست باشد، موقعیت شیء به طور نسبی از لبه‌ی راست (یا اگر عمودی باشد از "
+"لبه‌ی پایین) تابلو تفسیر می‌شود. "
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:9
 msgid "Lock the object to the panel"
@@ -1334,9 +925,11 @@ msgstr "قفل کردن شیء به تابلو"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:10
 msgid ""
-"If true, the user may not move the applet without first unlocking the object"
-" using the \"Unlock\" menuitem."
-msgstr "اگر درست باشد، کاربران نمی‌توانند بدون اول باز کردن قفل شیء با استفاده از «باز کردن قفل» شیء منو، برنامک را حرکت دهند."
+"If true, the user may not move the applet without first unlocking the object "
+"using the \"Unlock\" menuitem."
+msgstr ""
+"اگر درست باشد، کاربران نمی‌توانند بدون اول باز کردن قفل شیء با استفاده از "
+"«باز کردن قفل» شیء منو، برنامک را حرکت دهند."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:11
 msgid "Applet IID"
@@ -1344,10 +937,9 @@ msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:12
 msgid ""
-"The implementation ID of the applet - e.g. "
-"\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
-"object_type key is \"external-applet\" (or the deprecated \"ukuicomponent-"
-"applet\")."
+"The implementation ID of the applet - e.g. \"ClockAppletFactory::ClockApplet"
+"\". This key is only relevant if the object_type key is \"external-applet"
+"\" (or the deprecated \"ukuicomponent-applet\")."
 msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:13
@@ -1358,7 +950,9 @@ msgstr "تابلوی متصل به کشو"
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
 "relevant if the object_type key is \"drawer-object\"."
-msgstr "شناسه‌ی تابلوی متصل به این کشو. این کلید فقط در صورتی کار می‌کند که کلید object_type، ‏‏«drawer-object» باشد."
+msgstr ""
+"شناسه‌ی تابلوی متصل به این کشو. این کلید فقط در صورتی کار می‌کند که کلید "
+"object_type، ‏‏«drawer-object» باشد."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:15
 msgid "Tooltip displayed for drawer or menu"
@@ -1367,9 +961,11 @@ msgstr "راهنمای آنی نمایش داده شده برای کشو یا م
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:16
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
-"only relevant if the object_type key is \"drawer-object\" or \"menu-"
-"object\"."
-msgstr "متنی که برای این کشو یا این منو در یک راهنمای آنی نمایش داده می‌شود. این کلید تنها زمانی کار می‌کند که کلید ،object_type ‏«menu-object» یا ‏«drawer-object» باشد"
+"only relevant if the object_type key is \"drawer-object\" or \"menu-object\"."
+msgstr ""
+"متنی که برای این کشو یا این منو در یک راهنمای آنی نمایش داده می‌شود. این کلید "
+"تنها زمانی کار می‌کند که کلید ،object_type ‏«menu-object» یا ‏«drawer-object» "
+"باشد"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:17
 msgid "Use custom icon for object's button"
@@ -1380,7 +976,11 @@ msgid ""
 "If true, the custom_icon key is used as a custom icon for the button. If "
 "false, the custom_icon key is ignored. This key is only relevant if the "
 "object_type key is \"menu-object\" or \"drawer-object\"."
-msgstr "اگر درست باشد، کلید custom_icon به عنوان شمایلی سفارشی برای دکمه به کار خواهد رفت. اگر غلط باشد، کلید coustom_iconنادیده گرفته می‌شود. این کلید تنها در صورتی کار خواهد کرد که کلید object_type ‏«menu-object» یا ‏«drawer-object» باشد."
+msgstr ""
+"اگر درست باشد، کلید custom_icon به عنوان شمایلی سفارشی برای دکمه به کار "
+"خواهد رفت. اگر غلط باشد، کلید coustom_iconنادیده گرفته می‌شود. این کلید تنها "
+"در صورتی کار خواهد کرد که کلید object_type ‏«menu-object» یا ‏«drawer-object» "
+"باشد."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:19
 msgid "Icon used for object's button"
@@ -1391,7 +991,10 @@ msgid ""
 "The location of the image file used as the icon for the object's button. "
 "This key is only relevant if the object_type key is \"drawer-object\" or "
 "\"menu-object\" and the use_custom_icon key is true."
-msgstr "مکان پرونده‌ی تصویری مورد استفاده به عنوان شمایل دکمه‌ی شیء. این کلید فقط در صورتی کار می‌کند که کلید ،object_type ‏«drawer-object» یا ‏«menu-object»، و کلید use_custom_icon درست باشد."
+msgstr ""
+"مکان پرونده‌ی تصویری مورد استفاده به عنوان شمایل دکمه‌ی شیء. این کلید فقط در "
+"صورتی کار می‌کند که کلید ،object_type ‏«drawer-object» یا ‏«menu-object»، و "
+"کلید use_custom_icon درست باشد."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:21
 msgid "Use custom path for menu contents"
@@ -1402,7 +1005,11 @@ msgid ""
 "If true, the menu_path key is used as the path from which the menu contents "
 "should be constructed. If false, the menu_path key is ignored. This key is "
 "only relevant if the object_type key is \"menu-object\"."
-msgstr "اگر درست باشد، کلید menu_path به عنوان مسیری که محتویات منو باید از آنجا ساخته شوند به کار خواهد رفت. اگر غلط باشد، کلید menu_path نادیده گرفته می‌شود. این کلید تنها در صورتی کار می‌کند که کلید object_type، «menu-object» باشد."
+msgstr ""
+"اگر درست باشد، کلید menu_path به عنوان مسیری که محتویات منو باید از آنجا "
+"ساخته شوند به کار خواهد رفت. اگر غلط باشد، کلید menu_path نادیده گرفته "
+"می‌شود. این کلید تنها در صورتی کار می‌کند که کلید object_type، «menu-object» "
+"باشد."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:23
 msgid "Menu content path"
@@ -1413,7 +1020,9 @@ msgid ""
 "The path from which the menu contents is contructed. This key is only "
 "relevant if the use_menu_path key is true and the object_type key is \"menu-"
 "object\"."
-msgstr "مسیری که محتویات منو از آنجا ساخته می‌شود. این کلید فقط در صورتی کار می‌کند که کلید use_menu_path درست و کلید ،object_type ‏«menu-object» باشد."
+msgstr ""
+"مسیری که محتویات منو از آنجا ساخته می‌شود. این کلید فقط در صورتی کار می‌کند که "
+"کلید use_menu_path درست و کلید ،object_type ‏«menu-object» باشد."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:25
 msgid "Draw arrow in menu button"
@@ -1433,7 +1042,9 @@ msgstr "مکان راه‌انداز"
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
 "relevant if the object_type key is \"launcher-object\"."
-msgstr "مکان پرونده‌ی .desktop که راه‌انداز را توصیف میکند. این کلید زمانی به کار می‌رود که کلید ،object_type ‏«launcher-object» باشد."
+msgstr ""
+"مکان پرونده‌ی .desktop که راه‌انداز را توصیف میکند. این کلید زمانی به کار "
+"می‌رود که کلید ،object_type ‏«launcher-object» باشد."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:29
 msgid "Action button type"
@@ -1444,7 +1055,10 @@ msgid ""
 "The action type this button represents. Possible values are \"lock\", "
 "\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
 "relevant if the object_type key is \"action-applet\"."
-msgstr "نوع عملی که این دکمه نماینده‌ی آن است. مقادیر ممکن عبارتند از «قفل»، «خروج از سیستم»، «اجرا»، «جست و جو» و «عکس از صفحه‌ی نمایش». این کلید فقط در صورتی کار می‌کند که کلید ،object_type ‏«action-applet» باشد."
+msgstr ""
+"نوع عملی که این دکمه نماینده‌ی آن است. مقادیر ممکن عبارتند از «قفل»، «خروج از "
+"سیستم»، «اجرا»، «جست و جو» و «عکس از صفحه‌ی نمایش». این کلید فقط در صورتی کار "
+"می‌کند که کلید ،object_type ‏«action-applet» باشد."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:1
 msgid "Name to identify panel"
@@ -1455,7 +1069,10 @@ msgid ""
 "This is a human readable name which you can use to identify a panel. Its "
 "main purpose is to serve as the panel's window title which is useful when "
 "navigating between panels."
-msgstr "نامی قابل خواندن برای انسان است که می‌توانید برای شناسایی تابلوها به کار ببرید. فایده‌ی اصلی آن به کار رفتن به شکل عنوان پنجره‌ی تابلو است که موقع ناوش بین تابلوها به درد می‌خورد."
+msgstr ""
+"نامی قابل خواندن برای انسان است که می‌توانید برای شناسایی تابلوها به کار "
+"ببرید. فایده‌ی اصلی آن به کار رفتن به شکل عنوان پنجره‌ی تابلو است که موقع ناوش "
+"بین تابلوها به درد می‌خورد."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:3
 msgid "X screen where the panel is displayed"
@@ -1465,85 +1082,126 @@ msgstr "صفحه‌ی نمایش X که تابلو روی آن نمایش داد
 msgid ""
 "With a multi-screen setup, you may have panels on each individual screen. "
 "This key identifies the current screen the panel is displayed on."
-msgstr "با برپاسازی چند صفحه‌ای، می‌توانید روی تک تک صفحه‌های نمایش تابلو داشته باشید. این کلید صفحه‌ی فعلی را که تابلو روی آن نمایش داده می‌شود، مشخص می‌کند."
+msgstr ""
+"با برپاسازی چند صفحه‌ای، می‌توانید روی تک تک صفحه‌های نمایش تابلو داشته باشید. "
+"این کلید صفحه‌ی فعلی را که تابلو روی آن نمایش داده می‌شود، مشخص می‌کند."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:5
+msgid "Show blank starting position"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
+msgid "Windows-list get blank starting position"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
+msgid "Number of new inserted tray applets"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
+msgid "Number of new inserted launcher applets"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
 msgid "Xinerama monitor where the panel is displayed"
 msgstr "نمایشگر سینه‌رامایی‌که تابلو در آن نمایش داده شده است"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
 msgid ""
 "In a Xinerama setup, you may have panels on each individual monitor. This "
 "key identifies the current monitor the panel is displayed on."
-msgstr "در برپاسازی سینه‌راما، شما می‌توانید روی هر نمایشگر تابلوهای جداگانه داشته باشید. این کلید نمایشگری را که هم اکنون تابلو روی آن نمایش داده می‌شود را مشخص می‌کند."
+msgstr ""
+"در برپاسازی سینه‌راما، شما می‌توانید روی هر نمایشگر تابلوهای جداگانه داشته "
+"باشید. این کلید نمایشگری را که هم اکنون تابلو روی آن نمایش داده می‌شود را "
+"مشخص می‌کند."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
 msgid "Expand to occupy entire screen width"
 msgstr "گسترش تا اشغال سراسر عرض صفحه‌ی نمایش"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
 msgid ""
 "If true, the panel will occupy the entire screen width (height if this is a "
-"vertical panel). In this mode the panel can only be placed at a screen edge."
-" If false, the panel will only be large enough to accommodate the applets, "
+"vertical panel). In this mode the panel can only be placed at a screen edge. "
+"If false, the panel will only be large enough to accommodate the applets, "
 "launchers and buttons on the panel."
-msgstr "اگر درست باشد، تابلو سراسر عرض (یا اگر تابلو عمودی باشد، ارتفاع) صفحه‌ی نمایش را اشغال خواهد کرد. در این حالت فقط می‌توان تابلو را در یک لبه‌ی صفحه قرار داد. اگر نادرست باشد، تابلو فقط به قدری بزرگ خواهد بود که برنامک‌ها، راه‌انداز‌ها و دکمه‌ها روی آن جا شوند."
+msgstr ""
+"اگر درست باشد، تابلو سراسر عرض (یا اگر تابلو عمودی باشد، ارتفاع) صفحه‌ی نمایش "
+"را اشغال خواهد کرد. در این حالت فقط می‌توان تابلو را در یک لبه‌ی صفحه قرار "
+"داد. اگر نادرست باشد، تابلو فقط به قدری بزرگ خواهد بود که برنامک‌ها، "
+"راه‌انداز‌ها و دکمه‌ها روی آن جا شوند."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
 msgid "Panel orientation"
 msgstr "جهت تابلو"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
 msgid ""
-"The orientation of the panel. Possible values are \"top\", \"bottom\", "
-"\"left\", \"right\". In expanded mode the key specifies which screen edge "
-"the panel is on. In un-expanded mode the difference between \"top\" and "
-"\"bottom\" is less important - both indicate that this is a horizontal panel"
-" - but still give a useful hint as to how some panel objects should behave. "
-"For example, on a \"top\" panel a menu button will pop up its menu below the"
-" panel, whereas on a \"bottom\" panel the menu will be popped up above the "
+"The orientation of the panel. Possible values are \"top\", \"bottom\", \"left"
+"\", \"right\". In expanded mode the key specifies which screen edge the "
+"panel is on. In un-expanded mode the difference between \"top\" and \"bottom"
+"\" is less important - both indicate that this is a horizontal panel - but "
+"still give a useful hint as to how some panel objects should behave. For "
+"example, on a \"top\" panel a menu button will pop up its menu below the "
+"panel, whereas on a \"bottom\" panel the menu will be popped up above the "
 "panel."
-msgstr "جهت تابلو. مقادیر ممکن عبارتند از «بالا»، «پایین»، «چپ»، «راست». در حالت گسترش یافته کلید مشخص می‌کند تابلو در کدام لبه‌ی صفحه قرار دارد. در حالت گسترش نیافته، تفاوت میان «بالا» و «پایین» اهمیت چندانی ندارد ـ هر دو مشخص می‌کنند که این تابلو افقی است ـ ولی باز هم راهنمایی کارآمدی درباره‌ی طرز رفتار بعضی اشیاء تابلو ارائه می‌کند. به عنوان مثال، در یک تابلوی «بالا» یک دکمه‌ی منو، منوی خود را زیر تابلو باز خواهد کرد، در حالی که در یک تابلوی «پایین» منو بالای تابلو باز خواهد شد."
+msgstr ""
+"جهت تابلو. مقادیر ممکن عبارتند از «بالا»، «پایین»، «چپ»، «راست». در حالت "
+"گسترش یافته کلید مشخص می‌کند تابلو در کدام لبه‌ی صفحه قرار دارد. در حالت گسترش "
+"نیافته، تفاوت میان «بالا» و «پایین» اهمیت چندانی ندارد ـ هر دو مشخص می‌کنند "
+"که این تابلو افقی است ـ ولی باز هم راهنمایی کارآمدی درباره‌ی طرز رفتار بعضی "
+"اشیاء تابلو ارائه می‌کند. به عنوان مثال، در یک تابلوی «بالا» یک دکمه‌ی منو، "
+"منوی خود را زیر تابلو باز خواهد کرد، در حالی که در یک تابلوی «پایین» منو "
+"بالای تابلو باز خواهد شد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
 msgid "Panel size"
 msgstr "اندازه‌ی تابلو"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
 msgid ""
 "The height (width for a vertical panel) of the panel. The panel will "
 "determine at runtime a minimum size based on the font size and other "
 "indicators. The maximum size is fixed at one quarter of the screen height "
 "(or width)."
-msgstr "ارتفاع (برای تابلوهای عمودی عرض) تابلو. تابلو در هنگام اجرا شدن یک اندازه‌ی حداقل بر اساس اندازه‌ی قلم و دیگر ویژگی‌ها معین خواهد کرد. اندازه‌ی حداکثر به اندازه‌ی ربع ارتفاع (یا عرض) صفحه ثابت است."
+msgstr ""
+"ارتفاع (برای تابلوهای عمودی عرض) تابلو. تابلو در هنگام اجرا شدن یک اندازه‌ی "
+"حداقل بر اساس اندازه‌ی قلم و دیگر ویژگی‌ها معین خواهد کرد. اندازه‌ی حداکثر به "
+"اندازه‌ی ربع ارتفاع (یا عرض) صفحه ثابت است."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
 msgid "X co-ordinate of panel"
 msgstr "مختصات X تابلو"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
 msgid ""
 "The location of the panel along the x-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
-msgstr "مکان تابلو در امتداد محور x. این کلید تنها در حالت غیر گسترش یافته کار می‌کند. در حالت گسترش یافته این کلید نادیده گرفته می‌شود و تابلو در لبه‌ای از صفحه‌ی نمایش که کلید orientation مشخص می‌کند قرار داده می‌شود."
+msgstr ""
+"مکان تابلو در امتداد محور x. این کلید تنها در حالت غیر گسترش یافته کار "
+"می‌کند. در حالت گسترش یافته این کلید نادیده گرفته می‌شود و تابلو در لبه‌ای از "
+"صفحه‌ی نمایش که کلید orientation مشخص می‌کند قرار داده می‌شود."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
 msgid "Y co-ordinate of panel"
 msgstr "مختصات Y تابلو"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
 msgid ""
 "The location of the panel along the y-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
-msgstr "مکان تابلو در امتداد محور y. این کلید تنها در حالت گسترش یافته کار می‌کند. در حالت گسترش یافته این کلید نادیده گرفته می‌شود و تابلو در لبه‌ای از صفحه‌ی نمایش که کلید orientation مشخص می‌کند قرار داده می‌شود."
+msgstr ""
+"مکان تابلو در امتداد محور y. این کلید تنها در حالت گسترش یافته کار می‌کند. در "
+"حالت گسترش یافته این کلید نادیده گرفته می‌شود و تابلو در لبه‌ای از صفحه‌ی نمایش "
+"که کلید orientation مشخص می‌کند قرار داده می‌شود."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
 msgid "X co-ordinate of panel, starting from the right of the screen"
 msgstr ""
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
 msgid ""
 "The location of the panel along the x-axis, starting from the right of the "
 "screen. If set to -1, the value is ignored and the value of the x key is "
@@ -1553,11 +1211,11 @@ msgid ""
 "the orientation key."
 msgstr ""
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
 msgid "Y co-ordinate of panel, starting from the bottom of the screen"
 msgstr ""
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
 msgid ""
 "The location of the panel along the y-axis, starting from the bottom of the "
 "screen. If set to -1, the value is ignored and the value of the y key is "
@@ -1567,11 +1225,11 @@ msgid ""
 "the orientation key."
 msgstr ""
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
 msgid "Center panel on x-axis"
 msgstr "تنظیم وسط تابلو روی محور x"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
 msgid ""
 "If true, the x and x_right keys are ignored and the panel is placed at the "
 "center of the x-axis of the screen. If the panel is resized it will remain "
@@ -1579,11 +1237,11 @@ msgid ""
 "and x_right keys specify the location of the panel."
 msgstr ""
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
 msgid "Center panel on y-axis"
 msgstr "تنظیم وسط تابلو روی محور y"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
 msgid ""
 "If true, the y and y_bottom keys are ignored and the panel is placed at the "
 "center of the y-axis of the screen. If the panel is resized it will remain "
@@ -1591,92 +1249,139 @@ msgid ""
 "and y_bottom keys specify the location of the panel."
 msgstr ""
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
+#: ../ukui-panel/panel-settings-dialog.ui.h:7
+msgid "Taskbar background transparent"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
+msgid "If true, the panel is transparent."
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
+#: ../ukui-panel/panel-settings-dialog.ui.h:8
+msgid "Lock the taskbar"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
+msgid "If true, the panel is automatically locked."
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
+#: ../ukui-panel/panel-settings-dialog.ui.h:9
+#, fuzzy
+msgid "Hide workspace"
+msgstr "نمایش همه‌ی فضاهای کاری"
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
+msgid "If true, the workspace is hidden."
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
 msgid "Automatically hide panel into corner"
 msgstr "مخفی کردن  خودکار تابلو در گوشه"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
 msgid ""
 "If true, the panel is automatically hidden into a corner of the screen when "
 "the pointer leaves the panel area. Moving the pointer to that corner again "
 "will cause the panel to re-appear."
-msgstr "اگر درست باشد، وقتی نشان‌گر فضای تابلو را ترک می‌کند، تابلو به طور خودکار در یک گوشه‌ی صفحه‌ی نمایش مخفی می‌شود. بردن نشان‌گر به همان گوشه سبب دوباره ظاهر شدن تابلو خواهد شد."
+msgstr ""
+"اگر درست باشد، وقتی نشان‌گر فضای تابلو را ترک می‌کند، تابلو به طور خودکار در "
+"یک گوشه‌ی صفحه‌ی نمایش مخفی می‌شود. بردن نشان‌گر به همان گوشه سبب دوباره ظاهر "
+"شدن تابلو خواهد شد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
 msgid ""
 "If true, hiding and un-hiding of this panel will be aniukuid rather than "
 "happening instantly."
-msgstr "اگر درست باشد، مخفی شدن و از حالت مخفی درآمدن این تابلو به جای این که بلافاصله رخ دهد، پویانمایی خواهد شد."
+msgstr ""
+"اگر درست باشد، مخفی شدن و از حالت مخفی درآمدن این تابلو به جای این که "
+"بلافاصله رخ دهد، پویانمایی خواهد شد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
 msgid "Enable hide buttons"
 msgstr "به کار انداختن دکمه‌های مخفی کردن"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
 msgid ""
 "If true, buttons will be placed on each side of the panel which may be used "
 "to move the panel to edge of the screen, leaving only a button showing."
-msgstr "اگر درست باشد، دکمه‌ها در هر دو طرف تابلو که می‌تواند برای انتقال تابلو به گوشه‌های صفحه‌ی نمایش مورد استفاده قرار بگیرد، قرار خواهند گرفت، و فقط یک دکمه نشان داده خواهد شد."
+msgstr ""
+"اگر درست باشد، دکمه‌ها در هر دو طرف تابلو که می‌تواند برای انتقال تابلو به "
+"گوشه‌های صفحه‌ی نمایش مورد استفاده قرار بگیرد، قرار خواهند گرفت، و فقط یک دکمه "
+"نشان داده خواهد شد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
 msgid "Enable arrows on hide buttons"
 msgstr "به کار انداختن پیکان‌ها روی دکمه‌های مخفی کردن"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
 msgid ""
 "If true, arrows will be placed on the hide buttons. This key is only "
 "relevant if the enable_buttons key is true."
-msgstr "اگر درست باشد، روی دکمه‌های مخفی کردن پیکان‌هایی قرار داده خواهد شد. این کلید تنها زمانی کار می‌کند که کلید enable_buttons درست باشد."
+msgstr ""
+"اگر درست باشد، روی دکمه‌های مخفی کردن پیکان‌هایی قرار داده خواهد شد. این کلید "
+"تنها زمانی کار می‌کند که کلید enable_buttons درست باشد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
 msgid "Panel autohide delay"
 msgstr "تأخیر مخفی شدن خودکار تابلو"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
 msgid ""
 "Specifies the number of milliseconds delay after the pointer leaves the "
 "panel area before the panel is automatically hidden. This key is only "
 "relevant if the auto_hide key is true."
-msgstr "تعداد میلی‌ثانیه‌های تأخیر پس از آن که نشان‌گر فضای تابلو می‌شود تا این که تابلو به طور خودکار مخفی شود را مشخص می‌کند. این کلید تنها در صورتی کار خواهد کرد که کلید auto_hide درست باشد."
+msgstr ""
+"تعداد میلی‌ثانیه‌های تأخیر پس از آن که نشان‌گر فضای تابلو می‌شود تا این که تابلو "
+"به طور خودکار مخفی شود را مشخص می‌کند. این کلید تنها در صورتی کار خواهد کرد "
+"که کلید auto_hide درست باشد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
 msgid "Panel autounhide delay"
 msgstr "تأخیر مخفی شدن خودکار تابلو"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
 msgid ""
 "Specifies the number of milliseconds delay after the pointer enters the "
 "panel area before the panel is automatically re-shown. This key is only "
 "relevant if the auto_hide key is true."
-msgstr "تعداد میلی‌ثانیه‌های تأخیر پس از آن که نشان‌گر وارد فضای تابلو می‌شود تا این که تابلو دوباره به طور خودکار نمایش داده شود را مشخص می‌کند. این کلید تنها در صورتی کار خواهد کرد که کلید auto_hide درست باشد."
+msgstr ""
+"تعداد میلی‌ثانیه‌های تأخیر پس از آن که نشان‌گر وارد فضای تابلو می‌شود تا این که "
+"تابلو دوباره به طور خودکار نمایش داده شود را مشخص می‌کند. این کلید تنها در "
+"صورتی کار خواهد کرد که کلید auto_hide درست باشد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
 msgid "Visible pixels when hidden"
 msgstr "نقطه‌های مرئی هنگام مخفی شدن"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
 msgid ""
 "Specifies the number of pixels visible when the panel is automatically "
-"hidden into a corner. This key is only relevant if the auto_hide key is "
-"true."
-msgstr "تعداد نقطه‌های مرئی را هنگامی که تابلو به طور خودکار در گوشه مخفی می‌شود مشخص می‌کند. این کلید تنها در صورتی کار خواهد کرد که کلید auto_hide درست باشد."
+"hidden into a corner. This key is only relevant if the auto_hide key is true."
+msgstr ""
+"تعداد نقطه‌های مرئی را هنگامی که تابلو به طور خودکار در گوشه مخفی می‌شود مشخص "
+"می‌کند. این کلید تنها در صورتی کار خواهد کرد که کلید auto_hide درست باشد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
 msgid "Animation speed"
 msgstr "سرعت پویانمایی"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
 msgid ""
-"The speed in which panel animations should occur. Possible values are "
-"\"slow\", \"medium\" and \"fast\". This key is only relevant if the "
+"The speed in which panel animations should occur. Possible values are \"slow"
+"\", \"medium\" and \"fast\". This key is only relevant if the "
 "enable_animations key is true."
-msgstr "سرعت پویانمایی تابلو. مقادیر ممکن عبارتند از «آهسته»، «متوسط» و «سریع». این کلید تنها در صورتی کار می‌کند که کلید enable_animations درست باشد."
+msgstr ""
+"سرعت پویانمایی تابلو. مقادیر ممکن عبارتند از «آهسته»، «متوسط» و «سریع». این "
+"کلید تنها در صورتی کار می‌کند که کلید enable_animations درست باشد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
 msgid "Background type"
 msgstr "نوع پس‌زمینه"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
 msgid ""
 "Which type of background should be used for this panel. Possible values are "
 "\"none\" - the default GTK+ widget background will be used, \"color\" - the "
@@ -1684,65 +1389,74 @@ msgid ""
 "specified by the image key will be used as background."
 msgstr ""
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
 msgid "Background color"
 msgstr "رنگ پس‌زمینه"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
 msgid "Specifies the background color for the panel in #RGB format."
 msgstr "رنگ پس‌زمینه‌ی تابلو را در قالب #RGB مشخص می‌کند."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:55
 msgid "Background color opacity"
 msgstr "شفافیت رنگ پس‌زمینه"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:56
 msgid ""
 "Specifies the opacity of the background color format. If the color is not "
-"completely opaque (a value of less than 65535), the color will be composited"
-" onto the desktop background image."
-msgstr "شفافیت قالب رنگ پس‌زمینه را مشخص می‌کند. اگر رنگ کاملاْ مات نباشد (مقداری کمتر از ۶۵۵۳۵)، رنگ با تصویر پس‌زمینه‌ی رومیزی ترکیب می‌شود."
+"completely opaque (a value of less than 65535), the color will be composited "
+"onto the desktop background image."
+msgstr ""
+"شفافیت قالب رنگ پس‌زمینه را مشخص می‌کند. اگر رنگ کاملاْ مات نباشد (مقداری کمتر "
+"از ۶۵۵۳۵)، رنگ با تصویر پس‌زمینه‌ی رومیزی ترکیب می‌شود."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:57
 msgid "Background image"
 msgstr "تصویر پس‌زمینه"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:58
 msgid ""
 "Specifies the file to be used for the background image. If the image "
 "contains an alpha channel it will be composited onto the desktop background "
 "image."
-msgstr "پرونده‌ای را که باید برای تصویر پس‌زمینه به کار رود مشخص می‌کند. اگر تصویر حاوی یک کانال آلفا باشد با تصویر پس‌زمینه‌ی رومیزی ترکیب خواهد شد."
+msgstr ""
+"پرونده‌ای را که باید برای تصویر پس‌زمینه به کار رود مشخص می‌کند. اگر تصویر حاوی "
+"یک کانال آلفا باشد با تصویر پس‌زمینه‌ی رومیزی ترکیب خواهد شد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:59
 msgid "Fit image to panel"
 msgstr "جا کردن تصویر در تابلو"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:60
 msgid ""
 "If true, the image will be scaled (retaining the aspect ratio of the image) "
 "to the panel height (if horizontal)."
-msgstr "اگر درست باشد، تصویر (با حفظ نسبت‌ها) به اندازه‌ی ارتفاع تابلو (اگر افقی باشد) کوچک یا بزرگ خواهد شد."
+msgstr ""
+"اگر درست باشد، تصویر (با حفظ نسبت‌ها) به اندازه‌ی ارتفاع تابلو (اگر افقی باشد) "
+"کوچک یا بزرگ خواهد شد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:61
 msgid "Stretch image to panel"
 msgstr "کش آوردن تصویر به اندازه‌ی تابلو"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:62
 msgid ""
 "If true, the image will be scaled to the panel dimensions. The aspect ratio "
 "of the image will not be maintained."
-msgstr "اگر درست باشد، تصویر به ابعاد تابلو کوچک یا بزرگ خواهد شد. نسبت‌های تصویر حفظ نخواهد شد."
+msgstr ""
+"اگر درست باشد، تصویر به ابعاد تابلو کوچک یا بزرگ خواهد شد. نسبت‌های تصویر حفظ "
+"نخواهد شد."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:63
 msgid "Rotate image on vertical panels"
 msgstr "دوران تصویر در تابلوهای عمودی"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:64
 msgid ""
 "If true, the background image will be rotated when the panel is oriented "
 "vertically."
-msgstr "اگر درست باشد، وقتی جهت تابلو عمودی باشد تصویر پس‌زمینه دوران داده خواهد شد."
+msgstr ""
+"اگر درست باشد، وقتی جهت تابلو عمودی باشد تصویر پس‌زمینه دوران داده خواهد شد."
 
 #: ../ukui-panel/libegg/eggdesktopfile.c:165
 #, c-format
@@ -1769,12 +1483,12 @@ msgstr "برنامه اسناد را نمی تواند در خط فرمان قب
 msgid "Unrecognized launch option: %d"
 msgstr "گزینه راه اندازی ناشناخته: %d"
 
-#: ../ukui-panel/libegg/eggdesktopfile.c:1365
+#: ../ukui-panel/libegg/eggdesktopfile.c:1364
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr ""
 
-#: ../ukui-panel/libegg/eggdesktopfile.c:1386
+#: ../ukui-panel/libegg/eggdesktopfile.c:1385
 #, c-format
 msgid "Not a launchable item"
 msgstr "این مورد قابل راه اندازی نیست"
@@ -1813,8 +1527,8 @@ msgstr ""
 #. * http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #. FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #: ../ukui-panel/libpanel-util/panel-error.c:76
-#: ../ukui-panel/panel-applet-frame.c:827
-#: ../ukui-panel/panel-applet-frame.c:1003
+#: ../ukui-panel/panel-applet-frame.c:865
+#: ../ukui-panel/panel-applet-frame.c:1041
 msgid "Error"
 msgstr ""
 
@@ -1827,7 +1541,7 @@ msgstr ""
 msgid "Could not launch '%s'"
 msgstr ""
 
-#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:162
+#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:165
 msgid "Could not launch application"
 msgstr "راه‌اندازی برنامه ممکن نیست"
 
@@ -1840,28 +1554,28 @@ msgstr "باز کردن مکان «%s» ممکن نیست"
 msgid "No application to handle search folders is installed."
 msgstr ""
 
-#: ../ukui-panel/applet.c:466
+#: ../ukui-panel/applet.c:475
 msgid "???"
 msgstr "؟؟؟"
 
-#: ../ukui-panel/applet.c:545 ../libukui-panel-applet/ukui-panel-applet.c:139
+#: ../ukui-panel/applet.c:554 ../libukui-panel-applet/ukui-panel-applet.c:143
 msgid "_Remove From Panel"
 msgstr "_حذف از تابلو"
 
-#: ../ukui-panel/applet.c:556 ../libukui-panel-applet/ukui-panel-applet.c:142
+#: ../ukui-panel/applet.c:565 ../libukui-panel-applet/ukui-panel-applet.c:146
 msgid "_Move"
 msgstr "_جابه‌جایی"
 
-#: ../ukui-panel/applet.c:573 ../libukui-panel-applet/ukui-panel-applet.c:148
+#: ../ukui-panel/applet.c:582 ../libukui-panel-applet/ukui-panel-applet.c:152
 msgid "Loc_k To Panel"
 msgstr "_قفل کردن به تابلو"
 
-#: ../ukui-panel/applet.c:1384
+#: ../ukui-panel/applet.c:1415
 msgid "Cannot find an empty spot"
 msgstr "جای خالی پیدا نمی‌شود"
 
 #: ../ukui-panel/drawer.c:346 ../ukui-panel/panel-addto.c:175
-#: ../ukui-panel/panel-toplevel.c:1615
+#: ../ukui-panel/panel-toplevel.c:1619
 msgid "Drawer"
 msgstr "کشو"
 
@@ -1869,9 +1583,8 @@ msgstr "کشو"
 msgid "_Add to Drawer..."
 msgstr "ا_ضافه کردن به کشو..."
 
-#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:556
+#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:603
 #: ../ukui-panel/panel-action-button.c:192
-#: ../ukui-panel/panel-context-menu.c:196
 msgid "_Properties"
 msgstr "ویژگی‌ها_"
 
@@ -1888,20 +1601,20 @@ msgid "- Edit .desktop files"
 msgstr "- ویرایش  پرونده‌های.desktop"
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:144
-#: ../ukui-panel/ukui-desktop-item-edit.c:197 ../ukui-panel/launcher.c:928
+#: ../ukui-panel/ukui-desktop-item-edit.c:198 ../ukui-panel/launcher.c:974
 msgid "Create Launcher"
 msgstr "ایجاد راه‌انداز"
 
-#: ../ukui-panel/ukui-desktop-item-edit.c:168
-#: ../ukui-panel/ukui-desktop-item-edit.c:191
+#: ../ukui-panel/ukui-desktop-item-edit.c:169
+#: ../ukui-panel/ukui-desktop-item-edit.c:192
 msgid "Directory Properties"
 msgstr ""
 
-#: ../ukui-panel/ukui-desktop-item-edit.c:174 ../ukui-panel/launcher.c:775
+#: ../ukui-panel/ukui-desktop-item-edit.c:175 ../ukui-panel/launcher.c:818
 msgid "Launcher Properties"
 msgstr "ویژگی‌های راه‌انداز"
 
-#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:136
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:144
 msgid "Panel"
 msgstr "تابلو"
 
@@ -1911,79 +1624,79 @@ msgid ""
 "show the time, etc."
 msgstr ""
 
-#: ../ukui-panel/launcher.c:120
+#: ../ukui-panel/launcher.c:123
 msgid "Could not show this URL"
 msgstr ""
 
-#: ../ukui-panel/launcher.c:121
+#: ../ukui-panel/launcher.c:124
 msgid "No URL was specified."
 msgstr "هیچ URLی مشخص نشده است."
 
-#: ../ukui-panel/launcher.c:214
+#: ../ukui-panel/launcher.c:217
 msgid "Could not use dropped item"
 msgstr ""
 
-#: ../ukui-panel/launcher.c:440
+#: ../ukui-panel/launcher.c:448
 #, c-format
 msgid "No URI provided for panel launcher desktop file\n"
 msgstr "نشانی اینترنتی‌ای برای پرونده‌ی رومیزی راه‌انداز تابلو وجود ندارد\n"
 
-#: ../ukui-panel/launcher.c:465
+#: ../ukui-panel/launcher.c:487
 #, c-format
-msgid "Unable to open desktop file %s for panel launcher\n"
+msgid "Unable to open desktop file %s for panel launcher%s%s\n"
 msgstr ""
 
-#: ../ukui-panel/launcher.c:533
+#: ../ukui-panel/launcher.c:593
 msgid "_Launch"
 msgstr "راه اندازی_"
 
-#: ../ukui-panel/launcher.c:869
+#: ../ukui-panel/launcher.c:911
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
 msgstr "کلید %s تنظیم نشده است، بار کردن راه‌انداز ممکن نیست\n"
 
-#: ../ukui-panel/launcher.c:997 ../ukui-panel/panel-ditem-editor.c:1330
+#: ../ukui-panel/launcher.c:1043 ../ukui-panel/panel-ditem-editor.c:1330
 #: ../ukui-panel/panel-ditem-editor.c:1364
 #: ../ukui-panel/panel-ditem-editor.c:1395
 msgid "Could not save launcher"
 msgstr "ذخیره‌ی راه‌انداز ممکن نیست"
 
-#: ../ukui-panel/main.c:47
+#: ../ukui-panel/main.c:48
 msgid "Replace a currently running panel"
 msgstr ""
 
 #. this feature was request in #ukui irc channel
-#: ../ukui-panel/main.c:49
+#: ../ukui-panel/main.c:50
 msgid "Reset the panel configuration to default"
 msgstr ""
 
 #. open run dialog
-#: ../ukui-panel/main.c:51
+#: ../ukui-panel/main.c:52
 msgid "Execute the run dialog"
 msgstr ""
 
 #. default panels layout
-#: ../ukui-panel/main.c:53
+#: ../ukui-panel/main.c:54
 msgid "Set the default panel layout"
 msgstr ""
 
-#: ../ukui-panel/menu.c:527
+#: ../ukui-panel/menu.c:528
 msgid "Add this launcher to _panel"
 msgstr "اضافه کردن این راه‌انداز به _تابلو"
 
-#: ../ukui-panel/menu.c:534
+#: ../ukui-panel/menu.c:535
 msgid "Add this launcher to _desktop"
 msgstr "اضافه کردن این راه‌انداز به _رومیزی"
 
-#: ../ukui-panel/menu.c:546
+#: ../ukui-panel/menu.c:547
 msgid "_Entire menu"
 msgstr "_سراسر منو"
 
-#: ../ukui-panel/menu.c:551
+#: ../ukui-panel/menu.c:552
 msgid "Add this as _drawer to panel"
 msgstr "اضافه کردن به شکل _کشو به تابلو"
 
-#: ../ukui-panel/menu.c:558
+#: ../ukui-panel/menu.c:559
 msgid "Add this as _menu to panel"
 msgstr "اضافه کردن به شکل _منو به تابلو"
 
@@ -2034,8 +1747,7 @@ msgstr "جست و جو به دنبال پرونده..."
 msgid "Locate documents and folders on this computer by name or content"
 msgstr ""
 
-#: ../ukui-panel/panel-action-button.c:389
-#: ../ukui-panel/panel-force-quit.c:251
+#: ../ukui-panel/panel-action-button.c:389 ../ukui-panel/panel-force-quit.c:251
 msgid "Force Quit"
 msgstr "ترک اجباری"
 
@@ -2131,83 +1843,124 @@ msgstr "اضافه کردن به تابلو"
 msgid "Find an _item to add to the panel:"
 msgstr "یک _شیء پیدا کنید تا به تابلو اضافه شود:"
 
-#: ../ukui-panel/panel-applet-frame.c:788
+#: ../ukui-panel/panel-applet-frame.c:826
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
 msgstr "‏«%s» به طور غیرمنتظره‌ای تمام شد"
 
-#: ../ukui-panel/panel-applet-frame.c:790
+#: ../ukui-panel/panel-applet-frame.c:828
 msgid "Panel object has quit unexpectedly"
 msgstr "شیء موجود در تابلو به طور غیرمنتظره‌ای تمام شد"
 
-#: ../ukui-panel/panel-applet-frame.c:797
+#: ../ukui-panel/panel-applet-frame.c:835
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
-msgstr " اگر شیء موجود در تابلو را دوباره بارگیری کنید، خودش به طور خودکار دوباره به تابلو اضافه می‌شود."
+msgstr ""
+" اگر شیء موجود در تابلو را دوباره بارگیری کنید، خودش به طور خودکار دوباره به "
+"تابلو اضافه می‌شود."
 
-#: ../ukui-panel/panel-applet-frame.c:804
+#: ../ukui-panel/panel-applet-frame.c:842
 msgid "D_elete"
 msgstr ""
 
-#: ../ukui-panel/panel-applet-frame.c:805
-#: ../ukui-panel/panel-applet-frame.c:810
+#: ../ukui-panel/panel-applet-frame.c:843
+#: ../ukui-panel/panel-applet-frame.c:848
 msgid "_Don't Reload"
 msgstr "دوباره بار _نشود"
 
-#: ../ukui-panel/panel-applet-frame.c:806
-#: ../ukui-panel/panel-applet-frame.c:811
+#: ../ukui-panel/panel-applet-frame.c:844
+#: ../ukui-panel/panel-applet-frame.c:849
 msgid "_Reload"
 msgstr "_بار کردن دوباره"
 
-#: ../ukui-panel/panel-applet-frame.c:966
+#: ../ukui-panel/panel-applet-frame.c:1004
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
 msgstr "تابلو در حین بار کردن «%s» با مشکلی برخورد کرد."
 
-#: ../ukui-panel/panel-applet-frame.c:982
+#: ../ukui-panel/panel-applet-frame.c:1020
 msgid "Do you want to delete the applet from your configuration?"
 msgstr "آیا می‌خواهید برنامک را از پیکربندی‌تان حذف کنید؟"
 
-#: ../ukui-panel/panel-context-menu.c:89
+#: ../ukui-panel/panel-context-menu.c:119
 msgid "And many, many others..."
 msgstr "و بسیاری، بسیاری دیگر..."
 
-#: ../ukui-panel/panel-context-menu.c:112
+#: ../ukui-panel/panel-context-menu.c:142
 msgid "The UKUI Panel"
 msgstr "تابلوی گنوم"
 
-#: ../ukui-panel/panel-context-menu.c:116
+#: ../ukui-panel/panel-context-menu.c:146
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
 msgstr ""
 
-#: ../ukui-panel/panel-context-menu.c:120
+#: ../ukui-panel/panel-context-menu.c:150
 msgid "About the UKUI Panel"
 msgstr "درباره‌ی تابلوی گنوم"
 
-#: ../ukui-panel/panel-context-menu.c:151
+#: ../ukui-panel/panel-context-menu.c:181
 msgid "Cannot delete this panel"
 msgstr "حذف این تابلو ممکن نیست"
 
-#: ../ukui-panel/panel-context-menu.c:152
+#: ../ukui-panel/panel-context-menu.c:182
 msgid "You must always have at least one panel."
 msgstr ""
 
-#: ../ukui-panel/panel-context-menu.c:185
-msgid "_Add to Panel..."
-msgstr "_اضافه کردن به تابلو..."
+#: ../ukui-panel/panel-context-menu.c:226
+#, fuzzy
+msgid "Reset this panel?"
+msgstr "این تابلو حذف شود؟"
 
-#: ../ukui-panel/panel-context-menu.c:206
-msgid "_Delete This Panel"
-msgstr "_حذف این تابلو"
+#: ../ukui-panel/panel-context-menu.c:227
+#, fuzzy
+msgid ""
+"When a panel is reset,all \n"
+"custom settings are lost."
+msgstr ""
+"وقتی یک تابلو حذف می‌شود، تابلو و تنظیماتش\n"
+"از دست می‌روند."
 
-#: ../ukui-panel/panel-context-menu.c:221
-msgid "_New Panel"
+#: ../ukui-panel/panel-context-menu.c:240
+msgid "_Cancel"
+msgstr ""
+
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Add to Panel..."));
+#. image = gtk_image_new_from_icon_name ("list-add", GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+#. g_signal_connect (G_OBJECT (menuitem), "activate",
+#. G_CALLBACK (panel_addto_present), panel_widget);
+#.
+#. if (!panel_profile_id_lists_are_writable ())
+#. gtk_widget_set_sensitive (menuitem, FALSE);
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Properties"));
+#. image = gtk_image_new_from_icon_name ("document-properties",
+#. GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+#. g_signal_connect_swapped (menuitem, "activate",
+#. G_CALLBACK (panel_properties_dialog_present),
+#. panel_widget->toplevel);
+#.
+#: ../ukui-panel/panel-context-menu.c:241
+#: ../ukui-panel/panel-context-menu.c:292
+#, fuzzy
+msgid "_Reset Panel"
 msgstr "تابلوی _جدید"
 
-#: ../ukui-panel/panel-context-menu.c:273
+#: ../ukui-panel/panel-context-menu.c:262
+#, fuzzy
+msgid "_Settings"
+msgstr "_تنظیمات زمان"
+
+#: ../ukui-panel/panel-context-menu.c:378
 msgid "A_bout Panels"
 msgstr "_درباره‌ی تابلوها"
 
@@ -2286,7 +2039,9 @@ msgstr "نمی‌توان نوشتار راهنما را نمایش داد"
 #: ../ukui-panel/panel-force-quit.c:80
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
-msgstr "روی یک پنجره کلیک کنید تا آن را وادار به ترک کنید. برای انصراف <گریز> را فشار دهید."
+msgstr ""
+"روی یک پنجره کلیک کنید تا آن را وادار به ترک کنید. برای انصراف <گریز> را "
+"فشار دهید."
 
 #: ../ukui-panel/panel-force-quit.c:234
 msgid "Force this application to exit?"
@@ -2314,86 +2069,86 @@ msgstr ""
 msgid "Applications"
 msgstr "برنامه‌ها"
 
-#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:672
+#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:675
 msgid "_Edit Menus"
 msgstr "_ویرایش منوها"
 
-#: ../ukui-panel/panel-menu-items.c:473
+#: ../ukui-panel/panel-menu-items.c:472
 msgid "Bookmarks"
 msgstr "ها Bookmark"
 
 #. Translators: %s is a URI
-#: ../ukui-panel/panel-menu-items.c:496 ../ukui-panel/panel.c:549
+#: ../ukui-panel/panel-menu-items.c:495 ../ukui-panel/panel.c:549
 #, c-format
 msgid "Open '%s'"
 msgstr "باز کردن «%s»"
 
-#: ../ukui-panel/panel-menu-items.c:567
+#: ../ukui-panel/panel-menu-items.c:566
 #, c-format
 msgid "Unable to scan %s for media changes"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:610
+#: ../ukui-panel/panel-menu-items.c:609
 #, c-format
 msgid "Rescan %s"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:647
+#: ../ukui-panel/panel-menu-items.c:646
 #, c-format
 msgid "Unable to mount %s"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:710
+#: ../ukui-panel/panel-menu-items.c:709
 #, c-format
 msgid "Mount %s"
 msgstr "سوار کردن %s"
 
-#: ../ukui-panel/panel-menu-items.c:918
+#: ../ukui-panel/panel-menu-items.c:917
 msgid "Removable Media"
 msgstr "رسانه جداشدنی"
 
-#: ../ukui-panel/panel-menu-items.c:1005
+#: ../ukui-panel/panel-menu-items.c:1004
 msgid "Network Places"
 msgstr "محل‌های شبکه"
 
-#: ../ukui-panel/panel-menu-items.c:1044
+#: ../ukui-panel/panel-menu-items.c:1043
 msgid "Open your personal folder"
 msgstr "باز کردن پوشه‌ی شخصی شما"
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
 #. * environment).
-#: ../ukui-panel/panel-menu-items.c:1063
+#: ../ukui-panel/panel-menu-items.c:1062
 msgctxt "Desktop Folder"
 msgid "Desktop"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1064
+#: ../ukui-panel/panel-menu-items.c:1063
 msgid "Open the contents of your desktop in a folder"
 msgstr "باز کردن محتویات رومیزی شما به صورت کشو"
 
-#: ../ukui-panel/panel-menu-items.c:1080
+#: ../ukui-panel/panel-menu-items.c:1079
 msgid "Computer"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1085
+#: ../ukui-panel/panel-menu-items.c:1084
 msgid ""
 "Browse all local and remote disks and folders accessible from this computer"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1098
+#: ../ukui-panel/panel-menu-items.c:1097
 msgid "Network"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1099
+#: ../ukui-panel/panel-menu-items.c:1098
 msgid "Browse bookmarked and local network locations"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1497
+#: ../ukui-panel/panel-menu-items.c:1496
 msgid "Places"
 msgstr "محل‌های مهم"
 
-#: ../ukui-panel/panel-menu-items.c:1525
+#: ../ukui-panel/panel-menu-items.c:1524
 msgid "System"
 msgstr "سیستم"
 
@@ -2401,7 +2156,8 @@ msgstr "سیستم"
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
 #. * but "1" if "Log Out %s" doesn't make any sense in your
 #. * language (where %s is a username).
-#: ../ukui-panel/panel-menu-items.c:1610
+#.
+#: ../ukui-panel/panel-menu-items.c:1609
 msgctxt "panel:showusername"
 msgid "1"
 msgstr ""
@@ -2410,53 +2166,61 @@ msgstr ""
 #. * panel-action-button.c
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../ukui-panel/panel-menu-items.c:1622
+#: ../ukui-panel/panel-menu-items.c:1621
 #, c-format
 msgid "Log Out %s..."
 msgstr "خروج %s از سیستم..."
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../ukui-panel/panel-menu-items.c:1626
+#: ../ukui-panel/panel-menu-items.c:1625
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
 msgstr "خروج %s از این نشست برای ورود با کاربر دیگر"
 
 #: ../ukui-panel/panel-properties-dialog.c:120
+#: ../ukui-panel/panel-settings-dialog.c:131
 #: ../ukui-panel/panel-test-applets.c:58
 msgctxt "Orientation"
 msgid "Top"
 msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:121
+#: ../ukui-panel/panel-settings-dialog.c:132
 #: ../ukui-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Bottom"
 msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:122
+#: ../ukui-panel/panel-settings-dialog.c:133
 #: ../ukui-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Left"
 msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:123
+#: ../ukui-panel/panel-settings-dialog.c:134
 #: ../ukui-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Right"
 msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:819
+#: ../ukui-panel/panel-settings-dialog.c:1428
 msgid "Drawer Properties"
 msgstr "ویژگی‌های کشو"
 
 #: ../ukui-panel/panel-properties-dialog.c:939
-#: ../ukui-panel/panel-run-dialog.c:1970
+#: ../ukui-panel/panel-settings-dialog.c:1029
+#: ../ukui-panel/panel-settings-dialog.c:1552
+#: ../ukui-panel/panel-run-dialog.c:1973
 #, c-format
 msgid "Unable to load file '%s': %s."
 msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:945
+#: ../ukui-panel/panel-settings-dialog.c:1558
 msgid "Could not display properties dialog"
 msgstr ""
 
@@ -2543,24 +2307,94 @@ msgid "Background"
 msgstr "پس‌زمینه"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:23
+#: ../ukui-panel/panel-settings-dialog.ui.h:1
 msgid "Image Background Details"
 msgstr "جزئیات پس‌زمینه‌ی تصویری"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:24
+#: ../ukui-panel/panel-settings-dialog.ui.h:2
 msgid "_Tile"
 msgstr "کاشی_"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:25
+#: ../ukui-panel/panel-settings-dialog.ui.h:3
 msgid "_Scale"
 msgstr "_مقیاس"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:26
+#: ../ukui-panel/panel-settings-dialog.ui.h:4
 msgid "St_retch"
 msgstr "کشید_ن"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:27
+#: ../ukui-panel/panel-settings-dialog.ui.h:5
 msgid "Rotate image when panel is _vertical"
 msgstr "دوران تصویر وقتی تابلو عمودی است"
+
+#: ../ukui-panel/panel-settings-dialog.c:743
+#: ../ukui-panel/panel-settings-dialog.c:797
+#: ../ukui-panel/panel-settings-dialog.c:910
+msgid "show"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.c:743
+#: ../ukui-panel/panel-settings-dialog.c:798
+#: ../ukui-panel/panel-settings-dialog.c:911
+#, fuzzy
+msgid "hide"
+msgstr "_مخفی شدن خودکار"
+
+#: ../ukui-panel/panel-settings-dialog.c:1035
+#, fuzzy
+msgid "Could not notification area dialog"
+msgstr "باز کردن مکان «%s» ممکن نیست"
+
+#: ../ukui-panel/panel-settings-dialog.c:1058
+msgid "<a href=''>Customize icons appear on the taskbar</a>"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:6
+#, fuzzy
+msgid "Panel Settings"
+msgstr "_تنظیمات زمان"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:10
+msgid "Hide the taskbar"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:11
+#, fuzzy
+msgid "The taskbar position on the screen："
+msgstr "موقعیت شیء در تابلو"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:12
+msgid "Change taskbar height and icon size"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:14
+#, no-c-format
+msgid "Default-100%"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:16
+#, no-c-format
+msgid "Medium-150%"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:18
+#, no-c-format
+msgid "Large-200%"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:19
+#, fuzzy
+msgid "Notification area"
+msgstr "ناحیه‌ی اعلان"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:20
+#: ../ukui-panel/notification-area.ui.h:2
+msgid "Customize icons appear on the taskbar"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
@@ -2599,35 +2433,37 @@ msgstr ""
 msgid "Clear all items from the recent documents list"
 msgstr "همه‌ی موارد از فهرست نوشتارهای اخیر پاک شود"
 
-#: ../ukui-panel/panel-run-dialog.c:417
+#: ../ukui-panel/panel-run-dialog.c:419
 #, c-format
 msgid "Could not run command '%s'"
 msgstr "نمی‌توان فرمان «%s» را اجرا کرد"
 
-#: ../ukui-panel/panel-run-dialog.c:457
+#: ../ukui-panel/panel-run-dialog.c:460
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
 msgstr "نمی‌توان «%s» را از UTF-8 تبدیل کرد"
 
-#: ../ukui-panel/panel-run-dialog.c:1204
+#: ../ukui-panel/panel-run-dialog.c:1207
 msgid "Choose a file to append to the command..."
 msgstr "پرونده‌ای را برای ضمیمه کردن به فرمان انتخاب کنید..."
 
-#: ../ukui-panel/panel-run-dialog.c:1582 ../ukui-panel/panel-run-dialog.ui.h:9
+#: ../ukui-panel/panel-run-dialog.c:1585 ../ukui-panel/panel-run-dialog.ui.h:9
 msgid "Select an application to view its description."
 msgstr "برنامه‌ای را برای دیدن شرح آن انتخاب کنید"
 
-#: ../ukui-panel/panel-run-dialog.c:1620
+#: ../ukui-panel/panel-run-dialog.c:1623
 #, c-format
 msgid "Will run command: '%s'"
 msgstr "این فرمان را اجرا خواهد کرد: «%s»"
 
-#: ../ukui-panel/panel-run-dialog.c:1653
+#: ../ukui-panel/panel-run-dialog.c:1656
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
-msgstr "فهرست نشانی‌های اینترنتی که روی محاوره‌ی اجرا انداخته شد قالب (%Id) یا طول (%Id) غلطی داشت\n"
+msgstr ""
+"فهرست نشانی‌های اینترنتی که روی محاوره‌ی اجرا انداخته شد قالب (%Id) یا طول "
+"(%Id) غلطی داشت\n"
 
-#: ../ukui-panel/panel-run-dialog.c:1975
+#: ../ukui-panel/panel-run-dialog.c:1978
 msgid "Could not display run dialog"
 msgstr ""
 
@@ -2659,7 +2495,9 @@ msgstr "اجرا با _پرونده‌ی..."
 msgid ""
 "Click this button to browse for a file whose name to append to the command "
 "string."
-msgstr "برای مرور به دنبال پرونده‌ای که نامش به رشته‌ی فرمان ضمیمه شود روی این دکمه کلیک کنید."
+msgstr ""
+"برای مرور به دنبال پرونده‌ای که نامش به رشته‌ی فرمان ضمیمه شود روی این دکمه "
+"کلیک کنید."
 
 #: ../ukui-panel/panel-run-dialog.ui.h:8
 msgid "List of known applications"
@@ -2677,7 +2515,9 @@ msgstr "ا_جرا"
 msgid ""
 "Click this button to run the selected application or the command in the "
 "command entry field."
-msgstr "برای اجرای برنامه‌ی انتخاب شده یا فرمان فیلد ورودی فرمان روی این دکمه کلیک کنید."
+msgstr ""
+"برای اجرای برنامه‌ی انتخاب شده یا فرمان فیلد ورودی فرمان روی این دکمه کلیک "
+"کنید."
 
 #: ../ukui-panel/panel-stock-icons.c:98
 msgid "_Force quit"
@@ -2762,25 +2602,25 @@ msgstr "_برنامک:"
 msgid "_Prefs Path:"
 msgstr ""
 
-#: ../ukui-panel/panel-toplevel.c:1218
+#: ../ukui-panel/panel-toplevel.c:1222
 msgid "Hide Panel"
 msgstr "مخفی کردن تابلو"
 
 #. translators: these string will be shown in MetaCity's switch window
 #. * popup when you pass the focus to a panel
-#: ../ukui-panel/panel-toplevel.c:1621 ../ukui-panel/panel-toplevel.c:1631
+#: ../ukui-panel/panel-toplevel.c:1625 ../ukui-panel/panel-toplevel.c:1635
 msgid "Top Panel"
 msgstr ""
 
-#: ../ukui-panel/panel-toplevel.c:1623
+#: ../ukui-panel/panel-toplevel.c:1627
 msgid "Bottom Panel"
 msgstr ""
 
-#: ../ukui-panel/panel-toplevel.c:1625
+#: ../ukui-panel/panel-toplevel.c:1629
 msgid "Left Panel"
 msgstr ""
 
-#: ../ukui-panel/panel-toplevel.c:1627
+#: ../ukui-panel/panel-toplevel.c:1631
 msgid "Right Panel"
 msgstr ""
 
@@ -2816,6 +2656,7 @@ msgstr "جستجو"
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
+#.
 #: ../ukui-panel/panel-util.c:1097
 #, c-format
 msgid "%1$s: %2$s"
@@ -2826,22 +2667,252 @@ msgstr "‏%1$s: %2$s"
 msgid "Open URL: %s"
 msgstr "باز کردن نشانی اینترنتی: %s"
 
-#: ../ukui-panel/panel.c:1332
+#: ../ukui-panel/panel.c:1548
 msgid "Delete this drawer?"
 msgstr "این کشو حذف شود؟"
 
-#: ../ukui-panel/panel.c:1333
+#: ../ukui-panel/panel.c:1549
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
-msgstr "وقتی یک کشو پاک می‌شود، کشو و تنظیماتش\nاز دست می‌روند. این کشو حذف شود؟"
+msgstr ""
+"وقتی یک کشو پاک می‌شود، کشو و تنظیماتش\n"
+"از دست می‌روند. این کشو حذف شود؟"
 
-#: ../ukui-panel/panel.c:1336
+#: ../ukui-panel/panel.c:1552
 msgid "Delete this panel?"
 msgstr "این تابلو حذف شود؟"
 
-#: ../ukui-panel/panel.c:1337
+#: ../ukui-panel/panel.c:1553
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."
-msgstr "وقتی یک تابلو حذف می‌شود، تابلو و تنظیماتش\nاز دست می‌روند."
+msgstr ""
+"وقتی یک تابلو حذف می‌شود، تابلو و تنظیماتش\n"
+"از دست می‌روند."
+
+#~ msgid "Locations"
+#~ msgstr "مکان‌ها"
+
+#~ msgid "Edit"
+#~ msgstr "ویرایش"
+
+#~ msgid "Calendar"
+#~ msgstr "تقویم"
+
+#~ msgid "%l:%M:%S %p"
+#~ msgstr "%OH:%OM:%OS"
+
+#~ msgid "%l:%M %p"
+#~ msgstr "%OH:%OM"
+
+#~ msgid "%H:%M:%S"
+#~ msgstr "%OH:%OM:%OS"
+
+#~ msgid "%H:%M"
+#~ msgstr "%OH:%OM"
+
+#~ msgid "%a %b %e"
+#~ msgstr "%A %Oe %B"
+
+#~ msgid ""
+#~ "%1$s\n"
+#~ "%2$s"
+#~ msgstr ""
+#~ "%2$s\n"
+#~ "%1$s"
+
+#~ msgid "%1$s, %2$s"
+#~ msgstr "‏%2$s، %1$s"
+
+#~ msgid "%A %B %d (%%s)"
+#~ msgstr "%A %Oe %B (%%s)"
+
+#~ msgid "Click to hide month calendar"
+#~ msgstr "برای مخفی کردن تقویم ماه کلیک کنید"
+
+#~ msgid "Click to view month calendar"
+#~ msgstr "برای نمایش تقویم ماه کلیک کنید"
+
+#~ msgid "Computer Clock"
+#~ msgstr "ساعت کامپیوتر"
+
+#~ msgid "%I:%M:%S %p"
+#~ msgstr "%OH:%OM:%OS"
+
+#~ msgid "%I:%M %p"
+#~ msgstr "%OH:%OM"
+
+#~ msgid "%A, %B %d %Y"
+#~ msgstr "%A، %Oe %B %Oy"
+
+#~ msgid "Set System Time..."
+#~ msgstr "تنظیم زمان سیستم..."
+
+#~ msgid "Set System Time"
+#~ msgstr "تنظیم زمان سیستم"
+
+#~ msgid "Failed to set the system time"
+#~ msgstr "تنظیم زمان سیستم شکست خورد"
+
+#~ msgid "Copy _Time"
+#~ msgstr "نسخه‌برداری از _زمان"
+
+#~ msgid "Copy _Date"
+#~ msgstr "نسخه‌برداری از _تاریخ"
+
+#~ msgid "Ad_just Date & Time"
+#~ msgstr "تن_ظیم تاریخ و زمان"
+
+#~ msgid "City Name"
+#~ msgstr "نام شهر"
+
+#~ msgid "City Time Zone"
+#~ msgstr "منطقه‌ی زمانی شهر"
+
+#~ msgid "Clock"
+#~ msgstr "ساعت"
+
+#~ msgid "The Clock displays the current time and date"
+#~ msgstr "ساعت زمان و تاریخ فعلی را نمایش می‌دهد"
+
+#~ msgid "<i>(optional)</i>"
+#~ msgstr "<i>(اختیاری)</i>"
+
+#~ msgid "Current Time:"
+#~ msgstr "زمان فعلی"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "ترجیحات ساعت"
+
+#~ msgid "_12 hour format"
+#~ msgstr "قالب _۱۲ ساعتی"
+
+#~ msgid "_24 hour format"
+#~ msgstr "قالب _۲۴ ساعتی"
+
+#~ msgid "Show the _date"
+#~ msgstr "نمایش _تاریخ"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "نمایش _ثانیه"
+
+#~ msgid "Show _weather"
+#~ msgstr "نمایش آب‌و_هوا"
+
+#~ msgid "Show _temperature"
+#~ msgstr "نمایش _دما"
+
+#~ msgid "_Pressure unit:"
+#~ msgstr "واحد _فشار:"
+
+#~ msgid "_Wind speed unit:"
+#~ msgstr "واحد سرعت _باد:"
+
+#~ msgid "_Temperature unit:"
+#~ msgstr "واحد _دما:"
+
+#~ msgid "Weather"
+#~ msgstr "آب‌وهوا"
+
+#~ msgid "%l:%M <small>%p (%A)</small>"
+#~ msgstr "%OI:%OM <small>%p (%A)</small>"
+
+#~ msgid "%H:%M <small>(%A)</small>"
+#~ msgstr "%OH:%OM <small>(%A)</small>"
+
+#~ msgid "%l:%M <small>%p</small>"
+#~ msgstr "%OI:%OM <small>%p</small>"
+
+#~ msgid "%s, %s"
+#~ msgstr "%s،‏ %s"
+
+#~ msgid "Unknown"
+#~ msgstr "ناشناخته"
+
+#~ msgid "Sunrise: %s / Sunset: %s"
+#~ msgstr "طلوع: %s / غروب: %s"
+
+#~ msgid "Hour format"
+#~ msgstr "قالب ساعت"
+
+#~ msgid ""
+#~ "This key specifies the hour format used by the clock applet. Possible "
+#~ "values are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom"
+#~ "\". If set to \"internet\", the clock will display Internet time. The "
+#~ "Internet time system divides the day into 1000 \".beats\". There are no "
+#~ "time zones in this system, so time is the same all over the world. If set "
+#~ "to \"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key."
+#~ msgstr ""
+#~ "این کلید قالب‌بندی ساعت مورد استفاده‌ی برنامک ساعت را مشخص می‌کند. مقادیر "
+#~ "ممکن عبارتند از «۱۲ ساعتی»، «۲۴ ساعتی»، «اینترنتی»، «یونیکسی» و «سفارشی». "
+#~ "اگر روی «اینترنتی» تنظیم شود، ساعت وقت اینترنت را نشان خواهد داد. سیستم "
+#~ "زمانی اینترنت روز را به ۱۰۰۰ «ضرب» تقسیم می‌کند. در این سیستم منطقه‌ی زمانی "
+#~ "وجود ندارد، در نتیجه وقت در همه‌جای دنیا یکسان است. اگر کلید روی «یونیکسی» "
+#~ "تنظیم شود، ساعت وقت را به صورت ثانیه‌های سپری شده از آغاز تاریخ نمایش "
+#~ "خواهد داد، مثلاْ 1970-01-01. اگر روی «سفارشی» تنظیم شود، ساعت زمان را "
+#~ "مطابق با قالب‌بندی مشخص شده در کلید costum_format نمایش خواهد داد."
+
+#~ msgid "Custom format of the clock"
+#~ msgstr "قالب سفارشی ساعت"
+
+#~ msgid "Show time with seconds"
+#~ msgstr "نمایش وقت با ثانیه"
+
+#~ msgid "If true, display seconds in time."
+#~ msgstr "اگر درست باشد، ثانیه در وقت نمایش داده می‌شود."
+
+#~ msgid "Show date in clock"
+#~ msgstr "نمایش تاریخ در ساعت"
+
+#~ msgid "If true, display date in the clock, in addition to time."
+#~ msgstr "اگر درست باشد، علاوه بر زمان، تاریخ هم در وقت نمایش داده می‌شود."
+
+#~ msgid "Show date in tooltip"
+#~ msgstr "نمایش تاریخ در راهنمای آنی"
+
+#~ msgid "If true, show date in a tooltip when the pointer is over the clock."
+#~ msgstr ""
+#~ "اگر درست باشد، وقتی نشان‌گر روی ساعت رفت، تاریخ در یک راهنمای آنی نمایش "
+#~ "داده می‌شود."
+
+#~ msgid "Show weather in clock"
+#~ msgstr "نمایش آب‌وهوا در ساعت"
+
+#~ msgid "If true, display a weather icon."
+#~ msgstr "اگر درست باشد، شمایلی برای آب‌وهوا نمایش داده می‌شود."
+
+#~ msgid "Show temperature in clock"
+#~ msgstr "نمایش دما در ساعت"
+
+#~ msgid "If true, show the temperature next to the weather icon."
+#~ msgstr "اگر درست باشد، دما در کنار شمایل آب‌وهوا نمایش داده می‌شود."
+
+#~ msgid "Show week numbers in calendar"
+#~ msgstr "نمایش عدد هفته‌ها در تقویم"
+
+#~ msgid "If true, show week numbers in the calendar."
+#~ msgstr "اگر درست باشد، عدد هفته‌ها در تقویم نمایش داده می‌شود."
+
+#~ msgid "List of locations"
+#~ msgstr "فهرست مکان‌ها"
+
+#~ msgid "Temperature unit"
+#~ msgstr "واحد دما"
+
+#~ msgid "The unit to use when showing temperatures."
+#~ msgstr "واحدی که برای نمایش دما استفاده می‌شود."
+
+#~ msgid "Speed unit"
+#~ msgstr "واحد سرعت"
+
+#~ msgid "The unit to use when showing wind speed."
+#~ msgstr "واحدی که برای نمایش سرعت باد استفاده می‌شود."
+
+#~ msgid "_Add to Panel..."
+#~ msgstr "_اضافه کردن به تابلو..."
+
+#~ msgid "_Delete This Panel"
+#~ msgstr "_حذف این تابلو"

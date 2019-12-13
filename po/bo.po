@@ -1,34 +1,31 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Tibetan translations for ukui-panel package.
+# Copyright (C) 2019 THE ukui-panel'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ukui-panel package.
+# feng <jianfengli@ubuntukylin.com>, 2019.
 #
-# Translators:
-# Øystein Steffensen-Alværvik <internett@protonmail.com>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: UKUI Desktop Environment\n"
+"Project-Id-Version: ukui-panel 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-13 17:34+0800\n"
-"PO-Revision-Date: 2017-09-19 11:04+0000\n"
-"Last-Translator: monsta <monsta@inbox.ru>\n"
-"Language-Team: Norwegian Nynorsk (http://www.transifex.com/ukui/UKUI/"
-"language/nn/)\n"
-"Language: nn\n"
+"PO-Revision-Date: 2019-12-13 17:17+0800\n"
+"Last-Translator: handsome_feng <jianfengli@ubuntukylin.com>\n"
+"Language-Team: Tibetan\n"
+"Language: bo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../applets/fish/fish.c:171 ../applets/notification_area/main.c:130
 #: ../applets/wncklet/wncklet.c:74 ../ukui-panel/libpanel-util/panel-show.c:236
 #, c-format
 msgid "Could not display help document '%s'"
-msgstr "Klarte ikkje visa hjelpedokument «%s»"
+msgstr ""
 
 #: ../applets/fish/fish.c:197 ../applets/notification_area/main.c:144
 #: ../applets/wncklet/wncklet.c:91
 msgid "Error displaying help document"
-msgstr "Klarte ikkje visa hjelpedokument"
+msgstr ""
 
 #: ../applets/fish/fish.c:267
 #, c-format
@@ -38,20 +35,16 @@ msgid ""
 "We strongly advise you against using %s for anything\n"
 "which would make the applet \"practical\" or useful."
 msgstr ""
-"Åtvaring: Kommandoen ser faktisk ut til å gjera noko nyttig.\n"
-"Sidan dette er eit unyttig program er det ikkje sikkert du ynskjer dette.\n"
-"Me vil på det sterkaste åtvara mot einkvar bruk av %s som\n"
-"fører med seg at programmet gjer nytte for seg."
 
 #: ../applets/fish/fish.c:439
 msgid "Images"
-msgstr "Bilete"
+msgstr ""
 
 #: ../applets/fish/fish.c:545 ../applets/fish/fish.c:589
 #: ../applets/fish/fish.c:695
 #, no-c-format
 msgid "%s the Fish"
-msgstr "Fisken %s"
+msgstr ""
 
 #: ../applets/fish/fish.c:546
 #, c-format
@@ -60,19 +53,15 @@ msgid ""
 "time, and if loaded it also takes up precious panel space and memory. "
 "Anybody found using it should be promptly sent for a psychiatric evaluation."
 msgstr ""
-"%s er totalt unyttig. Det tek berre opp diskplass og kompileringstid, og om "
-"det er lasta, tek det óg opp dyrebar plass i panel og minne. Dersom nokon "
-"vert tekne i å nytta dette programmet, bør vedkommande sendast til psykisk "
-"evaluering snarast råd."
 
 #: ../applets/fish/fish.c:566
 msgid "(with minor help from George)"
-msgstr "(med noko hjelp fra George)"
+msgstr ""
 
 #: ../applets/fish/fish.c:572
 #: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:3
 msgid "Fish"
-msgstr "Fisk"
+msgstr ""
 
 #: ../applets/fish/fish.c:578 ../applets/notification_area/main.c:179
 #: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:605
@@ -81,27 +70,20 @@ msgstr "Fisk"
 #: ../ukui-panel/panel-context-menu.c:151
 msgid "translator-credits"
 msgstr ""
-"Roy-Magne Mo <rmo@sunnmore.net>\n"
-"Åsmund Skjæveland <aasmunds@ulrik.uio.no>\n"
-"Christian Fredrik Kalager Schaller <Uraeus@linuxrising.org>\n"
-"Kjartan Maraas  <kmaraas@gnome.org>\n"
-"Monica Gausen <monica@gausen.net>\n"
-"Eskild Hustvedt <eskildh@gnome.org>\n"
-"Torstein Adolf Winterseth <kvikende@yahoo.no>"
 
 #: ../applets/fish/fish.c:590
 #, c-format
 msgid "%s the Fish, a contemporary oracle"
-msgstr "Fisken %s, eit moderne orakel"
+msgstr ""
 
 #: ../applets/fish/fish.c:656
 msgid "Unable to locate the command to execute"
-msgstr "Klarte ikkje finna kommandoen som skal køyrast"
+msgstr ""
 
 #: ../applets/fish/fish.c:700
 #, no-c-format
 msgid "%s the Fish Says:"
-msgstr "Fisken %s seier:"
+msgstr ""
 
 #: ../applets/fish/fish.c:763
 #, c-format
@@ -110,18 +92,15 @@ msgid ""
 "\n"
 "Details: %s"
 msgstr ""
-"Klarte ikkje å lesa utskrift frå kommandoen\n"
-"\n"
-"Detaljar: %s"
 
 #: ../applets/fish/fish.c:840
 msgid "_Speak again"
-msgstr "_Snakk på nytt"
+msgstr ""
 
 #: ../applets/fish/fish.c:927
 #, c-format
 msgid "The configured command is not working and has been replaced by: %s"
-msgstr "Konfigurert kommando verkar ikkje og vart erstatta av: %s"
+msgstr ""
 
 #: ../applets/fish/fish.c:960
 #, c-format
@@ -130,9 +109,6 @@ msgid ""
 "\n"
 "Details: %s"
 msgstr ""
-"Klarte ikkje å køyra «%s»\n"
-"\n"
-"Detaljar: %s"
 
 #: ../applets/fish/fish.c:976
 #, c-format
@@ -141,27 +117,24 @@ msgid ""
 "\n"
 "Details: %s"
 msgstr ""
-"Klarte ikkje å lesa frå «%s»\n"
-"\n"
-"Detaljar: %s"
 
 #: ../applets/fish/fish.c:1544
 msgid "The water needs changing"
-msgstr "Vatnet må skiftast"
+msgstr ""
 
 #: ../applets/fish/fish.c:1546
 msgid "Look at today's date!"
-msgstr "Sjå på datoen i dag!"
+msgstr ""
 
 #: ../applets/fish/fish.c:1629
 #, c-format
 msgid "%s the Fish, the fortune teller"
-msgstr "Fisken %s, spåkona"
+msgstr ""
 
 #: ../applets/fish/fish.c:1688 ../applets/wncklet/window-list.c:172
 #: ../applets/wncklet/workspace-switcher.c:327
 msgid "_Preferences"
-msgstr "_Innstillingar"
+msgstr ""
 
 #: ../applets/fish/fish.c:1691 ../applets/notification_area/main.c:185
 #: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-menu.c:100
@@ -169,131 +142,122 @@ msgstr "_Innstillingar"
 #: ../ukui-panel/panel-action-button.c:737 ../ukui-panel/panel-menu-bar.c:359
 #: ../ukui-panel/panel-menu-button.c:669
 msgid "_Help"
-msgstr "_Hjelp"
+msgstr ""
 
 #: ../applets/fish/fish.c:1694 ../applets/notification_area/main.c:188
 #: ../applets/wncklet/showdesktop.c:243 ../applets/wncklet/window-menu.c:108
 #: ../applets/wncklet/workspace-switcher.c:343
 msgid "_About"
-msgstr "_Om"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:1
 msgid "Fish Preferences"
-msgstr "Innstillingar for fisk"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:2 ../ukui-panel/panel-properties-dialog.ui.h:11
 msgid "General"
-msgstr "Allment"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:3
 msgid "_Name of fish:"
-msgstr "_Namn på fisken:"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:4
 msgid "Co_mmand to run when clicked:"
-msgstr "Ko_mmando som skal utførast når klikka på:"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:5
 msgid "Animation"
-msgstr "Animasjon"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:6 ../ukui-panel/panel-properties-dialog.ui.h:14
 msgid "    "
-msgstr "    "
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:7
 msgid "_File:"
-msgstr "_Fil:"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:8
 msgid "Select an animation"
-msgstr "Velg ein animasjon"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:9
 msgid "_Total frames in animation:"
-msgstr "_Tal på bilete i animasjonen:"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:10
 msgid "_Pause per frame:"
-msgstr "_Pause for kvart bilete:"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:11
 msgid "frames"
-msgstr "bilete"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:12
 msgid "seconds"
-msgstr "sekund"
+msgstr ""
 
 #: ../applets/fish/fish.ui.h:13
 msgid "_Rotate on vertical panels"
-msgstr "_Roter på loddrette panel"
+msgstr ""
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:1
 msgid "The fish's name"
-msgstr "Namnet på fisken"
+msgstr ""
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:2
 msgid ""
 "A fish without a name is a pretty dull fish. Bring your fish to life by "
 "naming him."
 msgstr ""
-"Ein fisk utan namn er ein kjedeleg fisk. Gje liv til fisken din ved å gje "
-"honom eit namn."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:3
 msgid "The fish's animation pixmap"
-msgstr "Fisken sitt animasjonsbilete"
+msgstr ""
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:4
 msgid ""
 "This key specifies the filename of the pixmap which will be used for the "
 "animation displayed in the fish applet relative to the pixmap directory."
 msgstr ""
-"Denne nøkkelen inneheld filnamnet, relativt til biletekatalogen, på "
-"biletefila som skal brukast til animasjonen til fisken."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:5
 msgid "Command to execute on click"
-msgstr "Kommando som skal utførast når klikka på"
+msgstr ""
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:6
 msgid ""
 "This key specifies the command that will be tried to execute when the fish "
 "is clicked."
 msgstr ""
-"Denne nøkkelen avgjer kva for kommando som skal utførast ved klikk på fisken."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:7
 msgid "Frames in fish's animation"
-msgstr "Bilete i animasjonen til fisken"
+msgstr ""
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:8
 msgid ""
 "This key specifies the number of frames that will be displayed in the fish's "
 "animation."
 msgstr ""
-"Denne nøkkelen inneheld talet på bilete som vert viste i animasjonen til "
-"fisken."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:9
 msgid "Pause per frame"
-msgstr "Pause for kvart bilete"
+msgstr ""
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:10
 msgid "This key specifies the number of seconds each frame will be displayed."
-msgstr "Denne nøkkelen styrer kor mange sekund kvart bilete vert vist."
+msgstr ""
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:11
 msgid "Rotate on vertical panels"
-msgstr "Roter på loddrette panel"
+msgstr ""
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:12
 msgid ""
 "If true, the fish's animation will be displayed rotated on vertical panels."
 msgstr ""
-"Dersom set til sann, vert animasjonen til fisken vist rotert på loddrette "
-"panel."
 
 #: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:1
 msgid "Wanda Factory"
@@ -311,11 +275,11 @@ msgstr ""
 #: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:3
 #: ../ukui-panel/notification-area.ui.h:1
 msgid "Notification Area"
-msgstr "Varslingsområde"
+msgstr ""
 
 #: ../applets/notification_area/main.c:389
 msgid "Panel Notification Area"
-msgstr "Panelet sitt varslingsområde"
+msgstr ""
 
 #: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:1
 msgid "Notification Area Factory"
@@ -331,44 +295,37 @@ msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:1
 msgid "Show windows from all workspaces"
-msgstr "Vis vindauge frå alle arbeidsområda"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:2
 msgid ""
 "If true, the window list will show windows from all workspaces. Otherwise it "
 "will only display windows from the current workspace."
 msgstr ""
-"Dersom set til sann, vil vindaugslista visa vindauga på alle arbeidsområda. "
-"Elles vil ho berre visa vindauge på det noverande arbeidsområdet."
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:3
 msgid "When to group windows"
-msgstr "Når vindauge skal setjast i grupper"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:4
 msgid ""
 "Decides when to group windows from the same application on the window list. "
 "Possible values are \"never\", \"auto\" and \"always\"."
 msgstr ""
-"Styrer når vindauge frå same program skal setjast i gruppe på vindaugelista. "
-"Moglege verdiar er «never», «auto» og «always»."
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:5
 msgid "Move windows to current workspace when unminimized"
-msgstr "Flytt vindauge til noverande arbeidsområde når dei vert gjenoppretta"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:6
 msgid ""
 "If true, then when unminimizing a window, move it to the current workspace. "
 "Otherwise, switch to the workspace of the window."
 msgstr ""
-"Dersom set til sann, vil eit vindauge som vert gjenoppretta setjast på det "
-"aktive arbeidsområdet. Elles vil fokus flyttast til vindauget sitt "
-"arbeidsområde."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:1
 msgid "Display workspace names"
-msgstr "Vis namn på arbeidsområda"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:2
 msgid ""
@@ -376,25 +333,20 @@ msgid ""
 "the workspaces. Otherwise they will display the windows on the workspace. "
 "This setting only works when the window manager is Marco."
 msgstr ""
-"Dersom set til sann, vil arbeidsområdebyter visa namn på arbeidsområda, "
-"elles vil vindauga på arbeidsområdet vert viste. Denne innstillinga verkar "
-"berre med vindushandsamaren Marco."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:3
 msgid "Display all workspaces"
-msgstr "Vis alle arbeidsområda"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:4
 msgid ""
 "If true, the workspace switcher will show all workspaces. Otherwise it will "
 "only show the current workspace."
 msgstr ""
-"Dersom set til sann, vil arbeidsområdeskiftaren visa alle arbeidsområda. "
-"Elles vil han berre visa det noverande arbeidsområdet."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:5
 msgid "Rows in workspace switcher"
-msgstr "Rader i arbeidsområdeskiftar"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:6
 msgid ""
@@ -402,10 +354,6 @@ msgid ""
 "vertical layout) the workspace switcher shows the workspaces in. This key is "
 "only relevant if the display_all_workspaces key is true."
 msgstr ""
-"Denne nøkkelen styrer kor mange rader (i vassrett plassering) eller kolonner "
-"(i loddrett plassering) som arbeidsområdehandsamaren viser arbeidsområda i. "
-"Denne nøkkelen er berre relevant når «display_all_workspaces» er satt til "
-"«sann»."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:7
 msgid "Wrap around on scroll"
@@ -428,7 +376,7 @@ msgstr ""
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:3
 #: ../applets/wncklet/window-menu.c:83 ../applets/wncklet/window-menu.c:255
 msgid "Window Selector"
-msgstr "Vindaugeveljar"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:4
 msgid "Switch between open windows using a menu"
@@ -437,7 +385,7 @@ msgstr ""
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:5
 #: ../applets/wncklet/workspace-switcher.c:616
 msgid "Workspace Switcher"
-msgstr "Arbeidsområdeskiftar"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:6
 msgid "Switch between workspaces"
@@ -446,7 +394,7 @@ msgstr ""
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:7
 #: ../applets/wncklet/window-list.c:598
 msgid "Window List"
-msgstr "Vindaugsliste"
+msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:8
 msgid "Switch between open windows using buttons"
@@ -463,35 +411,33 @@ msgstr ""
 #: ../applets/wncklet/showdesktop.c:186
 #, c-format
 msgid "Failed to load %s: %s\n"
-msgstr "Klarte ikkje å lasta %s: %s\n"
+msgstr ""
 
 #: ../applets/wncklet/showdesktop.c:186
 msgid "Icon not found"
-msgstr "Fann ikkje ikonet"
+msgstr ""
 
 #: ../applets/wncklet/showdesktop.c:259
 msgid "Click here to restore hidden windows."
-msgstr "Klikk her for å gjenoppretta skjulte vindauge."
+msgstr ""
 
 #: ../applets/wncklet/showdesktop.c:263
 msgid "Click here to hide all windows and show the desktop."
-msgstr "Klikk her for å skjula alle vindauga og visa skrivebordet."
+msgstr ""
 
 #: ../applets/wncklet/showdesktop.c:447 ../applets/wncklet/showdesktop.c:513
 msgid "Show Desktop Button"
-msgstr "Knapp for å visa skrivebordet"
+msgstr ""
 
 #: ../applets/wncklet/showdesktop.c:515
 msgid "This button lets you hide all windows and show the desktop."
-msgstr "Denne knappen let deg skjula alle vindauga og visa skrivebordet."
+msgstr ""
 
 #: ../applets/wncklet/showdesktop.c:541
 msgid ""
 "Your window manager does not support the show desktop button, or you are not "
 "running a window manager."
 msgstr ""
-"Vindaugehandsamaren din støttar ikkje knapp som viser skrivebordet, eller du "
-"køyrer ikkje noko vindaugehandsamar."
 
 #.
 #. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Help"));
@@ -511,111 +457,105 @@ msgid ""
 "The Window List shows a list of all windows in a set of buttons and lets you "
 "browse them."
 msgstr ""
-"Vindaugelista viser ei liste over alle vindauga som knappar og let deg sjå "
-"gjennom dei."
 
 #: ../applets/wncklet/window-list.ui.h:1
 msgid "Window List Preferences"
-msgstr "Innstillingar for vindaugeliste"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:2
 msgid "Window List Content"
-msgstr "Innhald i vindaugeliste"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:3
 msgid "Sh_ow windows from current workspace"
-msgstr "Vis vindauge frå _aktiv arbeidsområde"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:4
 msgid "Show windows from a_ll workspaces"
-msgstr "Vis vindauger frå a_lle arbeidsområda"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:5
 msgid "Window Grouping"
-msgstr "Gruppering av vindauge"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:6
 msgid "_Never group windows"
-msgstr "Grupper aldri _vindauge"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:7
 msgid "Group windows when _space is limited"
-msgstr "Grupper vindague når _plassen er liten"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:8
 msgid "_Always group windows"
-msgstr "Grupper _alltid vindauger"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:9
 msgid "Restoring Minimized Windows"
-msgstr "Gjenoppretting av minimerte vindauge"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:10
 msgid "Restore to current _workspace"
-msgstr "Gjenopprett til gjeldande _arbeidsområde"
+msgstr ""
 
 #: ../applets/wncklet/window-list.ui.h:11
 msgid "Restore to na_tive workspace"
-msgstr "Gjenopprett til _opprinneleg arbeidsområde"
+msgstr ""
 
 #: ../applets/wncklet/window-menu.c:85
 msgid ""
 "The Window Selector shows a list of all windows in a menu and lets you "
 "browse them."
 msgstr ""
-"Vindaugeveljaren viser ei liste over alle vindauga som ein meny og lèt deg "
-"sjå gjennom dei."
 
 #: ../applets/wncklet/workspace-switcher.c:199
 #: ../applets/wncklet/workspace-switcher.c:918
 #: ../applets/wncklet/workspace-switcher.ui.h:4
 msgid "rows"
-msgstr "rader"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.c:199
 #: ../applets/wncklet/workspace-switcher.c:918
 msgid "columns"
-msgstr "kolonner"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.c:618
 msgid ""
 "The Workspace Switcher shows you a small version of your workspaces that "
 "lets you manage your windows."
 msgstr ""
-"Arbeidsområdeskiftaren viser ein liten versjon av arbeidsområda og lèt deg "
-"handtera vindauga."
 
 #: ../applets/wncklet/workspace-switcher.ui.h:1
 msgid "Workspace Switcher Preferences"
-msgstr "Innstillingar for arbeidsområdeskiftaren"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:2
 msgid "Show _only the current workspace"
-msgstr "Viser berre det _gjeldande arbeidsområdet"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:3
 msgid "Show _all workspaces in:"
-msgstr "Vis _alle arbeidsområda i:"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:5
 msgid "Switcher"
-msgstr "Bytar"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:6
 msgid "Number of _workspaces:"
-msgstr "Tal på arbeids_flater:"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:7
 msgid "Workspace na_mes:"
-msgstr "Na_mn på arbeidsområda:"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:8
 msgid "Workspace Names"
-msgstr "Namn på arbeidsområda"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:9
 msgid "Show workspace _names in switcher"
-msgstr "Vis arbeidsområde_namn i skiftaren"
+msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:10
 msgid "Allow workspace _wrap around in switcher"
@@ -623,7 +563,7 @@ msgstr ""
 
 #: ../applets/wncklet/workspace-switcher.ui.h:11
 msgid "Workspaces"
-msgstr "Arbeidsområde"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:1
 msgid "Ukui panel layout"
@@ -635,7 +575,7 @@ msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:3
 msgid "Enable program list in \"Run Application\" dialog"
-msgstr "Bruk programlista i «Køyr program»-dialogen"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:4
 msgid ""
@@ -643,13 +583,10 @@ msgid ""
 "dialog is made available. Whether or not the listing is expanded when the "
 "dialog is shown is controlled by the show_program_list key."
 msgstr ""
-"Dersom set til sann, vert lista over kjente program vist i «Køyr program»-"
-"dialogen. Om lista vert utvida eller ikkje når dialogen vert vist, vert "
-"kontrollert av nøkkelen «show_program_list»."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:5
 msgid "Expand program list in \"Run Application\" dialog"
-msgstr "Utvid programlista i «Køyr program»-dialogen"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:6
 msgid ""
@@ -657,18 +594,15 @@ msgid ""
 "dialog is expanded when the dialog is opened. This key is only relevant if "
 "the enable_program_list key is true."
 msgstr ""
-"Dersom set til sann, vert lista over kjente program i «Køyr program»-"
-"dialogen utvida. Denne nøkkelen er berre relevant dersom nøkkelen "
-"«enable_program_list» er sann."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:7
 msgid "Enable autocompletion in \"Run Application\" dialog"
-msgstr "Bruk autofullføring i «Køyr program»-dialogen"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:8
 msgid ""
 "If true, autocompletion in the \"Run Application\" dialog is made available."
-msgstr "Dersom set til sann, bruk autofullføring i «Køyr program»-dialogen."
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:9
 msgid "History for \"Run Application\" dialog"
@@ -703,20 +637,17 @@ msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:15
 msgid "Panel ID list"
-msgstr "Liste over panel-ID"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:16
 msgid ""
 "A list of panel IDs. Each ID identifies an individual toplevel panel. The "
 "settings for each of these panels are stored in /apps/panel/toplevels/$(id)."
 msgstr ""
-"Ei liste over panel-ID-ar. Kvar ID tilhøyrer eitt toppnivå-panel. "
-"Innstillingane til kvart av desse panela er lagra i «/apps/panel/toplevels/"
-"$(id)»."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:17
 msgid "Panel object ID list"
-msgstr "Liste over ID-ar til panelobjekt"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:18
 msgid ""
@@ -724,62 +655,52 @@ msgid ""
 "g. a launcher, action button or menu button/bar). The settings for each of "
 "these objects are stored in /apps/panel/objects/$(id)."
 msgstr ""
-"Ei liste over panelobjekt-ID-ar. Kvar ID kjennemerkar eitt panelobjekt (t.d. "
-"ein oppstartar, handlingsknapp, menyknapp eller menylinje). Innstillingane "
-"til kvart av desse panelobjekta er lagra i «/apps/panel/general/$(profiles)/"
-"objects/$(id)»."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:19
 msgid "Enable tooltips"
-msgstr "Bruk verktøytips"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:20
 msgid "If true, tooltips are shown for objects in panels."
-msgstr "Dersom set til sann, vert det vist verktøytips for objekta i panela."
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:21
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
 msgid "Enable animations"
-msgstr "Bruk animasjonar"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:22
 msgid "Autoclose drawer"
-msgstr "Lukk skuff automatisk"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:23
 msgid ""
 "If true, a drawer will automatically be closed when the user clicks a "
 "launcher in it."
 msgstr ""
-"Dersom set til sann, vil ei skuff verta stengt automatisk når brukaren "
-"klikkar på ein oppstartar i henne."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:24
 msgid "Confirm panel removal"
-msgstr "Stadfest fjerning av panel"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:25
 msgid ""
 "If true, a dialog is shown asking for confirmation if the user wants to "
 "remove a panel."
 msgstr ""
-"Dersom set til sann, vil ein dialog be om stadfesting når brukaren vil ta "
-"vekk eit panel."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:26
 msgid "Highlight launchers on mouseover"
-msgstr "Framhev oppstartarane når muspeikeren er over dei"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:27
 msgid ""
 "If true, a launcher is highlighted when the user moves the pointer over it."
 msgstr ""
-"Dersom set til sann, vert oppstartarane framheva når musepeikaren går over "
-"dei."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:28
 msgid "Complete panel lockdown"
-msgstr "Lås heile panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:29
 msgid ""
@@ -787,13 +708,10 @@ msgid ""
 "panel. Individual applets may need to be locked down separately however. The "
 "panel must be restarted for this to take effect."
 msgstr ""
-"Dersom set til sann, vil ikkje panelet tillata endringar i oppsettet sitt. "
-"Dei ulike panelprogramma må kanskje låsast kvar for seg. Panelet må startast "
-"på nytt for at denne innstillinga skal tre i kraft."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:30
 msgid "Applet IIDs to disable from loading"
-msgstr "Panelprogram-IID-ar som ikkje skal lastast"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:31
 msgid ""
@@ -802,23 +720,16 @@ msgid ""
 "disable the mini-commander applet add 'OAFIID:UKUI_MiniCommanderApplet' to "
 "this list. The panel must be restarted for this to take effect."
 msgstr ""
-"Ei liste over panelprogram-IID-ar som panelet vil oversjå. På denne måten "
-"kan du hindra visse panelprogram frå å verta lasta eller å verta viste i "
-"menyen. Til dømes kan du hindra kommandolinjeprogrammet i å verta brukt ved "
-"å leggja til «OAFIID:UKUI_MiniCommanderApplet» til denne lista. Panelet må "
-"startast på nytt for at endringar her skal verta verksame."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:32
 msgid "Disable Force Quit"
-msgstr "Kopla ut tvungen avslutting"
+msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:33
 msgid ""
 "If true, the panel will not allow a user to force an application to quit by "
 "removing access to the force quit button."
 msgstr ""
-"Dersom set til sann, vil panelet fjerna tilgangen til tvungen avslutt-"
-"knappen, og då vil ikkje ein brukar kunna tvinga eit program til å avslutta."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:34
 msgid "Enable SNI support"
@@ -900,7 +811,7 @@ msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:1
 msgid "Panel object type"
-msgstr "Type panelobjekt"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:2
 msgid "The type of this panel object."
@@ -908,47 +819,41 @@ msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:3
 msgid "Toplevel panel containing object"
-msgstr "Toppnivåpanel som inneheld objektet"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:4
 msgid "The identifier of the toplevel panel which contains this object."
-msgstr "Identifikatoren til toppnivå-panelet som inneheld objektet."
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:5
 msgid "Object's position on the panel"
-msgstr "Plasseringa til objektet på panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:6
 msgid ""
 "The position of this panel object. The position is specified by the number "
 "of pixels from the left (or top if vertical) panel edge."
 msgstr ""
-"Plasseringa til dette panelobjektet. Plasseringa er målt i pikslar frå "
-"venstre kant av panelet (øvre kant for loddrette panel)."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:7
 msgid "Interpret position relative to bottom/right edge"
-msgstr "Plasser i høve til høgre/nedre kant"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:8
 msgid ""
 "If true, the position of the object is interpreted relative to the right (or "
 "bottom if vertical) edge of the panel."
 msgstr ""
-"Dersom set til sann, vert plasseringa til objektet målt frå den høgre kanten "
-"av panelet (botnkanten for loddrette panel)"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:9
 msgid "Lock the object to the panel"
-msgstr "Lås objektet i panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:10
 msgid ""
 "If true, the user may not move the applet without first unlocking the object "
 "using the \"Unlock\" menuitem."
 msgstr ""
-"Dersom set til sann, kan ikkje brukaren flytta programmet utan å fyrst låsa "
-"det opp med «Lås opp»-menyvalet."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:11
 msgid "Applet IID"
@@ -963,32 +868,27 @@ msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:13
 msgid "Panel attached to drawer"
-msgstr "Panel festa til skuff"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:14
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
 "relevant if the object_type key is \"drawer-object\"."
 msgstr ""
-"Identifikatoren til panelet kopla til denne skuffa. Denne nøkkelen er berre "
-"relevant dersom nøkkelen «object_type» er «drawer-object»"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:15
 msgid "Tooltip displayed for drawer or menu"
-msgstr "Verktøytips som vert vist for skuffe eller meny"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:16
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
 "only relevant if the object_type key is \"drawer-object\" or \"menu-object\"."
 msgstr ""
-"Teksten som skal visast i eit verktøytips for denne skuffa eller denne "
-"menyen. Denne nøkkelen er berre relevant dersom nøkkelen «object_type» er "
-"«drawer-object» eller «menu-object»."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:17
 msgid "Use custom icon for object's button"
-msgstr "Bruk sjølvvalt ikon i knappen til objektet"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:18
 msgid ""
@@ -996,14 +896,10 @@ msgid ""
 "false, the custom_icon key is ignored. This key is only relevant if the "
 "object_type key is \"menu-object\" or \"drawer-object\"."
 msgstr ""
-"Dersom set til sann, vert ikonet oppgjeve i nøkkelen «custom_icon» brukt som "
-"ikon på knappen. Dersom set til usann, vert nøkkelen ignorert. Denne "
-"nøkkelen er berre relevant dersom nøkkelen «object_type» er «menu_object» "
-"eller «drawer_object»."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:19
 msgid "Icon used for object's button"
-msgstr "Ikon som vert brukt i knappen til objektet"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:20
 msgid ""
@@ -1011,13 +907,10 @@ msgid ""
 "This key is only relevant if the object_type key is \"drawer-object\" or "
 "\"menu-object\" and the use_custom_icon key is true."
 msgstr ""
-"Plasseringa til biletefila som skal brukast til ikon på knappen til "
-"objektet. Denne nøkkelen er berre relevant dersom nøkkelen «object_type» er "
-"«drawer_object» eller «menu_object» og nøkkelen «use_custom_icon» er sann."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:21
 msgid "Use custom path for menu contents"
-msgstr "Bruk sjølvvalt sti til menyinnhaldet"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:22
 msgid ""
@@ -1025,14 +918,10 @@ msgid ""
 "should be constructed. If false, the menu_path key is ignored. This key is "
 "only relevant if the object_type key is \"menu-object\"."
 msgstr ""
-"Dersom set til sann, vil nøkkelen «menu_path_key» verta brukt som stien som "
-"menyen skal lagast ut frå. Dersom set til usann, vert nøkkelen "
-"«meny_path_key» ignorert. Denne nøkkelen er berre relevant når nøkkelen "
-"«object_type» har verdien «menu_object»."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:23
 msgid "Menu content path"
-msgstr "Sti til menyinnhald"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:24
 msgid ""
@@ -1040,9 +929,6 @@ msgid ""
 "relevant if the use_menu_path key is true and the object_type key is \"menu-"
 "object\"."
 msgstr ""
-"Stien som menyinnhaldet vert laga frå. Denne nøkkelen er berre relevant "
-"dersom nøkkelen «use_menu_path» er sann og nøkkelen «object_type» er «menu-"
-"object»."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:25
 msgid "Draw arrow in menu button"
@@ -1056,19 +942,17 @@ msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:27
 msgid "Launcher location"
-msgstr "Plassering av oppstartar"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:28
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
 "relevant if the object_type key is \"launcher-object\"."
 msgstr ""
-"Plasseringa til .desktop-fila som skildrar oppstartaren. Denne nøkkelen er "
-"berre relevant dersom nøkkelen «object_type» er «launcher-object»."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:29
 msgid "Action button type"
-msgstr "Type handlingsknapp"
+msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:30
 msgid ""
@@ -1076,13 +960,10 @@ msgid ""
 "\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
 "relevant if the object_type key is \"action-applet\"."
 msgstr ""
-"Handlingstypen denne knappen representerer. Moglege verdiar er «lock», "
-"«logout», «run», «search» og «screenshot». Denne nøkkelen er berre relevant "
-"dersom nøkkelen «object_type» er «action-applet»."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:1
 msgid "Name to identify panel"
-msgstr "Namn som særmerkjer dette panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:2
 msgid ""
@@ -1090,21 +971,16 @@ msgid ""
 "main purpose is to serve as the panel's window title which is useful when "
 "navigating between panels."
 msgstr ""
-"Dette er eit namn som du kan bruka som kjennemerke på eit panel. "
-"Hovudformålet med namnet er å fungera som panelet sin vindaugstittel, som er "
-"nyttig når du navigerer mellom panel."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:3
 msgid "X screen where the panel is displayed"
-msgstr "X-skjerm der panelet vert vist"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:4
 msgid ""
 "With a multi-screen setup, you may have panels on each individual screen. "
 "This key identifies the current screen the panel is displayed on."
 msgstr ""
-"Dersom du har fleire skjermar, kan du ha panel på kvar skjerm. Denne "
-"nøkkelen inneheld kva for skjerm panelet vert vist på no."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:5
 msgid "Show blank starting position"
@@ -1124,19 +1000,17 @@ msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
 msgid "Xinerama monitor where the panel is displayed"
-msgstr "Xinerama-skjerm der panelet vert vist"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
 msgid ""
 "In a Xinerama setup, you may have panels on each individual monitor. This "
 "key identifies the current monitor the panel is displayed on."
 msgstr ""
-"I eit Xinerama-oppsett kan du ha ulike panel på kvar skjerm. Denne nøkkelen "
-"inneheld kva for ein skjerm panelet vert vist på."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
 msgid "Expand to occupy entire screen width"
-msgstr "Utvid til heile skjermbreidda"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
 msgid ""
@@ -1145,14 +1019,10 @@ msgid ""
 "If false, the panel will only be large enough to accommodate the applets, "
 "launchers and buttons on the panel."
 msgstr ""
-"Dersom sann, vil panelet bruka heile skjermbreidda (skjermhøgda på loddrette "
-"panel). Då kan panelet berre plasserast på kanten av skjermen. Dersom usann, "
-"vil panelet berre vera så stort som det må vera for å få plass til alle "
-"panelprogramma, oppstartarane og knappane."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
 msgid "Panel orientation"
-msgstr "Plasseringa til panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
 msgid ""
@@ -1165,17 +1035,10 @@ msgid ""
 "panel, whereas on a \"bottom\" panel the menu will be popped up above the "
 "panel."
 msgstr ""
-"Plasseringa av panelet. Moglege verdiar er «top», «bottom», «left» og "
-"«right». I utvida modus styrer nøkkelen kva for ein kant av skjermen panelet "
-"er på. I ikkje-utvida modus er skilnaden mellom «top» og «bottom» mindre "
-"vesentleg, begge er vassrette panel. Men dei to vala kan framleis gje "
-"nyttige vink om korleis somme panelobjekt skal te seg. T.d. vil eit panel "
-"som har «top» opna menyane sine under panelet, medan eit panel som har "
-"«bottom» vil opna menyane sine over panelet."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
 msgid "Panel size"
-msgstr "Storleik på panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
 msgid ""
@@ -1184,14 +1047,10 @@ msgid ""
 "indicators. The maximum size is fixed at one quarter of the screen height "
 "(or width)."
 msgstr ""
-"Høgda på eit vassrett panel, breidda på eit loddrett panel. Panelet vil "
-"finna ut når det er i bruk ein minste storleik ut frå skriftstorleik og "
-"anna. Den største storleiken er satt til ein fjerdedel av skrivebordshøgda "
-"(eller -breidda)."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
 msgid "X co-ordinate of panel"
-msgstr "X-koordinaten til panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
 msgid ""
@@ -1199,14 +1058,10 @@ msgid ""
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
 msgstr ""
-"Plasseringa av panelet langsetter X-aksen. Denne nøkkelen er berre relevant "
-"når panelet ikkje er utvida. Når panelet er utvida, vert denne nøkkelen "
-"ignorert, og panelet vert plassert på kanten av skjermen. Kva for ein kant "
-"vert styrt av nøkkelen «orientation»."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
 msgid "Y co-ordinate of panel"
-msgstr "Y-koordinaten til panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
 msgid ""
@@ -1214,14 +1069,10 @@ msgid ""
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
 msgstr ""
-"Plasseringa av panelet langsetter Y-aksen. Denne nøkkelen er berre relevant "
-"når panelet ikkje er utvida. Når panelet er utvida, vert denne nøkkelen "
-"ignorert, og panelet vert plassert på kanten av skjermen. Kva for ein kant "
-"vert styrt av nøkkelen «orientation»."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
 msgid "X co-ordinate of panel, starting from the right of the screen"
-msgstr "X-koordinat for panelet. Startar frå høgre side av skjermen"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
 msgid ""
@@ -1232,15 +1083,10 @@ msgid ""
 "this key is ignored and the panel is placed at the screen edge specified by "
 "the orientation key."
 msgstr ""
-"Stad for panelet langs x-aksen frå botnen av skjermen Viss den setjes til -1 "
-"ignorerast verdien og x-nøkkelen brukast i staden Viss verdien er større enn "
-"0 vil x-nøkkelen ignorerast. Denne nøkkelen er berre relevant i ikkje-utvida "
-"modus. I utvida modus ignorerast denne nøkkelen og panelet plasserast ved "
-"skjermkanten oppgjeven av nøkkelen orientation."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
 msgid "Y co-ordinate of panel, starting from the bottom of the screen"
-msgstr "Y-koordinat for panelet. Startar frå botnen av skjermen"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
 msgid ""
@@ -1251,15 +1097,10 @@ msgid ""
 "this key is ignored and the panel is placed at the screen edge specified by "
 "the orientation key."
 msgstr ""
-"Stad for panelet langs y-aksen frå botnen av skjermen Viss den setjes til -1 "
-"ignorerast verdien og y-nøkkelen brukast i staden Viss verdien er større enn "
-"0 vil y-nøkkelen ignorerast. Denne nøkkelen er berre relevant i ikkje-utvida "
-"modus. I utvida modus ignorerast denne nøkkelen og panelet plasserast ved "
-"skjermkanten oppgjeven av nøkkelen orientation."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
 msgid "Center panel on x-axis"
-msgstr "Midtstill panelet på X-aksen"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
 msgid ""
@@ -1268,14 +1109,10 @@ msgid ""
 "at that position - i.e. the panel will grow on both sides. If false, the x "
 "and x_right keys specify the location of the panel."
 msgstr ""
-"Viss «true» vil x og x_right-nøkkelen ignorerast og panelet plasserast "
-"sentrert på x-aksen av skjermen. Viss panelets storleik endrast vil det "
-"forbli i denne posisjonen - dvs. panelet vil vokse på begge sider. Viss "
-"«false» vil x og x_right-nøkkelen spesifisere panelets stad."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
 msgid "Center panel on y-axis"
-msgstr "Midtstill panelet på Y-aksen"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
 msgid ""
@@ -1284,10 +1121,6 @@ msgid ""
 "at that position - i.e. the panel will grow on both sides. If false, the y "
 "and y_bottom keys specify the location of the panel."
 msgstr ""
-"Viss «true» vil y og y_bottom-nøkkelen ignorerast og panelet plasserast "
-"sentrert på y-aksen av skjermen. Viss panelets storleik endrast vil det "
-"forbli i denne posisjonen - dvs. panelet vil vokse på begge sider. Viss "
-"«false» vil y og y_bottom-nøkkelen spesifisere panelets stad."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
 #: ../ukui-panel/panel-settings-dialog.ui.h:7
@@ -1309,9 +1142,8 @@ msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
 #: ../ukui-panel/panel-settings-dialog.ui.h:9
-#, fuzzy
 msgid "Hide workspace"
-msgstr "Arbeidsområde"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
 msgid "If true, the workspace is hidden."
@@ -1319,7 +1151,7 @@ msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
 msgid "Automatically hide panel into corner"
-msgstr "Gøym panelet i hjørnet automatisk"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
 msgid ""
@@ -1327,46 +1159,36 @@ msgid ""
 "the pointer leaves the panel area. Moving the pointer to that corner again "
 "will cause the panel to re-appear."
 msgstr ""
-"Dersom sann, vert panelet automatisk skjult i eit hjørne av skjermen når "
-"peikaren går vekk frå panelet. Når peikaren går inn i hjørnet kjem panelet "
-"fram att."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
 msgid ""
 "If true, hiding and un-hiding of this panel will be aniukuid rather than "
 "happening instantly."
 msgstr ""
-"Dersom sann, vil gøyming og vising av dette panelet vera animert i staden "
-"for å skje med ein gong."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
 msgid "Enable hide buttons"
-msgstr "Bruk gøymeknappar"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
 msgid ""
 "If true, buttons will be placed on each side of the panel which may be used "
 "to move the panel to edge of the screen, leaving only a button showing."
 msgstr ""
-"Dersom set til sann, vil knappane plasserast på kvar si side av panelet. Dei "
-"kan brukast til å flytta panelet utanfor skjermen, slik at berre ein knapp "
-"er synleg."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
 msgid "Enable arrows on hide buttons"
-msgstr "Vis piler på gøymeknappen"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
 msgid ""
 "If true, arrows will be placed on the hide buttons. This key is only "
 "relevant if the enable_buttons key is true."
 msgstr ""
-"Dersom set til sann, vil piler plasserast på gøymeknappane. Denne nøkkelen "
-"er berre relevant dersom nøkkelen «enable_buttons» er sann."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
 msgid "Panel autohide delay"
-msgstr "Pause før automatisk gøyming"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
 msgid ""
@@ -1374,13 +1196,10 @@ msgid ""
 "panel area before the panel is automatically hidden. This key is only "
 "relevant if the auto_hide key is true."
 msgstr ""
-"Styrer kor mange millisekund pause det skal vera mellom at peikaren går vekk "
-"frå panelområdet og panelet vert gøymt automatisk. Denne nøkkelen er berre "
-"relevant dersom nøkkelen «auto_hide» er sann."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
 msgid "Panel autounhide delay"
-msgstr "Pause før automatisk vising"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
 msgid ""
@@ -1388,26 +1207,20 @@ msgid ""
 "panel area before the panel is automatically re-shown. This key is only "
 "relevant if the auto_hide key is true."
 msgstr ""
-"Styrer kor mange millisekund pause det skal vera mellom at peikaren går inn "
-"i panelområdet og panelet vert vist automatisk. Denne nøkkelen er berre "
-"relevant dersom nøkkelen «auto_hide» er sann."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
 msgid "Visible pixels when hidden"
-msgstr "Synlege pikslar når gøymt"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
 msgid ""
 "Specifies the number of pixels visible when the panel is automatically "
 "hidden into a corner. This key is only relevant if the auto_hide key is true."
 msgstr ""
-"Styrer talet på pikslar som er synleg når panelet vert gøymt automatisk i "
-"eit hjørne. Denne nøkkelen er berre relevant dersom nøkkelen «auto_hide» er "
-"sann."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
 msgid "Animation speed"
-msgstr "Fart på animasjonar"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
 msgid ""
@@ -1415,13 +1228,10 @@ msgid ""
 "\", \"medium\" and \"fast\". This key is only relevant if the "
 "enable_animations key is true."
 msgstr ""
-"Kor raskt animasjonar i panelet skal gå. Moglege verdiar er «slow», «medium» "
-"og «fast». Denne nøkkelene er berre relevant dersom nøkkelen "
-"«enable_animations» er sann."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
 msgid "Background type"
-msgstr "Bakgrunnstype"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
 msgid ""
@@ -1433,15 +1243,15 @@ msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
 msgid "Background color"
-msgstr "Bakgrunnsfarge"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
 msgid "Specifies the background color for the panel in #RGB format."
-msgstr "Styrer bakgrunnsfargen til panelet, i #RGB-format."
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:55
 msgid "Background color opacity"
-msgstr "Uklårleik for bakgrunnsfarge"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:56
 msgid ""
@@ -1449,13 +1259,10 @@ msgid ""
 "completely opaque (a value of less than 65535), the color will be composited "
 "onto the desktop background image."
 msgstr ""
-"Styrer kor ugjennomskinleg bakgrunnsfargen skal vera. Dersom fargen ikkje er "
-"heilt ugjennomskinleg (verdi mindre enn 65535), vil fargen leggjast over "
-"skrivebordsbakgrunnen."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:57
 msgid "Background image"
-msgstr "Bakgrunnsbilete"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:58
 msgid ""
@@ -1463,44 +1270,36 @@ msgid ""
 "contains an alpha channel it will be composited onto the desktop background "
 "image."
 msgstr ""
-"Styrer kva fil som vert brukt til bakgrunnsbilete. Dersom biletet inneheld "
-"ein alpha-kanal, vil biletet leggjast oppå skrivebordsbakgrunnen."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:59
 msgid "Fit image to panel"
-msgstr "Tilpass biletet til panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:60
 msgid ""
 "If true, the image will be scaled (retaining the aspect ratio of the image) "
 "to the panel height (if horizontal)."
 msgstr ""
-"Dersom sann, vil biletet skalerast (med same tilhøve mellom kantane) til "
-"panelhøgda (dersom vassrett)."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:61
 msgid "Stretch image to panel"
-msgstr "Strekk biletet til panelet"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:62
 msgid ""
 "If true, the image will be scaled to the panel dimensions. The aspect ratio "
 "of the image will not be maintained."
 msgstr ""
-"Dersom sann, vert biletet skalert til same dimensjon som panelet. Tilhøvet "
-"mellom sidene i biletet vert ikkje bevart."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:63
 msgid "Rotate image on vertical panels"
-msgstr "Rotér biletet på loddrette panel"
+msgstr ""
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:64
 msgid ""
 "If true, the background image will be rotated when the panel is oriented "
 "vertically."
 msgstr ""
-"Dersom sann, vil bakgrunnsbiletet roterast når panelet vert plassert "
-"loddrett."
 
 #: ../ukui-panel/libegg/eggdesktopfile.c:165
 #, c-format
@@ -1547,23 +1346,23 @@ msgstr ""
 
 #: ../ukui-panel/libegg/eggsmclient.c:229
 msgid "FILE"
-msgstr "[FIL]"
+msgstr ""
 
 #: ../ukui-panel/libegg/eggsmclient.c:232
 msgid "Specify session management ID"
-msgstr "Oppgje økthandsamings-ID"
+msgstr ""
 
 #: ../ukui-panel/libegg/eggsmclient.c:232
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #: ../ukui-panel/libegg/eggsmclient.c:253
 msgid "Session management options:"
-msgstr "Brukarval for økthandsaming:"
+msgstr ""
 
 #: ../ukui-panel/libegg/eggsmclient.c:254
 msgid "Show session management options"
-msgstr "Vis brukarval for økthandsaming"
+msgstr ""
 
 #. FIXME: We need a title in this case, but we don't know what
 #. * the format should be. Let's put something simple until
@@ -1574,118 +1373,116 @@ msgstr "Vis brukarval for økthandsaming"
 #: ../ukui-panel/panel-applet-frame.c:865
 #: ../ukui-panel/panel-applet-frame.c:1041
 msgid "Error"
-msgstr "Feil"
+msgstr ""
 
 #: ../ukui-panel/libpanel-util/panel-icon-chooser.c:381
 msgid "Choose an icon"
-msgstr "Vel ikon"
+msgstr ""
 
 #: ../ukui-panel/libpanel-util/panel-launch.c:45
 #, c-format
 msgid "Could not launch '%s'"
-msgstr "Klarte ikkje køyra «%s»"
+msgstr ""
 
 #: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:165
 msgid "Could not launch application"
-msgstr "Klarte ikkje starta programmet"
+msgstr ""
 
 #: ../ukui-panel/libpanel-util/panel-show.c:44
 #, c-format
 msgid "Could not open location '%s'"
-msgstr "Klarte ikkje opna plasseringa «%s»"
+msgstr ""
 
 #: ../ukui-panel/libpanel-util/panel-show.c:158
 msgid "No application to handle search folders is installed."
-msgstr "Ingen program for å handtera søk i mapper er installert."
+msgstr ""
 
 #: ../ukui-panel/applet.c:475
 msgid "???"
-msgstr "???"
+msgstr ""
 
 #: ../ukui-panel/applet.c:554 ../libukui-panel-applet/ukui-panel-applet.c:143
 msgid "_Remove From Panel"
-msgstr "Fje_rn frå panelet"
+msgstr ""
 
 #: ../ukui-panel/applet.c:565 ../libukui-panel-applet/ukui-panel-applet.c:146
 msgid "_Move"
-msgstr "_Flytt"
+msgstr ""
 
 #: ../ukui-panel/applet.c:582 ../libukui-panel-applet/ukui-panel-applet.c:152
 msgid "Loc_k To Panel"
-msgstr "Lås til _panelet"
+msgstr ""
 
 #: ../ukui-panel/applet.c:1415
 msgid "Cannot find an empty spot"
-msgstr "Klarte ikkje finna ein tom plass"
+msgstr ""
 
 #: ../ukui-panel/drawer.c:346 ../ukui-panel/panel-addto.c:175
 #: ../ukui-panel/panel-toplevel.c:1619
 msgid "Drawer"
-msgstr "Skuff"
+msgstr ""
 
 #: ../ukui-panel/drawer.c:533
 msgid "_Add to Drawer..."
-msgstr "_Legg til i skuff …"
+msgstr ""
 
 #: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:603
 #: ../ukui-panel/panel-action-button.c:192
 msgid "_Properties"
-msgstr "_Eigenskapar"
+msgstr ""
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:27
 msgid "Create new file in the given directory"
-msgstr "Opprett ei ny fil i gjeven mappe"
+msgstr ""
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:28
 msgid "[FILE...]"
-msgstr "[FIL…]"
+msgstr ""
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:106
 msgid "- Edit .desktop files"
-msgstr "- Rediger .desktop-filer"
+msgstr ""
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:144
 #: ../ukui-panel/ukui-desktop-item-edit.c:198 ../ukui-panel/launcher.c:974
 msgid "Create Launcher"
-msgstr "Lag oppstartar"
+msgstr ""
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:169
 #: ../ukui-panel/ukui-desktop-item-edit.c:192
 msgid "Directory Properties"
-msgstr "Eigenskapar for katalogen"
+msgstr ""
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:175 ../ukui-panel/launcher.c:818
 msgid "Launcher Properties"
-msgstr "Eigenskapar for oppstartar"
+msgstr ""
 
 #: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:144
 msgid "Panel"
-msgstr "Panel"
+msgstr ""
 
 #: ../ukui-panel/ukui-panel.desktop.in.in.h:2
 msgid ""
 "Launch other applications and provide various utilities to manage windows, "
 "show the time, etc."
 msgstr ""
-"Start andre program og bruk ulike verktøy for å handtera vindauge, vis "
-"klokka osv."
 
 #: ../ukui-panel/launcher.c:123
 msgid "Could not show this URL"
-msgstr "Klarte ikkje visa denne URLen"
+msgstr ""
 
 #: ../ukui-panel/launcher.c:124
 msgid "No URL was specified."
-msgstr "Ingen URL vart oppgjeven."
+msgstr ""
 
 #: ../ukui-panel/launcher.c:217
 msgid "Could not use dropped item"
-msgstr "Klarte ikkje bruka sluppen oppføring"
+msgstr ""
 
 #: ../ukui-panel/launcher.c:448
 #, c-format
 msgid "No URI provided for panel launcher desktop file\n"
-msgstr "Ikkje oppgjeven noko URI til .desktop-fila til oppstartaren\n"
+msgstr ""
 
 #: ../ukui-panel/launcher.c:487
 #, c-format
@@ -1694,22 +1491,22 @@ msgstr ""
 
 #: ../ukui-panel/launcher.c:593
 msgid "_Launch"
-msgstr "_Start"
+msgstr ""
 
 #: ../ukui-panel/launcher.c:911
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
-msgstr "Nøkkelen %s er ikkje sete, kan ikkje lasta oppstartar\n"
+msgstr ""
 
 #: ../ukui-panel/launcher.c:1043 ../ukui-panel/panel-ditem-editor.c:1330
 #: ../ukui-panel/panel-ditem-editor.c:1364
 #: ../ukui-panel/panel-ditem-editor.c:1395
 msgid "Could not save launcher"
-msgstr "Klarte ikkje lagra oppstartar"
+msgstr ""
 
 #: ../ukui-panel/main.c:48
 msgid "Replace a currently running panel"
-msgstr "Byt ut eit køyrande panel"
+msgstr ""
 
 #. this feature was request in #ukui irc channel
 #: ../ukui-panel/main.c:50
@@ -1728,183 +1525,181 @@ msgstr ""
 
 #: ../ukui-panel/menu.c:528
 msgid "Add this launcher to _panel"
-msgstr "Legg til denne oppstartaren på _panelet"
+msgstr ""
 
 #: ../ukui-panel/menu.c:535
 msgid "Add this launcher to _desktop"
-msgstr "Legg til denne oppstartaren på _skrivebordet"
+msgstr ""
 
 #: ../ukui-panel/menu.c:547
 msgid "_Entire menu"
-msgstr "H_eile menyen"
+msgstr ""
 
 #: ../ukui-panel/menu.c:552
 msgid "Add this as _drawer to panel"
-msgstr "Legg til som s_kuff på panelet"
+msgstr ""
 
 #: ../ukui-panel/menu.c:559
 msgid "Add this as _menu to panel"
-msgstr "Legg til som _meny på panelet"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:180
 msgid "_Activate Screensaver"
-msgstr "St_art skjermsparar"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:186
 msgid "_Lock Screen"
-msgstr "_Lås skjerm"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:314
 msgid "Could not connect to server"
-msgstr "Klarte ikkje kopla til tenar"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:345
 msgid "Lock Screen"
-msgstr "Lås skjerm"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:346
 msgid "Protect your computer from unauthorized use"
-msgstr "Vern datamaskinen din mot uautorisert bruk"
+msgstr ""
 
 #. when changing one of those two strings, don't forget to
 #. * update the ones in panel-menu-items.c (look for
 #. * "1" (msgctxt: "panel:showusername"))
 #: ../ukui-panel/panel-action-button.c:360
 msgid "Log Out..."
-msgstr "Logg ut …"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:361
 msgid "Log out of this session to log in as a different user"
-msgstr "Logg ut for å logga inn som ein annan brukar"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:370
 msgid "Run Application..."
-msgstr "Køyr program …"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:371
 msgid "Run an application by typing a command or choosing from a list"
-msgstr "Køyr program ved å skriva inn ein kommando eller vel frå ei liste"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:380
 msgid "Search for Files..."
-msgstr "Søk etter filer …"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:381
 msgid "Locate documents and folders on this computer by name or content"
-msgstr "Finn dokument og mapper på denne datamaskinen etter namn eller innhald"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:389 ../ukui-panel/panel-force-quit.c:251
 msgid "Force Quit"
-msgstr "Tving til å avslutta"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:390
 msgid "Force a misbehaving application to quit"
-msgstr "Tving eit program som ikkje ter seg ordentleg til å avslutta"
+msgstr ""
 
 #. FIXME icon
 #: ../ukui-panel/panel-action-button.c:399
 msgid "Connect to Server..."
-msgstr "Kopla til tenar …"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:400
 msgid "Connect to a remote computer or shared disk"
-msgstr "Kopla til ein ekstern datamaskin eller delt disk"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:408
 msgid "Shut Down..."
-msgstr "Slå av …"
+msgstr ""
 
 #: ../ukui-panel/panel-action-button.c:409
 msgid "Shut down the computer"
-msgstr "Slå av datamaskinen"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:116
 msgid "Custom Application Launcher"
-msgstr "Sjølvlaga programoppstartar"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:117
 msgid "Create a new launcher"
-msgstr "Lag ny oppstartar"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:127
 msgid "Application Launcher..."
-msgstr "Programoppstartar …"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:128
 msgid "Copy a launcher from the applications menu"
-msgstr "Kopier ein oppstartar frå programmenyen"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:142 ../ukui-panel/panel-menu-button.c:1094
 msgid "Main Menu"
-msgstr "Hovudmeny"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:143
 msgid "The main UKUI menu"
-msgstr "UKUI-hovudmenyen"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:153
 msgid "Menu Bar"
-msgstr "Menylinje"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:154
 msgid "A custom menu bar"
-msgstr "Sjølvlaga menylinje"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:164
 msgid "Separator"
-msgstr "Delelinje"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:165
 msgid "A separator to organize the panel items"
-msgstr "Ei delelinje å ordna panelelementa med"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:176
 msgid "A pop out drawer to store other items in"
-msgstr "Ei sprettoppskuff å lagra andre ting i"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:257
 msgid "(empty)"
-msgstr "(tom)"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:988
 #, c-format
 msgid "Find an _item to add to \"%s\":"
-msgstr "Finn ei _oppføring å leggja til på «%s»:"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:992
 #, c-format
 msgid "Add to Drawer"
-msgstr "Legg til i skuff"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:994
 msgid "Find an _item to add to the drawer:"
-msgstr "Finn eit _element å leggja til i skuffa:"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:996
 #, c-format
 msgid "Add to Panel"
-msgstr "Legg til på panelet"
+msgstr ""
 
 #: ../ukui-panel/panel-addto.c:998
 msgid "Find an _item to add to the panel:"
-msgstr "Finn ei _oppføring å leggja til på panelet:"
+msgstr ""
 
 #: ../ukui-panel/panel-applet-frame.c:826
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
-msgstr "«%s» har avslutta uventa"
+msgstr ""
 
 #: ../ukui-panel/panel-applet-frame.c:828
 msgid "Panel object has quit unexpectedly"
-msgstr "Panelobjektet har avslutta uventa"
+msgstr ""
 
 #: ../ukui-panel/panel-applet-frame.c:835
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
 msgstr ""
-"Dersom du lastar eit panelobjekt på nytt vil det automatisk verta lagt "
-"tilbake i panelet."
 
 #: ../ukui-panel/panel-applet-frame.c:842
 msgid "D_elete"
@@ -1913,63 +1708,57 @@ msgstr ""
 #: ../ukui-panel/panel-applet-frame.c:843
 #: ../ukui-panel/panel-applet-frame.c:848
 msgid "_Don't Reload"
-msgstr "_Ikkje last på ny"
+msgstr ""
 
 #: ../ukui-panel/panel-applet-frame.c:844
 #: ../ukui-panel/panel-applet-frame.c:849
 msgid "_Reload"
-msgstr "_Last på ny"
+msgstr ""
 
 #: ../ukui-panel/panel-applet-frame.c:1004
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
-msgstr "Panelet støtte på eit problem medan «%s» vart lasta."
+msgstr ""
 
 #: ../ukui-panel/panel-applet-frame.c:1020
 msgid "Do you want to delete the applet from your configuration?"
-msgstr "Vil du fjerna panelprogrammet frå oppsettet ditt?"
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:119
 msgid "And many, many others..."
-msgstr "Og mange, mange andre …"
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:142
 msgid "The UKUI Panel"
-msgstr "UKUI-panel"
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:146
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
 msgstr ""
-"Dette programmet er ansvarlig for å starta andre program og gjev deg nokre "
-"nyttige verktøy."
 
 #: ../ukui-panel/panel-context-menu.c:150
 msgid "About the UKUI Panel"
-msgstr "Om UKUI-panelet"
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:181
 msgid "Cannot delete this panel"
-msgstr "Klarte ikkje sletta dette panelet"
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:182
 msgid "You must always have at least one panel."
-msgstr "Du må alltid ha minst eit panel."
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:226
-#, fuzzy
 msgid "Reset this panel?"
-msgstr "Slett denne skuffa?"
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:227
-#, fuzzy
 msgid ""
 "When a panel is reset,all \n"
 "custom settings are lost."
 msgstr ""
-"Når eit panel vert fjerna, går panelet og \n"
-"innstillingane det har tapt."
 
 #: ../ukui-panel/panel-context-menu.c:240
 msgid "_Cancel"
@@ -1999,171 +1788,165 @@ msgstr ""
 #.
 #: ../ukui-panel/panel-context-menu.c:241
 #: ../ukui-panel/panel-context-menu.c:292
-#, fuzzy
 msgid "_Reset Panel"
-msgstr "_Nytt panel"
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:262
-#, fuzzy
 msgid "_Settings"
-msgstr "Tid_sinnstillingar"
+msgstr ""
 
 #: ../ukui-panel/panel-context-menu.c:378
 msgid "A_bout Panels"
-msgstr "_Om panel"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:114
 msgid "Application"
-msgstr "Program"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:116
 msgid "Application in Terminal"
-msgstr "Program i terminal"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:118
 msgid "Location"
-msgstr "Stad"
+msgstr ""
 
 #. Type
 #: ../ukui-panel/panel-ditem-editor.c:610
 msgid "_Type:"
-msgstr "_Type:"
+msgstr ""
 
 #. Name
 #: ../ukui-panel/panel-ditem-editor.c:617
 msgid "_Name:"
-msgstr "_Namn:"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:642
 msgid "_Browse..."
-msgstr "_Bla gjennom …"
+msgstr ""
 
 #. Comment
 #: ../ukui-panel/panel-ditem-editor.c:649
 msgid "Co_mment:"
-msgstr "_Merknad:"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:981
 msgid "Choose an application..."
-msgstr "Vel eit program …"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:985
 msgid "Choose a file..."
-msgstr "Vel ei fil …"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:1150
 #: ../ukui-panel/panel-ditem-editor.c:1159
 msgid "Comm_and:"
-msgstr "Komm_ando:"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:1168
 msgid "_Location:"
-msgstr "_Plassering:"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:1331
 msgid "The name of the launcher is not set."
-msgstr "Namn på oppstartar er ikkje vald."
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:1335
 msgid "Could not save directory properties"
-msgstr "Kunne ikkje lagra eigenskapar for mappe"
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:1336
 msgid "The name of the directory is not set."
-msgstr "Namnet på mappa er ikkje sett."
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:1352
 msgid "The command of the launcher is not set."
-msgstr "Kommando for oppstartar er ikkje vald."
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:1355
 msgid "The location of the launcher is not set."
-msgstr "Plasseringa til oppstartaren er ikkje vald."
+msgstr ""
 
 #: ../ukui-panel/panel-ditem-editor.c:1432
 msgid "Could not display help document"
-msgstr "Klarte ikkje visa hjelpedokument"
+msgstr ""
 
 #: ../ukui-panel/panel-force-quit.c:80
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
 msgstr ""
-"Klikk på eit vindauge for å tvinga det programmet til å avslutta. Trykk "
-"<ESC> for å avbryta."
 
 #: ../ukui-panel/panel-force-quit.c:234
 msgid "Force this application to exit?"
-msgstr "Tving dette programmet til å avslutte?"
+msgstr ""
 
 #: ../ukui-panel/panel-force-quit.c:237
 msgid ""
 "If you choose to force an application to exit, unsaved changes in any open "
 "documents in it might get lost."
 msgstr ""
-"Viss du tvingar programmet til å avslutta kan ulagra endringar i opne "
-"dokument gå tapt."
 
 #: ../ukui-panel/panel-menu-bar.c:99
 msgid "Browse and run installed applications"
-msgstr "Sjå gjennom og køyr installerte program"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-bar.c:100
 msgid "Access documents, folders and network places"
-msgstr "Opna dokument, mapper og nettverksstader"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-bar.c:101
 msgid "Change desktop appearance and behavior, get help, or log out"
-msgstr "Endra utsjånad på og åtferda til skrivebordet, få hjelp eller logg ut"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-bar.c:168
 msgid "Applications"
-msgstr "Program"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:675
 msgid "_Edit Menus"
-msgstr "R_ediger menyar"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:472
 msgid "Bookmarks"
-msgstr "Bokmerke"
+msgstr ""
 
 #. Translators: %s is a URI
 #: ../ukui-panel/panel-menu-items.c:495 ../ukui-panel/panel.c:549
 #, c-format
 msgid "Open '%s'"
-msgstr "Opna «%s»"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:566
 #, c-format
 msgid "Unable to scan %s for media changes"
-msgstr "Klarte ikkje søkja gjennom «%s» etter mediumendringar."
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:609
 #, c-format
 msgid "Rescan %s"
-msgstr "Skann %s på nytt"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:646
 #, c-format
 msgid "Unable to mount %s"
-msgstr "Klarte ikkje montera %s"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:709
 #, c-format
 msgid "Mount %s"
-msgstr "Monter %s"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:917
 msgid "Removable Media"
-msgstr "Avtakbare medium"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:1004
 msgid "Network Places"
-msgstr "Nettverksstader"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:1043
 msgid "Open your personal folder"
-msgstr "Opna di personlige mappe"
+msgstr ""
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
@@ -2171,11 +1954,11 @@ msgstr "Opna di personlige mappe"
 #: ../ukui-panel/panel-menu-items.c:1062
 msgctxt "Desktop Folder"
 msgid "Desktop"
-msgstr "Skrivebord"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:1063
 msgid "Open the contents of your desktop in a folder"
-msgstr "Opna skrivebordet som ei mappe"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:1079
 msgid "Computer"
@@ -2196,11 +1979,11 @@ msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:1496
 msgid "Places"
-msgstr "Stader"
+msgstr ""
 
 #: ../ukui-panel/panel-menu-items.c:1524
 msgid "System"
-msgstr "System"
+msgstr ""
 
 #. Below this, we only have log out/shutdown items
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
@@ -2210,7 +1993,7 @@ msgstr "System"
 #: ../ukui-panel/panel-menu-items.c:1609
 msgctxt "panel:showusername"
 msgid "1"
-msgstr "1"
+msgstr ""
 
 #. keep those strings in sync with the ones in
 #. * panel-action-button.c
@@ -2219,47 +2002,47 @@ msgstr "1"
 #: ../ukui-panel/panel-menu-items.c:1621
 #, c-format
 msgid "Log Out %s..."
-msgstr "Logg ut %s …"
+msgstr ""
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
 #: ../ukui-panel/panel-menu-items.c:1625
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
-msgstr "Logg ut %s for å logga inn som ein annan brukar"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:120
 #: ../ukui-panel/panel-settings-dialog.c:131
 #: ../ukui-panel/panel-test-applets.c:58
 msgctxt "Orientation"
 msgid "Top"
-msgstr "Topp"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:121
 #: ../ukui-panel/panel-settings-dialog.c:132
 #: ../ukui-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Bottom"
-msgstr "Botn"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:122
 #: ../ukui-panel/panel-settings-dialog.c:133
 #: ../ukui-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Left"
-msgstr "Venstre"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:123
 #: ../ukui-panel/panel-settings-dialog.c:134
 #: ../ukui-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Right"
-msgstr "Høgre"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:819
 #: ../ukui-panel/panel-settings-dialog.c:1428
 msgid "Drawer Properties"
-msgstr "Eigenskapar for skuff"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:939
 #: ../ukui-panel/panel-settings-dialog.c:1029
@@ -2267,119 +2050,119 @@ msgstr "Eigenskapar for skuff"
 #: ../ukui-panel/panel-run-dialog.c:1973
 #, c-format
 msgid "Unable to load file '%s': %s."
-msgstr "Klarte ikkje lasta fila «%s»: %s"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.c:945
 #: ../ukui-panel/panel-settings-dialog.c:1558
 msgid "Could not display properties dialog"
-msgstr "Klarte ikkje visa dialogen for eigeskaper"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:1
 msgid "Panel Properties"
-msgstr "Eigenskapar for panelet"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:2
 msgid "Some of these properties are locked down"
-msgstr "Somme av desse eigenskapane er låste"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:3
 msgid "_Icon:"
-msgstr "_Ikon:"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:4
 msgid "pixels"
-msgstr "pikslar"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:5
 #: ../ukui-panel/panel-test-applets.ui.h:5
 msgid "_Orientation:"
-msgstr "_Plassering:"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:6
 #: ../ukui-panel/panel-test-applets.ui.h:3
 msgid "_Size:"
-msgstr "_Storleik:"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:7
 msgid "E_xpand"
-msgstr "_Utvid"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:8
 msgid "_Autohide"
-msgstr "_Gøym automatisk"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:9
 msgid "Show hide _buttons"
-msgstr "Vis gøyme_knappar"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:10
 msgid "Arro_ws on hide buttons"
-msgstr "_Piler på gøymeknappane"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:12
 msgid "_None (use system theme)"
-msgstr "I_nga (bruk systemdrakta)"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:13
 msgid "Solid c_olor"
-msgstr "Heilf_ylt farge"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:15
 msgid "Pick a color"
-msgstr "Vel ein farge"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:16
 msgid "<small>Transparent</small>"
-msgstr "<small>Gjennomsiktig</small>"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:17
 msgid "Co_lor:"
-msgstr "_Farge:"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:18
 msgid "S_tyle:"
-msgstr "S_til:"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:19
 msgid "<small>Opaque</small>"
-msgstr "<small>Ugjennomsiktig</small>"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:20
 msgid "Background _image:"
-msgstr "Bakgrunnsb_ilete:"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:21
 msgid "Select background"
-msgstr "Vel bakgrunn"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:22
 msgid "Background"
-msgstr "Bakgrunn"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:23
 #: ../ukui-panel/panel-settings-dialog.ui.h:1
 msgid "Image Background Details"
-msgstr "Detaljar om bakgrunnsbiletet"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:24
 #: ../ukui-panel/panel-settings-dialog.ui.h:2
 msgid "_Tile"
-msgstr "Fl_islegg"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:25
 #: ../ukui-panel/panel-settings-dialog.ui.h:3
 msgid "_Scale"
-msgstr "_Skaler"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:26
 #: ../ukui-panel/panel-settings-dialog.ui.h:4
 msgid "St_retch"
-msgstr "St_rekk"
+msgstr ""
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:27
 #: ../ukui-panel/panel-settings-dialog.ui.h:5
 msgid "Rotate image when panel is _vertical"
-msgstr "_Roter bilete på loddrette panel"
+msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.c:743
 #: ../ukui-panel/panel-settings-dialog.c:797
@@ -2390,32 +2173,28 @@ msgstr ""
 #: ../ukui-panel/panel-settings-dialog.c:743
 #: ../ukui-panel/panel-settings-dialog.c:798
 #: ../ukui-panel/panel-settings-dialog.c:911
-#, fuzzy
 msgid "hide"
-msgstr "_Gøym automatisk"
+msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.c:1035
-#, fuzzy
 msgid "Could not notification area dialog"
-msgstr "Kunne ikkje visa dialog for køyring av program"
+msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.c:1058
 msgid "<a href=''>Customize icons appear on the taskbar</a>"
 msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:6
-#, fuzzy
 msgid "Panel Settings"
-msgstr "Tid_sinnstillingar"
+msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:10
 msgid "Hide the taskbar"
 msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:11
-#, fuzzy
 msgid "The taskbar position on the screen："
-msgstr "Plasseringa til objektet på panelet"
+msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:12
 msgid "Change taskbar height and icon size"
@@ -2427,19 +2206,18 @@ msgid "Default-100%"
 msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:16
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Medium-150%"
-msgstr "Middels"
+msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:18
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Large-200%"
-msgstr "Stort"
+msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:19
-#, fuzzy
 msgid "Notification area"
-msgstr "Varslingsområde"
+msgstr ""
 
 #: ../ukui-panel/panel-settings-dialog.ui.h:20
 #: ../ukui-panel/notification-area.ui.h:2
@@ -2449,16 +2227,16 @@ msgstr ""
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
 msgid "Could not open recently used document \"%s\""
-msgstr "Klarte ikkje å opna nyleg brukt dokument «%s»"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:90
 #, c-format
 msgid "An unknown error occurred while trying to open \"%s\"."
-msgstr "Ein ukjend feil oppstod under freistnad på å opna «%s»"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:147
 msgid "Clear the Recent Documents list?"
-msgstr "Tøm lista over nyleg brukte dokument?"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:149
 msgid ""
@@ -2466,127 +2244,118 @@ msgid ""
 "• All items from the Places → Recent Documents menu item.\n"
 "• All items from the recent documents list in all applications."
 msgstr ""
-"Viss du tømmer lista over siste dokument vil følgjande fjernast:\n"
-"\n"
-"• Alle oppføringar frå menyoppføringa Steder -> Siste dokument.\n"
-"• Alle oppføringar frå lista over siste dokument i alle program."
 
 #: ../ukui-panel/panel-recent.c:161
 msgid "Clear Recent Documents"
-msgstr "Tøm lista over nyleg brukte dokument"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:196
 msgid "Recent Documents"
-msgstr "Nyleg brukte dokument"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:235
 msgid "Clear Recent Documents..."
-msgstr "Tøm lista over nyleg brukte dokument"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:237
 msgid "Clear all items from the recent documents list"
-msgstr "Fjern alle element i lista over nyleg brukte dokument"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.c:419
 #, c-format
 msgid "Could not run command '%s'"
-msgstr "Klarte ikkje køyra kommandoen «%s»"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.c:460
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
-msgstr "Klarte ikkje konvertera «%s» frå UTF-8"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.c:1207
 msgid "Choose a file to append to the command..."
-msgstr "Vel ei fil å leggja til kommandoen …"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.c:1585 ../ukui-panel/panel-run-dialog.ui.h:9
 msgid "Select an application to view its description."
-msgstr "Vel eit program for å lesa skildringa av det."
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.c:1623
 #, c-format
 msgid "Will run command: '%s'"
-msgstr "Køyrer kommandoen «%s»"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.c:1656
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
 msgstr ""
-"Adresselista sleppt ved køyredialog hadde feil format (%d) eller lengd (%d)\n"
 
 #: ../ukui-panel/panel-run-dialog.c:1978
 msgid "Could not display run dialog"
-msgstr "Kunne ikkje visa dialog for køyring av program"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:1
 msgid "Run Application"
-msgstr "Køyr program"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:2
 msgid "Command icon"
-msgstr "Kommandoikon"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:3
 msgid "The icon of the command to be run."
-msgstr "Ikon for kommandoen som skal køyrast."
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:4
 msgid "Run in _terminal"
-msgstr "Køyr i _terminal"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:5
 msgid "Select this box to run the command in a terminal window."
-msgstr "Kryss av i denne boksen for å køyra kommandoen i eit terminalvindauge."
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:6
 msgid "Run with _file..."
-msgstr "Køyr med _fil …"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:7
 msgid ""
 "Click this button to browse for a file whose name to append to the command "
 "string."
 msgstr ""
-"Klikk på denne knappen for å leita etter eit filnamn å leggja til "
-"kommandostrengen."
 
 #: ../ukui-panel/panel-run-dialog.ui.h:8
 msgid "List of known applications"
-msgstr "Liste over kjente program"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:10
 msgid "Show list of known _applications"
-msgstr "Vis liste over kjente _program"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:11 ../ukui-panel/panel-stock-icons.c:97
 msgid "_Run"
-msgstr "Køy_r"
+msgstr ""
 
 #: ../ukui-panel/panel-run-dialog.ui.h:12
 msgid ""
 "Click this button to run the selected application or the command in the "
 "command entry field."
 msgstr ""
-"Klikk på denne knappen for å køyra det valde programmet eller programmet i "
-"tekstfeltet."
 
 #: ../ukui-panel/panel-stock-icons.c:98
 msgid "_Force quit"
-msgstr "_Tving til å avslutta"
+msgstr ""
 
 #: ../ukui-panel/panel-stock-icons.c:99
 msgid "C_lear"
-msgstr "T_øm"
+msgstr ""
 
 #: ../ukui-panel/panel-stock-icons.c:100
 msgid "D_on't Delete"
-msgstr "_Ikkje slett"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:39
 msgid "Specify an applet IID to load"
-msgstr "Oppgje ein panelprogram-ID å lasta"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:40
 msgid ""
@@ -2596,62 +2365,60 @@ msgstr ""
 #: ../ukui-panel/panel-test-applets.c:41
 msgid "Specify the initial size of the applet (xx-small, medium, large etc.)"
 msgstr ""
-"Oppgje storleiken panelprogrammet skal starta med (veldig lite, middels, "
-"stort, etc.)"
 
 #: ../ukui-panel/panel-test-applets.c:42
 msgid ""
 "Specify the initial orientation of the applet (top, bottom, left or right)"
-msgstr "Oppgje startplasseringa til panelet (topp, botn, venstre eller høgre)"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:66
 msgctxt "Size"
 msgid "XX Small"
-msgstr "Ekstra ekstra lite"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:67
 msgctxt "Size"
 msgid "X Small"
-msgstr "Ekstra lite"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:68
 msgctxt "Size"
 msgid "Small"
-msgstr "Lite"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:69
 msgctxt "Size"
 msgid "Medium"
-msgstr "Middels"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:70
 msgctxt "Size"
 msgid "Large"
-msgstr "Stort"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:71
 msgctxt "Size"
 msgid "X Large"
-msgstr "Ekstra stort"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:72
 msgctxt "Size"
 msgid "XX Large"
-msgstr "Ekstra ekstra stort"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.c:130
 #, c-format
 msgid "Failed to load applet %s"
-msgstr "Klarte ikkje lasta panelprogram %s"
+msgstr ""
 
 #. This is an utility to easily test various applets
 #: ../ukui-panel/panel-test-applets.ui.h:2
 msgid "Test applet utility"
-msgstr "Verktøy for testing av panelprogram"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.ui.h:4
 msgid "_Applet:"
-msgstr "P_anelprogram:"
+msgstr ""
 
 #: ../ukui-panel/panel-test-applets.ui.h:6
 msgid "_Prefs Path:"
@@ -2659,7 +2426,7 @@ msgstr ""
 
 #: ../ukui-panel/panel-toplevel.c:1222
 msgid "Hide Panel"
-msgstr "Gøym panelet"
+msgstr ""
 
 #. translators: these string will be shown in MetaCity's switch window
 #. * popup when you pass the focus to a panel
@@ -2682,30 +2449,30 @@ msgstr ""
 #: ../ukui-panel/panel-util.c:347
 #, c-format
 msgid "Icon '%s' not found"
-msgstr "Ikon «%s» vart ikkje funnen"
+msgstr ""
 
 #: ../ukui-panel/panel-util.c:465
 #, c-format
 msgid "Could not execute '%s'"
-msgstr "Klarte ikkje køyra «%s»"
+msgstr ""
 
 #: ../ukui-panel/panel-util.c:693
 msgid "file"
-msgstr "fil"
+msgstr ""
 
 #: ../ukui-panel/panel-util.c:866
 msgid "Home Folder"
-msgstr "Heimemappe"
+msgstr ""
 
 #. Translators: this is the same string as the one found in
 #. * caja
 #: ../ukui-panel/panel-util.c:878
 msgid "File System"
-msgstr "Filsystem"
+msgstr ""
 
 #: ../ukui-panel/panel-util.c:1051
 msgid "Search"
-msgstr "Søk"
+msgstr ""
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
@@ -2715,360 +2482,29 @@ msgstr "Søk"
 #: ../ukui-panel/panel-util.c:1097
 #, c-format
 msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
+msgstr ""
 
 #: ../ukui-panel/panel.c:482
 #, c-format
 msgid "Open URL: %s"
-msgstr "Opna URL: %s"
+msgstr ""
 
 #: ../ukui-panel/panel.c:1548
 msgid "Delete this drawer?"
-msgstr "Slett denne skuffa?"
+msgstr ""
 
 #: ../ukui-panel/panel.c:1549
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
 msgstr ""
-"Når ei skuff vert fjerna, går skuffa og \n"
-"innstillingane ho har tapt. Fjern denne skuffa?"
 
 #: ../ukui-panel/panel.c:1552
 msgid "Delete this panel?"
-msgstr "Slett denne skuffa?"
+msgstr ""
 
 #: ../ukui-panel/panel.c:1553
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."
 msgstr ""
-"Når eit panel vert fjerna, går panelet og \n"
-"innstillingane det har tapt."
-
-#~ msgid "Locations"
-#~ msgstr "Stader"
-
-#~ msgid "Edit"
-#~ msgstr "Rediger"
-
-#~ msgid "Calendar"
-#~ msgstr "Kalender"
-
-#~ msgid "%l:%M:%S %p"
-#~ msgstr "%l.%M.%S %p"
-
-#~ msgid "%l:%M %p"
-#~ msgstr "%l.%M %p"
-
-#~ msgid "%H:%M:%S"
-#~ msgstr "%H.%M.%S"
-
-#~ msgid "%H:%M"
-#~ msgstr "%H.%M"
-
-#~ msgid "%a %b %e"
-#~ msgstr "%a %e. %b"
-
-#~ msgid ""
-#~ "%1$s\n"
-#~ "%2$s"
-#~ msgstr ""
-#~ "%1$s\n"
-#~ "%2$s"
-
-#~ msgid "%1$s, %2$s"
-#~ msgstr "%1$s, %2$s"
-
-#~ msgid "%A %B %d (%%s)"
-#~ msgstr "%A %d. %B (%%s)"
-
-#~ msgid "Click to hide month calendar"
-#~ msgstr "Trykk for å skjula månadskalender"
-
-#~ msgid "Click to view month calendar"
-#~ msgstr "Klikk for å visa kalender for denne månaden"
-
-#~ msgid "Computer Clock"
-#~ msgstr "Datamaskinklokke"
-
-#~ msgid "%I:%M:%S %p"
-#~ msgstr "%I.%M.%S %p"
-
-#~ msgid "%I:%M %p"
-#~ msgstr "%I.%M %p"
-
-#~ msgid "%A, %B %d %Y"
-#~ msgstr "%A %d. %B %Y"
-
-#~ msgid "Set System Time..."
-#~ msgstr "Sett systemtid …"
-
-#~ msgid "Set System Time"
-#~ msgstr "Sett systemtid"
-
-#~ msgid "Failed to set the system time"
-#~ msgstr "Klarte ikkje setja systemtid"
-
-#~ msgid "Copy _Time"
-#~ msgstr "Kopier _tid"
-
-#~ msgid "Copy _Date"
-#~ msgstr "Kopier _dato"
-
-#~ msgid "Ad_just Date & Time"
-#~ msgstr "_Juster dato og klokkeslett"
-
-#~ msgid "Choose Location"
-#~ msgstr "Vel stad"
-
-#~ msgid "Edit Location"
-#~ msgstr "Endra stad"
-
-#~ msgid "City Name"
-#~ msgstr "Bynamn"
-
-#~ msgid "City Time Zone"
-#~ msgstr "Tidssone for by"
-
-#~ msgid "Clock"
-#~ msgstr "Klokke"
-
-#~ msgid "The Clock displays the current time and date"
-#~ msgstr "Klokka viser noverande tid og dato"
-
-#~ msgid ""
-#~ "<small><i>Type a city, region, or country name and then select a match "
-#~ "from the pop-up.</i></small>"
-#~ msgstr ""
-#~ "<small><i>Skriv inn eit by-, stads- eller landsnamn og vel frå lista.</"
-#~ "i></small>"
-
-#~ msgid "_Timezone:"
-#~ msgstr "_Tidssone:"
-
-#~ msgid "_Location Name:"
-#~ msgstr "_Stadsnamn:"
-
-#~ msgid "<i>(optional)</i>"
-#~ msgstr "<i>(valfri)</i>"
-
-#~ msgid "L_ongitude:"
-#~ msgstr "_Lengdegrad:"
-
-#~ msgid "L_atitude:"
-#~ msgstr "_Breiddegrad:"
-
-#~ msgid "Time & Date"
-#~ msgstr "Tid og dato"
-
-#~ msgid "_Time:"
-#~ msgstr "_Tid:"
-
-#~ msgid "Current Time:"
-#~ msgstr "Gjeldande tid:"
-
-#~ msgid "_Set System Time"
-#~ msgstr "_Set systemtid"
-
-#~ msgid "East"
-#~ msgstr "Aust"
-
-#~ msgid "West"
-#~ msgstr "Vest"
-
-#~ msgid "North"
-#~ msgstr "Nord"
-
-#~ msgid "South"
-#~ msgstr "Sør"
-
-#~ msgid "Clock Preferences"
-#~ msgstr "Innstillingar for klokke"
-
-#~ msgid "Clock Format"
-#~ msgstr "Klokkeformat"
-
-#~ msgid "_12 hour format"
-#~ msgstr "_12-timarsformat"
-
-#~ msgid "_24 hour format"
-#~ msgstr "_24-timarsformat"
-
-#~ msgid "Panel Display"
-#~ msgstr "Panelvisning"
-
-#~ msgid "Show the _date"
-#~ msgstr "Vis _dato"
-
-#~ msgid "Show seco_nds"
-#~ msgstr "Vis _sekund"
-
-#~ msgid "Show wee_k numbers in calendar"
-#~ msgstr "Vis ve_kenummer i kalenderen"
-
-#~ msgid "Show _weather"
-#~ msgstr "Vis _vêr"
-
-#~ msgid "Show _temperature"
-#~ msgstr "Vis _temperatur"
-
-#~ msgid "Display"
-#~ msgstr "Vis"
-
-#~ msgid "_Visibility unit:"
-#~ msgstr "_Sikteining:"
-
-#~ msgid "_Pressure unit:"
-#~ msgstr "_Trykkeining:"
-
-#~ msgid "_Wind speed unit:"
-#~ msgstr "Eining for _vindfart:"
-
-#~ msgid "_Temperature unit:"
-#~ msgstr "_Temperatureining:"
-
-#~ msgid "Weather"
-#~ msgstr "Vêr"
-
-#~ msgid "Failed to set the system timezone"
-#~ msgstr "Klarte ikkje setja tidssone for systemet"
-
-#~ msgid "<small>Set...</small>"
-#~ msgstr "<small>Sett …</small>"
-
-#~ msgid "<small>Set</small>"
-#~ msgstr "<small>Sett</small>"
-
-#~ msgid ""
-#~ "Set location as current location and use its timezone for this computer"
-#~ msgstr ""
-#~ "Sett stad som gjeldande stad og bruk tidssona hans på denne maskinen"
-
-#~ msgid "%l:%M <small>%p (%A)</small>"
-#~ msgstr "%l.%M <small>%p (%A)</small>"
-
-#~ msgid "%H:%M <small>(%A)</small>"
-#~ msgstr "%H.%M <small>(%A)</small>"
-
-#~ msgid "%l:%M <small>%p</small>"
-#~ msgstr "%l.%M <small>%p</small>"
-
-#~ msgid "%s, %s"
-#~ msgstr "%s, %s"
-
-#~ msgid "Unknown"
-#~ msgstr "Ukjend"
-
-#~ msgid "%s, feels like %s"
-#~ msgstr "%s, kjennest ut som %s"
-
-#~ msgid "Sunrise: %s / Sunset: %s"
-#~ msgstr "Soloppgong: %s / Solnedgong: %s"
-
-#~ msgid "Hour format"
-#~ msgstr "Timeformat"
-
-#~ msgid ""
-#~ "This key specifies the hour format used by the clock applet. Possible "
-#~ "values are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom"
-#~ "\". If set to \"internet\", the clock will display Internet time. The "
-#~ "Internet time system divides the day into 1000 \".beats\". There are no "
-#~ "time zones in this system, so time is the same all over the world. If set "
-#~ "to \"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key."
-#~ msgstr ""
-#~ "Denne nøkkelen styrer timeforukuit klokkeprogrammet brukar. Moglege "
-#~ "verdiar er «12-hour», «24-hour», «internet», «unix» og «custom». Dersom "
-#~ "verdien er «internet», vil klokka visa internettid. Internettidssystemet "
-#~ "deler dagen inn i 1000 «slag». Det er ingen tidssonar i dette systemet, "
-#~ "så tida vert den same over heile verda. Dersom verdien er «unix», vil "
-#~ "klokka visa tida i sekund sidan Epoch, dvs. fyrste januar 1970. Dersom "
-#~ "verdien er «custom», vil klokka visa tida etter forukuit i nøkkelen "
-#~ "«custom_format»."
-
-#~ msgid "Custom format of the clock"
-#~ msgstr "Sjølvvald tidsformat for klokka"
-
-#~ msgid ""
-#~ "This key specifies the format used by the clock applet when the format "
-#~ "key is set to \"custom\". You can use conversion specifiers understood by "
-#~ "strftime() to obtain a specific format. See the strftime() manual for "
-#~ "more information."
-#~ msgstr ""
-#~ "Denne nøkkelen spesifiserer forukuit som brukast av panelklokka når "
-#~ "formatnøkkelen er sett til «custom». Du kan bruka "
-#~ "konverteringsspesifikasjonane som er gyldige i strftime() for å tilpassa "
-#~ "forukuit. Sjå manualsida for strftime()."
-
-#~ msgid "Show time with seconds"
-#~ msgstr "Vis tid med sekund"
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "Dersom sett til sann, vis sekund i tida."
-
-#~ msgid "Show date in clock"
-#~ msgstr "Vis dato i klokka"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "Dersom sett til sann, vis dato i klokka i tillegg til tid."
-
-#~ msgid "Show date in tooltip"
-#~ msgstr "Vis dato i verktøytips"
-
-#~ msgid "If true, show date in a tooltip when the pointer is over the clock."
-#~ msgstr ""
-#~ "Dersom sett til sann, vis datoen i eit verktøytips når peikaren er over "
-#~ "klokka."
-
-#~ msgid "Show weather in clock"
-#~ msgstr "Vis vêr i klokka"
-
-#~ msgid "If true, display a weather icon."
-#~ msgstr "Dersom sett til sann, vis eit vêrikon."
-
-#~ msgid "Show temperature in clock"
-#~ msgstr "Vis temperatur i klokka"
-
-#~ msgid "If true, show the temperature next to the weather icon."
-#~ msgstr "Dersom sett til sann, vis temperatur ved sida av vêrikonet."
-
-#~ msgid "Show week numbers in calendar"
-#~ msgstr "Vis vekenummer i kalenderen"
-
-#~ msgid "If true, show week numbers in the calendar."
-#~ msgstr "Dersom sett til sann, vis vekenummer i kalenderen."
-
-#~ msgid "Expand list of locations"
-#~ msgstr "Utvid liste med stader"
-
-#~ msgid "If true, expand the list of locations in the calendar window."
-#~ msgstr "Dersom sett til sann, utvid lista med stader i kalendervindauget."
-
-#~ msgid "List of locations"
-#~ msgstr "Liste over stader"
-
-#~ msgid "A list of locations to display in the calendar window."
-#~ msgstr "Ei liste over stader som skal visast i kalendervindauge."
-
-#~ msgid "Temperature unit"
-#~ msgstr "Temperatureining"
-
-#~ msgid "The unit to use when showing temperatures."
-#~ msgstr "Eininga som skal brukast når temperaturen vert vist."
-
-#~ msgid "Speed unit"
-#~ msgstr "Fartseining"
-
-#~ msgid "The unit to use when showing wind speed."
-#~ msgstr "Eininga som skal brukast når vindsnøggleiken vert vist."
-
-#~ msgid "Get the current time and date"
-#~ msgstr "Hent gjeldande tid og dato"
-
-#~ msgid "_Add to Panel..."
-#~ msgstr "_Legg til på panelet …"
-
-#~ msgid "_Delete This Panel"
-#~ msgstr "_Slett dette panelet"

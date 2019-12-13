@@ -1,663 +1,178 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: UKUI Desktop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-26 11:42+0300\n"
+"POT-Creation-Date: 2019-12-13 17:34+0800\n"
 "PO-Revision-Date: 2017-09-19 11:04+0000\n"
 "Last-Translator: monsta <monsta@inbox.ru>\n"
 "Language-Team: Tamil (http://www.transifex.com/ukui/UKUI/language/ta/)\n"
+"Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ta\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../applets/clock/calendar-window.c:248 ../applets/clock/clock.ui.h:27
-msgid "Locations"
-msgstr "இருப்பிடங்கள்"
-
-#: ../applets/clock/calendar-window.c:248
-msgid "Edit"
-msgstr "திருத்து"
-
-#: ../applets/clock/calendar-window.c:474
-msgid "Calendar"
-msgstr "நாள்காட்டி"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format (eg, like
-#. * in the US: 8:10 am). The %p expands to am/pm.
-#: ../applets/clock/clock.c:455
-msgid "%l:%M:%S %p"
-msgstr "%l:%M:%S %p"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format (eg, like
-#. * in the US: 8:10 am). The %p expands to am/pm.
-#: ../applets/clock/clock.c:455 ../applets/clock/clock-location-tile.c:513
-msgid "%l:%M %p"
-msgstr "%l:%M %p"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format (eg, like
-#. * in France: 20:10).
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 24-hours
-#. * format (eg, like in France: 20:10).
-#: ../applets/clock/clock.c:460 ../applets/clock/clock.c:1613
-msgid "%H:%M:%S"
-msgstr "%H:%M:%S"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 24-hours
-#. * format (eg, like in France: 20:10).
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format
-#. * (eg, like in France: 20:10).
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format (eg, like
-#. * in France: 20:10).
-#: ../applets/clock/clock.c:460 ../applets/clock/clock.c:1619
-#: ../applets/clock/clock-location-tile.c:473
-#: ../applets/clock/clock-location-tile.c:520
-msgid "%H:%M"
-msgstr "%H:%M"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the date. Replace %e with %d if, when
-#. * the day of the month as a decimal number is a single digit,
-#. * it should begin with a 0 in your locale (e.g. "May 01"
-#. * instead of "May  1").
-#: ../applets/clock/clock.c:471
-msgid "%a %b %e"
-msgstr "%a %b %e"
-
-#. translators: reverse the order of these arguments
-#. *              if the time should come before the
-#. *              date on a clock in your locale.
-#: ../applets/clock/clock.c:478
-#, c-format
-msgid ""
-"%1$s\n"
-"%2$s"
-msgstr "%1$s\n%2$s"
-
-#. translators: reverse the order of these arguments
-#. *              if the time should come before the
-#. *              date on a clock in your locale.
-#: ../applets/clock/clock.c:486
-#, c-format
-msgid "%1$s, %2$s"
-msgstr "%1$s, %2$s"
-
-#. Show date in tooltip.
-#. Translators: This is a strftime format string.
-#. * It is used to display a date. Please leave "%%s" as it is:
-#. * it will be used to insert the timezone name later.
-#: ../applets/clock/clock.c:659
-msgid "%A %B %d (%%s)"
-msgstr "%A %B %d (%%s)"
-
-#: ../applets/clock/clock.c:685
-msgid "Click to hide month calendar"
-msgstr "மாத நாட்காட்டியை மறைக்க சொடுக்கவும்"
-
-#: ../applets/clock/clock.c:687
-msgid "Click to view month calendar"
-msgstr "மாத நாட்காட்டியை பார்க்க சொடுக்கவும்"
-
-#: ../applets/clock/clock.c:1451
-msgid "Computer Clock"
-msgstr "கணிப்பொறி கடிகாரம்"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 12-hours
-#. * format with a leading 0 if needed (eg, like
-#. * in the US: 08:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock.c:1598
-msgid "%I:%M:%S %p"
-msgstr "%I:%M:%S %p"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 12-hours
-#. * format with a leading 0 if needed (eg, like
-#. * in the US: 08:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock.c:1606
-msgid "%I:%M %p"
-msgstr "%I:%M %p"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display a date in the full format (so that people can
-#. * copy and paste it elsewhere).
-#: ../applets/clock/clock.c:1652
-msgid "%A, %B %d %Y"
-msgstr "%A, %B %d %Y"
-
-#: ../applets/clock/clock.c:1683
-msgid "Set System Time..."
-msgstr "கணினி நேரத்தை அமை..."
-
-#: ../applets/clock/clock.c:1684
-msgid "Set System Time"
-msgstr "கணினி நேரத்தை அமை"
-
-#: ../applets/clock/clock.c:1699
-msgid "Failed to set the system time"
-msgstr "கணினி நேரத்தை அமைத்தல் தோல்வியடைந்தது"
-
-#: ../applets/clock/clock.c:1897 ../applets/fish/fish.c:1673
-#: ../applets/wncklet/window-list.c:179
-#: ../applets/wncklet/workspace-switcher.c:336
-msgid "_Preferences"
-msgstr "முன்னுரிமைகள் _P "
-
-#: ../applets/clock/clock.c:1900 ../applets/fish/fish.c:1676
-#: ../applets/notification_area/main.c:176
-#: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-list.c:187
-#: ../applets/wncklet/window-menu.c:100
-#: ../applets/wncklet/workspace-switcher.c:344 ../ukui-panel/drawer.c:545
-#: ../ukui-panel/panel-action-button.c:730
-#: ../ukui-panel/panel-context-menu.c:265 ../ukui-panel/panel-menu-bar.c:359
-#: ../ukui-panel/panel-menu-button.c:666
-msgid "_Help"
-msgstr "உதவி _H "
-
-#: ../applets/clock/clock.c:1903 ../applets/fish/fish.c:1679
-#: ../applets/notification_area/main.c:179
-#: ../applets/wncklet/showdesktop.c:243 ../applets/wncklet/window-list.c:195
-#: ../applets/wncklet/window-menu.c:108
-#: ../applets/wncklet/workspace-switcher.c:352
-msgid "_About"
-msgstr "(_A) அறிமுகம்"
-
-#: ../applets/clock/clock.c:1906
-msgid "Copy _Time"
-msgstr "(_T) நேரத்தை நகலெடு"
-
-#: ../applets/clock/clock.c:1909
-msgid "Copy _Date"
-msgstr "(_D) தேதியை நகலெடு"
-
-#: ../applets/clock/clock.c:1912
-msgid "Ad_just Date & Time"
-msgstr "தேதி & நேரத்தை சேர் (_j)"
-
-#: ../applets/clock/clock.c:2855
-msgid "Choose Location"
-msgstr "இடத்தை தேர்ந்தெடு"
-
-#: ../applets/clock/clock.c:2934
-msgid "Edit Location"
-msgstr "இடத்தை திருத்து"
-
-#: ../applets/clock/clock.c:3061
-msgid "City Name"
-msgstr "மாநகரத்தின் பெயர்"
-
-#: ../applets/clock/clock.c:3065
-msgid "City Time Zone"
-msgstr "மாநகர நேர மண்டலம்"
-
-#: ../applets/clock/clock.c:3280
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:3
-msgid "Clock"
-msgstr "கடிகாரம்"
-
-#: ../applets/clock/clock.c:3282
-msgid "The Clock displays the current time and date"
-msgstr "கடிகாரம் தற்போதைய நேரத்தையும் தேதியையும் காட்டும்"
-
-#: ../applets/clock/clock.c:3286 ../applets/fish/fish.c:575
-#: ../applets/notification_area/main.c:170
-#: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:562
-#: ../applets/wncklet/window-menu.c:90
-#: ../applets/wncklet/workspace-switcher.c:604
-#: ../ukui-panel/panel-context-menu.c:121
-msgid "translator-credits"
-msgstr "I. Felix <ifelix@redhat.com>. Dr. T. Vasudevan <agnihot3@gmail.com>"
-
-#. Languages that have a single word that translates as either "state" or
-#. "province" should use that instead of "region".
-#: ../applets/clock/clock.ui.h:2
-msgid ""
-"<small><i>Type a city, region, or country name and then select a match from "
-"the pop-up.</i></small>"
-msgstr "<small><i>ஒரு நகரம், பகுதி அல்லது நாட்டு பெயர் ஆகியவற்றை தேர்ந்தெடுத்து பாப்பப்பிலிருந்து ஒரு பொருத்தத்தத்தை தேர்ந்தெடு.</i></small>"
-
-#: ../applets/clock/clock.ui.h:3
-msgid "_Timezone:"
-msgstr "நேரமண்டலம்: (_T)"
-
-#: ../applets/clock/clock.ui.h:4
-msgid "_Location Name:"
-msgstr "இடப்பெயர்: (_L)"
-
-#: ../applets/clock/clock.ui.h:5
-msgid "<i>(optional)</i>"
-msgstr "<i>(விருப்ப தேர்வு)</i>"
-
-#: ../applets/clock/clock.ui.h:6
-msgid "L_ongitude:"
-msgstr "தீர்க்க ரேகை (_o):"
-
-#: ../applets/clock/clock.ui.h:7
-msgid "L_atitude:"
-msgstr "அட்ச ரேகை (_a):"
-
-#: ../applets/clock/clock.ui.h:8
-msgid "Time & Date"
-msgstr " நேரம் மற்றும் தேதி "
-
-#: ../applets/clock/clock.ui.h:9
-msgid "_Time:"
-msgstr "நேரம்: (_T)"
-
-#: ../applets/clock/clock.ui.h:10
-msgid "Current Time:"
-msgstr "இப்போதைய நேரம்:"
-
-#: ../applets/clock/clock.ui.h:11
-msgid "_Set System Time"
-msgstr "கணினி நேரத்தை அமை (_S)"
-
-#: ../applets/clock/clock.ui.h:12
-msgid "East"
-msgstr "கிழக்கு"
-
-#: ../applets/clock/clock.ui.h:13
-msgid "West"
-msgstr "மேற்கு"
-
-#: ../applets/clock/clock.ui.h:14
-msgid "North"
-msgstr "வடக்கு"
-
-#: ../applets/clock/clock.ui.h:15
-msgid "South"
-msgstr "தெற்கு"
-
-#: ../applets/clock/clock.ui.h:16
-msgid "Clock Preferences"
-msgstr "கடிகாரம் விருப்பங்கள்"
-
-#: ../applets/clock/clock.ui.h:17
-msgid "Clock Format"
-msgstr "கடிகார வடிவம்"
-
-#: ../applets/clock/clock.ui.h:18
-msgid "_12 hour format"
-msgstr "_12 மணி வடிவமைப்பு"
-
-#: ../applets/clock/clock.ui.h:19
-msgid "_24 hour format"
-msgstr "_24 மணி வடிவமைப்பு"
-
-#: ../applets/clock/clock.ui.h:20
-msgid "Panel Display"
-msgstr "பலக காட்சி"
-
-#: ../applets/clock/clock.ui.h:21
-msgid "Show the _date"
-msgstr "(_d)  தேதியை காட்டுக"
-
-#: ../applets/clock/clock.ui.h:22
-msgid "Show seco_nds"
-msgstr "(_n) நொடிகளை காட்டுக"
-
-#: ../applets/clock/clock.ui.h:23
-msgid "Show wee_k numbers in calendar"
-msgstr ""
-
-#: ../applets/clock/clock.ui.h:24
-msgid "Show _weather"
-msgstr "(_w)  வானிலையை காட்டுக"
-
-#: ../applets/clock/clock.ui.h:25
-msgid "Show _temperature"
-msgstr "(_t) வெப்ப அளவை காட்டுக"
-
-#: ../applets/clock/clock.ui.h:26 ../applets/fish/fish.ui.h:2
-#: ../ukui-panel/panel-properties-dialog.ui.h:11
-msgid "General"
-msgstr "பொது"
-
-#: ../applets/clock/clock.ui.h:28
-msgid "Display"
-msgstr "காட்சி"
-
-#: ../applets/clock/clock.ui.h:29
-msgid "_Visibility unit:"
-msgstr "(_V) தெளிவுப்பார்வை அலகு:"
-
-#: ../applets/clock/clock.ui.h:30
-msgid "_Pressure unit:"
-msgstr "அழுத்த அலகு (_P):"
-
-#: ../applets/clock/clock.ui.h:31
-msgid "_Wind speed unit:"
-msgstr "(_W) காற்று வேக அலகு:"
-
-#: ../applets/clock/clock.ui.h:32
-msgid "_Temperature unit:"
-msgstr "(_T) வெப்ப அலகு:"
-
-#: ../applets/clock/clock.ui.h:33
-msgid "Weather"
-msgstr "வானிலை"
-
-#: ../applets/clock/clock.ui.h:34
-msgid "Time _Settings"
-msgstr "(_S) நேர அமைப்புகள்"
-
-#: ../applets/clock/clock-location-tile.c:183
-msgid "Failed to set the system timezone"
-msgstr "கணினி நேரமண்டலத்தின் பெயர் ஐ அமைக்க தவறியது."
-
-#: ../applets/clock/clock-location-tile.c:231
-msgid "<small>Set...</small>"
-msgstr "<small>அமை...</small>"
-
-#: ../applets/clock/clock-location-tile.c:232
-msgid "<small>Set</small>"
-msgstr "<small>அமை</small>"
-
-#: ../applets/clock/clock-location-tile.c:314
-msgid ""
-"Set location as current location and use its timezone for this computer"
-msgstr "இடத்தை இப்போதைய இடமாக அமைத்து அதன் நேர மண்டலத்தை இந்த கணினிக்கு பயன்படுத்துக"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format
-#. * (eg, like in the US: 8:10 am), when the local
-#. * weekday differs from the weekday at the location
-#. * (the %A expands to the weekday). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock-location-tile.c:450
-msgid "%l:%M <small>%p (%A)</small>"
-msgstr "%l:%M <small>%p (%A)</small>"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format
-#. * (eg, like in France: 20:10), when the local
-#. * weekday differs from the weekday at the location
-#. * (the %A expands to the weekday).
-#: ../applets/clock/clock-location-tile.c:458
-msgid "%H:%M <small>(%A)</small>"
-msgstr "%H:%M <small>(%A)</small>"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format
-#. * (eg, like in the US: 8:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock-location-tile.c:467
-msgid "%l:%M <small>%p</small>"
-msgstr "%l:%M <small>%p</small>"
-
-#: ../applets/clock/clock-location-tile.c:606
-#, c-format
-msgid "%s, %s"
-msgstr "%s, %s"
-
-#. FMQ: it's broken to read from another module's translations; add some API
-#. to libukuiweather.
-#: ../applets/clock/clock-location-tile.c:618
-#: ../applets/clock/clock-location-tile.c:627
-msgid "Unknown"
-msgstr "தெரியாத"
-
-#. Translators: The two strings are temperatures.
-#: ../applets/clock/clock-location-tile.c:620
-#, c-format
-msgid "%s, feels like %s"
-msgstr "%s, %sஐ போல உணர்கிறது"
-
-#: ../applets/clock/clock-location-tile.c:643
-#, c-format
-msgid "Sunrise: %s / Sunset: %s"
-msgstr "சூரிய உதயம்: %s / சூரிய அஸ்தமனம்: %s"
-
-#: ../applets/clock/clock-utils.c:95 ../applets/fish/fish.c:168
-#: ../applets/notification_area/main.c:121 ../applets/wncklet/wncklet.c:71
-#: ../ukui-panel/libpanel-util/panel-show.c:234
+#: ../applets/fish/fish.c:171 ../applets/notification_area/main.c:130
+#: ../applets/wncklet/wncklet.c:74 ../ukui-panel/libpanel-util/panel-show.c:236
 #, c-format
 msgid "Could not display help document '%s'"
 msgstr "உதவி ஆவணம் '%s'ஐ காட்ட முடியவில்லை"
 
-#: ../applets/clock/clock-utils.c:124 ../applets/fish/fish.c:194
-#: ../applets/notification_area/main.c:135 ../applets/wncklet/wncklet.c:88
+#: ../applets/fish/fish.c:197 ../applets/notification_area/main.c:144
+#: ../applets/wncklet/wncklet.c:91
 msgid "Error displaying help document"
 msgstr "உதவி ஆவணத்தை காண்பிப்பதில் பிழை"
 
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:1
-msgid "Hour format"
-msgstr "மணி வடிவமைப்பு"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:2
-msgid ""
-"This key specifies the hour format used by the clock applet. Possible values"
-" are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom\". If set"
-" to \"internet\", the clock will display Internet time. The Internet time "
-"system divides the day into 1000 \".beats\". There are no time zones in this"
-" system, so time is the same all over the world. If set to \"unix\", the "
-"clock will display time in seconds since Epoch, i.e. 1970-01-01. If set to "
-"\"custom\", the clock will display time according to the format specified in"
-" the custom_format key."
-msgstr "இந்த விசை கடிகார குறுநிரல் மணை அமைப்பை குறிப்பிடும். மதிப்புகள் \"12-மணி\", \"24-மணி\", \"இணையம்\", \"யூனிக்ஸ்\" மற்றும் \"தனிப்பயன்\". \"இணையம்\" என அமைத்தால், இணைய நேரத்தை காட்டும். இணைய நேரம் நேரத்தை 1000 பகுதிகளாக பிரிக்கும் \".beats\". கணினியில் நேரம் இடம் குறிப்பிடப்படவில்லையென்றால் உலகம் முழுமைக்கும் பொதுவான நேரத்தை காட்டும். \"யூனிக்ஸ்\" என அமைத்தால் கடிகாரம் நெடிகளில் சேரத்தை காட்டும் அதாவது 1970-01-01. \"தனிப்பயன்\" என அமைத்தால் நீங்கள் குறிப்பிட்ட அமைப்பில் நேரம் காட்டப்படும்."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:3
-msgid "Custom format of the clock"
-msgstr "கடிகாரத்தின் தனிப்பயன் வடிவமைப்பு"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:4
-msgid ""
-"This key specifies the format used by the clock applet when the format key "
-"is set to \"custom\". You can use conversion specifiers understood by "
-"strftime() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr "வடிவமைப்பு விசை \"தனிப்பயன்\" என்று அமைக்கப்படும் போது கடிகார குறுநிரல் இந்த விசையை பயன்படுத்தும் குறிப்பிட்ட அமைப்பை பெற்றுக்கொள்ள strftime() ஆல் புரிந்துகொள்ளக்கூடிய மாற்று குறிப்புகளை தரவும். மேலும் அதிக விவரங்களுக்கு strftime() கையேட்டை பார்க்கவும்."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:5
-msgid "Show time with seconds"
-msgstr "நொடிகளுடன் நேரம் காட்டுக"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:6
-msgid "If true, display seconds in time."
-msgstr "உண்மை என்றால், நேரத்தில் நொடிகள் காட்டுக."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:7
-msgid "Show date in clock"
-msgstr "தேதியை கடிகாரத்தில் காட்டுக"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr "மெய்யென்றால், கடிகாரத்தில் தேதியையும் காட்டுக"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:9
-msgid "Show date in tooltip"
-msgstr "தேதியை கருவி-உதவியில் காண்பி"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:10
-msgid "If true, show date in a tooltip when the pointer is over the clock."
-msgstr "உண்மையெனில், சுட்டியை கடிகாத்திற்கு அருகில் கொண்டு செல்லும்போது தேதி குறிப்பை காட்டு"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:11
-msgid "Show weather in clock"
-msgstr "வானிலையை கடிகாரத்தில் காட்டுக"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:12
-msgid "If true, display a weather icon."
-msgstr "உண்மை என்றால், வானிலை சின்னத்தை காட்டுக."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:13
-msgid "Show temperature in clock"
-msgstr "வெப்பநிலையை கடிகாரத்தில் காட்டுக"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:14
-msgid "If true, show the temperature next to the weather icon."
-msgstr "உண்மையானால் வெப்ப நிலையை வானிலை சின்னத்துக்கு அடுத்து காட்டவும்."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:15
-msgid "Show week numbers in calendar"
-msgstr "நாட்காட்டியில் வார எண்களை காட்டுக"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:16
-msgid "If true, show week numbers in the calendar."
-msgstr "உண்மையானால் நாட்காட்டியில் வார எண்களை காட்டவும்."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:17
-msgid "Expand list of locations"
-msgstr "இடங்கள் பட்டியலை விரிக்கவும்."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:18
-msgid "If true, expand the list of locations in the calendar window."
-msgstr "உண்மையானால் இடங்கள் பட்டியலை நாட்காட்டி சாளரத்தில் விரிக்கவும்."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:19
-msgid "List of locations"
-msgstr "இடங்களின் பட்டியல் "
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:20
-msgid "A list of locations to display in the calendar window."
-msgstr "நாட்காட்டி சாளரத்தில் காட்ட இடங்கள் பட்டியல்"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:21
-msgid "Temperature unit"
-msgstr "வெப்ப அலகு"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:22
-msgid "The unit to use when showing temperatures."
-msgstr "வெப்ப நிலையை காட்டும் போது பயன்படுத்த அலகு"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:23
-msgid "Speed unit"
-msgstr "வேக அலகு"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:24
-msgid "The unit to use when showing wind speed."
-msgstr "காற்றின் வேகத்தை காட்டும் போது பயன்படுத்த அலகு."
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:1
-msgid "Clock Applet Factory"
-msgstr ""
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:2
-msgid "Factory for clock applet"
-msgstr ""
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:4
-msgid "Get the current time and date"
-msgstr ""
-
-#: ../applets/fish/fish.c:264
+#: ../applets/fish/fish.c:267
 #, c-format
 msgid ""
 "Warning:  The command appears to be something actually useful.\n"
 "Since this is a useless applet, you may not want to do this.\n"
 "We strongly advise you against using %s for anything\n"
 "which would make the applet \"practical\" or useful."
-msgstr "எச்சரிக்கை இந்த கட்டளை பயனுள்ளதாக தெரிகிறதுின்றஇந்த பயனற்ற குறுநிரல், இதை செய்யவேண்டாம் என சொல்லும் இல%s பயன்படுத்துவதை பற்றி நாங்கள் தவறாக அறிவுரை கூறிவிட்டோம்\nகுறும்பயனை \"சரியான\" முறையில் பயன்படுத்த இது உதவும். வேண்டாம்."
+msgstr ""
+"எச்சரிக்கை இந்த கட்டளை பயனுள்ளதாக தெரிகிறதுின்றஇந்த பயனற்ற குறுநிரல், இதை செய்யவேண்டாம் "
+"என சொல்லும் இல%s பயன்படுத்துவதை பற்றி நாங்கள் தவறாக அறிவுரை கூறிவிட்டோம்\n"
+"குறும்பயனை \"சரியான\" முறையில் பயன்படுத்த இது உதவும். வேண்டாம்."
 
-#: ../applets/fish/fish.c:436
+#: ../applets/fish/fish.c:439
 msgid "Images"
 msgstr "படங்கள்"
 
-#: ../applets/fish/fish.c:542 ../applets/fish/fish.c:586
-#: ../applets/fish/fish.c:692
+#: ../applets/fish/fish.c:545 ../applets/fish/fish.c:589
+#: ../applets/fish/fish.c:695
 #, no-c-format
 msgid "%s the Fish"
 msgstr "மீன் %s"
 
-#: ../applets/fish/fish.c:543
+#: ../applets/fish/fish.c:546
 #, c-format
 msgid ""
 "%s has no use what-so-ever. It only takes up disk space and compilation "
 "time, and if loaded it also takes up precious panel space and memory. "
 "Anybody found using it should be promptly sent for a psychiatric evaluation."
-msgstr "%s ஆல் இது வரை ஏதும் இல்லை. இது வட்டின் இடத்தையும், தொகுக்கும் நேரத்தையும் வீணாக்கும். ஏற்றினால் பலக இடத்தையும் நினைவகத்தையும் வீணாக்கும். இதை யாராவது பயன்படுத்தினால் அவர்களை மனநிலை பரிசோதிக்கும் நிபுணரிடம் அழைத்துச்செல்ல வேண்டும்."
+msgstr ""
+"%s ஆல் இது வரை ஏதும் இல்லை. இது வட்டின் இடத்தையும், தொகுக்கும் நேரத்தையும் வீணாக்கும். "
+"ஏற்றினால் பலக இடத்தையும் நினைவகத்தையும் வீணாக்கும். இதை யாராவது பயன்படுத்தினால் அவர்களை "
+"மனநிலை பரிசோதிக்கும் நிபுணரிடம் அழைத்துச்செல்ல வேண்டும்."
 
-#: ../applets/fish/fish.c:563
+#: ../applets/fish/fish.c:566
 msgid "(with minor help from George)"
 msgstr "(ஜார்ஜ் இடம் இருந்து கொஞ்சம் உதவியுடன்)"
 
-#: ../applets/fish/fish.c:569
+#: ../applets/fish/fish.c:572
 #: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:3
 msgid "Fish"
 msgstr "மீன்"
 
-#: ../applets/fish/fish.c:587
+#: ../applets/fish/fish.c:578 ../applets/notification_area/main.c:179
+#: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:605
+#: ../applets/wncklet/window-menu.c:90
+#: ../applets/wncklet/workspace-switcher.c:623
+#: ../ukui-panel/panel-context-menu.c:151
+msgid "translator-credits"
+msgstr "I. Felix <ifelix@redhat.com>. Dr. T. Vasudevan <agnihot3@gmail.com>"
+
+#: ../applets/fish/fish.c:590
 #, c-format
 msgid "%s the Fish, a contemporary oracle"
 msgstr "%s மீன் , சமகாலத்திய அறிவுரை"
 
-#: ../applets/fish/fish.c:653
+#: ../applets/fish/fish.c:656
 msgid "Unable to locate the command to execute"
 msgstr "செயல்படுத்த வேண்டிய கட்டளையை கண்டுபிடிக்க முடியவில்லை"
 
-#: ../applets/fish/fish.c:697
+#: ../applets/fish/fish.c:700
 #, no-c-format
 msgid "%s the Fish Says:"
 msgstr "%s மீன் சொல்வது:"
 
-#: ../applets/fish/fish.c:760
+#: ../applets/fish/fish.c:763
 #, c-format
 msgid ""
 "Unable to read output from command\n"
 "\n"
 "Details: %s"
-msgstr "கட்டளையின் வெளியீட்டை படிக்க முடியவில்லை\n\nவிவரங்கள்: %s"
+msgstr ""
+"கட்டளையின் வெளியீட்டை படிக்க முடியவில்லை\n"
+"\n"
+"விவரங்கள்: %s"
 
-#: ../applets/fish/fish.c:836
+#: ../applets/fish/fish.c:840
 msgid "_Speak again"
 msgstr "மறுபடியும் பேசவும் _S"
 
-#: ../applets/fish/fish.c:923
+#: ../applets/fish/fish.c:927
 #, c-format
 msgid "The configured command is not working and has been replaced by: %s"
 msgstr "வடிவமைத்த கட்டளை சரியாக வேலை செய்யவில்லை. அது %s ஆல் மீட்டமைக்கப்பட்டது."
 
-#: ../applets/fish/fish.c:955
+#: ../applets/fish/fish.c:960
 #, c-format
 msgid ""
 "Unable to execute '%s'\n"
 "\n"
 "Details: %s"
-msgstr "'%s' செயல்படுத்த முடியவில்லை\n\nவிவரங்கள்: %s"
+msgstr ""
+"'%s' செயல்படுத்த முடியவில்லை\n"
+"\n"
+"விவரங்கள்: %s"
 
-#: ../applets/fish/fish.c:971
+#: ../applets/fish/fish.c:976
 #, c-format
 msgid ""
 "Unable to read from '%s'\n"
 "\n"
 "Details: %s"
-msgstr "'%s' இலிருந்து படிக்க முடியவில்லை\n\nவிவரங்கள்: %s"
+msgstr ""
+"'%s' இலிருந்து படிக்க முடியவில்லை\n"
+"\n"
+"விவரங்கள்: %s"
 
-#: ../applets/fish/fish.c:1529
+#: ../applets/fish/fish.c:1544
 msgid "The water needs changing"
 msgstr "தண்ணீரை மாற்ற வேண்டும்!"
 
-#: ../applets/fish/fish.c:1531
+#: ../applets/fish/fish.c:1546
 msgid "Look at today's date!"
 msgstr "இன்றைய தேதியைப்பாருங்கள்!"
 
-#: ../applets/fish/fish.c:1614
+#: ../applets/fish/fish.c:1629
 #, c-format
 msgid "%s the Fish, the fortune teller"
 msgstr "%s எதிர் காலத்தை கணித்து சொல்பவர்"
 
+#: ../applets/fish/fish.c:1688 ../applets/wncklet/window-list.c:172
+#: ../applets/wncklet/workspace-switcher.c:327
+msgid "_Preferences"
+msgstr "முன்னுரிமைகள் _P "
+
+#: ../applets/fish/fish.c:1691 ../applets/notification_area/main.c:185
+#: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-menu.c:100
+#: ../applets/wncklet/workspace-switcher.c:335 ../ukui-panel/drawer.c:545
+#: ../ukui-panel/panel-action-button.c:737 ../ukui-panel/panel-menu-bar.c:359
+#: ../ukui-panel/panel-menu-button.c:669
+msgid "_Help"
+msgstr "உதவி _H "
+
+#: ../applets/fish/fish.c:1694 ../applets/notification_area/main.c:188
+#: ../applets/wncklet/showdesktop.c:243 ../applets/wncklet/window-menu.c:108
+#: ../applets/wncklet/workspace-switcher.c:343
+msgid "_About"
+msgstr "(_A) அறிமுகம்"
+
 #: ../applets/fish/fish.ui.h:1
 msgid "Fish Preferences"
 msgstr "மீன் பண்புகள்"
+
+#: ../applets/fish/fish.ui.h:2 ../ukui-panel/panel-properties-dialog.ui.h:11
+msgid "General"
+msgstr "பொது"
 
 #: ../applets/fish/fish.ui.h:3
 msgid "_Name of fish:"
@@ -721,7 +236,9 @@ msgstr "மீனின் அசைவூட்டம் பிக்ஸ்ப�
 msgid ""
 "This key specifies the filename of the pixmap which will be used for the "
 "animation displayed in the fish applet relative to the pixmap directory."
-msgstr "இந்த விசை மீன் குறுநிரல் பிக்ஸ்மேப் அடைவில் உள்ள இயக்க சித்திரத்தின் கோப்பின் பெயரை குறிப்பிட பயன்படும்."
+msgstr ""
+"இந்த விசை மீன் குறுநிரல் பிக்ஸ்மேப் அடைவில் உள்ள இயக்க சித்திரத்தின் கோப்பின் பெயரை "
+"குறிப்பிட பயன்படும்."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:5
 msgid "Command to execute on click"
@@ -739,8 +256,8 @@ msgstr "மீன் இயக்க சித்திரத்தில் உ
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:8
 msgid ""
-"This key specifies the number of frames that will be displayed in the fish's"
-" animation."
+"This key specifies the number of frames that will be displayed in the fish's "
+"animation."
 msgstr "இந்த விசை மீன் இயக்க சித்திரத்தில் உள்ள சட்டங்களின் எண்ணிக்கையை குறிப்பிட பயன்படும்."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:9
@@ -772,12 +289,13 @@ msgstr ""
 msgid "Display a swimming fish or another aniukuid creature"
 msgstr ""
 
-#: ../applets/notification_area/main.c:164
+#: ../applets/notification_area/main.c:173
 #: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:3
+#: ../ukui-panel/notification-area.ui.h:1
 msgid "Notification Area"
 msgstr "அறிவிப்பு இடம்"
 
-#: ../applets/notification_area/main.c:380
+#: ../applets/notification_area/main.c:389
 msgid "Panel Notification Area"
 msgstr "பலகை அறிவிப்பு இடம்"
 
@@ -799,9 +317,11 @@ msgstr "அனைத்து வேலையிடங்களில் உள�
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:2
 msgid ""
-"If true, the window list will show windows from all workspaces. Otherwise it"
-" will only display windows from the current workspace."
-msgstr "உண்மையெனில் சாளர பட்டியல் எல்லா பணியிடங்களையும் காட்டும், அல்லது இது சாளரத்தின் தற்போதைய பணியிடத்தை மட்டும் காட்டும்."
+"If true, the window list will show windows from all workspaces. Otherwise it "
+"will only display windows from the current workspace."
+msgstr ""
+"உண்மையெனில் சாளர பட்டியல் எல்லா பணியிடங்களையும் காட்டும், அல்லது இது சாளரத்தின் தற்போதைய "
+"பணியிடத்தை மட்டும் காட்டும்."
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:3
 msgid "When to group windows"
@@ -811,7 +331,9 @@ msgstr "எப்பொழுது சாளரங்களை தொகுப�
 msgid ""
 "Decides when to group windows from the same application on the window list. "
 "Possible values are \"never\", \"auto\" and \"always\"."
-msgstr "சாளரங்களை ஒரே பயன்பாட்டின் குழுக்களாக எப்போது ஆக்குவது என்பதை தீர்மானிக்கும். மதிப்புகள் \"எப்போதுமில்லை\", \"தானாக\" மற்றும் \"எப்போதும்\""
+msgstr ""
+"சாளரங்களை ஒரே பயன்பாட்டின் குழுக்களாக எப்போது ஆக்குவது என்பதை தீர்மானிக்கும். மதிப்புகள் "
+"\"எப்போதுமில்லை\", \"தானாக\" மற்றும் \"எப்போதும்\""
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:5
 msgid "Move windows to current workspace when unminimized"
@@ -821,7 +343,9 @@ msgstr "மறைந்த சாளரங்களை காண்பிக்�
 msgid ""
 "If true, then when unminimizing a window, move it to the current workspace. "
 "Otherwise, switch to the workspace of the window."
-msgstr "உண்மையெனில், சாளரத்தை பெரிதாக்கும் போது தற்போதைய பணியிடத்திற்கு நகர்த்து. அல்லது பணி இடத்தை வேறு சாளரத்திற்கு கொண்டு செல்."
+msgstr ""
+"உண்மையெனில், சாளரத்தை பெரிதாக்கும் போது தற்போதைய பணியிடத்திற்கு நகர்த்து. அல்லது பணி "
+"இடத்தை வேறு சாளரத்திற்கு கொண்டு செல்."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:1
 msgid "Display workspace names"
@@ -832,7 +356,9 @@ msgid ""
 "If true, the workspaces in the workspace switcher will display the names of "
 "the workspaces. Otherwise they will display the windows on the workspace. "
 "This setting only works when the window manager is Marco."
-msgstr "உண்மையெனில் பணியிடமாற்றி பணியிடங்களின் பெயரை காட்டும். இல்லையெனில் சாளரங்களை பணியிடத்தில் காட்டும். இது மெடாசிடியாக் சாளர மேலாளர் இருந்தால் மட்டுமே செல்லுபடியாகும்."
+msgstr ""
+"உண்மையெனில் பணியிடமாற்றி பணியிடங்களின் பெயரை காட்டும். இல்லையெனில் சாளரங்களை "
+"பணியிடத்தில் காட்டும். இது மெடாசிடியாக் சாளர மேலாளர் இருந்தால் மட்டுமே செல்லுபடியாகும்."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:3
 msgid "Display all workspaces"
@@ -842,7 +368,9 @@ msgstr "அனைத்து வேலையிடங்களை காட்�
 msgid ""
 "If true, the workspace switcher will show all workspaces. Otherwise it will "
 "only show the current workspace."
-msgstr "உண்மையெனில், பணியிடமாற்றி அனைத்து பணியிடங்களையும் காட்டும், இல்லையெனில் தற்போதைய பணியிடத்தை மட்டும் காட்டும்."
+msgstr ""
+"உண்மையெனில், பணியிடமாற்றி அனைத்து பணியிடங்களையும் காட்டும், இல்லையெனில் தற்போதைய "
+"பணியிடத்தை மட்டும் காட்டும்."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:5
 msgid "Rows in workspace switcher"
@@ -851,9 +379,12 @@ msgstr "வேலையிடம் மாற்றியில் வரிச�
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:6
 msgid ""
 "This key specifies how many rows (for horizontal layout) or columns (for "
-"vertical layout) the workspace switcher shows the workspaces in. This key is"
-" only relevant if the display_all_workspaces key is true."
-msgstr "இந்த விசை எத்தனை வரிசை(கிடைமட்டம்) அல்லது நெடுவரிசை (செங்குத்து) வரிகள் பணியிடமாற்றியால் பணியிடத்தில் காட்ட முடியும் என்பதை காட்டும். display_all_workspaces  என்பதை உண்மை என அமைத்தால் இந்த தகவல்கள் காட்டப்படும்."
+"vertical layout) the workspace switcher shows the workspaces in. This key is "
+"only relevant if the display_all_workspaces key is true."
+msgstr ""
+"இந்த விசை எத்தனை வரிசை(கிடைமட்டம்) அல்லது நெடுவரிசை (செங்குத்து) வரிகள் "
+"பணியிடமாற்றியால் பணியிடத்தில் காட்ட முடியும் என்பதை காட்டும். display_all_workspaces  "
+"என்பதை உண்மை என அமைத்தால் இந்த தகவல்கள் காட்டப்படும்."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:7
 msgid "Wrap around on scroll"
@@ -883,7 +414,7 @@ msgid "Switch between open windows using a menu"
 msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:5
-#: ../applets/wncklet/workspace-switcher.c:597
+#: ../applets/wncklet/workspace-switcher.c:616
 msgid "Workspace Switcher"
 msgstr "வேலையிட மாற்றி"
 
@@ -892,7 +423,7 @@ msgid "Switch between workspaces"
 msgstr ""
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:7
-#: ../applets/wncklet/window-list.c:555
+#: ../applets/wncklet/window-list.c:598
 msgid "Window List"
 msgstr "சாளரம் பட்டியல்"
 
@@ -935,19 +466,32 @@ msgstr "இந்த பொத்தான் எல்லா சாளரங்
 
 #: ../applets/wncklet/showdesktop.c:541
 msgid ""
-"Your window manager does not support the show desktop button, or you are not"
-" running a window manager."
-msgstr "உங்கள் சாளர மேலாளர் மேல்மேசையை காட்டு ஆதரவை பயன்படுத்தவில்லை, அல்லது நீங்கள் சாளர மேலாளரை இயக்க வில்லை"
+"Your window manager does not support the show desktop button, or you are not "
+"running a window manager."
+msgstr ""
+"உங்கள் சாளர மேலாளர் மேல்மேசையை காட்டு ஆதரவை பயன்படுத்தவில்லை, அல்லது நீங்கள் சாளர "
+"மேலாளரை இயக்க வில்லை"
 
-#: ../applets/wncklet/window-list.c:171
-msgid "_System Monitor"
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Help"));
+#. image = gtk_image_new_from_icon_name ("help-browser", GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (retval), menuitem);
+#. g_signal_connect (menuitem, "activate",
+#. G_CALLBACK (panel_context_menu_show_help), NULL);
+#.
+#: ../applets/wncklet/window-list.c:164 ../ukui-panel/panel-context-menu.c:368
+msgid "_Monitor"
 msgstr ""
 
-#: ../applets/wncklet/window-list.c:557
+#: ../applets/wncklet/window-list.c:600
 msgid ""
-"The Window List shows a list of all windows in a set of buttons and lets you"
-" browse them."
-msgstr "சாளர பட்டியல் ஒரு அமைப்பு பொத்தான்களில் எல்லா சாளரங்களின் பட்டியலையும் காட்டும். மேலும் எல்லா சாளரங்களையும் உலாவ உங்களை அனுமதிக்கும்"
+"The Window List shows a list of all windows in a set of buttons and lets you "
+"browse them."
+msgstr ""
+"சாளர பட்டியல் ஒரு அமைப்பு பொத்தான்களில் எல்லா சாளரங்களின் பட்டியலையும் காட்டும். மேலும் "
+"எல்லா சாளரங்களையும் உலாவ உங்களை அனுமதிக்கும்"
 
 #: ../applets/wncklet/window-list.ui.h:1
 msgid "Window List Preferences"
@@ -997,24 +541,27 @@ msgstr "(_t) சொந்த பணியிடத்தை மீட்கவ�
 msgid ""
 "The Window Selector shows a list of all windows in a menu and lets you "
 "browse them."
-msgstr "சாளர தேர்வாளர் தேர்வு செய்யப்பட்ட சாளரங்களின் பட்டியலை காட்டுவதோடு அவைகளில் உலாவ உங்களை அனுமதிக்கும்."
+msgstr ""
+"சாளர தேர்வாளர் தேர்வு செய்யப்பட்ட சாளரங்களின் பட்டியலை காட்டுவதோடு அவைகளில் உலாவ உங்களை "
+"அனுமதிக்கும்."
 
-#: ../applets/wncklet/workspace-switcher.c:198
-#: ../applets/wncklet/workspace-switcher.c:899
+#: ../applets/wncklet/workspace-switcher.c:199
+#: ../applets/wncklet/workspace-switcher.c:918
 #: ../applets/wncklet/workspace-switcher.ui.h:4
 msgid "rows"
 msgstr "வரிசைகள்"
 
-#: ../applets/wncklet/workspace-switcher.c:198
-#: ../applets/wncklet/workspace-switcher.c:899
+#: ../applets/wncklet/workspace-switcher.c:199
+#: ../applets/wncklet/workspace-switcher.c:918
 msgid "columns"
 msgstr "நெடுவரிசைகள்"
 
-#: ../applets/wncklet/workspace-switcher.c:599
+#: ../applets/wncklet/workspace-switcher.c:618
 msgid ""
 "The Workspace Switcher shows you a small version of your workspaces that "
 "lets you manage your windows."
-msgstr "பணியிட மாற்றி உங்கள் பணியிடத்தில் நீங்கள் கையாளும் சாளரத்தின் சிறிய பதிப்பை காட்டும்."
+msgstr ""
+"பணியிட மாற்றி உங்கள் பணியிடத்தில் நீங்கள் கையாளும் சாளரத்தின் சிறிய பதிப்பை காட்டும்."
 
 #: ../applets/wncklet/workspace-switcher.ui.h:1
 msgid "Workspace Switcher Preferences"
@@ -1057,11 +604,11 @@ msgid "Workspaces"
 msgstr "வேலை இடங்கள்"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:1
-msgid "Default panel layout"
+msgid "Ukui panel layout"
 msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:2
-msgid "The default panels layout to use when panels are created or resetted."
+msgid "The Ukui panels layout to use when panels are created or resetted."
 msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:3
@@ -1073,7 +620,9 @@ msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is made available. Whether or not the listing is expanded when the "
 "dialog is shown is controlled by the show_program_list key."
-msgstr "உண்மையெனில் \"தெரிந்த பயன்பாடு\" பட்டியலில் \"பயன்பாட்டை இயக்கு\" விரிந்து உரையால் பெட்டி திறக்கப்படும். show_program_list கட்டுப்பாட்டை பொருத்து விரியும்"
+msgstr ""
+"உண்மையெனில் \"தெரிந்த பயன்பாடு\" பட்டியலில் \"பயன்பாட்டை இயக்கு\" விரிந்து உரையால் "
+"பெட்டி திறக்கப்படும். show_program_list கட்டுப்பாட்டை பொருத்து விரியும்"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:5
 msgid "Expand program list in \"Run Application\" dialog"
@@ -1084,7 +633,9 @@ msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is expanded when the dialog is opened. This key is only relevant if "
 "the enable_program_list key is true."
-msgstr "உண்மையெனில் \"தெரிந்த பயன்பாடு\" பட்டியலில் \"பயன்பாட்டை இயக்கு\" விரிந்து உரையால் பெட்டி திறக்கப்படும். enable_program_list உண்மையாக இருந்தால் மட்டுமே இந்து செயல்படும்"
+msgstr ""
+"உண்மையெனில் \"தெரிந்த பயன்பாடு\" பட்டியலில் \"பயன்பாட்டை இயக்கு\" விரிந்து உரையால் "
+"பெட்டி திறக்கப்படும். enable_program_list உண்மையாக இருந்தால் மட்டுமே இந்து செயல்படும்"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:7
 msgid "Enable autocompletion in \"Run Application\" dialog"
@@ -1093,7 +644,8 @@ msgstr " \"பயன்பாட்டை இயக்கு\" உரையா�
 #: ../data/org.ukui.panel.gschema.xml.in.h:8
 msgid ""
 "If true, autocompletion in the \"Run Application\" dialog is made available."
-msgstr "உண்மையானால் தானியங்கி பூர்த்தி \"Run Application\"  உரையாடலில் இயலுமைப்படுத்தப்படும்."
+msgstr ""
+"உண்மையானால் தானியங்கி பூர்த்தி \"Run Application\"  உரையாடலில் இயலுமைப்படுத்தப்படும்."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:9
 msgid "History for \"Run Application\" dialog"
@@ -1102,8 +654,8 @@ msgstr ""
 #: ../data/org.ukui.panel.gschema.xml.in.h:10
 msgid ""
 "This is the list of commands used in \"Run Application\" dialog. The "
-"commands are sorted descendingly by recency (e.g., most recent command comes"
-" first)."
+"commands are sorted descendingly by recency (e.g., most recent command comes "
+"first)."
 msgstr ""
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:11
@@ -1134,7 +686,9 @@ msgstr "பலகை ID பட்டியல்"
 msgid ""
 "A list of panel IDs. Each ID identifies an individual toplevel panel. The "
 "settings for each of these panels are stored in /apps/panel/toplevels/$(id)."
-msgstr "பலக அடையாள பட்டியல். ஒவ்வொரு அடையாள எண்ணும் தனி மேல்மட்ட பலகத்தை குறிக்கும். இதன் அமைப்பு /apps/panel/toplevels/$(id) அடைவில் சேமிக்கப்பட்டிருக்கும்."
+msgstr ""
+"பலக அடையாள பட்டியல். ஒவ்வொரு அடையாள எண்ணும் தனி மேல்மட்ட பலகத்தை குறிக்கும். இதன் "
+"அமைப்பு /apps/panel/toplevels/$(id) அடைவில் சேமிக்கப்பட்டிருக்கும்."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:17
 msgid "Panel object ID list"
@@ -1142,10 +696,13 @@ msgstr "பலகை பொருள் ID பட்டியல்"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:18
 msgid ""
-"A list of panel object IDs. Each ID identifies an individual panel object "
-"(e.g. a launcher, action button or menu button/bar). The settings for each "
-"of these objects are stored in /apps/panel/objects/$(id)."
-msgstr "பலக பொருள் அடையாள பட்டியல். ஒவ்வொரு அடையாள எண்ணும் தனி பலக பொருளை  குறிக்கும். உதாரணம்: ஒரு துவக்கி, செயல் பொத்தான், பட்டியல் பொத்தான்/பலகை. இவற்றின் அமைப்பு //apps/panel/objects/$(id) அடைவில் சேமிக்கப்பட்டிருக்கும்."
+"A list of panel object IDs. Each ID identifies an individual panel object (e."
+"g. a launcher, action button or menu button/bar). The settings for each of "
+"these objects are stored in /apps/panel/objects/$(id)."
+msgstr ""
+"பலக பொருள் அடையாள பட்டியல். ஒவ்வொரு அடையாள எண்ணும் தனி பலக பொருளை  குறிக்கும். "
+"உதாரணம்: ஒரு துவக்கி, செயல் பொத்தான், பட்டியல் பொத்தான்/பலகை. இவற்றின் அமைப்பு //apps/"
+"panel/objects/$(id) அடைவில் சேமிக்கப்பட்டிருக்கும்."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:19
 msgid "Enable tooltips"
@@ -1156,7 +713,7 @@ msgid "If true, tooltips are shown for objects in panels."
 msgstr "உண்மையெனில், கருவிக்குறிப்புகள் பொருள் பலகத்தில் காட்டப்படும்."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:21
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
 msgid "Enable animations"
 msgstr "அசைவூட்டங்களை இயலுமைப்படுத்துக"
 
@@ -1196,9 +753,11 @@ msgstr "பலகம் முழுமையாக பூட்டபட்ட�
 #: ../data/org.ukui.panel.gschema.xml.in.h:29
 msgid ""
 "If true, the panel will not allow any changes to the configuration of the "
-"panel. Individual applets may need to be locked down separately however. The"
-" panel must be restarted for this to take effect."
-msgstr "உண்மையெனில் பலக அமைப்பில் மாற்றங்களை அனுமதிக்காது. தனிப்பட்ட குறுநிரல்கள் தனியாக பூட்டப்படவேண்டும். விளைவை உறுதி செய்ய பலகத்தை மீண்டும் துவக்க வேண்டும்"
+"panel. Individual applets may need to be locked down separately however. The "
+"panel must be restarted for this to take effect."
+msgstr ""
+"உண்மையெனில் பலக அமைப்பில் மாற்றங்களை அனுமதிக்காது. தனிப்பட்ட குறுநிரல்கள் தனியாக "
+"பூட்டப்படவேண்டும். விளைவை உறுதி செய்ய பலகத்தை மீண்டும் துவக்க வேண்டும்"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:30
 msgid "Applet IIDs to disable from loading"
@@ -1210,7 +769,11 @@ msgid ""
 "certain applets from loading or showing up in the menu. For example to "
 "disable the mini-commander applet add 'OAFIID:UKUI_MiniCommanderApplet' to "
 "this list. The panel must be restarted for this to take effect."
-msgstr "பலகம் தவிர்க்கும் IIDக்களின் பட்டியல். இந்த முறையில் மெனுவில் பல ஆப்லட்டுகள் காட்டப்படுவதையும் ஏற்றப்படுவதையும் தவிர்க்கலாம், உதாரணம் mini-commander குறுநிரலை செயலிழக்கச்செய்ய  'OAFIID:UKUI_MiniCommanderApplet' ஐ பட்டியலில் சேர்த்து, பலகத்தை மீண்டும் துவக்கவும்."
+msgstr ""
+"பலகம் தவிர்க்கும் IIDக்களின் பட்டியல். இந்த முறையில் மெனுவில் பல ஆப்லட்டுகள் "
+"காட்டப்படுவதையும் ஏற்றப்படுவதையும் தவிர்க்கலாம், உதாரணம் mini-commander குறுநிரலை "
+"செயலிழக்கச்செய்ய  'OAFIID:UKUI_MiniCommanderApplet' ஐ பட்டியலில் சேர்த்து, பலகத்தை "
+"மீண்டும் துவக்கவும்."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:32
 msgid "Disable Force Quit"
@@ -1220,7 +783,17 @@ msgstr "கட்டாயப்படுத்தி நிருத்து�
 msgid ""
 "If true, the panel will not allow a user to force an application to quit by "
 "removing access to the force quit button."
-msgstr "உண்மையெனில், பலகம் பயனீட்டாளர் பயன்பாட்டிலிருந்து வெளியேறாமல் வெளியேறச்செய் பட்டனை செயலிழக்கச்செய்யும்."
+msgstr ""
+"உண்மையெனில், பலகம் பயனீட்டாளர் பயன்பாட்டிலிருந்து வெளியேறாமல் வெளியேறச்செய் பட்டனை "
+"செயலிழக்கச்செய்யும்."
+
+#: ../data/org.ukui.panel.gschema.xml.in.h:34
+msgid "Enable SNI support"
+msgstr ""
+
+#: ../data/org.ukui.panel.gschema.xml.in.h:35
+msgid "If true, the panel provides support for SNI."
+msgstr ""
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:1
 msgid "Show applications menu"
@@ -1278,8 +851,8 @@ msgstr ""
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:14
 msgid ""
-"Set the size of icons used in the menu. The panel must be restarted for this"
-" to take effect."
+"Set the size of icons used in the menu. The panel must be restarted for this "
+"to take effect."
 msgstr ""
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:15
@@ -1316,7 +889,9 @@ msgstr "பலகையில் பொருளின் இடம்"
 msgid ""
 "The position of this panel object. The position is specified by the number "
 "of pixels from the left (or top if vertical) panel edge."
-msgstr "இந்த பலக பொருளின் நிலை. நிலை இடமிருந்து பிக்செல்லின் எண்ணிக்கையை குறிக்கும்(மேல் செங்குத்து)"
+msgstr ""
+"இந்த பலக பொருளின் நிலை. நிலை இடமிருந்து பிக்செல்லின் எண்ணிக்கையை குறிக்கும்(மேல் "
+"செங்குத்து)"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:7
 msgid "Interpret position relative to bottom/right edge"
@@ -1324,9 +899,11 @@ msgstr "நிலையை கீழ்/வலது மூலையோடு �
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:8
 msgid ""
-"If true, the position of the object is interpreted relative to the right (or"
-" bottom if vertical) edge of the panel."
-msgstr "உண்மையெனில், பொருளின் நிலை பலகத்தின் இடது பக்க (அல்லது கீழ் செங்குத்து) மூலையோடு தொடர்புடையதாக கொள்ளப்படும்."
+"If true, the position of the object is interpreted relative to the right (or "
+"bottom if vertical) edge of the panel."
+msgstr ""
+"உண்மையெனில், பொருளின் நிலை பலகத்தின் இடது பக்க (அல்லது கீழ் செங்குத்து) மூலையோடு "
+"தொடர்புடையதாக கொள்ளப்படும்."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:9
 msgid "Lock the object to the panel"
@@ -1334,9 +911,11 @@ msgstr "பொருளை பலகையில் ஒட்டுக"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:10
 msgid ""
-"If true, the user may not move the applet without first unlocking the object"
-" using the \"Unlock\" menuitem."
-msgstr "உண்மையெனில், பயனீட்டாளர் பலகத்தின் பூட்டை \"பூட்டை திற\" தேர்வை பயன்படுத்தி திறந்த பின்பு குறுநிரல்டை நகர்த்த முடியும்."
+"If true, the user may not move the applet without first unlocking the object "
+"using the \"Unlock\" menuitem."
+msgstr ""
+"உண்மையெனில், பயனீட்டாளர் பலகத்தின் பூட்டை \"பூட்டை திற\" தேர்வை பயன்படுத்தி திறந்த பின்பு "
+"குறுநிரல்டை நகர்த்த முடியும்."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:11
 msgid "Applet IID"
@@ -1344,10 +923,9 @@ msgstr "குறும்பயன் IID "
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:12
 msgid ""
-"The implementation ID of the applet - e.g. "
-"\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
-"object_type key is \"external-applet\" (or the deprecated \"ukuicomponent-"
-"applet\")."
+"The implementation ID of the applet - e.g. \"ClockAppletFactory::ClockApplet"
+"\". This key is only relevant if the object_type key is \"external-applet"
+"\" (or the deprecated \"ukuicomponent-applet\")."
 msgstr ""
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:13
@@ -1358,7 +936,9 @@ msgstr "பலகை இழுப்பறைக்கு இணைந்தத�
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
 "relevant if the object_type key is \"drawer-object\"."
-msgstr "பலகத்தின் இந்த அடையாளம் பெறுநரோடு பொருத்தப்பட்டிருக்கும். இந்த விசை பொருள் வகை \"பெறுநர் பொருள்\" என இருந்தால் மட்டுமே செயல்படும்."
+msgstr ""
+"பலகத்தின் இந்த அடையாளம் பெறுநரோடு பொருத்தப்பட்டிருக்கும். இந்த விசை பொருள் வகை \"பெறுநர் "
+"பொருள்\" என இருந்தால் மட்டுமே செயல்படும்."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:15
 msgid "Tooltip displayed for drawer or menu"
@@ -1367,9 +947,10 @@ msgstr "இழுப்பறைக்கோ பட்டிக்கோ கர�
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:16
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
-"only relevant if the object_type key is \"drawer-object\" or \"menu-"
-"object\"."
-msgstr "இந்த இழுப்பு அல்லது மெனுவில் காட்டப்பட வேண்டிய உரை. object_type  விசை \"drawer-object\" அல்லது \"menu-object\" குறித்தால் மட்டுமே பயன்படும்."
+"only relevant if the object_type key is \"drawer-object\" or \"menu-object\"."
+msgstr ""
+"இந்த இழுப்பு அல்லது மெனுவில் காட்டப்பட வேண்டிய உரை. object_type  விசை \"drawer-"
+"object\" அல்லது \"menu-object\" குறித்தால் மட்டுமே பயன்படும்."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:17
 msgid "Use custom icon for object's button"
@@ -1380,7 +961,10 @@ msgid ""
 "If true, the custom_icon key is used as a custom icon for the button. If "
 "false, the custom_icon key is ignored. This key is only relevant if the "
 "object_type key is \"menu-object\" or \"drawer-object\"."
-msgstr "உண்மையெனில், தனி_சின்ன விசை தனி சின்னத்திற்கான பட்டனாக பயன்படுத்தப்படும். பொய் எனில், தனி_சின்னம் தவிர்க்கப்படும். இந்த விசை பொருள்வகை விசை \"மெனு_பொருள்\" அல்லது \"பெறுநர் பொருளாக\" இருந்தால் மட்டுமே செயல்படும்."
+msgstr ""
+"உண்மையெனில், தனி_சின்ன விசை தனி சின்னத்திற்கான பட்டனாக பயன்படுத்தப்படும். பொய் எனில், "
+"தனி_சின்னம் தவிர்க்கப்படும். இந்த விசை பொருள்வகை விசை \"மெனு_பொருள்\" அல்லது \"பெறுநர் "
+"பொருளாக\" இருந்தால் மட்டுமே செயல்படும்."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:19
 msgid "Icon used for object's button"
@@ -1391,7 +975,10 @@ msgid ""
 "The location of the image file used as the icon for the object's button. "
 "This key is only relevant if the object_type key is \"drawer-object\" or "
 "\"menu-object\" and the use_custom_icon key is true."
-msgstr "இந்த பொருளுக்கான பட்டனாக தேர்வு செய்யப்பட்ட பிம்பம் உள்ள இடம். இந்த விசை பொருள்_வகை \"பெறுநர்-பொருள்\" அல்லது \"மெனு-பொருள்\" மற்றும் use_custom_icon விசை உண்மை யோடு தொடர்புடையது"
+msgstr ""
+"இந்த பொருளுக்கான பட்டனாக தேர்வு செய்யப்பட்ட பிம்பம் உள்ள இடம். இந்த விசை பொருள்_வகை "
+"\"பெறுநர்-பொருள்\" அல்லது \"மெனு-பொருள்\" மற்றும் use_custom_icon விசை உண்மை யோடு "
+"தொடர்புடையது"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:21
 msgid "Use custom path for menu contents"
@@ -1402,7 +989,10 @@ msgid ""
 "If true, the menu_path key is used as the path from which the menu contents "
 "should be constructed. If false, the menu_path key is ignored. This key is "
 "only relevant if the object_type key is \"menu-object\"."
-msgstr "உண்மையெனில் மெனு_பாதை விசை மெனு உள்ளடகத்திற்கான பாதையாக பயன்படுத்தப்படும். பொய் எனில் மெனு_பாதை தவிர்க்கப்படும். இந்த விசை பொருள் வகை \"மெனு_பொருளாக\" இருந்தால் மட்டுமே பயன்படும்"
+msgstr ""
+"உண்மையெனில் மெனு_பாதை விசை மெனு உள்ளடகத்திற்கான பாதையாக பயன்படுத்தப்படும். பொய் எனில் "
+"மெனு_பாதை தவிர்க்கப்படும். இந்த விசை பொருள் வகை \"மெனு_பொருளாக\" இருந்தால் மட்டுமே "
+"பயன்படும்"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:23
 msgid "Menu content path"
@@ -1413,7 +1003,9 @@ msgid ""
 "The path from which the menu contents is contructed. This key is only "
 "relevant if the use_menu_path key is true and the object_type key is \"menu-"
 "object\"."
-msgstr "மெனு உள்ளடக்கங்கள் உருவாக்க பயன்பட்ட பாதை. use_menu_path மற்றும் object_type விசைகள் \"menu-object\" விசையோடு தொடர்புடையது"
+msgstr ""
+"மெனு உள்ளடக்கங்கள் உருவாக்க பயன்பட்ட பாதை. use_menu_path மற்றும் object_type விசைகள் "
+"\"menu-object\" விசையோடு தொடர்புடையது"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:25
 msgid "Draw arrow in menu button"
@@ -1433,7 +1025,9 @@ msgstr "தொடங்கர் இடம்"
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
 "relevant if the object_type key is \"launcher-object\"."
-msgstr ".desktop கோப்பு இருக்குமிடம் துவக்கியை விளக்கும். இந்த விசை பொருள்வகை \"துவக்கி-பொருள்\" ளோடு தொடர்புடையது"
+msgstr ""
+".desktop கோப்பு இருக்குமிடம் துவக்கியை விளக்கும். இந்த விசை பொருள்வகை \"துவக்கி-பொருள்"
+"\" ளோடு தொடர்புடையது"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:29
 msgid "Action button type"
@@ -1444,7 +1038,10 @@ msgid ""
 "The action type this button represents. Possible values are \"lock\", "
 "\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
 "relevant if the object_type key is \"action-applet\"."
-msgstr "இந்த பட்டன் குறிப்பிடும் செயல்பாட்டு வகை. மதிப்புகள் \"பூட்டப்படது\", \"வெளிச்செல்\", \"தேடு\" மற்றும் \"திரைக்காப்பு\" ஆகியவையாக இருக்கும். இந்த விசை பொருள்வகை \"செயல்-குறுநிரல்\" என இருக்கும் போது மட்டுமே செயல்படும்."
+msgstr ""
+"இந்த பட்டன் குறிப்பிடும் செயல்பாட்டு வகை. மதிப்புகள் \"பூட்டப்படது\", \"வெளிச்செல்\", "
+"\"தேடு\" மற்றும் \"திரைக்காப்பு\" ஆகியவையாக இருக்கும். இந்த விசை பொருள்வகை \"செயல்-"
+"குறுநிரல்\" என இருக்கும் போது மட்டுமே செயல்படும்."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:1
 msgid "Name to identify panel"
@@ -1455,7 +1052,9 @@ msgid ""
 "This is a human readable name which you can use to identify a panel. Its "
 "main purpose is to serve as the panel's window title which is useful when "
 "navigating between panels."
-msgstr "இந்து படிக்ககூடிய பெரை பலகத்தின் பெயரை குறிக்க பயன்படுத்தலாம்.இதன் முக்கிய குறிக்கோள் பலகத்தின் பெயருக்கு ஏற்ப அதை பயன்படுத்துவதே "
+msgstr ""
+"இந்து படிக்ககூடிய பெரை பலகத்தின் பெயரை குறிக்க பயன்படுத்தலாம்.இதன் முக்கிய குறிக்கோள் "
+"பலகத்தின் பெயருக்கு ஏற்ப அதை பயன்படுத்துவதே "
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:3
 msgid "X screen where the panel is displayed"
@@ -1465,85 +1064,120 @@ msgstr "பலகை காண்பிக்கப்படும் X தி�
 msgid ""
 "With a multi-screen setup, you may have panels on each individual screen. "
 "This key identifies the current screen the panel is displayed on."
-msgstr "பல-திரை அமைப்புகளோடு, ஒவ்வொரு திரையிலும் பலகத்தை வைத்துக்கொள்ள முடியும். இந்த விசை பலகம் தற்போது காட்ட வேண்டிய விசையை குறிக்கும்."
+msgstr ""
+"பல-திரை அமைப்புகளோடு, ஒவ்வொரு திரையிலும் பலகத்தை வைத்துக்கொள்ள முடியும். இந்த விசை "
+"பலகம் தற்போது காட்ட வேண்டிய விசையை குறிக்கும்."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:5
+msgid "Show blank starting position"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
+msgid "Windows-list get blank starting position"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
+msgid "Number of new inserted tray applets"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
+msgid "Number of new inserted launcher applets"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
 msgid "Xinerama monitor where the panel is displayed"
 msgstr "பலகம் காட்ட வேண்டிய ஸ்னிராமா "
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
 msgid ""
 "In a Xinerama setup, you may have panels on each individual monitor. This "
 "key identifies the current monitor the panel is displayed on."
-msgstr "ஸ்னிரமா நிறுவலில், ஒவ்வொரு திரையிலும் பலகம் இருக்கும். இந்த விசை தற்போது திரையில் காட்டப்படும் பலகத்தை குறிக்கும்."
+msgstr ""
+"ஸ்னிரமா நிறுவலில், ஒவ்வொரு திரையிலும் பலகம் இருக்கும். இந்த விசை தற்போது திரையில் "
+"காட்டப்படும் பலகத்தை குறிக்கும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
 msgid "Expand to occupy entire screen width"
 msgstr "திரை அகலத்திட்கு பொருந்துமாரு பெரிதாக்குக"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
 msgid ""
 "If true, the panel will occupy the entire screen width (height if this is a "
-"vertical panel). In this mode the panel can only be placed at a screen edge."
-" If false, the panel will only be large enough to accommodate the applets, "
+"vertical panel). In this mode the panel can only be placed at a screen edge. "
+"If false, the panel will only be large enough to accommodate the applets, "
 "launchers and buttons on the panel."
-msgstr "உண்மையெனில், பலகம் திரை அகலத்தை முழுமையாக ஆக்ரமிக்கும்(செங்குத்து பகலமெனில் உயரம்).இந்த பாங்கில் பலகம் திரையின் மூலையில் வைக்கப்படும்.பொய்யெனில் பலகத்தால் குறுநிரல், துவக்கி மற்றும் பட்டனுக்கு்கு மட்டுமே இடமளிக்க முடியும்."
+msgstr ""
+"உண்மையெனில், பலகம் திரை அகலத்தை முழுமையாக ஆக்ரமிக்கும்(செங்குத்து பகலமெனில் உயரம்).இந்த "
+"பாங்கில் பலகம் திரையின் மூலையில் வைக்கப்படும்.பொய்யெனில் பலகத்தால் குறுநிரல், துவக்கி "
+"மற்றும் பட்டனுக்கு்கு மட்டுமே இடமளிக்க முடியும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
 msgid "Panel orientation"
 msgstr "பலகையின் திசை அமைவு"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
 msgid ""
-"The orientation of the panel. Possible values are \"top\", \"bottom\", "
-"\"left\", \"right\". In expanded mode the key specifies which screen edge "
-"the panel is on. In un-expanded mode the difference between \"top\" and "
-"\"bottom\" is less important - both indicate that this is a horizontal panel"
-" - but still give a useful hint as to how some panel objects should behave. "
-"For example, on a \"top\" panel a menu button will pop up its menu below the"
-" panel, whereas on a \"bottom\" panel the menu will be popped up above the "
+"The orientation of the panel. Possible values are \"top\", \"bottom\", \"left"
+"\", \"right\". In expanded mode the key specifies which screen edge the "
+"panel is on. In un-expanded mode the difference between \"top\" and \"bottom"
+"\" is less important - both indicate that this is a horizontal panel - but "
+"still give a useful hint as to how some panel objects should behave. For "
+"example, on a \"top\" panel a menu button will pop up its menu below the "
+"panel, whereas on a \"bottom\" panel the menu will be popped up above the "
 "panel."
-msgstr "பலகத்தின் அமைப்பு. மதிப்புகள் \"மேல்\",\"கீழ்\",\"இடது\" மற்றும் \"வலது\".விரிவாக்க  பாங்கில் எந்த திரை ஓர பலகம் செயல்பாட்டில் உள்ளது என்பதை காட்டும். விரிக்காத பாங்கு கிடைமட்ட பாங்கை குறிப்பதால் \"மேல்\" மற்றும் \"கீழ்\" முக்கியமில்லை - ஆனால் இது பலக பொருள்கள் எவ்வாறு நடந்துகொள்ளும் என்பதை காட்டும். உதாரணம் \"மேல்\" பலகம் மெனு பட்டன் அதன் மெனுவை பலகத்தின் கீழே காட்டும் ஆனால் \"கீழ்\" பலகம் மெனு பலகத்தின் மேலே காட்டப்படும்,"
+msgstr ""
+"பலகத்தின் அமைப்பு. மதிப்புகள் \"மேல்\",\"கீழ்\",\"இடது\" மற்றும் \"வலது\".விரிவாக்க  "
+"பாங்கில் எந்த திரை ஓர பலகம் செயல்பாட்டில் உள்ளது என்பதை காட்டும். விரிக்காத பாங்கு "
+"கிடைமட்ட பாங்கை குறிப்பதால் \"மேல்\" மற்றும் \"கீழ்\" முக்கியமில்லை - ஆனால் இது பலக "
+"பொருள்கள் எவ்வாறு நடந்துகொள்ளும் என்பதை காட்டும். உதாரணம் \"மேல்\" பலகம் மெனு பட்டன் அதன் "
+"மெனுவை பலகத்தின் கீழே காட்டும் ஆனால் \"கீழ்\" பலகம் மெனு பலகத்தின் மேலே காட்டப்படும்,"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
 msgid "Panel size"
 msgstr "பலகையின் அளவு"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
 msgid ""
 "The height (width for a vertical panel) of the panel. The panel will "
 "determine at runtime a minimum size based on the font size and other "
 "indicators. The maximum size is fixed at one quarter of the screen height "
 "(or width)."
-msgstr "பலகத்தின் உயரம்(செங்குத்து பலகத்தின் அகலம்). பலகம் இயக்கத்திலிருக்கும் போது எழுத்துரு அளவு மற்றும் மற்ற காட்டிகள் பற்றிய விவரங்களை கண்டறியும். அதிக பட்ச அளவு திரையின் உயரத்தின் கால் பகுதியாக இருக்கும்(அல்லது அகலம்)"
+msgstr ""
+"பலகத்தின் உயரம்(செங்குத்து பலகத்தின் அகலம்). பலகம் இயக்கத்திலிருக்கும் போது எழுத்துரு அளவு "
+"மற்றும் மற்ற காட்டிகள் பற்றிய விவரங்களை கண்டறியும். அதிக பட்ச அளவு திரையின் உயரத்தின் கால் "
+"பகுதியாக இருக்கும்(அல்லது அகலம்)"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
 msgid "X co-ordinate of panel"
 msgstr "இப்பலகையின் X இட-மதிப்பு"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
 msgid ""
 "The location of the panel along the x-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
-msgstr "x-அச்சில் பலகம் இருக்குமிடம். இது இயக்க பாங்கோடு தொடர்புடையது. விரிவாக்க பாங்கில் இந்த விசை தவிர்க்கப்படும் மற்றும் பகலம் திரையில் ஓரத்தில் திசை விசையை பொருத்து வைக்கப்படும்"
+msgstr ""
+"x-அச்சில் பலகம் இருக்குமிடம். இது இயக்க பாங்கோடு தொடர்புடையது. விரிவாக்க பாங்கில் இந்த "
+"விசை தவிர்க்கப்படும் மற்றும் பகலம் திரையில் ஓரத்தில் திசை விசையை பொருத்து வைக்கப்படும்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
 msgid "Y co-ordinate of panel"
 msgstr "இப்பலகையின் Y இட-மதிப்பு"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
 msgid ""
 "The location of the panel along the y-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
-msgstr "y-அச்சில் பலகம் இருக்குமிடம். இது இயக்க பாங்கோடு தொடர்புடையது. விரிவாக்க பாங்கில் இந்த விசை தவிர்க்கப்படும் மற்றும் பகலம் திரையில் ஓரத்தில் திசை விசையை பொருத்து வைக்கப்படும்"
+msgstr ""
+"y-அச்சில் பலகம் இருக்குமிடம். இது இயக்க பாங்கோடு தொடர்புடையது. விரிவாக்க பாங்கில் இந்த "
+"விசை தவிர்க்கப்படும் மற்றும் பகலம் திரையில் ஓரத்தில் திசை விசையை பொருத்து வைக்கப்படும்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
 msgid "X co-ordinate of panel, starting from the right of the screen"
 msgstr "பலகத்தின் X ஆயத்தொலைவு, திரையின் வலது பக்கம் துவங்கி"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
 msgid ""
 "The location of the panel along the x-axis, starting from the right of the "
 "screen. If set to -1, the value is ignored and the value of the x key is "
@@ -1551,13 +1185,17 @@ msgid ""
 "ignored. This key is only relevant in un-expanded mode. In expanded mode "
 "this key is ignored and the panel is placed at the screen edge specified by "
 "the orientation key."
-msgstr "திரையின் வலது பக்கம் துவங்கி x-அச்சில் பலகம் இருக்குமிடம். மதிப்பை -1 என அமைத்தால் அது உதாசீனப்படுத்தப்பட்டு x விசை பயன்படுத்தப்படும். மதிப்பு 0 க்கு மேல் இருந்தால் x விசை மதிப்பு உதாசீனப்படுத்தப்படும்.  இது இயக்க பாங்கோடு தொடர்புடையது. விரிவாக்க பாங்கில் இந்த விசை தவிர்க்கப்படும் மற்றும் பலகம் திரையில் ஓரத்தில் திசை விசையை பொருத்து வைக்கப்படும்"
+msgstr ""
+"திரையின் வலது பக்கம் துவங்கி x-அச்சில் பலகம் இருக்குமிடம். மதிப்பை -1 என அமைத்தால் அது "
+"உதாசீனப்படுத்தப்பட்டு x விசை பயன்படுத்தப்படும். மதிப்பு 0 க்கு மேல் இருந்தால் x விசை "
+"மதிப்பு உதாசீனப்படுத்தப்படும்.  இது இயக்க பாங்கோடு தொடர்புடையது. விரிவாக்க பாங்கில் இந்த "
+"விசை தவிர்க்கப்படும் மற்றும் பலகம் திரையில் ஓரத்தில் திசை விசையை பொருத்து வைக்கப்படும்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
 msgid "Y co-ordinate of panel, starting from the bottom of the screen"
 msgstr "பலகத்தின் Y ஆயத்தொலைவு, திரையின் கீழ் பக்கம் துவங்கி"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
 msgid ""
 "The location of the panel along the y-axis, starting from the bottom of the "
 "screen. If set to -1, the value is ignored and the value of the y key is "
@@ -1565,118 +1203,174 @@ msgid ""
 "ignored. This key is only relevant in un-expanded mode. In expanded mode "
 "this key is ignored and the panel is placed at the screen edge specified by "
 "the orientation key."
-msgstr "திரையின் வலது பக்கம் துவங்கி y-அச்சில் பலகம் இருக்குமிடம். மதிப்பை -1 என அமைத்தால் அது உதாசீனப்படுத்தப்பட்டு y விசை பயன்படுத்தப்படும். மதிப்பு 0 க்கு மேல் இருந்தால் y விசை மதிப்பு உதாசீனப்படுத்தப்படும்.  இது இயக்க பாங்கோடு தொடர்புடையது. விரிவாக்க பாங்கில் இந்த விசை தவிர்க்கப்படும் மற்றும் பலகம் திரையில் ஓரத்தில் திசை விசையை பொருத்து வைக்கப்படும்"
+msgstr ""
+"திரையின் வலது பக்கம் துவங்கி y-அச்சில் பலகம் இருக்குமிடம். மதிப்பை -1 என அமைத்தால் அது "
+"உதாசீனப்படுத்தப்பட்டு y விசை பயன்படுத்தப்படும். மதிப்பு 0 க்கு மேல் இருந்தால் y விசை "
+"மதிப்பு உதாசீனப்படுத்தப்படும்.  இது இயக்க பாங்கோடு தொடர்புடையது. விரிவாக்க பாங்கில் இந்த "
+"விசை தவிர்க்கப்படும் மற்றும் பலகம் திரையில் ஓரத்தில் திசை விசையை பொருத்து வைக்கப்படும்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
 msgid "Center panel on x-axis"
 msgstr "x-அச்சுவில் பலகையை நடுப்படுத்துக"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
 msgid ""
 "If true, the x and x_right keys are ignored and the panel is placed at the "
 "center of the x-axis of the screen. If the panel is resized it will remain "
 "at that position - i.e. the panel will grow on both sides. If false, the x "
 "and x_right keys specify the location of the panel."
-msgstr "உண்மையெனில் x விசை மற்றும் x வலது விசை தவிர்க்கப்பட்டு பலகம் x-அச்சின் திரையின் மையத்தில் வைக்கப்படும். பலகத்தின் அளவை மாற்றினால் அது அதே நிலையில் நிற்கும். அதாவது பலகம் எல்லா திசைகளிலும் விரியும். பொய்யெனில் x விசை மற்றும் x வலது விசை பலகத்தின் இடத்தை குறிப்பிடும்"
+msgstr ""
+"உண்மையெனில் x விசை மற்றும் x வலது விசை தவிர்க்கப்பட்டு பலகம் x-அச்சின் திரையின் மையத்தில் "
+"வைக்கப்படும். பலகத்தின் அளவை மாற்றினால் அது அதே நிலையில் நிற்கும். அதாவது பலகம் எல்லா "
+"திசைகளிலும் விரியும். பொய்யெனில் x விசை மற்றும் x வலது விசை பலகத்தின் இடத்தை "
+"குறிப்பிடும்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
 msgid "Center panel on y-axis"
 msgstr "y-அச்சுவில் பலகையை நடுப்படுத்துக"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
 msgid ""
 "If true, the y and y_bottom keys are ignored and the panel is placed at the "
 "center of the y-axis of the screen. If the panel is resized it will remain "
 "at that position - i.e. the panel will grow on both sides. If false, the y "
 "and y_bottom keys specify the location of the panel."
-msgstr "உண்மையெனில் y மற்றும் yகீழ்விசைகள் தவிர்க்கப்பட்டு பலகம் y-அச்சின் திரையின் மையத்தில் வைக்கப்படும். பலகத்தின் அளவை மாற்றினால் அது அதே நிலையில் நிற்கும். அதாவது பலகம் எல்லா திசைகளிலும் விரியும். பொய்யெனில் y மற்றும் yகீழ்விசைகள் பலகத்தின் இடத்தை குறிப்பிடும்"
+msgstr ""
+"உண்மையெனில் y மற்றும் yகீழ்விசைகள் தவிர்க்கப்பட்டு பலகம் y-அச்சின் திரையின் மையத்தில் "
+"வைக்கப்படும். பலகத்தின் அளவை மாற்றினால் அது அதே நிலையில் நிற்கும். அதாவது பலகம் எல்லா "
+"திசைகளிலும் விரியும். பொய்யெனில் y மற்றும் yகீழ்விசைகள் பலகத்தின் இடத்தை குறிப்பிடும்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
+#: ../ukui-panel/panel-settings-dialog.ui.h:7
+msgid "Taskbar background transparent"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
+msgid "If true, the panel is transparent."
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
+#: ../ukui-panel/panel-settings-dialog.ui.h:8
+msgid "Lock the taskbar"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
+msgid "If true, the panel is automatically locked."
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
+#: ../ukui-panel/panel-settings-dialog.ui.h:9
+#, fuzzy
+msgid "Hide workspace"
+msgstr "வேலை இடங்கள்"
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
+msgid "If true, the workspace is hidden."
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
 msgid "Automatically hide panel into corner"
 msgstr "தன்னியக்கதாக பலகையை ஒரு மூலையில் மறைக்கவும்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
 msgid ""
 "If true, the panel is automatically hidden into a corner of the screen when "
 "the pointer leaves the panel area. Moving the pointer to that corner again "
 "will cause the panel to re-appear."
-msgstr "உண்மையெனில்  அம்புக்குறியை விடுவிக்கும் போது பலகம் தானாக மறைக்கப்பட்டு திரையின் ஓரத்திற்கு சென்றுவிரும். அம்புக்குறியை திரையின் ஓரத்திற்கு கொண்டு சென்றால் பலகம் மீண்டும் தெரியும்."
+msgstr ""
+"உண்மையெனில்  அம்புக்குறியை விடுவிக்கும் போது பலகம் தானாக மறைக்கப்பட்டு திரையின் "
+"ஓரத்திற்கு சென்றுவிரும். அம்புக்குறியை திரையின் ஓரத்திற்கு கொண்டு சென்றால் பலகம் மீண்டும் "
+"தெரியும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
 msgid ""
 "If true, hiding and un-hiding of this panel will be aniukuid rather than "
 "happening instantly."
-msgstr "உண்மையெனில், மறைத்தல் மற்றும் காட்டல் ஆகியவை அப்போது காட்டபடுவதற்கு பதிலாக இயக்க சித்திரமாக காட்டப்படும்."
+msgstr ""
+"உண்மையெனில், மறைத்தல் மற்றும் காட்டல் ஆகியவை அப்போது காட்டபடுவதற்கு பதிலாக இயக்க "
+"சித்திரமாக காட்டப்படும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
 msgid "Enable hide buttons"
 msgstr "மறைப்பு பொத்தானை காட்டுக"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
 msgid ""
 "If true, buttons will be placed on each side of the panel which may be used "
 "to move the panel to edge of the screen, leaving only a button showing."
-msgstr "உண்மையெனில், பட்டன் பலகத்தின் ஒவ்வொரு ஓரத்திலும் வைக்கப்படும் இதலால் பகலத்தை திரையின் ஓரத்திற்கு நகர்த்த முடியும்."
+msgstr ""
+"உண்மையெனில், பட்டன் பலகத்தின் ஒவ்வொரு ஓரத்திலும் வைக்கப்படும் இதலால் பகலத்தை திரையின் "
+"ஓரத்திற்கு நகர்த்த முடியும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
 msgid "Enable arrows on hide buttons"
 msgstr "மறைவு பொத்தான்களிள் அம்புகள் காட்டுக"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
 msgid ""
 "If true, arrows will be placed on the hide buttons. This key is only "
 "relevant if the enable_buttons key is true."
-msgstr "உண்மையெனில், அம்புக்குறி பட்டனில் மேல் வைக்கப்படும். இந்த வைசை பட்டனை செயல்படுத்து விசையோடு தொடர்புடையது."
+msgstr ""
+"உண்மையெனில், அம்புக்குறி பட்டனில் மேல் வைக்கப்படும். இந்த வைசை பட்டனை செயல்படுத்து "
+"விசையோடு தொடர்புடையது."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
 msgid "Panel autohide delay"
 msgstr "பலகை தன்னியக்கதாக மறைக்கும் நேரம்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
 msgid ""
 "Specifies the number of milliseconds delay after the pointer leaves the "
 "panel area before the panel is automatically hidden. This key is only "
 "relevant if the auto_hide key is true."
-msgstr "பலகம் தானாக மறுபடி காட்டப்படும் போது அம்புக்குறி பலக பகுதியிலிருந்து வெளியேறிய பின் உள்ள மில்லிசெகண்டை குறிப்பிடும். இந்த விசை தானாக_மறை விசை செயலில் இருக்கும் போது செயல்படும்."
+msgstr ""
+"பலகம் தானாக மறுபடி காட்டப்படும் போது அம்புக்குறி பலக பகுதியிலிருந்து வெளியேறிய பின் "
+"உள்ள மில்லிசெகண்டை குறிப்பிடும். இந்த விசை தானாக_மறை விசை செயலில் இருக்கும் போது "
+"செயல்படும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
 msgid "Panel autounhide delay"
 msgstr "பலகை தன்னியக்கதாக காண்பிக்கும் நேரம்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
 msgid ""
 "Specifies the number of milliseconds delay after the pointer enters the "
 "panel area before the panel is automatically re-shown. This key is only "
 "relevant if the auto_hide key is true."
-msgstr "பலகம் தானாக மறுபடி காட்டப்படும் போது அம்புக்குறி பலக பகுதிக்குள் நுழைந்த பின்னும் உள்ள மில்லிசெகண்டை குறிப்பிடும். இந்த விசை தானாக_மறை விசை செயலில் இருக்கும் போது செயல்படும்."
+msgstr ""
+"பலகம் தானாக மறுபடி காட்டப்படும் போது அம்புக்குறி பலக பகுதிக்குள் நுழைந்த பின்னும் உள்ள "
+"மில்லிசெகண்டை குறிப்பிடும். இந்த விசை தானாக_மறை விசை செயலில் இருக்கும் போது செயல்படும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
 msgid "Visible pixels when hidden"
 msgstr "தெரியக்கூடிய பிக்செல்கள் மறைக்கப்பட்டது"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
 msgid ""
 "Specifies the number of pixels visible when the panel is automatically "
-"hidden into a corner. This key is only relevant if the auto_hide key is "
-"true."
-msgstr "பலகம் தானாக ஓரத்தில் மறைந்த பின் உள்ள பிக்செல்லின் எண்ணிக்கையை குறிக்கும். இந்த விசை தானாக_மறை விசையோடு தொடர்புடையது."
+"hidden into a corner. This key is only relevant if the auto_hide key is true."
+msgstr ""
+"பலகம் தானாக ஓரத்தில் மறைந்த பின் உள்ள பிக்செல்லின் எண்ணிக்கையை குறிக்கும். இந்த விசை "
+"தானாக_மறை விசையோடு தொடர்புடையது."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
 msgid "Animation speed"
 msgstr "அசைவூட்டத்தின் வேகம்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
 msgid ""
-"The speed in which panel animations should occur. Possible values are "
-"\"slow\", \"medium\" and \"fast\". This key is only relevant if the "
+"The speed in which panel animations should occur. Possible values are \"slow"
+"\", \"medium\" and \"fast\". This key is only relevant if the "
 "enable_animations key is true."
-msgstr "பலக உயிர்சித்திரம் நிகழ வேண்டிய வேகம். மதிப்புகள் \"மெதுவாக\", \"நடுநிலையாக\", மற்றும் \"வேகமாக\". உயிர்சித்திரத்தை செயல்படுத்து விசை உண்மையெனில் இந்த விசை செயல்படும்."
+msgstr ""
+"பலக உயிர்சித்திரம் நிகழ வேண்டிய வேகம். மதிப்புகள் \"மெதுவாக\", \"நடுநிலையாக\", "
+"மற்றும் \"வேகமாக\". உயிர்சித்திரத்தை செயல்படுத்து விசை உண்மையெனில் இந்த விசை செயல்படும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
 msgid "Background type"
 msgstr "பின்னணி வகை"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
 msgid ""
 "Which type of background should be used for this panel. Possible values are "
 "\"none\" - the default GTK+ widget background will be used, \"color\" - the "
@@ -1684,61 +1378,70 @@ msgid ""
 "specified by the image key will be used as background."
 msgstr ""
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
 msgid "Background color"
 msgstr "பின்னணி வண்ணம்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
 msgid "Specifies the background color for the panel in #RGB format."
 msgstr "#RGB முறைமையில் பலகையின் பின்னணி வண்ணத்தை கொடுக்கவும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:55
 msgid "Background color opacity"
 msgstr "பின்னணி வண்ணத்தின் ஒளி-புகாமை"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:56
 msgid ""
 "Specifies the opacity of the background color format. If the color is not "
-"completely opaque (a value of less than 65535), the color will be composited"
-" onto the desktop background image."
-msgstr "பின்னனி வண்ணத்தின் ஒலி புகும் தன்மையை காட்டும்.நிறம் ஒலிபுகுதன்மை இல்லாமல் இருந்தால்(மதிப்பு 65535 ஐ விட குறைவாக இருந்தால்), வண்ணம் மேல்மேசையில் பின்னனி வண்ணத்தோடு இணைந்து காட்டப்படும்."
+"completely opaque (a value of less than 65535), the color will be composited "
+"onto the desktop background image."
+msgstr ""
+"பின்னனி வண்ணத்தின் ஒலி புகும் தன்மையை காட்டும்.நிறம் ஒலிபுகுதன்மை இல்லாமல் "
+"இருந்தால்(மதிப்பு 65535 ஐ விட குறைவாக இருந்தால்), வண்ணம் மேல்மேசையில் பின்னனி வண்ணத்தோடு "
+"இணைந்து காட்டப்படும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:57
 msgid "Background image"
 msgstr "பின்னணி ஓவியம்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:58
 msgid ""
 "Specifies the file to be used for the background image. If the image "
 "contains an alpha channel it will be composited onto the desktop background "
 "image."
-msgstr "பின்னனியாக பயன்படுத்த வேண்டிய பிம்பத்தை குறிப்பிடும். பிம்பத்தில் ஆல்பா அது மேல் மேசையில் கூட்டாக தெரியும்"
+msgstr ""
+"பின்னனியாக பயன்படுத்த வேண்டிய பிம்பத்தை குறிப்பிடும். பிம்பத்தில் ஆல்பா அது மேல் மேசையில் "
+"கூட்டாக தெரியும்"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:59
 msgid "Fit image to panel"
 msgstr "ஓவியத்தை பலகையின் அளவுக்கு பொருத்துக"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:60
 msgid ""
 "If true, the image will be scaled (retaining the aspect ratio of the image) "
 "to the panel height (if horizontal)."
-msgstr "உண்மையெனில், பிம்பம் பகத்தில் உயரத்திற்கேற்ப.(விகிதத்தை நினைவில் கொண்டு செயல்படும்) அளவு மாற்றம் செய்யப்படும்."
+msgstr ""
+"உண்மையெனில், பிம்பம் பகத்தில் உயரத்திற்கேற்ப.(விகிதத்தை நினைவில் கொண்டு செயல்படும்) அளவு "
+"மாற்றம் செய்யப்படும்."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:61
 msgid "Stretch image to panel"
 msgstr "ஓவியத்தை பலகையில் நீட்டிப் போடுக"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:62
 msgid ""
 "If true, the image will be scaled to the panel dimensions. The aspect ratio "
 "of the image will not be maintained."
-msgstr "உண்மையெனில், பலகத்தின் அளவுக்கேற்ப பிம்பம் அளவுமாற்றம் செய்யப்படும். விகிதத்தை நினைவில் கொள்ளாது"
+msgstr ""
+"உண்மையெனில், பலகத்தின் அளவுக்கேற்ப பிம்பம் அளவுமாற்றம் செய்யப்படும். விகிதத்தை நினைவில் "
+"கொள்ளாது"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:63
 msgid "Rotate image on vertical panels"
 msgstr "செங்குத்தான-பலகத்தில் பிம்பத்தை சுழற்று"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:64
 msgid ""
 "If true, the background image will be rotated when the panel is oriented "
 "vertically."
@@ -1769,12 +1472,12 @@ msgstr "பயன்பாடு கட்டளை வரியில் ஆவ
 msgid "Unrecognized launch option: %d"
 msgstr "இனம் காணாத துவக்க தேர்வு: %d"
 
-#: ../ukui-panel/libegg/eggdesktopfile.c:1365
+#: ../ukui-panel/libegg/eggdesktopfile.c:1364
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr "'Type=Link' மேல்மேசை உள்ளீடுக்கு ஆவண யூஆர்ஐ ஐ கொடுக்க இயலாது"
 
-#: ../ukui-panel/libegg/eggdesktopfile.c:1386
+#: ../ukui-panel/libegg/eggdesktopfile.c:1385
 #, c-format
 msgid "Not a launchable item"
 msgstr "துவக்க முடியாத உருப்படி"
@@ -1813,8 +1516,8 @@ msgstr "அமர்வு மேலாணமை தேர்வுகளை க
 #. * http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #. FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #: ../ukui-panel/libpanel-util/panel-error.c:76
-#: ../ukui-panel/panel-applet-frame.c:827
-#: ../ukui-panel/panel-applet-frame.c:1003
+#: ../ukui-panel/panel-applet-frame.c:865
+#: ../ukui-panel/panel-applet-frame.c:1041
 msgid "Error"
 msgstr "பிழை"
 
@@ -1827,7 +1530,7 @@ msgstr "சின்னத்தைத் தேர்ந்தெடு"
 msgid "Could not launch '%s'"
 msgstr "'%s'ஐ ஏற்ற முடியவில்லை"
 
-#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:162
+#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:165
 msgid "Could not launch application"
 msgstr "நிரலை துவங்க முடியவில்லை"
 
@@ -1840,28 +1543,28 @@ msgstr "'%s' இடத்தை திறக்க முடியவில்�
 msgid "No application to handle search folders is installed."
 msgstr "தேடல் அடைவுகளை கையாள எந்த நிரலும் அமைக்கப்படவில்லை."
 
-#: ../ukui-panel/applet.c:466
+#: ../ukui-panel/applet.c:475
 msgid "???"
 msgstr "???"
 
-#: ../ukui-panel/applet.c:545 ../libukui-panel-applet/ukui-panel-applet.c:139
+#: ../ukui-panel/applet.c:554 ../libukui-panel-applet/ukui-panel-applet.c:143
 msgid "_Remove From Panel"
 msgstr "(_R) பலகையில் இருந்து கழட்டுக"
 
-#: ../ukui-panel/applet.c:556 ../libukui-panel-applet/ukui-panel-applet.c:142
+#: ../ukui-panel/applet.c:565 ../libukui-panel-applet/ukui-panel-applet.c:146
 msgid "_Move"
 msgstr "(_M) நகர்த்து"
 
-#: ../ukui-panel/applet.c:573 ../libukui-panel-applet/ukui-panel-applet.c:148
+#: ../ukui-panel/applet.c:582 ../libukui-panel-applet/ukui-panel-applet.c:152
 msgid "Loc_k To Panel"
 msgstr "(_k) பலகையில் பூட்டுக"
 
-#: ../ukui-panel/applet.c:1384
+#: ../ukui-panel/applet.c:1415
 msgid "Cannot find an empty spot"
 msgstr "காலியான ஓரிடம் இல்லை"
 
 #: ../ukui-panel/drawer.c:346 ../ukui-panel/panel-addto.c:175
-#: ../ukui-panel/panel-toplevel.c:1615
+#: ../ukui-panel/panel-toplevel.c:1619
 msgid "Drawer"
 msgstr "இழுப்பறை"
 
@@ -1869,9 +1572,8 @@ msgstr "இழுப்பறை"
 msgid "_Add to Drawer..."
 msgstr "(_A) இழுப்பறையில் சேர்க்கவும்..."
 
-#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:556
+#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:603
 #: ../ukui-panel/panel-action-button.c:192
-#: ../ukui-panel/panel-context-menu.c:196
 msgid "_Properties"
 msgstr "(_P) பண்புகள்"
 
@@ -1888,20 +1590,20 @@ msgid "- Edit .desktop files"
 msgstr "- .desktop கோப்புகளை திருத்தவும்"
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:144
-#: ../ukui-panel/ukui-desktop-item-edit.c:197 ../ukui-panel/launcher.c:928
+#: ../ukui-panel/ukui-desktop-item-edit.c:198 ../ukui-panel/launcher.c:974
 msgid "Create Launcher"
 msgstr "தொடங்கர் உருவாக்குக"
 
-#: ../ukui-panel/ukui-desktop-item-edit.c:168
-#: ../ukui-panel/ukui-desktop-item-edit.c:191
+#: ../ukui-panel/ukui-desktop-item-edit.c:169
+#: ../ukui-panel/ukui-desktop-item-edit.c:192
 msgid "Directory Properties"
 msgstr "அடைவின் பண்புகள்"
 
-#: ../ukui-panel/ukui-desktop-item-edit.c:174 ../ukui-panel/launcher.c:775
+#: ../ukui-panel/ukui-desktop-item-edit.c:175 ../ukui-panel/launcher.c:818
 msgid "Launcher Properties"
 msgstr "தொடங்கர் பண்புகள்"
 
-#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:136
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:144
 msgid "Panel"
 msgstr "பலகம்"
 
@@ -1909,81 +1611,82 @@ msgstr "பலகம்"
 msgid ""
 "Launch other applications and provide various utilities to manage windows, "
 "show the time, etc."
-msgstr "மற்ற நிரல்களை துவக்கவும், சாளரங்களை மேலாள,நேரத்தை காட்ட போன்ற பல பயன்பாடுகளை தரவும்."
+msgstr ""
+"மற்ற நிரல்களை துவக்கவும், சாளரங்களை மேலாள,நேரத்தை காட்ட போன்ற பல பயன்பாடுகளை தரவும்."
 
-#: ../ukui-panel/launcher.c:120
+#: ../ukui-panel/launcher.c:123
 msgid "Could not show this URL"
 msgstr "இந்த யூஆர்எல் ஐ காட்ட முடியவில்லை"
 
-#: ../ukui-panel/launcher.c:121
+#: ../ukui-panel/launcher.c:124
 msgid "No URL was specified."
 msgstr "யூஆர்எல் ஏதும் குறிப்பிடவில்லை"
 
-#: ../ukui-panel/launcher.c:214
+#: ../ukui-panel/launcher.c:217
 msgid "Could not use dropped item"
 msgstr "விடப்பட்ட உருப்படியை பயன்படுத்த முடியாது."
 
-#: ../ukui-panel/launcher.c:440
+#: ../ukui-panel/launcher.c:448
 #, c-format
 msgid "No URI provided for panel launcher desktop file\n"
 msgstr "பலக துவக்கிக்கான மேல்மேசை கோப்பின் URI தரப்படவில்லை\n"
 
-#: ../ukui-panel/launcher.c:465
+#: ../ukui-panel/launcher.c:487
 #, c-format
-msgid "Unable to open desktop file %s for panel launcher\n"
+msgid "Unable to open desktop file %s for panel launcher%s%s\n"
 msgstr ""
 
-#: ../ukui-panel/launcher.c:533
+#: ../ukui-panel/launcher.c:593
 msgid "_Launch"
 msgstr "துவக்கவும் _L "
 
-#: ../ukui-panel/launcher.c:869
+#: ../ukui-panel/launcher.c:911
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
 msgstr "%s விசை அமைக்கப்படவில்லை, தொடங்கரை ஏற்ற முடியவில்லை\n"
 
-#: ../ukui-panel/launcher.c:997 ../ukui-panel/panel-ditem-editor.c:1330
+#: ../ukui-panel/launcher.c:1043 ../ukui-panel/panel-ditem-editor.c:1330
 #: ../ukui-panel/panel-ditem-editor.c:1364
 #: ../ukui-panel/panel-ditem-editor.c:1395
 msgid "Could not save launcher"
 msgstr "தொடங்கரை சேமிக்க முடியவில்லை"
 
-#: ../ukui-panel/main.c:47
+#: ../ukui-panel/main.c:48
 msgid "Replace a currently running panel"
 msgstr "தற்போது இயங்கும் பேனலை மாற்று"
 
 #. this feature was request in #ukui irc channel
-#: ../ukui-panel/main.c:49
+#: ../ukui-panel/main.c:50
 msgid "Reset the panel configuration to default"
 msgstr ""
 
 #. open run dialog
-#: ../ukui-panel/main.c:51
+#: ../ukui-panel/main.c:52
 msgid "Execute the run dialog"
 msgstr ""
 
 #. default panels layout
-#: ../ukui-panel/main.c:53
+#: ../ukui-panel/main.c:54
 msgid "Set the default panel layout"
 msgstr ""
 
-#: ../ukui-panel/menu.c:527
+#: ../ukui-panel/menu.c:528
 msgid "Add this launcher to _panel"
 msgstr "(_p) இந்த தொடங்கரை பலகத்தில் சேர்க்க"
 
-#: ../ukui-panel/menu.c:534
+#: ../ukui-panel/menu.c:535
 msgid "Add this launcher to _desktop"
 msgstr "(_d) இந்த தொடங்கரை மேல்மேசையில் சேர்க்க"
 
-#: ../ukui-panel/menu.c:546
+#: ../ukui-panel/menu.c:547
 msgid "_Entire menu"
 msgstr "(_E) பட்டி முழுவதும்"
 
-#: ../ukui-panel/menu.c:551
+#: ../ukui-panel/menu.c:552
 msgid "Add this as _drawer to panel"
 msgstr "(_d) இதை ஓர் இழுப்பறையாக பலகத்தில் சேர்க்க"
 
-#: ../ukui-panel/menu.c:558
+#: ../ukui-panel/menu.c:559
 msgid "Add this as _menu to panel"
 msgstr "(_m) இதை ஓர் பட்டியலாக பலகத்தில் சேர்க்க"
 
@@ -2032,10 +1735,10 @@ msgstr "கோப்புகளுக்காக தேடுக..."
 
 #: ../ukui-panel/panel-action-button.c:381
 msgid "Locate documents and folders on this computer by name or content"
-msgstr "இந்த கணினியில் உள்ள ஆவணங்கள் அல்லது அடைவுகளை பெயராலோ உள்ளடக்கத்தாலோ கண்டுபிடிக்கவும்"
+msgstr ""
+"இந்த கணினியில் உள்ள ஆவணங்கள் அல்லது அடைவுகளை பெயராலோ உள்ளடக்கத்தாலோ கண்டுபிடிக்கவும்"
 
-#: ../ukui-panel/panel-action-button.c:389
-#: ../ukui-panel/panel-force-quit.c:251
+#: ../ukui-panel/panel-action-button.c:389 ../ukui-panel/panel-force-quit.c:251
 msgid "Force Quit"
 msgstr "கட்டாயப்படுத்தி மூடுவும்"
 
@@ -2131,83 +1834,122 @@ msgstr "பலகைப் பாளத்தோடு சேர்க்கவ�
 msgid "Find an _item to add to the panel:"
 msgstr "பலகத்தில் சேர்ப்பதற்கான ஒரு உருப்படியை கண்டு பிடிக்கவும்:"
 
-#: ../ukui-panel/panel-applet-frame.c:788
+#: ../ukui-panel/panel-applet-frame.c:826
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
 msgstr "\"%s\" எதிர்பாராது வெளியேறியது"
 
-#: ../ukui-panel/panel-applet-frame.c:790
+#: ../ukui-panel/panel-applet-frame.c:828
 msgid "Panel object has quit unexpectedly"
 msgstr "பலகப் பொருள் எதிர்பாராதவிதமாக வெளியேறியது"
 
-#: ../ukui-panel/panel-applet-frame.c:797
+#: ../ukui-panel/panel-applet-frame.c:835
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
 msgstr "நீங்கள் ஒரு பலக பொருளை மீள் ஏற்றம் செய்தால் அது பலகத்தில் தானியங்கியாக சேர்க்கப்படும்."
 
-#: ../ukui-panel/panel-applet-frame.c:804
+#: ../ukui-panel/panel-applet-frame.c:842
 msgid "D_elete"
 msgstr ""
 
-#: ../ukui-panel/panel-applet-frame.c:805
-#: ../ukui-panel/panel-applet-frame.c:810
+#: ../ukui-panel/panel-applet-frame.c:843
+#: ../ukui-panel/panel-applet-frame.c:848
 msgid "_Don't Reload"
 msgstr "(_D) மீண்டும் ஏற்ற வேண்டாம்"
 
-#: ../ukui-panel/panel-applet-frame.c:806
-#: ../ukui-panel/panel-applet-frame.c:811
+#: ../ukui-panel/panel-applet-frame.c:844
+#: ../ukui-panel/panel-applet-frame.c:849
 msgid "_Reload"
 msgstr "மீளேற்று (_R)"
 
-#: ../ukui-panel/panel-applet-frame.c:966
+#: ../ukui-panel/panel-applet-frame.c:1004
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
 msgstr "பலகையில் \"%s\" ஏற்றும்போது ஒரு பிழை நடைபெற்றது."
 
-#: ../ukui-panel/panel-applet-frame.c:982
+#: ../ukui-panel/panel-applet-frame.c:1020
 msgid "Do you want to delete the applet from your configuration?"
 msgstr "உங்கள் வடிவமைப்பிலிருந்து இந்த குறுநிரலை நீக்க விருப்பமா?"
 
-#: ../ukui-panel/panel-context-menu.c:89
+#: ../ukui-panel/panel-context-menu.c:119
 msgid "And many, many others..."
 msgstr "மற்றும் பலர்..."
 
-#: ../ukui-panel/panel-context-menu.c:112
+#: ../ukui-panel/panel-context-menu.c:142
 msgid "The UKUI Panel"
 msgstr "கனோம் பலகm"
 
-#: ../ukui-panel/panel-context-menu.c:116
+#: ../ukui-panel/panel-context-menu.c:146
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
 msgstr "இந்த நிரல் மற்ற நிரல்களை துவக்கவும் சிறு பயன்பாடுகளை தரவும் பயன்படும்"
 
-#: ../ukui-panel/panel-context-menu.c:120
+#: ../ukui-panel/panel-context-menu.c:150
 msgid "About the UKUI Panel"
 msgstr "க்னோம் பலகம் பற்றி"
 
-#: ../ukui-panel/panel-context-menu.c:151
+#: ../ukui-panel/panel-context-menu.c:181
 msgid "Cannot delete this panel"
 msgstr "இந்த பலகத்தை நீக்க இயலாது"
 
-#: ../ukui-panel/panel-context-menu.c:152
+#: ../ukui-panel/panel-context-menu.c:182
 msgid "You must always have at least one panel."
 msgstr "நீங்கள் எப்போதும் ஒரு பலகமாவது பெற்றிருக்க வேண்டும்."
 
-#: ../ukui-panel/panel-context-menu.c:185
-msgid "_Add to Panel..."
-msgstr "(_A) பலகத்தில் சேக்கவும்..."
+#: ../ukui-panel/panel-context-menu.c:226
+#, fuzzy
+msgid "Reset this panel?"
+msgstr " பலகைப் பாளத்தை நீக்கவும்?"
 
-#: ../ukui-panel/panel-context-menu.c:206
-msgid "_Delete This Panel"
-msgstr "(_D) இந்த பலகையை அழிக்கவும்"
+#: ../ukui-panel/panel-context-menu.c:227
+#, fuzzy
+msgid ""
+"When a panel is reset,all \n"
+"custom settings are lost."
+msgstr ""
+"ஓர் பலகையை அழித்தால், அதுவும் அதன்\n"
+"அமைவுகளும் இழக்கப்படும். "
 
-#: ../ukui-panel/panel-context-menu.c:221
-msgid "_New Panel"
+#: ../ukui-panel/panel-context-menu.c:240
+msgid "_Cancel"
+msgstr ""
+
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Add to Panel..."));
+#. image = gtk_image_new_from_icon_name ("list-add", GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+#. g_signal_connect (G_OBJECT (menuitem), "activate",
+#. G_CALLBACK (panel_addto_present), panel_widget);
+#.
+#. if (!panel_profile_id_lists_are_writable ())
+#. gtk_widget_set_sensitive (menuitem, FALSE);
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Properties"));
+#. image = gtk_image_new_from_icon_name ("document-properties",
+#. GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+#. g_signal_connect_swapped (menuitem, "activate",
+#. G_CALLBACK (panel_properties_dialog_present),
+#. panel_widget->toplevel);
+#.
+#: ../ukui-panel/panel-context-menu.c:241
+#: ../ukui-panel/panel-context-menu.c:292
+#, fuzzy
+msgid "_Reset Panel"
 msgstr "(_N) புதிய பலகை"
 
-#: ../ukui-panel/panel-context-menu.c:273
+#: ../ukui-panel/panel-context-menu.c:262
+#, fuzzy
+msgid "_Settings"
+msgstr "(_S) நேர அமைப்புகள்"
+
+#: ../ukui-panel/panel-context-menu.c:378
 msgid "A_bout Panels"
 msgstr "(_b) பலகம் பற்றி"
 
@@ -2286,7 +2028,8 @@ msgstr "உதவி ஆவணத்தை காண்பிக்க முட
 #: ../ukui-panel/panel-force-quit.c:80
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
-msgstr "பயன்பாட்டை வௌதயேறு வலியுறுத்தத சாளரத்தின் மேல் சொடுக்கு. விடுபட <ESC> அழுத்தவும்"
+msgstr ""
+"பயன்பாட்டை வௌதயேறு வலியுறுத்தத சாளரத்தின் மேல் சொடுக்கு. விடுபட <ESC> அழுத்தவும்"
 
 #: ../ukui-panel/panel-force-quit.c:234
 msgid "Force this application to exit?"
@@ -2296,7 +2039,9 @@ msgstr "செயல்பாட்டை கட்டாயப்படுத�
 msgid ""
 "If you choose to force an application to exit, unsaved changes in any open "
 "documents in it might get lost."
-msgstr "ஒரு பயன்பாட்டை விட்டு வெளியேறினால், திறக்கப்பட்ட ஆவணங்களில் சேமிக்கப்படாத மாற்றங்களை இழக்க நேரும்"
+msgstr ""
+"ஒரு பயன்பாட்டை விட்டு வெளியேறினால், திறக்கப்பட்ட ஆவணங்களில் சேமிக்கப்படாத மாற்றங்களை இழக்க "
+"நேரும்"
 
 #: ../ukui-panel/panel-menu-bar.c:99
 msgid "Browse and run installed applications"
@@ -2314,86 +2059,86 @@ msgstr "மேல்மேசை காட்சி, நடத்தை ஆக�
 msgid "Applications"
 msgstr "நிரல்கள்"
 
-#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:672
+#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:675
 msgid "_Edit Menus"
 msgstr " பட்டியலை தொகுக்கவும் _E"
 
-#: ../ukui-panel/panel-menu-items.c:473
+#: ../ukui-panel/panel-menu-items.c:472
 msgid "Bookmarks"
 msgstr "புத்தகக்குறிகள்"
 
 #. Translators: %s is a URI
-#: ../ukui-panel/panel-menu-items.c:496 ../ukui-panel/panel.c:549
+#: ../ukui-panel/panel-menu-items.c:495 ../ukui-panel/panel.c:549
 #, c-format
 msgid "Open '%s'"
 msgstr " '%s' திறக்கவும்"
 
-#: ../ukui-panel/panel-menu-items.c:567
+#: ../ukui-panel/panel-menu-items.c:566
 #, c-format
 msgid "Unable to scan %s for media changes"
 msgstr "%s ஐ ஊடக மாற்றங்களுக்கு வருட முடியவில்லை"
 
-#: ../ukui-panel/panel-menu-items.c:610
+#: ../ukui-panel/panel-menu-items.c:609
 #, c-format
 msgid "Rescan %s"
 msgstr "%s ஐ மறு வருடல் செய்க"
 
-#: ../ukui-panel/panel-menu-items.c:647
+#: ../ukui-panel/panel-menu-items.c:646
 #, c-format
 msgid "Unable to mount %s"
 msgstr " %s ஐ ஏற்ற முடியவில்லை"
 
-#: ../ukui-panel/panel-menu-items.c:710
+#: ../ukui-panel/panel-menu-items.c:709
 #, c-format
 msgid "Mount %s"
 msgstr " %s ஐ ஏற்றுக"
 
-#: ../ukui-panel/panel-menu-items.c:918
+#: ../ukui-panel/panel-menu-items.c:917
 msgid "Removable Media"
 msgstr "நீக்கப்படக்கூடிய சாதனங்கள் "
 
-#: ../ukui-panel/panel-menu-items.c:1005
+#: ../ukui-panel/panel-menu-items.c:1004
 msgid "Network Places"
 msgstr "பிணையத்தின் இடங்கள் "
 
-#: ../ukui-panel/panel-menu-items.c:1044
+#: ../ukui-panel/panel-menu-items.c:1043
 msgid "Open your personal folder"
 msgstr "உங்கள் அந்தரங்க அடைவை திறக்கவும்"
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
 #. * environment).
-#: ../ukui-panel/panel-menu-items.c:1063
+#: ../ukui-panel/panel-menu-items.c:1062
 msgctxt "Desktop Folder"
 msgid "Desktop"
 msgstr "பணிமேடை"
 
-#: ../ukui-panel/panel-menu-items.c:1064
+#: ../ukui-panel/panel-menu-items.c:1063
 msgid "Open the contents of your desktop in a folder"
 msgstr "உங்கள் மேல்மேசை உள்ளடக்கத்தை ஒரு அடைவில் திறக்கவும்"
 
-#: ../ukui-panel/panel-menu-items.c:1080
+#: ../ukui-panel/panel-menu-items.c:1079
 msgid "Computer"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1085
+#: ../ukui-panel/panel-menu-items.c:1084
 msgid ""
 "Browse all local and remote disks and folders accessible from this computer"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1098
+#: ../ukui-panel/panel-menu-items.c:1097
 msgid "Network"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1099
+#: ../ukui-panel/panel-menu-items.c:1098
 msgid "Browse bookmarked and local network locations"
 msgstr ""
 
-#: ../ukui-panel/panel-menu-items.c:1497
+#: ../ukui-panel/panel-menu-items.c:1496
 msgid "Places"
 msgstr "இடங்கள்"
 
-#: ../ukui-panel/panel-menu-items.c:1525
+#: ../ukui-panel/panel-menu-items.c:1524
 msgid "System"
 msgstr "முறைமை"
 
@@ -2401,7 +2146,8 @@ msgstr "முறைமை"
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
 #. * but "1" if "Log Out %s" doesn't make any sense in your
 #. * language (where %s is a username).
-#: ../ukui-panel/panel-menu-items.c:1610
+#.
+#: ../ukui-panel/panel-menu-items.c:1609
 msgctxt "panel:showusername"
 msgid "1"
 msgstr "1"
@@ -2410,53 +2156,61 @@ msgstr "1"
 #. * panel-action-button.c
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../ukui-panel/panel-menu-items.c:1622
+#: ../ukui-panel/panel-menu-items.c:1621
 #, c-format
 msgid "Log Out %s..."
 msgstr "வெளியேறு %s..."
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../ukui-panel/panel-menu-items.c:1626
+#: ../ukui-panel/panel-menu-items.c:1625
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
 msgstr "வேறு பயனீட்டாளராக உள்ளே நுழைய இந்த அமர்விலிருந்து %s ஐ வெளியேற்றவும்"
 
 #: ../ukui-panel/panel-properties-dialog.c:120
+#: ../ukui-panel/panel-settings-dialog.c:131
 #: ../ukui-panel/panel-test-applets.c:58
 msgctxt "Orientation"
 msgid "Top"
 msgstr "மேல்"
 
 #: ../ukui-panel/panel-properties-dialog.c:121
+#: ../ukui-panel/panel-settings-dialog.c:132
 #: ../ukui-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Bottom"
 msgstr "கீழ்"
 
 #: ../ukui-panel/panel-properties-dialog.c:122
+#: ../ukui-panel/panel-settings-dialog.c:133
 #: ../ukui-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Left"
 msgstr "இடது"
 
 #: ../ukui-panel/panel-properties-dialog.c:123
+#: ../ukui-panel/panel-settings-dialog.c:134
 #: ../ukui-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Right"
 msgstr "வலது"
 
 #: ../ukui-panel/panel-properties-dialog.c:819
+#: ../ukui-panel/panel-settings-dialog.c:1428
 msgid "Drawer Properties"
 msgstr "இழுப்பறையின் பண்புகள்"
 
 #: ../ukui-panel/panel-properties-dialog.c:939
-#: ../ukui-panel/panel-run-dialog.c:1970
+#: ../ukui-panel/panel-settings-dialog.c:1029
+#: ../ukui-panel/panel-settings-dialog.c:1552
+#: ../ukui-panel/panel-run-dialog.c:1973
 #, c-format
 msgid "Unable to load file '%s': %s."
 msgstr "'%s'. கோப்பை ஏற்ற முடியவில்லை: %s."
 
 #: ../ukui-panel/panel-properties-dialog.c:945
+#: ../ukui-panel/panel-settings-dialog.c:1558
 msgid "Could not display properties dialog"
 msgstr "பண்புகள் உரையாடலை காட்ட முடியவில்லை"
 
@@ -2543,24 +2297,94 @@ msgid "Background"
 msgstr "பின்னணி"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:23
+#: ../ukui-panel/panel-settings-dialog.ui.h:1
 msgid "Image Background Details"
 msgstr "ஓவியம் பின்னணி விவரங்கள்"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:24
+#: ../ukui-panel/panel-settings-dialog.ui.h:2
 msgid "_Tile"
 msgstr "_கட்டமாக"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:25
+#: ../ukui-panel/panel-settings-dialog.ui.h:3
 msgid "_Scale"
 msgstr "_அளவு மாற்று"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:26
+#: ../ukui-panel/panel-settings-dialog.ui.h:4
 msgid "St_retch"
 msgstr "இழுக்கவும்"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:27
+#: ../ukui-panel/panel-settings-dialog.ui.h:5
 msgid "Rotate image when panel is _vertical"
 msgstr "பலகம் செங்குத்தாக இருக்கும் போது பிம்பத்தை சுழற்று"
+
+#: ../ukui-panel/panel-settings-dialog.c:743
+#: ../ukui-panel/panel-settings-dialog.c:797
+#: ../ukui-panel/panel-settings-dialog.c:910
+msgid "show"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.c:743
+#: ../ukui-panel/panel-settings-dialog.c:798
+#: ../ukui-panel/panel-settings-dialog.c:911
+#, fuzzy
+msgid "hide"
+msgstr "தானாக மறை"
+
+#: ../ukui-panel/panel-settings-dialog.c:1035
+#, fuzzy
+msgid "Could not notification area dialog"
+msgstr "இயக்குக கட்டளை உரையாடலை காட்ட முடியவில்லை"
+
+#: ../ukui-panel/panel-settings-dialog.c:1058
+msgid "<a href=''>Customize icons appear on the taskbar</a>"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:6
+#, fuzzy
+msgid "Panel Settings"
+msgstr "(_S) நேர அமைப்புகள்"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:10
+msgid "Hide the taskbar"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:11
+#, fuzzy
+msgid "The taskbar position on the screen："
+msgstr "பலகையில் பொருளின் இடம்"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:12
+msgid "Change taskbar height and icon size"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:14
+#, no-c-format
+msgid "Default-100%"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:16
+#, fuzzy, no-c-format
+msgid "Medium-150%"
+msgstr "நடுத்தரம்"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:18
+#, fuzzy, no-c-format
+msgid "Large-200%"
+msgstr "பெரியது"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:19
+#, fuzzy
+msgid "Notification area"
+msgstr "அறிவிப்பு இடம்"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:20
+#: ../ukui-panel/notification-area.ui.h:2
+msgid "Customize icons appear on the taskbar"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
@@ -2581,7 +2405,11 @@ msgid ""
 "If you clear the Recent Documents list, you clear the following:\n"
 "• All items from the Places → Recent Documents menu item.\n"
 "• All items from the recent documents list in all applications."
-msgstr "சமீபத்திய ஆவணங்கள் பட்டியலை சுத்தப்படுத்தினால் கீழ்கண்டவைகளை நீக்குவீர்கள்:\n\n• இடங்கள் → சமீபத்திய ஆவணங்கள் மெனுவில் உள்ள எல்லா உருப்படிகளும்\n• எல்லா நிரல்களிலும் உள்ள சமீபத்திய ஆவணங்கள் பட்டியல்."
+msgstr ""
+"சமீபத்திய ஆவணங்கள் பட்டியலை சுத்தப்படுத்தினால் கீழ்கண்டவைகளை நீக்குவீர்கள்:\n"
+"\n"
+"• இடங்கள் → சமீபத்திய ஆவணங்கள் மெனுவில் உள்ள எல்லா உருப்படிகளும்\n"
+"• எல்லா நிரல்களிலும் உள்ள சமீபத்திய ஆவணங்கள் பட்டியல்."
 
 #: ../ukui-panel/panel-recent.c:161
 msgid "Clear Recent Documents"
@@ -2599,35 +2427,37 @@ msgstr "சமீபத்தில் ஆவணங்களை சுத்த�
 msgid "Clear all items from the recent documents list"
 msgstr "சமீபத்தில் ஆவணங்கள் பட்டியலிலிருந்து எல்லா உருப்படிகளையும் சுத்தப்படுத்த வேண்டுமா?"
 
-#: ../ukui-panel/panel-run-dialog.c:417
+#: ../ukui-panel/panel-run-dialog.c:419
 #, c-format
 msgid "Could not run command '%s'"
 msgstr "'%s' கட்டளை இயக்க முடியவில்லை"
 
-#: ../ukui-panel/panel-run-dialog.c:457
+#: ../ukui-panel/panel-run-dialog.c:460
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
 msgstr "UTF-8 இலிருந்து '%s' ஐ மாற்ற முடியவில்லை"
 
-#: ../ukui-panel/panel-run-dialog.c:1204
+#: ../ukui-panel/panel-run-dialog.c:1207
 msgid "Choose a file to append to the command..."
 msgstr "கட்டளையுடன் சேர்ப்பதற்கு கேப்பு ஒன்று தெரிவுசெய்க..."
 
-#: ../ukui-panel/panel-run-dialog.c:1582 ../ukui-panel/panel-run-dialog.ui.h:9
+#: ../ukui-panel/panel-run-dialog.c:1585 ../ukui-panel/panel-run-dialog.ui.h:9
 msgid "Select an application to view its description."
 msgstr "செயல்பாட்டின் விவரங்களை பார்க்க அதனை தெரிவு செய்யவும்"
 
-#: ../ukui-panel/panel-run-dialog.c:1620
+#: ../ukui-panel/panel-run-dialog.c:1623
 #, c-format
 msgid "Will run command: '%s'"
 msgstr "இயக்கும் கட்டளை: '%s'"
 
-#: ../ukui-panel/panel-run-dialog.c:1653
+#: ../ukui-panel/panel-run-dialog.c:1656
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
-msgstr "இயக்குக கட்டளை உரையாடல் போது விடப்பட்ட யுஆர்ஐ பட்டியல் தவறான முறையில் (%d) அல்லது நீளத்தில் (%d) இருந்தது.\n"
+msgstr ""
+"இயக்குக கட்டளை உரையாடல் போது விடப்பட்ட யுஆர்ஐ பட்டியல் தவறான முறையில் (%d) அல்லது "
+"நீளத்தில் (%d) இருந்தது.\n"
 
-#: ../ukui-panel/panel-run-dialog.c:1975
+#: ../ukui-panel/panel-run-dialog.c:1978
 msgid "Could not display run dialog"
 msgstr "இயக்குக கட்டளை உரையாடலை காட்ட முடியவில்லை"
 
@@ -2762,25 +2592,25 @@ msgstr "குறுப்பயன் _A:"
 msgid "_Prefs Path:"
 msgstr ""
 
-#: ../ukui-panel/panel-toplevel.c:1218
+#: ../ukui-panel/panel-toplevel.c:1222
 msgid "Hide Panel"
 msgstr "பலகையை மறைக்கவும்"
 
 #. translators: these string will be shown in MetaCity's switch window
 #. * popup when you pass the focus to a panel
-#: ../ukui-panel/panel-toplevel.c:1621 ../ukui-panel/panel-toplevel.c:1631
+#: ../ukui-panel/panel-toplevel.c:1625 ../ukui-panel/panel-toplevel.c:1635
 msgid "Top Panel"
 msgstr ""
 
-#: ../ukui-panel/panel-toplevel.c:1623
+#: ../ukui-panel/panel-toplevel.c:1627
 msgid "Bottom Panel"
 msgstr ""
 
-#: ../ukui-panel/panel-toplevel.c:1625
+#: ../ukui-panel/panel-toplevel.c:1629
 msgid "Left Panel"
 msgstr ""
 
-#: ../ukui-panel/panel-toplevel.c:1627
+#: ../ukui-panel/panel-toplevel.c:1631
 msgid "Right Panel"
 msgstr ""
 
@@ -2816,6 +2646,7 @@ msgstr "தேடுக"
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
+#.
 #: ../ukui-panel/panel-util.c:1097
 #, c-format
 msgid "%1$s: %2$s"
@@ -2826,22 +2657,343 @@ msgstr "%1$s: %2$s"
 msgid "Open URL: %s"
 msgstr "%s இணைய முகவரியை திறக்கவும்: "
 
-#: ../ukui-panel/panel.c:1332
+#: ../ukui-panel/panel.c:1548
 msgid "Delete this drawer?"
 msgstr "இந்த இழுப்பறையை அழிக்கவா?"
 
-#: ../ukui-panel/panel.c:1333
+#: ../ukui-panel/panel.c:1549
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
-msgstr "ஓர் இழுப்பறையை அழித்தால், அதுவும் அதன்\nஅமைவுகளும் இழக்கப்படும். "
+msgstr ""
+"ஓர் இழுப்பறையை அழித்தால், அதுவும் அதன்\n"
+"அமைவுகளும் இழக்கப்படும். "
 
-#: ../ukui-panel/panel.c:1336
+#: ../ukui-panel/panel.c:1552
 msgid "Delete this panel?"
 msgstr " பலகைப் பாளத்தை நீக்கவும்?"
 
-#: ../ukui-panel/panel.c:1337
+#: ../ukui-panel/panel.c:1553
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."
-msgstr "ஓர் பலகையை அழித்தால், அதுவும் அதன்\nஅமைவுகளும் இழக்கப்படும். "
+msgstr ""
+"ஓர் பலகையை அழித்தால், அதுவும் அதன்\n"
+"அமைவுகளும் இழக்கப்படும். "
+
+#~ msgid "Locations"
+#~ msgstr "இருப்பிடங்கள்"
+
+#~ msgid "Edit"
+#~ msgstr "திருத்து"
+
+#~ msgid "Calendar"
+#~ msgstr "நாள்காட்டி"
+
+#~ msgid "%l:%M:%S %p"
+#~ msgstr "%l:%M:%S %p"
+
+#~ msgid "%l:%M %p"
+#~ msgstr "%l:%M %p"
+
+#~ msgid "%H:%M:%S"
+#~ msgstr "%H:%M:%S"
+
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgid "%a %b %e"
+#~ msgstr "%a %b %e"
+
+#~ msgid ""
+#~ "%1$s\n"
+#~ "%2$s"
+#~ msgstr ""
+#~ "%1$s\n"
+#~ "%2$s"
+
+#~ msgid "%1$s, %2$s"
+#~ msgstr "%1$s, %2$s"
+
+#~ msgid "%A %B %d (%%s)"
+#~ msgstr "%A %B %d (%%s)"
+
+#~ msgid "Click to hide month calendar"
+#~ msgstr "மாத நாட்காட்டியை மறைக்க சொடுக்கவும்"
+
+#~ msgid "Click to view month calendar"
+#~ msgstr "மாத நாட்காட்டியை பார்க்க சொடுக்கவும்"
+
+#~ msgid "Computer Clock"
+#~ msgstr "கணிப்பொறி கடிகாரம்"
+
+#~ msgid "%I:%M:%S %p"
+#~ msgstr "%I:%M:%S %p"
+
+#~ msgid "%I:%M %p"
+#~ msgstr "%I:%M %p"
+
+#~ msgid "%A, %B %d %Y"
+#~ msgstr "%A, %B %d %Y"
+
+#~ msgid "Set System Time..."
+#~ msgstr "கணினி நேரத்தை அமை..."
+
+#~ msgid "Set System Time"
+#~ msgstr "கணினி நேரத்தை அமை"
+
+#~ msgid "Failed to set the system time"
+#~ msgstr "கணினி நேரத்தை அமைத்தல் தோல்வியடைந்தது"
+
+#~ msgid "Copy _Time"
+#~ msgstr "(_T) நேரத்தை நகலெடு"
+
+#~ msgid "Copy _Date"
+#~ msgstr "(_D) தேதியை நகலெடு"
+
+#~ msgid "Ad_just Date & Time"
+#~ msgstr "தேதி & நேரத்தை சேர் (_j)"
+
+#~ msgid "Choose Location"
+#~ msgstr "இடத்தை தேர்ந்தெடு"
+
+#~ msgid "Edit Location"
+#~ msgstr "இடத்தை திருத்து"
+
+#~ msgid "City Name"
+#~ msgstr "மாநகரத்தின் பெயர்"
+
+#~ msgid "City Time Zone"
+#~ msgstr "மாநகர நேர மண்டலம்"
+
+#~ msgid "Clock"
+#~ msgstr "கடிகாரம்"
+
+#~ msgid "The Clock displays the current time and date"
+#~ msgstr "கடிகாரம் தற்போதைய நேரத்தையும் தேதியையும் காட்டும்"
+
+#~ msgid ""
+#~ "<small><i>Type a city, region, or country name and then select a match "
+#~ "from the pop-up.</i></small>"
+#~ msgstr ""
+#~ "<small><i>ஒரு நகரம், பகுதி அல்லது நாட்டு பெயர் ஆகியவற்றை தேர்ந்தெடுத்து "
+#~ "பாப்பப்பிலிருந்து ஒரு பொருத்தத்தத்தை தேர்ந்தெடு.</i></small>"
+
+#~ msgid "_Timezone:"
+#~ msgstr "நேரமண்டலம்: (_T)"
+
+#~ msgid "_Location Name:"
+#~ msgstr "இடப்பெயர்: (_L)"
+
+#~ msgid "<i>(optional)</i>"
+#~ msgstr "<i>(விருப்ப தேர்வு)</i>"
+
+#~ msgid "L_ongitude:"
+#~ msgstr "தீர்க்க ரேகை (_o):"
+
+#~ msgid "L_atitude:"
+#~ msgstr "அட்ச ரேகை (_a):"
+
+#~ msgid "Time & Date"
+#~ msgstr " நேரம் மற்றும் தேதி "
+
+#~ msgid "_Time:"
+#~ msgstr "நேரம்: (_T)"
+
+#~ msgid "Current Time:"
+#~ msgstr "இப்போதைய நேரம்:"
+
+#~ msgid "_Set System Time"
+#~ msgstr "கணினி நேரத்தை அமை (_S)"
+
+#~ msgid "East"
+#~ msgstr "கிழக்கு"
+
+#~ msgid "West"
+#~ msgstr "மேற்கு"
+
+#~ msgid "North"
+#~ msgstr "வடக்கு"
+
+#~ msgid "South"
+#~ msgstr "தெற்கு"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "கடிகாரம் விருப்பங்கள்"
+
+#~ msgid "Clock Format"
+#~ msgstr "கடிகார வடிவம்"
+
+#~ msgid "_12 hour format"
+#~ msgstr "_12 மணி வடிவமைப்பு"
+
+#~ msgid "_24 hour format"
+#~ msgstr "_24 மணி வடிவமைப்பு"
+
+#~ msgid "Panel Display"
+#~ msgstr "பலக காட்சி"
+
+#~ msgid "Show the _date"
+#~ msgstr "(_d)  தேதியை காட்டுக"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "(_n) நொடிகளை காட்டுக"
+
+#~ msgid "Show _weather"
+#~ msgstr "(_w)  வானிலையை காட்டுக"
+
+#~ msgid "Show _temperature"
+#~ msgstr "(_t) வெப்ப அளவை காட்டுக"
+
+#~ msgid "Display"
+#~ msgstr "காட்சி"
+
+#~ msgid "_Visibility unit:"
+#~ msgstr "(_V) தெளிவுப்பார்வை அலகு:"
+
+#~ msgid "_Pressure unit:"
+#~ msgstr "அழுத்த அலகு (_P):"
+
+#~ msgid "_Wind speed unit:"
+#~ msgstr "(_W) காற்று வேக அலகு:"
+
+#~ msgid "_Temperature unit:"
+#~ msgstr "(_T) வெப்ப அலகு:"
+
+#~ msgid "Weather"
+#~ msgstr "வானிலை"
+
+#~ msgid "Failed to set the system timezone"
+#~ msgstr "கணினி நேரமண்டலத்தின் பெயர் ஐ அமைக்க தவறியது."
+
+#~ msgid "<small>Set...</small>"
+#~ msgstr "<small>அமை...</small>"
+
+#~ msgid "<small>Set</small>"
+#~ msgstr "<small>அமை</small>"
+
+#~ msgid ""
+#~ "Set location as current location and use its timezone for this computer"
+#~ msgstr "இடத்தை இப்போதைய இடமாக அமைத்து அதன் நேர மண்டலத்தை இந்த கணினிக்கு பயன்படுத்துக"
+
+#~ msgid "%l:%M <small>%p (%A)</small>"
+#~ msgstr "%l:%M <small>%p (%A)</small>"
+
+#~ msgid "%H:%M <small>(%A)</small>"
+#~ msgstr "%H:%M <small>(%A)</small>"
+
+#~ msgid "%l:%M <small>%p</small>"
+#~ msgstr "%l:%M <small>%p</small>"
+
+#~ msgid "%s, %s"
+#~ msgstr "%s, %s"
+
+#~ msgid "Unknown"
+#~ msgstr "தெரியாத"
+
+#~ msgid "%s, feels like %s"
+#~ msgstr "%s, %sஐ போல உணர்கிறது"
+
+#~ msgid "Sunrise: %s / Sunset: %s"
+#~ msgstr "சூரிய உதயம்: %s / சூரிய அஸ்தமனம்: %s"
+
+#~ msgid "Hour format"
+#~ msgstr "மணி வடிவமைப்பு"
+
+#~ msgid ""
+#~ "This key specifies the hour format used by the clock applet. Possible "
+#~ "values are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom"
+#~ "\". If set to \"internet\", the clock will display Internet time. The "
+#~ "Internet time system divides the day into 1000 \".beats\". There are no "
+#~ "time zones in this system, so time is the same all over the world. If set "
+#~ "to \"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key."
+#~ msgstr ""
+#~ "இந்த விசை கடிகார குறுநிரல் மணை அமைப்பை குறிப்பிடும். மதிப்புகள் \"12-மணி\", \"24-"
+#~ "மணி\", \"இணையம்\", \"யூனிக்ஸ்\" மற்றும் \"தனிப்பயன்\". \"இணையம்\" என அமைத்தால், "
+#~ "இணைய நேரத்தை காட்டும். இணைய நேரம் நேரத்தை 1000 பகுதிகளாக பிரிக்கும் \".beats\". "
+#~ "கணினியில் நேரம் இடம் குறிப்பிடப்படவில்லையென்றால் உலகம் முழுமைக்கும் பொதுவான நேரத்தை "
+#~ "காட்டும். \"யூனிக்ஸ்\" என அமைத்தால் கடிகாரம் நெடிகளில் சேரத்தை காட்டும் அதாவது "
+#~ "1970-01-01. \"தனிப்பயன்\" என அமைத்தால் நீங்கள் குறிப்பிட்ட அமைப்பில் நேரம் காட்டப்படும்."
+
+#~ msgid "Custom format of the clock"
+#~ msgstr "கடிகாரத்தின் தனிப்பயன் வடிவமைப்பு"
+
+#~ msgid ""
+#~ "This key specifies the format used by the clock applet when the format "
+#~ "key is set to \"custom\". You can use conversion specifiers understood by "
+#~ "strftime() to obtain a specific format. See the strftime() manual for "
+#~ "more information."
+#~ msgstr ""
+#~ "வடிவமைப்பு விசை \"தனிப்பயன்\" என்று அமைக்கப்படும் போது கடிகார குறுநிரல் இந்த "
+#~ "விசையை பயன்படுத்தும் குறிப்பிட்ட அமைப்பை பெற்றுக்கொள்ள strftime() ஆல் "
+#~ "புரிந்துகொள்ளக்கூடிய மாற்று குறிப்புகளை தரவும். மேலும் அதிக விவரங்களுக்கு "
+#~ "strftime() கையேட்டை பார்க்கவும்."
+
+#~ msgid "Show time with seconds"
+#~ msgstr "நொடிகளுடன் நேரம் காட்டுக"
+
+#~ msgid "If true, display seconds in time."
+#~ msgstr "உண்மை என்றால், நேரத்தில் நொடிகள் காட்டுக."
+
+#~ msgid "Show date in clock"
+#~ msgstr "தேதியை கடிகாரத்தில் காட்டுக"
+
+#~ msgid "If true, display date in the clock, in addition to time."
+#~ msgstr "மெய்யென்றால், கடிகாரத்தில் தேதியையும் காட்டுக"
+
+#~ msgid "Show date in tooltip"
+#~ msgstr "தேதியை கருவி-உதவியில் காண்பி"
+
+#~ msgid "If true, show date in a tooltip when the pointer is over the clock."
+#~ msgstr ""
+#~ "உண்மையெனில், சுட்டியை கடிகாத்திற்கு அருகில் கொண்டு செல்லும்போது தேதி குறிப்பை காட்டு"
+
+#~ msgid "Show weather in clock"
+#~ msgstr "வானிலையை கடிகாரத்தில் காட்டுக"
+
+#~ msgid "If true, display a weather icon."
+#~ msgstr "உண்மை என்றால், வானிலை சின்னத்தை காட்டுக."
+
+#~ msgid "Show temperature in clock"
+#~ msgstr "வெப்பநிலையை கடிகாரத்தில் காட்டுக"
+
+#~ msgid "If true, show the temperature next to the weather icon."
+#~ msgstr "உண்மையானால் வெப்ப நிலையை வானிலை சின்னத்துக்கு அடுத்து காட்டவும்."
+
+#~ msgid "Show week numbers in calendar"
+#~ msgstr "நாட்காட்டியில் வார எண்களை காட்டுக"
+
+#~ msgid "If true, show week numbers in the calendar."
+#~ msgstr "உண்மையானால் நாட்காட்டியில் வார எண்களை காட்டவும்."
+
+#~ msgid "Expand list of locations"
+#~ msgstr "இடங்கள் பட்டியலை விரிக்கவும்."
+
+#~ msgid "If true, expand the list of locations in the calendar window."
+#~ msgstr "உண்மையானால் இடங்கள் பட்டியலை நாட்காட்டி சாளரத்தில் விரிக்கவும்."
+
+#~ msgid "List of locations"
+#~ msgstr "இடங்களின் பட்டியல் "
+
+#~ msgid "A list of locations to display in the calendar window."
+#~ msgstr "நாட்காட்டி சாளரத்தில் காட்ட இடங்கள் பட்டியல்"
+
+#~ msgid "Temperature unit"
+#~ msgstr "வெப்ப அலகு"
+
+#~ msgid "The unit to use when showing temperatures."
+#~ msgstr "வெப்ப நிலையை காட்டும் போது பயன்படுத்த அலகு"
+
+#~ msgid "Speed unit"
+#~ msgstr "வேக அலகு"
+
+#~ msgid "The unit to use when showing wind speed."
+#~ msgstr "காற்றின் வேகத்தை காட்டும் போது பயன்படுத்த அலகு."
+
+#~ msgid "_Add to Panel..."
+#~ msgstr "(_A) பலகத்தில் சேக்கவும்..."
+
+#~ msgid "_Delete This Panel"
+#~ msgstr "(_D) இந்த பலகையை அழிக்கவும்"

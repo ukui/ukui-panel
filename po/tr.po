@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # tarakbumba <tarakbumba@gmail.com>, 2014
 # tarakbumba <tarakbumba@gmail.com>, 2014
@@ -16,657 +16,176 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UKUI Desktop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-26 11:42+0300\n"
+"POT-Creation-Date: 2019-12-13 17:34+0800\n"
 "PO-Revision-Date: 2017-09-19 11:04+0000\n"
 "Last-Translator: Mehmet\n"
 "Language-Team: Turkish (http://www.transifex.com/ukui/UKUI/language/tr/)\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../applets/clock/calendar-window.c:248 ../applets/clock/clock.ui.h:27
-msgid "Locations"
-msgstr "Konumlar"
-
-#: ../applets/clock/calendar-window.c:248
-msgid "Edit"
-msgstr "Düzenle"
-
-#: ../applets/clock/calendar-window.c:474
-msgid "Calendar"
-msgstr "Takvim"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format (eg, like
-#. * in the US: 8:10 am). The %p expands to am/pm.
-#: ../applets/clock/clock.c:455
-msgid "%l:%M:%S %p"
-msgstr "%l:%M:%S %p"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format (eg, like
-#. * in the US: 8:10 am). The %p expands to am/pm.
-#: ../applets/clock/clock.c:455 ../applets/clock/clock-location-tile.c:513
-msgid "%l:%M %p"
-msgstr "%l:%M %p"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format (eg, like
-#. * in France: 20:10).
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 24-hours
-#. * format (eg, like in France: 20:10).
-#: ../applets/clock/clock.c:460 ../applets/clock/clock.c:1613
-msgid "%H:%M:%S"
-msgstr "%H:%M:%S"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 24-hours
-#. * format (eg, like in France: 20:10).
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format
-#. * (eg, like in France: 20:10).
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format (eg, like
-#. * in France: 20:10).
-#: ../applets/clock/clock.c:460 ../applets/clock/clock.c:1619
-#: ../applets/clock/clock-location-tile.c:473
-#: ../applets/clock/clock-location-tile.c:520
-msgid "%H:%M"
-msgstr "%H:%M"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the date. Replace %e with %d if, when
-#. * the day of the month as a decimal number is a single digit,
-#. * it should begin with a 0 in your locale (e.g. "May 01"
-#. * instead of "May  1").
-#: ../applets/clock/clock.c:471
-msgid "%a %b %e"
-msgstr "%a %b %e"
-
-#. translators: reverse the order of these arguments
-#. *              if the time should come before the
-#. *              date on a clock in your locale.
-#: ../applets/clock/clock.c:478
-#, c-format
-msgid ""
-"%1$s\n"
-"%2$s"
-msgstr "%1$s\n%2$s"
-
-#. translators: reverse the order of these arguments
-#. *              if the time should come before the
-#. *              date on a clock in your locale.
-#: ../applets/clock/clock.c:486
-#, c-format
-msgid "%1$s, %2$s"
-msgstr "%1$s, %2$s"
-
-#. Show date in tooltip.
-#. Translators: This is a strftime format string.
-#. * It is used to display a date. Please leave "%%s" as it is:
-#. * it will be used to insert the timezone name later.
-#: ../applets/clock/clock.c:659
-msgid "%A %B %d (%%s)"
-msgstr "%A, %d %B (%%s)"
-
-#: ../applets/clock/clock.c:685
-msgid "Click to hide month calendar"
-msgstr "Ay takvimini gizlemek için tıklayın"
-
-#: ../applets/clock/clock.c:687
-msgid "Click to view month calendar"
-msgstr "Ay takvimini görüntülemek için tıklayın"
-
-#: ../applets/clock/clock.c:1451
-msgid "Computer Clock"
-msgstr "Bilgisayar Saati"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 12-hours
-#. * format with a leading 0 if needed (eg, like
-#. * in the US: 08:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock.c:1598
-msgid "%I:%M:%S %p"
-msgstr "%I:%M:%S %p"
-
-#. Translators: This is a strftime format
-#. * string.
-#. * It is used to display the time in 12-hours
-#. * format with a leading 0 if needed (eg, like
-#. * in the US: 08:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock.c:1606
-msgid "%I:%M %p"
-msgstr "%I:%M %p"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display a date in the full format (so that people can
-#. * copy and paste it elsewhere).
-#: ../applets/clock/clock.c:1652
-msgid "%A, %B %d %Y"
-msgstr "%A, %d %B %Y"
-
-#: ../applets/clock/clock.c:1683
-msgid "Set System Time..."
-msgstr "Sistem Zamanını Ayarla..."
-
-#: ../applets/clock/clock.c:1684
-msgid "Set System Time"
-msgstr "Sistem Zamanını Ayarla"
-
-#: ../applets/clock/clock.c:1699
-msgid "Failed to set the system time"
-msgstr "Sistem zamanı ayarlama başarısız oldu"
-
-#: ../applets/clock/clock.c:1897 ../applets/fish/fish.c:1673
-#: ../applets/wncklet/window-list.c:179
-#: ../applets/wncklet/workspace-switcher.c:336
-msgid "_Preferences"
-msgstr "Ter_cihler"
-
-#: ../applets/clock/clock.c:1900 ../applets/fish/fish.c:1676
-#: ../applets/notification_area/main.c:176
-#: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-list.c:187
-#: ../applets/wncklet/window-menu.c:100
-#: ../applets/wncklet/workspace-switcher.c:344 ../ukui-panel/drawer.c:545
-#: ../ukui-panel/panel-action-button.c:730
-#: ../ukui-panel/panel-context-menu.c:265 ../ukui-panel/panel-menu-bar.c:359
-#: ../ukui-panel/panel-menu-button.c:666
-msgid "_Help"
-msgstr "_Yardım"
-
-#: ../applets/clock/clock.c:1903 ../applets/fish/fish.c:1679
-#: ../applets/notification_area/main.c:179
-#: ../applets/wncklet/showdesktop.c:243 ../applets/wncklet/window-list.c:195
-#: ../applets/wncklet/window-menu.c:108
-#: ../applets/wncklet/workspace-switcher.c:352
-msgid "_About"
-msgstr "_Hakkında"
-
-#: ../applets/clock/clock.c:1906
-msgid "Copy _Time"
-msgstr "_Saati Kopyala"
-
-#: ../applets/clock/clock.c:1909
-msgid "Copy _Date"
-msgstr "_Tarihi Kopyala"
-
-#: ../applets/clock/clock.c:1912
-msgid "Ad_just Date & Time"
-msgstr "Tarihi ve Zamanı _Ayarla"
-
-#: ../applets/clock/clock.c:2855
-msgid "Choose Location"
-msgstr "Konum Seç"
-
-#: ../applets/clock/clock.c:2934
-msgid "Edit Location"
-msgstr "Konumu Düzenle"
-
-#: ../applets/clock/clock.c:3061
-msgid "City Name"
-msgstr "Şehir İsmi"
-
-#: ../applets/clock/clock.c:3065
-msgid "City Time Zone"
-msgstr "Şehir Saat Dilimi"
-
-#: ../applets/clock/clock.c:3280
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:3
-msgid "Clock"
-msgstr "Saat"
-
-#: ../applets/clock/clock.c:3282
-msgid "The Clock displays the current time and date"
-msgstr "Saat uygulamacığı şu anki zamanı ve tarihi gösterir"
-
-#: ../applets/clock/clock.c:3286 ../applets/fish/fish.c:575
-#: ../applets/notification_area/main.c:170
-#: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:562
-#: ../applets/wncklet/window-menu.c:90
-#: ../applets/wncklet/workspace-switcher.c:604
-#: ../ukui-panel/panel-context-menu.c:121
-msgid "translator-credits"
-msgstr "Barış Çiçek <baris@teamforce.name.tr>\nmauron, 2012, 2013\nAtilla Öntaş <tarakbumba@gmail.com>, 2014."
-
-#. Languages that have a single word that translates as either "state" or
-#. "province" should use that instead of "region".
-#: ../applets/clock/clock.ui.h:2
-msgid ""
-"<small><i>Type a city, region, or country name and then select a match from "
-"the pop-up.</i></small>"
-msgstr "<small><i>Bir şehir, bölge veya ülke adı girin ve açılan pencereden bir eşleşme seçin.</i></small>"
-
-#: ../applets/clock/clock.ui.h:3
-msgid "_Timezone:"
-msgstr "_Saat Dilimi:"
-
-#: ../applets/clock/clock.ui.h:4
-msgid "_Location Name:"
-msgstr "_Konum İsmi:"
-
-#: ../applets/clock/clock.ui.h:5
-msgid "<i>(optional)</i>"
-msgstr "<i>(seçimlik)</i>"
-
-#: ../applets/clock/clock.ui.h:6
-msgid "L_ongitude:"
-msgstr "_Boylam:"
-
-#: ../applets/clock/clock.ui.h:7
-msgid "L_atitude:"
-msgstr "_Enlem:"
-
-#: ../applets/clock/clock.ui.h:8
-msgid "Time & Date"
-msgstr "Zaman ve Tarih"
-
-#: ../applets/clock/clock.ui.h:9
-msgid "_Time:"
-msgstr "_Zaman:"
-
-#: ../applets/clock/clock.ui.h:10
-msgid "Current Time:"
-msgstr "Mevcut Zaman:"
-
-#: ../applets/clock/clock.ui.h:11
-msgid "_Set System Time"
-msgstr "_Sistem Zamanını Ayarla"
-
-#: ../applets/clock/clock.ui.h:12
-msgid "East"
-msgstr "Doğu"
-
-#: ../applets/clock/clock.ui.h:13
-msgid "West"
-msgstr "Batı"
-
-#: ../applets/clock/clock.ui.h:14
-msgid "North"
-msgstr "Kuzey"
-
-#: ../applets/clock/clock.ui.h:15
-msgid "South"
-msgstr "Güney"
-
-#: ../applets/clock/clock.ui.h:16
-msgid "Clock Preferences"
-msgstr "Saat Tercihleri"
-
-#: ../applets/clock/clock.ui.h:17
-msgid "Clock Format"
-msgstr "Saat Biçimi"
-
-#: ../applets/clock/clock.ui.h:18
-msgid "_12 hour format"
-msgstr "_12 saat biçimi"
-
-#: ../applets/clock/clock.ui.h:19
-msgid "_24 hour format"
-msgstr "_24 saat biçimi"
-
-#: ../applets/clock/clock.ui.h:20
-msgid "Panel Display"
-msgstr "Panel Ekranı"
-
-#: ../applets/clock/clock.ui.h:21
-msgid "Show the _date"
-msgstr "_Tarihi göster"
-
-#: ../applets/clock/clock.ui.h:22
-msgid "Show seco_nds"
-msgstr "_Saniyeleri göster"
-
-#: ../applets/clock/clock.ui.h:23
-msgid "Show wee_k numbers in calendar"
-msgstr "Ta_kvimde hafta numaralarını göster"
-
-#: ../applets/clock/clock.ui.h:24
-msgid "Show _weather"
-msgstr "_Hava durumunu göster"
-
-#: ../applets/clock/clock.ui.h:25
-msgid "Show _temperature"
-msgstr "Sıcaklığı _göster"
-
-#: ../applets/clock/clock.ui.h:26 ../applets/fish/fish.ui.h:2
-#: ../ukui-panel/panel-properties-dialog.ui.h:11
-msgid "General"
-msgstr "Genel"
-
-#: ../applets/clock/clock.ui.h:28
-msgid "Display"
-msgstr "Görüntü"
-
-#: ../applets/clock/clock.ui.h:29
-msgid "_Visibility unit:"
-msgstr "_Görüş mesafesi birimi:"
-
-#: ../applets/clock/clock.ui.h:30
-msgid "_Pressure unit:"
-msgstr "_Basınç birimi:"
-
-#: ../applets/clock/clock.ui.h:31
-msgid "_Wind speed unit:"
-msgstr "_Rüzgar hızı birimi:"
-
-#: ../applets/clock/clock.ui.h:32
-msgid "_Temperature unit:"
-msgstr "_Sıcaklık birimi:"
-
-#: ../applets/clock/clock.ui.h:33
-msgid "Weather"
-msgstr "Hava Durumu"
-
-#: ../applets/clock/clock.ui.h:34
-msgid "Time _Settings"
-msgstr "Zaman _Ayarları"
-
-#: ../applets/clock/clock-location-tile.c:183
-msgid "Failed to set the system timezone"
-msgstr "Sistem saat dilimi atanırken başarısız olundu"
-
-#: ../applets/clock/clock-location-tile.c:231
-msgid "<small>Set...</small>"
-msgstr "<small>Ayarla...</small>"
-
-#: ../applets/clock/clock-location-tile.c:232
-msgid "<small>Set</small>"
-msgstr "<small>Ayarla</small>"
-
-#: ../applets/clock/clock-location-tile.c:314
-msgid ""
-"Set location as current location and use its timezone for this computer"
-msgstr "Konumu mevcut konum olarak ata ve bu bilgisayar için onun zaman dilimini kullan"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format
-#. * (eg, like in the US: 8:10 am), when the local
-#. * weekday differs from the weekday at the location
-#. * (the %A expands to the weekday). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock-location-tile.c:450
-msgid "%l:%M <small>%p (%A)</small>"
-msgstr "%l:%M <small>%p (%A)</small>"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 24-hours format
-#. * (eg, like in France: 20:10), when the local
-#. * weekday differs from the weekday at the location
-#. * (the %A expands to the weekday).
-#: ../applets/clock/clock-location-tile.c:458
-msgid "%H:%M <small>(%A)</small>"
-msgstr "%H:%M <small>(%A)</small>"
-
-#. Translators: This is a strftime format string.
-#. * It is used to display the time in 12-hours format
-#. * (eg, like in the US: 8:10 am). The %p expands to
-#. * am/pm.
-#: ../applets/clock/clock-location-tile.c:467
-msgid "%l:%M <small>%p</small>"
-msgstr "%l:%M <small>%p</small>"
-
-#: ../applets/clock/clock-location-tile.c:606
-#, c-format
-msgid "%s, %s"
-msgstr "%s, %s"
-
-#. FMQ: it's broken to read from another module's translations; add some API
-#. to libukuiweather.
-#: ../applets/clock/clock-location-tile.c:618
-#: ../applets/clock/clock-location-tile.c:627
-msgid "Unknown"
-msgstr "Bilinmeyen"
-
-#. Translators: The two strings are temperatures.
-#: ../applets/clock/clock-location-tile.c:620
-#, c-format
-msgid "%s, feels like %s"
-msgstr "%s, hissedilen %s"
-
-#: ../applets/clock/clock-location-tile.c:643
-#, c-format
-msgid "Sunrise: %s / Sunset: %s"
-msgstr "Gün doğumu: %s / Gün batımı: %s"
-
-#: ../applets/clock/clock-utils.c:95 ../applets/fish/fish.c:168
-#: ../applets/notification_area/main.c:121 ../applets/wncklet/wncklet.c:71
-#: ../ukui-panel/libpanel-util/panel-show.c:234
+#: ../applets/fish/fish.c:171 ../applets/notification_area/main.c:130
+#: ../applets/wncklet/wncklet.c:74 ../ukui-panel/libpanel-util/panel-show.c:236
 #, c-format
 msgid "Could not display help document '%s'"
 msgstr "Yardım belgesi '%s' görüntülenemedi"
 
-#: ../applets/clock/clock-utils.c:124 ../applets/fish/fish.c:194
-#: ../applets/notification_area/main.c:135 ../applets/wncklet/wncklet.c:88
+#: ../applets/fish/fish.c:197 ../applets/notification_area/main.c:144
+#: ../applets/wncklet/wncklet.c:91
 msgid "Error displaying help document"
 msgstr "Yardım belgesi görüntülenirken hata"
 
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:1
-msgid "Hour format"
-msgstr "Saat biçimi"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:2
-msgid ""
-"This key specifies the hour format used by the clock applet. Possible values"
-" are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom\". If set"
-" to \"internet\", the clock will display Internet time. The Internet time "
-"system divides the day into 1000 \".beats\". There are no time zones in this"
-" system, so time is the same all over the world. If set to \"unix\", the "
-"clock will display time in seconds since Epoch, i.e. 1970-01-01. If set to "
-"\"custom\", the clock will display time according to the format specified in"
-" the custom_format key."
-msgstr "Bu anahtar saat uygulamacığı için kullanılacak saat biçimini belirtir. Geçerli değerler, \"12-hour\", \"24-hour\", \"internet\", \"unix\" ve \"custom\"dır. Eğer \"internet\" ayarlanmışsa, saat İnternet saatini gösterir. İnternet saati günleri 1000 \".beats\"e böler. Bu sistemde zaman dilimi yoktur, bu yüzden saat dünyanın her yerinde aynıdır. Eğer \"unix\" ayarlanmışsa, saat Epoch'dan, yani 1970-01-01'den, bugüne geçen zamanı saniye olarak gösterir. Eğer \"custom\" ayarlanmışsa, saat zamanı 'custom_format' anahtarında belirtildiği biçimde gösterir."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:3
-msgid "Custom format of the clock"
-msgstr "Özel saat biçimi"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:4
-msgid ""
-"This key specifies the format used by the clock applet when the format key "
-"is set to \"custom\". You can use conversion specifiers understood by "
-"strftime() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr "Bu anahtar format anahtarı \"custom\"a ayarlı olduğunda saat uygulamacığında kullanılacak biçimi belirtir. strftime() tarafından algılanabilen çevrim belirteçlerini bir biçim belirtmek için kullanabilirsiniz. Daha fazla bilgi için strftime() kılavuzuna bakın."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:5
-msgid "Show time with seconds"
-msgstr "Zamanı saniye ile birlikte göster"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:6
-msgid "If true, display seconds in time."
-msgstr "Eğer seçiliyse, zamanda saniyeleri göster."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:7
-msgid "Show date in clock"
-msgstr "Saat uygulamacığının içinde tarihi göster"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr "Eğer seçiliyse, zamana ek olarak saatin içinde tarihi göster."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:9
-msgid "Show date in tooltip"
-msgstr "Balon içinde tarihi göster"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:10
-msgid "If true, show date in a tooltip when the pointer is over the clock."
-msgstr "Eğer seçiliyse, imleç saatin üzerine getirildiğinde balonda tarihi göster."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:11
-msgid "Show weather in clock"
-msgstr "Saat içinde hava durumunu göster"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:12
-msgid "If true, display a weather icon."
-msgstr "Eğer seçiliyse, bir hava durumu simgesi gösterir."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:13
-msgid "Show temperature in clock"
-msgstr "Saat içinde sıcaklığı göster"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:14
-msgid "If true, show the temperature next to the weather icon."
-msgstr "Eğer seçiliyse, hava durumu simgesinin yanında sıcaklığı gösterir."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:15
-msgid "Show week numbers in calendar"
-msgstr "Takvimde kaçıncı hafta olduğunu göster"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:16
-msgid "If true, show week numbers in the calendar."
-msgstr "Eğer seçiliyse, takvimde kaçıncı hafta olduğunu göster."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:17
-msgid "Expand list of locations"
-msgstr "Konumların listesini genişlet"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:18
-msgid "If true, expand the list of locations in the calendar window."
-msgstr "Eğer seçiliyse, takvim penceresinde konumların listesi açılır."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:19
-msgid "List of locations"
-msgstr "Konumların listesi"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:20
-msgid "A list of locations to display in the calendar window."
-msgstr "Takvim penceresinde gösterilecek konumların listesi."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:21
-msgid "Temperature unit"
-msgstr "Sıcaklık birimi"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:22
-msgid "The unit to use when showing temperatures."
-msgstr "Sıcaklıklar gösterilirken kullanılacak birim."
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:23
-msgid "Speed unit"
-msgstr "Hız birimi"
-
-#: ../applets/clock/org.ukui.panel.applet.clock.gschema.xml.in.h:24
-msgid "The unit to use when showing wind speed."
-msgstr "Rüzgar hızı gösterilirken kullanılacak birim."
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:1
-msgid "Clock Applet Factory"
-msgstr "Saat Uygulamacık Üreticisi"
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:2
-msgid "Factory for clock applet"
-msgstr "Saat uygulamacığı için üretici"
-
-#: ../applets/clock/org.ukui.panel.ClockApplet.ukui-panel-applet.in.in.h:4
-msgid "Get the current time and date"
-msgstr "Şu anki zamanı ve tarihi al"
-
-#: ../applets/fish/fish.c:264
+#: ../applets/fish/fish.c:267
 #, c-format
 msgid ""
 "Warning:  The command appears to be something actually useful.\n"
 "Since this is a useless applet, you may not want to do this.\n"
 "We strongly advise you against using %s for anything\n"
 "which would make the applet \"practical\" or useful."
-msgstr "Uyarı:  Bu komut kullanışlı gibi gözüküyor.\nBu uygulamacık gereksiz olduğu için, bunu yapmak istemeyebilirsiniz.\nUygulamacığı \"pratik\" veya kullanışlı \nbir hale çevirmemek için %s komutunu kullanmamanızı tavsiye ederiz."
+msgstr ""
+"Uyarı:  Bu komut kullanışlı gibi gözüküyor.\n"
+"Bu uygulamacık gereksiz olduğu için, bunu yapmak istemeyebilirsiniz.\n"
+"Uygulamacığı \"pratik\" veya kullanışlı \n"
+"bir hale çevirmemek için %s komutunu kullanmamanızı tavsiye ederiz."
 
-#: ../applets/fish/fish.c:436
+#: ../applets/fish/fish.c:439
 msgid "Images"
 msgstr "Resimler"
 
-#: ../applets/fish/fish.c:542 ../applets/fish/fish.c:586
-#: ../applets/fish/fish.c:692
+#: ../applets/fish/fish.c:545 ../applets/fish/fish.c:589
+#: ../applets/fish/fish.c:695
 #, no-c-format
 msgid "%s the Fish"
 msgstr "%s Balığı"
 
-#: ../applets/fish/fish.c:543
+#: ../applets/fish/fish.c:546
 #, c-format
 msgid ""
 "%s has no use what-so-ever. It only takes up disk space and compilation "
 "time, and if loaded it also takes up precious panel space and memory. "
 "Anybody found using it should be promptly sent for a psychiatric evaluation."
-msgstr "%s ne olursa olsun hiçbir kullanımı yoktur. Sadece disk alanınızda ve çok değerli panel alanınızda yer kaplamaya yarar. Eğer birisi bu uygulamacığı kullanıyorsa, derhal bir ruh doktoruna gitmesini tavsiye ederiz."
+msgstr ""
+"%s ne olursa olsun hiçbir kullanımı yoktur. Sadece disk alanınızda ve çok "
+"değerli panel alanınızda yer kaplamaya yarar. Eğer birisi bu uygulamacığı "
+"kullanıyorsa, derhal bir ruh doktoruna gitmesini tavsiye ederiz."
 
-#: ../applets/fish/fish.c:563
+#: ../applets/fish/fish.c:566
 msgid "(with minor help from George)"
 msgstr "(George'un naçizane yardımlarıyla)"
 
-#: ../applets/fish/fish.c:569
+#: ../applets/fish/fish.c:572
 #: ../applets/fish/org.ukui.panel.FishApplet.ukui-panel-applet.in.in.h:3
 msgid "Fish"
 msgstr "Balık"
 
-#: ../applets/fish/fish.c:587
+#: ../applets/fish/fish.c:578 ../applets/notification_area/main.c:179
+#: ../applets/wncklet/showdesktop.c:520 ../applets/wncklet/window-list.c:605
+#: ../applets/wncklet/window-menu.c:90
+#: ../applets/wncklet/workspace-switcher.c:623
+#: ../ukui-panel/panel-context-menu.c:151
+msgid "translator-credits"
+msgstr ""
+"Barış Çiçek <baris@teamforce.name.tr>\n"
+"mauron, 2012, 2013\n"
+"Atilla Öntaş <tarakbumba@gmail.com>, 2014."
+
+#: ../applets/fish/fish.c:590
 #, c-format
 msgid "%s the Fish, a contemporary oracle"
 msgstr "Çağdaş Kahin %s Balığı"
 
-#: ../applets/fish/fish.c:653
+#: ../applets/fish/fish.c:656
 msgid "Unable to locate the command to execute"
 msgstr "Çalıştırılacak komutun konumuna ulaşılamıyor"
 
-#: ../applets/fish/fish.c:697
+#: ../applets/fish/fish.c:700
 #, no-c-format
 msgid "%s the Fish Says:"
 msgstr "%s Balığı Diyor ki:"
 
-#: ../applets/fish/fish.c:760
+#: ../applets/fish/fish.c:763
 #, c-format
 msgid ""
 "Unable to read output from command\n"
 "\n"
 "Details: %s"
-msgstr "Komutun çıktısı okunamadı\n\nAyrıntılar: %s"
+msgstr ""
+"Komutun çıktısı okunamadı\n"
+"\n"
+"Ayrıntılar: %s"
 
-#: ../applets/fish/fish.c:836
+#: ../applets/fish/fish.c:840
 msgid "_Speak again"
 msgstr "Tek_rar konuş"
 
-#: ../applets/fish/fish.c:923
+#: ../applets/fish/fish.c:927
 #, c-format
 msgid "The configured command is not working and has been replaced by: %s"
 msgstr "Ayarlanmış komut çalışmadığı için '%s' ile değiştirilmiştir."
 
-#: ../applets/fish/fish.c:955
+#: ../applets/fish/fish.c:960
 #, c-format
 msgid ""
 "Unable to execute '%s'\n"
 "\n"
 "Details: %s"
-msgstr "'%s' çalıştırılamadı\n\nAyrıntılar: %s"
+msgstr ""
+"'%s' çalıştırılamadı\n"
+"\n"
+"Ayrıntılar: %s"
 
-#: ../applets/fish/fish.c:971
+#: ../applets/fish/fish.c:976
 #, c-format
 msgid ""
 "Unable to read from '%s'\n"
 "\n"
 "Details: %s"
-msgstr "'%s' uygulamasından okunamadı\n\nAyrıntılar: %s"
+msgstr ""
+"'%s' uygulamasından okunamadı\n"
+"\n"
+"Ayrıntılar: %s"
 
-#: ../applets/fish/fish.c:1529
+#: ../applets/fish/fish.c:1544
 msgid "The water needs changing"
 msgstr "Suyun değiştirilmesi lazım"
 
-#: ../applets/fish/fish.c:1531
+#: ../applets/fish/fish.c:1546
 msgid "Look at today's date!"
 msgstr "Bugünün tarihine bakın!"
 
-#: ../applets/fish/fish.c:1614
+#: ../applets/fish/fish.c:1629
 #, c-format
 msgid "%s the Fish, the fortune teller"
 msgstr "Falcı %s Balığı"
 
+#: ../applets/fish/fish.c:1688 ../applets/wncklet/window-list.c:172
+#: ../applets/wncklet/workspace-switcher.c:327
+msgid "_Preferences"
+msgstr "Ter_cihler"
+
+#: ../applets/fish/fish.c:1691 ../applets/notification_area/main.c:185
+#: ../applets/wncklet/showdesktop.c:235 ../applets/wncklet/window-menu.c:100
+#: ../applets/wncklet/workspace-switcher.c:335 ../ukui-panel/drawer.c:545
+#: ../ukui-panel/panel-action-button.c:737 ../ukui-panel/panel-menu-bar.c:359
+#: ../ukui-panel/panel-menu-button.c:669
+msgid "_Help"
+msgstr "_Yardım"
+
+#: ../applets/fish/fish.c:1694 ../applets/notification_area/main.c:188
+#: ../applets/wncklet/showdesktop.c:243 ../applets/wncklet/window-menu.c:108
+#: ../applets/wncklet/workspace-switcher.c:343
+msgid "_About"
+msgstr "_Hakkında"
+
 #: ../applets/fish/fish.ui.h:1
 msgid "Fish Preferences"
 msgstr "Balık Tercihleri"
+
+#: ../applets/fish/fish.ui.h:2 ../ukui-panel/panel-properties-dialog.ui.h:11
+msgid "General"
+msgstr "Genel"
 
 #: ../applets/fish/fish.ui.h:3
 msgid "_Name of fish:"
@@ -720,7 +239,9 @@ msgstr "Balığın adı"
 msgid ""
 "A fish without a name is a pretty dull fish. Bring your fish to life by "
 "naming him."
-msgstr "Adsız bir balık, çok boş bir balıktır. Balığınıza bir isim takarak ona hayat verin."
+msgstr ""
+"Adsız bir balık, çok boş bir balıktır. Balığınıza bir isim takarak ona hayat "
+"verin."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:3
 msgid "The fish's animation pixmap"
@@ -730,7 +251,9 @@ msgstr "Balık canlandırmasının benekeşlemi"
 msgid ""
 "This key specifies the filename of the pixmap which will be used for the "
 "animation displayed in the fish applet relative to the pixmap directory."
-msgstr "Bu anahtar balık canlandırmasının gösteriminde kullanılacak resmin benekeşlem dizinine göre dosya adını belirtir."
+msgstr ""
+"Bu anahtar balık canlandırmasının gösteriminde kullanılacak resmin "
+"benekeşlem dizinine göre dosya adını belirtir."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:5
 msgid "Command to execute on click"
@@ -748,9 +271,10 @@ msgstr "Canlandırmadaki çerçeve sayısı"
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:8
 msgid ""
-"This key specifies the number of frames that will be displayed in the fish's"
-" animation."
-msgstr "Bu anahtar balığın canlandırılmasında kullanılacak çerçeve sayısını belirtir."
+"This key specifies the number of frames that will be displayed in the fish's "
+"animation."
+msgstr ""
+"Bu anahtar balığın canlandırılmasında kullanılacak çerçeve sayısını belirtir."
 
 #: ../applets/fish/org.ukui.panel.applet.fish.gschema.xml.in.h:9
 msgid "Pause per frame"
@@ -781,12 +305,13 @@ msgstr "Nereden çıktı bu aptal balık şimdi"
 msgid "Display a swimming fish or another aniukuid creature"
 msgstr "Yüzen bir balık veya diğer canlandırılmış yaratıklardan birini göster"
 
-#: ../applets/notification_area/main.c:164
+#: ../applets/notification_area/main.c:173
 #: ../applets/notification_area/org.ukui.panel.NotificationAreaApplet.ukui-panel-applet.in.in.h:3
+#: ../ukui-panel/notification-area.ui.h:1
 msgid "Notification Area"
 msgstr "Uyarı Alanı"
 
-#: ../applets/notification_area/main.c:380
+#: ../applets/notification_area/main.c:389
 msgid "Panel Notification Area"
 msgstr "Panel Uyarı Alanı"
 
@@ -808,9 +333,12 @@ msgstr "Bütün çalışma alanlarındaki pencereleri göster"
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:2
 msgid ""
-"If true, the window list will show windows from all workspaces. Otherwise it"
-" will only display windows from the current workspace."
-msgstr "Eğer seçiliyse, pencere listesi bütün çalışma alanlarındaki pencereleri gösterecektir. Aksi halde sadece o an kullanılan çalışma alanındaki pencereleri gösterir."
+"If true, the window list will show windows from all workspaces. Otherwise it "
+"will only display windows from the current workspace."
+msgstr ""
+"Eğer seçiliyse, pencere listesi bütün çalışma alanlarındaki pencereleri "
+"gösterecektir. Aksi halde sadece o an kullanılan çalışma alanındaki "
+"pencereleri gösterir."
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:3
 msgid "When to group windows"
@@ -820,7 +348,9 @@ msgstr "Pencerelerin ne zaman gruplanacağı"
 msgid ""
 "Decides when to group windows from the same application on the window list. "
 "Possible values are \"never\", \"auto\" and \"always\"."
-msgstr "Pencere listesinde aynı uygulamaların ne zaman gruplanacağına karar verir. Geçerli değerler  \"hiçbir zaman\", \"otomatik\" ve \"her zaman\" dır."
+msgstr ""
+"Pencere listesinde aynı uygulamaların ne zaman gruplanacağına karar verir. "
+"Geçerli değerler  \"hiçbir zaman\", \"otomatik\" ve \"her zaman\" dır."
 
 #: ../applets/wncklet/org.ukui.panel.applet.window-list.gschema.xml.in.h:5
 msgid "Move windows to current workspace when unminimized"
@@ -830,7 +360,9 @@ msgstr "Büyütülen pencereleri o anki çalışma alanına taşı"
 msgid ""
 "If true, then when unminimizing a window, move it to the current workspace. "
 "Otherwise, switch to the workspace of the window."
-msgstr "Eğer seçiliyse, pencereyi büyültdüğünüzde o anki çalışma alanına gelecektir. Aksi halde, büyütülen pencerenin çalışma alanına geçilecektir."
+msgstr ""
+"Eğer seçiliyse, pencereyi büyültdüğünüzde o anki çalışma alanına gelecektir. "
+"Aksi halde, büyütülen pencerenin çalışma alanına geçilecektir."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:1
 msgid "Display workspace names"
@@ -841,7 +373,10 @@ msgid ""
 "If true, the workspaces in the workspace switcher will display the names of "
 "the workspaces. Otherwise they will display the windows on the workspace. "
 "This setting only works when the window manager is Marco."
-msgstr "Eğer seçiliyse, çalışma alanı değiştiricisi bütün çalışma alanlarının isimlerini gösterir. Aksi halde, çalışma alanlarındaki pencereleri gösterir. Bu özellik sadece pencere yöneticisi Marco olduğunda çalışır."
+msgstr ""
+"Eğer seçiliyse, çalışma alanı değiştiricisi bütün çalışma alanlarının "
+"isimlerini gösterir. Aksi halde, çalışma alanlarındaki pencereleri gösterir. "
+"Bu özellik sadece pencere yöneticisi Marco olduğunda çalışır."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:3
 msgid "Display all workspaces"
@@ -851,7 +386,9 @@ msgstr "Bütün çalışma alanlarını göster"
 msgid ""
 "If true, the workspace switcher will show all workspaces. Otherwise it will "
 "only show the current workspace."
-msgstr "Eğer seçiliyse, çalışma alanı değiştiricisi bütün çalışma alanlarını gösterir. Aksi hâlde sadece o anki çalışma alanını gösterir."
+msgstr ""
+"Eğer seçiliyse, çalışma alanı değiştiricisi bütün çalışma alanlarını "
+"gösterir. Aksi hâlde sadece o anki çalışma alanını gösterir."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:5
 msgid "Rows in workspace switcher"
@@ -860,9 +397,12 @@ msgstr "Çalışma alanı değiştiricisindeki satır sayısı"
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:6
 msgid ""
 "This key specifies how many rows (for horizontal layout) or columns (for "
-"vertical layout) the workspace switcher shows the workspaces in. This key is"
-" only relevant if the display_all_workspaces key is true."
-msgstr "Bu anahtar çalışma alanı değiştiricisinin çalışma alanlarını kaç sıra (yatay düzen için), veya sütun (dikey düzen için) içinde göstereceğini belirtir. Bu anahtar sadece tüm çalışma alanları görüntüleniyorsa anlamlıdır."
+"vertical layout) the workspace switcher shows the workspaces in. This key is "
+"only relevant if the display_all_workspaces key is true."
+msgstr ""
+"Bu anahtar çalışma alanı değiştiricisinin çalışma alanlarını kaç sıra (yatay "
+"düzen için), veya sütun (dikey düzen için) içinde göstereceğini belirtir. Bu "
+"anahtar sadece tüm çalışma alanları görüntüleniyorsa anlamlıdır."
 
 #: ../applets/wncklet/org.ukui.panel.applet.workspace-switcher.gschema.xml.in.h:7
 msgid "Wrap around on scroll"
@@ -872,7 +412,10 @@ msgstr "Kaydırma sırasında sar"
 msgid ""
 "If true, the workspace switcher will allow wrap-around, which means "
 "switching from the first to the last workspace and vice versa via scrolling."
-msgstr "Seçiliyse çalışma alanı geçiş uygulamacığı sarmaya izin verir ki bu ilk çalışma alanından sonuncusuna ve sonuncudan ilkine fare tekerleğiyle kaydırma ile geçmek anlamına gelir."
+msgstr ""
+"Seçiliyse çalışma alanı geçiş uygulamacığı sarmaya izin verir ki bu ilk "
+"çalışma alanından sonuncusuna ve sonuncudan ilkine fare tekerleğiyle "
+"kaydırma ile geçmek anlamına gelir."
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:1
 msgid "Window Navigation Applet Factory"
@@ -892,7 +435,7 @@ msgid "Switch between open windows using a menu"
 msgstr "Bir menü kullanarak açık pencereler arasında geçiş yap"
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:5
-#: ../applets/wncklet/workspace-switcher.c:597
+#: ../applets/wncklet/workspace-switcher.c:616
 msgid "Workspace Switcher"
 msgstr "Çalışma Alanı Geçişi"
 
@@ -901,7 +444,7 @@ msgid "Switch between workspaces"
 msgstr "Çalışma alanları arasında geçiş yap"
 
 #: ../applets/wncklet/org.ukui.panel.Wncklet.ukui-panel-applet.in.in.h:7
-#: ../applets/wncklet/window-list.c:555
+#: ../applets/wncklet/window-list.c:598
 msgid "Window List"
 msgstr "Pencere Listesi"
 
@@ -932,7 +475,8 @@ msgstr "Gizli pencereleri görüntülemek için buraya tıklayın."
 
 #: ../applets/wncklet/showdesktop.c:263
 msgid "Click here to hide all windows and show the desktop."
-msgstr "Bütün pencereleri gizleyip masaüstünü görüntülemek için buraya tıklayın."
+msgstr ""
+"Bütün pencereleri gizleyip masaüstünü görüntülemek için buraya tıklayın."
 
 #: ../applets/wncklet/showdesktop.c:447 ../applets/wncklet/showdesktop.c:513
 msgid "Show Desktop Button"
@@ -944,19 +488,33 @@ msgstr "Bu düğme bütün pencereleri gizleyip masaüstünü görmenizi sağlar
 
 #: ../applets/wncklet/showdesktop.c:541
 msgid ""
-"Your window manager does not support the show desktop button, or you are not"
-" running a window manager."
-msgstr "Pencere yöneticiniz masaüstünü gösterme düğmesini desteklemiyor, veya bir pencere yöneticisi çalıştırmıyorsunuz."
+"Your window manager does not support the show desktop button, or you are not "
+"running a window manager."
+msgstr ""
+"Pencere yöneticiniz masaüstünü gösterme düğmesini desteklemiyor, veya bir "
+"pencere yöneticisi çalıştırmıyorsunuz."
 
-#: ../applets/wncklet/window-list.c:171
-msgid "_System Monitor"
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Help"));
+#. image = gtk_image_new_from_icon_name ("help-browser", GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (retval), menuitem);
+#. g_signal_connect (menuitem, "activate",
+#. G_CALLBACK (panel_context_menu_show_help), NULL);
+#.
+#: ../applets/wncklet/window-list.c:164 ../ukui-panel/panel-context-menu.c:368
+#, fuzzy
+msgid "_Monitor"
 msgstr "_Sistem İzleyici"
 
-#: ../applets/wncklet/window-list.c:557
+#: ../applets/wncklet/window-list.c:600
 msgid ""
-"The Window List shows a list of all windows in a set of buttons and lets you"
-" browse them."
-msgstr "Pencere Listesi, bütün pencerelerin listesini düğmeler halinde gösterir ve onlara gözatmanızı sağlar."
+"The Window List shows a list of all windows in a set of buttons and lets you "
+"browse them."
+msgstr ""
+"Pencere Listesi, bütün pencerelerin listesini düğmeler halinde gösterir ve "
+"onlara gözatmanızı sağlar."
 
 #: ../applets/wncklet/window-list.ui.h:1
 msgid "Window List Preferences"
@@ -1006,24 +564,28 @@ msgstr "_Kendi çalışma alanına geri al"
 msgid ""
 "The Window Selector shows a list of all windows in a menu and lets you "
 "browse them."
-msgstr "Pencere Seçici, bütün pencerelerin listesini bir menü olarak gösterir ve onlara gözatmanızı sağlar."
+msgstr ""
+"Pencere Seçici, bütün pencerelerin listesini bir menü olarak gösterir ve "
+"onlara gözatmanızı sağlar."
 
-#: ../applets/wncklet/workspace-switcher.c:198
-#: ../applets/wncklet/workspace-switcher.c:899
+#: ../applets/wncklet/workspace-switcher.c:199
+#: ../applets/wncklet/workspace-switcher.c:918
 #: ../applets/wncklet/workspace-switcher.ui.h:4
 msgid "rows"
 msgstr "satır"
 
-#: ../applets/wncklet/workspace-switcher.c:198
-#: ../applets/wncklet/workspace-switcher.c:899
+#: ../applets/wncklet/workspace-switcher.c:199
+#: ../applets/wncklet/workspace-switcher.c:918
 msgid "columns"
 msgstr "sütun"
 
-#: ../applets/wncklet/workspace-switcher.c:599
+#: ../applets/wncklet/workspace-switcher.c:618
 msgid ""
 "The Workspace Switcher shows you a small version of your workspaces that "
 "lets you manage your windows."
-msgstr "Çalışma Alanı Değiştiricisi size çalışma alanlarınızın küçültülmüş halini gösterir, bu sayede pencerelerini yönetebilirsiniz."
+msgstr ""
+"Çalışma Alanı Değiştiricisi size çalışma alanlarınızın küçültülmüş halini "
+"gösterir, bu sayede pencerelerini yönetebilirsiniz."
 
 #: ../applets/wncklet/workspace-switcher.ui.h:1
 msgid "Workspace Switcher Preferences"
@@ -1066,12 +628,16 @@ msgid "Workspaces"
 msgstr "Çalışma Alanları"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:1
-msgid "Default panel layout"
+#, fuzzy
+msgid "Ukui panel layout"
 msgstr "Varsayılan panel düzeni"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:2
-msgid "The default panels layout to use when panels are created or resetted."
-msgstr "Panel oluşturulduğunda ya da sıfırlandığında kullanılan varsayılan panel düzeni"
+#, fuzzy
+msgid "The Ukui panels layout to use when panels are created or resetted."
+msgstr ""
+"Panel oluşturulduğunda ya da sıfırlandığında kullanılan varsayılan panel "
+"düzeni"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:3
 msgid "Enable program list in \"Run Application\" dialog"
@@ -1082,7 +648,10 @@ msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is made available. Whether or not the listing is expanded when the "
 "dialog is shown is controlled by the show_program_list key."
-msgstr "Eğer seçiliyse, \"Uygulama Çalıştır\" penceresindeki \"Bilinen Uygulamalar\" listesi kullanılabilir olur. Listenin genişletilmiş olup olmamasıshow_program_list anahtarı ile kontrol edilir."
+msgstr ""
+"Eğer seçiliyse, \"Uygulama Çalıştır\" penceresindeki \"Bilinen Uygulamalar\" "
+"listesi kullanılabilir olur. Listenin genişletilmiş olup "
+"olmamasıshow_program_list anahtarı ile kontrol edilir."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:5
 msgid "Expand program list in \"Run Application\" dialog"
@@ -1093,16 +662,22 @@ msgid ""
 "If true, the \"Known Applications\" listing in the \"Run Application\" "
 "dialog is expanded when the dialog is opened. This key is only relevant if "
 "the enable_program_list key is true."
-msgstr "Eğer seçiliyse, \"Uygulama Çalıştır\" penceresindeki \"Bilinen Uygulamalar\" listesi, pencere açıldığında genişlemiş olarak başlar. Bu anahtar sadece enable_program_list anahtarı seçili ise anlamlıdır."
+msgstr ""
+"Eğer seçiliyse, \"Uygulama Çalıştır\" penceresindeki \"Bilinen Uygulamalar\" "
+"listesi, pencere açıldığında genişlemiş olarak başlar. Bu anahtar sadece "
+"enable_program_list anahtarı seçili ise anlamlıdır."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:7
 msgid "Enable autocompletion in \"Run Application\" dialog"
-msgstr "\"Uygulama Çalıştır\" penceresinde kendiliğinden tamamlamayı etkinleştir"
+msgstr ""
+"\"Uygulama Çalıştır\" penceresinde kendiliğinden tamamlamayı etkinleştir"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:8
 msgid ""
 "If true, autocompletion in the \"Run Application\" dialog is made available."
-msgstr "Eğer seçiliyse, \"Uygulama Çalıştır\" penceresinde kendiliğinden tamamlama etkin olur."
+msgstr ""
+"Eğer seçiliyse, \"Uygulama Çalıştır\" penceresinde kendiliğinden tamamlama "
+"etkin olur."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:9
 msgid "History for \"Run Application\" dialog"
@@ -1111,9 +686,12 @@ msgstr "\"Uygulama Çalıştır\" diyaloğunun tarihçesi"
 #: ../data/org.ukui.panel.gschema.xml.in.h:10
 msgid ""
 "This is the list of commands used in \"Run Application\" dialog. The "
-"commands are sorted descendingly by recency (e.g., most recent command comes"
-" first)."
-msgstr "Bu, \"Uygulama Çalıştır\" diyaloğunda kullanılan komutların listesidir. Komutlar yeniliğe göre aşağıya doğru sıralanır (yani son kullanılan komut ilk önce gelir)."
+"commands are sorted descendingly by recency (e.g., most recent command comes "
+"first)."
+msgstr ""
+"Bu, \"Uygulama Çalıştır\" diyaloğunda kullanılan komutların listesidir. "
+"Komutlar yeniliğe göre aşağıya doğru sıralanır (yani son kullanılan komut "
+"ilk önce gelir)."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:11
 msgid "Maximum history size for \"Run Application\" dialog"
@@ -1123,7 +701,9 @@ msgstr "\"Uygulama Çalıştır\" diyaloğunun azami tarihçe boyutu"
 msgid ""
 "Controls the maximum size of the history of the \"Run Application\" dialog. "
 "A value of 0 will disable the history."
-msgstr "\"Uygulama Çalıştır\" diyaloğunun tarihçesinin azami boyutunu kontrol eder. 0 değeri tarihçeyi devre dışı bırakır."
+msgstr ""
+"\"Uygulama Çalıştır\" diyaloğunun tarihçesinin azami boyutunu kontrol eder. "
+"0 değeri tarihçeyi devre dışı bırakır."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:13
 msgid "Reverse the history of the \"Run Application\" dialog"
@@ -1133,7 +713,9 @@ msgstr "\"Uygulama Çalıştır\" diyaloğunun tarihçesini tersine çevir"
 msgid ""
 "Displays the history in reverse. Provides a consistent view for terminal "
 "users as the up key will select the most recent entry."
-msgstr "Tarihçeyi ters sıralamayla gösterir. Yukarı tuşu en son unsuru gösterecek olduğundan terminal kullanıcılarına tutarlı bir görünüm sağlar."
+msgstr ""
+"Tarihçeyi ters sıralamayla gösterir. Yukarı tuşu en son unsuru gösterecek "
+"olduğundan terminal kullanıcılarına tutarlı bir görünüm sağlar."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:15
 msgid "Panel ID list"
@@ -1143,7 +725,10 @@ msgstr "Panel numara listesi"
 msgid ""
 "A list of panel IDs. Each ID identifies an individual toplevel panel. The "
 "settings for each of these panels are stored in /apps/panel/toplevels/$(id)."
-msgstr "Panel tanım numaralarının listesi. Her numara başka bir üst seviye paneli tanımlar. Bu panellerin her biri için ayarlar /apps/panel/toplevels/$(id) içerisinde saklanır."
+msgstr ""
+"Panel tanım numaralarının listesi. Her numara başka bir üst seviye paneli "
+"tanımlar. Bu panellerin her biri için ayarlar /apps/panel/toplevels/$(id) "
+"içerisinde saklanır."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:17
 msgid "Panel object ID list"
@@ -1151,10 +736,14 @@ msgstr "Panel nesnesi numara listesi"
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:18
 msgid ""
-"A list of panel object IDs. Each ID identifies an individual panel object "
-"(e.g. a launcher, action button or menu button/bar). The settings for each "
-"of these objects are stored in /apps/panel/objects/$(id)."
-msgstr "Panel nesnelerinin tanım numaraları listesi. Her numara başka bir panel nesnesi tanımlar (örn, bir çalıştırıcı, çekmece ya da menü düğmesi). Bu nesnelerin her biri için ayarlar /apps/panel/objects/$(id) içerisinde saklanır."
+"A list of panel object IDs. Each ID identifies an individual panel object (e."
+"g. a launcher, action button or menu button/bar). The settings for each of "
+"these objects are stored in /apps/panel/objects/$(id)."
+msgstr ""
+"Panel nesnelerinin tanım numaraları listesi. Her numara başka bir panel "
+"nesnesi tanımlar (örn, bir çalıştırıcı, çekmece ya da menü düğmesi). Bu "
+"nesnelerin her biri için ayarlar /apps/panel/objects/$(id) içerisinde "
+"saklanır."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:19
 msgid "Enable tooltips"
@@ -1165,7 +754,7 @@ msgid "If true, tooltips are shown for objects in panels."
 msgstr "Eğer seçiliyse, paneldeki nesneler için balon gösterilir."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:21
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
 msgid "Enable animations"
 msgstr "Canlandırmaları etkinleştir"
 
@@ -1177,7 +766,9 @@ msgstr "Çekmeceyi otomatik olarak kapat"
 msgid ""
 "If true, a drawer will automatically be closed when the user clicks a "
 "launcher in it."
-msgstr "Eğer seçiliyse, çekmeceler, içindeki bir başlatıcıya tıklandıktan sonra kendiliğinden kapanacaktır."
+msgstr ""
+"Eğer seçiliyse, çekmeceler, içindeki bir başlatıcıya tıklandıktan sonra "
+"kendiliğinden kapanacaktır."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:24
 msgid "Confirm panel removal"
@@ -1187,7 +778,9 @@ msgstr "Panel silmeyi onayla"
 msgid ""
 "If true, a dialog is shown asking for confirmation if the user wants to "
 "remove a panel."
-msgstr "Eğer seçiliyse, kullanıcı paneli silmek istediğinde onayının sorulduğu bir pencere gösterilir."
+msgstr ""
+"Eğer seçiliyse, kullanıcı paneli silmek istediğinde onayının sorulduğu bir "
+"pencere gösterilir."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:26
 msgid "Highlight launchers on mouseover"
@@ -1196,7 +789,8 @@ msgstr "İmleç başlatıcıların üzerine getirildiğinde parlat"
 #: ../data/org.ukui.panel.gschema.xml.in.h:27
 msgid ""
 "If true, a launcher is highlighted when the user moves the pointer over it."
-msgstr "Eğer seçiliyse, başlatıcılar imleç üstlerinden geçerken parlatılacaklardır."
+msgstr ""
+"Eğer seçiliyse, başlatıcılar imleç üstlerinden geçerken parlatılacaklardır."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:28
 msgid "Complete panel lockdown"
@@ -1205,9 +799,12 @@ msgstr "Panelin tamamını kilitleme"
 #: ../data/org.ukui.panel.gschema.xml.in.h:29
 msgid ""
 "If true, the panel will not allow any changes to the configuration of the "
-"panel. Individual applets may need to be locked down separately however. The"
-" panel must be restarted for this to take effect."
-msgstr "Eğer seçiliyse, panel yapılandırmasındaki hiç bir değişikliğe izin vermeyecektir. Ancak uygulamacıklar ayrıca kilitlenme ihtiyacı duyabilirler. Bunun etkili olabilmesi için panelin tekrar başlatılması gerekmektedir."
+"panel. Individual applets may need to be locked down separately however. The "
+"panel must be restarted for this to take effect."
+msgstr ""
+"Eğer seçiliyse, panel yapılandırmasındaki hiç bir değişikliğe izin "
+"vermeyecektir. Ancak uygulamacıklar ayrıca kilitlenme ihtiyacı duyabilirler. "
+"Bunun etkili olabilmesi için panelin tekrar başlatılması gerekmektedir."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:30
 msgid "Applet IIDs to disable from loading"
@@ -1219,7 +816,12 @@ msgid ""
 "certain applets from loading or showing up in the menu. For example to "
 "disable the mini-commander applet add 'OAFIID:UKUI_MiniCommanderApplet' to "
 "this list. The panel must be restarted for this to take effect."
-msgstr "Panelin yoksayacağı uygulamacık IIDlerinin listesi. Bu sayede belirli uygulamacıkların menü içinde görüntülenmemesini veya yüklenmemesini sağlayabilirsiniz. Örnek olarak mini-commander uygulamacığını devre dışı bırakmak için 'OAFIID:UKUI_MiniCommanderApplet'i bu listeye ekleyin. Bunun etkili olması için paneli yeniden başlatmanız gerekiyor."
+msgstr ""
+"Panelin yoksayacağı uygulamacık IIDlerinin listesi. Bu sayede belirli "
+"uygulamacıkların menü içinde görüntülenmemesini veya yüklenmemesini "
+"sağlayabilirsiniz. Örnek olarak mini-commander uygulamacığını devre dışı "
+"bırakmak için 'OAFIID:UKUI_MiniCommanderApplet'i bu listeye ekleyin. Bunun "
+"etkili olması için paneli yeniden başlatmanız gerekiyor."
 
 #: ../data/org.ukui.panel.gschema.xml.in.h:32
 msgid "Disable Force Quit"
@@ -1229,7 +831,17 @@ msgstr "Zorla Çık'ı Etkisizleştir"
 msgid ""
 "If true, the panel will not allow a user to force an application to quit by "
 "removing access to the force quit button."
-msgstr "Eğer seçiliyse, panel, bir uygulama kapatılırken zorla çıkış yapılmasını Sonlandır düğmesine erişimi keserek engeller."
+msgstr ""
+"Eğer seçiliyse, panel, bir uygulama kapatılırken zorla çıkış yapılmasını "
+"Sonlandır düğmesine erişimi keserek engeller."
+
+#: ../data/org.ukui.panel.gschema.xml.in.h:34
+msgid "Enable SNI support"
+msgstr ""
+
+#: ../data/org.ukui.panel.gschema.xml.in.h:35
+msgid "If true, the panel provides support for SNI."
+msgstr ""
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:1
 msgid "Show applications menu"
@@ -1279,7 +891,9 @@ msgstr "Menü çubuğundaki ikon boyutu"
 msgid ""
 "Set the size of an icon used in menu bar. The panel must be restarted for "
 "this to take effect."
-msgstr "Menü çubuğundaki bir ikonun boyutunu ayarla. Bunun etkili olması için panelin tekrar başlatılması gerekir."
+msgstr ""
+"Menü çubuğundaki bir ikonun boyutunu ayarla. Bunun etkili olması için "
+"panelin tekrar başlatılması gerekir."
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:13
 msgid "Menu items icon size"
@@ -1287,9 +901,11 @@ msgstr "Menü unsurları ikon boyutu"
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:14
 msgid ""
-"Set the size of icons used in the menu. The panel must be restarted for this"
-" to take effect."
-msgstr "Menü kullanılan ikonların boyutunu ayarla. Bunun etkili olması için panelin tekrar başlatılması gerekir."
+"Set the size of icons used in the menu. The panel must be restarted for this "
+"to take effect."
+msgstr ""
+"Menü kullanılan ikonların boyutunu ayarla. Bunun etkili olması için panelin "
+"tekrar başlatılması gerekir."
 
 #: ../data/org.ukui.panel.menubar.gschema.xml.in.h:15
 msgid "Threshold of menu items before submenu is created"
@@ -1299,7 +915,9 @@ msgstr "Alt menü oluşturulmasından önce menü unsurları eşiği"
 msgid ""
 "Maximum number of menu items (i.e. bookmarks) that are displayed without "
 "being put in a submenu."
-msgstr "Bir alt menüye konulmadan görüntülenen azami menü unsuru (mesela yer imleri) sayısı."
+msgstr ""
+"Bir alt menüye konulmadan görüntülenen azami menü unsuru (mesela yer imleri) "
+"sayısı."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:1
 msgid "Panel object type"
@@ -1325,7 +943,9 @@ msgstr "Nesnenin paneldeki konumu"
 msgid ""
 "The position of this panel object. The position is specified by the number "
 "of pixels from the left (or top if vertical) panel edge."
-msgstr "Panel nesnesinin konumu. Bu pozisyon panelin sol (veya dikeyse üst) kenarından benek sayısı olarak belirtilmiştir."
+msgstr ""
+"Panel nesnesinin konumu. Bu pozisyon panelin sol (veya dikeyse üst) "
+"kenarından benek sayısı olarak belirtilmiştir."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:7
 msgid "Interpret position relative to bottom/right edge"
@@ -1333,9 +953,11 @@ msgstr "Pozisyonu alt/sağ kenara göre uygula"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:8
 msgid ""
-"If true, the position of the object is interpreted relative to the right (or"
-" bottom if vertical) edge of the panel."
-msgstr "Eğer seçiliyse, nesnenin pozisyonu panelin sağ (eğer dikeyse aşağıya göre) kenarına göre uygulanır."
+"If true, the position of the object is interpreted relative to the right (or "
+"bottom if vertical) edge of the panel."
+msgstr ""
+"Eğer seçiliyse, nesnenin pozisyonu panelin sağ (eğer dikeyse aşağıya göre) "
+"kenarına göre uygulanır."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:9
 msgid "Lock the object to the panel"
@@ -1343,9 +965,11 @@ msgstr "Nesneyi panele kilitle"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:10
 msgid ""
-"If true, the user may not move the applet without first unlocking the object"
-" using the \"Unlock\" menuitem."
-msgstr "Eğer seçiliyse, kullanıcı uygulamacığı \"Kilidi aç\" menü öğesini kullanıp nesnenin kilidini kaldırmadan taşıyamaz."
+"If true, the user may not move the applet without first unlocking the object "
+"using the \"Unlock\" menuitem."
+msgstr ""
+"Eğer seçiliyse, kullanıcı uygulamacığı \"Kilidi aç\" menü öğesini kullanıp "
+"nesnenin kilidini kaldırmadan taşıyamaz."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:11
 msgid "Applet IID"
@@ -1353,11 +977,13 @@ msgstr "Programcık IID"
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:12
 msgid ""
-"The implementation ID of the applet - e.g. "
-"\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
-"object_type key is \"external-applet\" (or the deprecated \"ukuicomponent-"
-"applet\")."
-msgstr "Uygulamacığın uygulama kimliği - mesela \"ClockAppletFactory::ClockApplet\". Bu anahtar sadece object_type anahtarı \"external-applet\" iseyse (ya da esimiş \"ukuicomponent-applet\" iseyse) uygundur."
+"The implementation ID of the applet - e.g. \"ClockAppletFactory::ClockApplet"
+"\". This key is only relevant if the object_type key is \"external-applet"
+"\" (or the deprecated \"ukuicomponent-applet\")."
+msgstr ""
+"Uygulamacığın uygulama kimliği - mesela \"ClockAppletFactory::ClockApplet\". "
+"Bu anahtar sadece object_type anahtarı \"external-applet\" iseyse (ya da "
+"esimiş \"ukuicomponent-applet\" iseyse) uygundur."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:13
 msgid "Panel attached to drawer"
@@ -1367,7 +993,9 @@ msgstr "Çekmeceye eklenmiş panel"
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
 "relevant if the object_type key is \"drawer-object\"."
-msgstr "Bu çekmeceye eklenmiş panel belirteci. Bu anahtar sadece object_type, \"drawer-object\" ise anlamlıdır."
+msgstr ""
+"Bu çekmeceye eklenmiş panel belirteci. Bu anahtar sadece object_type, "
+"\"drawer-object\" ise anlamlıdır."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:15
 msgid "Tooltip displayed for drawer or menu"
@@ -1376,9 +1004,10 @@ msgstr "Menü veya çekmece için gösterilecek balon"
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:16
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
-"only relevant if the object_type key is \"drawer-object\" or \"menu-"
-"object\"."
-msgstr "Bu menü veya çekmece için gösterilecek balondaki metin. Bu anahtar sadece object_type \"drawer-object\" veya \"menu-object\" ise anlamlıdır."
+"only relevant if the object_type key is \"drawer-object\" or \"menu-object\"."
+msgstr ""
+"Bu menü veya çekmece için gösterilecek balondaki metin. Bu anahtar sadece "
+"object_type \"drawer-object\" veya \"menu-object\" ise anlamlıdır."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:17
 msgid "Use custom icon for object's button"
@@ -1389,7 +1018,10 @@ msgid ""
 "If true, the custom_icon key is used as a custom icon for the button. If "
 "false, the custom_icon key is ignored. This key is only relevant if the "
 "object_type key is \"menu-object\" or \"drawer-object\"."
-msgstr "Eğer seçiliyse, custom_icon anahtarı bu düğme için özel simge olarak kullanılır. Eğer seçilmemişse, custom_icon yoksayılır. Bu anahtar sadece object_type anahtarı \"menu-object\" veya \"drawer_object\" ise anlamlıdır."
+msgstr ""
+"Eğer seçiliyse, custom_icon anahtarı bu düğme için özel simge olarak "
+"kullanılır. Eğer seçilmemişse, custom_icon yoksayılır. Bu anahtar sadece "
+"object_type anahtarı \"menu-object\" veya \"drawer_object\" ise anlamlıdır."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:19
 msgid "Icon used for object's button"
@@ -1400,7 +1032,10 @@ msgid ""
 "The location of the image file used as the icon for the object's button. "
 "This key is only relevant if the object_type key is \"drawer-object\" or "
 "\"menu-object\" and the use_custom_icon key is true."
-msgstr "Nesnenin düğmesinde kullanılacak resim dosyasının konumu. Bu anahtar sadece object_type \"drawer-object\" veya \"menu-object\" ise ve use_custom_icon anahtarı seçiliyse anlamlıdır."
+msgstr ""
+"Nesnenin düğmesinde kullanılacak resim dosyasının konumu. Bu anahtar sadece "
+"object_type \"drawer-object\" veya \"menu-object\" ise ve use_custom_icon "
+"anahtarı seçiliyse anlamlıdır."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:21
 msgid "Use custom path for menu contents"
@@ -1411,7 +1046,10 @@ msgid ""
 "If true, the menu_path key is used as the path from which the menu contents "
 "should be constructed. If false, the menu_path key is ignored. This key is "
 "only relevant if the object_type key is \"menu-object\"."
-msgstr "Eğer seçiliyse, menü içeriğini oluşturmak için menu_path anahtarıda belirtilen yol kullanılır. Eğer seçili değilse, menu_path anahtarı yoksayılır. Bu anahtar sadece object_type, \"menu-object\" ise anlamlıdır."
+msgstr ""
+"Eğer seçiliyse, menü içeriğini oluşturmak için menu_path anahtarıda "
+"belirtilen yol kullanılır. Eğer seçili değilse, menu_path anahtarı "
+"yoksayılır. Bu anahtar sadece object_type, \"menu-object\" ise anlamlıdır."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:23
 msgid "Menu content path"
@@ -1422,7 +1060,10 @@ msgid ""
 "The path from which the menu contents is contructed. This key is only "
 "relevant if the use_menu_path key is true and the object_type key is \"menu-"
 "object\"."
-msgstr "Menü içeriğinin oluşmasında kullanılacak yol. Bu anahtar sacede use_menu_path_key seçiliyse ve object_type anahtarı \"menu-object\" ise anlamlıdır."
+msgstr ""
+"Menü içeriğinin oluşmasında kullanılacak yol. Bu anahtar sacede "
+"use_menu_path_key seçiliyse ve object_type anahtarı \"menu-object\" ise "
+"anlamlıdır."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:25
 msgid "Draw arrow in menu button"
@@ -1432,7 +1073,9 @@ msgstr "Menü düğmesinde ok çiz"
 msgid ""
 "If true, an arrow is drawn over the menu button icon. If false, menu button "
 "has only the icon."
-msgstr "Seçilirse menü düğmesi simgesinin üzerine bir ok çizilecektir. Seçilmediyse menü düğmesinin sadece simgesi olur."
+msgstr ""
+"Seçilirse menü düğmesi simgesinin üzerine bir ok çizilecektir. Seçilmediyse "
+"menü düğmesinin sadece simgesi olur."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:27
 msgid "Launcher location"
@@ -1442,7 +1085,9 @@ msgstr "Başlatıcı konumu"
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
 "relevant if the object_type key is \"launcher-object\"."
-msgstr "Başlatıcıyı tanımlayan .desktop dosyasının konumu. Bu anahtar sadece object_type anahtarı \"launce-object\" ise anlamlıdır."
+msgstr ""
+"Başlatıcıyı tanımlayan .desktop dosyasının konumu. Bu anahtar sadece "
+"object_type anahtarı \"launce-object\" ise anlamlıdır."
 
 #: ../data/org.ukui.panel.object.gschema.xml.in.h:29
 msgid "Action button type"
@@ -1453,7 +1098,10 @@ msgid ""
 "The action type this button represents. Possible values are \"lock\", "
 "\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
 "relevant if the object_type key is \"action-applet\"."
-msgstr "Bu düğmenin belirttiği eylem türü. Geçerli değerler  \"lock\", \"logout\", \"run\", \"search\" ve \"screenshot\"dır. Bu anahtar sadece object_type anahtarı, \"action-applet\" ise anlamlıdır."
+msgstr ""
+"Bu düğmenin belirttiği eylem türü. Geçerli değerler  \"lock\", \"logout\", "
+"\"run\", \"search\" ve \"screenshot\"dır. Bu anahtar sadece object_type "
+"anahtarı, \"action-applet\" ise anlamlıdır."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:1
 msgid "Name to identify panel"
@@ -1464,7 +1112,10 @@ msgid ""
 "This is a human readable name which you can use to identify a panel. Its "
 "main purpose is to serve as the panel's window title which is useful when "
 "navigating between panels."
-msgstr "Bu paneli tanımlamanıza yarayacak, insanların anlayabileceği bir isimdir. Bunun asıl amacı paneller arasında dolaşırken panellerin pencere başlığı olarak kullanılmasıdır."
+msgstr ""
+"Bu paneli tanımlamanıza yarayacak, insanların anlayabileceği bir isimdir. "
+"Bunun asıl amacı paneller arasında dolaşırken panellerin pencere başlığı "
+"olarak kullanılmasıdır."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:3
 msgid "X screen where the panel is displayed"
@@ -1474,85 +1125,126 @@ msgstr "Panelin görüntüleneceği X ekranı"
 msgid ""
 "With a multi-screen setup, you may have panels on each individual screen. "
 "This key identifies the current screen the panel is displayed on."
-msgstr "Çoklu ekran kurulumunda, ayrı ekranlarda paneller bulundurabilirsiniz. Bu anahtar mevcut ekranda gösterilecek paneli belirler."
+msgstr ""
+"Çoklu ekran kurulumunda, ayrı ekranlarda paneller bulundurabilirsiniz. Bu "
+"anahtar mevcut ekranda gösterilecek paneli belirler."
 
 #: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:5
+msgid "Show blank starting position"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
+msgid "Windows-list get blank starting position"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
+msgid "Number of new inserted tray applets"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
+msgid "Number of new inserted launcher applets"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
 msgid "Xinerama monitor where the panel is displayed"
 msgstr "Panelin görüntüleneceği Xinerama ekranı"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:6
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
 msgid ""
 "In a Xinerama setup, you may have panels on each individual monitor. This "
 "key identifies the current monitor the panel is displayed on."
-msgstr "Xinerama ayarında, her ekranda panel bulundurabilirsiniz. Bu anahtar panelin gösterileceği mevcut ekranı belirtir."
+msgstr ""
+"Xinerama ayarında, her ekranda panel bulundurabilirsiniz. Bu anahtar panelin "
+"gösterileceği mevcut ekranı belirtir."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:7
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
 msgid "Expand to occupy entire screen width"
 msgstr "Tüm ekran genişliğini kaplaması için genişlet"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:8
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
 msgid ""
 "If true, the panel will occupy the entire screen width (height if this is a "
-"vertical panel). In this mode the panel can only be placed at a screen edge."
-" If false, the panel will only be large enough to accommodate the applets, "
+"vertical panel). In this mode the panel can only be placed at a screen edge. "
+"If false, the panel will only be large enough to accommodate the applets, "
 "launchers and buttons on the panel."
-msgstr "Eğer seçiliyse, panel tüm ekran genişliğini (eğer dikey panelse yüksekliğini) kaplayacak. Bu kipte panel sadece ekranın kenarlarında konumlandırılabilir. Eğer seçili değilse; panel sadece uygulamacıkları, başlatıcıları ve düğmeleri barındırabilecek büyüklükte olacak."
+msgstr ""
+"Eğer seçiliyse, panel tüm ekran genişliğini (eğer dikey panelse "
+"yüksekliğini) kaplayacak. Bu kipte panel sadece ekranın kenarlarında "
+"konumlandırılabilir. Eğer seçili değilse; panel sadece uygulamacıkları, "
+"başlatıcıları ve düğmeleri barındırabilecek büyüklükte olacak."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:9
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
 msgid "Panel orientation"
 msgstr "Panelin konumu"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:10
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
 msgid ""
-"The orientation of the panel. Possible values are \"top\", \"bottom\", "
-"\"left\", \"right\". In expanded mode the key specifies which screen edge "
-"the panel is on. In un-expanded mode the difference between \"top\" and "
-"\"bottom\" is less important - both indicate that this is a horizontal panel"
-" - but still give a useful hint as to how some panel objects should behave. "
-"For example, on a \"top\" panel a menu button will pop up its menu below the"
-" panel, whereas on a \"bottom\" panel the menu will be popped up above the "
+"The orientation of the panel. Possible values are \"top\", \"bottom\", \"left"
+"\", \"right\". In expanded mode the key specifies which screen edge the "
+"panel is on. In un-expanded mode the difference between \"top\" and \"bottom"
+"\" is less important - both indicate that this is a horizontal panel - but "
+"still give a useful hint as to how some panel objects should behave. For "
+"example, on a \"top\" panel a menu button will pop up its menu below the "
+"panel, whereas on a \"bottom\" panel the menu will be popped up above the "
 "panel."
-msgstr "Panelin konumu. Geçerli değerler \"top\", \"bottom\", \"left \", \"right\" dır. Kenarı kaplama kipinde anahtar, panelin hangi kenarda bulunacağını belirtir. Eğer kenarı kaplamayan kipte ise \"top\" ve \"bottom\" arasındaki fark çok az önem taşır - her ikisi de bunun yatay panel olduğunu belirtir - fakat gene de kimi panel nesnelerinin işleyişi hakkında bir fikir verir. Örneğin \"top\" panelinde menü düğmesi menünün altında menü gösterir ancak \"bottom\" panelde menü panelin üstünde oluşur."
+msgstr ""
+"Panelin konumu. Geçerli değerler \"top\", \"bottom\", \"left \", \"right\" "
+"dır. Kenarı kaplama kipinde anahtar, panelin hangi kenarda bulunacağını "
+"belirtir. Eğer kenarı kaplamayan kipte ise \"top\" ve \"bottom\" arasındaki "
+"fark çok az önem taşır - her ikisi de bunun yatay panel olduğunu belirtir - "
+"fakat gene de kimi panel nesnelerinin işleyişi hakkında bir fikir verir. "
+"Örneğin \"top\" panelinde menü düğmesi menünün altında menü gösterir ancak "
+"\"bottom\" panelde menü panelin üstünde oluşur."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:11
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
 msgid "Panel size"
 msgstr "Panel boyutu"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:12
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
 msgid ""
 "The height (width for a vertical panel) of the panel. The panel will "
 "determine at runtime a minimum size based on the font size and other "
 "indicators. The maximum size is fixed at one quarter of the screen height "
 "(or width)."
-msgstr "Panelin yüksekliği (dikey panel için genişlik). Panel çalışma sırasında yazıtipi boyutu ve diğer belirteçleri göze alarak asgari boyut belirler. Azami boyut ekranın yükseliğinin (ya da genişliğinin) dörtte birine sabitlenir."
+msgstr ""
+"Panelin yüksekliği (dikey panel için genişlik). Panel çalışma sırasında "
+"yazıtipi boyutu ve diğer belirteçleri göze alarak asgari boyut belirler. "
+"Azami boyut ekranın yükseliğinin (ya da genişliğinin) dörtte birine "
+"sabitlenir."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:13
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
 msgid "X co-ordinate of panel"
 msgstr "Panelin X koordinatı"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:14
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
 msgid ""
 "The location of the panel along the x-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
-msgstr "Panelin x ekseni üzerindeki konumu. Bu anahtar sadece panel kenarı kaplayan kipte değilken anlamlıdır. Kenarı kaplayan kipte, bu anahtar yoksayılır ve panel orientation anahtarının belirtildiği şekilde kenara yerleştirilir."
+msgstr ""
+"Panelin x ekseni üzerindeki konumu. Bu anahtar sadece panel kenarı kaplayan "
+"kipte değilken anlamlıdır. Kenarı kaplayan kipte, bu anahtar yoksayılır ve "
+"panel orientation anahtarının belirtildiği şekilde kenara yerleştirilir."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:15
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
 msgid "Y co-ordinate of panel"
 msgstr "Panelin Y koordinatı"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:16
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
 msgid ""
 "The location of the panel along the y-axis. This key is only relevant in un-"
 "expanded mode. In expanded mode this key is ignored and the panel is placed "
 "at the screen edge specified by the orientation key."
-msgstr "Panelin y ekseni üzerindeki konumu. Bu anahtar sadece panel kenarı kaplayan kipte değilken anlamlıdır. Kenarı kaplayan kipte, bu anahtar yoksayılır ve panel orientation anahtarının belirtildiği şekilde kenara yerleştirilir."
+msgstr ""
+"Panelin y ekseni üzerindeki konumu. Bu anahtar sadece panel kenarı kaplayan "
+"kipte değilken anlamlıdır. Kenarı kaplayan kipte, bu anahtar yoksayılır ve "
+"panel orientation anahtarının belirtildiği şekilde kenara yerleştirilir."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:17
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
 msgid "X co-ordinate of panel, starting from the right of the screen"
 msgstr "Panelin X koordinatı, ekranın sağından başlayarak"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:18
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
 msgid ""
 "The location of the panel along the x-axis, starting from the right of the "
 "screen. If set to -1, the value is ignored and the value of the x key is "
@@ -1560,13 +1252,19 @@ msgid ""
 "ignored. This key is only relevant in un-expanded mode. In expanded mode "
 "this key is ignored and the panel is placed at the screen edge specified by "
 "the orientation key."
-msgstr "Panelin x ekseni üzerindeki ekranın sağından başlayarak ki konumu. Eğer -1 olarak atanmışsa değer yok sayılır ve x anahtarı kullanılır. Eğer 0 değerinden büyükse o zaman x anahtarı yok sayılır. Bu anahtar sadece panel kenarı kaplayan kipte değilken anlamlıdır. Kenarı kaplayan kipte, bu anahtar yoksayılır ve panel orientation anahtarının belirtildiği şekilde kenara yerleştirilir."
+msgstr ""
+"Panelin x ekseni üzerindeki ekranın sağından başlayarak ki konumu. Eğer -1 "
+"olarak atanmışsa değer yok sayılır ve x anahtarı kullanılır. Eğer 0 "
+"değerinden büyükse o zaman x anahtarı yok sayılır. Bu anahtar sadece panel "
+"kenarı kaplayan kipte değilken anlamlıdır. Kenarı kaplayan kipte, bu anahtar "
+"yoksayılır ve panel orientation anahtarının belirtildiği şekilde kenara "
+"yerleştirilir."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:19
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
 msgid "Y co-ordinate of panel, starting from the bottom of the screen"
 msgstr "Panelin Y koordinatı, ekranın altından başlayarak"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:20
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
 msgid ""
 "The location of the panel along the y-axis, starting from the bottom of the "
 "screen. If set to -1, the value is ignored and the value of the y key is "
@@ -1574,184 +1272,260 @@ msgid ""
 "ignored. This key is only relevant in un-expanded mode. In expanded mode "
 "this key is ignored and the panel is placed at the screen edge specified by "
 "the orientation key."
-msgstr "Panelin y ekseni üzerindeki aşağıdan başlayarak konumu. Eğer -1 olarak atanmışsa bu değer yok sayılır ve y anahtarı kullanılır, eğer 0 değerinden büyükse o zaman y anahtarı yok sayılır. Bu anahtar sadece panel kenarı kaplayan kipte değilken anlamlıdır. Kenarı kaplayan kipte, bu anahtar yoksayılır ve panel orientation anahtarının belirtildiği şekilde kenara yerleştirilir."
+msgstr ""
+"Panelin y ekseni üzerindeki aşağıdan başlayarak konumu. Eğer -1 olarak "
+"atanmışsa bu değer yok sayılır ve y anahtarı kullanılır, eğer 0 değerinden "
+"büyükse o zaman y anahtarı yok sayılır. Bu anahtar sadece panel kenarı "
+"kaplayan kipte değilken anlamlıdır. Kenarı kaplayan kipte, bu anahtar "
+"yoksayılır ve panel orientation anahtarının belirtildiği şekilde kenara "
+"yerleştirilir."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:21
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
 msgid "Center panel on x-axis"
 msgstr "X ekseninde paneli ortala"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:22
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
 msgid ""
 "If true, the x and x_right keys are ignored and the panel is placed at the "
 "center of the x-axis of the screen. If the panel is resized it will remain "
 "at that position - i.e. the panel will grow on both sides. If false, the x "
 "and x_right keys specify the location of the panel."
-msgstr "Eğer seçiliyse, x ve x_right anahtarları yok sayılır ve panel ekranın x ekseninin ortasında konumlandırılır. Eğer panel yeniden boyutlandırılırsa panel bu pozisyonda kalır - örn. panel her iki yöne de uzar. Eğer seçili değilse, x ve x_right anahtarları panelin konumunu belirler."
+msgstr ""
+"Eğer seçiliyse, x ve x_right anahtarları yok sayılır ve panel ekranın x "
+"ekseninin ortasında konumlandırılır. Eğer panel yeniden boyutlandırılırsa "
+"panel bu pozisyonda kalır - örn. panel her iki yöne de uzar. Eğer seçili "
+"değilse, x ve x_right anahtarları panelin konumunu belirler."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:23
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:27
 msgid "Center panel on y-axis"
 msgstr "Y ekseninde paneli ortala"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:24
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
 msgid ""
 "If true, the y and y_bottom keys are ignored and the panel is placed at the "
 "center of the y-axis of the screen. If the panel is resized it will remain "
 "at that position - i.e. the panel will grow on both sides. If false, the y "
 "and y_bottom keys specify the location of the panel."
-msgstr "Eğer seçiliyse, y ve y_bottom anahtarları yok sayılır ve panel ekranın y ekseninin ortasında konumlandırılır. Eğer panel yeniden boyutlandırılırsa panel bu pozisyonda kalır - örn. panel her iki yöne de uzar. Eğer seçili değilse, y ve y_bottom anahtarları panelin konumunu belirler."
+msgstr ""
+"Eğer seçiliyse, y ve y_bottom anahtarları yok sayılır ve panel ekranın y "
+"ekseninin ortasında konumlandırılır. Eğer panel yeniden boyutlandırılırsa "
+"panel bu pozisyonda kalır - örn. panel her iki yöne de uzar. Eğer seçili "
+"değilse, y ve y_bottom anahtarları panelin konumunu belirler."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:25
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
+#: ../ukui-panel/panel-settings-dialog.ui.h:7
+msgid "Taskbar background transparent"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
+msgid "If true, the panel is transparent."
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
+#: ../ukui-panel/panel-settings-dialog.ui.h:8
+msgid "Lock the taskbar"
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
+msgid "If true, the panel is automatically locked."
+msgstr ""
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
+#: ../ukui-panel/panel-settings-dialog.ui.h:9
+#, fuzzy
+msgid "Hide workspace"
+msgstr "Çalışma Alanları"
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
+#, fuzzy
+msgid "If true, the workspace is hidden."
+msgstr "Eğer doğru ise, menü çubuğunda yerler öğesini gösterir"
+
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
 msgid "Automatically hide panel into corner"
 msgstr "Paneli kendiliğinden köşeye gizle"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:26
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
 msgid ""
 "If true, the panel is automatically hidden into a corner of the screen when "
 "the pointer leaves the panel area. Moving the pointer to that corner again "
 "will cause the panel to re-appear."
-msgstr "Eğer seçiliyse; panel kendiliğinden, imleç panel alanını terk ettikten sonra ekranın köşesine gizlenecek. İmlecin köşeye tekrar getirilmesi panelin görünmesini sağlayacak."
+msgstr ""
+"Eğer seçiliyse; panel kendiliğinden, imleç panel alanını terk ettikten sonra "
+"ekranın köşesine gizlenecek. İmlecin köşeye tekrar getirilmesi panelin "
+"görünmesini sağlayacak."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:28
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
 msgid ""
 "If true, hiding and un-hiding of this panel will be aniukuid rather than "
 "happening instantly."
-msgstr "Eğer seçiliyse, panelin gizlenmesi ve gösterilmesi aniden olmaktansa canlandırma ile olacak."
+msgstr ""
+"Eğer seçiliyse, panelin gizlenmesi ve gösterilmesi aniden olmaktansa "
+"canlandırma ile olacak."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:29
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
 msgid "Enable hide buttons"
 msgstr "Gizleme düğmelerini etkinleştir"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:30
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
 msgid ""
 "If true, buttons will be placed on each side of the panel which may be used "
 "to move the panel to edge of the screen, leaving only a button showing."
-msgstr "Eğer seçiliyse, panelin her iki tarafına, paneli ekranın kenarlarına sadece düğme gözükür şekle getiren düğmeler yerleştirilecek."
+msgstr ""
+"Eğer seçiliyse, panelin her iki tarafına, paneli ekranın kenarlarına sadece "
+"düğme gözükür şekle getiren düğmeler yerleştirilecek."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:31
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
 msgid "Enable arrows on hide buttons"
 msgstr "Gizleme düğmelerinde oklar görünsün"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:32
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
 msgid ""
 "If true, arrows will be placed on the hide buttons. This key is only "
 "relevant if the enable_buttons key is true."
-msgstr "Eğer seçiliyse, gizleme düğmelerine oklar yerleştirilecek. Bu anahtar sadece enable_buttons anahtarı seçiliyse anlamlıdır."
+msgstr ""
+"Eğer seçiliyse, gizleme düğmelerine oklar yerleştirilecek. Bu anahtar sadece "
+"enable_buttons anahtarı seçiliyse anlamlıdır."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:33
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
 msgid "Panel autohide delay"
 msgstr "Panel otomatik gizleme gecikmesi"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:34
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
 msgid ""
 "Specifies the number of milliseconds delay after the pointer leaves the "
 "panel area before the panel is automatically hidden. This key is only "
 "relevant if the auto_hide key is true."
-msgstr "İmleç panel alanından çıktığında kendiliğinden gizlemeden önceki beklemenin kaç milisaniye olacağını belirtir. Bu anahtar sadece auto_hide anahtarı seçiliyse anlamlıdır."
+msgstr ""
+"İmleç panel alanından çıktığında kendiliğinden gizlemeden önceki beklemenin "
+"kaç milisaniye olacağını belirtir. Bu anahtar sadece auto_hide anahtarı "
+"seçiliyse anlamlıdır."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:35
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
 msgid "Panel autounhide delay"
 msgstr "Panel otomatik gösterme gecikmesi"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:36
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
 msgid ""
 "Specifies the number of milliseconds delay after the pointer enters the "
 "panel area before the panel is automatically re-shown. This key is only "
 "relevant if the auto_hide key is true."
-msgstr "İmleç panel alanına girdiğinde kendiliğinden görüntülenmeden önceki beklemenin kaç milisaniye olacağını belirtir. Bu anahtar sadece auto_hide anahtarı seçiliyse anlamlıdır."
+msgstr ""
+"İmleç panel alanına girdiğinde kendiliğinden görüntülenmeden önceki "
+"beklemenin kaç milisaniye olacağını belirtir. Bu anahtar sadece auto_hide "
+"anahtarı seçiliyse anlamlıdır."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:37
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
 msgid "Visible pixels when hidden"
 msgstr "Gizliyken görünecek benekler"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:38
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
 msgid ""
 "Specifies the number of pixels visible when the panel is automatically "
-"hidden into a corner. This key is only relevant if the auto_hide key is "
-"true."
-msgstr "Panel köşede kendiliğinden gizlendiğinde kaç beneğin görünür olacağını belirtir. Bu anahtar sadece auto_hide anahtarı seçiliyse anlamlıdır."
+"hidden into a corner. This key is only relevant if the auto_hide key is true."
+msgstr ""
+"Panel köşede kendiliğinden gizlendiğinde kaç beneğin görünür olacağını "
+"belirtir. Bu anahtar sadece auto_hide anahtarı seçiliyse anlamlıdır."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:39
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
 msgid "Animation speed"
 msgstr "Canlandırma hızı"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:40
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
 msgid ""
-"The speed in which panel animations should occur. Possible values are "
-"\"slow\", \"medium\" and \"fast\". This key is only relevant if the "
+"The speed in which panel animations should occur. Possible values are \"slow"
+"\", \"medium\" and \"fast\". This key is only relevant if the "
 "enable_animations key is true."
-msgstr "Panel canlandırmalarının hangi hızda yapılacağını belirtir. Geçerli değerler \"slow\", \"medium\" ve \"fast\"dır. Bu anahtar sadece enable_animations anahtarı seçiliyse anlamlıdır."
+msgstr ""
+"Panel canlandırmalarının hangi hızda yapılacağını belirtir. Geçerli değerler "
+"\"slow\", \"medium\" ve \"fast\"dır. Bu anahtar sadece enable_animations "
+"anahtarı seçiliyse anlamlıdır."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:41
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
 msgid "Background type"
 msgstr "Arkaplan türü"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:42
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
 msgid ""
 "Which type of background should be used for this panel. Possible values are "
 "\"none\" - the default GTK+ widget background will be used, \"color\" - the "
 "color key will be used as background color or \"image\" - the image "
 "specified by the image key will be used as background."
-msgstr "Bu panel için kullanılacak zemin. İzin verilen değerler şunlardır: \"none\" - varsayılan GTK+ widget zemini kullanılır, \"color\" - renk anahtarı zemin rengi olarak kullanılır veya \"image\" - resim anahtarı tarafından belirtilen resim zemin olarak kullanılır."
+msgstr ""
+"Bu panel için kullanılacak zemin. İzin verilen değerler şunlardır: \"none\" "
+"- varsayılan GTK+ widget zemini kullanılır, \"color\" - renk anahtarı zemin "
+"rengi olarak kullanılır veya \"image\" - resim anahtarı tarafından "
+"belirtilen resim zemin olarak kullanılır."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:43
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
 msgid "Background color"
 msgstr "Arkaplan rengi"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:44
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
 msgid "Specifies the background color for the panel in #RGB format."
 msgstr "#RGB biçiminde panelin arkaplan rengini belirtir."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:45
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:55
 msgid "Background color opacity"
 msgstr "Arkaplan rengi matlığı"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:46
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:56
 msgid ""
 "Specifies the opacity of the background color format. If the color is not "
-"completely opaque (a value of less than 65535), the color will be composited"
-" onto the desktop background image."
-msgstr "Arkaplan renginin saydamlığının biçimini belirtir. Eğer renk tamamıyla salt renk değil ise (65535'den küçük bir değer), renk masaüstü arkaplan resmi ile karıştırılır."
+"completely opaque (a value of less than 65535), the color will be composited "
+"onto the desktop background image."
+msgstr ""
+"Arkaplan renginin saydamlığının biçimini belirtir. Eğer renk tamamıyla salt "
+"renk değil ise (65535'den küçük bir değer), renk masaüstü arkaplan resmi ile "
+"karıştırılır."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:47
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:57
 msgid "Background image"
 msgstr "Arkaplan resmi"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:48
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:58
 msgid ""
 "Specifies the file to be used for the background image. If the image "
 "contains an alpha channel it will be composited onto the desktop background "
 "image."
-msgstr "Arkaplan resmi olarak kullanılacak dosyayı belirtir. Eğer resim alfa kanalı bulunduruyorsa masaüstü arkaplan resmi ile birleştirilir."
+msgstr ""
+"Arkaplan resmi olarak kullanılacak dosyayı belirtir. Eğer resim alfa kanalı "
+"bulunduruyorsa masaüstü arkaplan resmi ile birleştirilir."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:49
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:59
 msgid "Fit image to panel"
 msgstr "Resmi panele uydur"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:50
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:60
 msgid ""
 "If true, the image will be scaled (retaining the aspect ratio of the image) "
 "to the panel height (if horizontal)."
-msgstr "Eğer seçiliyse, resim (resim görüş oranı korunacak biçimde) panelin boyuna göre ölçeklenecek (eğer yataysa)."
+msgstr ""
+"Eğer seçiliyse, resim (resim görüş oranı korunacak biçimde) panelin boyuna "
+"göre ölçeklenecek (eğer yataysa)."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:51
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:61
 msgid "Stretch image to panel"
 msgstr "Resmi panele göre esnet"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:52
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:62
 msgid ""
 "If true, the image will be scaled to the panel dimensions. The aspect ratio "
 "of the image will not be maintained."
-msgstr "Eğer seçiliyse, resim panel boyutlarına göre ölçeklenecek. Görüş oranında değişiklik yapılmayacak."
+msgstr ""
+"Eğer seçiliyse, resim panel boyutlarına göre ölçeklenecek. Görüş oranında "
+"değişiklik yapılmayacak."
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:53
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:63
 msgid "Rotate image on vertical panels"
 msgstr "Dikey panellerde resmi döndür"
 
-#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:54
+#: ../data/org.ukui.panel.toplevel.gschema.xml.in.h:64
 msgid ""
 "If true, the background image will be rotated when the panel is oriented "
 "vertically."
-msgstr "Eğer seçiliyse; arkaplan resmi, panel dikey konumlandırıldığında çevrilecek."
+msgstr ""
+"Eğer seçiliyse; arkaplan resmi, panel dikey konumlandırıldığında çevrilecek."
 
 #: ../ukui-panel/libegg/eggdesktopfile.c:165
 #, c-format
@@ -1778,12 +1552,12 @@ msgstr "Uygulama komut satırında belgeleri kabul etmiyor"
 msgid "Unrecognized launch option: %d"
 msgstr "Tanınmayan başlatma seçeneği: %d"
 
-#: ../ukui-panel/libegg/eggdesktopfile.c:1365
+#: ../ukui-panel/libegg/eggdesktopfile.c:1364
 #, c-format
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr "Bir 'Type=Link' unsuruna belge URI'leri aktarılamaz "
 
-#: ../ukui-panel/libegg/eggdesktopfile.c:1386
+#: ../ukui-panel/libegg/eggdesktopfile.c:1385
 #, c-format
 msgid "Not a launchable item"
 msgstr "Başlatılabilir bir unsur değil"
@@ -1822,8 +1596,8 @@ msgstr "Oturum yönetimi seçeneklerini göster"
 #. * http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #. FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=165132
 #: ../ukui-panel/libpanel-util/panel-error.c:76
-#: ../ukui-panel/panel-applet-frame.c:827
-#: ../ukui-panel/panel-applet-frame.c:1003
+#: ../ukui-panel/panel-applet-frame.c:865
+#: ../ukui-panel/panel-applet-frame.c:1041
 msgid "Error"
 msgstr "Hata"
 
@@ -1836,7 +1610,7 @@ msgstr "Bir simge seçiniz"
 msgid "Could not launch '%s'"
 msgstr "'%s' başlatılamadı"
 
-#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:162
+#: ../ukui-panel/libpanel-util/panel-launch.c:48 ../ukui-panel/launcher.c:165
 msgid "Could not launch application"
 msgstr "Uygulama başlatılamadı"
 
@@ -1849,28 +1623,28 @@ msgstr "'%s' konumu açılamadı"
 msgid "No application to handle search folders is installed."
 msgstr "Arama dizinlerini işlemek için hiçbir uygulama yüklü değil."
 
-#: ../ukui-panel/applet.c:466
+#: ../ukui-panel/applet.c:475
 msgid "???"
 msgstr "???"
 
-#: ../ukui-panel/applet.c:545 ../libukui-panel-applet/ukui-panel-applet.c:139
+#: ../ukui-panel/applet.c:554 ../libukui-panel-applet/ukui-panel-applet.c:143
 msgid "_Remove From Panel"
 msgstr "Panelden _Sil"
 
-#: ../ukui-panel/applet.c:556 ../libukui-panel-applet/ukui-panel-applet.c:142
+#: ../ukui-panel/applet.c:565 ../libukui-panel-applet/ukui-panel-applet.c:146
 msgid "_Move"
 msgstr "_Taşı"
 
-#: ../ukui-panel/applet.c:573 ../libukui-panel-applet/ukui-panel-applet.c:148
+#: ../ukui-panel/applet.c:582 ../libukui-panel-applet/ukui-panel-applet.c:152
 msgid "Loc_k To Panel"
 msgstr "Panele _Kilitle"
 
-#: ../ukui-panel/applet.c:1384
+#: ../ukui-panel/applet.c:1415
 msgid "Cannot find an empty spot"
 msgstr "Boş bir yuva bulunamıyor"
 
 #: ../ukui-panel/drawer.c:346 ../ukui-panel/panel-addto.c:175
-#: ../ukui-panel/panel-toplevel.c:1615
+#: ../ukui-panel/panel-toplevel.c:1619
 msgid "Drawer"
 msgstr "Çekmece"
 
@@ -1878,9 +1652,8 @@ msgstr "Çekmece"
 msgid "_Add to Drawer..."
 msgstr "Çekmeceye _Ekle..."
 
-#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:556
+#: ../ukui-panel/drawer.c:539 ../ukui-panel/launcher.c:603
 #: ../ukui-panel/panel-action-button.c:192
-#: ../ukui-panel/panel-context-menu.c:196
 msgid "_Properties"
 msgstr "_Özellikler"
 
@@ -1897,20 +1670,20 @@ msgid "- Edit .desktop files"
 msgstr "- .desktop dosyalarını düzenle"
 
 #: ../ukui-panel/ukui-desktop-item-edit.c:144
-#: ../ukui-panel/ukui-desktop-item-edit.c:197 ../ukui-panel/launcher.c:928
+#: ../ukui-panel/ukui-desktop-item-edit.c:198 ../ukui-panel/launcher.c:974
 msgid "Create Launcher"
 msgstr "Başlatıcı Oluştur"
 
-#: ../ukui-panel/ukui-desktop-item-edit.c:168
-#: ../ukui-panel/ukui-desktop-item-edit.c:191
+#: ../ukui-panel/ukui-desktop-item-edit.c:169
+#: ../ukui-panel/ukui-desktop-item-edit.c:192
 msgid "Directory Properties"
 msgstr "Dizin Özellikleri"
 
-#: ../ukui-panel/ukui-desktop-item-edit.c:174 ../ukui-panel/launcher.c:775
+#: ../ukui-panel/ukui-desktop-item-edit.c:175 ../ukui-panel/launcher.c:818
 msgid "Launcher Properties"
 msgstr "Başlatıcı Özellikleri"
 
-#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:136
+#: ../ukui-panel/ukui-panel.desktop.in.in.h:1 ../ukui-panel/main.c:144
 msgid "Panel"
 msgstr "Panel"
 
@@ -1918,81 +1691,83 @@ msgstr "Panel"
 msgid ""
 "Launch other applications and provide various utilities to manage windows, "
 "show the time, etc."
-msgstr "Diğer uygulamaları başlatır ve pencereleri yönetmek, zamanı göstermek vb. gibi amaçlar için çeşitli araçlar sağlar."
+msgstr ""
+"Diğer uygulamaları başlatır ve pencereleri yönetmek, zamanı göstermek vb. "
+"gibi amaçlar için çeşitli araçlar sağlar."
 
-#: ../ukui-panel/launcher.c:120
+#: ../ukui-panel/launcher.c:123
 msgid "Could not show this URL"
 msgstr "Bu URL gösterilemedi"
 
-#: ../ukui-panel/launcher.c:121
+#: ../ukui-panel/launcher.c:124
 msgid "No URL was specified."
 msgstr "Hiçbir URL belirtilmedi."
 
-#: ../ukui-panel/launcher.c:214
+#: ../ukui-panel/launcher.c:217
 msgid "Could not use dropped item"
 msgstr "Bırakılan öğe kullanılamadı"
 
-#: ../ukui-panel/launcher.c:440
+#: ../ukui-panel/launcher.c:448
 #, c-format
 msgid "No URI provided for panel launcher desktop file\n"
 msgstr "Panel başlatıcısı masaüstü dosyası için URI belirtilmemiş\n"
 
-#: ../ukui-panel/launcher.c:465
-#, c-format
-msgid "Unable to open desktop file %s for panel launcher\n"
+#: ../ukui-panel/launcher.c:487
+#, fuzzy, c-format
+msgid "Unable to open desktop file %s for panel launcher%s%s\n"
 msgstr "%s Panel başlatıcısı masaüstü dosyasını başlatamıyor\n"
 
-#: ../ukui-panel/launcher.c:533
+#: ../ukui-panel/launcher.c:593
 msgid "_Launch"
 msgstr "Baş_lat"
 
-#: ../ukui-panel/launcher.c:869
+#: ../ukui-panel/launcher.c:911
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
 msgstr "Anahtar %s tanımlanmamış, başlatıcı yüklenemiyor\n"
 
-#: ../ukui-panel/launcher.c:997 ../ukui-panel/panel-ditem-editor.c:1330
+#: ../ukui-panel/launcher.c:1043 ../ukui-panel/panel-ditem-editor.c:1330
 #: ../ukui-panel/panel-ditem-editor.c:1364
 #: ../ukui-panel/panel-ditem-editor.c:1395
 msgid "Could not save launcher"
 msgstr "Başlatıcı kaydedilemedi"
 
-#: ../ukui-panel/main.c:47
+#: ../ukui-panel/main.c:48
 msgid "Replace a currently running panel"
 msgstr "Şu an çalışan bir panel ile yer değiştir"
 
 #. this feature was request in #ukui irc channel
-#: ../ukui-panel/main.c:49
+#: ../ukui-panel/main.c:50
 msgid "Reset the panel configuration to default"
 msgstr "Panel yapılandırmasını varsayılan değerlere geri al"
 
 #. open run dialog
-#: ../ukui-panel/main.c:51
+#: ../ukui-panel/main.c:52
 msgid "Execute the run dialog"
 msgstr "Çalıştırma diyaloğunu başlat"
 
 #. default panels layout
-#: ../ukui-panel/main.c:53
+#: ../ukui-panel/main.c:54
 msgid "Set the default panel layout"
 msgstr "Varsayılan panel düzenini ayarla"
 
-#: ../ukui-panel/menu.c:527
+#: ../ukui-panel/menu.c:528
 msgid "Add this launcher to _panel"
 msgstr "Bu başlatıcıyı _panele ekle"
 
-#: ../ukui-panel/menu.c:534
+#: ../ukui-panel/menu.c:535
 msgid "Add this launcher to _desktop"
 msgstr "Bu başlatıcıyı _masaüstüne ekle"
 
-#: ../ukui-panel/menu.c:546
+#: ../ukui-panel/menu.c:547
 msgid "_Entire menu"
 msgstr "_Tüm menü"
 
-#: ../ukui-panel/menu.c:551
+#: ../ukui-panel/menu.c:552
 msgid "Add this as _drawer to panel"
 msgstr "Bunu çekmece _olarak panele ekle"
 
-#: ../ukui-panel/menu.c:558
+#: ../ukui-panel/menu.c:559
 msgid "Add this as _menu to panel"
 msgstr "Bunu _menü olarak panele ekle"
 
@@ -2041,10 +1816,11 @@ msgstr "Dosya Ara..."
 
 #: ../ukui-panel/panel-action-button.c:381
 msgid "Locate documents and folders on this computer by name or content"
-msgstr "Bu bilgisayar üzerindeki belgeleri ve dizinler ismiyle ya da içeriğiyle konumlandırın"
+msgstr ""
+"Bu bilgisayar üzerindeki belgeleri ve dizinler ismiyle ya da içeriğiyle "
+"konumlandırın"
 
-#: ../ukui-panel/panel-action-button.c:389
-#: ../ukui-panel/panel-force-quit.c:251
+#: ../ukui-panel/panel-action-button.c:389 ../ukui-panel/panel-force-quit.c:251
 msgid "Force Quit"
 msgstr "Sonlandır"
 
@@ -2140,83 +1916,126 @@ msgstr "Panele Ekle"
 msgid "Find an _item to add to the panel:"
 msgstr "Panele eklemek için bir öğe _bul:"
 
-#: ../ukui-panel/panel-applet-frame.c:788
+#: ../ukui-panel/panel-applet-frame.c:826
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
 msgstr "\"%s\" beklenmedik bir şekilde kapandı"
 
-#: ../ukui-panel/panel-applet-frame.c:790
+#: ../ukui-panel/panel-applet-frame.c:828
 msgid "Panel object has quit unexpectedly"
 msgstr "Panel nesnesi beklenmedik bir şekilde kapandı"
 
-#: ../ukui-panel/panel-applet-frame.c:797
+#: ../ukui-panel/panel-applet-frame.c:835
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
-msgstr "Eğer bir panel nesnesini yeniden yüklerseniz, o nesne kendiliğinden panele tekrar eklenecektir."
+msgstr ""
+"Eğer bir panel nesnesini yeniden yüklerseniz, o nesne kendiliğinden panele "
+"tekrar eklenecektir."
 
-#: ../ukui-panel/panel-applet-frame.c:804
+#: ../ukui-panel/panel-applet-frame.c:842
 msgid "D_elete"
 msgstr "S_il"
 
-#: ../ukui-panel/panel-applet-frame.c:805
-#: ../ukui-panel/panel-applet-frame.c:810
+#: ../ukui-panel/panel-applet-frame.c:843
+#: ../ukui-panel/panel-applet-frame.c:848
 msgid "_Don't Reload"
 msgstr "Tekrar Yükle_me"
 
-#: ../ukui-panel/panel-applet-frame.c:806
-#: ../ukui-panel/panel-applet-frame.c:811
+#: ../ukui-panel/panel-applet-frame.c:844
+#: ../ukui-panel/panel-applet-frame.c:849
 msgid "_Reload"
 msgstr "Tekrar _Yükle"
 
-#: ../ukui-panel/panel-applet-frame.c:966
+#: ../ukui-panel/panel-applet-frame.c:1004
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
 msgstr "\"%s\" yüklenirken panelde bir sorunla karşılaşıldı."
 
-#: ../ukui-panel/panel-applet-frame.c:982
+#: ../ukui-panel/panel-applet-frame.c:1020
 msgid "Do you want to delete the applet from your configuration?"
 msgstr "Bu uygulamacığı ayarlarınızdan silmek istiyor musunuz?"
 
-#: ../ukui-panel/panel-context-menu.c:89
+#: ../ukui-panel/panel-context-menu.c:119
 msgid "And many, many others..."
 msgstr "Daha daha niceleri..."
 
-#: ../ukui-panel/panel-context-menu.c:112
+#: ../ukui-panel/panel-context-menu.c:142
 msgid "The UKUI Panel"
 msgstr "UKUI Paneli"
 
-#: ../ukui-panel/panel-context-menu.c:116
+#: ../ukui-panel/panel-context-menu.c:146
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
-msgstr "Bu uygulama başka uygulamalara ulaşmak ve kullanışlı araçlar sağlamakla sorumludur."
+msgstr ""
+"Bu uygulama başka uygulamalara ulaşmak ve kullanışlı araçlar sağlamakla "
+"sorumludur."
 
-#: ../ukui-panel/panel-context-menu.c:120
+#: ../ukui-panel/panel-context-menu.c:150
 msgid "About the UKUI Panel"
 msgstr "UKUI Paneli Hakkında"
 
-#: ../ukui-panel/panel-context-menu.c:151
+#: ../ukui-panel/panel-context-menu.c:181
 msgid "Cannot delete this panel"
 msgstr "Bu panel silinemedi"
 
-#: ../ukui-panel/panel-context-menu.c:152
+#: ../ukui-panel/panel-context-menu.c:182
 msgid "You must always have at least one panel."
 msgstr "Her zaman en az bir paneliniz olması gerekiyor."
 
-#: ../ukui-panel/panel-context-menu.c:185
-msgid "_Add to Panel..."
-msgstr "Panele _Ekle..."
+#: ../ukui-panel/panel-context-menu.c:226
+#, fuzzy
+msgid "Reset this panel?"
+msgstr "Bu panel silinsin mi?"
 
-#: ../ukui-panel/panel-context-menu.c:206
-msgid "_Delete This Panel"
-msgstr "Bu Paneli _Sil"
+#: ../ukui-panel/panel-context-menu.c:227
+#, fuzzy
+msgid ""
+"When a panel is reset,all \n"
+"custom settings are lost."
+msgstr ""
+"Bir panel silinince, panel ve panelin\n"
+"ayarları kaybolacaktır."
 
-#: ../ukui-panel/panel-context-menu.c:221
-msgid "_New Panel"
-msgstr "_Yeni Panel"
+#: ../ukui-panel/panel-context-menu.c:240
+msgid "_Cancel"
+msgstr ""
 
-#: ../ukui-panel/panel-context-menu.c:273
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Add to Panel..."));
+#. image = gtk_image_new_from_icon_name ("list-add", GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+#. g_signal_connect (G_OBJECT (menuitem), "activate",
+#. G_CALLBACK (panel_addto_present), panel_widget);
+#.
+#. if (!panel_profile_id_lists_are_writable ())
+#. gtk_widget_set_sensitive (menuitem, FALSE);
+#.
+#. menuitem = gtk_image_menu_item_new_with_mnemonic (_("_Properties"));
+#. image = gtk_image_new_from_icon_name ("document-properties",
+#. GTK_ICON_SIZE_MENU);
+#. gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem), image);
+#. gtk_widget_show (menuitem);
+#. gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+#. g_signal_connect_swapped (menuitem, "activate",
+#. G_CALLBACK (panel_properties_dialog_present),
+#. panel_widget->toplevel);
+#.
+#: ../ukui-panel/panel-context-menu.c:241
+#: ../ukui-panel/panel-context-menu.c:292
+#, fuzzy
+msgid "_Reset Panel"
+msgstr "Sol Panel"
+
+#: ../ukui-panel/panel-context-menu.c:262
+#, fuzzy
+msgid "_Settings"
+msgstr "Zaman _Ayarları"
+
+#: ../ukui-panel/panel-context-menu.c:378
 msgid "A_bout Panels"
 msgstr "Paneller _Hakkında"
 
@@ -2295,7 +2114,9 @@ msgstr "Yardım belgesi görüntülenemedi"
 #: ../ukui-panel/panel-force-quit.c:80
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
-msgstr "Uygulamayı çıkmaya zorlamak için bir pencereye tıklayın. İptal etmek için <ESC> tuşuna basın."
+msgstr ""
+"Uygulamayı çıkmaya zorlamak için bir pencereye tıklayın. İptal etmek için "
+"<ESC> tuşuna basın."
 
 #: ../ukui-panel/panel-force-quit.c:234
 msgid "Force this application to exit?"
@@ -2305,7 +2126,9 @@ msgstr "Bu uygulama çıkmaya zorlansın mı?"
 msgid ""
 "If you choose to force an application to exit, unsaved changes in any open "
 "documents in it might get lost."
-msgstr "Eğer bir uygulamayı çıkmaya zorlarsanız, açık olan tüm belgelerdeki kaydedilmemiş değişiklikler kaybolacak."
+msgstr ""
+"Eğer bir uygulamayı çıkmaya zorlarsanız, açık olan tüm belgelerdeki "
+"kaydedilmemiş değişiklikler kaybolacak."
 
 #: ../ukui-panel/panel-menu-bar.c:99
 msgid "Browse and run installed applications"
@@ -2317,92 +2140,95 @@ msgstr "Belgelere, dizinlere ve ağ yerlerine erişim"
 
 #: ../ukui-panel/panel-menu-bar.c:101
 msgid "Change desktop appearance and behavior, get help, or log out"
-msgstr "Masaüstü görünümünü ve davranışını değiştir, yardım al, ya da çıkış yap"
+msgstr ""
+"Masaüstü görünümünü ve davranışını değiştir, yardım al, ya da çıkış yap"
 
 #: ../ukui-panel/panel-menu-bar.c:168
 msgid "Applications"
 msgstr "Uygulamalar"
 
-#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:672
+#: ../ukui-panel/panel-menu-bar.c:364 ../ukui-panel/panel-menu-button.c:675
 msgid "_Edit Menus"
 msgstr "_Menüleri Düzenle"
 
-#: ../ukui-panel/panel-menu-items.c:473
+#: ../ukui-panel/panel-menu-items.c:472
 msgid "Bookmarks"
 msgstr "Yer İmleri"
 
 #. Translators: %s is a URI
-#: ../ukui-panel/panel-menu-items.c:496 ../ukui-panel/panel.c:549
+#: ../ukui-panel/panel-menu-items.c:495 ../ukui-panel/panel.c:549
 #, c-format
 msgid "Open '%s'"
 msgstr "URL Aç: '%s'"
 
-#: ../ukui-panel/panel-menu-items.c:567
+#: ../ukui-panel/panel-menu-items.c:566
 #, c-format
 msgid "Unable to scan %s for media changes"
 msgstr "Ortam değişiklikleri için %s taranamadı"
 
-#: ../ukui-panel/panel-menu-items.c:610
+#: ../ukui-panel/panel-menu-items.c:609
 #, c-format
 msgid "Rescan %s"
 msgstr "Tekrar Tara %s"
 
-#: ../ukui-panel/panel-menu-items.c:647
+#: ../ukui-panel/panel-menu-items.c:646
 #, c-format
 msgid "Unable to mount %s"
 msgstr "%s bağlanamadı"
 
-#: ../ukui-panel/panel-menu-items.c:710
+#: ../ukui-panel/panel-menu-items.c:709
 #, c-format
 msgid "Mount %s"
 msgstr "Bağla %s"
 
-#: ../ukui-panel/panel-menu-items.c:918
+#: ../ukui-panel/panel-menu-items.c:917
 msgid "Removable Media"
 msgstr "Çıkarılabilir Araçlar"
 
-#: ../ukui-panel/panel-menu-items.c:1005
+#: ../ukui-panel/panel-menu-items.c:1004
 msgid "Network Places"
 msgstr "Ağ Bağlantıları"
 
-#: ../ukui-panel/panel-menu-items.c:1044
+#: ../ukui-panel/panel-menu-items.c:1043
 msgid "Open your personal folder"
 msgstr "Kişisel dizininizi açın"
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
 #. * environment).
-#: ../ukui-panel/panel-menu-items.c:1063
+#: ../ukui-panel/panel-menu-items.c:1062
 msgctxt "Desktop Folder"
 msgid "Desktop"
 msgstr "Masaüstü"
 
-#: ../ukui-panel/panel-menu-items.c:1064
+#: ../ukui-panel/panel-menu-items.c:1063
 msgid "Open the contents of your desktop in a folder"
 msgstr "Masaüstünüzün içeriğini bir dizin içerisinde açın"
 
-#: ../ukui-panel/panel-menu-items.c:1080
+#: ../ukui-panel/panel-menu-items.c:1079
 msgid "Computer"
 msgstr "Bilgisayar"
 
-#: ../ukui-panel/panel-menu-items.c:1085
+#: ../ukui-panel/panel-menu-items.c:1084
 msgid ""
 "Browse all local and remote disks and folders accessible from this computer"
-msgstr "Bu bilgisayardan erişilebilen, tüm yerel ve uzak disklere ve dizinlere gözatın"
+msgstr ""
+"Bu bilgisayardan erişilebilen, tüm yerel ve uzak disklere ve dizinlere "
+"gözatın"
 
-#: ../ukui-panel/panel-menu-items.c:1098
+#: ../ukui-panel/panel-menu-items.c:1097
 msgid "Network"
 msgstr "Ağ"
 
-#: ../ukui-panel/panel-menu-items.c:1099
+#: ../ukui-panel/panel-menu-items.c:1098
 msgid "Browse bookmarked and local network locations"
 msgstr "Yerimlerine ve yerel ağ konumlarına gözatın"
 
-#: ../ukui-panel/panel-menu-items.c:1497
+#: ../ukui-panel/panel-menu-items.c:1496
 msgid "Places"
 msgstr "Yerler"
 
-#: ../ukui-panel/panel-menu-items.c:1525
+#: ../ukui-panel/panel-menu-items.c:1524
 msgid "System"
 msgstr "Sistem"
 
@@ -2410,7 +2236,8 @@ msgstr "Sistem"
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
 #. * but "1" if "Log Out %s" doesn't make any sense in your
 #. * language (where %s is a username).
-#: ../ukui-panel/panel-menu-items.c:1610
+#.
+#: ../ukui-panel/panel-menu-items.c:1609
 msgctxt "panel:showusername"
 msgid "1"
 msgstr "1"
@@ -2419,53 +2246,62 @@ msgstr "1"
 #. * panel-action-button.c
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../ukui-panel/panel-menu-items.c:1622
+#: ../ukui-panel/panel-menu-items.c:1621
 #, c-format
 msgid "Log Out %s..."
 msgstr "Çıkış %s..."
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: ../ukui-panel/panel-menu-items.c:1626
+#: ../ukui-panel/panel-menu-items.c:1625
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
-msgstr "Başka bir kullanıcı ile giriş yapmak için bu oturumun %s çıkışını yapın"
+msgstr ""
+"Başka bir kullanıcı ile giriş yapmak için bu oturumun %s çıkışını yapın"
 
 #: ../ukui-panel/panel-properties-dialog.c:120
+#: ../ukui-panel/panel-settings-dialog.c:131
 #: ../ukui-panel/panel-test-applets.c:58
 msgctxt "Orientation"
 msgid "Top"
 msgstr "Üst"
 
 #: ../ukui-panel/panel-properties-dialog.c:121
+#: ../ukui-panel/panel-settings-dialog.c:132
 #: ../ukui-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Bottom"
 msgstr "Alt"
 
 #: ../ukui-panel/panel-properties-dialog.c:122
+#: ../ukui-panel/panel-settings-dialog.c:133
 #: ../ukui-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Left"
 msgstr "Sol"
 
 #: ../ukui-panel/panel-properties-dialog.c:123
+#: ../ukui-panel/panel-settings-dialog.c:134
 #: ../ukui-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Right"
 msgstr "Sağ"
 
 #: ../ukui-panel/panel-properties-dialog.c:819
+#: ../ukui-panel/panel-settings-dialog.c:1428
 msgid "Drawer Properties"
 msgstr "Çekmece Özellikleri"
 
 #: ../ukui-panel/panel-properties-dialog.c:939
-#: ../ukui-panel/panel-run-dialog.c:1970
+#: ../ukui-panel/panel-settings-dialog.c:1029
+#: ../ukui-panel/panel-settings-dialog.c:1552
+#: ../ukui-panel/panel-run-dialog.c:1973
 #, c-format
 msgid "Unable to load file '%s': %s."
 msgstr "Dosya '%s' yüklenemiyor: %s."
 
 #: ../ukui-panel/panel-properties-dialog.c:945
+#: ../ukui-panel/panel-settings-dialog.c:1558
 msgid "Could not display properties dialog"
 msgstr "Seçenekler penceresi gösterilemedi"
 
@@ -2552,24 +2388,94 @@ msgid "Background"
 msgstr "Arkaplan"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:23
+#: ../ukui-panel/panel-settings-dialog.ui.h:1
 msgid "Image Background Details"
 msgstr "Resim Arkaplan Detayları"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:24
+#: ../ukui-panel/panel-settings-dialog.ui.h:2
 msgid "_Tile"
 msgstr "D_öşe"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:25
+#: ../ukui-panel/panel-settings-dialog.ui.h:3
 msgid "_Scale"
 msgstr "Öl_çekle"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:26
+#: ../ukui-panel/panel-settings-dialog.ui.h:4
 msgid "St_retch"
 msgstr "E_snet"
 
 #: ../ukui-panel/panel-properties-dialog.ui.h:27
+#: ../ukui-panel/panel-settings-dialog.ui.h:5
 msgid "Rotate image when panel is _vertical"
 msgstr "Panel dik_ey olduğu zaman resmi döndür"
+
+#: ../ukui-panel/panel-settings-dialog.c:743
+#: ../ukui-panel/panel-settings-dialog.c:797
+#: ../ukui-panel/panel-settings-dialog.c:910
+msgid "show"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.c:743
+#: ../ukui-panel/panel-settings-dialog.c:798
+#: ../ukui-panel/panel-settings-dialog.c:911
+#, fuzzy
+msgid "hide"
+msgstr "Otomatik _gizle"
+
+#: ../ukui-panel/panel-settings-dialog.c:1035
+#, fuzzy
+msgid "Could not notification area dialog"
+msgstr "Çalıştır penceresi gösterilemedi"
+
+#: ../ukui-panel/panel-settings-dialog.c:1058
+msgid "<a href=''>Customize icons appear on the taskbar</a>"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:6
+#, fuzzy
+msgid "Panel Settings"
+msgstr "Zaman _Ayarları"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:10
+msgid "Hide the taskbar"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:11
+#, fuzzy
+msgid "The taskbar position on the screen："
+msgstr "Nesnenin paneldeki konumu"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:12
+msgid "Change taskbar height and icon size"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:14
+#, no-c-format
+msgid "Default-100%"
+msgstr ""
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:16
+#, fuzzy, no-c-format
+msgid "Medium-150%"
+msgstr "Orta"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:18
+#, fuzzy, no-c-format
+msgid "Large-200%"
+msgstr "Büyük"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:19
+#, fuzzy
+msgid "Notification area"
+msgstr "Uyarı Alanı"
+
+#: ../ukui-panel/panel-settings-dialog.ui.h:20
+#: ../ukui-panel/notification-area.ui.h:2
+msgid "Customize icons appear on the taskbar"
+msgstr ""
 
 #: ../ukui-panel/panel-recent.c:78 ../ukui-panel/panel-recent.c:88
 #, c-format
@@ -2590,7 +2496,12 @@ msgid ""
 "If you clear the Recent Documents list, you clear the following:\n"
 "• All items from the Places → Recent Documents menu item.\n"
 "• All items from the recent documents list in all applications."
-msgstr "Eğer Son Kullanılan Belgeler listesini temizlerseniz, aşağıdakiler de temizlenir:\n\n• Yerler → Son Kullanılan Belgeler menüsündeki tüm öğeler.\n• Tüm uygulamalardaki son kullanılan belgeler listeleri."
+msgstr ""
+"Eğer Son Kullanılan Belgeler listesini temizlerseniz, aşağıdakiler de "
+"temizlenir:\n"
+"\n"
+"• Yerler → Son Kullanılan Belgeler menüsündeki tüm öğeler.\n"
+"• Tüm uygulamalardaki son kullanılan belgeler listeleri."
 
 #: ../ukui-panel/panel-recent.c:161
 msgid "Clear Recent Documents"
@@ -2608,35 +2519,37 @@ msgstr "Son Kullanılan Belgeleri Temizle..."
 msgid "Clear all items from the recent documents list"
 msgstr "Son kullanılan belgeler listesini temizle"
 
-#: ../ukui-panel/panel-run-dialog.c:417
+#: ../ukui-panel/panel-run-dialog.c:419
 #, c-format
 msgid "Could not run command '%s'"
 msgstr "'%s' komutu çalıştırılamadı"
 
-#: ../ukui-panel/panel-run-dialog.c:457
+#: ../ukui-panel/panel-run-dialog.c:460
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
 msgstr "'%s' UTF-8'den çevirilemedi"
 
-#: ../ukui-panel/panel-run-dialog.c:1204
+#: ../ukui-panel/panel-run-dialog.c:1207
 msgid "Choose a file to append to the command..."
 msgstr "Komuta eklenecek bir dosya seçin..."
 
-#: ../ukui-panel/panel-run-dialog.c:1582 ../ukui-panel/panel-run-dialog.ui.h:9
+#: ../ukui-panel/panel-run-dialog.c:1585 ../ukui-panel/panel-run-dialog.ui.h:9
 msgid "Select an application to view its description."
 msgstr "Açıklamasını görüntülemek için bir uygulama seçin."
 
-#: ../ukui-panel/panel-run-dialog.c:1620
+#: ../ukui-panel/panel-run-dialog.c:1623
 #, c-format
 msgid "Will run command: '%s'"
 msgstr "çalıştıracak komut: '%s'"
 
-#: ../ukui-panel/panel-run-dialog.c:1653
+#: ../ukui-panel/panel-run-dialog.c:1656
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
-msgstr "Çalıştırma penceresine sürüklenen URI listesinin biçimi (%d) veya uzunluğu (%d) hatalıydı.\n"
+msgstr ""
+"Çalıştırma penceresine sürüklenen URI listesinin biçimi (%d) veya uzunluğu "
+"(%d) hatalıydı.\n"
 
-#: ../ukui-panel/panel-run-dialog.c:1975
+#: ../ukui-panel/panel-run-dialog.c:1978
 msgid "Could not display run dialog"
 msgstr "Çalıştır penceresi gösterilemedi"
 
@@ -2668,7 +2581,8 @@ msgstr "Dosya _ile çalıştır..."
 msgid ""
 "Click this button to browse for a file whose name to append to the command "
 "string."
-msgstr "İsmi komut satırına eklenecek dosyaya göz atmak için bu düğmeye tıklayın."
+msgstr ""
+"İsmi komut satırına eklenecek dosyaya göz atmak için bu düğmeye tıklayın."
 
 #: ../ukui-panel/panel-run-dialog.ui.h:8
 msgid "List of known applications"
@@ -2686,7 +2600,9 @@ msgstr "_Çalıştır"
 msgid ""
 "Click this button to run the selected application or the command in the "
 "command entry field."
-msgstr "Komut girişi alanındaki komutu veya uygulamayı çalıştırmak için bu düğmeye tıklayın."
+msgstr ""
+"Komut girişi alanındaki komutu veya uygulamayı çalıştırmak için bu düğmeye "
+"tıklayın."
 
 #: ../ukui-panel/panel-stock-icons.c:98
 msgid "_Force quit"
@@ -2716,7 +2632,8 @@ msgstr "Uygulamacığın başlangıç boyutunu belirtin (minicik, orta, büyük 
 #: ../ukui-panel/panel-test-applets.c:42
 msgid ""
 "Specify the initial orientation of the applet (top, bottom, left or right)"
-msgstr "Uygulamacığın başlangıç konumunu belirtin (yukarı, aşağı, sol veya sağ)"
+msgstr ""
+"Uygulamacığın başlangıç konumunu belirtin (yukarı, aşağı, sol veya sağ)"
 
 #: ../ukui-panel/panel-test-applets.c:66
 msgctxt "Size"
@@ -2771,25 +2688,25 @@ msgstr "_Uygulamacık:"
 msgid "_Prefs Path:"
 msgstr "_Tercih yolu:"
 
-#: ../ukui-panel/panel-toplevel.c:1218
+#: ../ukui-panel/panel-toplevel.c:1222
 msgid "Hide Panel"
 msgstr "Paneli Gizle"
 
 #. translators: these string will be shown in MetaCity's switch window
 #. * popup when you pass the focus to a panel
-#: ../ukui-panel/panel-toplevel.c:1621 ../ukui-panel/panel-toplevel.c:1631
+#: ../ukui-panel/panel-toplevel.c:1625 ../ukui-panel/panel-toplevel.c:1635
 msgid "Top Panel"
 msgstr "Üst Panel"
 
-#: ../ukui-panel/panel-toplevel.c:1623
+#: ../ukui-panel/panel-toplevel.c:1627
 msgid "Bottom Panel"
 msgstr "Alt Panel"
 
-#: ../ukui-panel/panel-toplevel.c:1625
+#: ../ukui-panel/panel-toplevel.c:1629
 msgid "Left Panel"
 msgstr "Sol Panel"
 
-#: ../ukui-panel/panel-toplevel.c:1627
+#: ../ukui-panel/panel-toplevel.c:1631
 msgid "Right Panel"
 msgstr "Sağ Panel"
 
@@ -2825,6 +2742,7 @@ msgstr "Arama"
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
+#.
 #: ../ukui-panel/panel-util.c:1097
 #, c-format
 msgid "%1$s: %2$s"
@@ -2835,22 +2753,362 @@ msgstr "%1$s: %2$s"
 msgid "Open URL: %s"
 msgstr "URL Aç: %s"
 
-#: ../ukui-panel/panel.c:1332
+#: ../ukui-panel/panel.c:1548
 msgid "Delete this drawer?"
 msgstr "Bu çekmece silinsin mi?"
 
-#: ../ukui-panel/panel.c:1333
+#: ../ukui-panel/panel.c:1549
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
-msgstr "Bir çekmece silinince, çekmece ve çekmecenin\nayarları kaybolacaktır."
+msgstr ""
+"Bir çekmece silinince, çekmece ve çekmecenin\n"
+"ayarları kaybolacaktır."
 
-#: ../ukui-panel/panel.c:1336
+#: ../ukui-panel/panel.c:1552
 msgid "Delete this panel?"
 msgstr "Bu panel silinsin mi?"
 
-#: ../ukui-panel/panel.c:1337
+#: ../ukui-panel/panel.c:1553
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."
-msgstr "Bir panel silinince, panel ve panelin\nayarları kaybolacaktır."
+msgstr ""
+"Bir panel silinince, panel ve panelin\n"
+"ayarları kaybolacaktır."
+
+#~ msgid "Locations"
+#~ msgstr "Konumlar"
+
+#~ msgid "Edit"
+#~ msgstr "Düzenle"
+
+#~ msgid "Calendar"
+#~ msgstr "Takvim"
+
+#~ msgid "%l:%M:%S %p"
+#~ msgstr "%l:%M:%S %p"
+
+#~ msgid "%l:%M %p"
+#~ msgstr "%l:%M %p"
+
+#~ msgid "%H:%M:%S"
+#~ msgstr "%H:%M:%S"
+
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgid "%a %b %e"
+#~ msgstr "%a %b %e"
+
+#~ msgid ""
+#~ "%1$s\n"
+#~ "%2$s"
+#~ msgstr ""
+#~ "%1$s\n"
+#~ "%2$s"
+
+#~ msgid "%1$s, %2$s"
+#~ msgstr "%1$s, %2$s"
+
+#~ msgid "%A %B %d (%%s)"
+#~ msgstr "%A, %d %B (%%s)"
+
+#~ msgid "Click to hide month calendar"
+#~ msgstr "Ay takvimini gizlemek için tıklayın"
+
+#~ msgid "Click to view month calendar"
+#~ msgstr "Ay takvimini görüntülemek için tıklayın"
+
+#~ msgid "Computer Clock"
+#~ msgstr "Bilgisayar Saati"
+
+#~ msgid "%I:%M:%S %p"
+#~ msgstr "%I:%M:%S %p"
+
+#~ msgid "%I:%M %p"
+#~ msgstr "%I:%M %p"
+
+#~ msgid "%A, %B %d %Y"
+#~ msgstr "%A, %d %B %Y"
+
+#~ msgid "Set System Time..."
+#~ msgstr "Sistem Zamanını Ayarla..."
+
+#~ msgid "Set System Time"
+#~ msgstr "Sistem Zamanını Ayarla"
+
+#~ msgid "Failed to set the system time"
+#~ msgstr "Sistem zamanı ayarlama başarısız oldu"
+
+#~ msgid "Copy _Time"
+#~ msgstr "_Saati Kopyala"
+
+#~ msgid "Copy _Date"
+#~ msgstr "_Tarihi Kopyala"
+
+#~ msgid "Ad_just Date & Time"
+#~ msgstr "Tarihi ve Zamanı _Ayarla"
+
+#~ msgid "Choose Location"
+#~ msgstr "Konum Seç"
+
+#~ msgid "Edit Location"
+#~ msgstr "Konumu Düzenle"
+
+#~ msgid "City Name"
+#~ msgstr "Şehir İsmi"
+
+#~ msgid "City Time Zone"
+#~ msgstr "Şehir Saat Dilimi"
+
+#~ msgid "Clock"
+#~ msgstr "Saat"
+
+#~ msgid "The Clock displays the current time and date"
+#~ msgstr "Saat uygulamacığı şu anki zamanı ve tarihi gösterir"
+
+#~ msgid ""
+#~ "<small><i>Type a city, region, or country name and then select a match "
+#~ "from the pop-up.</i></small>"
+#~ msgstr ""
+#~ "<small><i>Bir şehir, bölge veya ülke adı girin ve açılan pencereden bir "
+#~ "eşleşme seçin.</i></small>"
+
+#~ msgid "_Timezone:"
+#~ msgstr "_Saat Dilimi:"
+
+#~ msgid "_Location Name:"
+#~ msgstr "_Konum İsmi:"
+
+#~ msgid "<i>(optional)</i>"
+#~ msgstr "<i>(seçimlik)</i>"
+
+#~ msgid "L_ongitude:"
+#~ msgstr "_Boylam:"
+
+#~ msgid "L_atitude:"
+#~ msgstr "_Enlem:"
+
+#~ msgid "Time & Date"
+#~ msgstr "Zaman ve Tarih"
+
+#~ msgid "_Time:"
+#~ msgstr "_Zaman:"
+
+#~ msgid "Current Time:"
+#~ msgstr "Mevcut Zaman:"
+
+#~ msgid "_Set System Time"
+#~ msgstr "_Sistem Zamanını Ayarla"
+
+#~ msgid "East"
+#~ msgstr "Doğu"
+
+#~ msgid "West"
+#~ msgstr "Batı"
+
+#~ msgid "North"
+#~ msgstr "Kuzey"
+
+#~ msgid "South"
+#~ msgstr "Güney"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "Saat Tercihleri"
+
+#~ msgid "Clock Format"
+#~ msgstr "Saat Biçimi"
+
+#~ msgid "_12 hour format"
+#~ msgstr "_12 saat biçimi"
+
+#~ msgid "_24 hour format"
+#~ msgstr "_24 saat biçimi"
+
+#~ msgid "Panel Display"
+#~ msgstr "Panel Ekranı"
+
+#~ msgid "Show the _date"
+#~ msgstr "_Tarihi göster"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "_Saniyeleri göster"
+
+#~ msgid "Show wee_k numbers in calendar"
+#~ msgstr "Ta_kvimde hafta numaralarını göster"
+
+#~ msgid "Show _weather"
+#~ msgstr "_Hava durumunu göster"
+
+#~ msgid "Show _temperature"
+#~ msgstr "Sıcaklığı _göster"
+
+#~ msgid "Display"
+#~ msgstr "Görüntü"
+
+#~ msgid "_Visibility unit:"
+#~ msgstr "_Görüş mesafesi birimi:"
+
+#~ msgid "_Pressure unit:"
+#~ msgstr "_Basınç birimi:"
+
+#~ msgid "_Wind speed unit:"
+#~ msgstr "_Rüzgar hızı birimi:"
+
+#~ msgid "_Temperature unit:"
+#~ msgstr "_Sıcaklık birimi:"
+
+#~ msgid "Weather"
+#~ msgstr "Hava Durumu"
+
+#~ msgid "Failed to set the system timezone"
+#~ msgstr "Sistem saat dilimi atanırken başarısız olundu"
+
+#~ msgid "<small>Set...</small>"
+#~ msgstr "<small>Ayarla...</small>"
+
+#~ msgid "<small>Set</small>"
+#~ msgstr "<small>Ayarla</small>"
+
+#~ msgid ""
+#~ "Set location as current location and use its timezone for this computer"
+#~ msgstr ""
+#~ "Konumu mevcut konum olarak ata ve bu bilgisayar için onun zaman dilimini "
+#~ "kullan"
+
+#~ msgid "%l:%M <small>%p (%A)</small>"
+#~ msgstr "%l:%M <small>%p (%A)</small>"
+
+#~ msgid "%H:%M <small>(%A)</small>"
+#~ msgstr "%H:%M <small>(%A)</small>"
+
+#~ msgid "%l:%M <small>%p</small>"
+#~ msgstr "%l:%M <small>%p</small>"
+
+#~ msgid "%s, %s"
+#~ msgstr "%s, %s"
+
+#~ msgid "Unknown"
+#~ msgstr "Bilinmeyen"
+
+#~ msgid "%s, feels like %s"
+#~ msgstr "%s, hissedilen %s"
+
+#~ msgid "Sunrise: %s / Sunset: %s"
+#~ msgstr "Gün doğumu: %s / Gün batımı: %s"
+
+#~ msgid "Hour format"
+#~ msgstr "Saat biçimi"
+
+#~ msgid ""
+#~ "This key specifies the hour format used by the clock applet. Possible "
+#~ "values are \"12-hour\", \"24-hour\", \"internet\", \"unix\" and \"custom"
+#~ "\". If set to \"internet\", the clock will display Internet time. The "
+#~ "Internet time system divides the day into 1000 \".beats\". There are no "
+#~ "time zones in this system, so time is the same all over the world. If set "
+#~ "to \"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key."
+#~ msgstr ""
+#~ "Bu anahtar saat uygulamacığı için kullanılacak saat biçimini belirtir. "
+#~ "Geçerli değerler, \"12-hour\", \"24-hour\", \"internet\", \"unix\" ve "
+#~ "\"custom\"dır. Eğer \"internet\" ayarlanmışsa, saat İnternet saatini "
+#~ "gösterir. İnternet saati günleri 1000 \".beats\"e böler. Bu sistemde "
+#~ "zaman dilimi yoktur, bu yüzden saat dünyanın her yerinde aynıdır. Eğer "
+#~ "\"unix\" ayarlanmışsa, saat Epoch'dan, yani 1970-01-01'den, bugüne geçen "
+#~ "zamanı saniye olarak gösterir. Eğer \"custom\" ayarlanmışsa, saat zamanı "
+#~ "'custom_format' anahtarında belirtildiği biçimde gösterir."
+
+#~ msgid "Custom format of the clock"
+#~ msgstr "Özel saat biçimi"
+
+#~ msgid ""
+#~ "This key specifies the format used by the clock applet when the format "
+#~ "key is set to \"custom\". You can use conversion specifiers understood by "
+#~ "strftime() to obtain a specific format. See the strftime() manual for "
+#~ "more information."
+#~ msgstr ""
+#~ "Bu anahtar format anahtarı \"custom\"a ayarlı olduğunda saat "
+#~ "uygulamacığında kullanılacak biçimi belirtir. strftime() tarafından "
+#~ "algılanabilen çevrim belirteçlerini bir biçim belirtmek için "
+#~ "kullanabilirsiniz. Daha fazla bilgi için strftime() kılavuzuna bakın."
+
+#~ msgid "Show time with seconds"
+#~ msgstr "Zamanı saniye ile birlikte göster"
+
+#~ msgid "If true, display seconds in time."
+#~ msgstr "Eğer seçiliyse, zamanda saniyeleri göster."
+
+#~ msgid "Show date in clock"
+#~ msgstr "Saat uygulamacığının içinde tarihi göster"
+
+#~ msgid "If true, display date in the clock, in addition to time."
+#~ msgstr "Eğer seçiliyse, zamana ek olarak saatin içinde tarihi göster."
+
+#~ msgid "Show date in tooltip"
+#~ msgstr "Balon içinde tarihi göster"
+
+#~ msgid "If true, show date in a tooltip when the pointer is over the clock."
+#~ msgstr ""
+#~ "Eğer seçiliyse, imleç saatin üzerine getirildiğinde balonda tarihi göster."
+
+#~ msgid "Show weather in clock"
+#~ msgstr "Saat içinde hava durumunu göster"
+
+#~ msgid "If true, display a weather icon."
+#~ msgstr "Eğer seçiliyse, bir hava durumu simgesi gösterir."
+
+#~ msgid "Show temperature in clock"
+#~ msgstr "Saat içinde sıcaklığı göster"
+
+#~ msgid "If true, show the temperature next to the weather icon."
+#~ msgstr "Eğer seçiliyse, hava durumu simgesinin yanında sıcaklığı gösterir."
+
+#~ msgid "Show week numbers in calendar"
+#~ msgstr "Takvimde kaçıncı hafta olduğunu göster"
+
+#~ msgid "If true, show week numbers in the calendar."
+#~ msgstr "Eğer seçiliyse, takvimde kaçıncı hafta olduğunu göster."
+
+#~ msgid "Expand list of locations"
+#~ msgstr "Konumların listesini genişlet"
+
+#~ msgid "If true, expand the list of locations in the calendar window."
+#~ msgstr "Eğer seçiliyse, takvim penceresinde konumların listesi açılır."
+
+#~ msgid "List of locations"
+#~ msgstr "Konumların listesi"
+
+#~ msgid "A list of locations to display in the calendar window."
+#~ msgstr "Takvim penceresinde gösterilecek konumların listesi."
+
+#~ msgid "Temperature unit"
+#~ msgstr "Sıcaklık birimi"
+
+#~ msgid "The unit to use when showing temperatures."
+#~ msgstr "Sıcaklıklar gösterilirken kullanılacak birim."
+
+#~ msgid "Speed unit"
+#~ msgstr "Hız birimi"
+
+#~ msgid "The unit to use when showing wind speed."
+#~ msgstr "Rüzgar hızı gösterilirken kullanılacak birim."
+
+#~ msgid "Clock Applet Factory"
+#~ msgstr "Saat Uygulamacık Üreticisi"
+
+#~ msgid "Factory for clock applet"
+#~ msgstr "Saat uygulamacığı için üretici"
+
+#~ msgid "Get the current time and date"
+#~ msgstr "Şu anki zamanı ve tarihi al"
+
+#~ msgid "_Add to Panel..."
+#~ msgstr "Panele _Ekle..."
+
+#~ msgid "_Delete This Panel"
+#~ msgstr "Bu Paneli _Sil"
+
+#~ msgid "_New Panel"
+#~ msgstr "_Yeni Panel"
