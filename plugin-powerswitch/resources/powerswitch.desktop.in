@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=PowerSwitch
+Comment=Get the powerswitch
+Icon=power-switch
+
+#TRANSLATIONS_DIR=../translations
+Name=电源管理
+Comment=用以开关机以及查看电源状态的插件

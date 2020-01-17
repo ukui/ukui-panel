@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=calendar
+Comment=calendar plugin.
+Icon=clock
+

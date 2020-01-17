@@ -1,0 +1,38 @@
+# - Finds the ukui package
+
+@PACKAGE_INIT@
+
+if (CMAKE_VERSION VERSION_LESS 3.0.2)
+    message(FATAL_ERROR \"@PROJECT_NAME@ requires at least CMake version 3.0.2\")
+endif()
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(Qt5Widgets @QT_MINIMUM_VERSION@)
+find_dependency(Qt5DBus @QT_MINIMUM_VERSION@)
+find_dependency(Qt5X11Extras @QT_MINIMUM_VERSION@)
+find_dependency(Qt5LinguistTools @QT_MINIMUM_VERSION@)
+find_dependency(Qt5Xdg @QTXDG_MINIMUM_VERSION@)
+find_dependency(KF5WindowSystem)
+#find_dependency(ukui-build-tools @UKUIBT_MINIMUM_VERSION@)
+#include(UKUiConfigVars)
+include(/usr/share/cmake/ukui-build-tools/modules/UKUiConfigVars.cmake)
+
+
+#  - Set version informations
+set(UKUI_MAJOR_VERSION      "@UKUI_MAJOR_VERSION@")
+set(UKUI_MINOR_VERSION      "@UKUI_MINOR_VERSION@")
+set(UKUI_PATCH_VERSION      "@UKUI_PATCH_VERSION@")
+set(UKUI_VERSION            "@UKUI_VERSION@")
+
+add_definitions("-DUKUI_MAJOR_VERSION=\"${UKUI_MAJOR_VERSION}\"")
+add_definitions("-DUKUI_MINOR_VERSION=\"${UKUI_MINOR_VERSION}\"")
+add_definitions("-DUKUI_PATCH_VERSION=\"${UKUI_PATCH_VERSION}\"")
+add_definitions("-DUKUI_VERSION=\"${UKUI_VERSION}\"")
+
+if (NOT TARGET @UKUI_LIBRARY_NAME@)
+    if (POLICY CMP0024)
+        cmake_policy(SET CMP0024 NEW)
+    endif()
+    include("${CMAKE_CURRENT_LIST_DIR}/ukui-targets.cmake")
+endif()

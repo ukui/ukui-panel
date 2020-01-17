@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=TaskView
+Comment=Get the taskview
+Icon=taskView
+
+Name=任务视图
+Comment=任务视图插件

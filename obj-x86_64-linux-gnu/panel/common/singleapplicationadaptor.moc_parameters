@@ -1,0 +1,13 @@
+-I/home/kylin/work/panel/ukui-panel/panel/common
+-I/home/kylin/work/panel/ukui-panel/obj-x86_64-linux-gnu/panel/common
+-DUKUI_PANEL_VERSION="3.0.0"
+-DPLUGIN_DIR="/usr/lib/x86_64-linux-gnu/ukui-panel"
+-DPACKAGE_DATA_DIR="/usr/share/ukui-panel"
+-DWITH_QUICKLAUNCH_PLUGIN
+-DWITH_SHOWDESKTOP_PLUGIN
+-DWITH_TASKBAR_PLUGIN
+-DWITH_TRAY_PLUGIN
+-DWITH_SPACER_PLUGIN
+-o
+/home/kylin/work/panel/ukui-panel/obj-x86_64-linux-gnu/panel/common/singleapplicationadaptor.moc
+/home/kylin/work/panel/ukui-panel/obj-x86_64-linux-gnu/panel/common/singleapplicationadaptor.h

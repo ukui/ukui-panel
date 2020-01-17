@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link href="ukui.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="LunarCalendar.js"></script>
+  <script type="text/javascript" src="index.js" defer = "defer"></script>
+</head>
+<body>
+<div id="header">
+  <div id="selector_div">
+    <input type="button" id="go_prev_month" class="effect_button" />
+    <input type="button" id="year_selector" class="effect_button" />
+    <input type="button" id="month_selector" class="effect_button" />
+    <input type="button" id="go_next_month" class="effect_button" />
+
+    <div id="year_div" class="hidden_div">
+      <ol id="year_list" class="no_style_list">
+      </ol>
+    </div>
+
+    <div id="month_div" class="hidden_div">
+      <ol id="month_list" class="no_style_list">
+      </ol>
+    </div>
+
+    <div id="holiday_div" class="hidden_div">
+      <ol id="holiday_list" class="no_style_list">
+      </ol>
+    </div>
+
+    <input type="button" id="today_button" value="今天" class="effect_button" />
+    <input type="button" id="holiday_button" value="假期" class="effect_button" />
+    <div id="checkbox_div">
+    <span style="color:#eee; font-size:14px">宜忌</span>
+    <input type="checkbox" id="checkbox" value="宜忌" style="color: #eee"/>
+    </div>
+
+  </div>
+</div>
+
+<div id="container" style="background: #000000">
+  <div id="left_pane">
+
+    <table id="calendar_table">
+      <tr id="weekday_name">
+        <td>日</td>
+        <td>一</td>
+        <td>二</td>
+        <td>三</td>
+        <td>四</td>
+        <td>五</td>
+        <td>六</td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div id="right_pane">
+    <ol id="general_datetime_list">
+      <li>2015-02-04 星期三</li>
+      <li id="day">4</li>
+      <li>十一月十四</li>
+      <li>甲午年【马年】</li>
+      <li>丙子月 庚辰日</li>
+    </ol>
+    <img id="zodiac_icon" src="/usr/share/ukui-panel/plugin-calendar/html/images/zodiac/blue/mouse-black.png" />
+    <table id="hl_table" style="visibility:hidden">
+      <tr>
+        <td style="font-size: 1.6em;">宜</big></td>
+        <td style="font-size: 1.6em;">忌</big></td>
+      </tr>
+      <tr>
+        <td>迁徙</td>
+        <td>嫁娶</td>
+      </tr>
+      <tr>
+        <td>祭祀</td>
+        <td>安葬</td>
+      </tr>
+      <tr>
+        <td>开光</td>
+        <td>破土</td>
+      </tr>
+      <tr>
+        <td>祈福</td>
+        <td>作梁</td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

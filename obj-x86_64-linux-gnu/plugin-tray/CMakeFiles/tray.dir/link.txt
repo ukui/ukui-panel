@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtray.a  CMakeFiles/tray.dir/ukuitrayplugin.cpp.o CMakeFiles/tray.dir/ukuitray.cpp.o CMakeFiles/tray.dir/trayicon.cpp.o CMakeFiles/tray.dir/xfitman.cpp.o CMakeFiles/tray.dir/UKUiPluginTranslationLoader.cpp.o CMakeFiles/tray.dir/tray_autogen/mocs_compilation.cpp.o
+/usr/bin/ranlib libtray.a

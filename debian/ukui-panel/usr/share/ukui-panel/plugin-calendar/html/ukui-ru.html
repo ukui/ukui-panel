@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link href="ukui.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="LunarCalendar-en.js"></script>
+  <script type="text/javascript" src="index-ru.js"></script>
+</head>
+<body>
+<div id="header">
+  <div id="selector_div">
+    <input type="button" id="go_prev_month" class="effect_button" />
+    <input type="button" id="year_selector" class="effect_button" />
+    <input type="button" id="month_selector" class="effect_button" />
+    <input type="button" id="go_next_month" class="effect_button" />
+
+    <div id="year_div" class="hidden_div">
+      <ol id="year_list" class="no_style_list">
+      </ol>
+    </div>
+
+    <div id="month_div" class="hidden_div">
+      <ol id="month_list" class="no_style_list">
+      </ol>
+    </div>
+
+    <div id="holiday_div" class="hidden_div">
+      <ol id="holiday_list" class="no_style_list">
+      </ol>
+    </div>
+
+    <input type="button" id="today_button" value="сегодня" class="effect_button" />
+<!--    <input type="button" id="holiday_button" value="假期" class="effect_button" /> -->
+  </div>
+</div>
+
+<div id="container">
+  <div id="left_pane">
+
+    <table id="calendar_table">
+      <tr id="weekday_name">
+        <td>ВС</td>
+        <td>ПН</td>
+        <td>ВТ</td>
+        <td>СР</td>
+        <td>ЧТ</td>
+        <td>ПТ</td>
+        <td>СБ</td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div id="right_pane">
+    <ol id="general_datetime_list">
+      <li>2015-02-04 星期三</li>
+      <li id="day">4</li>
+      <li>十一月十四</li>
+      <li>甲午年【马年】</li>
+      <li>丙子月 庚辰日</li>
+    </ol>
+
+    <table id="hl_table">
+      <tr>
+        <td style="font-size: 1.6em;">  </big></td>
+        <td style="font-size: 1.6em;">  </big></td>
+      </tr>
+      <tr>
+        <td>  </td>
+        <td>  </td>
+      </tr>
+      <tr>
+        <td>  </td>
+        <td>  </td>
+      </tr>
+      <tr>
+        <td>  </td>
+        <td>  </td>
+      </tr>
+      <tr>
+        <td>  </td>
+        <td>  </td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libshowdesktop.a  CMakeFiles/showdesktop.dir/showdesktop.cpp.o CMakeFiles/showdesktop.dir/UKUiPluginTranslationLoader.cpp.o CMakeFiles/showdesktop.dir/showdesktop_autogen/mocs_compilation.cpp.o
+/usr/bin/ranlib libshowdesktop.a

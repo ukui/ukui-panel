@@ -1,0 +1,4 @@
+ukui-panel-dbgsym_3.14.2~202001161810_amd64.ddeb debug optional automatic=yes
+ukui-panel-l10n_3.14.2~202001161810_all.deb localization optional
+ukui-panel_3.14.2~202001161810_amd64.buildinfo x11 optional
+ukui-panel_3.14.2~202001161810_amd64.deb x11 optional

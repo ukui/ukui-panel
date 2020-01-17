@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=Task manager
+Comment=Switch between running applications
+Icon=window-duplicate
+

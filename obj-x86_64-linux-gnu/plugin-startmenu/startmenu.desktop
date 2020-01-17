@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=Start Menu
+Comment=Get the start menu under the cursor. For web developers.
+Icon=start-menu

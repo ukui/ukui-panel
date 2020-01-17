@@ -1,0 +1,380 @@
+ukui-panel (3.14.2~202001161810) eoan; urgency=medium
+  * 
+ -- hepuyao <hepuyao@kylinos.cn>  Fri, 01 Nov 2019 10:43:29 +0800
+
+ukui-panel (3.14.1-0ubuntukylin1~201911011036) disco; urgency=medium
+
+  * 
+
+ -- hepuyao <hepuyao@H>  Fri, 01 Nov 2019 10:37:43 +0800
+
+ukui-panel (3.14.1-0ubuntukylin1~201911011007) disco; urgency=medium
+
+  * ukui-panel-3.0
+
+ -- hepuyao <hepuyao@kylinos.cn>  Fri, 01 Nov 2019 10:06:30 +0800
+
+ukui-panel (3.14.1-0ubuntukylin1) disco; urgency=medium
+
+  * forck lxqt-panel 0.14.1
+
+ -- hepuyao <hepuyao@kylinos.cn>  Tue, 27 Aug 2019 10:41:05 +0800
+
+lxqt-panel (0.14.1-0ubuntu1) disco; urgency=medium
+
+  * New upstream release.
+  * Run wrap-and-sort.
+
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Sat, 09 Mar 2019 13:27:32 -0600
+
+lxqt-panel (0.14.0-0ubuntu1) disco; urgency=medium
+
+  * New upstream release.
+    - Bump build dependencies.
+    - Remove reverse-applicable patches.
+  * Bump Standards-version to 4.3.0, no changes needed.
+  * Bump debhelper compat to 12, no changes needed.
+  * Add a new lxqt-panel-l10n package.
+
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Sat, 26 Jan 2019 01:19:25 -0600
+
+lxqt-panel (0.13.0-0ubuntu5) cosmic; urgency=medium
+
+  * Add optional overriding of icon theme.
+  * Run wrap-and-sort.
+
+ -- Walter Lapchynski <wxl@ubuntu.com>  Tue, 21 Aug 2018 23:37:22 -0700
+
+lxqt-panel (0.13.0-0ubuntu4) cosmic; urgency=medium
+
+  * Change the Uploaders to Ubuntu uploaders.
+  * Update Standards-version to 4.2.0, no changes needed.
+  * Add an autoexpansion feature to the spacer plugin.
+
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 16 Aug 2018 16:17:17 -0500
+
+lxqt-panel (0.13.0-0ubuntu3) cosmic; urgency=medium
+
+  * Add a DEP-3 header for the patch completely removing the clock plugin.
+  * Don't auto-unmute the volume when it's changed.
+  * Bump Standards-version to 4.1.5, no changes needed.
+  * Run wrap-and-sort.
+
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Mon, 16 Jul 2018 21:58:19 -0500
+
+lxqt-panel (0.13.0-0ubuntu2) cosmic; urgency=medium
+
+  * Completely remove plugin-clock.
+
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 24 May 2018 22:51:05 -0500
+
+lxqt-panel (0.13.0-0ubuntu1) cosmic; urgency=medium
+
+  * New upstream release.
+  * Update build dependencies.
+  * Update copyright.
+  * Remove patches applied upstream.
+
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 23 May 2018 22:38:37 -0500
+
+lxqt-panel (0.12.0-9ubuntu1) cosmic; urgency=medium
+
+  * Merge from Debian Sid. Remaining changes:
+    - Cherry-pick some upstream commits:
+      + Fix wrongly positioned popups (LP: #1527013).
+        * fix-wrongly-positioned-popups.patch
+        * Upstream commit 7391172.
+      + plugin-volume: Use a specific icon for the panel.
+        * use-specific-panel-icon.patch
+        * Upstream commit eaa65e5.
+      + Fix various memory leaks.
+        * fix-memory-leaks.patch
+        * mainmenu: Fix possible leaks in menu-cache usage.
+          - Upstream commit 04630d4.
+        * mount: Fix leak by correctly assigning the QObject parent.
+          - Upstream commit d1bd23f.
+        * taskbar: Avoid conditionals on unintialized values by proper
+          initialization of data members
+          - Upstream commit 1cb5778.
+      + Avoid infinite recursion when no icon is available.
+        * avoid-infinite-recursion-icons.patch
+        * Upstream commit b9b4133.
+      + Add Move and Resize items in the task-button context menu.
+        * add-move-resize-items.patch
+        * Upstream commit b69fe72.
+      + Set the initial task button text (and icon) correctly.
+        * set-initial-task-button-correctly.patch
+        * Upstream commit 563d6bf.
+  * Change the Vcs entries to be Lubuntu-specific.
+  * Fix typo in the patch description of fix-memory-leaks.patch.
+
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Mon, 21 May 2018 00:43:10 -0500
+
+lxqt-panel (0.12.0-9) unstable; urgency=medium
+
+  * Ported back USE_MENU_CACHE handling
+  * Removed build dependency on libmenu-cache-dev (Closes: #896512)
+  * Ported back USE_MENU_CACHE handling
+  * Moved lxqt-about from dependencies to recommends (Closes: #894640)
+  * Bumped debhelper version to 11~
+  * Bumped compat to 11
+  * Bumped Standards to 4.1.4, no changes needed
+  * Fixed VCS fields for salsa
+  * Removed trailing whitespaces
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 23 Apr 2018 19:47:29 +0200
+
+lxqt-panel (0.12.0-8ubuntu1) bionic; urgency=medium
+
+  * Cherry-pick some upstream commits because the upstream release cycle is
+    horribly slow (and without this it'll be years before they come in):
+    - Fix wrongly positioned popups (LP: #1527013).
+      + fix-wrongly-positioned-popups.patch
+      + Upstream commit 7391172.
+    - plugin-volume: Use a specific icon for the panel.
+      + use-specific-panel-icon.patch
+      + Upstream commit eaa65e5.
+    - Fix various memory leaks.
+      + fix-memory-leaks.patch
+      + mainmenu: Fix possible leaks in menu-cache usage.
+        * Upstream commit 04630d4.
+      + mount: Fix leak by correctly assigning the QObject parent.
+        * Upstream commit d1bd23f.
+      + taskbar: Avoid conditionals on unintialized values by proper
+        initialization of data members
+        * Upstream commit 1cb5778.
+    - Avoid infinite recursion when no icon is available.
+      + avoid-infinite-recursion-icons.patch
+      + Upstream commit b9b4133.
+    - Add Move and Resize items in the task-button context menu.
+      + add-move-resize-items.patch
+      + Upstream commit b69fe72.
+    - Set the initial task button text (and icon) correctly.
+      + set-initial-task-button-correctly.patch
+      + Upstream commit 563d6bf.
+
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Mon, 05 Feb 2018 20:04:48 -0600
+
+lxqt-panel (0.12.0-8build1) bionic; urgency=medium
+
+  * No change rebuild against libdbusmenu-qt5-2.
+
+ -- Dmitry Shachnev <mitya57@ubuntu.com>  Tue, 30 Jan 2018 22:29:41 +0300
+
+lxqt-panel (0.12.0-8) unstable; urgency=medium
+
+  * Fix plugin-volume, use pavucontrol-qt (Closes: #884547)
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 16 Dec 2017 18:36:45 +0100
+
+lxqt-panel (0.12.0-7) unstable; urgency=medium
+
+  * Bumped Standards to 4.1.2
+  * Removed branch from VCS fields
+  * Removed debian/gbp.conf
+
+ -- Alf Gaida <agaida@siduction.org>  Thu, 14 Dec 2017 21:28:35 +0100
+
+lxqt-panel (0.12.0-6) unstable; urgency=medium
+
+  * Transition to unstable
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 05 Dec 2017 20:04:19 +0100
+
+lxqt-panel (0.12.0-5) experimental; urgency=medium
+
+  * Ported back the config move to /usr/share/xdg (Closes: #883034)
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 02 Dec 2017 03:23:04 +0100
+
+lxqt-panel (0.12.0-4) experimental; urgency=medium
+
+  * Ported back some cosmetics (volume % and clock size)
+    (Closes: #880150)
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 05 Nov 2017 01:49:39 +0100
+
+lxqt-panel (0.12.0-3) experimental; urgency=medium
+
+  * Fixed host OS query in rules - we really want to know the system
+    instead of set it
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 29 Oct 2017 21:27:27 +0100
+
+lxqt-panel (0.12.0-2) experimental; urgency=medium
+
+  * Added missed breaks and replaces for lxqt-common << 0.12.0
+    (Closes: #879910) - Thanks Andreas Beckmann <anbe@debian.org>
+  * Time off fixed upstream (Closes: #855379)
+
+ -- Alf Gaida <agaida@siduction.org>  Fri, 27 Oct 2017 23:27:44 +0200
+
+lxqt-panel (0.12.0-1) experimental; urgency=medium
+
+  * Cherry-picking upstream release 0.12.0.
+  * Switched to experimental
+  * Bumped liblxqt0-dev to >= 0.12.0
+  * Bumped liblxqt-globalkeys0-dev to >= 0.12.0
+  * Bumped liblxqt-globalkeys-ui0-dev to >= 0.12.0
+  * Bumped libsysstat-qt5-0-dev to >= 0.4.0
+  * Bumped Standards to 4.1.1 - no changes needed
+  * Removed patches - patch was taken from upstream
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 24 Oct 2017 22:32:05 +0200
+
+lxqt-panel (0.11.1-4) unstable; urgency=medium
+
+  * Removed some not needed versions from build dependencies
+  * Bumped Standards to 4.1.0 - no changes needed
+  * Ported back fix for explicit keyword (Closes: #873599)
+    Thanks Adrian Bunk for spotting this.
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 04 Sep 2017 01:29:45 +0200
+
+lxqt-panel (0.11.1-3) unstable; urgency=medium
+
+  * Recommends lxqt-notificationd (Closes: #866886)
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 02 Jul 2017 18:26:25 +0200
+
+lxqt-panel (0.11.1-2) unstable; urgency=medium
+
+  * Bumped Standards to 4.0.0 - no changes needed
+  * Added to Dependencies: lxqt-about, lxqt-policykit
+  * Added Recommends: lxqt-config, lxqt-panel-l10n, lxqt-qtplugin, lxqt-runner,
+    lxqt-session, pavucontrol-qt | pavucontrol, qlipper
+    (Closes: #866255)
+  * Suggests: lxqt | lxqt-core
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 02 Jul 2017 13:25:03 +0200
+
+lxqt-panel (0.11.1-1) unstable; urgency=medium
+
+  * Cherry-picking upstream release 0.11.0 (Closes: #821382).
+  * Removed some build dependencies:
+    - cmake
+    - libqt5xdg-dev
+    - libqt5xdgiconloader-dev
+    - pkg-config
+    - qttools5-dev
+    - qttools5-dev-tools
+  * Bumped some build dependencies:
+    - liblxqt0-dev (>= 0.11.1)
+    - liblxqt-globalkeys0-dev (>= 0.11.1)
+    - liblxqt-globalkeys-ui0-dev (>= 0.11.1)
+    - libsysstat-qt5-0-dev (>= 0.3.3)
+  * Fixed VCS-Git, pointing to the right branch
+  * Bumped years in d/copyright
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 02 Jan 2017 18:12:54 +0100
+
+lxqt-panel (0.11.0-2) unstable; urgency=medium
+
+  * Cherry-picking upstream release 0.11.0.
+  * Synced debian foo with experimental
+  * Bumped Standards to 3.9.8, no changes needed
+  * Bumped compat to 10
+  * Removed --parallel from rules, standard compat 10
+  * Bumped minimum version debhelper (>= 10)
+  * Bumped minimum version liblxqt0-dev (>= 0.11.0)
+  * Bumped minimum version liblxqt-globalkeys0-dev (>= 0.11.0),
+  * Bumped minimum version liblxqt-globalkeys-ui0-dev (>= 0.11.0),
+  * Bumped minimum version libsysstat-qt5-0-dev (>= 0.3.2)
+  * Added build-dependency libqt5svg5-dev
+  * Added build-dependency libqtxdg-dev (>= 2.0.0)
+  * Added build-dependency libqt5xdgiconloader-dev (>= 2.0.0)
+  * Added Recommends lxqt-panel-l10n
+  * Fixed VCS fields, point to the right branch
+  * Fixed copyrights Format field to https
+  * Bumped years in copyrights
+  * Added translation control to rules
+  * Added hardening options
+  * Set CMAKE_BUILD_TYPE=RelWithDebInfo
+  * Exported LC_ALL=C.UTF-8, make builds reproducible
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 18 Oct 2016 22:10:42 +0200
+
+lxqt-panel (0.10.0-8) unstable; urgency=medium
+
+  [ Ralf Jung ]
+  * Add gbp.conf
+
+  [ ChangZhuo Chen (陳昌倬) ]
+  * Merge patch from Ralf Jung.
+  * Bump Standards-Version to 3.9.7.
+  * Update Vcs-* fields.
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Mon, 21 Mar 2016 18:27:53 +0800
+
+lxqt-panel (0.10.0-7) unstable; urgency=medium
+
+  * Fix typo in hurd plugin rules
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 28 Dec 2015 18:57:15 +0100
+
+lxqt-panel (0.10.0-6) unstable; urgency=medium
+
+  * different handling of non-linux-os:
+    - hurd: no cpuload-, networkmonitor-, volume- and sensors-plugin
+    - kfreebsd: no cpuload-, networkmonitor- and volume-plugin
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 28 Dec 2015 17:07:30 +0100
+
+lxqt-panel (0.10.0-5) unstable; urgency=medium
+
+  * Build volume-plugin only for linux.
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 27 Dec 2015 13:24:08 +0100
+
+lxqt-panel (0.10.0-4) unstable; urgency=medium
+
+  * Remove dbg package in favor of dbgsym.
+  * Build cpuoad- and networkmonitor-plugin only for linux.
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 27 Dec 2015 11:15:32 +0100
+
+lxqt-panel (0.10.0-3) unstable; urgency=medium
+
+  * Added dependency lxmenu-data (Closes: 807066)
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 20 Dec 2015 23:44:22 +0100
+
+lxqt-panel (0.10.0-2) unstable; urgency=medium
+
+  * Merge to unstable.
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Tue, 17 Nov 2015 12:35:47 +0800
+
+lxqt-panel (0.10.0-1) experimental; urgency=medium
+
+  * Cherry-picked upstream version 0.10.0.
+  * Adjust minimum versions for liblxqt and libqtxdg
+
+ -- Alf Gaida <agaida@siduction.org>  Fri, 13 Nov 2015 22:47:09 +0100
+
+lxqt-panel (0.9.0+20151101-1) experimental; urgency=medium
+
+  [ Alf Gaida ]
+  * Cherry-picked upstream version 0.9.0+20151101.
+  * Install manpage for lxqt-panel
+  * Deleted debian/lintian-overrides
+  * Cleaned up debian/.gitignore
+  * Switched to experimental because of LXQt namespace change
+  * Added minimum version for liblxqt and libqtxdg
+  * Added upstream signing key and use it in watch file
+  * drop transitional packages
+  * drop breaks/replaces
+  * append  -Wl,--as-needed to linker flags
+  * copyright fixed, the panel uses only LGPL2.1+, file headers
+    fixed upstream
+  * Initial release (Closes: #747610)
+
+  [ Shih-Yuan Lee (FourDollars) ]
+  * Polish debian/control by 'cme fix dpkg-control'.
+
+  [ Andrew Lee (李健秋) ]
+  * Added myself as Uploader.
+  * Sorting build-depends.
+  * Removing whitespaces at EOL and EOF.
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 25 Oct 2015 02:27:12 +0200

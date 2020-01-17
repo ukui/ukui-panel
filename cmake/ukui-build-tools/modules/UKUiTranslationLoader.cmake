@@ -1,0 +1,77 @@
+#=============================================================================
+# Copyright 2014 Luís Pereira <luis.artur.pereira@gmail.com>
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+# 3. The name of the author may not be used to endorse or promote products
+#    derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#=============================================================================
+#
+# These functions enables "automatic" translation loading in UKUi Qt5 apps
+#   and libs. They generate a .cpp file that takes care of everything. The
+#   user doesn't have to do anything in the source code.
+#
+# Typical use:
+#   include(UKUiTranslationLoader)
+#   ukui_app_translation_loader(ukui-app_QM_LOADER ${PROJECT_NAME})
+#   add_executable(${PROJECT_NAME}
+#       ${ukui-app_QM_LOADER}
+#       ...
+#   )
+
+
+# ukui_app_translation_loader(<source_files> <catalog_name>)
+#       <source_files> The generated .cpp file is added to <source_files>
+#       <catalog_name> Translations catalog to be loaded
+function(ukui_app_translation_loader source_files catalog_name)
+    configure_file(
+	    #${UKUI_CMAKE_MODULES_DIR}/UKUiAppTranslationLoader.cpp.in
+	    ../cmake/ukui-build-tools/modules/UKUiAppTranslationLoader.cpp.in
+        UKUiAppTranslationLoader.cpp @ONLY
+    )
+    set(${source_files} ${${source_files}} ${CMAKE_CURRENT_BINARY_DIR}/UKUiAppTranslationLoader.cpp PARENT_SCOPE)
+endfunction()
+
+# ukui_lib_translation_loader(<source_files> <catalog_name>)
+#       <source_files> The generated .cpp file is added to <source_files>
+#       <catalog_name> Translations catalog to be loaded
+function(ukui_lib_translation_loader source_files catalog_name)
+    configure_file(
+        #${UKUI_CMAKE_MODULES_DIR}/UKUiLibTranslationLoader.cpp.in
+	../cmake/ukui-build-tools/modules/UKUiLibTranslationLoader.cpp.in
+        UKUiLibTranslationLoader.cpp @ONLY
+    )
+    set(${source_files} ${${source_files}} ${CMAKE_CURRENT_BINARY_DIR}/UKUiLibTranslationLoader.cpp PARENT_SCOPE)
+endfunction()
+
+# ukui_plugin_translation_loader(<source_files> <catalog_name>)
+#       <source_files> The generated .cpp file is added to <source_files>
+#       <catalog_name> Translations catalog to be loaded
+#       <plugin_type> Plugin type. Example: ukui-panel
+function(ukui_plugin_translation_loader source_files catalog_name plugin_type)
+    configure_file(
+	#${UKUI_CMAKE_MODULES_DIR}/UKUiPluginTranslationLoader.cpp.in
+        #/usr/share/cmake/ukui-build-tools/modules/UKUiPluginTranslationLoader.cpp.in
+        ../cmake/ukui-build-tools/modules/UKUiPluginTranslationLoader.cpp.in
+	UKUiPluginTranslationLoader.cpp @ONLY
+    )
+    set(${source_files} ${${source_files}} ${CMAKE_CURRENT_BINARY_DIR}/UKUiPluginTranslationLoader.cpp PARENT_SCOPE)
+endfunction()

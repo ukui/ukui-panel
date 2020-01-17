@@ -1,0 +1,259 @@
+@charset "UTF-8";
+
+body, div, table {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 12px;
+    background: #fff;
+    -webkit-user-select: none;
+    cursor: default;
+    overflow: hidden;
+    color: #444;
+}
+
+#header {
+    width: 100%;
+    height: 38px;
+    background: #3b9dc5;
+/*    border: 2px solid #155670;*/
+/*    border-bottom: 0;*/
+}
+
+#container {
+    position: absolute;
+    top: 38px;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+/*    background: #f33;*/
+/*    border: 2px solid #155670;*/
+/*    border-top: 0;*/
+}
+
+#left_pane {
+/*    width: 75%;*/
+    background: #fff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#right_pane {
+/*    width: 110px;*/
+/*    height: 300px;*/
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #eff0f1;
+    padding: 5px;
+}
+
+#calendar_table {
+    padding: 5px;
+    width: 100%;
+    border-spacing: 0;
+}
+
+td {
+    position: relative;
+    left: 0;
+    top: 0;
+    border: 1px solid transparent;
+    border-top: 1px solid #ddd;
+    padding: 2px 12px;
+    text-align: center;
+/*    width: 44px;*/
+}
+
+td:hover {
+    border: 1px solid #7eb4ea;
+}
+
+td:active {
+    background: #e4f0fc;
+}
+
+#weekday_name td {
+    border: 0;
+}
+
+#weekday_name td:hover {
+    border: 0;
+}
+
+#weekday_name td:active {
+    border: 0;
+    background-color: transparent;
+}
+
+.day_this_month .solar_part { color: #000; font-size: 18px; }
+.day_this_month .lunar_part { color: #aaa; font-size: 11px; }
+.day_other_month .solar_part { color: #ccc; font-size: 18px; }
+.day_other_month .lunar_part { color: #ccc; font-size: 11px; }
+.day_today .solar_part { color: #000; font-size: 18px; }
+.day_today .lunar_part { color: #aaa; font-size: 11px; }
+.day_today {
+    background: #d9ebfc;
+    border: 1px solid #7eb4ea;
+}
+.day_today:hover { border: 1px solid #7eb4ea; }
+.day_today:active{ background: #d9ebfc; }
+.day_weekend .solar_part { color: #f5412b; font-size: 18px; }
+.day_weekend .lunar_part { color: #ccc; font-size: 11px; }
+
+.day_highlight {
+    background: #e4f0fc;
+    border: 1px solid #7eb4ea;
+}
+.day_highlight .solar_part { color: #000; font-size: 18px; }
+.day_highlight .lunar_part { color: #aaa; font-size: 11px; }
+
+#selector_div {
+    padding-top: 8px;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 38px;
+}
+
+#holiday_button {
+    margin-left: 10px;
+}
+
+#checkbox_div {
+    float: right;
+}
+
+.effect_button {
+    width: 64px;
+    height: 20px;
+    text-align: center;
+    -webkit-appearance: none;
+    color: #eee;
+    vertical-align: middle;
+    background: #358db1;
+    border: none;
+    float: left;
+    font-size: 13px;
+}
+
+.effect_button:hover {
+    border: 1px solid #78cdf7;
+}
+
+.effect_button:active {
+    border: 1px solid #2a6f8c;
+    background: #3183a4;
+}
+
+#selector_div #go_prev_month {
+    margin-right: 10px;
+    width: 15px;
+    background-image: url("images/prev.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#selector_div #go_next_month {
+    margin-left: 10px;
+    width: 15px;
+    background-image: url("images/next.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#selector_div #today_button {
+    margin-left: 30px;
+}
+
+.hidden_div {
+    display: none;
+}
+
+.visible_div {
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 170px;
+    z-index: 2;
+    background: #fff;
+    border: 1px solid #2d7897;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.no_style_list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.no_style_list li {
+    text-align: center;
+}
+
+.no_style_list li:hover {
+    background: #bee6fd;
+}
+
+#general_datetime_list {
+    margin: 0;
+    padding: 5px 5px 20px 5px;
+    list-style-type: none;
+    border-bottom: 1px solid #ddd;
+}
+
+#general_datetime_list li {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#general_datetime_list #day {
+    font-size: 64px;
+    color: #0c7ba9;
+}
+
+#hl_table {
+    width: 110px;
+    height: 110px;
+    padding: 5px;
+    border: 0;
+    text-align: center;
+}
+
+#hl_table td {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+}
+
+#sep {
+    width: 90%;
+    color: #ddd;
+}
+
+.worktime1 {
+/*    display: block;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 11px;
+    background: #999;
+    color: #fff;
+}
+
+.worktime2 {
+/*    display: block;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 11px;
+    background: #f43;
+    color: #fff;
+}

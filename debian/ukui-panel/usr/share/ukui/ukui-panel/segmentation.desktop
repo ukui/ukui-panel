@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=Segmentation
+Comment=Segmentation
+Icon=segmentation
