@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.ukui.panel.applet.FishAppletFactory
-Exec=@LOCATION@

@@ -1,3 +1,0 @@
-#include <ukui-panel-applet.h>
-
-ukui_panel_applet_get_type
