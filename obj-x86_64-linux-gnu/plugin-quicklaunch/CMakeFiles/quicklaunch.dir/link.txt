@@ -1,2 +1,0 @@
-/usr/bin/ar qc libquicklaunch.a  CMakeFiles/quicklaunch.dir/ukuiquicklaunchplugin.cpp.o CMakeFiles/quicklaunch.dir/ukuiquicklaunch.cpp.o CMakeFiles/quicklaunch.dir/quicklaunchbutton.cpp.o CMakeFiles/quicklaunch.dir/quicklaunchaction.cpp.o CMakeFiles/quicklaunch.dir/UKUiPluginTranslationLoader.cpp.o CMakeFiles/quicklaunch.dir/quicklaunch_autogen/mocs_compilation.cpp.o
-/usr/bin/ranlib libquicklaunch.a

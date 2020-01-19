@@ -2,7 +2,8 @@
  * (c)LGPL2+
  *
  * Copyright (C) 2012  Alec Moskvin <alecm@gmx.com>
- * Copyright (C) 2019  minglequn <minglequn@kylinos.cn>
+ * Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either

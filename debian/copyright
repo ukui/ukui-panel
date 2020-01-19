@@ -3,12 +3,36 @@ Upstream-Name: ukui-panel
 Source: https://github.com/ukui/ukui-panel
 
 Files: *
-Copyright: 2012-2018 UKUI team
-           2010-2012 UKUI team
+Copyright: 2012-2018 LXQt team
+           2010-2012 Razor team
 License: LGPL-2.1+
 
 Files: debian/*
-Copyright: 2014-2019 xiaoyiwu <wuxiaoyi@kylinos.cn>
+Copyright: 2014-2018 Alf Gaida <agaida@siduction.org>
+           2015 Andrew Lee (李健秋) <ajqlee@debian.org> 
+           2019 Tianjin KYLIN Information Technology Co., Ltd. *
+License: LGPL-2.1+
+
+Files: panel/* 
+       plugin-quicklaunch/* 
+       plugin-spacer/* 
+       plugin-show-desktop/* 
+       cmake/*  
+       plugin-taskbar/* 
+       plugin-tray/*
+Copyright: 2012-2018 LXQt team
+           2010-2012 Razor team
+           2012 Alec Moskvin <alecm@gmx.com>
+           2018 Luís Pereira <luis.artur.pereira@gmail.com>
+           2019 Tianjin KYLIN Information Technology Co., Ltd. *
+License: LGPL-2.1+
+
+Files: plugin-calendar/ukuiwebviewdialog.*
+       plugin-startmenu/*
+       plugin-taskview/*
+       plugin-segmentation/*
+       plugin-powerswitch/*
+Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 License: LGPL-2.1+
 
 License: LGPL-2.1+

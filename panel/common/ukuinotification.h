@@ -3,9 +3,7 @@
  *
  * Copyright (C) 2012  Alec Moskvin <alecm@gmx.com>
  *
- * Copyright: 2019-2020 UKUI team
- * Authors:
- *   minglequn <minglequn@kylinos.cn>
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd. *
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

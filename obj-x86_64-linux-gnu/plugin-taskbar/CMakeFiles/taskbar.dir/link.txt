@@ -1,2 +1,0 @@
-/usr/bin/ar qc libtaskbar.a  CMakeFiles/taskbar.dir/ukuitaskbar.cpp.o CMakeFiles/taskbar.dir/ukuitaskbutton.cpp.o CMakeFiles/taskbar.dir/ukuitaskbarconfiguration.cpp.o CMakeFiles/taskbar.dir/ukuitaskbarplugin.cpp.o CMakeFiles/taskbar.dir/ukuitaskgroup.cpp.o CMakeFiles/taskbar.dir/ukuigrouppopup.cpp.o CMakeFiles/taskbar.dir/UKUiPluginTranslationLoader.cpp.o CMakeFiles/taskbar.dir/taskbar_autogen/mocs_compilation.cpp.o
-/usr/bin/ranlib libtaskbar.a

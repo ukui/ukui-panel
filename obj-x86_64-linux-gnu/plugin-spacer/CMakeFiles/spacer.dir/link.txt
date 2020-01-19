@@ -1,2 +1,0 @@
-/usr/bin/ar qc libspacer.a  CMakeFiles/spacer.dir/spacer.cpp.o CMakeFiles/spacer.dir/spacerconfiguration.cpp.o CMakeFiles/spacer.dir/UKUiPluginTranslationLoader.cpp.o CMakeFiles/spacer.dir/spacer_autogen/mocs_compilation.cpp.o
-/usr/bin/ranlib libspacer.a

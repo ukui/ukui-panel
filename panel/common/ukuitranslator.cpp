@@ -6,9 +6,7 @@
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
      Luís Pereira <luis.artur.pereira@gmail.com>
  *
- * Copyright: 2019-2020 UKUI team
- * Authors:
- *   minglequn <minglequn@kylinos.cn>
+ * Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public

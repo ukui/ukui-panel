@@ -5,8 +5,7 @@
  * Authors:
  *   Palo Kisa <palo.kisa@gmail.com>
  *
- * Copyright: 2019-2020 UKUI team
- * Modified by  hepuyao <hepuyao@kylinos.cn>
+ * Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
