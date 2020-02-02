@@ -1,12 +1,8 @@
-#etc/xdg
 usr/bin/ukui-panel
 usr/include/ukui
 usr/lib/*/ukui-panel
-#usr/share/desktop-directories
 usr/share/ukui/ukui-panel
 usr/share/ukui/panel.conf
 usr/share/man
 usr/share
 usr/
-#panel/resources/ukui-panel.desktop usr/share/applications
-

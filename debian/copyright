@@ -16,7 +16,7 @@ License: LGPL-2.1+
 Files: panel/* 
        plugin-quicklaunch/* 
        plugin-spacer/* 
-       plugin-show-desktop/* 
+       plugin-showdesktop/* 
        cmake/*  
        plugin-taskbar/* 
        plugin-tray/*

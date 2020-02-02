@@ -1,6 +1,0 @@
-/home/minglequn/hepuyaolib/ukui-build-tools-0.6.0/obj-x86_64-linux-gnu/CMakeFiles/rebuild_cache.dir
-/home/minglequn/hepuyaolib/ukui-build-tools-0.6.0/obj-x86_64-linux-gnu/CMakeFiles/install/strip.dir
-/home/minglequn/hepuyaolib/ukui-build-tools-0.6.0/obj-x86_64-linux-gnu/CMakeFiles/install/local.dir
-/home/minglequn/hepuyaolib/ukui-build-tools-0.6.0/obj-x86_64-linux-gnu/CMakeFiles/edit_cache.dir
-/home/minglequn/hepuyaolib/ukui-build-tools-0.6.0/obj-x86_64-linux-gnu/CMakeFiles/list_install_components.dir
-/home/minglequn/hepuyaolib/ukui-build-tools-0.6.0/obj-x86_64-linux-gnu/CMakeFiles/install.dir

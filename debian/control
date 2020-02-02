@@ -1,9 +1,11 @@
 Source: ukui-panel
-Maintainer: kylin Developers <ukui@kylinos.cn>
-Uploaders: xiaoyiwu <wuxiaoyi@kylinos.cn>
 Section: x11
 Priority: optional
-Build-Depends: debhelper (>= 12),
+Maintainer: kylin Team <team+kylin@tracker.debian.org>
+Uploaders: Aron Xu <aron@debian.org>,
+           handsome_feng <jianfengli@ubuntukylin.com>
+Build-Depends: debhelper-compat (= 12),
+               cmake,
                libasound2-dev,
                libdbusmenu-qt5-dev,
                libglib2.0-dev(>=2.36),
@@ -27,25 +29,18 @@ Build-Depends: debhelper (>= 12),
                libxrender-dev,
                libqt5webkit5-dev,
                qttools5-dev,
-               libqt5x11extras5-dev,
-               libkf5windowsystem-dev,
-               libxcb-util-dev,
-               libxcb-damage0-dev,
-	       cmake,
-	       libqt5xdg-dev,
-		libgsettings-qt-dev	       
-Standards-Version: 4.3.0
+               libqt5xdg-dev,
+               libgsettings-qt-dev
+Standards-Version: 4.5.0
+Rules-Requires-Root: no
 Vcs-Browser: https://github.com/explorer-cs/ukui-panel
 Vcs-Git: https://github.com/explorer-cs/ukui-panel
 Homepage: https://github.com/ukui/ukui-panel
 
 Package: ukui-panel
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-#Recommends:
-#Suggests:
-#Breaks: 
-#Replaces:
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
 Description: ukui desktop panel
  The ukui desktop panel
  .
@@ -56,6 +51,7 @@ Package: ukui-panel-l10n
 Architecture: all
 Multi-Arch: foreign
 Section: localization
-Depends: qttranslations5-l10n, ${misc:Depends}
+Depends: qttranslations5-l10n,
+         ${misc:Depends}
 Description: Language package for ukui-panel
  This package contains the l10n files needed by ukui-panel.
