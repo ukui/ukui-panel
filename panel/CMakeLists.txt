@@ -211,7 +211,7 @@ install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES ${CONFIG_FILES} DESTINATION ${CMAKE_INSTALL_DATADIR}/ukui)
 install(FILES ${PUB_HEADERS} DESTINATION include/ukui)
 install(FILES
-    man/ukui-panel.1
+    ../man/ukui-panel.1
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man1"
     COMPONENT Runtime
 )
