@@ -42,15 +42,7 @@ Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends}
 Description: ukui desktop panel
- The ukui desktop panel is used on ukui desktop and has some plugins like starmenu quicklaunch.
+ The ukui desktop panel is used on ukui desktop and has some plugins like
+ starmenu, quicklaunch and other useful tools.
+ .
  This package contains the ukui panel.
-
-
-Package: ukui-panel-l10n
-Architecture: all
-Multi-Arch: foreign
-Section: localization
-Depends: qttranslations5-l10n,
-         ${misc:Depends}
-Description: Language package for ukui-panel;empty package
- This package contains the l10n files needed by ukui-panel.

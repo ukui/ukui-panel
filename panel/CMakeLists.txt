@@ -217,6 +217,6 @@ install(FILES
 )
 install(FILES
     resources/ukui-panel.desktop
-    DESTINATION "${UKUI_ETC_XDG_DIR}/autostart/"
+    DESTINATION "/etc/xdg/autostart/"
     COMPONENT Runtime
 )

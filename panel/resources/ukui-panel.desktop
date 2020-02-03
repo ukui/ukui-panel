@@ -1,10 +1,10 @@
-#!/usr/bin/env xdg-open
 [Desktop Entry]
 Name=ukui-panel
-Comment=任务栏
+comment=Panel
+Comment[zh_CN]=任务栏
 Exec=ukui-panel
 Terminal=false
 Type=Application
-Icon=baidunetdisk
+Icon=panel
 X-UKUI-AutoRestart=true
 
