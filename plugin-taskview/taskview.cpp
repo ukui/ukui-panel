@@ -69,7 +69,7 @@ PowerSwitchWidget::PowerSwitchWidget(QWidget *parent):
                 "QToolButton{"
                 /*"background-color:rgba(100,225,100,80%);"//背景色（也可以设置图片）*/
                 "qproperty-icon:url(/usr/share/ukui-panel/plugin-taskview/img/taskview.svg);"
-                "qproperty-iconSize:24px 24px;"
+                "qproperty-iconSize:28px 28px;"
                 "border-style:outset;"                  //边框样式（inset/outset）
                 "border-width:0px;"                     //边框宽度像素
                 "border-radius:0px;"                   //边框圆角半径像素

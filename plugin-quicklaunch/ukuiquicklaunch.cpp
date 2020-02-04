@@ -170,6 +170,7 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
 
     mLayout->addWidget(btn);
     //set button style
+    btn->setIconSize(QSize(28,28));
     btn->setStyleSheet(
                 //正常状态样式
                 "QToolButton{"
