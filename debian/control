@@ -41,6 +41,7 @@ Package: ukui-panel
 Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends}
+Provides: ukui-indicators
 Description: ukui desktop panel
  The ukui desktop panel is used on ukui desktop and has some plugins like
  starmenu, quicklaunch and other useful tools.
