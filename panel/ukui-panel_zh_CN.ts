@@ -106,5 +106,32 @@ icons here</source>
         <translation>移动应用程序图标至此</translation>
     </message>
 </context>
-
+<context>
+    <name>StartMenuWidget</name>
+    <message>
+        <location filename="../ukuipanelapplication.cpp" line="100"/>
+        <source>Lock The Screen</source>
+	<translation>锁定屏幕</translation>
+    </message>
+    <message>
+        <location filename="../ukuipanelapplication.cpp" line="100"/>
+        <source>Switch The User</source>
+        <translation>切换用户</translation>
+    </message>
+    <message>
+        <location filename="../ukuipanelapplication.cpp" line="100"/>
+        <source>Logout</source>
+        <translation>注销计算机</translation>
+    </message>
+    <message>
+        <location filename="../ukuipanelapplication.cpp" line="100"/>
+        <source>Reboot</source>
+        <translation>重启计算机</translation>
+    </message>
+    <message>
+        <location filename="../ukuipanelapplication.cpp" line="100"/>
+        <source>Shutdown</source>
+        <translation>关闭计算机</translation>
+    </message>
+</context>
 </TS>

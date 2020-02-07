@@ -20,9 +20,41 @@
 #include "../panel/ukuipanel.h"
 //#include "../panel/config/configpaneldialog.h"
 #include "../panel/config/configpanelwidget.h"
+#include <../panel/popupmenu.h>
 #include <QMenu>
 #include <QtDBus/QtDBus>
 
+class  StartMenuWidget: public QFrame
+{
+    Q_OBJECT
+public:
+    StartMenuWidget(QWidget* parent = nullptr);
+    ~StartMenuWidget();
+
+    QLineEdit *lineEdit() { return &mLineEdit; }
+    QToolButton *button() { return &mButton; }
+
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *event);
+    virtual void contextMenuEvent(QContextMenuEvent *event);
+
+private slots:
+    void captureMouse();
+    void this_customContextMenuRequested(const QPoint & pos);
+    void ScreenServer();
+    void SessionSwitch();
+    void SessionLogout();
+    void SessionReboot();
+    void SessionShutdown();
+
+private:
+    QLineEdit mLineEdit;
+    QToolButton mButton;
+    bool mCapturing;
+    QMenu *mRightMenu;
+    IUKUIPanelPlugin * mPlugin;
+};
 
 class StartMenu : public QObject, public IUKUIPanelPlugin
 {
@@ -31,18 +63,18 @@ public:
     StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo);
     ~StartMenu();
 
-    virtual QWidget *widget() { return &mButton; }
+    virtual QWidget *widget() { return &mWidget; }
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 private:
-    //StartMenuWidget mWidget;
-    IUKUIPanelPlugin *mPlugin;
-    QToolButton mButton;
-    bool mCapturing;
+    StartMenuWidget mWidget;
+//    IUKUIPanelPlugin *mPlugin;
+//    QToolButton mButton;
+//    bool mCapturing;
 
-private slots:
-    void captureMouse();
+//private slots:
+//    void captureMouse();
 
 };
 
