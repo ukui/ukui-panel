@@ -41,7 +41,7 @@ protected:
 
 private slots:
     void captureMouse();
-    void this_customContextMenuRequested(const QPoint & pos);
+//    void this_customContextMenuRequested(const QPoint & pos);
     void ScreenServer();
     void SessionSwitch();
     void SessionLogout();
