@@ -5,7 +5,7 @@
  */
 
 #include <QCoreApplication>
-#include "../../panel/common/ukuitranslator.h"
+#include "../panel/common/ukuitranslator.h"
 
 static void loadAppTranslation()
 {
