@@ -128,6 +128,15 @@ ConfigPanelWidget::ConfigPanelWidget(UKUIPanel *panel, QWidget *parent) :
     gsettings= new QGSettings("org.mate.interface", "", this);
     connect(gsettings,&QGSettings::changed,this,&ConfigPanelWidget::reset);
 
+    FileSetPanel *f;
+    f=new FileSetPanel(mPanel);
+    QDBusConnection conp=QDBusConnection::sessionBus();
+    if(!conp.registerService("com.ukui.panel.settings") ||
+            !conp.registerObject("/set",mPanel))
+    {
+        qDebug()<<"fail";
+    }
+
 }
 
 
@@ -574,4 +583,110 @@ void ConfigPanelWidget::changeBackground()
     setStyleSheet(sheet.join("\n"));
     editChanged();
     reset();
+}
+
+bool ConfigPanelWidget::SetPanelsizeSmall(QString arg)
+{
+    changeToSmallSize();
+    return true;
+}
+
+bool ConfigPanelWidget::SetPanelsizeMid(QString arg)
+{
+    changeToMidSize();
+    return true;
+}
+
+bool ConfigPanelWidget::SetPanelsizeLarge(QString arg)
+{
+    changeToLargeSize();
+    qDebug()<<"setPanelSizeLarge";
+    return true;
+}
+
+bool ConfigPanelWidget::SetPanelPositionLeft(QString arg)
+{
+    positionChanged_left();
+    return true;
+}
+
+bool ConfigPanelWidget::SetPanelPositionRight(QString arg)
+{
+    positionChanged_right();
+    return true;
+}
+
+bool ConfigPanelWidget::SetPanelPositionUp(QString arg)
+{
+    positionChanged_top();
+    return true;
+}
+
+bool ConfigPanelWidget::SetPanelPositionBottom(QString arg)
+{
+    positionChanged_bottom();
+    return true;
+}
+/*
+ * Implementation of adaptor class FilectrlAdaptor
+ */
+
+FileSetPanel::FileSetPanel(QObject *parent)
+    : QDBusAbstractAdaptor(parent)
+{
+    // constructor
+    setAutoRelaySignals(true);
+}
+
+FileSetPanel::~FileSetPanel()
+{
+    // destructor
+}
+bool FileSetPanel::SetPanelsizeSmall(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "SetPanelsizeSmall", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+bool FileSetPanel::SetPanelsizeMid(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "SetPanelsizeMid", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+bool FileSetPanel::SetPanelsizeLarge(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "SetPanelsizeLarge", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+bool FileSetPanel::SetPanelPositionLeft(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "SetPanelPositionLeft", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+bool FileSetPanel::SetPanelPositionRight(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "SetPanelPositionRight", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+bool FileSetPanel::SetPanelPositionUp(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "SetPanelPositionUp", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+bool FileSetPanel::SetPanelPositionBottom(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "SetPanelPositionBottom", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
 }

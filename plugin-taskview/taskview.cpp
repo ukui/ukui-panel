@@ -22,7 +22,7 @@
 #include <QHBoxLayout>
 #include <QScreen>
 #include <QDebug>
-PowerSwitch::PowerSwitch(const IUKUIPanelPluginStartupInfo &startupInfo) :
+TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
@@ -31,12 +31,12 @@ PowerSwitch::PowerSwitch(const IUKUIPanelPluginStartupInfo &startupInfo) :
 }
 
 
-PowerSwitch::~PowerSwitch()
+TaskView::~TaskView()
 {
 }
 
 
-void PowerSwitch::realign()
+void TaskView::realign()
 {
 //    QSize size;
 //    size.setHeight(40);
@@ -48,7 +48,7 @@ void PowerSwitch::realign()
 
 }
 
-PowerSwitchWidget::PowerSwitchWidget(QWidget *parent):
+TaskViewWidget::TaskViewWidget(QWidget *parent):
     QFrame(parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -92,13 +92,12 @@ PowerSwitchWidget::PowerSwitchWidget(QWidget *parent):
 
 
 
-
-PowerSwitchWidget::~PowerSwitchWidget()
+TaskViewWidget::~TaskViewWidget()
 {
 }
 
 
-void PowerSwitchWidget::mouseReleaseEvent(QMouseEvent *event)
+void TaskViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 //    if (!mCapturing)
 //        return;
@@ -107,13 +106,13 @@ void PowerSwitchWidget::mouseReleaseEvent(QMouseEvent *event)
 }
 
 
-void PowerSwitchWidget::captureMouse()
+void TaskViewWidget::captureMouse()
 {
     qDebug()<<"show taskview";
     system("ukui-window-switch --show-workspace");
 }
 
-void PowerSwitchWidget::contextMenuEvent(QContextMenuEvent *event) {
+void TaskViewWidget::contextMenuEvent(QContextMenuEvent *event) {
   //创建一个菜单 添加事件
 qDebug()<<"contextMenuEvent    right press event";
 }
