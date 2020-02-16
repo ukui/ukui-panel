@@ -52,6 +52,15 @@ ConfigPanelDialog::ConfigPanelDialog(UKUIPanel *panel, QWidget *parent):
 
 //   });
 
+    FileSetPanel *f;
+    f=new FileSetPanel(mPanelPage);
+    QDBusConnection conp=QDBusConnection::sessionBus();
+    if(!conp.registerService("com.ukui.panel.settings") ||
+            !conp.registerObject("/set",mPanelPage))
+    {
+        qDebug()<<"fail";
+    }
+
 }
 
 void ConfigPanelDialog::showConfigPanelPage()
