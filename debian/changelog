@@ -3,7 +3,9 @@ ukui-panel (2.0.0-1) unstable; urgency=medium
   * New upstream release.
     - Migrate from gtk to qt.
   * Debian/{control,compat}:
-    - Use debhelper-compat notation. Bump to DH compat level version 12.
+    - Use debhelper-compat notation.
+    - Bump standards-version to 4.5.0.
+    - Set Rules-Requires-Root to no.
 
  -- handsome_feng <jianfengli@ubuntukylin.com>  Sun, 02 Feb 2020 14:07:37 +0800
 

@@ -7,7 +7,7 @@
 #include <QCoreApplication>
 #include <QLatin1String>
 
-#include "../../panel/common/ukuitranslator.h"
+#include "../panel/common/ukuitranslator.h"
 
 /* Dummy helper symbol for referencing.
  * In case plugin is linked as static (lib*.a) unreferenced objects are stripped in linking time
