@@ -41,12 +41,12 @@
 #define DEFAULT_SHORTCUT "Alt+F1"
 
 
-class  PowerSwitchWidget: public QFrame
+class  TaskViewWidget: public QFrame
 {
     Q_OBJECT
 public:
-    PowerSwitchWidget(QWidget* parent = nullptr);
-    ~PowerSwitchWidget();
+    TaskViewWidget(QWidget* parent = nullptr);
+    ~TaskViewWidget();
 
     QLineEdit *lineEdit() { return &mLineEdit; }
     QToolButton *button() { return &mButton; }
@@ -67,19 +67,19 @@ private:
 
 
 
-class PowerSwitch : public QObject, public IUKUIPanelPlugin
+class TaskView: public QObject, public IUKUIPanelPlugin
 {
     Q_OBJECT
 public:
-    PowerSwitch(const IUKUIPanelPluginStartupInfo &startupInfo);
-    ~PowerSwitch();
+    TaskView(const IUKUIPanelPluginStartupInfo &startupInfo);
+    ~TaskView();
 
     virtual QWidget *widget() { return &mWidget; }
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 private:
-    PowerSwitchWidget mWidget;
+    TaskViewWidget mWidget;
 
 
 };
@@ -92,7 +92,7 @@ class PowerSwitchLibrary: public QObject, public IUKUIPanelPluginLibrary
 public:
     IUKUIPanelPlugin *instance(const IUKUIPanelPluginStartupInfo &startupInfo) const
     {
-        return new PowerSwitch(startupInfo);
+        return new TaskView(startupInfo);
     }
 };
 

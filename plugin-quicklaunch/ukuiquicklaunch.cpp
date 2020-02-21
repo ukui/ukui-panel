@@ -267,7 +267,7 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
                 qDebug()<<"child   >>>"<<child;
                 //mLayout->removeItem(child);
                 mLayout->removeWidget(b);
-                b->deleteLater();
+                //b->deleteLater();
             } else {
                 ++i;
             }
@@ -384,7 +384,6 @@ bool UKUIQuickLaunch::CheckIfExist(QString arg)
     XdgDesktopFile xdg;
     xdg.load(fileName);
     return  checkButton(new QuickLaunchAction(&xdg, this));
-
 }
 
 bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)

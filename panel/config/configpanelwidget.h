@@ -33,6 +33,7 @@
 #include <QTimer>
 //#include <UKUi/ConfigDialog>
 #include "../common/ukuiconfigdialog.h"
+#include <QtDBus/QtDBus>
 
 class UKUIPanel;
 
@@ -47,6 +48,8 @@ class ConfigPanelWidget : public QWidget
 public:
     explicit ConfigPanelWidget(UKUIPanel *panel, QWidget *parent = 0);
     ~ConfigPanelWidget();
+
+    friend class FileSetPanel;
 
     int screenNum() const { return mScreenNum; }
     IUKUIPanel::Position position() const { return mPosition; }
@@ -113,6 +116,70 @@ private:
     QString mOldBackgroundImage;
     int mOldOpacity;
     bool mOldReserveSpace;
+
+public slots:
+    bool SetPanelsizeSmall(QString arg);
+    bool SetPanelsizeMid(QString arg);
+    bool SetPanelsizeLarge(QString arg);
+    bool SetPanelPositionLeft(QString arg);
+    bool SetPanelPositionRight(QString arg);
+    bool SetPanelPositionUp(QString arg);
+    bool SetPanelPositionBottom(QString arg);
 };
 
+class FileSetPanel: public QDBusAbstractAdaptor
+{
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "panelset.DBus")
+    Q_CLASSINFO("D-Bus Introspection", ""
+"  <interface name=\"panelset.DBus\">\n"
+"    <method name=\"SetPanelsizeSmall\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"SetPanelsizeMid\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"SetPanelsizeLarge\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"SetPanelPositionLeft\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"SetPanelPositionRighr\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"SetPanelPositionUp\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"SetPanelPositionBottom\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"  </interface>\n"
+        "")
+public:
+    FileSetPanel(QObject *parent);
+    virtual ~FileSetPanel();
+
+public: // PROPERTIES
+public Q_SLOTS: // METHODS
+    bool SetPanelsizeSmall(const QString &arg);
+    bool SetPanelsizeMid(const QString &arg);
+    bool SetPanelsizeLarge(const QString &arg);
+    bool SetPanelPositionLeft(const QString &arg);
+    bool SetPanelPositionRight(const QString &arg);
+    bool SetPanelPositionUp(const QString &arg);
+    bool SetPanelPositionBottom(const QString &arg);
+
+Q_SIGNALS: // SIGNALS
+
+signals:
+    void addtak(int);
+};
 #endif
