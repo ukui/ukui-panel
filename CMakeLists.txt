@@ -150,6 +150,7 @@ if(TASKBAR_PLUGIN)
   add_subdirectory(plugin-taskbar)
 endif()
 
+add_subdirectory(ukui-flash-disk)
 
 setByDefault(TRAY_PLUGIN Yes)
 if(TRAY_PLUGIN)
