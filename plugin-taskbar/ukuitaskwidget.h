@@ -26,41 +26,31 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef UKUITASKBUTTON_H
-#define UKUITASKBUTTON_H
+#ifndef UKUITASKWIDGET_H
+#define UKUITASKWIDGET_H
 
-#include <QToolButton>
 #include <QProxyStyle>
-#include <QLabel>
 #include "../panel/iukuipanel.h"
 //#include <QWinThumbnailToolBar>
 #include <QtX11Extras/qtx11extrasversion.h>
+#include <QLabel>
+#include <QVBoxLayout>
 class QPainter;
 class QPalette;
 class QMimeData;
 class UKUITaskGroup;
 class UKUITaskBar;
+class UKUITaskCloseButton;
 
-class LeftAlignedTextStyle : public QProxyStyle
-{
-    using QProxyStyle::QProxyStyle;
-public:
-
-    virtual void drawItemText(QPainter * painter, const QRect & rect, int flags
-            , const QPalette & pal, bool enabled, const QString & text
-            , QPalette::ColorRole textRole = QPalette::NoRole) const override;
-};
-
-
-class UKUITaskButton : public QToolButton
+class UKUITaskWidget : public QWidget
 {
     Q_OBJECT
 
     Q_PROPERTY(Qt::Corner origin READ origin WRITE setOrigin)
 
 public:
-    explicit UKUITaskButton(const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
-    virtual ~UKUITaskButton();
+    explicit UKUITaskWidget(const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
+    virtual ~UKUITaskWidget();
 
     bool isApplicationHidden() const;
     bool isApplicationActive() const;
@@ -80,10 +70,12 @@ public:
     UKUITaskBar * parentTaskBar() const {return mParentTaskBar;}
 
     void refreshIconGeometry(QRect const & geom);
-    static QString mimeDataFormat() { return QLatin1String("ukui/UKUITaskButton"); }
+    static QString mimeDataFormat() { return QLatin1String("ukui/UKUITaskWidget"); }
     /*! \return true if this buttom received DragEnter event (and no DragLeave event yet)
      * */
     bool hasDragAndDropHover() const;
+    void setThumbNail(QPixmap _pixmap);
+    void setTitle();
 
 public slots:
     void raiseApplication();
@@ -128,6 +120,12 @@ private:
     bool mDrawPixmap;
     UKUITaskBar * mParentTaskBar;
     IUKUIPanelPlugin * mPlugin;
+    QLabel *mTitleLabel;
+    QLabel *mThumbnailLabel;
+    QLabel *mAppIcon;
+    UKUITaskCloseButton *mCloseBtn;
+    QVBoxLayout *mVWindowsLayout;
+    QHBoxLayout *mTopBarLayout;
 
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
@@ -141,7 +139,6 @@ signals:
     void dragging(QObject * dragSource, QPoint const & pos);
 };
 
-//typedef QHash<WId,UKUITaskButton*> UKUITaskButtonHash;
-//typedef QHash<WId,QWidget*> UKUITaskButtonHash;
+typedef QHash<WId,UKUITaskWidget*> UKUITaskButtonHash;
 
-#endif // UKUITASKBUTTON_H
+#endif // UKUITASKWIDGET_H

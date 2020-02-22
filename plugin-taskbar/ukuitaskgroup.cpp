@@ -52,8 +52,8 @@
 #include <QApplication>
 #include "../panel/iukuipanelplugin.h"
 #include <QSize>
-#define PREVIEW_WIDTH		168
-#define PREVIEW_HEIGHT		128
+#define PREVIEW_WIDTH		468
+#define PREVIEW_HEIGHT		428
 #define SPACE_WIDTH			8
 #define SPACE_HEIGHT		8
 #define THUMBNAIL_WIDTH		(PREVIEW_WIDTH - SPACE_WIDTH)
@@ -168,21 +168,22 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
  ************************************************/
 void UKUITaskGroup::closeGroup()
 {
-    for (UKUITaskButton *button : qAsConst(mButtonHash) )
-        if (button->isOnDesktop(KWindowSystem::currentDesktop()))
-            button->closeApplication();
+    //To Do
+//    for (QWidget *button : qAsConst(mButtonHash) )
+//        if (button->isOnDesktop(KWindowSystem::currentDesktop()))
+//            button->closeApplication();
 }
 
 /************************************************
 
  ************************************************/
-UKUITaskButton * UKUITaskGroup::addWindow(WId id)
+QWidget * UKUITaskGroup::addWindow(WId id)
 {
+
     if (mButtonHash.contains(id))
         return mButtonHash.value(id);
-
-    UKUITaskButton *btn = new UKUITaskButton(id, parentTaskBar(), mPopup);
-    btn->setToolButtonStyle(popupButtonStyle());
+    UKUITaskWidget *btn = new UKUITaskWidget(id, parentTaskBar(), mPopup);
+    //btn->setToolButtonStyle(popupButtonStyle());
 
     btn->setStyleSheet(
                 //正常状态样式
@@ -201,14 +202,12 @@ UKUITaskButton * UKUITaskGroup::addWindow(WId id)
                 "}"
                 );
 
-    if (btn->isApplicationActive())
-    {
-        btn->setChecked(true);
-        setChecked(true);
-    }
-
+//    if (btn->isApplicationActive())
+//    {
+//        btn->setChecked(true);
+//        setChecked(true);
+//    }
     mButtonHash.insert(id, btn);
-    //mPopup->addButton(btn);
 
     connect(btn, SIGNAL(clicked()), this, SLOT(onChildButtonClicked()));
     refreshVisibility();
@@ -219,11 +218,11 @@ UKUITaskButton * UKUITaskGroup::addWindow(WId id)
 /************************************************
 
  ************************************************/
-UKUITaskButton * UKUITaskGroup::checkedButton() const
+QWidget * UKUITaskGroup::checkedButton() const
 {
-    for (UKUITaskButton* button : qAsConst(mButtonHash))
-        if (button->isChecked())
-            return button;
+//    for (QWidget* button : qAsConst(mButtonHash))
+//        if (button->isChecked())
+//            return button;
 
     return NULL;
 }
@@ -231,9 +230,10 @@ UKUITaskButton * UKUITaskGroup::checkedButton() const
 /************************************************
 
  ************************************************/
-UKUITaskButton * UKUITaskGroup::getNextPrevChildButton(bool next, bool circular)
+QWidget * UKUITaskGroup::getNextPrevChildButton(bool next, bool circular)
 {
-    UKUITaskButton *button = checkedButton();
+#if 0
+    QWidget *button = checkedButton();
     int idx = mPopup->indexOf(button);
     int inc = next ? 1 : -1;
     idx += inc;
@@ -271,7 +271,8 @@ UKUITaskButton * UKUITaskGroup::getNextPrevChildButton(bool next, bool circular)
             return button;
     }
 
-    return NULL;
+#endif
+     return NULL;
 }
 
 /************************************************
@@ -279,16 +280,16 @@ UKUITaskButton * UKUITaskGroup::getNextPrevChildButton(bool next, bool circular)
  ************************************************/
 void UKUITaskGroup::onActiveWindowChanged(WId window)
 {
-    UKUITaskButton *button = mButtonHash.value(window, nullptr);
-    for (UKUITaskButton *btn : qAsConst(mButtonHash))
-        btn->setChecked(false);
+    UKUITaskWidget *button = mButtonHash.value(window, nullptr);
+//    for (QWidget *btn : qAsConst(mButtonHash))
+//        btn->setChecked(false);
 
-    if (button)
-    {
-        button->setChecked(true);
-        if (button->hasUrgencyHint())
-            button->setUrgencyHint(false);
-    }
+//    if (button)
+//    {
+//        button->setChecked(true);
+//        if (button->hasUrgencyHint())
+//            button->setUrgencyHint(false);
+//    }
     setChecked(nullptr != button);
 }
 
@@ -307,7 +308,7 @@ void UKUITaskGroup::onWindowRemoved(WId window)
 {
     if (mButtonHash.contains(window))
     {
-        UKUITaskButton *button = mButtonHash.value(window);
+        UKUITaskWidget *button = mButtonHash.value(window);
         mButtonHash.remove(window);
         mPopup->removeWidget(button);
         button->deleteLater();
@@ -351,11 +352,11 @@ void UKUITaskGroup::setToolButtonsStyle(Qt::ToolButtonStyle style)
 {
     setToolButtonStyle(style);
 
-    const Qt::ToolButtonStyle styleInPopup = popupButtonStyle();
-    for (auto & button : mButtonHash)
-    {
-        button->setToolButtonStyle(styleInPopup);
-    }
+//    const Qt::ToolButtonStyle styleInPopup = popupButtonStyle();
+//    for (auto & button : mButtonHash)
+//    {
+//        button->setToolButtonStyle(styleInPopup);
+//    }
 }
 
 /************************************************
@@ -372,7 +373,7 @@ int UKUITaskGroup::buttonsCount() const
 int UKUITaskGroup::visibleButtonsCount() const
 {
     int i = 0;
-    for (UKUITaskButton *btn : qAsConst(mButtonHash))
+    for (QWidget *btn : qAsConst(mButtonHash))
         if (btn->isVisibleTo(mPopup))
             i++;
     return i;
@@ -459,10 +460,10 @@ void UKUITaskGroup::recalculateFrameIfVisible()
  ************************************************/
 void UKUITaskGroup::setAutoRotation(bool value, IUKUIPanel::Position position)
 {
-    for (UKUITaskButton *button : qAsConst(mButtonHash))
-        button->setAutoRotation(false, position);
+//    for (QWidget *button : qAsConst(mButtonHash))
+//        button->setAutoRotation(false, position);
 
-    UKUITaskButton::setAutoRotation(value, position);
+    //UKUITaskWidget::setAutoRotation(value, position);
 }
 
 /************************************************
@@ -473,7 +474,7 @@ void UKUITaskGroup::refreshVisibility()
     bool will = false;
     UKUITaskBar const * taskbar = parentTaskBar();
     const int showDesktop = taskbar->showDesktopNum();
-    for(UKUITaskButton * btn : qAsConst(mButtonHash))
+    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
     {
         bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
         visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
@@ -527,18 +528,17 @@ void UKUITaskGroup::refreshIconsGeometry()
 {
     QRect rect = geometry();
     rect.moveTo(mapToGlobal(QPoint(0, 0)));
-
     if (mSingleButton)
     {
         refreshIconGeometry(rect);
         return;
     }
 
-    for(UKUITaskButton *but : qAsConst(mButtonHash))
-    {
-        but->refreshIconGeometry(rect);
-        but->setIconSize(QSize(plugin()->panel()->iconSize(), plugin()->panel()->iconSize()));
-    }
+//    for(UKUITaskButton *but : qAsConst(mButtonHash))
+//    {
+//        but->refreshIconGeometry(rect);
+//        but->setIconSize(QSize(plugin()->panel()->iconSize(), plugin()->panel()->iconSize()));
+//    }
 }
 
 /************************************************
@@ -579,8 +579,8 @@ int UKUITaskGroup::recalculateFrameWidth() const
     const QFontMetrics fm = fontMetrics();
     int max = 100 * fm.width (' '); // elide after the max width
     int txtWidth = 0;
-    for (UKUITaskButton *btn : qAsConst(mButtonHash))
-        txtWidth = qMax(fm.width(btn->text()), txtWidth);
+//    for (UKUITaskButton *btn : qAsConst(mButtonHash))
+//        txtWidth = qMax(fm.width(btn->text()), txtWidth);
     return iconSize().width() + qMin(txtWidth, max) + 30/* give enough room to margins and borders*/;
 
 }
@@ -676,7 +676,7 @@ void UKUITaskGroup::mouseMoveEvent(QMouseEvent* event)
 bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2)
 { // returns true if the class is preserved
     bool needsRefreshVisibility{false};
-    QVector<UKUITaskButton *> buttons;
+    QVector<QWidget *> buttons;
     if (mButtonHash.contains(window))
         buttons.append(mButtonHash.value(window));
 
@@ -706,20 +706,20 @@ bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
             }
         }
 
-        if (prop.testFlag(NET::WMVisibleName) || prop.testFlag(NET::WMName))
-            std::for_each(buttons.begin(), buttons.end(), std::mem_fn(&UKUITaskButton::updateText));
+//        if (prop.testFlag(NET::WMVisibleName) || prop.testFlag(NET::WMName))
+//            std::for_each(buttons.begin(), buttons.end(), std::mem_fn(&UKUITaskButton::updateText));
 
         // XXX: we are setting window icon geometry -> don't need to handle NET::WMIconGeometry
         // Icon of the button can be based on windowClass
-        if (prop.testFlag(NET::WMIcon) || prop2.testFlag(NET::WM2WindowClass))
-            std::for_each(buttons.begin(), buttons.end(), std::mem_fn(&UKUITaskButton::updateIcon));
+//        if (prop.testFlag(NET::WMIcon) || prop2.testFlag(NET::WM2WindowClass))
+//            std::for_each(buttons.begin(), buttons.end(), std::mem_fn(&UKUITaskButton::updateIcon));
 
         if (prop.testFlag(NET::WMState))
         {
             KWindowInfo info{window, NET::WMState};
             if (info.hasState(NET::SkipTaskbar))
                 onWindowRemoved(window);
-            std::for_each(buttons.begin(), buttons.end(), std::bind(&UKUITaskButton::setUrgencyHint, std::placeholders::_1, info.hasState(NET::DemandsAttention)));
+//            std::for_each(buttons.begin(), buttons.end(), std::bind(&UKUITaskButton::setUrgencyHint, std::placeholders::_1, info.hasState(NET::DemandsAttention)));
 
             if (parentTaskBar()->isShowOnlyMinimizedTasks())
             {
@@ -757,7 +757,7 @@ void UKUITaskGroup::showPreview()
     XImage *img = NULL;
     Display *display = NULL;
     XWindowAttributes attr;
-    //removeWidget();
+    removeWidget();
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         display = XOpenDisplay(nullptr);
@@ -766,15 +766,23 @@ void UKUITaskGroup::showPreview()
 
         QPixmap thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::FastTransformation);
         thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));
-        //QLabel * label = new QLabel(mPopup); // 创建堆对象
+        //QLabel * label = new QLabel; // 创建堆对象
 
-        UKUITaskButton *btn = it.value();
-        btn->setFixedSize(thumbnail.width(),80);
-        btn->setIcon(thumbnail);
-        btn->setIconSize(thumbnail.rect().size());
+        UKUITaskWidget *btn = it.value();
+        btn->setFixedSize(300,180);
+//        btn->setTitle();
+        btn->setThumbNail(thumbnail);
+//        QVBoxLayout *VWindowsLayout = new QVBoxLayout;
+        //label->setPixmap(thumbnail);
+        //VWindowsLayout->addWidget(label);
+        //btn->setLayout(VWindowsLayout);
+//        btn->setIcon(thumbnail);
+//        btn->setIconSize(thumbnail.rect().size());
 
-        btn->setToolButtonStyle(Qt::ToolButtonIconOnly);/*not show title*/
-        //btn->setStyleSheet(QString("border-image:url(/tmp/picture/%1.png)").arg(mButtonHash.begin().key()));
+//        btn->setToolButtonStyle(Qt::ToolButtonIconOnly);/*not show title*/
+//        //btn->setStyleSheet(QString("border-image:url(/tmp/picture/%1.png)").arg(mButtonHash.begin().key()));
+        //btn->setFrameShape(QFrame::NoFrame);
+        mPopup->layout()->setContentsMargins(0,0,0,0);
         mPopup->layout()->addWidget(btn);
         XDestroyImage(img);
         XCloseDisplay(display);
