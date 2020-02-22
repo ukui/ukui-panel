@@ -59,7 +59,7 @@ void ShowDesktop::realign()
 {
     if(panel()->isHorizontal())
     {
-        mButton.setFixedSize(DESKTOP_HEIGHT,DESKTOP_WIDTH);
+        mButton.setFixedSize(DESKTOP_HEIGHT,panel()->panelSize());
         mButton.setStyleSheet(
                     //正常状态样式
                     "QToolButton{"

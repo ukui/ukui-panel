@@ -128,14 +128,6 @@ ConfigPanelWidget::ConfigPanelWidget(UKUIPanel *panel, QWidget *parent) :
     gsettings= new QGSettings("org.mate.interface", "", this);
     connect(gsettings,&QGSettings::changed,this,&ConfigPanelWidget::reset);
 
-    FileSetPanel *f;
-    f=new FileSetPanel(mPanel);
-    QDBusConnection conp=QDBusConnection::sessionBus();
-    if(!conp.registerService("com.ukui.panel.settings") ||
-            !conp.registerObject("/set",mPanel))
-    {
-        qDebug()<<"fail";
-    }
 
 }
 

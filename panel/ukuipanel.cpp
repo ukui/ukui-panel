@@ -1151,29 +1151,30 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
             delete m;
         }
     }
-    menu->setStyleSheet(
-                         "QMenu {"
-                         "background-color:rgb(21,26,30);"
-                         "border: 1px solid #626c6e;"
-                         //"border-color:rgba(255,255,255,30);"    //边框颜色
-                         "font:SimSun 14px;"                       //字体，字体大小
-                         "color:rgba(255,255,255,100);"                //字体颜色
-                        "padding: 4px 2px 4px 2px;"
-                        " }"
-                        "QMenu::item {"
-                        "width: 244px;"
-                        "height: 90px;"
-                        "}"
-                        //鼠标悬停样式
-                        "QMenu:hover{"
-                        "background-color:rgba(190,216,239,30%);"
-                        "}"
-                        //鼠标按下样式
-                        "QMenu:selected{"
-                        "background-color:rgba(190,216,239,30%);"
-                        "}"
+    //old menu stytle
+//    menu->setStyleSheet(
+//                         "QMenu {"
+//                         "background-color:rgb(21,26,30);"
+//                         "border: 1px solid #626c6e;"
+//                         //"border-color:rgba(255,255,255,30);"    //边框颜色
+//                         "font:SimSun 14px;"                       //字体，字体大小
+//                         "color:rgba(255,255,255,100);"                //字体颜色
+//                        "padding: 4px 2px 4px 2px;"
+//                        " }"
+//                        "QMenu::item {"
+//                        "width: 244px;"
+//                        "height: 90px;"
+//                        "}"
+//                        //鼠标悬停样式
+//                        "QMenu:hover{"
+//                        "background-color:rgba(190,216,239,30%);"
+//                        "}"
+//                        //鼠标按下样式
+//                        "QMenu:selected{"
+//                        "background-color:rgba(190,216,239,30%);"
+//                        "}"
 
-                        );
+//                        );
 
 
     // Panel menu ...............................
@@ -1236,25 +1237,25 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     menu->addMenu(pmenu_panelsize);
 
 
-    pmenu_panelsize->setStyleSheet(
-                         "QMenu {"
-                         "background-color:rgba(21,26,30,90%);"
-                         "border-color:rgba(255,255,255,30);"    //边框颜色
-                         "font:SimSun 14px;"                       //字体，字体大小
-                         "color:rgba(255,255,255,100);"                //字体颜色
-                         "padding:2px 2px; "                     //设置菜单项文字上下和左右的内边距，效果就是菜单中的条目左右上下有了间隔
-                        " }"
+//    pmenu_panelsize->setStyleSheet(
+//                         "QMenu {"
+//                         "background-color:rgba(21,26,30,90%);"
+//                         "border-color:rgba(255,255,255,30);"    //边框颜色
+//                         "font:SimSun 14px;"                       //字体，字体大小
+//                         "color:rgba(255,255,255,100);"                //字体颜色
+//                         "padding:2px 2px; "                     //设置菜单项文字上下和左右的内边距，效果就是菜单中的条目左右上下有了间隔
+//                        " }"
 
-                        //鼠标悬停样式
-                        "QToolButton:hover{"
-                        "background-color:rgba(190,216,239,30%);"
-                        "}"
-                        //鼠标按下样式
-                        "QToolButton:pressed{"
-                        "background-color:rgba(0,0,0,12%);"
-                        "}"
+//                        //鼠标悬停样式
+//                        "QToolButton:hover{"
+//                        "background-color:rgba(190,216,239,30%);"
+//                        "}"
+//                        //鼠标按下样式
+//                        "QToolButton:pressed{"
+//                        "background-color:rgba(0,0,0,12%);"
+//                        "}"
 
-                        );
+//                        );
 
     connect(pmenuaction_s,SIGNAL(triggered()),this,SLOT(panelsizechange_s()));
     connect(pmenuaction_m,SIGNAL(triggered()),this,SLOT(panelsizechange_m()));
@@ -1281,25 +1282,26 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     pmenu_positon->addAction(pmenuaction_left);
     pmenu_positon->addAction(pmenuaction_right);
     menu->addMenu(pmenu_positon);
-    pmenu_positon->setStyleSheet(
-                         "QMenu {"
-                         "background-color:rgba(21,26,30,90%);"
-                         "border-color:rgba(255,255,255,30);"    //边框颜色
-                         "font:SimSun 14px;"                       //字体，字体大小
-                         "color:rgba(255,255,255,100);"                //字体颜色
-                         "padding:2px 2px; "                     //设置菜单项文字上下和左右的内边距，效果就是菜单中的条目左右上下有了间隔
-                        " }"
+    //old menu style
+//    pmenu_positon->setStyleSheet(
+//                         "QMenu {"
+//                         "background-color:rgba(21,26,30,90%);"
+//                         "border-color:rgba(255,255,255,30);"    //边框颜色
+//                         "font:SimSun 14px;"                       //字体，字体大小
+//                         "color:rgba(255,255,255,100);"                //字体颜色
+//                         "padding:2px 2px; "                     //设置菜单项文字上下和左右的内边距，效果就是菜单中的条目左右上下有了间隔
+//                        " }"
 
-                        //鼠标悬停样式
-                        "QToolButton:hover{"
-                        "background-color:rgba(190,216,239,30%);"
-                        "}"
-                        //鼠标按下样式
-                        "QToolButton:pressed{"
-                        "background-color:rgba(0,0,0,12%);"
-                        "}"
+//                        //鼠标悬停样式
+//                        "QToolButton:hover{"
+//                        "background-color:rgba(190,216,239,30%);"
+//                        "}"
+//                        //鼠标按下样式
+//                        "QToolButton:pressed{"
+//                        "background-color:rgba(0,0,0,12%);"
+//                        "}"
 
-                        );
+//                        );
 
     connect(pmenuaction_top,SIGNAL(triggered()),this,SLOT(changePosition_top()));
     connect(pmenuaction_bottom,SIGNAL(triggered()),this,SLOT(changePosition_bottom()));

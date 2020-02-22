@@ -117,6 +117,7 @@ Q_SIGNALS:
 protected:
     void wheelEvent(QWheelEvent *);
     void mouseReleaseEvent(QMouseEvent* event);
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 };
 
 class UKUICalendarPluginLibrary: public QObject, public IUKUIPanelPluginLibrary

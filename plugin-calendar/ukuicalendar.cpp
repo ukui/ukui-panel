@@ -804,3 +804,8 @@ void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
 
     QLabel::mouseReleaseEvent(event);
 }
+
+void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
+{
+    qDebug()<<"calendar right press";
+}
