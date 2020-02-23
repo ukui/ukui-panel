@@ -110,11 +110,12 @@ UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget 
     mParentTaskBar->setStyleSheet(
                 //正常状态样式
                 "QToolButton{"
-                "background-color:rgba(190,216,239,5%);"
+                "background-color:rgba(190,216,239,0%);"
                                 "border-style:outset;"                  //边框样式（inset/outset）
+                                "border-color:rgba(190,216,239,0%);"    //边框颜色
                                 "qproperty-iconSize: 28px 28px;"
-                                "border-width:2px;"                     //边框宽度像素
-                                "border-radius:2px;"                   //边框圆角半径像素
+                                "border-width:4px;"                     //边框宽度像素
+                                "border-radius:5px;"                   //边框圆角半径像素
                                 "font:bold 14px;"                       //字体，字体大小
                                 "color:rgba(0,0,0,100);"                //字体颜色
                                 "padding:0px;"

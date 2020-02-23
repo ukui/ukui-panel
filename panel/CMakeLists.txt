@@ -220,3 +220,9 @@ install(FILES
     DESTINATION "/etc/xdg/autostart/"
     COMPONENT Runtime
 )
+
+install(FILES
+    img/setting.svg  img/tick.svg img/up.svg
+    DESTINATION "${PACKAGE_DATA_DIR}/panel/img"
+    COMPONENT Runtime
+)
