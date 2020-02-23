@@ -34,6 +34,7 @@
 #include "../panel/iukuipanelplugin.h"
 #include "ukuitaskbar.h"
 #include "ukuigrouppopup.h"
+#include "ukuitaskwidget.h"
 #include "ukuitaskbutton.h"
 #include <KF5/KWindowSystem/kwindowsystem.h>
 
@@ -55,12 +56,12 @@ public:
     int buttonsCount() const;
     int visibleButtonsCount() const;
 
-    UKUITaskButton * addWindow(WId id);
-    UKUITaskButton * checkedButton() const;
+    QWidget * addWindow(WId id);
+    QWidget * checkedButton() const;
 
     // Returns the next or the previous button in the popup
     // if circular is true, then it will go around the list of buttons
-    UKUITaskButton * getNextPrevChildButton(bool next, bool circular);
+    QWidget * getNextPrevChildButton(bool next, bool circular);
 
     bool onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2);
     void setAutoRotation(bool value, IUKUIPanel::Position position);
@@ -107,6 +108,7 @@ signals:
 private:
     QString mGroupName;
     UKUIGroupPopup * mPopup;
+    QVBoxLayout *VLayout;
     UKUITaskButtonHash mButtonHash;
     bool mPreventPopup;
     bool mSingleButton; //!< flag if this group should act as a "standard" button (no groupping or only one "shown" window in group)

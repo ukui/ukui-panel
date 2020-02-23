@@ -7,6 +7,8 @@ set(HEADERS
     ukuitaskbarplugin.h
     ukuitaskgroup.h
     ukuigrouppopup.h
+    ukuitaskwidget.h
+    ukuitaskclosebutton.h
 )
 
 set(SOURCES
@@ -16,6 +18,8 @@ set(SOURCES
     ukuitaskbarplugin.cpp
     ukuitaskgroup.cpp
     ukuigrouppopup.cpp
+    ukuitaskwidget.cpp
+    ukuitaskclosebutton.cpp
 )
 
 set(UIS

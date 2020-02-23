@@ -59,7 +59,7 @@ UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     connect(&mCloseTimer, &QTimer::timeout, this, &UKUIGroupPopup::closeTimerSlot);
     mCloseTimer.setSingleShot(true);
     mCloseTimer.setInterval(400);
-    setFixedHeight(80);
+    setFixedHeight(180);
 }
 
 UKUIGroupPopup::~UKUIGroupPopup()
