@@ -371,6 +371,7 @@ void UKUITaskBar::onWindowChanged(WId window, NET::Properties prop, NET::Propert
 
 void UKUITaskBar::onWindowAdded(WId window)
 {
+    qDebug()<<"onWindowAdded";
     auto const pos = mKnownWindows.find(window);
     if (mKnownWindows.end() == pos && acceptWindow(window))
         addWindow(window);
@@ -565,6 +566,7 @@ void UKUITaskBar::realign()
  ************************************************/
 void UKUITaskBar::wheelEvent(QWheelEvent* event)
 {
+#if 0
     if (!mCycleOnWheelScroll)
         return QFrame::wheelEvent(event);
 
@@ -611,6 +613,7 @@ void UKUITaskBar::wheelEvent(QWheelEvent* event)
         group = list.at(idx);
     }
     QFrame::wheelEvent(event);
+#endif
 }
 
 /************************************************

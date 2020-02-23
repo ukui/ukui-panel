@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "ukuitaskbutton.h"
+#include "ukuitaskwidget.h"
 #include "ukuitaskgroup.h"
 #include "ukuitaskbar.h"
 
@@ -50,31 +50,32 @@
 
 #include "ukuitaskgroup.h"
 #include "ukuitaskbar.h"
+#include "ukuitaskclosebutton.h"
 
 #include <KWindowSystem/KWindowSystem>
 // Necessary for closeApplication()
 #include <KWindowSystem/NETWM>
 #include <QtX11Extras/QX11Info>
 
-bool UKUITaskButton::sDraggging = false;
+bool UKUITaskWidget::sDraggging = false;
 
 /************************************************
 
 ************************************************/
-void LeftAlignedTextStyle::drawItemText(QPainter * painter, const QRect & rect, int flags
-            , const QPalette & pal, bool enabled, const QString & text
-            , QPalette::ColorRole textRole) const
-{
-    QString txt = QFontMetrics(painter->font()).elidedText(text, Qt::ElideRight, rect.width());
-    return QProxyStyle::drawItemText(painter, rect, (flags & ~Qt::AlignHCenter) | Qt::AlignLeft, pal, enabled, txt, textRole);
-}
+//void LeftAlignedTextStyle::drawItemText(QPainter * painter, const QRect & rect, int flags
+//            , const QPalette & pal, bool enabled, const QString & text
+//            , QPalette::ColorRole textRole) const
+//{
+//    QString txt = QFontMetrics(painter->font()).elidedText(text, Qt::ElideRight, rect.width());
+//    return QProxyStyle::drawItemText(painter, rect, (flags & ~Qt::AlignHCenter) | Qt::AlignLeft, pal, enabled, txt, textRole);
+//}
 
 
 /************************************************
 
 ************************************************/
-UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget *parent) :
-    QToolButton(parent),
+UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget *parent) :
+    QWidget(parent),
     mWindow(window),
     mUrgencyHint(false),
     mOrigin(Qt::TopLeftCorner),
@@ -85,75 +86,119 @@ UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget 
 {
     Q_ASSERT(taskbar);
 
-    setCheckable(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     setMinimumWidth(1);
     setMinimumHeight(1);
-    setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     setAcceptDrops(true);
+    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
 
+    //for layout
+    mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
+    mCloseBtn->setIcon(closePix);
+    mTitleLabel = new QLabel;
+    mThumbnailLabel = new QLabel;
+    mAppIcon = new QLabel;
+    mVWindowsLayout = new QVBoxLayout;
+    mTopBarLayout = new QHBoxLayout;
+
+
+    mTitleLabel->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    mAppIcon->setAlignment(Qt::AlignLeft);
+    mAppIcon->setScaledContents(false);
+
+
+    // 自动缩放图片
+    //	titleLabel->setScaledContents(true);
+    mThumbnailLabel->setScaledContents(false);
+
+    // 设置控件缩放方式
+    QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    sizePolicy.setHorizontalPolicy(QSizePolicy::Expanding);
+    mTitleLabel->setSizePolicy(sizePolicy);
+    mAppIcon->setSizePolicy(sizePolicy);
+    sizePolicy.setVerticalPolicy(QSizePolicy::Expanding);
+
+//    mTitleLabel->setAttribute(Qt::WA_TranslucentBackground, true);
+//    mAppIcon->setAttribute(Qt::WA_TranslucentBackground, true);
+    mAppIcon->resize(QSize(32,32));
+
+    // 设置控件最大尺寸
+    mTitleLabel->setFixedHeight(32);
+    mTitleLabel->setMinimumWidth(1);
+    mThumbnailLabel->setMinimumSize(QSize(1, 1));
+
+//    iconLabel->setContentsMargins(5, 0, 0, 0);
+    mTitleLabel->setContentsMargins(0, 0, 5, 0);
+    mTopBarLayout->addWidget(mAppIcon);
+    mTopBarLayout->addWidget(mTitleLabel);
+    mTopBarLayout->addWidget(mCloseBtn);
+    mVWindowsLayout->addLayout(mTopBarLayout);
+    mVWindowsLayout->addWidget(mThumbnailLabel);
+    this->setLayout(mVWindowsLayout);
+    //
     updateText();
     updateIcon();
-
     mDNDTimer->setSingleShot(true);
     mDNDTimer->setInterval(700);
     connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
-    connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskButton::updateIcon);
-    mParentTaskBar->setStyleSheet(
-                //正常状态样式
-                "QFrame{"
-                "border-width:2px;"                     //边框宽度像素
-                "}"
-                );
-    mParentTaskBar->setStyleSheet(
-                //正常状态样式
-                "QToolButton{"
-                "background-color:rgba(190,216,239,5%);"
-                                "border-style:outset;"                  //边框样式（inset/outset）
-                                "qproperty-iconSize: 28px 28px;"
-                                "border-width:2px;"                     //边框宽度像素
-                                "border-radius:2px;"                   //边框圆角半径像素
-                                "font:bold 14px;"                       //字体，字体大小
-                                "color:rgba(0,0,0,100);"                //字体颜色
-                                "padding:0px;"
-                "}"
-                //鼠标悬停样式
-                "QToolButton:hover{"
-                "background-color:rgba(190,216,239,20%);"
-                "}"
-                //鼠标按下样式
-                "QToolButton:pressed{"
-                "background-color:rgba(190,216,239,12%);"
-                "}"
+    connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskWidget::updateIcon);
+    connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
+//    mParentTaskBar->setStyleSheet(
+//                //正常状态样式
+//                "QFrame{"
+//                "border-width:2px;"                     //边框宽度像素
+//                "}"
+//                );
+//    mParentTaskBar->setStyleSheet(
+//                //正常状态样式
+//                "QWidget{"
+//                "background-color:rgba(190,216,239,5%);"
+//                                "border-style:outset;"                  //边框样式（inset/outset）
+//                                "qproperty-iconSize: 28px 28px;"
+//                                "border-width:2px;"                     //边框宽度像素
+//                                "border-radius:2px;"                   //边框圆角半径像素
+//                                "font:bold 14px;"                       //字体，字体大小
+//                                "color:rgba(0,0,0,100);"                //字体颜色
+//                                "padding:0px;"
+//                "}"
+//                //鼠标悬停样式
+//                "QWidget:hover{"
+//                "background-color:rgba(190,216,239,20%);"
+//                "}"
+//                //鼠标按下样式
+//                "QWidget:pressed{"
+//                "background-color:rgba(190,216,239,12%);"
+//                "}"
 
 
-                );
+//                );
 }
 
 /************************************************
 
 ************************************************/
-UKUITaskButton::~UKUITaskButton()
+UKUITaskWidget::~UKUITaskWidget()
 {
 }
 
 /************************************************
 
  ************************************************/
-void UKUITaskButton::updateText()
+void UKUITaskWidget::updateText()
 {
     KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
     QString title = info.visibleName().isEmpty() ? info.name() : info.visibleName();
-    setText(title.replace("&", "&&"));
-    setToolTip(title);
+    mTitleLabel->setText(title);
+//    setText(title.replace("&", "&&"));
+//    setToolTip(title);
 }
 
 /************************************************
 
  ************************************************/
-void UKUITaskButton::updateIcon()
+void UKUITaskWidget::updateIcon()
 {
     QIcon ico;
     if (mParentTaskBar->isIconByClass())
@@ -164,13 +209,15 @@ void UKUITaskButton::updateIcon()
     {
         ico = KWindowSystem::icon(mWindow);
     }
-    setIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
+    mAppIcon->setPixmap(ico.pixmap(QSize(32,32)));
+    //mAppIcon->setWindowIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
+    //setIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
 }
 
 /************************************************
 
  ************************************************/
-void UKUITaskButton::refreshIconGeometry(QRect const & geom)
+void UKUITaskWidget::refreshIconGeometry(QRect const & geom)
 {
     NETWinInfo info(QX11Info::connection(),
                     windowId(),
@@ -193,7 +240,7 @@ void UKUITaskButton::refreshIconGeometry(QRect const & geom)
 /************************************************
 
  ************************************************/
-void UKUITaskButton::dragEnterEvent(QDragEnterEvent *event)
+void UKUITaskWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     // It must be here otherwise dragLeaveEvent and dragMoveEvent won't be called
     // on the other hand drop and dragmove events of parent widget won't be called
@@ -207,10 +254,10 @@ void UKUITaskButton::dragEnterEvent(QDragEnterEvent *event)
         mDNDTimer->start();
     }
 
-    QToolButton::dragEnterEvent(event);
+    QWidget::dragEnterEvent(event);
 }
 
-void UKUITaskButton::dragMoveEvent(QDragMoveEvent * event)
+void UKUITaskWidget::dragMoveEvent(QDragMoveEvent * event)
 {
     if (event->mimeData()->hasFormat(mimeDataFormat()))
     {
@@ -219,13 +266,13 @@ void UKUITaskButton::dragMoveEvent(QDragMoveEvent * event)
     }
 }
 
-void UKUITaskButton::dragLeaveEvent(QDragLeaveEvent *event)
+void UKUITaskWidget::dragLeaveEvent(QDragLeaveEvent *event)
 {
     mDNDTimer->stop();
-    QToolButton::dragLeaveEvent(event);
+    QWidget::dragLeaveEvent(event);
 }
 
-void UKUITaskButton::dropEvent(QDropEvent *event)
+void UKUITaskWidget::dropEvent(QDropEvent *event)
 {
     mDNDTimer->stop();
     if (event->mimeData()->hasFormat(mimeDataFormat()))
@@ -233,13 +280,13 @@ void UKUITaskButton::dropEvent(QDropEvent *event)
         emit dropped(event->source(), event->pos());
         setAttribute(Qt::WA_UnderMouse, false);
     }
-    QToolButton::dropEvent(event);
+    QWidget::dropEvent(event);
 }
 
 /************************************************
 
  ************************************************/
-void UKUITaskButton::mousePressEvent(QMouseEvent* event)
+void UKUITaskWidget::mousePressEvent(QMouseEvent* event)
 {
     const Qt::MouseButton b = event->button();
 
@@ -248,31 +295,30 @@ void UKUITaskButton::mousePressEvent(QMouseEvent* event)
     else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
         closeApplication();
 
-    QToolButton::mousePressEvent(event);
+    QWidget::mousePressEvent(event);
 }
 
 /************************************************
 
  ************************************************/
-void UKUITaskButton::mouseReleaseEvent(QMouseEvent* event)
+void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 {
+    qDebug()<<"mouseReleaseEvent";
     if (event->button() == Qt::LeftButton)
     {
-        if (isChecked())
-            minimizeApplication();
-        else
-        {
+//        if (isChecked())
+//            minimizeApplication();
+//        else
             raiseApplication();
-        }
     }
-    QToolButton::mouseReleaseEvent(event);
+    QWidget::mouseReleaseEvent(event);
 
 }
 
 /************************************************
 
  ************************************************/
-QMimeData * UKUITaskButton::mimeData()
+QMimeData * UKUITaskWidget::mimeData()
 {
     QMimeData *mimedata = new QMimeData;
     QByteArray ba;
@@ -285,46 +331,14 @@ QMimeData * UKUITaskButton::mimeData()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::mouseMoveEvent(QMouseEvent* event)
+void UKUITaskWidget::mouseMoveEvent(QMouseEvent* event)
 {
-    if (!(event->buttons() & Qt::LeftButton))
-        return;
-
-    if ((event->pos() - mDragStartPosition).manhattanLength() < QApplication::startDragDistance())
-        return;
-
-    QDrag *drag = new QDrag(this);
-    drag->setMimeData(mimeData());
-    QIcon ico = icon();
-    QPixmap img = ico.pixmap(ico.actualSize({32, 32}));
-    drag->setPixmap(img);
-    switch (parentTaskBar()->panel()->position())
-    {
-        case IUKUIPanel::PositionLeft:
-        case IUKUIPanel::PositionTop:
-            drag->setHotSpot({0, 0});
-            break;
-        case IUKUIPanel::PositionRight:
-        case IUKUIPanel::PositionBottom:
-            drag->setHotSpot(img.rect().bottomRight());
-            break;
-    }
-
-    sDraggging = true;
-    drag->exec();
-
-    // if button is dropped out of panel (e.g. on desktop)
-    // it is not deleted automatically by Qt
-    drag->deleteLater();
-    sDraggging = false;
-
-    QAbstractButton::mouseMoveEvent(event);
 }
 
 /************************************************
 
  ************************************************/
-bool UKUITaskButton::isApplicationHidden() const
+bool UKUITaskWidget::isApplicationHidden() const
 {
     KWindowInfo info(mWindow, NET::WMState);
     return (info.state() & NET::Hidden);
@@ -333,7 +347,7 @@ bool UKUITaskButton::isApplicationHidden() const
 /************************************************
 
  ************************************************/
-bool UKUITaskButton::isApplicationActive() const
+bool UKUITaskWidget::isApplicationActive() const
 {
     return KWindowSystem::activeWindow() == mWindow;
 }
@@ -341,7 +355,7 @@ bool UKUITaskButton::isApplicationActive() const
 /************************************************
 
  ************************************************/
-void UKUITaskButton::activateWithDraggable()
+void UKUITaskWidget::activateWithDraggable()
 {
     // raise app in any time when there is a drag
     // in progress to allow drop it into an app
@@ -352,7 +366,7 @@ void UKUITaskButton::activateWithDraggable()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::raiseApplication()
+void UKUITaskWidget::raiseApplication()
 {
     KWindowInfo info(mWindow, NET::WMDesktop | NET::WMState | NET::XAWMState);
     if (parentTaskBar()->raiseOnCurrentDesktop() && info.isMinimized())
@@ -373,7 +387,7 @@ void UKUITaskButton::raiseApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::minimizeApplication()
+void UKUITaskWidget::minimizeApplication()
 {
     KWindowSystem::minimizeWindow(mWindow);
 }
@@ -381,7 +395,7 @@ void UKUITaskButton::minimizeApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::maximizeApplication()
+void UKUITaskWidget::maximizeApplication()
 {
     QAction* act = qobject_cast<QAction*>(sender());
     if (!act)
@@ -410,7 +424,7 @@ void UKUITaskButton::maximizeApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::deMaximizeApplication()
+void UKUITaskWidget::deMaximizeApplication()
 {
     KWindowSystem::clearState(mWindow, NET::Max);
 
@@ -421,7 +435,7 @@ void UKUITaskButton::deMaximizeApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::shadeApplication()
+void UKUITaskWidget::shadeApplication()
 {
     KWindowSystem::setState(mWindow, NET::Shaded);
 }
@@ -429,7 +443,7 @@ void UKUITaskButton::shadeApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::unShadeApplication()
+void UKUITaskWidget::unShadeApplication()
 {
     KWindowSystem::clearState(mWindow, NET::Shaded);
 }
@@ -437,16 +451,17 @@ void UKUITaskButton::unShadeApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::closeApplication()
+void UKUITaskWidget::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
+    qDebug()<<"closeApplication";
     NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(mWindow);
 }
 
 /************************************************
 
  ************************************************/
-void UKUITaskButton::setApplicationLayer()
+void UKUITaskWidget::setApplicationLayer()
 {
     QAction* act = qobject_cast<QAction*>(sender());
     if (!act)
@@ -475,7 +490,7 @@ void UKUITaskButton::setApplicationLayer()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::moveApplicationToDesktop()
+void UKUITaskWidget::moveApplicationToDesktop()
 {
     QAction* act = qobject_cast<QAction*>(sender());
     if (!act)
@@ -493,7 +508,7 @@ void UKUITaskButton::moveApplicationToDesktop()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::moveApplication()
+void UKUITaskWidget::moveApplication()
 {
     KWindowInfo info(mWindow, NET::WMDesktop);
     if (!info.isOnCurrentDesktop())
@@ -511,7 +526,7 @@ void UKUITaskButton::moveApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::resizeApplication()
+void UKUITaskWidget::resizeApplication()
 {
     KWindowInfo info(mWindow, NET::WMDesktop);
     if (!info.isOnCurrentDesktop())
@@ -529,7 +544,7 @@ void UKUITaskButton::resizeApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
+void UKUITaskWidget::contextMenuEvent(QContextMenuEvent* event)
 {
     if (event->modifiers().testFlag(Qt::ControlModifier))
     {
@@ -601,10 +616,10 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
     menu->addSeparator();
     a = menu->addAction(tr("&Move"));
     a->setEnabled(info.actionSupported(NET::ActionMove) && !(state & NET::Max) && !(state & NET::FullScreen));
-    connect(a, &QAction::triggered, this, &UKUITaskButton::moveApplication);
+    connect(a, &QAction::triggered, this, &UKUITaskWidget::moveApplication);
     a = menu->addAction(tr("Resi&ze"));
     a->setEnabled(info.actionSupported(NET::ActionResize) && !(state & NET::Max) && !(state & NET::FullScreen));
-    connect(a, &QAction::triggered, this, &UKUITaskButton::resizeApplication);
+    connect(a, &QAction::triggered, this, &UKUITaskWidget::resizeApplication);
 
     /********** State menu **********/
     menu->addSeparator();
@@ -683,7 +698,7 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
 /************************************************
 
  ************************************************/
-void UKUITaskButton::setUrgencyHint(bool set)
+void UKUITaskWidget::setUrgencyHint(bool set)
 {
     if (mUrgencyHint == set)
         return;
@@ -701,27 +716,27 @@ void UKUITaskButton::setUrgencyHint(bool set)
 /************************************************
 
  ************************************************/
-bool UKUITaskButton::isOnDesktop(int desktop) const
+bool UKUITaskWidget::isOnDesktop(int desktop) const
 {
     return KWindowInfo(mWindow, NET::WMDesktop).isOnDesktop(desktop);
 }
 
-bool UKUITaskButton::isOnCurrentScreen() const
+bool UKUITaskWidget::isOnCurrentScreen() const
 {
     return QApplication::desktop()->screenGeometry(parentTaskBar()).intersects(KWindowInfo(mWindow, NET::WMFrameExtents).frameGeometry());
 }
 
-bool UKUITaskButton::isMinimized() const
+bool UKUITaskWidget::isMinimized() const
 {
     return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
 }
 
-Qt::Corner UKUITaskButton::origin() const
+Qt::Corner UKUITaskWidget::origin() const
 {
     return mOrigin;
 }
 
-void UKUITaskButton::setOrigin(Qt::Corner newOrigin)
+void UKUITaskWidget::setOrigin(Qt::Corner newOrigin)
 {
     if (mOrigin != newOrigin)
     {
@@ -730,7 +745,7 @@ void UKUITaskButton::setOrigin(Qt::Corner newOrigin)
     }
 }
 
-void UKUITaskButton::setAutoRotation(bool value, IUKUIPanel::Position position)
+void UKUITaskWidget::setAutoRotation(bool value, IUKUIPanel::Position position)
 {
     if (value)
     {
@@ -754,82 +769,20 @@ void UKUITaskButton::setAutoRotation(bool value, IUKUIPanel::Position position)
         setOrigin(Qt::TopLeftCorner);
 }
 
-void UKUITaskButton::paintEvent(QPaintEvent *event)
+void UKUITaskWidget::paintEvent(QPaintEvent *event)
 {
-    if (mOrigin == Qt::TopLeftCorner)
-    {
-        QToolButton::paintEvent(event);
-        return;
-    }
-
-    QSize sz = size();
-    QSize adjSz = sz;
-    QTransform transform;
-    QPoint originPoint;
-
-    switch (mOrigin)
-    {
-    case Qt::TopLeftCorner:
-        transform.rotate(0.0);
-        originPoint = QPoint(0.0, 0.0);
-        break;
-
-    case Qt::TopRightCorner:
-        transform.rotate(90.0);
-        originPoint = QPoint(0.0, -sz.width());
-        adjSz.transpose();
-        break;
-
-    case Qt::BottomRightCorner:
-        transform.rotate(180.0);
-        originPoint = QPoint(-sz.width(), -sz.height());
-        break;
-
-    case Qt::BottomLeftCorner:
-        transform.rotate(270.0);
-        originPoint = QPoint(-sz.height(), 0.0);
-        adjSz.transpose();
-        break;
-    }
-
-    bool drawPixmapNextTime = false;
-
-    if (!mDrawPixmap)
-    {
-        mPixmap = QPixmap(adjSz);
-        mPixmap.fill(QColor(0, 0, 0, 0));
-
-        if (adjSz != sz)
-            resize(adjSz); // this causes paint event to be repeated - next time we'll paint the pixmap to the widget surface.
-
-        // copied from QToolButton::paintEvent   {
-        QStylePainter painter(&mPixmap, this);
-        QStyleOptionToolButton opt;
-        initStyleOption(&opt);
-        painter.drawComplexControl(QStyle::CC_ToolButton, opt);
-        // }
-
-        if (adjSz != sz)
-        {
-            resize(sz);
-            drawPixmapNextTime = true;
-        }
-        else
-            mDrawPixmap = true; // transfer the pixmap to the widget now!
-    }
-    if (mDrawPixmap)
-    {
-        QPainter painter(this);
-        painter.setTransform(transform);
-        painter.drawPixmap(originPoint, mPixmap);
-
-        drawPixmapNextTime = false;
-    }
-
-    mDrawPixmap = drawPixmapNextTime;
 }
 
-bool UKUITaskButton::hasDragAndDropHover() const
+bool UKUITaskWidget::hasDragAndDropHover() const
 {
     return mDNDTimer->isActive();
 }
+ void UKUITaskWidget::setTitle()
+ {
+     mTitleLabel->setText("12345");
+ }
+
+ void UKUITaskWidget::setThumbNail(QPixmap _pixmap)
+ {
+     mThumbnailLabel->setPixmap(_pixmap);
+ }
