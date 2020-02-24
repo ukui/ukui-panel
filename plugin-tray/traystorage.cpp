@@ -36,7 +36,7 @@
 #include "trayicon.h"
 #include "../panel/iukuipanel.h"
 #include "../panel/common/ukuigridlayout.h"
-#include "ukuitray.h"
+#include "traystorage.h"
 #include "xfitman.h"
 
 #include <X11/Xlib.h>
@@ -46,7 +46,7 @@
 #include <X11/extensions/Xdamage.h>
 #include <xcb/xcb.h>
 #include <xcb/damage.h>
-#include "traystorage.h"
+
 #undef Bool // defined as int in X11/Xlib.h
 
 #include "../panel/iukuipanelplugin.h"
@@ -65,7 +65,7 @@
 /************************************************
 
  ************************************************/
-UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
+TrayStorage::TrayStorage(IUKUIPanelPlugin *plugin, QWidget *parent):
     QFrame(parent),
     mValid(false),
     mTrayId(0),
@@ -82,77 +82,28 @@ UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
-    QPushButton *bt=new QPushButton;
-    bt->setStyleSheet(
-                "QPushButton {"
-                "qproperty-icon:url(/usr/share/ukui-panel/panel/img/up.svg);"
-                "border-color:rgba(255,255,255,30);"    //边框颜色
-                "font:SimSun 14px;"                       //字体，字体大小
-                "color:rgba(255,255,255,100);"                //字体颜色
-                "}"
-
-               //鼠标悬停样式
-               "QPushButton:hover{"
-               "background-color:rgba(190,216,239,30%);"
-               "}"
-               //鼠标按下样式
-               "QPushButton:selected{"
-               "background-color:rgba(190,216,239,30%);"
-               "}"
-               );
-    bt->setFlat(true);
-    mLayout->addWidget(bt);
-
-
-
-    connect(bt,SIGNAL(clicked()),this,SLOT(storageBar()));
+//    QPalette pal = palette();
+//    pal.setColor(QPalette::Background, QColor(0x00,0xff,0x00,0x00));
+//    setPalette(pal);
+//    setAttribute(Qt::WA_TranslucentBackground, true);
 }
 
 
 /************************************************
  ************************************************/
-UKUITray::~UKUITray()
+TrayStorage::~TrayStorage()
 {
     stopTray();
 }
-void UKUITray::storageBar()
-{
-    TrayStorage *tys = new TrayStorage(mPlugin);
-    tys->setStyleSheet(
-                "TrayStorage {"
-                "background-color:rgba(190,216,239,30%);"
-                "border-style:outset;"                  //边框样式（inset/outset）
-                "border-color:rgba(255,255,255,50%);"    //边框颜色
-                "border-width:1px;"                     //边框宽度像素
-                "border-radius:5px 5px;"                   //边框圆角半径像素
-                "font:bold 14px;"                       //字体，字体大小
-                "color:rgba(0,0,0,100);"                //字体颜色
-                "padding:0px;"
-                "}"
 
-               //鼠标悬停样式
-               "TrayStorage:hover{"
-               "background-color:rgba(190,216,239,30%);"
-               "}"
-               //鼠标按下样式
-               "TrayStorage:selected{"
-               "background-color:rgba(190,216,239,30%);"
-               "}"
-                );
-        int availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
-        int avaliableWidth=QGuiApplication::screens().at(0)->availableVirtualGeometry().width();
-        tys->setGeometry(avaliableWidth-300,availableHeight-90,150,90);
-        tys->setWindowFlags(Qt::Popup | Qt::WindowStaysOnTopHint);
-        tys->show();
-}
-void UKUITray::contextMenuEvent(QContextMenuEvent *event)
+void TrayStorage::contextMenuEvent(QContextMenuEvent *event)
 {
 
 }
 /************************************************
 
  ************************************************/
-bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, long *)
+bool TrayStorage::nativeEventFilter(const QByteArray &eventType, void *message, long *)
 {
     if (eventType != "xcb_generic_event_t")
         return false;
@@ -204,7 +155,7 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
 /************************************************
 
  ************************************************/
-void UKUITray::realign()
+void TrayStorage::realign()
 {
     mLayout->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
@@ -226,7 +177,7 @@ void UKUITray::realign()
 /************************************************
 
  ************************************************/
-void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
+void TrayStorage::clientMessageEvent(xcb_generic_event_t *e)
 {
     unsigned long opcode;
     unsigned long message_type;
@@ -267,7 +218,7 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
 /************************************************
 
  ************************************************/
-TrayIcon* UKUITray::findIcon(Window id)
+TrayIcon* TrayStorage::findIcon(Window id)
 {
     for(TrayIcon* icon : qAsConst(mIcons))
     {
@@ -281,7 +232,7 @@ TrayIcon* UKUITray::findIcon(Window id)
 /************************************************
 
 ************************************************/
-void UKUITray::setIconSize(QSize iconSize)
+void TrayStorage::setIconSize(QSize iconSize)
 {
     mIconSize = iconSize;
     unsigned long size = qMin(mIconSize.width(), mIconSize.height());
@@ -299,7 +250,7 @@ void UKUITray::setIconSize(QSize iconSize)
 /************************************************
 
 ************************************************/
-VisualID UKUITray::getVisual()
+VisualID TrayStorage::getVisual()
 {
     VisualID visualId = 0;
     Display* dsp = mDisplay;
@@ -337,14 +288,14 @@ VisualID UKUITray::getVisual()
 /************************************************
    freedesktop systray specification
  ************************************************/
-void UKUITray::startTray()
+void TrayStorage::startTray()
 {
     Display* dsp = mDisplay;
     Window root = QX11Info::appRootWindow();
 
     QString s = QString("_NET_SYSTEM_TRAY_S%1").arg(DefaultScreen(dsp));
     Atom _NET_SYSTEM_TRAY_S = XfitMan::atom(s.toLatin1());
-    //this limit the tray apps  | will not run more Same apps
+        //this limit the tray apps  | will not run more Same apps
 //    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != None)
 //    {
 //        qWarning() << "Another systray is running";
@@ -415,10 +366,10 @@ void UKUITray::startTray()
 /************************************************
 
  ************************************************/
-void UKUITray::stopTray()
+void TrayStorage::stopTray()
 {
     for (auto & icon : mIcons)
-        disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+        disconnect(icon, &QObject::destroyed, this, &TrayStorage::onIconDestroyed);
     qDeleteAll(mIcons);
     if (mTrayId)
     {
@@ -432,7 +383,7 @@ void UKUITray::stopTray()
 /************************************************
 
  ************************************************/
-void UKUITray::onIconDestroyed(QObject * icon)
+void TrayStorage::onIconDestroyed(QObject * icon)
 {
     //in the time QOjbect::destroyed is emitted, the child destructor
     //is already finished, so the qobject_cast to child will return nullptr in all cases
@@ -443,60 +394,42 @@ void UKUITray::onIconDestroyed(QObject * icon)
 
  ************************************************/
 #include <QLabel>
-void UKUITray::addIcon(Window winId)
+void TrayStorage::addIcon(Window winId)
 {
     // decline to add an icon for a window we already manage
     TrayIcon *icon = findIcon(winId);
     if(icon)
         return;
-    //set the different trayapp's icon
-//    QSize s(24,24);
-//    if(xfitMan().getApplicationName(winId)=="kylin-nm")
-//    {
-//        icon = new TrayIcon(winId, s, this);
+    QSize s(24,24);
+    if(xfitMan().getApplicationName(winId)=="kylin-nm")
+    {
+        icon = new TrayIcon(winId, s, this);
 
-//    }
+    }
     else
     icon = new TrayIcon(winId, mIconSize, this);
 
-//    icon->setStyleSheet(
-//                         "TrayIcon {"
-//                         "border-color:rgba(255,255,255,30);"    //边框颜色
-//                         "font:SimSun 14px;"                       //字体，字体大小
-//                         "color:rgba(255,255,255,100);"                //字体颜色
-//                         "}"
+    qDebug()<<"UKUITray::addIcon(Window winId)  :";
+    icon->setStyleSheet(
+                         "TrayIcon {"
+                         "border-color:rgba(255,255,255,30);"    //边框颜色
+                         "font:SimSun 14px;"                       //字体，字体大小
+                         "color:rgba(255,255,255,100);"                //字体颜色
+                         "}"
 
-//                        //鼠标悬停样式
-//                        "TrayIcon:hover{"
-//                        "background-color:rgba(190,216,239,30%);"
-//                        "}"
-//                        //鼠标按下样式
-//                        "TrayIcon:selected{"
-//                        "background-color:rgba(190,216,239,30%);"
-//                        "}"
-//                        );
-    if(xfitMan().getApplicationName(winId)=="kylin-nm" |xfitMan().getApplicationName(winId)=="ukui-volume-control-applet-qt" | xfitMan().getApplicationName(winId)=="ukui-flash-disk"  )
+                        //鼠标悬停样式
+                        "TrayIcon:hover{"
+                        "background-color:rgba(190,216,239,30%);"
+                        "}"
+                        //鼠标按下样式
+                        "TrayIcon:selected{"
+                        "background-color:rgba(190,216,239,30%);"
+                        "}"
+                        );
+    if(xfitMan().getApplicationName(winId) !="kylin-nm"& xfitMan().getApplicationName(winId) !="ukui-flash-disk"  )
     {
     mIcons.append(icon);
     mLayout->addWidget(icon);
     }
-    connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+    connect(icon, &QObject::destroyed, this, &TrayStorage::onIconDestroyed);
 }
-
-//this way was not used
-StorageBar::StorageBar(IUKUIPanelPlugin *plugin, QWidget *parent):UKUITray (mPlugin,parent)
-{
-
-}
-
-
-bool StorageBar:: event(QEvent *event)
-{
-    if (event->type() == QEvent::ActivationChange) {
-        if (QApplication::activeWindow() != this) {
-            this->hide();
-        }
-    }
-    return QWidget::event(event);
-}
-

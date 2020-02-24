@@ -1190,7 +1190,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                   )->setDisabled(mLockPanel);
 */
     menu->setWindowOpacity(0.9);
-    menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
+    menu->addAction(QIcon("/usr/share/ukui-panel/panel/img/setting.svg"),
                    tr("Set up Panel"),
                    this, SLOT(panelBackgroundChange())
                   )->setDisabled(mLockPanel);

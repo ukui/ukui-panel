@@ -24,8 +24,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef UKUITRAY_H
-#define UKUITRAY_H
+#ifndef TRAYSTORAGE_H
+#define TRAYSTORAGE_H
 
 #include <QFrame>
 #include <QAbstractNativeEventFilter>
@@ -34,7 +34,7 @@
 #include <X11/Xlib.h>
 #include <xcb/xcb_event.h>
 #include "fixx11h.h"
-#include <QScreen>
+
 class TrayIcon;
 class QSize;
 
@@ -47,13 +47,13 @@ class GridLayout;
  */
 class IUKUIPanelPlugin;
 
-class UKUITray: public QFrame, QAbstractNativeEventFilter
+class TrayStorage: public QFrame, QAbstractNativeEventFilter
 {
     Q_OBJECT
     Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 public:
-    UKUITray(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
-    ~UKUITray();
+    TrayStorage(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
+    ~TrayStorage();
 
 
     QSize iconSize() const { return mIconSize; }
@@ -64,8 +64,6 @@ public:
     void realign();
     virtual void contextMenuEvent(QContextMenuEvent *event);
     IUKUIPanelPlugin *mPlugin;
-public slots:
-    void storageBar();
 
 
 signals:
@@ -102,14 +100,4 @@ private:
     Display* mDisplay;
 };
 
-//this class is another way to show the trayStorage
-//but I didn't succeed because the Constructor
-class StorageBar:public UKUITray
-{
-    Q_OBJECT
-public:
-    StorageBar(IUKUIPanelPlugin *plugin, QWidget *parent=0);
-protected:
-    bool event(QEvent *event);//重写窗口事件
-};
 #endif

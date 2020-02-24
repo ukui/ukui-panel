@@ -233,10 +233,22 @@ TrayIcon::~TrayIcon()
  ************************************************/
 QSize TrayIcon::sizeHint() const
 {
-    QMargins margins = contentsMargins();
-    return QSize(margins.left() + mRectSize.width() + margins.right(),
-                 margins.top() + mRectSize.height() + margins.bottom()
-                );
+    if(xfitMan().getApplicationName(mIconId)=="kylin-n")
+    {
+        qDebug()<<"sizeHint kylin-nm ***********";
+        QMargins margins = contentsMargins();
+        return QSize(margins.left() + mRectSize.width()*2 + margins.right(),
+                     margins.top() + mRectSize.height() + margins.bottom()
+                    );
+    }
+    else
+    {
+        QMargins margins = contentsMargins();
+                return QSize(margins.left() + mRectSize.width() + margins.right(),
+                             margins.top() + mRectSize.height() + margins.bottom()
+                            );
+    }
+
 }
 
 
@@ -249,11 +261,17 @@ void TrayIcon::setIconSize(QSize iconSize)
 
     const QSize req_size{mIconSize * metric(PdmDevicePixelRatio)};
     if (mWindowId)
+    {
         xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
+        qDebug()<<"setIconSize mWindowId";
+    }
 
     if (mIconId)
+    {
         xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
-    QSize mysize(16,16);
+        qDebug()<<"setIconSize mIconId*********************";
+    }
+    QSize mysize(8,8);
     mIconSize=mysize;
 }
 
@@ -357,6 +375,7 @@ void TrayIcon::draw(QPaintEvent* /*event*/)
 //    qDebug() << "    * bits per pixel:" << ximage->bits_per_pixel;
 
     // Draw QImage ...........................
+    qDebug() << "    * window name: *******************"<<xfitMan().getApplicationName(mIconId);
     QPainter painter(this);
     QRect iconRect = iconGeometry();
     if (image.size() != iconRect.size())
