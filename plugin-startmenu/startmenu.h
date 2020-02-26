@@ -54,6 +54,8 @@ private:
     bool mCapturing;
     QMenu *mRightMenu;
     IUKUIPanelPlugin * mPlugin;
+    friend class StartMenu;
+
 };
 
 class StartMenu : public QObject, public IUKUIPanelPlugin
@@ -67,6 +69,7 @@ public:
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    StartMenuWidget *menu;
 private:
     StartMenuWidget mWidget;
 //    IUKUIPanelPlugin *mPlugin;
