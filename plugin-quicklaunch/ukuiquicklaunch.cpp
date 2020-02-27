@@ -58,6 +58,7 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     mPlaceHolder(0)
 {
     setAcceptDrops(true);
+    mVBtn.clear();
 
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
@@ -119,6 +120,12 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
 
 UKUIQuickLaunch::~UKUIQuickLaunch()
 {
+    for(auto it = mVBtn.begin(); it != mVBtn.end();)
+    {
+        (*it)->deleteLater();
+        mVBtn.erase(it);
+    }
+    mVBtn.clear();
 }
 
 
@@ -136,7 +143,10 @@ int UKUIQuickLaunch::countOfButtons() const
 
 void UKUIQuickLaunch::realign()
 {
-    btn->setFixedSize(46,mPlugin->panel()->panelSize());
+    for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
+    {
+        (*it)->setFixedSize(46,mPlugin->panel()->panelSize());
+    }
     mLayout->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
 
@@ -165,9 +175,10 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
 {
     mLayout->setEnabled(false);
 
-    btn = new QuickLaunchButton(action, mPlugin, this);
+    QuickLaunchButton *btn = new QuickLaunchButton(action, mPlugin, this);
     btn->setFixedSize(46,mPlugin->panel()->panelSize());
-
+    //save btn
+    mVBtn.push_back(btn);
     mLayout->addWidget(btn);
     //set button style
     btn->setIconSize(QSize(28,28));
@@ -201,8 +212,8 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
     connect(btn, SIGNAL(movedRight()), this, SLOT(buttonMoveRight()));
 
     mLayout->removeWidget(mPlaceHolder);
-    delete mPlaceHolder;
-    mPlaceHolder = 0;
+    mPlaceHolder->deleteLater();
+    mPlaceHolder = NULL;
     mLayout->setEnabled(true);
     realign();
 }
@@ -433,6 +444,18 @@ void UKUIQuickLaunch::buttonDeleted()
     if (!btn)
         return;
     mLayout->removeWidget(btn);
+    for(auto it = mVBtn.begin(); it != mVBtn.end();)
+    {
+        if(*it == btn)
+        {
+            mVBtn.erase(it);
+            break;
+        }
+        else
+        {
+            it++;
+        }
+    }
     btn->deleteLater();
     saveSettings();
 
