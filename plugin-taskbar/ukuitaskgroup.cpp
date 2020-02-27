@@ -169,9 +169,9 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 void UKUITaskGroup::closeGroup()
 {
     //To Do
-//    for (QWidget *button : qAsConst(mButtonHash) )
-//        if (button->isOnDesktop(KWindowSystem::currentDesktop()))
-//            button->closeApplication();
+    for (UKUITaskWidget *button : qAsConst(mButtonHash) )
+        if (button->isOnDesktop(KWindowSystem::currentDesktop()))
+            button->closeApplication();
 }
 
 /************************************************
