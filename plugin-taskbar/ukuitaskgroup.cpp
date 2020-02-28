@@ -183,30 +183,6 @@ QWidget * UKUITaskGroup::addWindow(WId id)
     if (mButtonHash.contains(id))
         return mButtonHash.value(id);
     UKUITaskWidget *btn = new UKUITaskWidget(id, parentTaskBar(), mPopup);
-    //btn->setToolButtonStyle(popupButtonStyle());
-
-    btn->setStyleSheet(
-                //正常状态样式
-                "QToolButton{"
-                "background-color:rgba(190,216,239,5%);"//背景色（也可以设置图片）
-                "qproperty-iconSize:24px 24px;"
-                "border-style:outset;"                  //边框样式（inset/outset）
-                "border-width:0px;"                     //边框宽度像素
-                "border-radius:0px;"                   //边框圆角半径像素
-                "border-color:rgba(255,255,255,30);"    //边框颜色
-                "font:bold 14px;"                       //字体，字体大小
-                "color:rgba(255,255,255,100%);"                //字体颜色
-                "padding:0px;"                          //填衬
-                "spacing:0px;"
-                "border-bottom-style:solid"
-                "}"
-                );
-
-//    if (btn->isApplicationActive())
-//    {
-//        btn->setChecked(true);
-//        setChecked(true);
-//    }
     mButtonHash.insert(id, btn);
 
     connect(btn, SIGNAL(clicked()), this, SLOT(onChildButtonClicked()));
@@ -770,18 +746,7 @@ void UKUITaskGroup::showPreview()
 
         UKUITaskWidget *btn = it.value();
         btn->setFixedSize(300,180);
-//        btn->setTitle();
         btn->setThumbNail(thumbnail);
-//        QVBoxLayout *VWindowsLayout = new QVBoxLayout;
-        //label->setPixmap(thumbnail);
-        //VWindowsLayout->addWidget(label);
-        //btn->setLayout(VWindowsLayout);
-//        btn->setIcon(thumbnail);
-//        btn->setIconSize(thumbnail.rect().size());
-
-//        btn->setToolButtonStyle(Qt::ToolButtonIconOnly);/*not show title*/
-//        //btn->setStyleSheet(QString("border-image:url(/tmp/picture/%1.png)").arg(mButtonHash.begin().key()));
-        //btn->setFrameShape(QFrame::NoFrame);
         mPopup->layout()->setContentsMargins(0,0,0,0);
         mPopup->layout()->addWidget(btn);
         XDestroyImage(img);

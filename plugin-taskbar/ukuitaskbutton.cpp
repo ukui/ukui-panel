@@ -160,10 +160,14 @@ void UKUITaskButton::updateIcon()
     if (mParentTaskBar->isIconByClass())
     {
         ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
+//        qDebug()<<"KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass())   ********:"<<QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower();
     }
     if (ico.isNull())
     {
         ico = KWindowSystem::icon(mWindow);
+        qDebug()<<"KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass())   ********:"<<QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower();
+//        ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
+
     }
     setIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
 }
