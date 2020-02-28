@@ -35,6 +35,7 @@
 #include <xcb/xcb_event.h>
 #include "fixx11h.h"
 #include <QScreen>
+#include "traystorage.h"
 class TrayIcon;
 class QSize;
 
@@ -62,11 +63,12 @@ public:
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
 
     void realign();
-    virtual void contextMenuEvent(QContextMenuEvent *event);
     IUKUIPanelPlugin *mPlugin;
+    TrayStorage *tys;
+
 public slots:
     void storageBar();
-
+    void storageAddIcon(Window winId);
 
 signals:
     void iconSizeChanged(int iconSize);
@@ -78,16 +80,13 @@ private slots:
 
 private:
     VisualID getVisual();
-
     void clientMessageEvent(xcb_generic_event_t *e);
-
     int clientMessage(WId _wid, Atom _msg,
                       long unsigned int data0,
                       long unsigned int data1 = 0,
                       long unsigned int data2 = 0,
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
-
     void addIcon(Window id);
     TrayIcon* findIcon(Window trayId);
 
@@ -100,16 +99,5 @@ private:
     UKUi::GridLayout *mLayout;
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
-};
-
-//this class is another way to show the trayStorage
-//but I didn't succeed because the Constructor
-class StorageBar:public UKUITray
-{
-    Q_OBJECT
-public:
-    StorageBar(IUKUIPanelPlugin *plugin, QWidget *parent=0);
-protected:
-    bool event(QEvent *event);//重写窗口事件
 };
 #endif

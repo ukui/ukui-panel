@@ -33,8 +33,10 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <xcb/xcb_event.h>
+#include <QHBoxLayout>
 #include "fixx11h.h"
-
+#include <QPainter>
+#include <QStyleOption>
 class TrayIcon;
 class QSize;
 
@@ -52,7 +54,7 @@ class TrayStorage: public QFrame, QAbstractNativeEventFilter
     Q_OBJECT
     Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 public:
-    TrayStorage(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
+    TrayStorage(QWidget* parent = 0);
     ~TrayStorage();
 
 
@@ -61,23 +63,21 @@ public:
 
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
 
-    void realign();
-    virtual void contextMenuEvent(QContextMenuEvent *event);
-    IUKUIPanelPlugin *mPlugin;
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void paintEvent(QPaintEvent *);
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout;
 
 
 signals:
     void iconSizeChanged(int iconSize);
 
-private slots:
-    void startTray();
-    void stopTray();
+public slots:
     void onIconDestroyed(QObject * icon);
-
 private:
     VisualID getVisual();
 
-    void clientMessageEvent(xcb_generic_event_t *e);
 
     int clientMessage(WId _wid, Atom _msg,
                       long unsigned int data0,
@@ -85,9 +85,8 @@ private:
                       long unsigned int data2 = 0,
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
-
-    void addIcon(Window id);
-    TrayIcon* findIcon(Window trayId);
+    enum TrayStorageStatus{NORMAL, HOVER, PRESS};
+    TrayStorageStatus status;
 
     bool mValid;
     Window mTrayId;
@@ -95,7 +94,6 @@ private:
     int mDamageEvent;
     int mDamageError;
     QSize mIconSize;
-    UKUi::GridLayout *mLayout;
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
 };
