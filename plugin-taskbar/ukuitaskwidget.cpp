@@ -92,6 +92,9 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     setMinimumHeight(1);
     setAcceptDrops(true);
     QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+    status=HOVER;
+    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
     //for layout
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
@@ -128,7 +131,6 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mTitleLabel->setMinimumWidth(1);
     mThumbnailLabel->setMinimumSize(QSize(1, 1));
 
-//    iconLabel->setContentsMargins(5, 0, 0, 0);
     mTitleLabel->setContentsMargins(0, 0, 5, 0);
     mTopBarLayout->addWidget(mAppIcon);
     mTopBarLayout->addWidget(mTitleLabel);
@@ -136,7 +138,6 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mVWindowsLayout->addLayout(mTopBarLayout);
     mVWindowsLayout->addWidget(mThumbnailLabel);
     this->setLayout(mVWindowsLayout);
-    //
     updateText();
     updateIcon();
     mDNDTimer->setSingleShot(true);
@@ -145,35 +146,6 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
     connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskWidget::updateIcon);
     connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
-//    mParentTaskBar->setStyleSheet(
-//                //正常状态样式
-//                "QFrame{"
-//                "border-width:2px;"                     //边框宽度像素
-//                "}"
-//                );
-//    mParentTaskBar->setStyleSheet(
-//                //正常状态样式
-//                "QWidget{"
-//                "background-color:rgba(190,216,239,5%);"
-//                                "border-style:outset;"                  //边框样式（inset/outset）
-//                                "qproperty-iconSize: 28px 28px;"
-//                                "border-width:2px;"                     //边框宽度像素
-//                                "border-radius:2px;"                   //边框圆角半径像素
-//                                "font:bold 14px;"                       //字体，字体大小
-//                                "color:rgba(0,0,0,100);"                //字体颜色
-//                                "padding:0px;"
-//                "}"
-//                //鼠标悬停样式
-//                "QWidget:hover{"
-//                "background-color:rgba(190,216,239,20%);"
-//                "}"
-//                //鼠标按下样式
-//                "QWidget:pressed{"
-//                "background-color:rgba(190,216,239,12%);"
-//                "}"
-
-
-//                );
 }
 
 /************************************************
@@ -291,9 +263,16 @@ void UKUITaskWidget::mousePressEvent(QMouseEvent* event)
     const Qt::MouseButton b = event->button();
 
     if (Qt::LeftButton == b)
+    {
         mDragStartPosition = event->pos();
+        status = PRESS;
+    }
     else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
+    {
         closeApplication();
+        status = HOVER;
+    }
+    update();
 
     QWidget::mousePressEvent(event);
 }
@@ -303,7 +282,6 @@ void UKUITaskWidget::mousePressEvent(QMouseEvent* event)
  ************************************************/
 void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-    qDebug()<<"mouseReleaseEvent";
     if (event->button() == Qt::LeftButton)
     {
 //        if (isChecked())
@@ -311,6 +289,8 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 //        else
             raiseApplication();
     }
+    status = HOVER;
+    update();
     QWidget::mouseReleaseEvent(event);
 
 }
@@ -771,7 +751,39 @@ void UKUITaskWidget::setAutoRotation(bool value, IUKUIPanel::Position position)
 
 void UKUITaskWidget::paintEvent(QPaintEvent *event)
 {
+
+
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+
+    switch(status)
+      {
+      case NORMAL:
+          {
+              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+              p.setPen(Qt::NoPen);
+              break;
+          }
+      case HOVER:
+          {
+              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+              p.setPen(Qt::NoPen);
+              break;
+          }
+      case PRESS:
+          {
+              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+              p.setPen(Qt::NoPen);
+              break;
+          }
+      }
+    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    p.drawRoundedRect(opt.rect,15,15);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
 }
+
 
 bool UKUITaskWidget::hasDragAndDropHover() const
 {
@@ -785,4 +797,154 @@ bool UKUITaskWidget::hasDragAndDropHover() const
  void UKUITaskWidget::setThumbNail(QPixmap _pixmap)
  {
      mThumbnailLabel->setPixmap(_pixmap);
+ }
+
+
+
+ InternalStyle::InternalStyle(QStyle *parentStyle) : QProxyStyle (parentStyle)
+ {
+
+ }
+
+ InternalStyle::InternalStyle(const QString parentStyleName) : QProxyStyle(parentStyleName)
+ {
+
+ }
+
+ void InternalStyle::setUseSystemStyle(bool use)
+ {
+     Q_EMIT useSystemStylePolicyChanged(use);
+ }
+
+
+
+ MPSStyle::MPSStyle(bool dark) : InternalStyle ("fusion")
+ {
+
+ }
+
+ void MPSStyle::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
+ {
+     //FIXME:
+     QProxyStyle::drawComplexControl(control, option, painter, widget);
+ }
+
+ void MPSStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+ {
+     //FIXME:
+     QProxyStyle::drawControl(element, option, painter, widget);
+ }
+
+ void MPSStyle::drawItemPixmap(QPainter *painter, const QRect &rectangle, int alignment, const QPixmap &pixmap) const
+ {
+     //FIXME:
+     QProxyStyle::drawItemPixmap(painter, rectangle, alignment, pixmap);
+ }
+
+ void MPSStyle::drawItemText(QPainter *painter, const QRect &rectangle, int alignment, const QPalette &palette, bool enabled, const QString &text, QPalette::ColorRole textRole) const
+ {
+     //FIXME:
+     QProxyStyle::drawItemText(painter, rectangle, alignment, palette, enabled, text, textRole);
+ }
+
+ void MPSStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+ {
+     //FIXME:
+     QProxyStyle::drawPrimitive(element, option, painter, widget);
+ }
+
+ QPixmap MPSStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option) const
+ {
+     //FIXME:
+     return QProxyStyle::generatedIconPixmap(iconMode, pixmap, option);
+ }
+
+ QStyle::SubControl MPSStyle::hitTestComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, const QPoint &position, const QWidget *widget) const
+ {
+     //FIXME:
+     return QProxyStyle::hitTestComplexControl(control, option, position, widget);
+ }
+
+ QRect MPSStyle::itemPixmapRect(const QRect &rectangle, int alignment, const QPixmap &pixmap) const
+ {
+     //FIXME:
+     return QProxyStyle::itemPixmapRect(rectangle, alignment, pixmap);
+ }
+
+ QRect MPSStyle::itemTextRect(const QFontMetrics &metrics, const QRect &rectangle, int alignment, bool enabled, const QString &text) const
+ {
+     //FIXME:
+     return QProxyStyle::itemTextRect(metrics, rectangle, alignment, enabled, text);
+ }
+
+ int MPSStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
+ {
+     //FIXME:
+     return QProxyStyle::pixelMetric(metric, option, widget);
+ }
+
+ void MPSStyle::polish(QWidget *widget)
+ {
+     //FIXME:
+     QProxyStyle::polish(widget);
+ }
+
+ void MPSStyle::polish(QApplication *application)
+ {
+     //FIXME:
+     QProxyStyle::polish(application);
+ }
+
+ void MPSStyle::polish(QPalette &palette)
+ {
+     //FIXME:
+     QProxyStyle::polish(palette);
+ }
+
+ void MPSStyle::unpolish(QWidget *widget)
+ {
+     //FIXME:
+     QProxyStyle::unpolish(widget);
+ }
+
+ void MPSStyle::unpolish(QApplication *application)
+ {
+     //FIXME:
+     QProxyStyle::unpolish(application);
+ }
+
+ QSize MPSStyle::sizeFromContents(QStyle::ContentsType type, const QStyleOption *option, const QSize &contentsSize, const QWidget *widget) const
+ {
+     //FIXME:
+     return QProxyStyle::sizeFromContents(type, option, contentsSize, widget);
+ }
+
+ QIcon MPSStyle::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const
+ {
+     //FIXME:
+     return QProxyStyle::standardIcon(standardIcon, option, widget);
+ }
+
+ QPalette MPSStyle::standardPalette() const
+ {
+     //FIXME:
+     return QProxyStyle::standardPalette();
+ }
+
+ int MPSStyle::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
+ {
+     //FIXME:
+     return QProxyStyle::styleHint(hint, option, widget, returnData);
+ }
+
+ QRect MPSStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex *option, QStyle::SubControl subControl, const QWidget *widget) const
+ {
+     //FIXME:
+     return QProxyStyle::subControlRect(control, option, subControl, widget);
+ }
+
+ QRect MPSStyle::subElementRect(QStyle::SubElement element, const QStyleOption *option, const QWidget *widget) const
+ {
+     //FIXME:
+     return QProxyStyle::subElementRect(element, option, widget);
  }
