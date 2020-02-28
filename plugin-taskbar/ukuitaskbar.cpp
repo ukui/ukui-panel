@@ -371,7 +371,6 @@ void UKUITaskBar::onWindowChanged(WId window, NET::Properties prop, NET::Propert
 
 void UKUITaskBar::onWindowAdded(WId window)
 {
-    qDebug()<<"onWindowAdded";
     auto const pos = mKnownWindows.find(window);
     if (mKnownWindows.end() == pos && acceptWindow(window))
         addWindow(window);

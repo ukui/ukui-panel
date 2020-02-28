@@ -33,6 +33,7 @@
 #include <QHash>
 #include <QString>
 #include <QMap>
+#include <QVector>
 #include "qlayout.h"
 #include "qlayoutitem.h"
 #include "qlayoutitem.h"
@@ -92,7 +93,8 @@ private:
 
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
-    QuickLaunchButton* btn;
+    QVector<QuickLaunchButton*> mVBtn;
+    //QuickLaunchButton* btn;
 
 
 
