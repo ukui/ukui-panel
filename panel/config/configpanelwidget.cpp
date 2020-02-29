@@ -516,20 +516,44 @@ void ConfigPanelWidget::pickBackgroundImage()
 void ConfigPanelWidget::positionChanged_top()
 {    mPosition   =IUKUIPanel::PositionTop;
      editChanged();
+     QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
+                                "/getvalue/panel",
+                                "com.ukui.panel.sidebar.value",
+                                "panelPositionChangeNotify");
+
+     message << mPosition;
 }
 void ConfigPanelWidget::positionChanged_bottom()
 {    mPosition   =IUKUIPanel::PositionBottom;
      editChanged();
+     QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
+                                "/getvalue/panel",
+                                "com.ukui.panel.sidebar.value",
+                                "panelPositionChangeNotify");
+
+     message << mPosition;
 }
 
 void ConfigPanelWidget::positionChanged_left()
 {    mPosition   =IUKUIPanel::PositionLeft;
      editChanged();
+     QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
+                                 "/getvalue/panel",
+                                 "com.ukui.panel.sidebar.value",
+                                 "panelPositionChangeNotify");
+
+     message << mPosition;
 }
 
 void ConfigPanelWidget::positionChanged_right()
 {    mPosition   =IUKUIPanel::PositionRight;
      editChanged();
+     QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
+                                 "/getvalue/panel",
+                                 "com.ukui.panel.sidebar.value",
+                                 "panelPositionChangeNotify");
+
+     message << mPosition;
 }
 
 void ConfigPanelWidget::changeToSmallSize()
@@ -537,6 +561,12 @@ void ConfigPanelWidget::changeToSmallSize()
     mOldPanelSize = 46;
     mOldIconSize  = 24;
     editChanged();
+    QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
+                              "/getvalue/panel",
+                              "com.ukui.panel.sidebar.value",
+                              "panelSizeChangeNotify");
+
+    message << mOldPanelSize;
     reset();
 }
 
@@ -545,6 +575,12 @@ void ConfigPanelWidget::changeToMidSize()
     mOldPanelSize = 72;
     mOldIconSize = 36;
     editChanged();
+    QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
+                              "/getvalue/panel",
+                              "com.ukui.panel.sidebar.value",
+                              "panelSizeChangeNotify");
+
+    message << mOldPanelSize;
     reset();
 }
 
@@ -553,6 +589,12 @@ void ConfigPanelWidget::changeToLargeSize()
     mOldPanelSize = 94;
     mOldIconSize = 48;
     editChanged();
+    QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
+                              "/getvalue/panel",
+                              "com.ukui.panel.sidebar.value",
+                              "panelSizeChangeNotify");
+
+    message << mOldPanelSize;
     reset();
 }
 
