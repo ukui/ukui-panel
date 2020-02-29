@@ -740,6 +740,8 @@ void UKUITaskGroup::showPreview()
         XGetWindowAttributes(display, it.key(), &attr);
         img = XGetImage(display, it.key(), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
 
+        if (!img)
+            return;
         QPixmap thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::FastTransformation);
         thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));
         //QLabel * label = new QLabel; // 创建堆对象
