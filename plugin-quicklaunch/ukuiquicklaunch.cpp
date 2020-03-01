@@ -190,9 +190,7 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
                                 "border-color:rgba(190,216,239,0%);"    //边框颜色
                                 "qproperty-iconSize: 28px 28px;"
                                 "border-width:4px;"                     //边框宽度像素
-                                "border-radius:5px;"                   //边框圆角半径像素
-                                "font:bold 14px;"                       //字体，字体大小
-                                "color:rgba(0,0,0,100);"                //字体颜色
+                                "border-radius:6px;"                   //边框圆角半径像素
                                 "padding:0px;"
                 "}"
                 //鼠标悬停样式

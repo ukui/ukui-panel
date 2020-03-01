@@ -104,7 +104,6 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-    virtual void contextMenuEvent(QContextMenuEvent *event);
     void paintEvent(QPaintEvent *);
 
     void setWindowId(WId wid) {mWindow = wid;}
@@ -145,52 +144,5 @@ signals:
 };
 
 typedef QHash<WId,UKUITaskWidget*> UKUITaskButtonHash;
-
-class InternalStyle : public QProxyStyle
-{
-    Q_OBJECT
-public:
-    explicit InternalStyle(QStyle *parentStyle = nullptr);
-    explicit InternalStyle(const QString parentStyleName);
-
-signals:
-    void useSystemStylePolicyChanged(bool use);
-
-public slots:
-    virtual void setUseSystemStyle(bool use);
-};
-
-class MPSStyle : public InternalStyle
-{
-    Q_OBJECT
-public:
-    explicit MPSStyle(bool dark = true);
-
-    void drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget = nullptr) const;
-    void drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = nullptr) const;
-    void drawItemPixmap(QPainter *painter, const QRect &rectangle, int alignment, const QPixmap &pixmap) const;
-    void drawItemText(QPainter *painter, const QRect &rectangle, int alignment, const QPalette &palette, bool enabled, const QString &text, QPalette::ColorRole textRole = QPalette::NoRole) const;
-    void drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = nullptr) const;
-
-    QPixmap generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option) const;
-    QStyle::SubControl hitTestComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, const QPoint &position, const QWidget *widget = nullptr) const;
-    QRect itemPixmapRect(const QRect &rectangle, int alignment, const QPixmap &pixmap) const;
-    QRect itemTextRect(const QFontMetrics &metrics, const QRect &rectangle, int alignment, bool enabled, const QString &text) const;
-    //virtual int layoutSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2, Qt::Orientation orientation, const QStyleOption *option, const QWidget *widget);
-    int pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const;
-
-    void polish(QWidget *widget);
-    void polish(QApplication *application);
-    void polish(QPalette &palette);
-    void unpolish(QWidget *widget);
-    void unpolish(QApplication *application);
-
-    QSize sizeFromContents(QStyle::ContentsType type, const QStyleOption *option, const QSize &contentsSize, const QWidget *widget = nullptr) const;
-    QIcon standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const;
-    QPalette standardPalette() const;
-    int	styleHint(QStyle::StyleHint hint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr, QStyleHintReturn *returnData = nullptr) const;
-    QRect subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex *option, QStyle::SubControl subControl, const QWidget *widget = nullptr) const;
-    QRect subElementRect(QStyle::SubElement element, const QStyleOption *option, const QWidget *widget = nullptr) const;
-};
 
 #endif // UKUITASKWIDGET_H

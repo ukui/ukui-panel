@@ -49,6 +49,7 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAcceptDrops(true);
     setAutoRaise(true);
+    quicklanuchstatus = NORMAL;
 
     setDefaultAction(mAct);
     mAct->setParent(this);
@@ -121,6 +122,35 @@ void QuickLaunchButton::paintEvent(QPaintEvent *)
     initStyleOption(&opt);
     opt.features &= (~ QStyleOptionToolButton::HasMenu);
     p.drawComplexControl(QStyle::CC_ToolButton, opt);
+
+//    QStyleOption opt;
+//    opt.initFrom(this);
+//    QPainter p(this);
+
+//    switch(quicklanuchstatus)
+//      {
+//      case NORMAL:
+//          {
+////              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+//              p.setPen(Qt::NoPen);
+//              break;
+//          }
+//      case HOVER:
+//          {
+//              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+//              p.setPen(Qt::NoPen);
+//              break;
+//          }
+//      case PRESS:
+//          {
+//              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+//              p.setPen(Qt::NoPen);
+//              break;
+//          }
+//      }
+//    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+//    p.drawRoundedRect(opt.rect,6,6);
+//    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 

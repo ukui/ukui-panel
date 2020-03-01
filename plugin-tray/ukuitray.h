@@ -56,7 +56,6 @@ public:
     UKUITray(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     ~UKUITray();
 
-
     QSize iconSize() const { return mIconSize; }
     void setIconSize(QSize iconSize);
 
