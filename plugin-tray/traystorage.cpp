@@ -62,6 +62,7 @@
 #define XEMBED_EMBEDDED_NOTIFY  0
 #define XEMBED_MAPPED          (1 << 0)
 
+TrayStorageStatus storagestatus=HIDE;
 
 /************************************************
 
@@ -178,18 +179,12 @@ void TrayStorage::onIconDestroyed(QObject * icon)
 
 void TrayStorage::mouseReleaseEvent(QMouseEvent *event)
 {
-    status = NORMAL;
     update();
     QWidget::mouseReleaseEvent(event);
 }
 
 void TrayStorage::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        this->hide();
-    }
-    status = NORMAL;
     update();
     QWidget::mousePressEvent(event);
 }
@@ -206,4 +201,19 @@ void TrayStorage::paintEvent(QPaintEvent *)
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
     p.drawRoundedRect(opt.rect,15,15);
     style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
+}
+
+
+/*
+    点击窗口之外的部分隐藏
+*/
+bool TrayStorage:: event(QEvent *event)
+{
+    if (event->type() == QEvent::ActivationChange) {
+        if (QApplication::activeWindow() != this) {
+            hide();
+            storagestatus=HIDE;
+        }
+    }
+    return QWidget::event(event);
 }

@@ -43,6 +43,7 @@ class QSize;
 namespace UKUi {
 class GridLayout;
 }
+enum TrayStorageStatus{HIDE,HOVER};
 
 /**
  * @brief This makes our trayplugin
@@ -56,6 +57,7 @@ class TrayStorage: public QFrame, QAbstractNativeEventFilter
 public:
     TrayStorage(QWidget* parent = 0);
     ~TrayStorage();
+    friend class UKUITray;
 
 
     QSize iconSize() const { return mIconSize; }
@@ -75,6 +77,10 @@ signals:
 
 public slots:
     void onIconDestroyed(QObject * icon);
+
+protected:
+    bool event(QEvent *event);//重写窗口事件
+
 private:
     VisualID getVisual();
 
@@ -85,8 +91,6 @@ private:
                       long unsigned int data2 = 0,
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
-    enum TrayStorageStatus{NORMAL, HOVER, PRESS};
-    TrayStorageStatus status;
 
     bool mValid;
     Window mTrayId;

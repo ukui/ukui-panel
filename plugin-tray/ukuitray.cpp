@@ -64,6 +64,9 @@
 /************************************************
 
  ************************************************/
+
+extern TrayStorageStatus storagestatus;
+
 UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     QFrame(parent),
     mValid(false),
@@ -104,10 +107,22 @@ UKUITray::~UKUITray()
 }
 void UKUITray::storageBar()
 {
-        int availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
-        int avaliableWidth=QGuiApplication::screens().at(0)->availableVirtualGeometry().width();
-        tys->setGeometry(avaliableWidth-300,availableHeight-90,150,90);
+    int availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
+    int avaliableWidth=QGuiApplication::screens().at(0)->availableVirtualGeometry().width();
+    tys->setGeometry(avaliableWidth-300,availableHeight-90,150,90);
+    switch (storagestatus) {
+    case HIDE:
         tys->show();
+        storagestatus=HOVER;
+        break;
+
+    case HOVER:
+        tys->hide();
+        storagestatus=HIDE;
+        break;
+    default:
+        break;
+    }
 }
 
 /************************************************
