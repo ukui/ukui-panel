@@ -443,25 +443,6 @@ void UKUITray::addIcon(Window winId)
         return;
     else
     icon = new TrayIcon(winId, mIconSize, this);
-    icon->setStyleSheet(
-                //正常状态样式
-                "TrayIcon{"
-                "border-color:rgba(190,216,239,0%);"
-                                "border-style:outset;"                  //边框样式（inset/outset）
-                                "border-color:rgba(190,216,239,0%);"    //边框颜色
-                                "border-width:4px;"                     //边框宽度像素
-                                "border-radius:6px;"                   //边框圆角半径像素
-                "}"
-                //鼠标悬停样式
-                "TrayIcon:hover{"
-                "background-color:rgba(190,216,239,20%);"
-                "}"
-                //鼠标按下样式
-                "TrayIcon:selected{"
-                "background-color:rgba(190,216,239,12%);"
-                "}"
-
-                );
 
     if(xfitMan().getApplicationName(winId)=="kylin-nm" |xfitMan().getApplicationName(winId)=="ukui-volume-control-applet-qt" | xfitMan().getApplicationName(winId)=="ukui-flash-disk"  )
     {

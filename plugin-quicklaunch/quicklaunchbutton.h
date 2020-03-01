@@ -59,6 +59,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
     void dragEnterEvent(QDragEnterEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
 
 private:
     QuickLaunchAction *mAct;

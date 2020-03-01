@@ -113,6 +113,17 @@ void QuickLaunchButton::selfRemove()
     emit buttonDeleted();
 }
 
+void QuickLaunchButton::enterEvent(QEvent *)
+{
+    quicklanuchstatus =HOVER;
+    repaint();
+}
+
+void QuickLaunchButton::leaveEvent(QEvent *)
+{
+    quicklanuchstatus=NORMAL;
+    repaint();
+}
 
 void QuickLaunchButton::paintEvent(QPaintEvent *)
 {
@@ -131,7 +142,7 @@ void QuickLaunchButton::paintEvent(QPaintEvent *)
 //      {
 //      case NORMAL:
 //          {
-////              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+//              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
 //              p.setPen(Qt::NoPen);
 //              break;
 //          }

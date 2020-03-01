@@ -111,6 +111,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     virtual void contextMenuEvent(QContextMenuEvent *event);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
 
     void setWindowId(WId wid) {mWindow = wid;}
@@ -128,6 +130,8 @@ private:
     bool mDrawPixmap;
     UKUITaskBar * mParentTaskBar;
     IUKUIPanelPlugin * mPlugin;
+    enum TaskButtonStatus{NORMAL, HOVER, PRESS};
+    TaskButtonStatus taskbuttonstatus;
 
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window

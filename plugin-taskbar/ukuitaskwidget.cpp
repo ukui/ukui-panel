@@ -92,7 +92,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     setMinimumHeight(1);
     setAcceptDrops(true);
     QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
-    status=HOVER;
+    status=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
@@ -267,12 +267,12 @@ void UKUITaskWidget::mousePressEvent(QMouseEvent* event)
         mDragStartPosition = event->pos();
         status = PRESS;
     }
-    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
-    {
-        closeApplication();
-        status = HOVER;
-    }
-    update();
+//    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
+//    {
+//        closeApplication();
+//        status = HOVER;
+//    }
+//    update();
 
     QWidget::mousePressEvent(event);
 }
@@ -289,7 +289,7 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 //        else
             raiseApplication();
     }
-    status = HOVER;
+    status = NORMAL;
     update();
     QWidget::mouseReleaseEvent(event);
 
@@ -298,6 +298,18 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 /************************************************
 
  ************************************************/
+
+void UKUITaskWidget::enterEvent(QEvent *)
+{
+    status = HOVER;
+    repaint();
+}
+
+void UKUITaskWidget::leaveEvent(QEvent *)
+{
+    status = NORMAL;
+    update();
+}
 QMimeData * UKUITaskWidget::mimeData()
 {
     QMimeData *mimedata = new QMimeData;
@@ -607,25 +619,25 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
       {
       case NORMAL:
           {
-              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-              p.setPen(Qt::NoPen);
+              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+              p.setPen(Qt::black);
               break;
           }
       case HOVER:
           {
               p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-              p.setPen(Qt::NoPen);
+              p.setPen(Qt::white);
               break;
           }
       case PRESS:
           {
-              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
-              p.setPen(Qt::NoPen);
+              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+              p.setPen(Qt::white);
               break;
           }
       }
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    p.drawRoundedRect(opt.rect,15,15);
+    p.drawRoundedRect(opt.rect,6,6);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 
 }

@@ -35,9 +35,11 @@
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QProcess>
-
+#include <QStyleOption>
+#include <QPainter>
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
+//#include "../panel/customstyle.h"
 #define DEFAULT_SHORTCUT "Alt+F1"
 
 
@@ -55,14 +57,20 @@ public:
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
     virtual void contextMenuEvent(QContextMenuEvent *event);
+//    void enterEvent(QEvent *);
+//    void leaveEvent(QEvent *);
+    void paintEvent(QPaintEvent *);
 
 private slots:
     void captureMouse();
 
 private:
+    enum TaskviewStatus{NORMAL, HOVER, PRESS};
+    TaskviewStatus taskviewstatus;
     QLineEdit mLineEdit;
     QToolButton mButton;
     bool mCapturing;
+
 };
 
 

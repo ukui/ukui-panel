@@ -76,6 +76,7 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     mDamage(0),
     mDisplay(QX11Info::display())
 {
+    traystatus=NORMAL;
     // NOTE:
     // it's a good idea to save the return value of QX11Info::display().
     // In Qt 5, this API is slower and has some limitations which can trigger crashes.
@@ -398,4 +399,48 @@ bool TrayIcon::isXCompositeAvailable()
 {
     int eventBase, errorBase;
     return XCompositeQueryExtension(QX11Info::display(), &eventBase, &errorBase );
+}
+
+void TrayIcon::enterEvent(QEvent *)
+{
+    traystatus=HOVER;
+    update();
+}
+
+void TrayIcon::leaveEvent(QEvent *)
+{
+    traystatus=NORMAL;
+    update();
+}
+
+void TrayIcon::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.initFrom(this);
+        QPainter p(this);
+
+        switch(traystatus)
+          {
+          case NORMAL:
+              {
+//                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+                  p.setPen(Qt::NoPen);
+                  break;
+              }
+          case HOVER:
+              {
+                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+                  p.setPen(Qt::NoPen);
+                  break;
+              }
+          case PRESS:
+              {
+                  p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+                  p.setPen(Qt::NoPen);
+                  break;
+              }
+          }
+        p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        p.drawRoundedRect(opt.rect,6,6);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

@@ -599,7 +599,7 @@ void ConfigPanelWidget::positionChanged_right()
 void ConfigPanelWidget::changeToSmallSize()
 {
     mOldPanelSize = 46;
-    mOldIconSize  = 24;
+    mOldIconSize  = 32;
     editChanged();
     QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
                               "/getvalue/panel",
@@ -622,7 +622,7 @@ void ConfigPanelWidget::changeToSmallSize()
 void ConfigPanelWidget::changeToMidSize()
 {
     mOldPanelSize = 72;
-    mOldIconSize = 36;
+    mOldIconSize = 48;
     editChanged();
     QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
                               "/getvalue/panel",
@@ -638,7 +638,7 @@ void ConfigPanelWidget::changeToMidSize()
 void ConfigPanelWidget::changeToLargeSize()
 {
     mOldPanelSize = 94;
-    mOldIconSize = 48;
+    mOldIconSize = 64;
     editChanged();
     QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
                               "/getvalue/panel",

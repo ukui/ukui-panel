@@ -84,6 +84,7 @@ UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget 
     mDNDTimer(new QTimer(this))
 {
     Q_ASSERT(taskbar);
+    taskbuttonstatus=NORMAL;
 
     setCheckable(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -126,8 +127,6 @@ UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget 
                 "QToolButton:pressed{"
                 "background-color:rgba(190,216,239,6%);"
                 "}"
-
-
                 );
 }
 
@@ -757,50 +756,62 @@ void UKUITaskButton::setAutoRotation(bool value, IUKUIPanel::Position position)
         setOrigin(Qt::TopLeftCorner);
 }
 
+void UKUITaskButton::enterEvent(QEvent *)
+{
+    taskbuttonstatus=HOVER;
+    update();
+}
+
+void UKUITaskButton::leaveEvent(QEvent *)
+{
+    taskbuttonstatus=NORMAL;
+    update();
+}
+
 void UKUITaskButton::paintEvent(QPaintEvent *event)
 {
-    if (mOrigin == Qt::TopLeftCorner)
-    {
-        QToolButton::paintEvent(event);
-        return;
-    }
+//    if (mOrigin == Qt::TopLeftCorner)
+//    {
+//        QToolButton::paintEvent(event);
+//        return;
+//    }
 
     QSize sz = size();
     QSize adjSz = sz;
     QTransform transform;
     QPoint originPoint;
 
-    switch (mOrigin)
-    {
-    case Qt::TopLeftCorner:
-        transform.rotate(0.0);
-        originPoint = QPoint(0.0, 0.0);
-        break;
+//    switch (mOrigin)
+//    {
+//    case Qt::TopLeftCorner:
+//        transform.rotate(0.0);
+//        originPoint = QPoint(0.0, 0.0);
+//        break;
 
-    case Qt::TopRightCorner:
-        transform.rotate(90.0);
-        originPoint = QPoint(0.0, -sz.width());
-        adjSz.transpose();
-        break;
+//    case Qt::TopRightCorner:
+//        transform.rotate(90.0);
+//        originPoint = QPoint(0.0, -sz.width());
+//        adjSz.transpose();
+//        break;
 
-    case Qt::BottomRightCorner:
-        transform.rotate(180.0);
-        originPoint = QPoint(-sz.width(), -sz.height());
-        break;
+//    case Qt::BottomRightCorner:
+//        transform.rotate(180.0);
+//        originPoint = QPoint(-sz.width(), -sz.height());
+//        break;
 
-    case Qt::BottomLeftCorner:
-        transform.rotate(270.0);
-        originPoint = QPoint(-sz.height(), 0.0);
-        adjSz.transpose();
-        break;
-    }
+//    case Qt::BottomLeftCorner:
+//        transform.rotate(270.0);
+//        originPoint = QPoint(-sz.height(), 0.0);
+//        adjSz.transpose();
+//        break;
+//    }
 
     bool drawPixmapNextTime = false;
 
     if (!mDrawPixmap)
     {
         mPixmap = QPixmap(adjSz);
-        mPixmap.fill(QColor(0, 0, 0, 0));
+        mPixmap.fill(QColor(255, 0, 0, 0));
 
         if (adjSz != sz)
             resize(adjSz); // this causes paint event to be repeated - next time we'll paint the pixmap to the widget surface.
@@ -809,6 +820,7 @@ void UKUITaskButton::paintEvent(QPaintEvent *event)
         QStylePainter painter(&mPixmap, this);
         QStyleOptionToolButton opt;
         initStyleOption(&opt);
+        painter.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
         painter.drawComplexControl(QStyle::CC_ToolButton, opt);
         // }
 
