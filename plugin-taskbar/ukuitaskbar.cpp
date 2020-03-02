@@ -70,6 +70,10 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mPlaceHolder(new QWidget(this)),
     mStyle(new LeftAlignedTextStyle())
 {
+    taskstatus=NORMAL;
+    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
+
     setStyle(mStyle);
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
@@ -699,4 +703,48 @@ void UKUITaskBar::activateTask(int pos)
             }
         }
     }
+}
+
+void UKUITaskBar::enterEvent(QEvent *)
+{
+    taskstatus=HOVER;
+    update();
+}
+
+void UKUITaskBar::leaveEvent(QEvent *)
+{
+    taskstatus=NORMAL;
+    update();
+}
+
+void UKUITaskBar::paintEvent(QPaintEvent *)
+{
+        QStyleOption opt;
+        opt.initFrom(this);
+        QPainter p(this);
+
+        switch(taskstatus)
+          {
+          case NORMAL:
+              {
+//                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+                  p.setPen(Qt::NoPen);
+                  break;
+              }
+          case HOVER:
+              {
+//                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+                  p.setPen(Qt::NoPen);
+                  break;
+              }
+          case PRESS:
+              {
+//                  p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+                  p.setPen(Qt::NoPen);
+                  break;
+              }
+          }
+        p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        p.drawRoundedRect(opt.rect,6,6);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

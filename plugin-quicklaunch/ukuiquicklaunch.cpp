@@ -143,9 +143,10 @@ int UKUIQuickLaunch::countOfButtons() const
 
 void UKUIQuickLaunch::realign()
 {
+//    btn->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
     for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
     {
-        (*it)->setFixedSize(46,mPlugin->panel()->panelSize());
+        (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
     }
     mLayout->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
@@ -161,6 +162,7 @@ void UKUIQuickLaunch::realign()
         {
             mLayout->setRowCount(panel->lineCount());
             mLayout->setColumnCount(0);
+            btn->setIconSize(QSize(28,28));
         }
         else
         {
@@ -168,6 +170,7 @@ void UKUIQuickLaunch::realign()
             mLayout->setRowCount(0);
         }
     }
+    btn->setIconSize(QSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()));
     mLayout->setEnabled(true);
 }
 
@@ -175,24 +178,18 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
 {
     mLayout->setEnabled(false);
 
-    QuickLaunchButton *btn = new QuickLaunchButton(action, mPlugin, this);
-    btn->setFixedSize(46,mPlugin->panel()->panelSize());
-    //save btn
+    btn = new QuickLaunchButton(action, mPlugin, this);
     mVBtn.push_back(btn);
     mLayout->addWidget(btn);
-    //set button style
-    btn->setIconSize(QSize(28,28));
     btn->setStyleSheet(
                 //正常状态样式
                 "QToolButton{"
                 "background-color:rgba(190,216,239,0%);"
                                 "border-style:outset;"                  //边框样式（inset/outset）
                                 "border-color:rgba(190,216,239,0%);"    //边框颜色
-                                "qproperty-iconSize: 28px 28px;"
+//                                "qproperty-iconSize: 28px 28px;"
                                 "border-width:4px;"                     //边框宽度像素
-                                "border-radius:5px;"                   //边框圆角半径像素
-                                "font:bold 14px;"                       //字体，字体大小
-                                "color:rgba(0,0,0,100);"                //字体颜色
+                                "border-radius:6px;"                   //边框圆角半径像素
                                 "padding:0px;"
                 "}"
                 //鼠标悬停样式
@@ -205,7 +202,7 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
                 "}"
 
                 );
-
+    btn->setIconSize(QSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()));
     connect(btn, SIGNAL(switchButtons(QuickLaunchButton*,QuickLaunchButton*)), this, SLOT(switchButtons(QuickLaunchButton*,QuickLaunchButton*)));
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));

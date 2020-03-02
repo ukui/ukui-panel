@@ -92,7 +92,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     setMinimumHeight(1);
     setAcceptDrops(true);
     QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
-    status=HOVER;
+    status=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
@@ -267,12 +267,12 @@ void UKUITaskWidget::mousePressEvent(QMouseEvent* event)
         mDragStartPosition = event->pos();
         status = PRESS;
     }
-    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
-    {
-        closeApplication();
-        status = HOVER;
-    }
-    update();
+//    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
+//    {
+//        closeApplication();
+//        status = HOVER;
+//    }
+//    update();
 
     QWidget::mousePressEvent(event);
 }
@@ -289,7 +289,7 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 //        else
             raiseApplication();
     }
-    status = HOVER;
+    status = NORMAL;
     update();
     QWidget::mouseReleaseEvent(event);
 
@@ -298,6 +298,18 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 /************************************************
 
  ************************************************/
+
+void UKUITaskWidget::enterEvent(QEvent *)
+{
+    status = HOVER;
+    repaint();
+}
+
+void UKUITaskWidget::leaveEvent(QEvent *)
+{
+    status = NORMAL;
+    update();
+}
 QMimeData * UKUITaskWidget::mimeData()
 {
     QMimeData *mimedata = new QMimeData;
@@ -524,160 +536,6 @@ void UKUITaskWidget::resizeApplication()
 /************************************************
 
  ************************************************/
-void UKUITaskWidget::contextMenuEvent(QContextMenuEvent* event)
-{
-    if (event->modifiers().testFlag(Qt::ControlModifier))
-    {
-        event->ignore();
-        return;
-    }
-
-    KWindowInfo info(mWindow, 0, NET::WM2AllowedActions);
-    unsigned long state = KWindowInfo(mWindow, NET::WMState).state();
-
-    QMenu * menu = new QMenu(tr("Application"));
-    menu->setAttribute(Qt::WA_DeleteOnClose);
-    QAction* a;
-
-    /* KDE menu *******
-
-      + To &Desktop >
-      +     &All Desktops
-      +     ---
-      +     &1 Desktop 1
-      +     &2 Desktop 2
-      + &To Current Desktop
-        &Move
-        Re&size
-      + Mi&nimize
-      + Ma&ximize
-      + &Shade
-        Ad&vanced >
-            Keep &Above Others
-            Keep &Below Others
-            Fill screen
-        &Layer >
-            Always on &top
-            &Normal
-            Always on &bottom
-      ---
-      + &Close
-    */
-
-    /********** Desktop menu **********/
-    int deskNum = KWindowSystem::numberOfDesktops();
-    if (deskNum > 1)
-    {
-        int winDesk = KWindowInfo(mWindow, NET::WMDesktop).desktop();
-        QMenu* deskMenu = menu->addMenu(tr("To &Desktop"));
-
-        a = deskMenu->addAction(tr("&All Desktops"));
-        a->setData(NET::OnAllDesktops);
-        a->setEnabled(winDesk != NET::OnAllDesktops);
-        connect(a, SIGNAL(triggered(bool)), this, SLOT(moveApplicationToDesktop()));
-        deskMenu->addSeparator();
-
-        for (int i = 0; i < deskNum; ++i)
-        {
-            a = deskMenu->addAction(tr("Desktop &%1").arg(i + 1));
-            a->setData(i + 1);
-            a->setEnabled(i + 1 != winDesk);
-            connect(a, SIGNAL(triggered(bool)), this, SLOT(moveApplicationToDesktop()));
-        }
-
-        int curDesk = KWindowSystem::currentDesktop();
-        a = menu->addAction(tr("&To Current Desktop"));
-        a->setData(curDesk);
-        a->setEnabled(curDesk != winDesk);
-        connect(a, SIGNAL(triggered(bool)), this, SLOT(moveApplicationToDesktop()));
-    }
-
-    /********** Move/Resize **********/
-    menu->addSeparator();
-    a = menu->addAction(tr("&Move"));
-    a->setEnabled(info.actionSupported(NET::ActionMove) && !(state & NET::Max) && !(state & NET::FullScreen));
-    connect(a, &QAction::triggered, this, &UKUITaskWidget::moveApplication);
-    a = menu->addAction(tr("Resi&ze"));
-    a->setEnabled(info.actionSupported(NET::ActionResize) && !(state & NET::Max) && !(state & NET::FullScreen));
-    connect(a, &QAction::triggered, this, &UKUITaskWidget::resizeApplication);
-
-    /********** State menu **********/
-    menu->addSeparator();
-
-    a = menu->addAction(tr("Ma&ximize"));
-    a->setEnabled(info.actionSupported(NET::ActionMax) && (!(state & NET::Max) || (state & NET::Hidden)));
-    a->setData(NET::Max);
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
-
-    if (event->modifiers() & Qt::ShiftModifier)
-    {
-        a = menu->addAction(tr("Maximize vertically"));
-        a->setEnabled(info.actionSupported(NET::ActionMaxVert) && !((state & NET::MaxVert) || (state & NET::Hidden)));
-        a->setData(NET::MaxVert);
-        connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
-
-        a = menu->addAction(tr("Maximize horizontally"));
-        a->setEnabled(info.actionSupported(NET::ActionMaxHoriz) && !((state & NET::MaxHoriz) || (state & NET::Hidden)));
-        a->setData(NET::MaxHoriz);
-        connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
-    }
-
-    a = menu->addAction(tr("&Restore"));
-    a->setEnabled((state & NET::Hidden) || (state & NET::Max) || (state & NET::MaxHoriz) || (state & NET::MaxVert));
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(deMaximizeApplication()));
-
-    a = menu->addAction(tr("Mi&nimize"));
-    a->setEnabled(info.actionSupported(NET::ActionMinimize) && !(state & NET::Hidden));
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(minimizeApplication()));
-
-    if (state & NET::Shaded)
-    {
-        a = menu->addAction(tr("Roll down"));
-        a->setEnabled(info.actionSupported(NET::ActionShade) && !(state & NET::Hidden));
-        connect(a, SIGNAL(triggered(bool)), this, SLOT(unShadeApplication()));
-    }
-    else
-    {
-        a = menu->addAction(tr("Roll up"));
-        a->setEnabled(info.actionSupported(NET::ActionShade) && !(state & NET::Hidden));
-        connect(a, SIGNAL(triggered(bool)), this, SLOT(shadeApplication()));
-    }
-
-    /********** Layer menu **********/
-    menu->addSeparator();
-
-    QMenu* layerMenu = menu->addMenu(tr("&Layer"));
-
-    a = layerMenu->addAction(tr("Always on &top"));
-    // FIXME: There is no info.actionSupported(NET::ActionKeepAbove)
-    a->setEnabled(!(state & NET::KeepAbove));
-    a->setData(NET::KeepAbove);
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(setApplicationLayer()));
-
-    a = layerMenu->addAction(tr("&Normal"));
-    a->setEnabled((state & NET::KeepAbove) || (state & NET::KeepBelow));
-    // FIXME: There is no NET::KeepNormal, so passing 0
-    a->setData(0);
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(setApplicationLayer()));
-
-    a = layerMenu->addAction(tr("Always on &bottom"));
-    // FIXME: There is no info.actionSupported(NET::ActionKeepBelow)
-    a->setEnabled(!(state & NET::KeepBelow));
-    a->setData(NET::KeepBelow);
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(setApplicationLayer()));
-
-    /********** Kill menu **********/
-    menu->addSeparator();
-    a = menu->addAction(XdgIcon::fromTheme("process-stop"), tr("&Close"));
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(closeApplication()));
-    menu->setGeometry(mParentTaskBar->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
-    mPlugin->willShowWindow(menu);
-    menu->show();
-}
-
-/************************************************
-
- ************************************************/
 void UKUITaskWidget::setUrgencyHint(bool set)
 {
     if (mUrgencyHint == set)
@@ -761,25 +619,25 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
       {
       case NORMAL:
           {
-              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-              p.setPen(Qt::NoPen);
+              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+              p.setPen(Qt::black);
               break;
           }
       case HOVER:
           {
               p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-              p.setPen(Qt::NoPen);
+              p.setPen(Qt::white);
               break;
           }
       case PRESS:
           {
-              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
-              p.setPen(Qt::NoPen);
+              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+              p.setPen(Qt::white);
               break;
           }
       }
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    p.drawRoundedRect(opt.rect,15,15);
+    p.drawRoundedRect(opt.rect,6,6);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 
 }
@@ -797,154 +655,4 @@ bool UKUITaskWidget::hasDragAndDropHover() const
  void UKUITaskWidget::setThumbNail(QPixmap _pixmap)
  {
      mThumbnailLabel->setPixmap(_pixmap);
- }
-
-
-
- InternalStyle::InternalStyle(QStyle *parentStyle) : QProxyStyle (parentStyle)
- {
-
- }
-
- InternalStyle::InternalStyle(const QString parentStyleName) : QProxyStyle(parentStyleName)
- {
-
- }
-
- void InternalStyle::setUseSystemStyle(bool use)
- {
-     Q_EMIT useSystemStylePolicyChanged(use);
- }
-
-
-
- MPSStyle::MPSStyle(bool dark) : InternalStyle ("fusion")
- {
-
- }
-
- void MPSStyle::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
- {
-     //FIXME:
-     QProxyStyle::drawComplexControl(control, option, painter, widget);
- }
-
- void MPSStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
- {
-     //FIXME:
-     QProxyStyle::drawControl(element, option, painter, widget);
- }
-
- void MPSStyle::drawItemPixmap(QPainter *painter, const QRect &rectangle, int alignment, const QPixmap &pixmap) const
- {
-     //FIXME:
-     QProxyStyle::drawItemPixmap(painter, rectangle, alignment, pixmap);
- }
-
- void MPSStyle::drawItemText(QPainter *painter, const QRect &rectangle, int alignment, const QPalette &palette, bool enabled, const QString &text, QPalette::ColorRole textRole) const
- {
-     //FIXME:
-     QProxyStyle::drawItemText(painter, rectangle, alignment, palette, enabled, text, textRole);
- }
-
- void MPSStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
- {
-     //FIXME:
-     QProxyStyle::drawPrimitive(element, option, painter, widget);
- }
-
- QPixmap MPSStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option) const
- {
-     //FIXME:
-     return QProxyStyle::generatedIconPixmap(iconMode, pixmap, option);
- }
-
- QStyle::SubControl MPSStyle::hitTestComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, const QPoint &position, const QWidget *widget) const
- {
-     //FIXME:
-     return QProxyStyle::hitTestComplexControl(control, option, position, widget);
- }
-
- QRect MPSStyle::itemPixmapRect(const QRect &rectangle, int alignment, const QPixmap &pixmap) const
- {
-     //FIXME:
-     return QProxyStyle::itemPixmapRect(rectangle, alignment, pixmap);
- }
-
- QRect MPSStyle::itemTextRect(const QFontMetrics &metrics, const QRect &rectangle, int alignment, bool enabled, const QString &text) const
- {
-     //FIXME:
-     return QProxyStyle::itemTextRect(metrics, rectangle, alignment, enabled, text);
- }
-
- int MPSStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
- {
-     //FIXME:
-     return QProxyStyle::pixelMetric(metric, option, widget);
- }
-
- void MPSStyle::polish(QWidget *widget)
- {
-     //FIXME:
-     QProxyStyle::polish(widget);
- }
-
- void MPSStyle::polish(QApplication *application)
- {
-     //FIXME:
-     QProxyStyle::polish(application);
- }
-
- void MPSStyle::polish(QPalette &palette)
- {
-     //FIXME:
-     QProxyStyle::polish(palette);
- }
-
- void MPSStyle::unpolish(QWidget *widget)
- {
-     //FIXME:
-     QProxyStyle::unpolish(widget);
- }
-
- void MPSStyle::unpolish(QApplication *application)
- {
-     //FIXME:
-     QProxyStyle::unpolish(application);
- }
-
- QSize MPSStyle::sizeFromContents(QStyle::ContentsType type, const QStyleOption *option, const QSize &contentsSize, const QWidget *widget) const
- {
-     //FIXME:
-     return QProxyStyle::sizeFromContents(type, option, contentsSize, widget);
- }
-
- QIcon MPSStyle::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const
- {
-     //FIXME:
-     return QProxyStyle::standardIcon(standardIcon, option, widget);
- }
-
- QPalette MPSStyle::standardPalette() const
- {
-     //FIXME:
-     return QProxyStyle::standardPalette();
- }
-
- int MPSStyle::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
- {
-     //FIXME:
-     return QProxyStyle::styleHint(hint, option, widget, returnData);
- }
-
- QRect MPSStyle::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex *option, QStyle::SubControl subControl, const QWidget *widget) const
- {
-     //FIXME:
-     return QProxyStyle::subControlRect(control, option, subControl, widget);
- }
-
- QRect MPSStyle::subElementRect(QStyle::SubElement element, const QStyleOption *option, const QWidget *widget) const
- {
-     //FIXME:
-     return QProxyStyle::subElementRect(element, option, widget);
  }

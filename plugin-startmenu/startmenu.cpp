@@ -47,13 +47,10 @@ StartMenuWidget::StartMenuWidget(QWidget *parent):
                 "QToolButton{"
                 "background-color:rgba(190,216,239,0%);"
                 "qproperty-icon:url(/usr/share/ukui-panel/plugin-startmenu/img/startmenu.svg);"
-                //"qproperty-iconSize:24px 24px;"
                 "border-style:outset;"                  //边框样式（inset/outset）
                 "border-color:rgba(190,216,239,0%);"    //边框颜色
                 "border-width:2px;"                     //边框宽度像素
-                "border-radius:2px;"                   //边框圆角半径像素
-                "font:SimSun 14px;"                       //字体，字体大小
-                "color:rgba(0,0,0,100);"                //字体颜色
+                "border-radius:6px;"                   //边框圆角半径像素
                 "padding:2px;"                          //填衬
                 "border-bottom-style:solid"
                 "}"
