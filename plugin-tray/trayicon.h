@@ -31,6 +31,7 @@
 #include <QObject>
 #include <QFrame>
 #include <QList>
+#include <QStyleOption>
 
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
@@ -61,6 +62,9 @@ public:
 protected:
     bool event(QEvent *event);
     void draw(QPaintEvent* event);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
+    void paintEvent(QPaintEvent *);
 
 private:
     void init();
@@ -73,6 +77,9 @@ private:
 
     static bool isXCompositeAvailable();
     QSize mRectSize;
+
+    enum TrayAppStatus{NORMAL, HOVER, PRESS};
+    TrayAppStatus traystatus;
 };
 
 #endif // TRAYICON_H

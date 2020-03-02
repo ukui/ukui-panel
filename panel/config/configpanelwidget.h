@@ -99,7 +99,7 @@ private:
     QColor mBackgroundColor;
 
     // old values for reset
-    int mOldPanelSize;
+    uint mOldPanelSize;
     int mOldIconSize;
     int mOldLineCount;
     int mOldLength;

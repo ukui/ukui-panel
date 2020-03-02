@@ -94,7 +94,7 @@ private:
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
     QVector<QuickLaunchButton*> mVBtn;
-    //QuickLaunchButton* btn;
+    QuickLaunchButton* btn;
 
 
 

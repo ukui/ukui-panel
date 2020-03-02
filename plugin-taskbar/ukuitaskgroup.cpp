@@ -742,7 +742,7 @@ void UKUITaskGroup::showPreview()
 
         if (!img)
             return;
-        QPixmap thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::FastTransformation);
+        QPixmap thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
         thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));
         //QLabel * label = new QLabel; // 创建堆对象
 

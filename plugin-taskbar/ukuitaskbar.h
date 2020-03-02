@@ -44,6 +44,8 @@
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/KWindowInfo>
 #include <KWindowSystem/NETWM>
+#include <QStyleOption>
+#include <QPainter>
 
 class QSignalMapper;
 class UKUITaskButton;
@@ -93,6 +95,9 @@ signals:
 protected:
     virtual void dragEnterEvent(QDragEnterEvent * event);
     virtual void dragMoveEvent(QDragMoveEvent * event);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
+    void paintEvent(QPaintEvent *);
 
 private slots:
     void refreshTaskList();
@@ -113,6 +118,9 @@ private:
     void addWindow(WId window);
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
+
+    enum TaskStatus{NORMAL, HOVER, PRESS};
+    TaskStatus taskstatus;
 
 private:
     QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)

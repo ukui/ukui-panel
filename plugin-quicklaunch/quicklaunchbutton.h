@@ -59,6 +59,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
     void dragEnterEvent(QDragEnterEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
 
 private:
     QuickLaunchAction *mAct;
@@ -68,6 +70,8 @@ private:
     QAction *mMoveRightAct;
     QMenu *mMenu;
     QPoint mDragStart;
+    enum QuickLaunchStatus{NORMAL, HOVER, PRESS};
+    QuickLaunchStatus quicklanuchstatus;
 
 private slots:
     void this_customContextMenuRequested(const QPoint & pos);

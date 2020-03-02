@@ -22,6 +22,8 @@
 #include <QHBoxLayout>
 #include <QScreen>
 #include <QDebug>
+#include <QToolBar>
+#include <QStyle>
 TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
@@ -44,16 +46,17 @@ void TaskView::realign()
 TaskViewWidget::TaskViewWidget(QWidget *parent):
     QFrame(parent)
 {
+    taskviewstatus=NORMAL;
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins (0, 0, 0, 0);
     layout->setSpacing (1);
     setLayout(layout);
-    layout->addWidget (&mButton);
-
+    layout->addWidget(&mButton);
     mCapturing = false;
     connect(&mButton, SIGNAL(clicked()), this, SLOT(captureMouse()));
 
     QSize mBtnSize(92,92);
+//    mButton.setIcon(QIcon("/usr/share/ukui-panel/plugin-taskview/img/taskview.svg"));
     mButton.setIconSize(mBtnSize);
     mButton.setStyleSheet(
                 //正常状态样式
@@ -63,11 +66,10 @@ TaskViewWidget::TaskViewWidget(QWidget *parent):
                 //"qproperty-iconSize:28px 28px;"
                 "border-style:outset;"                  //边框样式（inset/outset）
                 "border-width:2px;"                     //边框宽度像素
-                "border-radius:2px;"                   //边框圆角半径像素
+                "border-radius:6px;"                   //边框圆角半径像素
                 "border-color:rgba(190,216,239,0%);"    //边框颜色
-                "font:bold 14px;"                       //字体，字体大小
-                "color:rgba(0,0,0,100);"                //字体颜色
                 "padding:7px;"
+
                 "}"
                 //鼠标悬停样式
                 "QToolButton:hover{"
@@ -91,20 +93,58 @@ TaskViewWidget::~TaskViewWidget()
 
 void TaskViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-//    if (!mCapturing)
-//        return;
-//    WId id = QApplication::desktop()->winId();
-//    qDebug()<<id<<endl;
 }
 
 
 void TaskViewWidget::captureMouse()
 {
-    qDebug()<<"show taskview";
     system("ukui-window-switch --show-workspace");
 }
 
 void TaskViewWidget::contextMenuEvent(QContextMenuEvent *event) {
-  //创建一个菜单 添加事件
-qDebug()<<"contextMenuEvent    right press event";
+}
+
+
+//void TaskViewWidget::enterEvent(QEvent *)
+//{
+//    taskviewstatus=HOVER;
+//    repaint();
+//}
+
+//void TaskViewWidget::leaveEvent(QEvent *)
+//{
+//    taskviewstatus=NORMAL;
+//    repaint();
+//}
+
+void TaskViewWidget::paintEvent(QPaintEvent *)
+{
+//        CustomStyle opt;
+////        opt.initFrom(this);
+//        QPainter p(this);
+
+//        switch(taskviewstatus)
+//          {
+//          case NORMAL:
+//              {
+//                  p.setBrush(QBrush(QColor(0xBE,0xD8,0xEF,0x00)));
+//                  p.setPen(Qt::NoPen);
+//                  break;
+//              }
+//          case HOVER:
+//              {
+//                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+//                  p.setPen(Qt::NoPen);
+//                  break;
+//              }
+//          case PRESS:
+//              {
+//                  p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+//                  p.setPen(Qt::NoPen);
+//                  break;
+//              }
+//          }
+//        p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+//        p.drawRoundedRect(opt.rect,6,6);
+//        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
