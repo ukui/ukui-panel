@@ -795,7 +795,13 @@ void UKUIPanel::setPanelStyle()
 
 void UKUIPanel::systeMonitor()
 {
-    system("mate-system-monitor");
+//    system("mate-system-monitor");
+    if(QFileInfo::exists(QString("/usr/bin/mate-system-monitor")))
+    {
+    QProcess *process =new QProcess(this);
+    process->startDetached("/usr/bin/mate-system-monitor");
+    }
+    else{qDebug()<<"not find /usr/bin/mate-system-monitor"<<endl;}
 }
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
