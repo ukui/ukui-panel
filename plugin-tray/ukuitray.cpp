@@ -49,7 +49,12 @@
 #undef Bool // defined as int in X11/Xlib.h
 
 #include "../panel/iukuipanelplugin.h"
+#include "traystorage.h"
+//#include "../panel/customstyle.h"
+
 #include <QPushButton>
+#include <QToolButton>
+
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
 #define _NET_SYSTEM_TRAY_ORIENTATION_VERT 1
 
@@ -84,13 +89,9 @@ UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
-    QPushButton *bt=new QPushButton;
-    bt->setStyleSheet(
-                "QPushButton {"
-                "qproperty-icon:url(/usr/share/ukui-panel/panel/img/up.svg);"
-                "}"
-               );
-    bt->setFlat(true);
+    QToolButton *bt=new QToolButton;
+    bt->setStyle(new CustomStyle());
+    bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
     mLayout->addWidget(bt);
 
     tys= new TrayStorage();
@@ -461,7 +462,7 @@ void UKUITray::storageAddIcon(Window winId)
     icon = new TrayIcon(winId, mIconSize, this);
     if(xfitMan().getApplicationName(winId) !="kylin-nm"& xfitMan().getApplicationName(winId) !="ukui-flash-disk" &  xfitMan().getApplicationName(winId) !="ukui-volume-control-applet-qt" ){
     mIcons.append(icon);
-    tys->horizontalLayout->addWidget(icon);
+    tys->mLayout->addWidget(icon);
     }
     connect(icon, &QObject::destroyed, tys, &TrayStorage::onIconDestroyed);
 }

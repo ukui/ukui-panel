@@ -2,7 +2,7 @@
 #define CUSTOMSTYLE_H
 
 #include <QProxyStyle>
-
+#include <QDebug>
 /*!
  * \brief The CustomStyle class
  * \details

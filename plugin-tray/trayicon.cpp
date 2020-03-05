@@ -429,13 +429,13 @@ void TrayIcon::paintEvent(QPaintEvent *)
               }
           case HOVER:
               {
-                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0xe0)));
                   p.setPen(Qt::NoPen);
                   break;
               }
           case PRESS:
               {
-                  p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0xf0)));
                   p.setPen(Qt::NoPen);
                   break;
               }

@@ -76,19 +76,11 @@ TrayStorage::TrayStorage( QWidget *parent):
     mIconSize(TRAY_ICON_SIZE_DEFAULT, TRAY_ICON_SIZE_DEFAULT),
     mDisplay(QX11Info::display())
 {
-    horizontalLayoutWidget = new QWidget(this);
-    horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-    horizontalLayoutWidget->setGeometry(QRect(10, 20, 100, 121));
-    horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-    horizontalLayout->setSpacing(6);
-    horizontalLayout->setContentsMargins(11, 11, 11, 11);
-    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-    horizontalLayout->setContentsMargins(0, 0, 0, 0);    //mLayout->setHorizontalSpacing(10);
+    this->setGeometry(QRect(10, 20, 100, 121));
+    mLayout = new UKUi::GridLayout(this);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
-    // Init the selection later just to ensure that no signals are sent until
-    // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
 
 }
