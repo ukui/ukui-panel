@@ -514,28 +514,33 @@ void ConfigPanelWidget::pickBackgroundImage()
 }
 
 void ConfigPanelWidget::positionChanged_top()
-{    mPosition   =IUKUIPanel::PositionTop;
-     editChanged();
-      QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
-                                 "/getvalue/panel",
-                                 "com.ukui.panel.sidebar.value",
-                                 "panelPositionChangeNotify");
+{    
+    mPosition   =IUKUIPanel::PositionTop;
+    editChanged();
+    mOldScreenNum = mScreenNum;
+    mOldPosition = mPosition;
+    QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
+			         "/getvalue/panel",
+			         "com.ukui.panel.sidebar.value",
+			         "panelPositionChangeNotify");
 
-      uint position=mPosition;
-      message << position;
-      QDBusConnection::sessionBus().send(message);
+    uint position=mPosition;
+    message << position;
+    QDBusConnection::sessionBus().send(message);
 
-       QDBusMessage menuMessage = QDBusMessage::createMethodCall("com.ukui.panel.menu",
-                                  "/getvalue/panel",
-                                  "com.ukui.panel.sidebar.value",
-                                  "panelPositionChangeNotify");
+    QDBusMessage menuMessage = QDBusMessage::createMethodCall("com.ukui.panel.menu",
+			          "/getvalue/panel",
+			          "com.ukui.panel.sidebar.value",
+			          "panelPositionChangeNotify");
 
-       menuMessage << position;
-       QDBusConnection::sessionBus().send(menuMessage);
+    menuMessage << position;
+    QDBusConnection::sessionBus().send(menuMessage);
 }
 void ConfigPanelWidget::positionChanged_bottom()
 {    mPosition   =IUKUIPanel::PositionBottom;
      editChanged();
+    mOldScreenNum = mScreenNum;
+    mOldPosition = mPosition;
      QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
                                 "/getvalue/panel",
                                 "com.ukui.panel.sidebar.value",
@@ -557,6 +562,8 @@ void ConfigPanelWidget::positionChanged_bottom()
 void ConfigPanelWidget::positionChanged_left()
 {    mPosition   =IUKUIPanel::PositionLeft;
      editChanged();
+    mOldScreenNum = mScreenNum;
+    mOldPosition = mPosition;
       QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
                                  "/getvalue/panel",
                                  "com.ukui.panel.sidebar.value",
@@ -578,6 +585,8 @@ void ConfigPanelWidget::positionChanged_left()
 void ConfigPanelWidget::positionChanged_right()
 {    mPosition   =IUKUIPanel::PositionRight;
      editChanged();
+    mOldScreenNum = mScreenNum;
+    mOldPosition = mPosition;
       QDBusMessage message = QDBusMessage::createMethodCall("com.ukui.panel.sidebar",
                                  "/getvalue/panel",
                                  "com.ukui.panel.sidebar.value",
