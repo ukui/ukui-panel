@@ -265,14 +265,9 @@ void UKUITaskWidget::mousePressEvent(QMouseEvent* event)
     if (Qt::LeftButton == b)
     {
         mDragStartPosition = event->pos();
-        status = PRESS;
     }
-//    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
-//    {
-//        closeApplication();
-//        status = HOVER;
-//    }
-//    update();
+    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
+        closeApplication();
 
     QWidget::mousePressEvent(event);
 }
