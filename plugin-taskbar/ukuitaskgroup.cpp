@@ -124,6 +124,7 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     mSingleButton(true)
 {
     Q_ASSERT(parent);
+    taskgroupStatus = NORMAL;
 
     setObjectName(groupName);
     setText(groupName);
@@ -597,6 +598,8 @@ void UKUITaskGroup::leaveEvent(QEvent *event)
 {
     setPopupVisible(false);
     QToolButton::leaveEvent(event);
+    taskgroupStatus = NORMAL;
+    update();
 }
 
 /************************************************
@@ -612,8 +615,13 @@ void UKUITaskGroup::enterEvent(QEvent *event)
     {
         setPopupVisible(true);
     }
+    taskgroupStatus = HOVER;
+    repaint();
 }
 
+//void UKUITaskGroup::paintEvent(QPaintEvent *)
+//{
+//}
 /************************************************
 
  ************************************************/
