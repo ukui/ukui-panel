@@ -108,7 +108,7 @@ UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget 
                 "border-width:2px;"                     //边框宽度像素
                 "}"
                 );
-    mParentTaskBar->setStyleSheet(
+    this->setStyleSheet(
                 //正常状态样式
                 "QToolButton{"
                 "background-color:rgba(190,216,239,8%);"
@@ -157,12 +157,10 @@ void UKUITaskButton::updateIcon()
     if (mParentTaskBar->isIconByClass())
     {
         ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
-//        qDebug()<<"KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass())   ********:"<<QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower();
     }
     if (ico.isNull())
     {
         ico = KWindowSystem::icon(mWindow);
-        qDebug()<<"KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass())   ********:"<<QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower();
 //        ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
 
     }
@@ -777,7 +775,7 @@ void UKUITaskButton::paintEvent(QPaintEvent *event)
 //    }
 
     QSize sz = size();
-    QSize adjSz = sz;
+    QSize adjSz (mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
     QTransform transform;
     QPoint originPoint;
 

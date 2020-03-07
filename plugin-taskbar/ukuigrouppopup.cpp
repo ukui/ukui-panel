@@ -149,6 +149,7 @@ void UKUIGroupPopup::paintEvent(QPaintEvent *event)
     QPainter p(this);
     QStyleOption opt;
     opt.initFrom(this);
+    p.setBrush(QBrush(QColor(0xff,0x14,0x14,0xb2)));
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 

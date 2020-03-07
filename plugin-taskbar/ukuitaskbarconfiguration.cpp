@@ -60,7 +60,7 @@ UKUITaskbarConfiguration::UKUITaskbarConfiguration(PluginSettings *settings, QWi
     connect(ui->limitByMinimizedCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->raiseOnCurrentDesktopCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->buttonStyleCB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
-    connect(ui->buttonWidthSB, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
+//    connect(ui->buttonWidthSB, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
     connect(ui->buttonHeightSB, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
     connect(ui->autoRotateCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->middleClickCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
@@ -88,7 +88,7 @@ void UKUITaskbarConfiguration::loadSettings()
     ui->middleClickCB->setChecked(settings().value("closeOnMiddleClick", true).toBool());
     ui->raiseOnCurrentDesktopCB->setChecked(settings().value("raiseOnCurrentDesktop", false).toBool());
     ui->buttonStyleCB->setCurrentIndex(ui->buttonStyleCB->findData(settings().value("buttonStyle", "IconText")));
-    ui->buttonWidthSB->setValue(50);
+//    ui->buttonWidthSB->setValue(100);
     ui->buttonHeightSB->setValue(settings().value("buttonHeight", 100).toInt());
     ui->groupingGB->setChecked(settings().value("groupingEnabled",true).toBool());
     ui->showGroupOnHoverCB->setChecked(settings().value("showGroupOnHover",true).toBool());
