@@ -84,6 +84,7 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent * event);
     void contextMenuEvent(QContextMenuEvent * event);
     void mouseMoveEvent(QMouseEvent * event);
+//    void paintEvent(QPaintEvent *);
     int recalculateFrameHeight() const;
     int recalculateFrameWidth() const;
 
@@ -112,6 +113,8 @@ private:
     UKUITaskButtonHash mButtonHash;
     bool mPreventPopup;
     bool mSingleButton; //!< flag if this group should act as a "standard" button (no groupping or only one "shown" window in group)
+    enum TaskGroupStatus{NORMAL, HOVER, PRESS};
+    TaskGroupStatus taskgroupStatus;
 
     QSize recalculateFrameSize();
     QPoint recalculateFramePosition();

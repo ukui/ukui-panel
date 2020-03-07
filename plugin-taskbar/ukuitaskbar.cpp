@@ -306,6 +306,7 @@ void UKUITaskBar::addWindow(WId window)
             buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
         });
 
+        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         mLayout->addWidget(group);
         group->setToolButtonsStyle(mButtonStyle);
     }
@@ -516,11 +517,13 @@ void UKUITaskBar::realign()
     refreshButtonRotation();
 
     IUKUIPanel *panel = mPlugin->panel();
-    QSize maxSize = QSize(50, mButtonHeight);
+    //set taskbar width by panel
+    QSize maxSize = QSize(100, mButtonHeight);
     QSize minSize = QSize(0, 0);
+    int iconsize = panel->iconSize();
+    int panelsize = panel->panelSize();
 
     bool rotated = false;
-
     if (panel->isHorizontal())
     {
         mLayout->setRowCount(panel->lineCount());
@@ -554,6 +557,13 @@ void UKUITaskBar::realign()
         }
     }
 
+    for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+    {
+        UKUITaskGroup *group = it.value();
+        group->setFixedSize(panelsize, panelsize);
+        group->setIconSize(QSize(iconsize,iconsize));
+        group->updateIcon();
+    }
     mLayout->setCellMinimumSize(minSize);
     mLayout->setCellMaximumSize(maxSize);
     mLayout->setDirection(rotated ? UKUi::GridLayout::TopToBottom : UKUi::GridLayout::LeftToRight);
@@ -607,7 +617,7 @@ void UKUITaskBar::wheelEvent(QWheelEvent* event)
     UKUITaskButton *button = NULL;
 
     // switching between groups from temporary list in modulo addressing
-    while (!button)
+    while (!button)conSize()
     {
         button = group->getNextPrevChildButton(delta == 1, !(list.count() - 1));
         if (button)

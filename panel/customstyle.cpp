@@ -8,25 +8,15 @@ CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProx
 
 }
 
+
 void CustomStyle::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
 
     if(control == CC_ToolButton)
     {
-        /// 我们参考qt的官方文档和源码，可以知道ToolButton需要绘制的子控件似乎只有两个
-        /// QStyle::SC_ToolButton
-        /// QStyle::SC_ToolButtonMenu
-
         /// 我们需要获取ToolButton的详细信息，通过qstyleoption_cast可以得到
         /// 对应的option，通过拷贝构造函数得到一份备份用于绘制子控件
         /// 我们一般不用在意option是怎么得到的，大部分的Qt控件都能够提供了option的init方法
-//        const QStyleOptionToolButton opt = *qstyleoption_cast<const QStyleOptionToolButton*>(option);
-//        QStyleOption tmp = opt;
-
-        /// 我们可以通过subControlRect获取对应子控件的rect
-//        auto subLineRect = subControlRect(CC_ToolButton, option, SC_ToolButton);
-//        tmp.rect = subLineRect;
-//        drawControl(CE_ToolBoxTabLabel, &tmp, painter, widget);
 
     }
     return QProxyStyle::drawComplexControl(control, option, painter, widget);
@@ -36,39 +26,7 @@ void CustomStyle::drawComplexControl(QStyle::ComplexControl control, const QStyl
 
 void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    switch (element)
-    {
-    case CE_ToolBoxTabShape:{
-        painter->save();
-        painter->setPen(Qt::black);
-        painter->setBrush(Qt::green);
-        painter->drawRect(option->rect.adjusted(0, 0, -1, 0));
-        painter->restore();
-        return;
-    }
-    case CE_ToolBoxTabLabel:{
-        QIcon icon;
-        if (option->state.testFlag(State_Horizontal)) {
-            icon = QIcon::fromTheme("pan-start-symbolic");
-        } else {
-            icon = QIcon::fromTheme("pan-up-symolic");
-        }
 
-        /// 这里我使用调色板绘制图标的底色
-        painter->setBrush(option->palette.foreground());
-        painter->drawRect(option->rect.adjusted(0, 0, -1, -1));
-        icon.paint(painter, option->rect, Qt::AlignCenter);
-        return;
-    }
-    case CE_HeaderEmptyArea:{
-        painter->save();
-        painter->setPen(Qt::black);
-        painter->setBrush(Qt::green);
-        painter->drawRect(option->rect.adjusted(0, 0, -1, 0));
-        painter->restore();
-        return;
-    }
-    }
     return QProxyStyle::drawControl(element, option, painter, widget);
 }
 
@@ -82,31 +40,46 @@ void CustomStyle::drawItemText(QPainter *painter, const QRect &rectangle, int al
     return QProxyStyle::drawItemText(painter, rectangle, alignment, palette, enabled, text, textRole);
 }
 
+//绘制简单的颜色圆角等
 void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     switch (element) {
-    //绘制 ToolButton 圆角
+    //绘制 ToolButton
     case PE_PanelButtonTool:{
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing,true);
         painter->setPen(Qt::NoPen);
-        painter->setBrush(Qt::NoBrush);
+//        painter->setBrush(QColor(0xff,0xff,0xff,0xe0));
+        painter->drawRoundedRect(option->rect.x(),option->rect.y(),option->rect.width(),option->rect.height(),6,6);
+//        painter->restore();
         if (option->state & State_MouseOver) {
-        if (option->state & State_Sunken) {
-        painter->setPen(option->palette.color(QPalette::Highlight));
-        painter->setBrush(option->palette.color(QPalette::Highlight));
-        } else {
-        painter->setPen(option->palette.color(QPalette::Highlight));
-        painter->setBrush(option->palette.color(QPalette::Highlight));
+            if (option->state & State_Sunken) {
+                painter->save();
+             painter->setBrush(QColor(0xff,0xff,0xff,0xf0));
+             painter->setPen(Qt::NoPen);
+             painter->drawRoundedRect(option->rect.x(),option->rect.y(),option->rect.width(),option->rect.height(),6,6);
+             painter->restore();
+            }
+            else {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing,true);
+//                painter->setBrush(QColor(0xff,0xff,0xff,0xe0));
+                painter->setPen(Qt::NoPen);
+                painter->drawRoundedRect(option->rect.x(),option->rect.y(),option->rect.width(),option->rect.height(),6,6);
+                painter->restore();
+            }
+
         }
-        }
-        painter->drawRoundedRect(option->rect,10,10);
+//        painter->drawRoundedRect(option->rect,20,20);
         painter->restore();
         return;
+
     }
+
 
     }
     return QProxyStyle::drawPrimitive(element, option, painter, widget);
+
 }
 
 QPixmap CustomStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option) const

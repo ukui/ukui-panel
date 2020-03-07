@@ -68,8 +68,8 @@ public:
     void mouseReleaseEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void paintEvent(QPaintEvent *);
-    QWidget *horizontalLayoutWidget;
-    QHBoxLayout *horizontalLayout;
+//    QWidget *horizontalLayoutWidget;
+//    QHBoxLayout *horizontalLayout;
 
 
 signals:
@@ -100,6 +100,7 @@ private:
     QSize mIconSize;
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
+    UKUi::GridLayout *mLayout;
 };
 
 #endif

@@ -36,9 +36,11 @@
 #include "fixx11h.h"
 #include <QScreen>
 #include "traystorage.h"
+#include "../panel/customstyle.h"
+
 class TrayIcon;
 class QSize;
-
+//class CustomStyle;
 namespace UKUi {
 class GridLayout;
 }
