@@ -157,21 +157,21 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
 
 UKUITaskGroup::~UKUITaskGroup()
 {
-    if(mPopup)
-    {
-        mPopup->deleteLater();
-        mPopup = NULL;
-    }
-    if(mpWidget)
-    {
-        mpWidget->deleteLater();
-        mpWidget = NULL;
-    }
-    if(VLayout)
-    {
-        VLayout->deleteLater();
-        VLayout = NULL;
-    }
+//    if(mPopup)
+//    {
+//        mPopup->deleteLater();
+//        mPopup = NULL;
+//    }
+//    if(mpWidget)
+//    {
+//        mpWidget->deleteLater();
+//        mpWidget = NULL;
+//    }
+//    if(VLayout)
+//    {
+//        VLayout->deleteLater();
+//        VLayout = NULL;
+//    }
 }
 
 /************************************************
@@ -795,6 +795,20 @@ void UKUITaskGroup::setLayOutForPostion()
         mpWidget->setLayout(new QVBoxLayout);
         mpWidget->layout()->setSpacing(3);
         mpWidget->layout()->setMargin(3);
+    }
+}
+
+bool UKUITaskGroup::isSetMaxWindow()
+{
+    int iScreenWidth = QApplication::screens().at(0)->size().width();
+    int iScreenHeight = QApplication::screens().at(0)->size().height();
+    if((iScreenWidth >= SCREEN_MID_WIDTH_SIZE)||((iScreenWidth > SCREEN_MAX_WIDTH_SIZE) && (iScreenHeight > SCREEN_MAX_HEIGHT_SIZE)))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
