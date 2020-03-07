@@ -50,7 +50,7 @@ class UKUITaskGroup: public UKUITaskButton
 
 public:
     UKUITaskGroup(const QString & groupName, WId window, UKUITaskBar * parent);
-
+    virtual ~UKUITaskGroup();
     QString groupName() const { return mGroupName; }
 
     int buttonsCount() const;
@@ -71,6 +71,7 @@ public:
     void setPopupVisible(bool visible = true, bool fast = false);
     void showPreview();
     void removeWidget();
+    bool isSetMaxWindow();
 
 public slots:
     void onWindowRemoved(WId window);

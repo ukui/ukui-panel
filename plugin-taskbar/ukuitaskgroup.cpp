@@ -52,6 +52,7 @@
 #include <QApplication>
 #include "../panel/iukuipanelplugin.h"
 #include <QSize>
+#include <QScreen>
 #define PREVIEW_WIDTH		468
 #define PREVIEW_HEIGHT		428
 #define SPACE_WIDTH			8
@@ -60,6 +61,20 @@
 #define THUMBNAIL_HEIGHT	(PREVIEW_HEIGHT - SPACE_HEIGHT)
 #define ICON_WIDTH			48
 #define ICON_HEIGHT			48
+
+#define SCREEN_MAX_WIDTH_SIZE     1400
+#define SCREEN_MAX_HEIGHT_SIZE    1050
+
+#define SCREEN_MIN_WIDTH_SIZE    800
+#define SCREEN_MIN_HEIGHT_SIZE   600
+
+#define SCREEN_MID_WIDTH_SIZE    1600
+
+#define PREVIEW_WIDGET_MAX_WIDTH            352
+#define PREVIEW_WIDGET_MAX_HEIGHT           264
+
+#define PREVIEW_WIDGET_MIN_WIDTH            276
+#define PREVIEW_WIDGET_MIN_HEIGHT           200
 
 QPixmap qimageFromXImage(XImage* ximage)
 {
@@ -138,6 +153,25 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     connect(parent, &UKUITaskBar::buttonStyleRefreshed, this, &UKUITaskGroup::setToolButtonsStyle);
     connect(parent, &UKUITaskBar::showOnlySettingChanged, this, &UKUITaskGroup::refreshVisibility);
     connect(parent, &UKUITaskBar::popupShown, this, &UKUITaskGroup::groupPopupShown);
+}
+
+UKUITaskGroup::~UKUITaskGroup()
+{
+    if(mPopup)
+    {
+        mPopup->deleteLater();
+        mPopup = NULL;
+    }
+    if(mpWidget)
+    {
+        mpWidget->deleteLater();
+        mpWidget = NULL;
+    }
+    if(VLayout)
+    {
+        VLayout->deleteLater();
+        VLayout = NULL;
+    }
 }
 
 /************************************************
@@ -737,12 +771,15 @@ void UKUITaskGroup::removeWidget()
     if(hLayout != NULL)
     {
         hLayout->deleteLater();
+        hLayout = NULL;
     }
     if(vLayout != NULL)
     {
         vLayout->deleteLater();
+        vLayout = NULL;
     }
     mpWidget->deleteLater();
+    mpWidget = NULL;
 }
 
 void UKUITaskGroup::setLayOutForPostion()
@@ -766,12 +803,29 @@ void UKUITaskGroup::showPreview()
     XImage *img = NULL;
     Display *display = NULL;
     XWindowAttributes attr;
+    int winWidth = 0;
+    int winHeight = 0;
+    /*begin get the winsize*/
+    bool isMaxWinSize = isSetMaxWindow();
+    if(isMaxWinSize)
+    {
+        winWidth = PREVIEW_WIDGET_MAX_WIDTH;
+        winHeight = PREVIEW_WIDGET_MAX_HEIGHT;
+    }
+    else
+    {
+        winWidth = PREVIEW_WIDGET_MIN_WIDTH;
+        winHeight = PREVIEW_WIDGET_MIN_HEIGHT;
+    }
+    /*end get the winsize*/
+
     if(mPopup->layout()->count() > 0)
     {
         removeWidget();
     }
     mpWidget = new QWidget;
     setLayOutForPostion();
+    /*begin catch preview picture*/
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         display = XOpenDisplay(nullptr);
@@ -787,12 +841,13 @@ void UKUITaskGroup::showPreview()
 
         UKUITaskWidget *btn = it.value();
         btn->setThumbNail(thumbnail);
-        btn->setFixedSize(188,136);
+        btn->setFixedSize(winWidth, winHeight);
         mpWidget->layout()->setContentsMargins(0,0,0,0);
         mpWidget->layout()->addWidget(btn);
         XDestroyImage(img);
         XCloseDisplay(display);
     }
+    /*end*/
     plugin()->willShowWindow(mPopup);
     mPopup->layout()->addWidget(mpWidget);
     mPopup->adjustSize();
