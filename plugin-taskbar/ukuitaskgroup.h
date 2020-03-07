@@ -87,6 +87,7 @@ protected:
 //    void paintEvent(QPaintEvent *);
     int recalculateFrameHeight() const;
     int recalculateFrameWidth() const;
+    void setLayOutForPostion();
 
     void draggingTimerTimeout();
 
@@ -115,7 +116,7 @@ private:
     bool mSingleButton; //!< flag if this group should act as a "standard" button (no groupping or only one "shown" window in group)
     enum TaskGroupStatus{NORMAL, HOVER, PRESS};
     TaskGroupStatus taskgroupStatus;
-
+    QWidget *mpWidget;
     QSize recalculateFrameSize();
     QPoint recalculateFramePosition();
     void recalculateFrameIfVisible();
