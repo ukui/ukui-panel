@@ -121,7 +121,8 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     mGroupName(groupName),
     mPopup(new UKUIGroupPopup(this)),
     mPreventPopup(false),
-    mSingleButton(true)
+    mSingleButton(true),
+    mpWidget(NULL)
 {
     Q_ASSERT(parent);
     taskgroupStatus = NORMAL;
@@ -730,9 +731,33 @@ void UKUITaskGroup::groupPopupShown(UKUITaskGroup * const sender)
 
 void UKUITaskGroup::removeWidget()
 {
-    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    mPopup->layout()->removeWidget(mpWidget);
+    QHBoxLayout *hLayout = dynamic_cast<QHBoxLayout*>(mpWidget->layout());
+    QVBoxLayout *vLayout = dynamic_cast<QVBoxLayout*>(mpWidget->layout());
+    if(hLayout != NULL)
     {
-         mPopup->layout()->addWidget(it.value());
+        hLayout->deleteLater();
+    }
+    if(vLayout != NULL)
+    {
+        vLayout->deleteLater();
+    }
+    mpWidget->deleteLater();
+}
+
+void UKUITaskGroup::setLayOutForPostion()
+{
+    if(plugin()->panel()->isHorizontal())
+    {
+        mpWidget->setLayout(new QHBoxLayout);
+        mpWidget->layout()->setSpacing(3);
+        mpWidget->layout()->setMargin(3);
+    }
+    else
+    {
+        mpWidget->setLayout(new QVBoxLayout);
+        mpWidget->layout()->setSpacing(3);
+        mpWidget->layout()->setMargin(3);
     }
 }
 
@@ -741,7 +766,12 @@ void UKUITaskGroup::showPreview()
     XImage *img = NULL;
     Display *display = NULL;
     XWindowAttributes attr;
-    removeWidget();
+    if(mPopup->layout()->count() > 0)
+    {
+        removeWidget();
+    }
+    mpWidget = new QWidget;
+    setLayOutForPostion();
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         display = XOpenDisplay(nullptr);
@@ -756,14 +786,15 @@ void UKUITaskGroup::showPreview()
         thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));
 
         UKUITaskWidget *btn = it.value();
-        btn->setFixedSize(300,180);
         btn->setThumbNail(thumbnail);
-        mPopup->layout()->setContentsMargins(0,0,0,0);
-        mPopup->layout()->addWidget(btn);
+        btn->setFixedSize(188,136);
+        mpWidget->layout()->setContentsMargins(0,0,0,0);
+        mpWidget->layout()->addWidget(btn);
         XDestroyImage(img);
         XCloseDisplay(display);
     }
     plugin()->willShowWindow(mPopup);
+    mPopup->layout()->addWidget(mpWidget);
     mPopup->adjustSize();
     mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,0)), mPopup->size()));
     mPopup->show();

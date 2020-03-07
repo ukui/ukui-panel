@@ -59,7 +59,6 @@ UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     connect(&mCloseTimer, &QTimer::timeout, this, &UKUIGroupPopup::closeTimerSlot);
     mCloseTimer.setSingleShot(true);
     mCloseTimer.setInterval(400);
-    setFixedHeight(180);
 }
 
 UKUIGroupPopup::~UKUIGroupPopup()
@@ -173,7 +172,7 @@ void UKUIGroupPopup::closeTimerSlot()
     QLayout* l = layout();
     for (int i = 0; l->count() > i; ++i)
     {
-        UKUITaskButton const * const button = dynamic_cast<UKUITaskButton const *>(l->itemAt(i)->widget());
+        UKUITaskWidget const * const button = dynamic_cast<UKUITaskWidget const *>(l->itemAt(i)->widget());
         if (0 != button && button->hasDragAndDropHover())
         {
             button_has_dnd_hover = true;

@@ -113,7 +113,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
 
     // 自动缩放图片
     //	titleLabel->setScaledContents(true);
-    mThumbnailLabel->setScaledContents(false);
+    mThumbnailLabel->setScaledContents(true);
 
     // 设置控件缩放方式
     QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
