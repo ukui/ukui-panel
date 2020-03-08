@@ -848,6 +848,7 @@ void UKUITaskGroup::showPreview()
 
         if(NULL == img)
         {
+            qDebug()<<"can not catch picture";
             continue;
         }
         QPixmap thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
@@ -864,9 +865,22 @@ void UKUITaskGroup::showPreview()
     /*end*/
     plugin()->willShowWindow(mPopup);
     mPopup->layout()->addWidget(mpWidget);
-    mPopup->adjustSize();
+    adjustPopWindowSize(winWidth, winHeight);
     mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,0)), mPopup->size()));
     mPopup->show();
 
    emit popupShown(this);
+}
+
+void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
+{
+    if(plugin()->panel()->isHorizontal())
+    {
+        mPopup->setFixedSize(winWidth*mButtonHash.size() + (mButtonHash.size() + 1)*3, winHeight + 6);
+    }
+    else
+    {
+        mPopup->setFixedSize(winWidth + 6,winHeight*mButtonHash.size() + (mButtonHash.size() + 1)*3);
+    }
+    mPopup->adjustSize();
 }

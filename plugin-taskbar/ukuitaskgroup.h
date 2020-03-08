@@ -121,6 +121,7 @@ private:
     QSize recalculateFrameSize();
     QPoint recalculateFramePosition();
     void recalculateFrameIfVisible();
+    void adjustPopWindowSize(int width, int height);
     void regroup();
 };
 
