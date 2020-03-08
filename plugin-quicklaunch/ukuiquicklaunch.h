@@ -38,7 +38,7 @@
 #include "qlayoutitem.h"
 #include "qlayoutitem.h"
 #include "qgridlayout.h"
-//for dbus
+#include <QPainter>
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
 
@@ -50,7 +50,6 @@ class QString;
 class QStringList;
 class QVariant;
 QT_END_NAMESPACE
-//-----------------------
 
 class XdgDesktopFile;
 class QuickLaunchAction;
@@ -93,6 +92,7 @@ private:
 
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
+    void paintEvent(QPaintEvent *);
     QVector<QuickLaunchButton*> mVBtn;
     QuickLaunchButton* btn;
 

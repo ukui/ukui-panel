@@ -849,7 +849,7 @@ void UKUITaskGroup::showPreview()
         if(NULL == img)
         {
             qDebug()<<"can not catch picture";
-            continue;
+            return;
         }
         QPixmap thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
         thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));

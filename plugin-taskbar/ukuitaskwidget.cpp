@@ -621,7 +621,7 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
       case HOVER:
           {
               p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-              p.setPen(Qt::white);
+              p.setPen(Qt::black);
               break;
           }
       case PRESS:

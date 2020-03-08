@@ -37,7 +37,6 @@
 #include <XdgIcon>
 #include <string>
 
-
 #define MIMETYPE "x-ukui/quicklaunch-button"
 
 
@@ -79,7 +78,8 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
             this, SLOT(this_customContextMenuRequested(const QPoint&)));
     //file_name=act->m_settingsMap["name"];
     file_name=act->m_settingsMap["desktop"];
-
+    this->setStyle(new CustomStyle());
+    repaint();
 
 }
 
@@ -124,46 +124,6 @@ void QuickLaunchButton::leaveEvent(QEvent *)
     quicklanuchstatus=NORMAL;
     repaint();
 }
-
-void QuickLaunchButton::paintEvent(QPaintEvent *)
-{
-    // Do not paint that ugly "has menu" arrow
-    QStylePainter p(this);
-    QStyleOptionToolButton opt;
-    initStyleOption(&opt);
-    opt.features &= (~ QStyleOptionToolButton::HasMenu);
-    p.drawComplexControl(QStyle::CC_ToolButton, opt);
-
-//    QStyleOption opt;
-//    opt.initFrom(this);
-//    QPainter p(this);
-
-//    switch(quicklanuchstatus)
-//      {
-//      case NORMAL:
-//          {
-//              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-//              p.setPen(Qt::NoPen);
-//              break;
-//          }
-//      case HOVER:
-//          {
-//              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-//              p.setPen(Qt::NoPen);
-//              break;
-//          }
-//      case PRESS:
-//          {
-//              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
-//              p.setPen(Qt::NoPen);
-//              break;
-//          }
-//      }
-//    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-//    p.drawRoundedRect(opt.rect,6,6);
-//    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
 
 void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
 {
@@ -226,4 +186,3 @@ void QuickLaunchButton::dragEnterEvent(QDragEnterEvent *e)
         emit switchButtons(mimeData->button(), this);
     }
 }
-

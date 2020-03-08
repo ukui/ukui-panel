@@ -78,11 +78,13 @@ TrayStorage::TrayStorage( QWidget *parent):
 {
     this->setGeometry(QRect(10, 20, 100, 121));
     mLayout = new UKUi::GridLayout(this);
+    mLayout->setColumnCount(3);
+    mLayout->setRowCount(3);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
+//    setWindowFlags(/*Qt::FramelessWindowHint |*/ Qt::WindowStaysOnTopHint | Qt::ToolTip);
+    setWindowFlags(Qt::FramelessWindowHint );
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     QTimer::singleShot(0, this, SLOT(startTray()));
-
 }
 
 
@@ -90,8 +92,21 @@ TrayStorage::TrayStorage( QWidget *parent):
  ************************************************/
 TrayStorage::~TrayStorage()
 {
+    stopTrayStorage();
 }
 
+void TrayStorage::stopTrayStorage()
+{
+    for (auto & icon : mIcons)
+        disconnect(icon, &QObject::destroyed, this, &TrayStorage::onIconDestroyed);
+    qDeleteAll(mIcons);
+    if (mTrayId)
+    {
+        XDestroyWindow(mDisplay, mTrayId);
+        mTrayId = 0;
+    }
+    mValid = false;
+}
 bool TrayStorage::nativeEventFilter(const QByteArray &eventType, void *message, long *)
 {
     if (eventType != "xcb_generic_event_t")
@@ -171,6 +186,8 @@ void TrayStorage::onIconDestroyed(QObject * icon)
 
 void TrayStorage::mouseReleaseEvent(QMouseEvent *event)
 {
+    storagestatus = HIDE;
+    this->hide();
     update();
     QWidget::mouseReleaseEvent(event);
 }
@@ -179,6 +196,11 @@ void TrayStorage::mousePressEvent(QMouseEvent *event)
 {
     update();
     QWidget::mousePressEvent(event);
+}
+
+void TrayStorage::leaveEvent(QEvent *)
+{
+//    tra= HIDE;
 }
 
 void TrayStorage::paintEvent(QPaintEvent *)
