@@ -32,8 +32,12 @@
 #include "quicklaunchaction.h"
 #include <QMimeData>
 #include <QToolButton>
+#include "../panel/customstyle.h"
+#include <QStyleOption>
+#include <QPainter>
 
 class IUKUIPanelPlugin;
+//class CustomStyle;
 
 class QuickLaunchButton : public QToolButton
 {
@@ -54,7 +58,6 @@ signals:
 
 protected:
     //! Disable that annoying small arrow when there is a menu
-    virtual void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void dragEnterEvent(QDragEnterEvent *e);
@@ -72,6 +75,7 @@ private:
     QPoint mDragStart;
     enum QuickLaunchStatus{NORMAL, HOVER, PRESS};
     QuickLaunchStatus quicklanuchstatus;
+    CustomStyle toolbuttonstyle;
 
 private slots:
     void this_customContextMenuRequested(const QPoint & pos);

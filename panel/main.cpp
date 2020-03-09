@@ -30,6 +30,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <syslog.h>
+#include <QStandardPaths>
 /*! The ukui-panel is the panel of UKUI.
   Usage: ukui-panel [CONFIG_ID]
     CONFIG_ID      Section name in config file ~/.config/ukui/panel.conf
@@ -42,7 +43,10 @@ int main(int argc, char *argv[])
     app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     //Singleton
-    int fd = open("/tmp/ukui-panel-lock", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+
+    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    QString lockPath = homePath.at(0) + "/.config/ukui-panel";
+    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     if (fd < 0) { exit(1); }
     if (lockf(fd, F_TLOCK, 0)) {
         syslog(LOG_ERR, "Can't lock single file, kylin-network-manager is already running!");

@@ -7,7 +7,9 @@ CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProx
 {
 
 }
-
+CustomStyle::~CustomStyle()
+{
+};
 
 void CustomStyle::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
@@ -49,34 +51,24 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing,true);
         painter->setPen(Qt::NoPen);
-//        painter->setBrush(QColor(0xff,0xff,0xff,0xe0));
-        painter->drawRoundedRect(option->rect.x(),option->rect.y(),option->rect.width(),option->rect.height(),6,6);
-//        painter->restore();
+//        painter->setBrush(QColor(0xff,0xff,0xff,0xff));
+        painter->drawRoundedRect(option->rect,6,6);
         if (option->state & State_MouseOver) {
-            if (option->state & State_Sunken) {
-                painter->save();
-             painter->setBrush(QColor(0xff,0xff,0xff,0xf0));
-             painter->setPen(Qt::NoPen);
-             painter->drawRoundedRect(option->rect.x(),option->rect.y(),option->rect.width(),option->rect.height(),6,6);
-             painter->restore();
-            }
-            else {
-                painter->save();
-                painter->setRenderHint(QPainter::Antialiasing,true);
-//                painter->setBrush(QColor(0xff,0xff,0xff,0xe0));
-                painter->setPen(Qt::NoPen);
-                painter->drawRoundedRect(option->rect.x(),option->rect.y(),option->rect.width(),option->rect.height(),6,6);
-                painter->restore();
-            }
-
+           if (option->state & State_Sunken) {
+               painter->setRenderHint(QPainter::Antialiasing,true);
+               painter->setPen(Qt::NoPen);
+               painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
+               painter->drawRoundedRect(option->rect,6,6);
+           } else {
+               painter->setRenderHint(QPainter::Antialiasing,true);
+               painter->setPen(Qt::NoPen);
+               painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
+               painter->drawRoundedRect(option->rect,6,6);
+           }
         }
-//        painter->drawRoundedRect(option->rect,20,20);
-        painter->restore();
-        return;
-
-    }
-
-
+    painter->restore();
+    return;
+    }break;
     }
     return QProxyStyle::drawPrimitive(element, option, painter, widget);
 
@@ -118,6 +110,7 @@ int CustomStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *opt
 //
 void CustomStyle::polish(QWidget *widget)
 {
+    widget->setAttribute(Qt::WA_Hover);
     return QProxyStyle::polish(widget);
 }
 
