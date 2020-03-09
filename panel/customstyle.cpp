@@ -7,7 +7,9 @@ CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProx
 {
 
 }
-
+CustomStyle::~CustomStyle()
+{
+};
 
 void CustomStyle::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {

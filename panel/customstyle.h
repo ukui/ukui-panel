@@ -24,7 +24,7 @@ class CustomStyle : public QProxyStyle
     Q_OBJECT
 public:
     explicit CustomStyle(const QString &proxyStyleName = "windows", QObject *parent = nullptr);
-
+    ~CustomStyle();
     /*!
      * \brief drawComplexControl
      * \param control 比如ScrollBar，对应CC枚举类型
