@@ -24,6 +24,8 @@
 #include <QDebug>
 #include <QToolBar>
 #include <QStyle>
+#include <QDBusInterface>
+#include <QDBusReply>
 TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
@@ -62,7 +64,7 @@ TaskViewWidget::TaskViewWidget(QWidget *parent):
                 //正常状态样式
                 "QToolButton{"
                 "background-color:rgba(190,216,239,0%);"
-                "qproperty-icon:url(/usr/share/ukui-panel/plugin-taskview/img/taskview.svg);"
+                "qproperty-icon:url(/usr/share/ukui-panel/panel/img/taskview.svg);"
                 //"qproperty-iconSize:28px 28px;"
                 "border-style:outset;"                  //边框样式（inset/outset）
                 "border-width:2px;"                     //边框宽度像素
@@ -98,7 +100,23 @@ void TaskViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void TaskViewWidget::captureMouse()
 {
-    system("ukui-window-switch --show-workspace");
+    //Two ways to call the taskview
+    //system("ukui-window-switch --show-workspace");
+    QDBusInterface interface("org.ukui.WindowSwitch", "/org/ukui/WindowSwitch",
+                                "org.ukui.WindowSwitch",
+                                QDBusConnection::sessionBus());
+    if (!interface.isValid()) {
+        qCritical() << QDBusConnection::sessionBus().lastError().message();
+        exit(1);
+    }
+    //调用远程的value方法
+    QDBusReply<bool> reply = interface.call("handleWorkspace");
+    if (reply.isValid()) {
+        if (!reply.value())
+            qWarning() << "Handle Workspace View Failed";
+    } else {
+        qCritical() << "Call Dbus method failed";
+    }
 }
 
 void TaskViewWidget::contextMenuEvent(QContextMenuEvent *event) {
