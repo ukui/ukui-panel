@@ -222,7 +222,7 @@ install(FILES
 )
 
 install(FILES
-    img/setting.svg  img/tick.svg img/up.svg
+    img/setting.svg  img/tick.svg img/up.svg img/taskview.svg
     DESTINATION "${PACKAGE_DATA_DIR}/panel/img"
     COMPONENT Runtime
 )

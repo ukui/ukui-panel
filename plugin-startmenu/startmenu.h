@@ -9,53 +9,31 @@
 #include <QLineEdit>
 #include <QToolButton>
 #include <XdgIcon>
-
-
 #include <QMainWindow>
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QProcess>
-
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
-//#include "../panel/config/configpaneldialog.h"
 #include "../panel/config/configpanelwidget.h"
 #include <../panel/popupmenu.h>
 #include <QMenu>
-#include <QtDBus/QtDBus>
 
-class  StartMenuWidget: public QFrame
+class StartMenuButton:public QToolButton
 {
     Q_OBJECT
 public:
-    StartMenuWidget(QWidget* parent = nullptr);
-    ~StartMenuWidget();
-
-    QLineEdit *lineEdit() { return &mLineEdit; }
-    QToolButton *button() { return &mButton; }
-
-
+    StartMenuButton();
+    ~StartMenuButton();
 protected:
-    void mouseReleaseEvent(QMouseEvent *event);
-    virtual void contextMenuEvent(QContextMenuEvent *event);
-
+    void contextMenuEvent(QContextMenuEvent *event);
 private slots:
     void captureMouse();
-//    void this_customContextMenuRequested(const QPoint & pos);
     void ScreenServer();
     void SessionSwitch();
     void SessionLogout();
     void SessionReboot();
     void SessionShutdown();
-
-private:
-    QLineEdit mLineEdit;
-    QToolButton mButton;
-    bool mCapturing;
-    QMenu *mRightMenu;
-    IUKUIPanelPlugin * mPlugin;
-    friend class StartMenu;
-
 };
 
 class StartMenu : public QObject, public IUKUIPanelPlugin
@@ -65,19 +43,17 @@ public:
     StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo);
     ~StartMenu();
 
-    virtual QWidget *widget() { return &mWidget; }
+    virtual QWidget *widget() { return &mButton; }
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
-    StartMenuWidget *menu;
+protected:
+    void contextMenuEvent(QContextMenuEvent *event);
 private:
-    StartMenuWidget mWidget;
-//    IUKUIPanelPlugin *mPlugin;
-//    QToolButton mButton;
-//    bool mCapturing;
+    StartMenuButton mButton;
 
-//private slots:
-//    void captureMouse();
+private slots:
+    void captureMouse();
 
 };
 
