@@ -11,7 +11,6 @@ StartMenu::StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo) :
     IUKUIPanelPlugin(startupInfo)
 {
     realign();
-    connect(&mButton, SIGNAL(clicked()), this, SLOT(captureMouse()));
     mButton.setStyle(new CustomStyle());
     mButton.setIcon(QIcon("/usr/share/ukui-panel/plugin-startmenu/img/startmenu.svg"));
 
@@ -27,12 +26,6 @@ void StartMenu::realign()
     mButton.setFixedSize(panel()->panelSize(),panel()->panelSize());
     mButton.setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
 }
-void StartMenu::contextMenuEvent(QContextMenuEvent *event)
-{
-    qDebug()<<"void StartMenu::contextMenuEvent(QContextMenuEvent *event)";
-
-}
-
 StartMenuButton::StartMenuButton()
 {
 }
@@ -41,6 +34,21 @@ StartMenuButton::~StartMenuButton()
 {
 }
 
+void StartMenuButton::mousePressEvent(QMouseEvent* event)
+{
+    const Qt::MouseButton b = event->button();
+
+    if (Qt::LeftButton == b)
+    {
+        if(QFileInfo::exists(QString("/usr/bin/ukui-menu")))
+        {
+        QProcess *process =new QProcess(this);
+        process->startDetached("/usr/bin/ukui-menu");
+        }
+        else{qDebug()<<"not find /usr/bin/ukui-start-menu"<<endl;}
+    }
+    QWidget::mousePressEvent(event);
+}
 void StartMenuButton::contextMenuEvent(QContextMenuEvent *)
 {
     qDebug()<<"void StartMenuButton::QContextMenuEvent(QContextMenuEvent *)  ";
@@ -75,16 +83,6 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *)
     int availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
     menuTaskview->setGeometry(50,availableHeight-140,140,140);
     menuTaskview->show();
-}
-
-void StartMenu::captureMouse()
-{
-    if(QFileInfo::exists(QString("/usr/bin/ukui-menu")))
-    {
-    QProcess *process =new QProcess(this);
-    process->startDetached("/usr/bin/ukui-menu");
-    }
-    else{qDebug()<<"not find /usr/bin/ukui-start-menu"<<endl;}
 }
 
 void StartMenuButton::ScreenServer()

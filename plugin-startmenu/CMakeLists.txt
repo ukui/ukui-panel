@@ -16,7 +16,7 @@ set(LIBRARIES
 )
 
 install(FILES
-    img/startmenu.svg  img/taskview.svg img/ukui-panel_zh_CN.qm
+    img/startmenu.svg  img/taskview.svg
     DESTINATION "${PACKAGE_DATA_DIR}/plugin-startmenu/img"
     COMPONENT Runtime
 )
