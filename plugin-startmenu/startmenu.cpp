@@ -10,9 +10,11 @@ StartMenu::StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    qDebug()<<"StartMenu::StartMenu";
+    mButton =new StartMenuButton();
+    mButton->setStyle(new CustomStyle());
+    mButton->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     realign();
-    mButton.setStyle(new CustomStyle());
-    mButton.setIcon(QIcon("/usr/share/ukui-panel/plugin-startmenu/img/startmenu.svg"));
 
 }
 
@@ -23,8 +25,8 @@ StartMenu::~StartMenu()
 
 void StartMenu::realign()
 {
-    mButton.setFixedSize(panel()->panelSize(),panel()->panelSize());
-    mButton.setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
+    mButton->setFixedSize(panel()->panelSize(),panel()->panelSize());
+    mButton->setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
 }
 StartMenuButton::StartMenuButton()
 {
@@ -51,7 +53,6 @@ void StartMenuButton::mousePressEvent(QMouseEvent* event)
 }
 void StartMenuButton::contextMenuEvent(QContextMenuEvent *)
 {
-    qDebug()<<"void StartMenuButton::QContextMenuEvent(QContextMenuEvent *)  ";
     PopupMenu *menuTaskview=new PopupMenu();
     menuTaskview->setAttribute(Qt::WA_DeleteOnClose);
 

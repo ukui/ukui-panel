@@ -29,7 +29,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mousePressEvent(QMouseEvent* event);
 private slots:
-    void captureMouse();
     void ScreenServer();
     void SessionSwitch();
     void SessionLogout();
@@ -44,12 +43,12 @@ public:
     StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo);
     ~StartMenu();
 
-    virtual QWidget *widget() { return &mButton; }
+    virtual QWidget *widget() { return mButton; }
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 private:
-    StartMenuButton mButton;
+    StartMenuButton *mButton;
 };
 
 class StartMenuLibrary: public QObject, public IUKUIPanelPluginLibrary
