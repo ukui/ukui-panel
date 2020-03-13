@@ -1,31 +1,22 @@
 #ifndef QCLICKWIDGET_H
 #define QCLICKWIDGET_H
-
 #include <QWidget>
-#include <QPoint>
+#include <QProcess>
 #include <QDebug>
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QStyle>
-#include <QPainter>
 #include <QStyleOption>
-#include <QProcess>
-#include <sys/mount.h>
-
+#include <QPainter>
 class MainWindow;
 class QClickWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit QClickWidget(QWidget *parent = nullptr,bool is_eject = true, QString name=NULL, qlonglong capacity=NULL, QString path=NULL);
-    ~QClickWidget(void);
-
-signals:
-    void clicked();
-
-public slots:
+    ~QClickWidget();
+public Q_SLOTS:
     void mouseClicked();
-
 protected:
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);
@@ -38,6 +29,8 @@ private:
     QString m_path;
     MainWindow *m_mainwindow;
     QPoint mousePos;
+Q_SIGNALS:
+    void clicked();
 };
 
-#endif // QCLICKWIDGET_H
+#endif
