@@ -405,11 +405,11 @@ void UKUITaskGroup::draggingTimerTimeout()
  ************************************************/
 void UKUITaskGroup::onClicked(bool)
 {
-    if (visibleButtonsCount() > 1)
-    {
-        setChecked(mButtonHash.contains(KWindowSystem::activeWindow()));
-        setPopupVisible(true);
-    }
+//    if (visibleButtonsCount() > 1)
+//    {
+//        setChecked(mButtonHash.contains(KWindowSystem::activeWindow()));
+//        setPopupVisible(true);
+//    }
 }
 
 /************************************************
@@ -483,24 +483,24 @@ void UKUITaskGroup::setAutoRotation(bool value, IUKUIPanel::Position position)
  ************************************************/
 void UKUITaskGroup::refreshVisibility()
 {
-    bool will = false;
-    UKUITaskBar const * taskbar = parentTaskBar();
-    const int showDesktop = taskbar->showDesktopNum();
-    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
-    {
-        bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
-        visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
-        visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;
-        btn->setVisible(visible);
-        will |= visible;
-    }
+//    bool will = false;
+//    UKUITaskBar const * taskbar = parentTaskBar();
+//    const int showDesktop = taskbar->showDesktopNum();
+//    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
+//    {
+//        bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
+//        visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
+//        visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;
+//        btn->setVisible(visible);
+//        will |= visible;
+//    }
 
-    bool is = isVisible();
-    setVisible(will);
+//    bool is = isVisible();
+    setVisible(true);
     regroup();
 
-    if (is != will)
-        emit visibilityChanged(will);
+//    if (is != will)
+//        emit visibilityChanged(will);
 }
 
 /************************************************

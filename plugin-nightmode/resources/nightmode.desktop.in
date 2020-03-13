@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=NightMode
+Comment=NightMode
+Icon=nightmode
+
+#TRANSLATIONS_DIR=../translations
+Name=夜间模式
+Comment=夜间模式切换按键
