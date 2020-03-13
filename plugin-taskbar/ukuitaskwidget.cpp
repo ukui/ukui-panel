@@ -91,14 +91,14 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     setMinimumWidth(1);
     setMinimumHeight(1);
     setAcceptDrops(true);
-    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+//    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
     status=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
     //for layout
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
-    mCloseBtn->setIcon(closePix);
+    mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     mTitleLabel = new QLabel;
     mThumbnailLabel = new QLabel;
     mAppIcon = new QLabel;
@@ -163,6 +163,9 @@ void UKUITaskWidget::updateText()
     KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
     QString title = info.visibleName().isEmpty() ? info.name() : info.visibleName();
     mTitleLabel->setText(title);
+    QPalette pa;
+    pa.setColor(QPalette::WindowText,Qt::white);
+    mTitleLabel->setPalette(pa);
 //    setText(title.replace("&", "&&"));
 //    setToolTip(title);
 }

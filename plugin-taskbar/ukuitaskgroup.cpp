@@ -483,7 +483,7 @@ void UKUITaskGroup::setAutoRotation(bool value, IUKUIPanel::Position position)
  ************************************************/
 void UKUITaskGroup::refreshVisibility()
 {
-//    bool will = false;
+    bool will = true;
 //    UKUITaskBar const * taskbar = parentTaskBar();
 //    const int showDesktop = taskbar->showDesktopNum();
 //    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
@@ -495,12 +495,12 @@ void UKUITaskGroup::refreshVisibility()
 //        will |= visible;
 //    }
 
-//    bool is = isVisible();
+    bool is = isVisible();
     setVisible(true);
     regroup();
 
-//    if (is != will)
-//        emit visibilityChanged(will);
+    if (is != will)
+        emit visibilityChanged(will);
 }
 
 /************************************************
