@@ -2,6 +2,7 @@
  * (c)LGPL2+
  *
  * Copyright: 2011 Razor team
+ *            2014 LXQt team
  * Authors:
  *   Maciej Płaza <plaza.maciej@gmail.com>
  *
