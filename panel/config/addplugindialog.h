@@ -5,7 +5,7 @@
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
- * Copyright: 2019-2020 UKUI team
+ * Copyright: 2019-2020 LXQt team
  * Modified by  hepuyao <hepuyao@kylinos.cn>
  *
  * This program or library is free software; you can redistribute it

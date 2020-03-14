@@ -1,7 +1,7 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  * (c)LGPL2+
  *
- * Copyright: 2014 UKUi team
+ * Copyright: 2014 LXQt team
  * Authors:
  *  Luís Pereira <luis.artur.pereira@gmail.com>
  *
