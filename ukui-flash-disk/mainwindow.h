@@ -1,11 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include <QMainWindow>
-#include <QScrollArea>
-#include <QScrollBar>
 #include <QtWidgets>
+#include <QLabel>
+#include <QPushButton>
 #include "qclickwidget.h"
+#include<QSystemTrayIcon>
 
 namespace Ui {
 class MainWindow;
@@ -21,23 +21,20 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QScrollArea *m_ScrollArea;
-    QSystemTrayIcon m_systray;
     QVBoxLayout *vboxlayout;
-//    QBoxLayout *vboxlayout;
     QLabel *no_device_label;
-
-private slots:
-    void iconActivated(QSystemTrayIcon::ActivationReason reason);
-    void mouseClicked();
-
-private:
-    void moveBottomRight();
+    QPushButton *eject_image_button;
     void newarea(QString name, qlonglong capacity, QString path,int linestatus);
-    int getdevicenum();
+    void moveBottomRight();
     QString size_human(qlonglong capacity);
-signals:
+    //QSystemTrayIcon m_systray;
+    //void initUi();
+
+public Q_SLOTS:
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    //void ejectDevice();
+Q_SIGNALS:
     void clicked();
 };
 
-#endif // MAINWINDOW_H
+#endif
