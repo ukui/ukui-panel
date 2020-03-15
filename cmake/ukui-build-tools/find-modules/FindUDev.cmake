@@ -7,7 +7,7 @@
 
 # Copyright (c) 2010, Rafael Fernández López, <ereslibre@kde.org>
 # Copyright (c) 2016, Luís Pereira, <luis.artur.pereira@gmail.com>
-#
+# Copyright (c) 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:

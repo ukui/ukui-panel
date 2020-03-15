@@ -40,7 +40,7 @@
 
 #=============================================================================
 # Copyright 2017 Luís Pereira <luis.artur.pereira@gmail.com>
-#
+# Copyright (c) 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 # Documentation adapted from the KF5 FindWayland module.
 #
 # Redistribution and use in source and binary forms, with or without
