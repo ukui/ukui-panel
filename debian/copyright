@@ -93,6 +93,7 @@ License: LGPL-2.1+
 
 Files: panel/common/ukuibacklight/*
 Copyright: 2016  P.L. Lucas
+           2019 Tianjin KYLIN Information Technology Co., Ltd. *
 License:GPL-2+
 
 Files: cmake/*
