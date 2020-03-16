@@ -11,14 +11,15 @@ Files: panel/comm_func.*
        panel/plugin.*
        panel/pluginmoveprocessor.*
        panel/popupmenu.h
+       panel/config/*
        panel/ukuipanelapplication.*
        panel/ukuipanel.*
        panel/ukuipanellayout.*
        panel/ukuipanellimits.h
        panel/ukuipanelpluginconfigdialog.*
-       panel/ukuipageselectwidget.*
-       panel/ukuipageselectwidget.*
-       panel/commom/ukuipower/*
+       panel/common/CMakeLists.txt
+       panel/common/cmake/*
+       panel/common/ukuipower/*
        panel/common/ukuiapplication.*
        panel/common/ukuigridlayout.*
        panel/common/ukuihtmldelegate.*
@@ -28,9 +29,14 @@ Files: panel/comm_func.*
        panel/common/ukuiscreensaver.*
        panel/common/ukuisettings.*
        panel/common/ukuibacklight/linux_backend/driver/*
+       panel/common/configdialog/ukuipageselectwidget.*
+       panel/common/dbus/*
+       panel/common/polkit/*
+       panel/common/resources/*
+       panel/common/libukui.doxygen
        plugin-calendar/ukuicalendar.*
        plugin-quicklaunch/*
-       plugin-showdesktop/showdesktop.*
+       plugin-showdesktop/*
        plugin-tray/*
 Copyright:2019 Tianjin KYLIN Information Technology Co., Ltd. *
           2010-2012 Razor team
@@ -40,8 +46,9 @@ Files: panel/pluginmoveprocessor.*
        panel/popupmenu.cpp
        panel/ukuipanelglobals.h
        panel/windownotifier.*
+       panel/pluginsettings*
        panel/common/ukuiglobals.*
-       panel/ccommon/ukuisingleapplication.*
+       panel/common/ukuisingleapplication.*
        panel/common/ukuitranslator.*
        plugin-spacer/*
 Copyright:2019 Tianjin KYLIN Information Technology Co., Ltd. *
@@ -61,31 +68,47 @@ Copyright:2019 Tianjin KYLIN Information Technology Co., Ltd. *
 License: LGPL-2.1+
 
 
-Files: plugin-calendar/ukuiwebviewdialog.*
+Files: AUTHORS 
+       CHANGELOG
+       CMakeLists.txt
+       NEWS
+       doc/*
+       man/*
+       README.md
+       panel/img/*
+       panel/resources/*
+       panel/CMakeLists.txt
+       panel/customstyle.*
+       plugin-calendar/CMakeLists.txt
+       plugin-calendar/ukuiwebviewdialog.*
        plugin-calendar/html/*
        plugin-calendar/style/indicators.css
+       plugin-calendar/calendar-button-bg.png
+       plugin-calendar/resources/calendar.desktop.in
        plugin-startmenu/*
        plugin-taskview/*
        plugin-segmentation/*
        plugin-nightmode/*
+       plugin-taskbar/CMakeLists.txt
+       plugin-taskbar/resources/taskbar.desktop.in
        plugin-taskbar/ukuitaskclosebutton.*
        plugin-taskbar/ukuitaskwidget.*
        ukui-flash-disk/*
 Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 License: LGPL-2.1+
 
-Files: panel/common/ukuiconfigdialogcmdlineoptions.*
+Files: panel/common/configdialog/ukuiconfigdialogcmdlineoptions.*
        panel/ukuipanelapplication_p.h
 Copyright:2019 Tianjin KYLIN Information Technology Co., Ltd. *
           2018 Luís Pereira <luis.artur.pereira@gmail.com>
 License: LGPL-2.1+
 
 
-Files: panel/common/ukuiconfigdialog.*
+Files: panel/common/configdialog/ukuiconfigdialog*
        panel/common/ukuiautostartentry.*
        panel/common/ukuibacklight.*
        panel/common/ukuiconfigdialog.*
-       panel/common/ukuinotification.*
+       panel/common/ukuinotification
        panel/common/ukuiprogramfinder.*
 Copyright:2019 Tianjin KYLIN Information Technology Co., Ltd. *
           2012 Alec Moskvin <alecm@gmx.com>
@@ -93,6 +116,7 @@ License: LGPL-2.1+
 
 Files: panel/common/ukuibacklight/*
 Copyright: 2016  P.L. Lucas
+           2019 Tianjin KYLIN Information Technology Co., Ltd. *
 License:GPL-2+
 
 Files: cmake/*
