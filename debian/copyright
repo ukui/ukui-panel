@@ -108,7 +108,7 @@ Files: panel/common/configdialog/ukuiconfigdialog*
        panel/common/ukuiautostartentry.*
        panel/common/ukuibacklight.*
        panel/common/ukuiconfigdialog.*
-       panel/common/ukuinotification
+       panel/common/ukuinotification*
        panel/common/ukuiprogramfinder.*
 Copyright:2019 Tianjin KYLIN Information Technology Co., Ltd. *
           2012 Alec Moskvin <alecm@gmx.com>
