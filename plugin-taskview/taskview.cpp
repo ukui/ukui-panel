@@ -2,8 +2,8 @@
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
  * any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -24,10 +24,14 @@
 #include <QDebug>
 #include <QToolBar>
 #include <QStyle>
+#include <QDBusInterface>
+#include <QDBusReply>
 TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    QProcess *process =new QProcess(this);
+    process->startDetached("ukui-window-switch");
     realign();
 
 }
@@ -62,7 +66,7 @@ TaskViewWidget::TaskViewWidget(QWidget *parent):
                 //正常状态样式
                 "QToolButton{"
                 "background-color:rgba(190,216,239,0%);"
-                "qproperty-icon:url(/usr/share/ukui-panel/plugin-taskview/img/taskview.svg);"
+                "qproperty-icon:url(/usr/share/ukui-panel/panel/img/taskview.svg);"
                 //"qproperty-iconSize:28px 28px;"
                 "border-style:outset;"                  //边框样式（inset/outset）
                 "border-width:2px;"                     //边框宽度像素
@@ -98,7 +102,23 @@ void TaskViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void TaskViewWidget::captureMouse()
 {
-    system("ukui-window-switch --show-workspace");
+    //Two ways to call the taskview
+    //system("ukui-window-switch --show-workspace");
+    QDBusInterface interface("org.ukui.WindowSwitch", "/org/ukui/WindowSwitch",
+                                "org.ukui.WindowSwitch",
+                                QDBusConnection::sessionBus());
+    if (!interface.isValid()) {
+        qCritical() << QDBusConnection::sessionBus().lastError().message();
+        exit(1);
+    }
+    //调用远程的value方法
+    QDBusReply<bool> reply = interface.call("handleWorkspace");
+    if (reply.isValid()) {
+        if (!reply.value())
+            qWarning() << "Handle Workspace View Failed";
+    } else {
+        qCritical() << "Call Dbus method failed";
+    }
 }
 
 void TaskViewWidget::contextMenuEvent(QContextMenuEvent *event) {
@@ -119,32 +139,6 @@ void TaskViewWidget::contextMenuEvent(QContextMenuEvent *event) {
 
 void TaskViewWidget::paintEvent(QPaintEvent *)
 {
-//        CustomStyle opt;
-////        opt.initFrom(this);
-//        QPainter p(this);
-
-//        switch(taskviewstatus)
-//          {
-//          case NORMAL:
-//              {
-//                  p.setBrush(QBrush(QColor(0xBE,0xD8,0xEF,0x00)));
-//                  p.setPen(Qt::NoPen);
-//                  break;
-//              }
-//          case HOVER:
-//              {
-//                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-//                  p.setPen(Qt::NoPen);
-//                  break;
-//              }
-//          case PRESS:
-//              {
-//                  p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
-//                  p.setPen(Qt::NoPen);
-//                  break;
-//              }
-//          }
-//        p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-//        p.drawRoundedRect(opt.rect,6,6);
-//        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
+

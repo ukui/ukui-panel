@@ -30,7 +30,10 @@ Build-Depends: debhelper-compat (= 12),
                libqt5webkit5-dev,
                qttools5-dev,
                libqt5xdg-dev,
-               libgsettings-qt-dev
+               libgsettings-qt-dev,
+               libpoppler-dev,
+               libpoppler-qt5-dev,
+               libpeony-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/explorer-cs/ukui-panel

@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
+ *
+ */
+
 #ifndef STARTMENU_H
 #define STARTMENU_H
 
@@ -9,53 +27,31 @@
 #include <QLineEdit>
 #include <QToolButton>
 #include <XdgIcon>
-
-
 #include <QMainWindow>
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QProcess>
-
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
-//#include "../panel/config/configpaneldialog.h"
 #include "../panel/config/configpanelwidget.h"
 #include <../panel/popupmenu.h>
 #include <QMenu>
-#include <QtDBus/QtDBus>
 
-class  StartMenuWidget: public QFrame
+class StartMenuButton:public QToolButton
 {
     Q_OBJECT
 public:
-    StartMenuWidget(QWidget* parent = nullptr);
-    ~StartMenuWidget();
-
-    QLineEdit *lineEdit() { return &mLineEdit; }
-    QToolButton *button() { return &mButton; }
-
-
+    StartMenuButton();
+    ~StartMenuButton();
 protected:
-    void mouseReleaseEvent(QMouseEvent *event);
-    virtual void contextMenuEvent(QContextMenuEvent *event);
-
+    void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent* event);
 private slots:
-    void captureMouse();
-//    void this_customContextMenuRequested(const QPoint & pos);
     void ScreenServer();
     void SessionSwitch();
     void SessionLogout();
     void SessionReboot();
     void SessionShutdown();
-
-private:
-    QLineEdit mLineEdit;
-    QToolButton mButton;
-    bool mCapturing;
-    QMenu *mRightMenu;
-    IUKUIPanelPlugin * mPlugin;
-    friend class StartMenu;
-
 };
 
 class StartMenu : public QObject, public IUKUIPanelPlugin
@@ -65,20 +61,12 @@ public:
     StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo);
     ~StartMenu();
 
-    virtual QWidget *widget() { return &mWidget; }
+    virtual QWidget *widget() { return mButton; }
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
-    StartMenuWidget *menu;
 private:
-    StartMenuWidget mWidget;
-//    IUKUIPanelPlugin *mPlugin;
-//    QToolButton mButton;
-//    bool mCapturing;
-
-//private slots:
-//    void captureMouse();
-
+    StartMenuButton *mButton;
 };
 
 class StartMenuLibrary: public QObject, public IUKUIPanelPluginLibrary

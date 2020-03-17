@@ -8,3 +8,4 @@ Type=Application
 Icon=panel
 X-UKUI-AutoRestart=true
 OnlyShowIn=UKUI
+X-UKUI-Autostart-Phase=Initialization

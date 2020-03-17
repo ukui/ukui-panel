@@ -78,12 +78,15 @@ signals:
 public slots:
     void onIconDestroyed(QObject * icon);
 
+private slots:
+    void stopTrayStorage();
+
 protected:
     bool event(QEvent *event);//重写窗口事件
+    void leaveEvent(QEvent *);
 
 private:
     VisualID getVisual();
-
 
     int clientMessage(WId _wid, Atom _msg,
                       long unsigned int data0,

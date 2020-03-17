@@ -95,7 +95,6 @@ UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     mLayout->addWidget(bt);
 
     tys= new TrayStorage();
-    tys->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
     connect(bt,SIGNAL(clicked()),this,SLOT(storageBar()));
 }
 
@@ -445,7 +444,7 @@ void UKUITray::addIcon(Window winId)
     else
     icon = new TrayIcon(winId, mIconSize, this);
 
-    if(xfitMan().getApplicationName(winId)=="kylin-nm" |xfitMan().getApplicationName(winId)=="ukui-volume-control-applet-qt" | xfitMan().getApplicationName(winId)=="ukui-flash-disk"  )
+    if(xfitMan().getApplicationName(winId)=="kylin-nm" |xfitMan().getApplicationName(winId)=="ukui-volume-control-applet-qt" | xfitMan().getApplicationName(winId)=="ukui-flash-disk" | xfitMan().getApplicationName(winId)=="ukui-sidebar")
     {
     mIcons.append(icon);
     mLayout->addWidget(icon);

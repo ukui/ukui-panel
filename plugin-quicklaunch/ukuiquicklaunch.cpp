@@ -147,6 +147,7 @@ void UKUIQuickLaunch::realign()
     for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
     {
         (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+        (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
     }
     mLayout->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
@@ -162,7 +163,6 @@ void UKUIQuickLaunch::realign()
         {
             mLayout->setRowCount(panel->lineCount());
             mLayout->setColumnCount(0);
-            btn->setIconSize(QSize(28,28));
         }
         else
         {
@@ -170,7 +170,6 @@ void UKUIQuickLaunch::realign()
             mLayout->setRowCount(0);
         }
     }
-    btn->setIconSize(QSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()));
     mLayout->setEnabled(true);
 }
 
@@ -179,29 +178,10 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
     mLayout->setEnabled(false);
 
     btn = new QuickLaunchButton(action, mPlugin, this);
+    btn->setArrowType(Qt::NoArrow);
+//    btn->setMenu(Qt::InstantPopup);
     mVBtn.push_back(btn);
     mLayout->addWidget(btn);
-    btn->setStyleSheet(
-                //正常状态样式
-                "QToolButton{"
-                "background-color:rgba(190,216,239,0%);"
-                                "border-style:outset;"                  //边框样式（inset/outset）
-                                "border-color:rgba(190,216,239,0%);"    //边框颜色
-//                                "qproperty-iconSize: 28px 28px;"
-                                "border-width:4px;"                     //边框宽度像素
-                                "border-radius:6px;"                   //边框圆角半径像素
-                                "padding:0px;"
-                "}"
-                //鼠标悬停样式
-                "QToolButton:hover{"
-                "background-color:rgba(190,216,239,20%);"
-                "}"
-                //鼠标按下样式
-                "QToolButton:pressed{"
-                "background-color:rgba(190,216,239,12%);"
-                "}"
-
-                );
     btn->setIconSize(QSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()));
     connect(btn, SIGNAL(switchButtons(QuickLaunchButton*,QuickLaunchButton*)), this, SLOT(switchButtons(QuickLaunchButton*,QuickLaunchButton*)));
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
@@ -352,6 +332,16 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
         }
     }
     saveSettings();
+}
+
+void UKUIQuickLaunch::paintEvent(QPaintEvent *)
+{
+    //设置quicklaunch 区域底色
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 bool UKUIQuickLaunch::AddToTaskbar(QString arg)

@@ -1,29 +1,20 @@
-/* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL2+
+/*
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
- * Copyright: 2011 Razor team
- * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.com>
- *   Kuzma Shapran <kuzma.shapran@gmail.com>
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
+ * any later version.
  *
- * Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
- *
- * This program or library is free software; you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * END_COMMON_COPYRIGHT_HEADER */
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
+ *
+ */
 
 #include "ukuitaskwidget.h"
 #include "ukuitaskgroup.h"
@@ -91,14 +82,14 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     setMinimumWidth(1);
     setMinimumHeight(1);
     setAcceptDrops(true);
-    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+//    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
     status=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
     //for layout
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
-    mCloseBtn->setIcon(closePix);
+    mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     mTitleLabel = new QLabel;
     mThumbnailLabel = new QLabel;
     mAppIcon = new QLabel;
@@ -163,6 +154,9 @@ void UKUITaskWidget::updateText()
     KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
     QString title = info.visibleName().isEmpty() ? info.name() : info.visibleName();
     mTitleLabel->setText(title);
+    QPalette pa;
+    pa.setColor(QPalette::WindowText,Qt::white);
+    mTitleLabel->setPalette(pa);
 //    setText(title.replace("&", "&&"));
 //    setToolTip(title);
 }
@@ -621,7 +615,7 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
       case HOVER:
           {
               p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-              p.setPen(Qt::white);
+              p.setPen(Qt::black);
               break;
           }
       case PRESS:

@@ -221,8 +221,19 @@ install(FILES
     COMPONENT Runtime
 )
 
-install(FILES
-    img/setting.svg  img/tick.svg img/up.svg
+install(DIRECTORY
+	./img/
     DESTINATION "${PACKAGE_DATA_DIR}/panel/img"
+)
+
+install(FILES
+    resources/ukui-panel_zh_CN.qm resources/ukui-panel_zh_CN.ts
+    DESTINATION "${PACKAGE_DATA_DIR}/panel/resources"
+    COMPONENT Runtime
+)
+
+install(FILES
+    resources/org.ukui.panel.plugin.gschema.xml
+    DESTINATION "/usr/share/glib-2.0/schemas"
     COMPONENT Runtime
 )

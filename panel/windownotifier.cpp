@@ -1,7 +1,7 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  * (c)LGPL2+
  *
- * Copyright: 2015 UKUi team
+ * Copyright: 2015 LXQt team
  * Authors:
  *   Palo Kisa <palo.kisa@gmail.com>
  *

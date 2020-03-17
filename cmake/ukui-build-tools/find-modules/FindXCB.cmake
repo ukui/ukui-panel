@@ -21,7 +21,7 @@
 #
 #=============================================================================
 # Copyright (c) 2015 Jari Vetoniemi
-#
+# Copyright (c) 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 # Distributed under the OSI-approved BSD License (the "License");
 #
 # This software is distributed WITHOUT ANY WARRANTY; without even the
