@@ -23,8 +23,16 @@ var calendar = null;
 var today = new Date();
 var highlight_day = today.getDate(); // 鼠标选中的日期值，范围1-31
 var year_selector = null;
+var current_ui= null;
 var month_selector = null;
+var month_button = null;
+var year_button = null;
 var hl_script = null;
+var year = null;
+var month = null;
+var scrollUp_count = 0;
+var scrollDown_count = 0;
+
 var div_range = {
     year: {
         x_min: 0,
@@ -46,6 +54,248 @@ var div_range = {
     }
 };
 
+ function addZero(v) {
+    if ( v < 10 ) {
+         return '0' + v;
+    } else {
+        return '' + v;
+        }
+  }
+
+function getTime(d) {
+    return [
+        addZero(d.getHours()),
+        addZero(d.getMinutes()),
+        addZero(d.getSeconds())
+        ].join(':');
+  }
+
+function convertToNormal()
+    {
+        document.getElementById('month_div').className = 'hidden_div';
+        document.getElementById('year_div').className = 'hidden_div';
+        document.getElementById('calendar_table').style.display = "";
+    }
+
+function updateTime() {
+        var timer = null;
+        var today_time = new Date();
+        datetime_container.children[0].innerHTML = getTime(today_time);
+        //alert(datetime_container.children[0].innerHTML);
+        timer = setInterval(function() {
+        var today_time = new Date();
+        datetime_container.children[0].innerHTML = getTime(today_time);
+        }, 500);
+  }
+
+function update_month_ui(mode)
+{
+    var li = document.getElementById('month_div');
+    for(index = 0; index < 16; index++)
+    {
+        li.children[0].children[index].removeEventListener('click', new_month_selected);
+    }
+    var list = null;
+    var bind_click_position = null;
+    var bind_click_count  = 0;
+    if(scrollUp_count %3 ===1)//mode 2 &&the second ui  for month
+   {
+        if(mode === 0)
+        {
+            list = [9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12];//show diff month by scroll  mouse
+            bind_click_position = 4;
+        }
+        else
+        {
+            list = [1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4]; //show diff month by scroll  mouse
+            bind_click_position = 0;
+        }
+   } 
+   else if(scrollUp_count %3 ===2)//mode 3 && the third ui for month
+   {
+       if(mode ===0)//roll up
+       {
+            list = [5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8];   //show diff month by scroll  mouse
+            bind_click_position = 0;//show prev years month,and year need  -1 from this time
+            year--;
+            year_selector.value = year + '年';
+       }
+       else//roll down
+       {
+            list = [9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12];//show diff month by scroll  mouse
+            bind_click_position = 4;  
+       }
+
+   }
+   else//mode 3 && the first ui for month
+   {
+        if(mode === 0)
+        {
+            list = [1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4]; //show diff month by scroll  mouse
+            bind_click_position = 0;
+            // year--;
+            // year_selector.value = year+'年';
+        }
+        else
+        {
+            list = [5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8];   //show diff month by scroll  mouse
+            bind_click_position = 8;//show prev years month,and year need  -1 from this time
+            year_selector.value = year + 1+'年';
+            year++;
+        }
+   }
+   if(mode == 1)
+   {
+       if(scrollUp_count > 0)
+       {
+        scrollUp_count--;
+       }
+       else
+       {
+        scrollUp_count = 2;
+       }
+   }
+   for(var index = 0; index <16; index++)
+   {
+       li.children[0].children[index].innerHTML = list[index]+ '月';
+       if(index >= bind_click_position)
+       {
+            if(scrollUp_count%3 ===2)
+            {
+                if(bind_click_count < 8)
+                {
+                    li.children[0].children[index].style.color  = "#FFFFFFFF";
+                    li.children[0].children[index].addEventListener('click', new_month_selected);
+                    bind_click_count = bind_click_count + 1;
+                }
+                else
+                {
+                    li.children[0].children[index].style.color  = "#FFFFFF33";
+                }
+               continue;
+            }    
+
+            if(bind_click_count < 12) // max bind _count of month click is no more than 12
+            {
+                li.children[0].children[index].style.color  = "#FFFFFFFF";
+                li.children[0].children[index].addEventListener('click', new_month_selected);
+                bind_click_count = bind_click_count + 1;
+            } 
+            else
+            {
+                li.children[0].children[index].style.color  = "#FFFFFF33";
+            }  
+       }
+       else
+       {
+            li.children[0].children[index].style.color  = "#FFFFFF33";
+       }
+   }
+}
+
+function update_year_month_ui()
+{
+    var li = document.getElementById('year_div');
+    for (var index =  0;  index < 16;  index++) {
+        li.children[0].children[index].innerHTML= year + index + '年';
+        // if(index === 0)
+        // {
+        //     li.children[0].children[index].style.backgroundColor = "#2b87a8";
+        // }
+        li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
+        // year_list.appendChild(li);
+        // if (index === year) {
+        //     year_selector.value = index + '年';
+        // }
+    }
+    li = document.getElementById('month_div');
+    for (var index = 0; index < 16; index++) {
+        if(index >=12)
+        {
+            var new_index =  index -12;
+            li.children[0].children[index].style.color  = "#FFFFFF33";
+            li.children[0].children[index].innerHTML = new_index +1+ '月';
+            //li.children[0].children[index].innerHTML = "<font color=rgba(255,255,255,0.2)>1月</font>";
+        }
+        else
+        {
+            li.children[0].children[index].innerHTML = index +1+ '月';
+        }
+        if(index < 12)
+        {
+            li.children[0].children[index].addEventListener('click', new_month_selected);
+        }
+        // month_list.appendChild(li);
+        if (index === month + 1) {
+            month_selector.value = index + '月';
+        }
+    }
+}
+
+function updateUi()
+{
+    year_selector.value = year + '年';
+    update_year_month_ui();
+    // var li = document.getElementById('year_div');
+    // for (var index =  0;  index < 16;  index++) {
+    //     li.children[0].children[index].innerHTML= year + index + '年';
+    //     li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
+    //     // year_list.appendChild(li);
+    //     // if (index === year) {
+    //     //     year_selector.value = index + '年';
+    //     // }
+    // }
+    // li = document.getElementById('month_div');
+    // for (var index = 0; index < 16; index++) {
+    //     if(index >=12)
+    //     {
+    //         var new_index =  index -12;
+    //         li.children[0].children[index].innerHTML = new_index +1+ '月';
+    //     }
+    //     else
+    //     {
+    //         li.children[0].children[index].innerHTML = index +1+ '月';
+    //     }
+    //     li.children[0].children[index].addEventListener('click', new_month_selected);
+    //     // month_list.appendChild(li);
+    //     if (index === month + 1) {
+    //         month_selector.value = index + '月';
+    //     }
+    // }
+}
+
+function scroll_div(event)
+{
+    var e = event||window.event;
+    if(e.wheelDelta > 0)
+    {
+        if(this.id === 'year_div')
+        {
+            year = year - 4;
+        }
+        else if(this.id === 'month_div')
+        {
+            scrollUp_count++;
+            update_month_ui(0);
+            return;
+        }
+    }
+    else
+    {       
+        if(this.id === 'year_div')
+        {
+           year = year + 4;
+        }
+        else if(this.id === 'month_div')
+        {
+            scrollDown_count++;
+            update_month_ui(1);
+            return;
+        }
+    }
+    updateUi();
+}
+
 function update_yiji_area() {
     "use strict";
     var year = parseInt(year_selector.value, 10);
@@ -61,14 +311,14 @@ function update_yiji_area() {
     }
 
     if (typeof HuangLi['y' + year] === 'undefined') {
-        for (var row = 1; row < 5; row++) {
+        for (var row = 0; row < 2; row++) {
             if (hl_table.rows.length === row) {
                 current_row = hl_table.insertRow(row);
             } else {
                 current_row = hl_table.rows[row];
             }
 
-            for (var column = 0; column < 2; column++) {
+            for (var column = 1; column < 5; column++) {
                 if (current_row.cells.length === column) {
                     current_cell = current_row.insertCell(column);
                 } else {
@@ -96,28 +346,45 @@ function update_yiji_area() {
 
     var yi_str = HuangLi['y' + year]['d' + month_str + day_str]['y'];
     var ji_str = HuangLi['y' + year]['d' + month_str + day_str]['j'];
+    var hl_yi_data = yi_str.split('.');
+    var hl_ji_data = ji_str.split('.');
 
-    var hl_data = [yi_str.split('.'), ji_str.split('.')];
-
-    for (var row = 1; row < 5; row++) {
+    for (var row = 0; row < 2; row++) {
         if (hl_table.rows.length === row) {
             current_row = hl_table.insertRow(row);
         } else {
             current_row = hl_table.rows[row];
         }
 
-        for (var column = 0; column < 2; column++) {
+        for (var column = 1; column < 5; column++) {
             if (current_row.cells.length === column) {
                 current_cell = current_row.insertCell(column);
             } else {
                 current_cell = current_row.cells[column];
             }
-
-            if (hl_data[column][row - 1]) {
-                current_cell.innerHTML = hl_data[column][row - 1];
-            } else {
-                current_cell.innerHTML = '';
-            }
+                if(0 == row )
+                {
+                    if(hl_yi_data[column-1])
+                    {
+                        current_cell.innerHTML = hl_yi_data[column-1]; 
+                    }
+                    else
+                    {
+                        current_cell.innerHTML =  ''; 
+                    }
+                    
+                }
+                else
+                {
+                    if(hl_ji_data[column-1])
+                    {
+                        current_cell.innerHTML = hl_ji_data[column-1];
+                    }
+                    else
+                    {
+                        current_cell.innerHTML =''; 
+                    }       
+                }
         }
     }
 }
@@ -141,29 +408,31 @@ function load_hl_script(year) {
 }
 
 window.onload = function () {
-    var checkbox = document.getElementById('checkbox');
+
+    var checkbox = document.getElementById('advice_checkbox');
     if (localStorage.getItem('hl_table') == "display"){
             checkbox.setAttribute("checked", true);    
 	    hl_table.setAttribute("style", "visibility:display");
-	    var zodiac_icon = document.getElementById('zodiac_icon');
-            zodiac_icon.setAttribute("style", "display:none");
+	    //var zodiac_icon = document.getElementById('zodiac_icon');
+            //zodiac_icon.setAttribute("style", "display:none");
     }
 
     checkbox.onclick = function(){
+        console.log("checkbox triggerd");
         if(this.checked){
             var hl_table = document.getElementById('hl_table');
 	    hl_table.setAttribute("style", "visibility:display");
-	    var zodiac_icon = document.getElementById('zodiac_icon');
-            zodiac_icon.setAttribute("style", "display:none");
+	    //var zodiac_icon = document.getElementById('zodiac_icon');
+            //zodiac_icon.setAttribute("style", "display:none");
 
            localStorage.setItem('hl_table', "display");
            
         } else{
             var hl_table = document.getElementById('hl_table');
 	   hl_table.setAttribute("style", "visibility:hidden");
-	   var zodiac_icon = document.getElementById('zodiac_icon');
-           zodiac_icon.setAttribute("style", "display:block");
-	   zodiac_icon.setAttribute("style", "padding-top: 33px");
+	  // var zodiac_icon = document.getElementById('zodiac_icon');
+          // zodiac_icon.setAttribute("style", "display:block");
+	   //zodiac_icon.setAttribute("style", "padding-top: 33px");
            localStorage.setItem('hl_table', "hidden");
        }
     }
@@ -171,83 +440,112 @@ window.onload = function () {
     "use strict";
     
     load_hl_script(today.getFullYear());
-    var year_list = document.getElementById('year_list');
-    var month_list = document.getElementById('month_list');
+    // var year_list = document.getElementById('year_list');
+    // var month_list = document.getElementById('month_list');
 
-    var year = today.getFullYear();
-    var month = today.getMonth();
-
+    year = today.getFullYear();
+    month = today.getMonth();
+    //begin before modify year button
     year_selector = document.getElementById('year_selector');
-    year_selector.addEventListener('click', popup_div);
+    // year_selector.addEventListener('click', popup_div);
 
     month_selector = document.getElementById('month_selector');
-    month_selector.addEventListener('click', popup_div);
+    // month_selector.addEventListener('click', popup_div);
+    //end 
+    // alert("begin");
+    year_button = document.getElementById('year_button');
+    year_button.addEventListener('click', popup_div);
+    // alert("end");
+    month_button= document.getElementById('month_button');
+    month_button.addEventListener('click', popup_div);
+    document.getElementById('year_div').addEventListener('mousewheel',scroll_div);
+    document.getElementById('month_div').addEventListener('mousewheel',scroll_div);
+    // year_button = document.getElementById('year_button');
+    // year_button.addEventListener('click', popup_div);
 
+    // month_button = document.getElementById('month_button');
+    // month_button.addEventListener('click', popup_div);
+    // document.addEventListener('mousewheel', function(event)
+    // {
+    //     //alert("sroll??");
+    // })
     document.addEventListener('click', function(event) {
-        var year_div = document.getElementById('year_div');
-        var month_div = document.getElementById('month_div');
-        var holiday_div = document.getElementById('holiday_div');
-        var x = event.clientX;
-        var y = event.clientY;
+        // var year_div = document.getElementById('year_div');
+        // var month_div = document.getElementById('month_div');
+        // var holiday_div = document.getElementById('holiday_div');
+        // var x = event.clientX;
+        // var y = event.clientY;
 
-        if (year_div.className === 'visible_div') {
-            if (x > div_range.year.x_max || x < div_range.year.x_min ||
-                y > div_range.year.y_max || y < div_range.year.y_min) {
-                year_div.className = 'hidden_div';
-            }
-        }
-        if (month_div.className === 'visible_div') {
-            if (x > div_range.month.x_max || x < div_range.month.x_min ||
-                y > div_range.month.y_max || y < div_range.month.y_min ) {
-                month_div.className = 'hidden_div';
-            }
-        }
-        if (holiday_div.className === 'visible_div') {
-            if (x > div_range.holiday.x_max || x < div_range.holiday.x_min ||
-                y > div_range.holiday.y_max || y < div_range.holiday.y_min ) {
-                holiday_div.className = 'hidden_div';
-            }
-        }
-	var header_id=document.getElementById("header");
-	var header_color=header_id.style.background;
-	var x=document.getElementsByClassName("day_highlight");
-	if (header_color == "rgb(0, 0, 0)"){
-	    for (i = 0; i < x.length; i++) {
-	    	x[i].style.backgroundColor = "#2b87a8";
-	    }
-            var day_highlight_len=document.getElementsByClassName('day_highlight').length;
-            for (var i=0; i<day_today_len; i++){
-                document.getElementsByClassName('day_highlight')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';
-                document.getElementsByClassName('day_highlight')[i].getElementsByClassName('lunar_part ')[0].style.color='#ffffff';
-            }                               
-	}
-	else{
-	    for (i = 0; i < x.length; i++) {
-		x[i].style.backgroundColor = header_color;
-	    }
-	}
+        // if (year_div.className === 'visible_div') {
+        //     if (x > div_range.year.x_max || x < div_range.year.x_min ||
+        //         y > div_range.year.y_max || y < div_range.year.y_min) {
+        //         year_div.className = 'hidden_div';
+        //     }
+        // }
+        // if (month_div.className === 'visible_div') {
+        //     if (x > div_range.month.x_max || x < div_range.month.x_min ||
+        //         y > div_range.month.y_max || y < div_range.month.y_min ) {
+        //         month_div.className = 'hidden_div';
+        //     }
+        // }
+        // if (holiday_div.className === 'visible_div') {
+        //     if (x > div_range.holiday.x_max || x < div_range.holiday.x_min ||
+        //         y > div_range.holiday.y_max || y < div_range.holiday.y_min ) {
+        //         holiday_div.className = 'hidden_div';
+        //     }
+        // }
+	// var header_id=document.getElementById("header");
+	// var header_color=header_id.style.background;
+	// var x=document.getElementsByClassName("day_highlight");
+	// if (header_color == "rgb(0, 0, 0)"){
+	//     for (i = 0; i < x.length; i++) {
+	//     	x[i].style.backgroundColor = "#2b87a8";
+	//     }
+  //           var day_highlight_len=document.getElementsByClassName('day_highlight').length;
+  //           for (var i=0; i<day_today_len; i++){
+  //               document.getElementsByClassName('day_highlight')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';
+  //               document.getElementsByClassName('day_highlight')[i].getElementsByClassName('lunar_part ')[0].style.color='#ffffff';
+  //           }                               
+	// }
+	// else{
+	//     for (i = 0; i < x.length; i++) {
+	// 	x[i].style.backgroundColor = header_color;
+	//     }
+	// }
     });
 
-    for (var index = year_range['low']; index <= year_range['high']; index++) {
-        var li = document.createElement('LI');
-        li.innerHTML = index + '年';
-        li.addEventListener('click', new_month_selected); // new year implies new month
-        year_list.appendChild(li);
-        if (index === year) {
-            year_selector.value = index + '年';
-        }
-    }
+    //pre for show year list
+    // for (var index = year_range['low']; index <= year_range['high']; index++) {
+    //     var li = document.createElement('LI');
+    //     li.innerHTML = index + '年';
+    //     li.addEventListener('click', new_month_selected); // new year implies new month
+    //     year_list.appendChild(li);
+    //     if (index === year) {
+    //         year_selector.value = index + '年';
+    //     }
+    // }
 
-    for (var index = 1; index <= 12; index++) {
-        var li = document.createElement('LI');
-        li.innerHTML = index + '月';
-        li.addEventListener('click', new_month_selected);
-        month_list.appendChild(li);
-        if (index === month + 1) {
-            month_selector.value = index + '月';
-        }
-    }
 
+    // year_selector.value = year + '年';
+    // var li = document.getElementById('year_div');
+    // for (var index =  0;  index < 16;  index++) {
+    //     li.children[0].children[index].innerHTML= year + index + '年';
+    //     li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
+    //     // year_list.appendChild(li);
+    //     // if (index === year) {
+    //     //     year_selector.value = index + '年';
+    //     // }
+    // }
+    // li = document.getElementById('month_div');
+    // for (var index = 0; index < 12; index++) {
+    //     li.children[0].children[index].innerHTML = index +1+ '月';
+    //     li.children[0].children[index].addEventListener('click', new_month_selected);
+    //     // month_list.appendChild(li);
+    //     if (index === month + 1) {
+    //         month_selector.value = index + '月';
+    //     }
+    // }
+    updateUi();
     var goto_arrows = document.getElementsByTagName('input');
     var n_months = (year_range['high'] - year_range['low'] + 1) * 12;
     for (var index = 0; index < goto_arrows.length; index++) {
@@ -274,11 +572,9 @@ window.onload = function () {
 
             year_selector.value = Math.floor(month_offset / 12) + year_range['low'] + '年';
             month_selector.value = month_offset % 12 === 0 ? 1 : month_offset % 12 + 1 + '月';
-
             create_page(parseInt(year_selector.value), parseInt(month_selector.value));
         });
     }
-
     var holidays = ['元旦节', '春节', '清明节', '劳动节', '端午节', '中秋节', '国庆节'];
     var holiday_list = document.getElementById('holiday_list');
     for (var index = 0; index < holidays.length; index++) {
@@ -287,20 +583,22 @@ window.onload = function () {
         li.addEventListener('click', go_to_holiday);
         holiday_list.appendChild(li);
     }
-    var holiday_button = document.getElementById('holiday_button');
-    holiday_button.addEventListener('click', popup_div);
+    //var holiday_button = document.getElementById('holiday_button');
+    //holiday_button.addEventListener('click', popup_div);
 
     var today_button = document.getElementById('today_button');
     today_button.addEventListener('click', function() {
         year_selector.value = today.getFullYear() + '年';
         month_selector.value = today.getMonth() + 1 + '月';
         highlight_day = today.getDate();
+        convertToNormal();
+        year = today.getFullYear();
+        month =  today.getMonth();
         create_page(today.getFullYear(), today.getMonth() + 1);
 	var header_id=document.getElementById("header");
 	var header_color=header_id.style.background;
 	var x=document.getElementsByClassName("day_today");
 	var i;
-    alert(header_color);
 	if (header_color == "rgb(0, 0, 0)"){
 	    for (i = 0; i < x.length; i++) {
 		x[i].style.backgroundColor = "#3593b5";
@@ -312,17 +610,16 @@ window.onload = function () {
 	    }
 	}
     });
-
+    
     calendar = document.getElementById('calendar_table');
     create_page(parseInt(year_selector.value), parseInt(month_selector.value));
 }
 
 function create_page(year, month) {
+    console.log(calendar.rows.length);
     if (year < year_range['low'] || year > year_range['high'])
         return;
-
     var month_stuff = LunarCalendar.calendar(year, month, true);
-
     highlight_day = highlight_day > month_stuff['monthDays'] ? month_stuff['monthDays'] : highlight_day;
 
     var current_row = null;
@@ -349,20 +646,20 @@ function create_page(year, month) {
             } else {
                 current_cell = current_row.cells[column];
             }
-	    var header_id=document.getElementById("header");
-	    var header_color=header_id.style.background;
-	    if (header_color == "rgb(0, 0, 0)"){
-	        var x=document.getElementsByClassName("day_highlight");
-	    	for (i = 0; i < x.length; i++) {
-		    x[i].style.backgroundColor = "#151a1e";
-	        }
-	    }
-	    else{
-	        var x=document.getElementsByClassName("day_highlight");
-	    	for (i = 0; i < x.length; i++) {
-		    x[i].style.backgroundColor = "#ffffff";
-	        }
-	    }
+	    // var header_id=document.getElementById("header");
+	    // var header_color=header_id.style.background;
+	    // if (header_color == "rgb(0, 0, 0)"){
+	    //     var x=document.getElementsByClassName("day_highlight");
+	    // 	for (i = 0; i < x.length; i++) {
+		  //   x[i].style.backgroundColor = "#151a1e";
+	    //     }
+	    // }
+	    // else{
+	    //     var x=document.getElementsByClassName("day_highlight");
+	    // 	for (i = 0; i < x.length; i++) {
+		  //   x[i].style.backgroundColor = "#ffffff";
+	    //     }
+	    // }
 	        x=document.getElementsByClassName("day_today");
 	        for (i = 0; i < x.length; i++) {
 	    	    x[i].style.backgroundColor = "#3593b5";
@@ -403,25 +700,48 @@ function create_page(year, month) {
             if (month_stuff['monthData'][index]['worktime'] === 2) {
                 worktime = document.createElement("SPAN");
                 worktime.className = 'worktime2';
-                worktime.innerHTML = '休';
+                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/xiuxi.png" align="left" width = "18px" height = "18px"></td> </tr>';
             } else if (month_stuff['monthData'][index]['worktime'] === 1) {
                 worktime = document.createElement("SPAN");
                 worktime.className = 'worktime1';
-                worktime.innerHTML = '班';
+                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/shangban.png" align="left" width = "18px" height = "18px"></td> </tr>';
             } else {
 
             }
-
-            current_cell.innerHTML = '<span class="solar_part">' +
+                 /*myworktime.innerHTML =   '<span class="solar_part">' +
+                                     month_stuff['monthData'][index]['day'] +
+                                     '</span>' +
+                                     '<br />' +
+                                     '<span class="lunar_part">' +
+                                     lunar_day +
+                                     '</span>';*/
+            if (worktime && current_cell.className !== 'day_other_month') {
+                //current_cell.appendChild(worktime);
+                // <td><div id="aa"></div></td>
+                //  document.getElementById('aa').innerHTML = worktime.innerHTML;
+                 current_cell.innerHTML = worktime.innerHTML+
+                                      '<br />'+ 
+                                    '<span class="solar_part" > ' +
                                      month_stuff['monthData'][index]['day'] +
                                      '</span>' +
                                      '<br />' +
                                      '<span class="lunar_part">' +
                                      lunar_day +
                                      '</span>';
-            if (worktime && current_cell.className !== 'day_other_month') {
-                current_cell.appendChild(worktime);
+                // current_cell.innerHTML =  '<tr style="background: green"><td>1</td><td>2</td><td>3</td></tr>'
+                // +'<br />' + '<tr style="background: green"><td>4</td><td>5</td><td>6</td></tr>'+
+                // '<br />' +'<tr style="background: green"><td>7</td><td>8</td><td>9</td></tr>';
             }
+            else
+			{
+                 current_cell.innerHTML =   '<span class="solar_part">' +
+                                     month_stuff['monthData'][index]['day'] +
+                                     '</span>' +
+                                     '<br />' +
+                                     '<span class="lunar_part">' +
+                                     lunar_day +
+                                     '</span>';
+			}
         }
     }
 
@@ -450,66 +770,118 @@ function create_page(year, month) {
 }
 
 function new_month_selected() {
-    if (this.parentNode.id === 'year_list') {
+    console.log(year_selector.value);
+    console.log(month_selector.value);
+    if (this.parentNode.className=== 'show_years') {
         year_selector.value = this.innerHTML;
         document.getElementById('year_div').className = 'hidden_div';
-    } else if (this.parentNode.id === 'month_list') {
+        calendar.style.display = "";
+    } else if (this.parentNode.className=== 'show_months') {
         month_selector.value = this.innerHTML;
         document.getElementById('month_div').className = 'hidden_div';
+        calendar.style.display = "";
     }
-
+    console.log(year_selector.value);
+    console.log(month_selector.value);
     create_page(parseInt(year_selector.value), parseInt(month_selector.value));
 }
+
+
+
+// var scrollFunc=function(e){ 
+
+//     e=e || window.event;
+
+//     if(e.wheelDelta){//IE/Opera/Chrome 
+
+//         t1.value=e.wheelDelta; 
+
+//     }
+
+//     } 
+
+// } 
+
+/*注册事件*/ 
+
+// if(document.addEventListener){ 
+
+//     document.addEventListener('DOMMouseScroll',scrollFunc,false); 
+
+// }
+
+// window.onmousewheel=document.onmousewheel=scrollFunc;//IE/Opera/Chrome 
+
+// if(e.wheelDelta){//IE/Opera/Chrome
+
+//     t1.value=e.wheelDelta;
+    
+//     }
+    
+
 
 function popup_div(event) {
     var x = event.clientX - event.offsetX;
     var y = event.clientY - event.offsetY;
     var div;
-
     // TODO
     var width = 64;
     var height = 20;
-    if (this.id === 'year_selector') {
+    if (this.id === 'year_button') {
         div = document.getElementById('year_div');
 
         div_range.year.x_min = x;
         div_range.year.x_max = x + width;
         div_range.year.y_min = y;
         div_range.year.y_max = y + height;
-    } else if (this.id === 'month_selector') {
+
+        if (div.className === 'hidden_div') {
+            div.className = 'visible_div';
+            document.getElementById('month_div').className = 'hidden_div';
+            calendar.style.display = "none";
+        } else {
+            div.className = 'hidden_div';
+            calendar.style.display = "";
+        }
+    } else if (this.id === 'month_button') {
         div = document.getElementById('month_div');
 
         div_range.month.x_min = x;
         div_range.month.x_max = x + width;
         div_range.month.y_min = y;
         div_range.month.y_max = y + height;
-    } else if (this.id === 'holiday_button') {
-        div = document.getElementById('holiday_div');
-        div.style.width = '64px';
-        div.style.height = '100px';
 
-        div_range.holiday.x_min = x;
-        div_range.holiday.x_max = x + width;
-        div_range.holiday.y_min = y;
-        div_range.holiday.y_max = y + height;
-    }else {
+        if (div.className === 'hidden_div') {
+            div.className = 'visible_div';
+            document.getElementById('year_div').className = 'hidden_div';
+            calendar.style.display = "none";
+        } else {
+            div.className = 'hidden_div';
+            calendar.style.display = "";
+        }
+    } else {
         return;
     }
 
-    if (div.className === 'hidden_div') {
-        div.className = 'visible_div';
-    } else {
-        div.className = 'hidden_div';
-    }
+    // if (div.className === 'hidden_div') {
+    //     div.className = 'visible_div';
+    //     calendar.style.display = "none";
+    // } else {
+    //     div.className = 'hidden_div';
+    //     calendar.style.display = "";
+    // }
 
     div.style.left = x + 'px';
     div.style.top = y + height + 'px';
+    update_year_month_ui();
+    //updateUi();
 }
 
 function update_right_pane(year, month, day) {
     var month_stuff = LunarCalendar.calendar(year, month, true);
 
     var general_datetime_list = document.getElementById('general_datetime_list');
+    var datetime_container = document.getElementById('datetime_container');
     var highlight_index = month_stuff['firstDay'] + day - 1;
     var lunar_month_name = month_stuff['monthData'][highlight_index]['lunarMonthName'];
     var lunar_day_name = month_stuff['monthData'][highlight_index]['lunarDayName'];
@@ -527,13 +899,14 @@ function update_right_pane(year, month, day) {
     if (day <= 9) {
         day_str = '0' + day;
     }
+    datetime_container.children[1].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday  + ' '+lunar_month_name + lunar_day_name;
 
-    general_datetime_list.children[0].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday;
+   /* general_datetime_list.children[0].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday;
     general_datetime_list.children[1].innerHTML = day_str; // e.g. 06
-    general_datetime_list.children[2].innerHTML = lunar_month_name + lunar_day_name;
-    general_datetime_list.children[3].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】';
-    general_datetime_list.children[4].innerHTML = ganzhi_month + '月 ' + ganzhi_day + '日';
-
+    general_datetime_list.children[2].innerHTML = lunar_month_name + lunar_day_name;*/
+    general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
+   // general_datetime_list.children[1].innerHTML = ganzhi_month + '月 ' + ganzhi_day + '日';
+   updateTime();
     update_yiji_area();
 
     month_stuff = null;
