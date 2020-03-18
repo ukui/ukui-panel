@@ -140,8 +140,8 @@ function update_month_ui(mode)
         {
             list = [5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8];   //show diff month by scroll  mouse
             bind_click_position = 8;//show prev years month,and year need  -1 from this time
-            year_selector.value = year + 1+'年';
             year++;
+            year_selector.value = year +'年';
         }
    }
    if(mode == 1)
@@ -210,6 +210,8 @@ function update_year_month_ui()
     }
     li = document.getElementById('month_div');
     for (var index = 0; index < 16; index++) {
+        li.children[0].children[index].removeEventListener('click', new_month_selected);
+        li.children[0].children[index].style.color  = "#FFFFFFFF";
         if(index >=12)
         {
             var new_index =  index -12;
@@ -595,6 +597,7 @@ window.onload = function () {
         year = today.getFullYear();
         month =  today.getMonth();
         create_page(today.getFullYear(), today.getMonth() + 1);
+        update_year_month_ui();
 	var header_id=document.getElementById("header");
 	var header_color=header_id.style.background;
 	var x=document.getElementsByClassName("day_today");
