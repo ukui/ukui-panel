@@ -440,7 +440,7 @@ void IndicatorCalendar::activated(ActivationReason reason)
 //        QString  htmlFilePath = QLatin1String(PACKAGE_DATA_DIR);
 //        htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui.html");
 
-        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(480,400)));
+        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(454,704)));
         mWebViewDiag->show();
         setbackground();
         if(!mbActived)

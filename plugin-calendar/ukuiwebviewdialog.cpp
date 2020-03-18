@@ -61,7 +61,7 @@ void UkuiWebviewDialog::creatwebview()
         /*set window no margins*/
         mWebView->setWindowFlags(Qt::FramelessWindowHint);
         /*set window size*/
-        mWebView->resize(480,400);
+        mWebView->resize(454,704);
         mWebView->settings()->setAttribute(QWebSettings::JavascriptEnabled,true);
         mWebView->settings()->setAttribute(QWebSettings::WebAttribute::LocalStorageEnabled, true);
         mWebView->setContextMenuPolicy(Qt::NoContextMenu);
