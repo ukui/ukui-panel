@@ -73,11 +73,17 @@ body {
   margin-left: 30px;
   padding:0;
   text-align: right;
+  height: 36px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   float:left
 }
 #month_selector {
   padding:0;
   text-align: left;
+  height: 36px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   float:left
 }
 
@@ -194,34 +200,44 @@ margin-bottom: 4px;
 
 #selector_div #go_prev_month {
   margin-right: 10px;
-  width: 15px;
+  width: 32px;
+  height: 32px;
   background-image: url("images/prev.png");
   background-repeat: no-repeat;
   background-position: center;
-  float: left;
+  background-size:100% 100%;
+  /* float: left; */
 }
 
 #selector_div #go_next_month {
   margin-left: 10px;
-  width: 15px;
+  width: 32px;
+  height: 32px;
   background-image: url("images/next.png");
   background-repeat: no-repeat;
   background-position: center;
-  float: left;
+  background-size:100% 100%;
+  /* float: left; */
 }
 
 #selector_div #today_button {
   margin-right: 30px;
+  width: 36px;
+  height: 36px;
   float: right;
 }
 
 #selector_div #month_button {
   margin-right: 30px;
+  width: 36px;
+  height: 36px;
   float: right;
 }
 
 #selector_div #year_button {
   margin-right: 30px;
+  width: 36px;
+  height: 36px;
   float: right;
 }
 
