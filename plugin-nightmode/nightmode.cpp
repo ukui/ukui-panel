@@ -46,23 +46,24 @@ void NightMode::realign()
 }
 
 NightModeButton::NightModeButton(){
-    gsettings= new QGSettings("org.ukui.panel.plugins", "", this);
+    gsettings= new QGSettings("org.ukui.control-center.panel.plugins", "", this);
     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
 }
 NightModeButton::~NightModeButton(){
+    delete gsettings;
 }
 void NightModeButton::mousePressEvent(QMouseEvent* event)
 {
     const Qt::MouseButton b = event->button();
     if (Qt::LeftButton == b){
-        QString mode=gsettings->get("nightmode").toString();
-        if(mode==NIGHE_MODE_NIGHT){
+        bool mode=gsettings->get("nightmode").toBool();
+        if(mode==true){
         this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-        gsettings->set("nightmode", NIGHT_MODE_LIGHT);
+        gsettings->set("nightmode", false);
         }
         else{
         this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
-        gsettings->set("nightmode", NIGHE_MODE_NIGHT);
+        gsettings->set("nightmode", true);
         }
     }
     QWidget::mousePressEvent(event);
