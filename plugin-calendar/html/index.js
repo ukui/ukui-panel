@@ -552,8 +552,49 @@ window.onload = function () {
     var n_months = (year_range['high'] - year_range['low'] + 1) * 12;
     for (var index = 0; index < goto_arrows.length; index++) {
         goto_arrows[index].addEventListener('click', function() {
+
             var year = parseInt(year_selector.value);
             var month = parseInt(month_selector.value);
+            //page  the year ui
+            if(document.getElementById('year_div').className ==='visible_div')
+            {
+                 var li = document.getElementById('year_div');
+                if(this.id === 'go_prev_month')
+                {
+                    year = year -16;
+                    year_selector.value = year + '年';
+                    for (var index =  0;  index < 16;  index++) {
+                        li.children[0].children[index].innerHTML= year + index + '年';
+                        li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
+                    }
+                }
+                else if(this.id === 'go_next_month')
+                {
+                    year = year + 16;
+                    year_selector.value = year + '年';
+                    for (var index =  0;  index < 16;  index++) {
+                        li.children[0].children[index].innerHTML= year + index + '年';
+                        li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
+                    }
+                }
+                return;
+            }
+            else if(document.getElementById('month_div').className ==='visible_div')//page the month ui
+            {
+                if(this.id === 'go_prev_month')
+                {
+                    year --;
+                    year_selector.value = year + '年';
+                }
+                else if(this.id === 'go_next_month')
+                {
+                    year++;
+                    year_selector.value = year + '年';
+                }     
+                return;
+            }
+            // var year = parseInt(year_selector.value);
+            // var month = parseInt(month_selector.value);
             var month_offset = (year - year_range['low']) * 12 + month - 1; // [0, n_months - 1]
 
             if (this.id === 'go_prev_year') {
