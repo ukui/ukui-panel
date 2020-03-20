@@ -312,6 +312,7 @@ margin-bottom: 4px;
   font-size: 14px;
   text-align: left;
   color: #FFFFFFA6;
+
 }
 
 
@@ -371,12 +372,12 @@ margin-bottom: 4px;
 .item:active {
   background: #e4f0fc;
 }
-.item span{
+/* .item span{
   height: 80;
   width: 80;
   display:block;
   background-color:#7eb4ea;
-}
+} */
 /* .visible_div {
   width: 454;
   height:440;
