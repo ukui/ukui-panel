@@ -99,7 +99,7 @@
 
 #=============================================================================
 # Copyright 2014 Alex Merry <alex.merry@kde.org>
-#
+# Copyright (c) 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:

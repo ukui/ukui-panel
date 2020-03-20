@@ -1,3 +1,20 @@
+ukui-panel (2.0.1-1) unstable; urgency=medium
+
+  * New upstream release:
+    - Fix build under Arch.
+    - Fix the error when click calendar.
+    - Fix the error when show preview.
+    - Adjust the style.
+    - Add dbus interface.
+    - Add disk plugin.
+    - Add close button to preview.
+    - Add tray storage area.
+  * debian/control:
+    - Add libpoppler-dev, libpopplet-qt5-dev and libpeony-dev to
+      build-depends.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 12 Mar 2020 10:45:13 +0800
+
 ukui-panel (2.0.0-1) unstable; urgency=medium
 
   * New upstream release.

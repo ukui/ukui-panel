@@ -2,8 +2,8 @@
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
  * any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -31,7 +31,6 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     IUKUIPanelPlugin(startupInfo)
 {
     realign();
-
 }
 
 
@@ -137,32 +136,6 @@ void TaskViewWidget::contextMenuEvent(QContextMenuEvent *event) {
 
 void TaskViewWidget::paintEvent(QPaintEvent *)
 {
-//        CustomStyle opt;
-////        opt.initFrom(this);
-//        QPainter p(this);
-
-//        switch(taskviewstatus)
-//          {
-//          case NORMAL:
-//              {
-//                  p.setBrush(QBrush(QColor(0xBE,0xD8,0xEF,0x00)));
-//                  p.setPen(Qt::NoPen);
-//                  break;
-//              }
-//          case HOVER:
-//              {
-//                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-//                  p.setPen(Qt::NoPen);
-//                  break;
-//              }
-//          case PRESS:
-//              {
-//                  p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
-//                  p.setPen(Qt::NoPen);
-//                  break;
-//              }
-//          }
-//        p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-//        p.drawRoundedRect(opt.rect,6,6);
-//        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
+
