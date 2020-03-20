@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=ukui flash disk
+comment=Ukui Flash Disk
+Comment[zh_CN]=u盘管理工具
+Exec=ukui-flash-disk
+Terminal=false
+Type=Application
+Icon=panel
+X-UKUI-AutoRestart=true
+OnlyShowIn=UKUI

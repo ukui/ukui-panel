@@ -12,6 +12,7 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
 endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(PEONY REQUIRED peony)
@@ -20,11 +21,15 @@ message(${PEONY_LIBRARIES})
 
 include_directories(${PEONY_INCLUDE_DIRS})
 add_executable(ukui-flash-disk
+    ukui-flash-disk.qrc
+    disk-resources/ukui-flash-disk_zh_CN.ts
     main.cpp
     mainwindow.cpp
     qclickwidget.cpp
     UnionVariable.cpp
     UnionVariable.h
+    ejectInterface.cpp
+    ejectInterface.h
         mainwindow.ui
         mainwindow.h
         qclickwidget.h
@@ -33,12 +38,18 @@ add_executable(ukui-flash-disk
 
 add_definitions(-DQT_NO_KEYWORDS)
 
-target_link_libraries(${PROJECT_NAME}  Qt5::Widgets ${PEONY_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${PEONY_LIBRARIES})
 
 install(TARGETS ukui-flash-disk DESTINATION bin)
 
 install(FILES
-    ukui-flash-disk.desktop
+    disk-resources/ukui-flash-disk.desktop
     DESTINATION "/etc/xdg/autostart/"
+    COMPONENT Runtime
+)
+
+install(FILES
+    ukui-flash-disk.qrc disk-resources/ukui-flash-disk_zh_CN.qm
+    DESTINATION "/usr/share/ukui/ukui-panel/"
     COMPONENT Runtime
 )

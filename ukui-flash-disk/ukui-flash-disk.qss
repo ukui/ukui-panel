@@ -1,0 +1,14 @@
+QToolTip{
+    height: 98px;
+    width: 38px;
+    padding-left: 4px;
+    padding-right: 4x;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-style: solid;
+    font-size:14px;
+    color:rgba(255,255,255,1);
+    background:rgba(26,26,26,0.7);
+    border:1px solid rgba(255, 255, 255, 0.2);
+    border-radius:6px;
+}
