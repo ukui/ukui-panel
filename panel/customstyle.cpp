@@ -21,6 +21,34 @@
 #include <QStyleOptionToolButton>
 #include <QPainter>
 #include <QApplication>
+
+#if QT_CONFIG(toolbutton)
+static void drawArrow(const QStyle *style, const QStyleOptionToolButton *toolbutton,
+                      const QRect &rect, QPainter *painter, const QWidget *widget = 0)
+{
+    QStyle::PrimitiveElement pe;
+    switch (toolbutton->arrowType) {
+    case Qt::LeftArrow:
+        pe = QStyle::PE_IndicatorArrowLeft;
+        break;
+    case Qt::RightArrow:
+        pe = QStyle::PE_IndicatorArrowRight;
+        break;
+    case Qt::UpArrow:
+        pe = QStyle::PE_IndicatorArrowUp;
+        break;
+    case Qt::DownArrow:
+        pe = QStyle::PE_IndicatorArrowDown;
+        break;
+    default:
+        return;
+    }
+    QStyleOption arrowOpt = *toolbutton;
+    arrowOpt.rect = rect;
+    style->drawPrimitive(pe, &arrowOpt, painter, widget);
+}
+#endif // QT_CONFIG(toolbutton)
+
 CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
 {
 
@@ -29,25 +57,179 @@ CustomStyle::~CustomStyle()
 {
 };
 
-void CustomStyle::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
+void CustomStyle::drawComplexControl(QStyle::ComplexControl cc, const QStyleOptionComplex *opt, QPainter *p, const QWidget *widget) const
 {
 
-    if(control == CC_ToolButton)
-    {
-        /// 我们需要获取ToolButton的详细信息，通过qstyleoption_cast可以得到
-        /// 对应的option，通过拷贝构造函数得到一份备份用于绘制子控件
-        /// 我们一般不用在意option是怎么得到的，大部分的Qt控件都能够提供了option的init方法
+//    if(control == CC_ToolButton)
+//    {
+//        /// 我们需要获取ToolButton的详细信息，通过qstyleoption_cast可以得到
+//        /// 对应的option，通过拷贝构造函数得到一份备份用于绘制子控件
+//        /// 我们一般不用在意option是怎么得到的，大部分的Qt控件都能够提供了option的init方法
 
+//    }
+    switch (cc) {
+    case CC_ToolButton:
+        if (const QStyleOptionToolButton *toolbutton
+            = qstyleoption_cast<const QStyleOptionToolButton *>(opt)) {
+            QRect button, menuarea;
+            button = proxy()->subControlRect(cc, toolbutton, SC_ToolButton, widget);
+            menuarea = proxy()->subControlRect(cc, toolbutton, SC_ToolButtonMenu, widget);
+
+            State bflags = toolbutton->state & ~State_Sunken;
+
+            if (bflags & State_AutoRaise) {
+                if (!(bflags & State_MouseOver) || !(bflags & State_Enabled)) {
+                    bflags &= ~State_Raised;
+                }
+            }
+            State mflags = bflags;
+            if (toolbutton->state & State_Sunken) {
+                if (toolbutton->activeSubControls & SC_ToolButton)
+                    bflags |= State_Sunken;
+                mflags |= State_Sunken;
+            }
+
+            QStyleOption tool = *toolbutton;
+            if (toolbutton->subControls & SC_ToolButton) {
+                if (bflags & (State_Sunken | State_On | State_Raised)) {
+                    tool.rect = button;
+                    tool.state = bflags;
+                    proxy()->drawPrimitive(PE_PanelButtonTool, &tool, p, widget);
+                }
+            }
+
+            if (toolbutton->state & State_HasFocus) {
+                QStyleOptionFocusRect fr;
+                fr.QStyleOption::operator=(*toolbutton);
+                fr.rect.adjust(3, 3, -3, -3);
+                if (toolbutton->features & QStyleOptionToolButton::MenuButtonPopup)
+                    fr.rect.adjust(0, 0, -proxy()->pixelMetric(QStyle::PM_MenuButtonIndicator,
+                                                      toolbutton, widget), 0);
+                proxy()->drawPrimitive(PE_FrameFocusRect, &fr, p, widget);
+            }
+            QStyleOptionToolButton label = *toolbutton;
+            label.state = bflags;
+            int fw = proxy()->pixelMetric(PM_DefaultFrameWidth, opt, widget);
+            label.rect = button.adjusted(fw, fw, -fw, -fw);
+            proxy()->drawControl(CE_ToolButtonLabel, &label, p, widget);
+
+            if (toolbutton->subControls & SC_ToolButtonMenu) {
+                tool.rect = menuarea;
+                tool.state = mflags;
+                if (mflags & (State_Sunken | State_On | State_Raised))
+                    proxy()->drawPrimitive(PE_IndicatorButtonDropDown, &tool, p, widget);
+                proxy()->drawPrimitive(PE_IndicatorArrowDown, &tool, p, widget);
+            } else if (toolbutton->features & QStyleOptionToolButton::HasMenu) {
+                int mbi = proxy()->pixelMetric(PM_MenuButtonIndicator, toolbutton, widget);
+                QRect ir = toolbutton->rect;
+                QStyleOptionToolButton newBtn = *toolbutton;
+                newBtn.rect = QRect(ir.right() + 5 - mbi, ir.y() + ir.height() - mbi + 4, mbi - 6, mbi - 6);
+                newBtn.rect = visualRect(toolbutton->direction, button, newBtn.rect);
+                //proxy()->drawPrimitive(PE_IndicatorArrowDown, &newBtn, p, widget);
+            }
+        }
+        return;
+    default:
+        break;
     }
-    return QProxyStyle::drawComplexControl(control, option, painter, widget);
+    return QProxyStyle::drawComplexControl(cc, opt, p, widget);
 
 
 }
 
-void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption *opt, QPainter *p, const QWidget *widget) const
 {
+    switch (element) {
+    case CE_ToolButtonLabel:
+    {
+        if (const QStyleOptionToolButton *toolbutton
+                = qstyleoption_cast<const QStyleOptionToolButton *>(opt)) {
+            QRect rect = toolbutton->rect;
+            int shiftX = 0;
+            int shiftY = 0;
+//            if (toolbutton->state & (State_Sunken | State_On)) {
+//                shiftX = proxy()->pixelMetric(PM_ButtonShiftHorizontal, toolbutton, widget);
+//                shiftY = proxy()->pixelMetric(PM_ButtonShiftVertical, toolbutton, widget);
+//            }
+            // Arrow type always overrules and is always shown
+            bool hasArrow = toolbutton->features & QStyleOptionToolButton::Arrow;
+            if (((!hasArrow && toolbutton->icon.isNull()) && !toolbutton->text.isEmpty())
+                || toolbutton->toolButtonStyle == Qt::ToolButtonTextOnly) {
+                int alignment = Qt::AlignCenter | Qt::TextShowMnemonic;
+                if (!proxy()->styleHint(SH_UnderlineShortcut, opt, widget))
+                    alignment |= Qt::TextHideMnemonic;
+                rect.translate(shiftX, shiftY);
+                p->setFont(toolbutton->font);
+                proxy()->drawItemText(p, rect, alignment, toolbutton->palette,
+                             opt->state & State_Enabled, toolbutton->text,
+                             QPalette::ButtonText);
+            } else {
+                QPixmap pm;
+                QSize pmSize = toolbutton->iconSize;
+                if (!toolbutton->icon.isNull()) {
+                    QIcon::State state = toolbutton->state & State_On ? QIcon::On : QIcon::Off;
+                    QIcon::Mode mode;
+                    if (!(toolbutton->state & State_Enabled))
+                        mode = QIcon::Disabled;
+                    else if ((opt->state & State_MouseOver) && (opt->state & State_AutoRaise))
+                        mode = QIcon::Active;
+                    else
+                        mode = QIcon::Normal;
+                    pm = toolbutton->icon.pixmap(widget->window()->windowHandle(), toolbutton->rect.size().boundedTo(toolbutton->iconSize),
+                                                 mode, state);
+                    pmSize = pm.size() / pm.devicePixelRatio();
+                }
 
-    return QProxyStyle::drawControl(element, option, painter, widget);
+                if (toolbutton->toolButtonStyle != Qt::ToolButtonIconOnly) {
+                    p->setFont(toolbutton->font);
+                    QRect pr = rect,
+                    tr = rect;
+                    int alignment = Qt::TextShowMnemonic;
+                    if (!proxy()->styleHint(SH_UnderlineShortcut, opt, widget))
+                        alignment |= Qt::TextHideMnemonic;
+
+                    if (toolbutton->toolButtonStyle == Qt::ToolButtonTextUnderIcon) {
+                        pr.setHeight(pmSize.height() + 4); //### 4 is currently hardcoded in QToolButton::sizeHint()
+                        tr.adjust(0, pr.height() - 1, 0, -1);
+                        pr.translate(shiftX, shiftY);
+                        if (!hasArrow) {
+                            proxy()->drawItemPixmap(p, pr, Qt::AlignCenter, pm);
+                        } else {
+                            drawArrow(proxy(), toolbutton, pr, p, widget);
+                        }
+                        alignment |= Qt::AlignCenter;
+                    } else {
+                        pr.setWidth(pmSize.width() + 4); //### 4 is currently hardcoded in QToolButton::sizeHint()
+                        tr.adjust(pr.width(), 0, 0, 0);
+                        pr.translate(shiftX, shiftY);
+                        if (!hasArrow) {
+                            proxy()->drawItemPixmap(p, QStyle::visualRect(opt->direction, rect, pr), Qt::AlignCenter, pm);
+                        } else {
+                            drawArrow(proxy(), toolbutton, pr, p, widget);
+                        }
+                        alignment |= Qt::AlignLeft | Qt::AlignVCenter;
+                    }
+                    tr.translate(shiftX, shiftY);
+                    //const QString text = d->toolButtonElideText(toolbutton, tr, alignment);
+                    proxy()->drawItemText(p, QStyle::visualRect(opt->direction, rect, tr), alignment, toolbutton->palette,
+                                 toolbutton->state & State_Enabled, toolbutton->text,
+                                 QPalette::ButtonText);
+                } else {
+                    rect.translate(shiftX, shiftY);
+                    if (hasArrow) {
+                        drawArrow(proxy(), toolbutton, rect, p, widget);
+                    } else {
+                        proxy()->drawItemPixmap(p, rect, Qt::AlignCenter, pm);
+                    }
+                }
+            }
+        }
+        return;
+    }
+    default:
+        break;
+    }
+    return QProxyStyle::drawControl(element, opt, p, widget);
 }
 
 void CustomStyle::drawItemPixmap(QPainter *painter, const QRect &rectangle, int alignment, const QPixmap &pixmap) const
@@ -81,7 +263,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
                painter->setRenderHint(QPainter::Antialiasing,true);
                painter->setPen(Qt::NoPen);
                painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
-               painter->drawRoundedRect(option->rect,6,6);
+               painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
            }
         }
     painter->restore();

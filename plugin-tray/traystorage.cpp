@@ -82,7 +82,8 @@ TrayStorage::TrayStorage( QWidget *parent):
     mLayout->setRowCount(3);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
 //    setWindowFlags(/*Qt::FramelessWindowHint |*/ Qt::WindowStaysOnTopHint | Qt::ToolTip);
-    setWindowFlags(Qt::FramelessWindowHint );
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+//    setWindowFlags(Qt::FramelessWindowHint );
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     QTimer::singleShot(0, this, SLOT(startTray()));
 }
@@ -208,12 +209,10 @@ void TrayStorage::paintEvent(QPaintEvent *)
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
-
     p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
     p.setPen(Qt::NoPen);
-
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    p.drawRoundedRect(opt.rect,15,15);
+    p.drawRoundedRect(opt.rect,6,6);
     style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
 }
 

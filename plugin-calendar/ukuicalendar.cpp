@@ -40,12 +40,17 @@
 #include <QDebug>
 #include <QApplication>
 #include <QtWebKit/qwebsettings.h>
+#include <QStyleOption>
 #include <glib.h>
 #include <gio/gio.h>
-
 #define CALENDAR_HEIGHT (40)
 #define CALENDAR_WIDTH (85)
 
+#define HOUR_SYSTEM_CONTROL "org.ukui.control-center.panel.plugins"
+#define HOUR_SYSTEM_24_Horizontal "hh:mm dddd  yyyy-MM-dd"
+#define HOUR_SYSTEM_24_Vertical "hh:mm dddd  MM-dd"
+#define HOUR_SYSTEM_12_Horizontal   "hh/A:mm dddd  yyyy-MM-dd"
+#define HOUR_SYSTEM_12_Vertical   "hh/A:mm dddd  MM-dd"
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
     IUKUIPanelPlugin(startupInfo),
@@ -82,6 +87,18 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
     connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
+    const QByteArray id(HOUR_SYSTEM_CONTROL);
+    if(QGSettings::isSchemaInstalled(id)) {
+    //        qDebug()<<"isSchemaInstalled"<<endl;
+            gsettings = new QGSettings(id);
+
+            connect(gsettings, &QGSettings::changed, this, [=] (const QString &key) {
+                qDebug()<<"status changed ------------>"<<endl;
+                if (key == "hour-system") {
+                    updateTimeText();
+                }
+            });
+        }
 
     setTimeShowStyle();
     mContent->setStyleSheet(
@@ -89,7 +106,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
                 "QLabel{"
                 /*"background-color:rgba(100,225,100,80%);"//背景色（也可以设置图片）*/
                 "border-width:0px;"                     //边框宽度像素
-                "border-radius:0px;"                   //边框圆角半径像素
+                "border-radius:6px;"                   //边框圆角半径像素
                 "font: SourceHanSansCN-Medium  12px;"                       //字体，字体大小
                 "color:rgba(255,255,255,100%);"                //字体颜色
                 "padding:0px;"                          //填衬
@@ -131,6 +148,7 @@ IndicatorCalendar::~IndicatorCalendar()
     {
      mPopupContent->deleteLater();
     }
+//    delete gsettings;
 }
 
 void IndicatorCalendar::timeout()
@@ -186,20 +204,40 @@ void IndicatorCalendar::updateTimeText()
         }
     }
 
-    if (!isUpToDate || mbIsNeedUpdate)
-    {
+//    if (!isUpToDate || mbIsNeedUpdate)
+//    {
         const QSize old_size = mContent->sizeHint();
         QString str;
-        if(panel()->isHorizontal())
+        gsettings= new QGSettings("org.ukui.control-center.panel.plugins", "", this);
+        QString mode=gsettings->get("hour-system").toString();
+        if(!gsettings)
         {
-            str=tzNow.toString("hh:mm dddd  yyyy-MM-dd");
+            qDebug()<<"gsettings  get error    :";
+            return;
         }
-        else
-        {
-            str=tzNow.toString("hh:mm dddd  MM-dd");
+        if(mode=="24"){
+            if(panel()->isHorizontal()){
+                str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
+            }
+            else{
+                str=tzNow.toString(HOUR_SYSTEM_24_Vertical);
+            }
+
         }
+        else{
+            if(panel()->isHorizontal()){
+                str=tzNow.toString(HOUR_SYSTEM_12_Horizontal);
+            }
+            else{
+                str=tzNow.toString(HOUR_SYSTEM_12_Vertical);
+            }
+        }
+
+
         str.replace("-","/");
         str.replace("星期","周");
+        str.remove("/上午");
+        str.remove("/下午");
         mContent->setText(str);
         if (old_size != mContent->sizeHint())
         {
@@ -208,7 +246,7 @@ void IndicatorCalendar::updateTimeText()
         mRotatedWidget->update();
         updatePopupContent();
         mbIsNeedUpdate = false;
-    }
+//    }
 }
 
 void IndicatorCalendar::setTimeText()
