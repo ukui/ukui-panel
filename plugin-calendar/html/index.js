@@ -161,7 +161,8 @@ function update_month_ui(mode)
    }
    for(var index = 0; index <16; index++)
    {
-       li.children[0].children[index].innerHTML = list[index]+ '月';
+    li.children[0].children[index].innerHTML = '<br/>';
+       li.children[0].children[index].innerHTML += list[index]+ '月';
        if(index >= bind_click_position)
        {
             if(scrollUp_count%3 ===2)
@@ -201,7 +202,8 @@ function update_year_month_ui()
 {
     var li = document.getElementById('year_div');
     for (var index =  0;  index < 16;  index++) {
-        li.children[0].children[index].innerHTML= year + index + '年';
+        li.children[0].children[index].innerHTML = '<br/>';
+        li.children[0].children[index].innerHTML+= year + index + '年';
         // if(index === 0)
         // {
         //     li.children[0].children[index].style.backgroundColor = "#2b87a8";
@@ -217,16 +219,17 @@ function update_year_month_ui()
     for (var index = 0; index < 16; index++) {
         li.children[0].children[index].removeEventListener('click', new_month_selected);
         li.children[0].children[index].style.color  = "#FFFFFFFF";
+        li.children[0].children[index].innerHTML = '<br/>';
         if(index >=12)
         {
             var new_index =  index -12;
             li.children[0].children[index].style.color  = "#FFFFFF33";
-            li.children[0].children[index].innerHTML = new_index +1+ '月';
+            li.children[0].children[index].innerHTML += new_index +1+ '月';
             //li.children[0].children[index].innerHTML = "<font color=rgba(255,255,255,0.2)>1月</font>";
         }
         else
         {
-            li.children[0].children[index].innerHTML = index +1+ '月';
+            li.children[0].children[index].innerHTML += index +1+ '月';
         }
         if(index < 12)
         {
@@ -573,7 +576,8 @@ window.onload = function () {
                     year_selector.value = year + '年';
                     selected_date_div.innerHTML = year_selector.value + month_selector.value;
                     for (var index =  0;  index < 16;  index++) {
-                        li.children[0].children[index].innerHTML= year + index + '年';
+                        li.children[0].children[index].innerHTML = '<br/>';
+                        li.children[0].children[index].innerHTML+= year + index + '年';
                         li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
                     }
                 }
@@ -583,7 +587,8 @@ window.onload = function () {
                     year_selector.value = year + '年';
                     selected_date_div.innerHTML = year_selector.value + month_selector.value;
                     for (var index =  0;  index < 16;  index++) {
-                        li.children[0].children[index].innerHTML= year + index + '年';
+                        li.children[0].children[index].innerHTML = '<br/>';
+                        li.children[0].children[index].innerHTML+= year + index + '年';
                         li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
                     }
                 }
