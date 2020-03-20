@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>ukui-flash-disk.qss</file>
-        <file>picture/tip-32.svg</file>
-    </qresource>
-</RCC>
