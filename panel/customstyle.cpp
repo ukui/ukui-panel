@@ -263,7 +263,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
                painter->setRenderHint(QPainter::Antialiasing,true);
                painter->setPen(Qt::NoPen);
                painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
-               painter->drawRoundedRect(option->rect,6,6);
+               painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
            }
         }
     painter->restore();
