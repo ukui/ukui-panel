@@ -83,7 +83,6 @@ UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     mDisplay(QX11Info::display())
 {
     mLayout = new UKUi::GridLayout(this);
-    //mLayout->setHorizontalSpacing(10);
     realign();
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until

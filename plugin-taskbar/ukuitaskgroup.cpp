@@ -2,7 +2,7 @@
  * (c)LGPL2+
  *
  * Copyright: 2011 Razor team
- *            2014 UKUi team
+ *            2014 LXQt team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *   Maciej Płaza <plaza.maciej@gmail.com>
@@ -326,7 +326,10 @@ void UKUITaskGroup::onWindowRemoved(WId window)
         button->deleteLater();
 
         if (mButtonHash.count())
-            regroup();
+        {
+            mPopup->hide();
+            showPreview();
+        }
         else
         {
             if (isVisible())
@@ -385,7 +388,7 @@ int UKUITaskGroup::buttonsCount() const
 int UKUITaskGroup::visibleButtonsCount() const
 {
     int i = 0;
-    for (QWidget *btn : qAsConst(mButtonHash))
+    for (UKUITaskWidget *btn : qAsConst(mButtonHash))
         if (btn->isVisibleTo(mPopup))
             i++;
     return i;
@@ -405,11 +408,11 @@ void UKUITaskGroup::draggingTimerTimeout()
  ************************************************/
 void UKUITaskGroup::onClicked(bool)
 {
-    if (visibleButtonsCount() > 1)
-    {
-        setChecked(mButtonHash.contains(KWindowSystem::activeWindow()));
-        setPopupVisible(true);
-    }
+//    if (visibleButtonsCount() > 1)
+//    {
+//        setChecked(mButtonHash.contains(KWindowSystem::activeWindow()));
+//        setPopupVisible(true);
+//    }
 }
 
 /************************************************
@@ -483,20 +486,20 @@ void UKUITaskGroup::setAutoRotation(bool value, IUKUIPanel::Position position)
  ************************************************/
 void UKUITaskGroup::refreshVisibility()
 {
-    bool will = false;
-    UKUITaskBar const * taskbar = parentTaskBar();
-    const int showDesktop = taskbar->showDesktopNum();
-    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
-    {
-        bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
-        visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
-        visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;
-        btn->setVisible(visible);
-        will |= visible;
-    }
+    bool will = true;
+//    UKUITaskBar const * taskbar = parentTaskBar();
+//    const int showDesktop = taskbar->showDesktopNum();
+//    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
+//    {
+//        bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
+//        visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
+//        visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;
+//        btn->setVisible(visible);
+//        will |= visible;
+//    }
 
     bool is = isVisible();
-    setVisible(will);
+    setVisible(true);
     regroup();
 
     if (is != will)
@@ -816,6 +819,7 @@ void UKUITaskGroup::showPreview()
 {
     XImage *img = NULL;
     Display *display = NULL;
+    QPixmap thumbnail;
     XWindowAttributes attr;
     int winWidth = 0;
     int winHeight = 0;
@@ -846,21 +850,35 @@ void UKUITaskGroup::showPreview()
         XGetWindowAttributes(display, it.key(), &attr);
         img = XGetImage(display, it.key(), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
 
-        if(NULL == img)
+//        if(NULL == img)
+//        {
+//            qDebug()<<"can not catch picture";
+//            return;
+//        }
+        if(img)
+        {
+            thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+            thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));
+        }
+        else
         {
             qDebug()<<"can not catch picture";
-            return;
         }
-        QPixmap thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
-        thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));
 
         UKUITaskWidget *btn = it.value();
         btn->setThumbNail(thumbnail);
         btn->setFixedSize(winWidth, winHeight);
         mpWidget->layout()->setContentsMargins(0,0,0,0);
         mpWidget->layout()->addWidget(btn);
-        XDestroyImage(img);
-        XCloseDisplay(display);
+
+        if(img)
+        {
+           XDestroyImage(img);
+        }
+        if(display)
+        {
+            XCloseDisplay(display);
+        }
     }
     /*end*/
     plugin()->willShowWindow(mPopup);

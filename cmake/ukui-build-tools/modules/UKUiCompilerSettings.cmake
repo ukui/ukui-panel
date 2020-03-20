@@ -2,7 +2,7 @@
 # Copyright 2015 Luís Pereira <luis.artur.pereira@gmail.com>
 # Copyright 2015 Palo Kisa <palo.kisa@gmail.com>
 # Copyright 2013 Hong Jen Yee (PCMan) <pcman.tw@gmail.com>
-#
+# Copyright (c) 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:

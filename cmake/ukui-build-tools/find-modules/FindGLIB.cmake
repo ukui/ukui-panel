@@ -20,7 +20,7 @@
 #
 # Copyright (C) 2012 Raphael Kubo da Costa <rakuco@webkit.org>
 # Copyright (C) 2016 Luís Pereira <luis.artur.pereira@gmail.com>
-#
+# Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:

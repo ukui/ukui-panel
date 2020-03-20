@@ -1,7 +1,7 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  * (c)LGPL2+
  *
- * Copyright: 2013 - UKUi team
+ * Copyright: 2013 - LXQt team
  * Authors:
  *   Hong Jen Yee (PCMan) <pcman.tw@gmail.com>
  *

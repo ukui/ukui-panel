@@ -1,5 +1,6 @@
 #=============================================================================
 # Copyright 2005-2011 Kitware, Inc.
+# Copyright (c) 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without

@@ -34,7 +34,7 @@
 #include "../panel/common/ukuirotatedwidget.h"
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
-
+#include <QGSettings>
 
 class QTimer;
 class CalendarActiveLabel;
@@ -99,6 +99,7 @@ private:
     bool formatHasTimeZone(QString format);
     QString preformat(const QDateTime &dateTime,const QString &format, const QTimeZone &timeZone);
     bool mbIsNeedUpdate;
+    QGSettings *gsettings;
 };
 
 

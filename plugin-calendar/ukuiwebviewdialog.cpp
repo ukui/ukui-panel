@@ -2,8 +2,8 @@
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * it under the terms of the GNU Lesser General Public as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
  * any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -61,7 +61,7 @@ void UkuiWebviewDialog::creatwebview()
         /*set window no margins*/
         mWebView->setWindowFlags(Qt::FramelessWindowHint);
         /*set window size*/
-        mWebView->resize(480,400);
+        mWebView->resize(454,704);
         mWebView->settings()->setAttribute(QWebSettings::JavascriptEnabled,true);
         mWebView->settings()->setAttribute(QWebSettings::WebAttribute::LocalStorageEnabled, true);
         mWebView->setContextMenuPolicy(Qt::NoContextMenu);

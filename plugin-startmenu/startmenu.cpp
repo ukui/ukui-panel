@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU  Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
+ *
+ */
+
 #include "startmenu.h"
 #include <QMouseEvent>
 #include <QHBoxLayout>
@@ -10,9 +28,11 @@ StartMenu::StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    qDebug()<<"StartMenu::StartMenu";
+    mButton =new StartMenuButton();
+    mButton->setStyle(new CustomStyle());
+    mButton->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     realign();
-    mButton.setStyle(new CustomStyle());
-    mButton.setIcon(QIcon("/usr/share/ukui-panel/plugin-startmenu/img/startmenu.svg"));
 
 }
 
@@ -23,8 +43,8 @@ StartMenu::~StartMenu()
 
 void StartMenu::realign()
 {
-    mButton.setFixedSize(panel()->panelSize(),panel()->panelSize());
-    mButton.setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
+    mButton->setFixedSize(panel()->panelSize(),panel()->panelSize());
+    mButton->setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
 }
 StartMenuButton::StartMenuButton()
 {
@@ -51,7 +71,6 @@ void StartMenuButton::mousePressEvent(QMouseEvent* event)
 }
 void StartMenuButton::contextMenuEvent(QContextMenuEvent *)
 {
-    qDebug()<<"void StartMenuButton::QContextMenuEvent(QContextMenuEvent *)  ";
     PopupMenu *menuTaskview=new PopupMenu();
     menuTaskview->setAttribute(Qt::WA_DeleteOnClose);
 

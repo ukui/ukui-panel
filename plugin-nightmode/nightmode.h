@@ -2,8 +2,8 @@
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
  * any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -28,62 +28,45 @@
 #include <QLineEdit>
 #include <QToolButton>
 #include <XdgIcon>
-
-
 #include <QMainWindow>
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QProcess>
+#include <QGSettings>
 
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
-#define DEFAULT_SHORTCUT "Alt+F1"
 
-
-class  PowerSwitchWidget: public QFrame
+class NightModeButton:public QToolButton
 {
     Q_OBJECT
 public:
-    PowerSwitchWidget(QWidget* parent = nullptr);
-    ~PowerSwitchWidget();
-
-    QLineEdit *lineEdit() { return &mLineEdit; }
-    QToolButton *button() { return &mButton; }
-
-
+    NightModeButton();
+    ~NightModeButton();
 protected:
-    void mouseReleaseEvent(QMouseEvent *event);
-    virtual void contextMenuEvent(QContextMenuEvent *event);
-
-private slots:
-    void captureMouse();
-
-private:
-    QLineEdit mLineEdit;
-    QToolButton mButton;
-    bool mCapturing;
+    void mousePressEvent(QMouseEvent* event);
+    QGSettings *gsettings;
 };
 
-
-
-class PowerSwitch : public QObject, public IUKUIPanelPlugin
+class NightMode : public QObject, public IUKUIPanelPlugin
 {
     Q_OBJECT
 public:
-    PowerSwitch(const IUKUIPanelPluginStartupInfo &startupInfo);
-    ~PowerSwitch();
+    NightMode(const IUKUIPanelPluginStartupInfo &startupInfo);
+    ~NightMode();
 
-    virtual QWidget *widget() { return &mWidget; }
+    virtual QWidget *widget() { return &mButton; }
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 private:
-    PowerSwitchWidget mWidget;
+    NightModeButton mButton;
+
 
 
 };
 
-class PowerSwitchLibrary: public QObject, public IUKUIPanelPluginLibrary
+class NightModeLibrary: public QObject, public IUKUIPanelPluginLibrary
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "lxqt.org/Panel/PluginInterface/3.0")
@@ -91,7 +74,7 @@ class PowerSwitchLibrary: public QObject, public IUKUIPanelPluginLibrary
 public:
     IUKUIPanelPlugin *instance(const IUKUIPanelPluginStartupInfo &startupInfo) const
     {
-        return new PowerSwitch(startupInfo);
+        return new NightMode(startupInfo);
     }
 };
 
