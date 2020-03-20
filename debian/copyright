@@ -32,6 +32,7 @@ Files: plugin-calendar/ukuiwebviewdialog.*
        plugin-taskview/*
        plugin-segmentation/*
        plugin-powerswitch/*
+       ukui-flash-disk/*
 Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 License: LGPL-2.1+
 
