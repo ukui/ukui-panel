@@ -36,8 +36,8 @@ Build-Depends: debhelper-compat (= 12),
                libpeony-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
-Vcs-Browser: https://github.com/explorer-cs/ukui-panel
-Vcs-Git: https://github.com/explorer-cs/ukui-panel
+Vcs-Browser: https://github.com/ukui/ukui-panel
+Vcs-Git: https://github.com/ukui/ukui-panel
 Homepage: https://github.com/ukui/ukui-panel
 
 Package: ukui-panel
