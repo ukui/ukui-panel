@@ -1,3 +1,12 @@
+ukui-panel (2.0.2-1) unstable; urgency=medium
+
+  * New upstream release:
+    - Update the UI of calendar by new design.
+    - Update the UI of plugin ukui-flash-disk.
+    - Fix the wrong position when panel changed direction.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Sat, 21 Mar 2020 16:52:54 +0800
+
 ukui-panel (2.0.1-1) unstable; urgency=medium
 
   * New upstream release:

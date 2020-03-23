@@ -16,7 +16,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
-
 #include "UnionVariable.h"
 
 static QList<std::shared_ptr<Peony::Mount>> mountsList;
@@ -24,4 +23,11 @@ static QList<std::shared_ptr<Peony::Mount>> mountsList;
 QList<std::shared_ptr<Peony::Mount> > *findList()
 {
     return &mountsList;
+}
+
+static QList<std::shared_ptr<Peony::Volume>> volumesList;
+
+QList<std::shared_ptr<Peony::Volume> > *findVolumeList()
+{
+    return &volumesList;
 }

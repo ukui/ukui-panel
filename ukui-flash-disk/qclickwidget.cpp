@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
@@ -56,5 +55,6 @@ void QClickWidget::paintEvent(QPaintEvent *)
      QStyleOption opt;
      opt.init(this);
      QPainter p(this);
+     p.setBrush(QColor(0x00,0x00,0x00));
      style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
  }

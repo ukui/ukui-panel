@@ -15,21 +15,15 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
-
 #include <QApplication>
-
-#include <PeonyVolumeManager>
-
-#include <QSystemTrayIcon>
-
 #include <QDebug>
-
-#include <gio/gio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <syslog.h>
 #include <QDebug>
+#include <QtDBus/QDBusConnection>
+#include <QTranslator>
 #include "UnionVariable.h"
 #include "mainwindow.h"
 
@@ -37,91 +31,47 @@
 
 int main(int argc, char *argv[])
 {
-    int fd = open("/tmp/usb-flash-disk", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-    if (fd < 0)
-    {
-        exit(1);
-    }
-    if (lockf(fd, F_TLOCK, 0))
-    {
+    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    QString lockPath = homePath.at(0) + "/.config/ukui-flash-disk-lock";
+    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+
+    if (fd < 0) { exit(1); }
+
+    if (lockf(fd, F_TLOCK, 0)) {
         syslog(LOG_ERR, "Can't lock single file, ukui-flash-disk is already running!");
         qDebug()<<"Can't lock single file, ukui-flash-disk is already running!";
         exit(0);
     }
+    QIcon::setThemeName("ukui-icon-theme-default");
+    QDBusConnection connection = QDBusConnection::sessionBus();
+
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication a(argc, argv);
     a.setQuitOnLastWindowClosed(false);        //进程不隐式退出
 
-    QSystemTrayIcon m_systray;
-    MainWindow w;
-    //w.show();
-    m_systray.setIcon(QIcon("/usr/share/icons/ukui-icon-theme-default/22x22/devices/drive-removable-media.png"));
-    QObject::connect(&m_systray, &QSystemTrayIcon::activated, &w, &MainWindow::iconActivated);
-    auto g_volume_monitor = g_volume_monitor_get();
-    GList *current_mount_list = g_volume_monitor_get_mounts(g_volume_monitor);
-    GList *current_device = current_mount_list;
-    while (current_device)
+    //load translation file
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+    if (locale == "zh_CN")
     {
-        GMount *gmount = G_MOUNT(current_device->data);
-        std::shared_ptr<Peony::Mount> mount = std::make_shared<Peony::Mount>(gmount);
-        qDebug()<<mount->name()<<"append to list";
-        *findList()<<mount;
-        current_device = current_device->next;
+        if (translator.load("/usr/share/ukui/ukui-panel/ukui-flash-disk_zh_CN.qm"))
+        {
+            a.installTranslator(&translator);
+        }
+        else
+        {
+            qDebug() << "Load translations file" << locale << "failed!";
+        }
+
     }
 
-    auto manager = Peony::VolumeManager::getInstance();
-
-    //volumeAdded一般在设备插入时触发
-    manager->connect(manager, &Peony::VolumeManager::volumeAdded, [](const std::shared_ptr<Peony::Volume> &volume)
-    {
-        qDebug() << "volume" << volume->name() << "added";
-        g_volume_mount(volume->getGVolume(),
-                       G_MOUNT_MOUNT_NONE,
-                       nullptr,
-                       nullptr,
-                       nullptr,
-                       nullptr);
-    });
-
-    manager->connect(manager, &Peony::VolumeManager::volumeRemoved, [](const std::shared_ptr<Peony::Volume> &volume)
-    {
-        qDebug()<< "volume" << volume->name() << "removed";
-    });
-
-    //注意mountAdded必须要挂载之后才会触发
-    manager->connect(manager, &Peony::VolumeManager::mountAdded, [&](const std::shared_ptr<Peony::Mount> &mount)
-    {
-        qDebug()<<"mount"<<mount->name()<<"added";
-        if(g_mount_can_eject(mount->getGMount()))
-        {
-            *findList()<<mount;
-        }
-        qDebug()<<"*findList():"<<findList()->size();
-//        m_systray.setIcon(QIcon("/usr/share/icons/ukui-icon-theme-default/22x22/devices/drive-removable-media.png"));
-//        m_systray.show();
-        if(findList()->size() != 0)
-        {
-            m_systray.show();
-        }
-
-    });
-
-    manager->connect(manager, &Peony::VolumeManager::mountRemoved, [&](const std::shared_ptr<Peony::Mount> &mount)
-    {
-        qDebug()<<"mount"<<mount->name()<<"removed";
-        for (auto cachedMount : *findList())
-        {
-            if (cachedMount->name() == mount->name())
-            {
-                findList()->removeOne(cachedMount);
-                if(findList()->size() == 0)
-                {
-                    m_systray.hide();
-                }
-            }
-        }
-    });
-
-
+    //load qss
+    QFile qss(":ukui-flash-disk.qss");
+    bool ok = qss.open(QFile::ReadOnly);
+    if (!ok)
+        qDebug() << "加载失败";
+    qApp->setStyleSheet(qss.readAll());
+    qss.close();
+    MainWindow w;
     return a.exec();
 }

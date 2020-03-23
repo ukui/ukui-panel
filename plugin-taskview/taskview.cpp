@@ -30,10 +30,7 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
-    QProcess *process =new QProcess(this);
-    process->startDetached("ukui-window-switch");
     realign();
-
 }
 
 
