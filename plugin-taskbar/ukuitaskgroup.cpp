@@ -327,8 +327,15 @@ void UKUITaskGroup::onWindowRemoved(WId window)
 
         if (mButtonHash.count())
         {
-            mPopup->hide();
-            showPreview();
+            if(mPopup->isVisible())
+            {
+                mPopup->hide();
+                showPreview();
+            }
+            else
+            {
+                regroup();
+            }
         }
         else
         {
@@ -413,6 +420,15 @@ void UKUITaskGroup::onClicked(bool)
 //        setChecked(mButtonHash.contains(KWindowSystem::activeWindow()));
 //        setPopupVisible(true);
 //    }
+    if(mPopup->isVisible())
+    {
+        mPopup->hide();
+        return;
+    }
+    else
+    {
+        showPreview();
+    }
 }
 
 /************************************************
