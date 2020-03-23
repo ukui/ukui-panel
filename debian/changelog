@@ -1,3 +1,11 @@
+ukui-panel (2.0.3-1) unstable; urgency=medium
+
+  * New upstream bugfix-only release.
+  * debian/control:
+    - Update the vcs location.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 23 Mar 2020 12:35:10 +0800
+
 ukui-panel (2.0.2-1) unstable; urgency=medium
 
   * New upstream release:
