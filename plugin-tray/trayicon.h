@@ -59,6 +59,12 @@ public:
 
     QSize sizeHint() const;
 
+public slots:
+    void notifyAppFreeze();
+
+signals:
+    void notifyTray(Window);
+
 protected:
     bool event(QEvent *event);
     void draw(QPaintEvent* event);
