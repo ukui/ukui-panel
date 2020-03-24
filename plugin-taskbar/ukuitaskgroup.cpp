@@ -502,21 +502,24 @@ void UKUITaskGroup::setAutoRotation(bool value, IUKUIPanel::Position position)
  ************************************************/
 void UKUITaskGroup::refreshVisibility()
 {
-    bool will = true;
-//    UKUITaskBar const * taskbar = parentTaskBar();
-//    const int showDesktop = taskbar->showDesktopNum();
-//    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
-//    {
-//        bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
-//        visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
-//        visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;
-//        btn->setVisible(visible);
-//        will |= visible;
-//    }
+    bool will = false;
+    UKUITaskBar const * taskbar = parentTaskBar();
+    const int showDesktop = taskbar->showDesktopNum();
+    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
+    {
+        bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
+        visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
+        visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;
+        btn->setVisible(visible);
+        will |= visible;
+    }
 
     bool is = isVisible();
-    setVisible(true);
-    regroup();
+    setVisible(will);
+    if(!mPopup->isVisible())
+    {
+        regroup();
+    }
 
     if (is != will)
         emit visibilityChanged(will);

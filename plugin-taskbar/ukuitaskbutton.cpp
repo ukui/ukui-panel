@@ -257,15 +257,15 @@ void UKUITaskButton::mousePressEvent(QMouseEvent* event)
  ************************************************/
 void UKUITaskButton::mouseReleaseEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        if (isChecked())
-            minimizeApplication();
-        else
-        {
-            raiseApplication();
-        }
-    }
+//    if (event->button() == Qt::LeftButton)
+//    {
+//        if (isChecked())
+//            minimizeApplication();
+//        else
+//        {
+//            raiseApplication();
+//        }
+//    }
     QToolButton::mouseReleaseEvent(event);
 
 }
