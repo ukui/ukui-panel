@@ -62,7 +62,7 @@ body {
 
 /* 第二栏，切换选择年、月 */
 #selector_div {
-  height: 32px;
+  height: 48px;
   width: 454;
   display: grid;
   text-align: center;
@@ -73,11 +73,17 @@ body {
   margin-left: 30px;
   padding:0;
   text-align: right;
+  height: 36px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   float:left
 }
 #month_selector {
   padding:0;
   text-align: left;
+  height: 36px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   float:left
 }
 
@@ -173,7 +179,8 @@ margin-bottom: 4px;
 .day_weekend .lunar_part { color: #ccc; font-size: 11px; }
 
 .day_highlight {
-  background: #e4f0fc;
+  /* background: #e4f0fc; */
+  background:#7eb4ea;
   border: 1px solid #7eb4ea;
 }
 .day_highlight .solar_part { color: #F5F4F7; font-size: 18px; }
@@ -192,36 +199,55 @@ margin-bottom: 4px;
   background: #3183a4;
 }
 
+#selector_div #selected_date_div {
+  margin-left: 16px;
+  width: 110px;
+  height: 48px;
+  font-size: 18px; 
+  color: #FFFFFFFF;
+  float: left;
+}
+
 #selector_div #go_prev_month {
   margin-right: 10px;
-  width: 15px;
+  width: 32px;
+  height: 32px;
   background-image: url("images/prev.png");
   background-repeat: no-repeat;
   background-position: center;
-  float: left;
+  background-size:100% 100%;
+  /* float: left; */
 }
 
 #selector_div #go_next_month {
   margin-left: 10px;
-  width: 15px;
+  width: 32px;
+  height: 32px;
   background-image: url("images/next.png");
   background-repeat: no-repeat;
   background-position: center;
-  float: left;
+  background-size:100% 100%;
+  /* float: left; */
 }
 
 #selector_div #today_button {
   margin-right: 30px;
+  width: 36px;
+  height: 36px;
   float: right;
 }
 
 #selector_div #month_button {
   margin-right: 30px;
+  width: 36px;
+  height: 36px;
   float: right;
 }
 
 #selector_div #year_button {
   margin-right: 30px;
+  width: 36px;
+  height: 36px;
   float: right;
 }
 
@@ -285,7 +311,8 @@ margin-bottom: 4px;
   width: 60px;
   font-size: 14px;
   text-align: left;
-  color: #d9ebfc;
+  color: #FFFFFFA6;
+
 }
 
 
@@ -306,6 +333,11 @@ margin-bottom: 4px;
   height: 420px;
   /* grid-template-columns: 1fr 1fr 1fr 1fr; */
   grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 25% 25% 25% 25%;
+  justify-content: center;
+  align-content: center;
+  margin-left: 16px;
+  margin-right: 16px;
 
   /* display: grid;
   grid-template-columns:repeat(4,1fr);
@@ -315,25 +347,37 @@ margin-bottom: 4px;
   grid-gap: 20px; */
 }
 .item {
-  height: 85px;
-  width: 25%;
+  height: 100px;
+  width: 100px;
   font-size: 1.6em;
   color: #F5F4F7;
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  /* align-self: center;
+  justify-self: center; */
+  /* padding-top: 2%;
+  padding-bottom: 2%;
+  padding-left: 2%;
+  padding-right: 2%; */
+  /* padding-left: ; */
+  /* padding: 20px 10px 10px 10px; */
   float: left;
+  border: 1px solid #1C1C1E;
 }
 
 
-/* .item:hover {
+.item:hover {
   border: 1px solid #7eb4ea;
-} */
+}
 
 .item:active {
   background: #e4f0fc;
 }
-
+/* .item span{
+  height: 80;
+  width: 80;
+  display:block;
+  background-color:#7eb4ea;
+} */
 /* .visible_div {
   width: 454;
   height:440;
@@ -357,6 +401,10 @@ margin-bottom: 4px;
   height: 420px;
   /* grid-template-columns: 1fr 1fr 1fr 1fr; */
   grid-template-columns: 25% 25% 25% 25%;
+  justify-content: center;
+  align-content: center;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 /* .item {
   height: 20%;
@@ -390,6 +438,8 @@ margin-bottom: 4px;
 #general_datetime_list li {
   margin: 0;
   padding: 0;
+  font-size: 16px;
+  color: #FFFFFFD9;
 }
 
 #general_datetime_list #day {
