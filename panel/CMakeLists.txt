@@ -53,6 +53,7 @@ set(PUB_HEADERS
     common/ukuirotatedwidget.h
     common/ukuiglobals.h
     #common/ukuibacklight.h
+    ukuicontrolstyle.h
 )
 
 set(SOURCES
@@ -96,6 +97,7 @@ set(SOURCES
     #common/ukuibacklight.cpp
     #common/ukuibacklight/virtual_backend.cpp
     #common/ukuibacklight/linux_backend/linuxbackend.cpp
+    ukuicontrolstyle.cpp
 )
 
 set(UI

@@ -39,41 +39,24 @@
 #include <QPainter>
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
-//#include "../panel/customstyle.h"
+#include "../panel/ukuicontrolstyle.h"
 #define DEFAULT_SHORTCUT "Alt+F1"
 
-
-class  TaskViewWidget: public QFrame
+class TaskViewButton:public UkuiToolButton
 {
     Q_OBJECT
 public:
-    TaskViewWidget(QWidget* parent = nullptr);
-    ~TaskViewWidget();
-
-    QLineEdit *lineEdit() { return &mLineEdit; }
-    QToolButton *button() { return &mButton; }
-
-
+    TaskViewButton();
+    ~TaskViewButton();
 protected:
-    void mouseReleaseEvent(QMouseEvent *event);
-    virtual void contextMenuEvent(QContextMenuEvent *event);
-//    void enterEvent(QEvent *);
-//    void leaveEvent(QEvent *);
-    void paintEvent(QPaintEvent *);
-
-private slots:
-    void captureMouse();
-
+//    void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent*);
+//    bool event(QEvent *e);
 private:
-    enum TaskviewStatus{NORMAL, HOVER, PRESS};
-    TaskviewStatus taskviewstatus;
-    QLineEdit mLineEdit;
-    QToolButton mButton;
-    bool mCapturing;
+    void paintTaskViewStyle();
 
 };
-
-
 
 class TaskView: public QObject, public IUKUIPanelPlugin
 {
@@ -82,17 +65,18 @@ public:
     TaskView(const IUKUIPanelPluginStartupInfo &startupInfo);
     ~TaskView();
 
-    virtual QWidget *widget() { return &mWidget; }
-    virtual QString themeId() const { return QStringLiteral("startmenu"); }
+    virtual QWidget *widget() { return mButton; }
+    virtual QString themeId() const { return QStringLiteral("taskview"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+
 private:
-    TaskViewWidget mWidget;
+    TaskViewButton *mButton;
 
 
 };
 
-class PowerSwitchLibrary: public QObject, public IUKUIPanelPluginLibrary
+class TaskViewLibrary: public QObject, public IUKUIPanelPluginLibrary
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "ukui.org/Panel/PluginInterface/3.0")
