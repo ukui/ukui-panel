@@ -63,7 +63,7 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
     mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("从快速启动栏取消固定"), this);
     connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
     addAction(mDeleteAct);
-    mMenu = new QMenu(this);
+    mMenu = new QuicklaunchMenu();
     mMenu->addAction(mAct);
     mMenu->addActions(mAct->addtitionalActions());
     mMenu->addSeparator();
@@ -74,6 +74,7 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
 
 
     setContextMenuPolicy(Qt::CustomContextMenu);
+//    mMenu.exec(QCursor::pos());
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(this_customContextMenuRequested(const QPoint&)));
     //file_name=act->m_settingsMap["name"];
@@ -185,4 +186,16 @@ void QuickLaunchButton::dragEnterEvent(QDragEnterEvent *e)
     {
         emit switchButtons(mimeData->button(), this);
     }
+}
+
+void QuickLaunchButton::contextMenuEvent(QContextMenuEvent *){
+}
+QuicklaunchMenu::QuicklaunchMenu(){
+}
+
+QuicklaunchMenu::~QuicklaunchMenu(){
+}
+
+void QuicklaunchMenu::contextMenuEvent(QContextMenuEvent *)
+{
 }
