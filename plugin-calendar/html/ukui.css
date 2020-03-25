@@ -136,7 +136,7 @@ text-align: center;
 margin-right: 4px;
 margin-top: 4px;
 margin-bottom: 4px; */
-border: 1px;
+border: 1px solid transparent;
  /*width:60px;*/
 }
 
@@ -172,7 +172,8 @@ border: 1px;
 .day_today .solar_part { color: #F5F4F7; font-size: 18px; }
 .day_today .lunar_part { color: #aaa; font-size: 11px; }
 .day_today {
-  background: #d9ebfc;
+  /* background: #d9ebfc; */
+  background:#3d6be5;
   border: 1px solid #7eb4ea;
 }
 .day_today:hover { border: 1px solid #7eb4ea; }
@@ -273,11 +274,26 @@ color: #78cdf7;
   background-color: #FFFFFF1A;
 }
 
+#selector_div #month_button:hover{
+  /* font */
+  background-color: #3d6be5;
+}
+
 #selector_div #year_button {
   margin-left: 30px;
   width: 36px;
   height: 36px;
   background-color: #FFFFFF1A;
+}
+
+#selector_div #year_button:hover{
+  /* font */
+  background-color: #3d6be5;
+}
+
+#selector_div #today_button:hover{
+  /* font */
+  background-color: #3d6be5;
 }
 
 /* 第四栏，显示农历日期，宜忌信息 */
@@ -301,28 +317,10 @@ color: #78cdf7;
   float: left;
 }
 
-#advice_checkbox {
-  float: right;
-  margin-right: 25px;
-  float:right;
-  margin-bottom: 6px;
-  margin-top: 6px;
-}
-
-#advice_title {
-  font-size: 12px;
-  float: right;
-  margin-top: 6px;
-  margin-bottom: 6px;
-}
-
-
-
-
 #hl_table {
     /* padding: 5px; */
     border: 0;
-    text-align: center;
+    /* text-align: center; */
     width: 420px;
     height: 48px;
     margin-left: 16px;
@@ -344,6 +342,10 @@ color: #78cdf7;
   border: 1px;
 }
 
+#hl_table.yiji{
+  /* padding-left: 20px; */
+  text-align: center;
+  }
 
 /* 显示年份的下拉选择 */
 .visible_div {
@@ -351,8 +353,8 @@ color: #78cdf7;
   height:420;
   z-index: 2;
   background: #1C1C1E;
-  margin-bottom: 18px;
-  margin-top: 18px;
+  /* margin-bottom: 16px;*/
+  margin-top: 16px;
 
 }
 .show_years
@@ -473,6 +475,25 @@ color: #78cdf7;
   border: none;
   font-weight: bold;
 }
+
+#advice_checkbox {
+  float: right;
+  margin-right: 16px;
+  /* margin-bottom: 6px;*/
+  margin-top: 16px;
+  /* width: 20px;
+  height: 20px; */
+}
+
+#advice_title {
+  font-size: 14px;
+  float: right;
+  line-height: 48px;
+  /* margin-top: 6px;
+  margin-bottom: 6px; */
+  margin-right: 10px;
+}
+
 
 #general_datetime_list #day {
   font-size: 64px;

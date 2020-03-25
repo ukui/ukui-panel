@@ -697,7 +697,7 @@ function create_page(year, month) {
 
     if (year < year_range['low'] || year > year_range['high'])
         return;
-    var month_stuff = LunarCalendar.calendar(year, month, true);
+    var month_stuff = LunarCalendar.calendar(year, month, true,1);
     highlight_day = highlight_day > month_stuff['monthDays'] ? month_stuff['monthDays'] : highlight_day;
 
     var current_row = null;
@@ -737,11 +737,22 @@ function create_page(year, month) {
 	    // 	for (i = 0; i < x.length; i++) {
 		  //   x[i].style.backgroundColor = "#ffffff";
 	    //     }
-	    // }
-	        x=document.getElementsByClassName("day_today");
-	        for (i = 0; i < x.length; i++) {
-	    	    x[i].style.backgroundColor = "#3593b5";
-	        }
+        // }
+            // if((year == today.getFullYear()) && (month == today.getMonth()))
+            // {
+
+                // var x=document.getElementsByClassName("day_today");
+                // for (i = 0; i < x.length; i++) {
+                //     // x[i].style.backgroundColor = "#3593b5";
+                //     x[i].style.backgroundColor = "#3d6be5";
+                // }  
+
+            // }
+	        // x=document.getElementsByClassName("day_today");
+	        // for (i = 0; i < x.length; i++) {
+            //     // x[i].style.backgroundColor = "#3593b5";
+            //     x[i].style.backgroundColor = "#3d6be5";
+	        // }
             var index = (row - 1) * 7 + column; // [0, 7 * 6 - 1]
             /*
              * 注意判断顺序
@@ -921,7 +932,7 @@ function popup_div(event) {
 }
 
 function update_right_pane(year, month, day) {
-    var month_stuff = LunarCalendar.calendar(year, month, true);
+    var month_stuff = LunarCalendar.calendar(year, month, true, 1);
 
     var general_datetime_list = document.getElementById('general_datetime_list');
     var datetime_container = document.getElementById('datetime_container');
@@ -964,7 +975,7 @@ function go_to_holiday () {
     var month = today.getMonth() + 1;
     var day = 0;
 
-    var month_stuff = LunarCalendar.calendar(year, month, false);
+    var month_stuff = LunarCalendar.calendar(year, month, false, 1);
     var found = false;
     var target = this.innerHTML;
     do {
@@ -988,7 +999,7 @@ function go_to_holiday () {
             month++;
         }
 
-        month_stuff = LunarCalendar.calendar(year, month, false);
+        month_stuff = LunarCalendar.calendar(year, month, false, 1);
     } while (year - today.getFullYear() <= 1);
 
     if (!found) {
