@@ -208,7 +208,10 @@ void IndicatorCalendar::updateTimeText()
 //    {
         const QSize old_size = mContent->sizeHint();
         QString str;
-        gsettings= new QGSettings("org.ukui.control-center.panel.plugins", "", this);
+        const QByteArray id(HOUR_SYSTEM_CONTROL);
+        if(QGSettings::isSchemaInstalled(id)) {
+        //        qDebug()<<"isSchemaInstalled"<<endl;
+                gsettings = new QGSettings(id);
         QString mode=gsettings->get("hour-system").toString();
         if(!gsettings)
         {
@@ -223,6 +226,7 @@ void IndicatorCalendar::updateTimeText()
                 str=tzNow.toString(HOUR_SYSTEM_24_Vertical);
             }
 
+        }
         }
         else{
             if(panel()->isHorizontal()){

@@ -37,7 +37,9 @@
 #include <QScreen>
 #include "traystorage.h"
 #include "../panel/customstyle.h"
-
+#include <QGSettings>
+#include <string.h>
+#include <string>
 class TrayIcon;
 class QSize;
 //class CustomStyle;
@@ -67,18 +69,28 @@ public:
     IUKUIPanelPlugin *mPlugin;
     TrayStorage *tys;
 
+    //control app show in tray/traystorege  by ukui-control-center
+    QList<char *> listExistsPath();
+    QString findFreePath();
+
+    void regulateIcon(Window *mid);
+    void freezeApp();
+
 public slots:
     void storageBar();
     void storageAddIcon(Window winId);
 
 signals:
     void iconSizeChanged(int iconSize);
+    void freezeIcon(TrayIcon *icon,Window winid);
 
 private slots:
     void startTray();
     void stopTray();
+    void stopStorageTray();
     void onIconDestroyed(QObject * icon);
-
+    void freezeTrayApp(Window winId);
+    void freezeIconSlot(TrayIcon *icon,Window winid);
 private:
     VisualID getVisual();
     void clientMessageEvent(xcb_generic_event_t *e);
@@ -89,16 +101,21 @@ private:
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
     void addIcon(Window id);
+    void moveIcon(Window id);
+    void storageMoveIcon(Window winId);
     TrayIcon* findIcon(Window trayId);
+    TrayIcon* findStorageIcon(Window trayId);
 
     bool mValid;
     Window mTrayId;
     QList<TrayIcon*> mIcons;
+    QList<TrayIcon*> mStorageIcons;
     int mDamageEvent;
     int mDamageError;
     QSize mIconSize;
     UKUi::GridLayout *mLayout;
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
+//    QGSettings *settings;
 };
 #endif
