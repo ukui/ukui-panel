@@ -161,8 +161,12 @@ function update_month_ui(mode)
    }
    for(var index = 0; index <16; index++)
    {
-    
-       li.children[0].children[index].innerHTML = list[index]+ '月';
+    //   li.children[0].children[index].innerHTML = '<br />';
+       //li.children[0].children[index].innerHTML = '<br />'+ list[index]+ '月';
+       li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ list[index]+ '月' + '</span>';
+    //    li.children[0].children[index].innerHTML =  list[index]+ '月';
+    //    document.getElementsByTagName('span').style="float:left;width:250px;background:#6C3;";
+
        if(index >= bind_click_position)
        {
             if(scrollUp_count%3 ===2)
@@ -202,8 +206,10 @@ function update_year_month_ui()
 {
     var li = document.getElementById('year_div');
     for (var index =  0;  index < 16;  index++) {
-        
-        li.children[0].children[index].innerHTML= year + index + '年';
+        // li.children[0].children[index].innerHTML = '<br />'; 
+        var  curretYear = year + index;
+        li.children[0].children[index].innerHTML=  '<span class="year_month_grid">'+curretYear+ '年' +'</span>' ;
+        //li.children[0].children[index].innerHTML= '<br />'+curretYear+ '年';
         // if(index === 0)
         // {
         //     li.children[0].children[index].style.backgroundColor = "#2b87a8";
@@ -222,14 +228,17 @@ function update_year_month_ui()
         
         if(index >=12)
         {
-            var new_index =  index -12;
+            var newIndex =  index -12 + 1;
             li.children[0].children[index].style.color  = "#FFFFFF33";
-            li.children[0].children[index].innerHTML = new_index +1+ '月';
+            //li.children[0].children[index].innerHTML = '<br />' +  new_index + '月';
+            li.children[0].children[index].innerHTML=  '<span class="year_month_grid">'+newIndex + '月' +'</span>' ;
             //li.children[0].children[index].innerHTML = "<font color=rgba(255,255,255,0.2)>1月</font>";
         }
         else
         {
-            li.children[0].children[index].innerHTML = index +1+ '月';
+            var newIndex =  index + 1;
+            //li.children[0].children[index].innerHTML ='<br />' + newIndex+ '月';
+            li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ newIndex+ '月' + '</span>' ;
         }
         if(index < 12)
         {
@@ -574,10 +583,13 @@ window.onload = function () {
                 {
                     year = year -16;
                     year_selector.value = year + '年';
-                    selected_date_div.innerHTML = year_selector.value + month_selector.value;
+                    // selected_date_div.innerHTML = year_selector.value + month_selector.value;
                     for (var index =  0;  index < 16;  index++) {
                         
-                        li.children[0].children[index].innerHTML= year + index + '年';
+                        // li.children[0].children[index].innerHTML = '<br />';
+                        var currentYear = year + index;
+                        //li.children[0].children[index].innerHTML= '<br />' + curretYear + '年';
+                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '月' + '</span>';
                         li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
                     }
                 }
@@ -585,10 +597,13 @@ window.onload = function () {
                 {
                     year = year + 16;
                     year_selector.value = year + '年';
-                    selected_date_div.innerHTML = year_selector.value + month_selector.value;
+                    // selected_date_div.innerHTML = year_selector.value + month_selector.value;
                     for (var index =  0;  index < 16;  index++) {
                         
-                        li.children[0].children[index].innerHTML= year + index + '年';
+                        // li.children[0].children[index].innerHTML = '<br />';
+                        var currentYear = year + index;
+                        //li.children[0].children[index].innerHTML=  '<br />'+ curretYear + '年';
+                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '月'  + '</span>';
                         li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
                     }
                 }
@@ -631,7 +646,7 @@ window.onload = function () {
             }
 
             year_selector.value = Math.floor(month_offset / 12) + year_range['low'] + '年';
-            month_selector.value = month_offset % 12 === 0 ? 1 : month_offset % 12 + 1 + '月';
+            month_selector.value = month_offset % 12 === 0 ? 1 +'月': month_offset % 12 + 1 + '月';
             selected_date_div.innerHTML = year_selector.value + month_selector.value;
             create_page(parseInt(year_selector.value), parseInt(month_selector.value));
         });
@@ -679,7 +694,7 @@ window.onload = function () {
 }
 
 function create_page(year, month) {
-    console.log(calendar.rows.length);
+
     if (year < year_range['low'] || year > year_range['high'])
         return;
     var month_stuff = LunarCalendar.calendar(year, month, true);
@@ -763,11 +778,11 @@ function create_page(year, month) {
             if (month_stuff['monthData'][index]['worktime'] === 2) {
                 worktime = document.createElement("SPAN");
                 worktime.className = 'worktime2';
-                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/xiuxi.png" align="left" width = "18px" height = "18px"></td> </tr>';
+                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/xiuxi.png" align="left" width = "14px" height = "16px"></td> </tr>';
             } else if (month_stuff['monthData'][index]['worktime'] === 1) {
                 worktime = document.createElement("SPAN");
                 worktime.className = 'worktime1';
-                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/shangban.png" align="left" width = "18px" height = "18px"></td> </tr>';
+                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/shangban.png" align="left" width = "16px" height = "16px"></td> </tr>';
             } else {
 
             }
@@ -783,7 +798,7 @@ function create_page(year, month) {
                 // <td><div id="aa"></div></td>
                 //  document.getElementById('aa').innerHTML = worktime.innerHTML;
                  current_cell.innerHTML = worktime.innerHTML+
-                                      '<br />'+ 
+                                    //   '<br />'+ 
                                     '<span class="solar_part" > ' +
                                      month_stuff['monthData'][index]['day'] +
                                      '</span>' +
@@ -833,19 +848,17 @@ function create_page(year, month) {
 }
 
 function new_month_selected() {
-    console.log(year_selector.value);
-    console.log(month_selector.value);
     if (this.parentNode.className=== 'show_years') {
-        year_selector.value = this.innerHTML;
+        var str = this.innerHTML.replace("<span class=\"year_month_grid\">","");
+        year_selector.value = str.replace("</span>","");
         document.getElementById('year_div').className = 'hidden_div';
         calendar.style.display = "";
     } else if (this.parentNode.className=== 'show_months') {
-        month_selector.value = this.innerHTML;
+        var str = this.innerHTML.replace("<span class=\"year_month_grid\">","");
+        month_selector.value = str.replace("</span>","");
         document.getElementById('month_div').className = 'hidden_div';
         calendar.style.display = "";
     }
-    console.log(year_selector.value);
-    console.log(month_selector.value);
     selected_date_div.innerHTML = year_selector.value + month_selector.value;
     create_page(parseInt(year_selector.value), parseInt(month_selector.value));
 }
