@@ -36,8 +36,9 @@
 
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
+#include "../panel/ukuicontrolstyle.h"
 
-class NightModeButton:public QToolButton
+class NightModeButton:public UkuiToolButton
 {
     Q_OBJECT
 public:
