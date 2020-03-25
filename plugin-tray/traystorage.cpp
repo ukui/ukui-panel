@@ -81,11 +81,10 @@ TrayStorage::TrayStorage( QWidget *parent):
     mLayout->setColumnCount(3);
     mLayout->setRowCount(3);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-//    setWindowFlags(/*Qt::FramelessWindowHint |*/ Qt::WindowStaysOnTopHint | Qt::ToolTip);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    setWindowFlags(/*Qt::FramelessWindowHint |*/ /*Qt::WindowStaysOnTopHint |*/ Qt::ToolTip);
 //    setWindowFlags(Qt::FramelessWindowHint );
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
-    QTimer::singleShot(0, this, SLOT(startTray()));
+//    QTimer::singleShot(0, this, SLOT(startTray()));
 }
 
 
