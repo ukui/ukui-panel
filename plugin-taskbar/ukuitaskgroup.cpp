@@ -886,6 +886,7 @@ void UKUITaskGroup::showPreview()
 
         UKUITaskWidget *btn = it.value();
         btn->setThumbNail(thumbnail);
+        btn->updateTitle();
         btn->setFixedSize(winWidth, winHeight);
         mpWidget->layout()->setContentsMargins(0,0,0,0);
         mpWidget->layout()->addWidget(btn);
