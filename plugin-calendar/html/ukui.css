@@ -142,6 +142,7 @@ border: 1px solid transparent;
 
 #calendar_table td:hover {
   border: 1px solid #7eb4ea;
+  border-radius: 4px;
 }
 
 #calendar_table td:active {
@@ -175,6 +176,7 @@ border: 1px solid transparent;
   /* background: #d9ebfc; */
   background:#3d6be5;
   border: 1px solid #7eb4ea;
+  border-radius: 4px;
 }
 .day_today:hover { border: 1px solid #7eb4ea; }
 .day_today:active{ background: #d9ebfc; }
@@ -236,6 +238,7 @@ color: #78cdf7;
 
 #selector_div #go_prev_month:active{
   background-image: url("images/up_click.png");
+  background: none;
 }
 
 
@@ -256,6 +259,7 @@ color: #78cdf7;
 
 #selector_div #go_next_month:active{
   background-image: url("images/down_click.png");
+  background: none;
 }
 
 
@@ -277,6 +281,7 @@ color: #78cdf7;
 #selector_div #month_button:hover{
   /* font */
   background-color: #3d6be5;
+  border-radius: 4px;
 }
 
 #selector_div #year_button {
@@ -289,11 +294,13 @@ color: #78cdf7;
 #selector_div #year_button:hover{
   /* font */
   background-color: #3d6be5;
+  border-radius: 4px;
 }
 
 #selector_div #today_button:hover{
   /* font */
   background-color: #3d6be5;
+  border-radius: 4px;
 }
 
 /* 第四栏，显示农历日期，宜忌信息 */

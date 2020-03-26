@@ -68,7 +68,7 @@ public:
      * */
     bool hasDragAndDropHover() const;
     void setThumbNail(QPixmap _pixmap);
-    void setTitle();
+    void updateTitle();
 
 public slots:
     void raiseApplication();
