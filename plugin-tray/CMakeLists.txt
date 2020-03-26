@@ -52,9 +52,9 @@ set(LIBRARIES
     ${DCONF_LIBRARIES}
 )
 
-install(FILES
-    ../panel/resources/org.ukui.control-center.keybinding.gschema.xml
-    DESTINATION "/usr/share/glib-2.0/schemas/"
-    COMPONENT Runtime
-)
+#install(FILES
+#    ../panel/resources/org.ukui.control-center.keybinding.gschema.xml
+#    DESTINATION "/usr/share/glib-2.0/schemas/"
+#    COMPONENT Runtime
+#)
 BUILD_UKUI_PLUGIN(${PLUGIN})
