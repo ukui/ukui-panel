@@ -22,10 +22,12 @@
 #include <QHBoxLayout>
 #include <QScreen>
 #include <QDebug>
+#include <QMessageBox>
 #include "../panel/customstyle.h"
 
 #define NIGHT_MODE_LIGHT "light"
 #define NIGHE_MODE_NIGHT "night"
+#define NIGHT_MODE_KEY "nightmode"
 #define NIGHT_MODE_CONTROL "org.ukui.control-center.panel.plugins"
 
 NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
@@ -34,7 +36,8 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
 {
     realign();
     mButton.setStyle(new CustomStyle());
-//    mButton.setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode.svg"));
+    mButton.paintTooltipStyle();
+    mButton.setToolTip("夜间模式");
 }
 
 
@@ -54,14 +57,16 @@ NightModeButton::NightModeButton(){
             gsettings = new QGSettings(id);
             connect(gsettings, &QGSettings::changed, this, [=] (const QString &key) {
                 if (key == "nightmode") {
-                    bool mode=gsettings->get("nightmode").toBool();{
+                    bool mode=gsettings->get(NIGHT_MODE_KEY).toBool();
                     if(mode==true){
                     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
+                        this->setToolTip("夜间模式开启");
                     }
                     else{
                     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
+                        this->setToolTip("夜间模式关闭");
                 }
-                }
+
                 }
             });
         }
@@ -83,12 +88,14 @@ void NightModeButton::mousePressEvent(QMouseEvent* event)
         else{
         gsettings->set("nightmode", true);
 //        system("redshift -t 5700:3600 -g 0.8 -m randr -v");
-        if(QFileInfo::exists(QString("/usr/bin/ukui-menu")))
+        if(QFileInfo::exists(QString("/usr/bin/redshift")))
         {
         QProcess *process =new QProcess(this);
         process->startDetached("redshift -t 5700:3600 -g 0.8 -m randr -v");
         }
-        else{qDebug()<<"not find redshift"<<endl;}
+        else{
+            QMessageBox::information(this,"Error","请先安装redshift");
+        }
         }
     }
     QWidget::mousePressEvent(event);

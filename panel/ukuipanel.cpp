@@ -577,19 +577,19 @@ void UKUIPanel::setMargins()
 void UKUIPanel::realign()
 {
     QStringList sheet;
-    QGSettings *gsettings;
-    gsettings= new QGSettings("org.mate.interface", "", this);
-    QString mode;
-    mode=gsettings->get("gtk-theme").toString();
-    qDebug()<<"ukui-theme:"<<mode;
-    if(mode=="ukui-blue")
-    {
-        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
-    }
-    else
-    {
+//    QGSettings *gsettings;
+//    gsettings= new QGSettings("org.mate.interface", "", this);
+//    QString mode;
+//    mode=gsettings->get("gtk-theme").toString();
+//    qDebug()<<"ukui-theme:"<<mode;
+//    if(mode=="ukui-blue")
+//    {
+//        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
+//    }
+//    else
+//    {
         sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
-    }
+//    }
     setStyleSheet(sheet.join("\n"));
     if (!isVisible())
         return;

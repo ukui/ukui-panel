@@ -36,6 +36,7 @@
 #include "../panel/config/configpanelwidget.h"
 #include <../panel/popupmenu.h>
 #include <QMenu>
+#include <QPointF>
 
 class StartMenuButton:public QToolButton
 {
@@ -46,6 +47,11 @@ public:
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mousePressEvent(QMouseEvent* event);
+
+private:
+    void moveMenu(QPointF pt);
+    PopupMenu *menuTaskview;
+
 private slots:
     void ScreenServer();
     void SessionSwitch();
