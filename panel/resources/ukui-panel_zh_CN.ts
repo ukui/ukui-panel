@@ -571,7 +571,7 @@ Colorize icons based on widget style (palette)</source>
     <message>
         <location filename="../../plugin-quicklaunch/quicklaunchbutton.cpp" line="59"/>
         <source>move to right</source>
-        <translation>右边移动ddddd</translation>
+        <translation>右移</translation>
     </message>
     <message>
         <location filename="../../plugin-quicklaunch/quicklaunchbutton.cpp" line="63"/>

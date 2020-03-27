@@ -79,6 +79,7 @@ Files: AUTHORS
        panel/resources/*
        panel/CMakeLists.txt
        panel/customstyle.*
+       panel/ukuicontrolstyle.*
        plugin-calendar/CMakeLists.txt
        plugin-calendar/ukuiwebviewdialog.*
        plugin-calendar/html/*

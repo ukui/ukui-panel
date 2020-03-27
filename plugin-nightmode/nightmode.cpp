@@ -34,10 +34,12 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    mButton=new NightModeButton;
+    mButton->setStyle(new CustomStyle());
+    mButton->paintTooltipStyle();
+    mButton->setToolTip(tr("nightmode"));
     realign();
-    mButton.setStyle(new CustomStyle());
-    mButton.paintTooltipStyle();
-    mButton.setToolTip("夜间模式");
+
 }
 
 
@@ -46,8 +48,8 @@ NightMode::~NightMode(){
 
 void NightMode::realign()
 {
-    mButton.setFixedSize(32,32);
-    mButton.setIconSize(QSize(24,24));
+    mButton->setFixedSize(32,32);
+    mButton->setIconSize(QSize(24,24));
 }
 
 NightModeButton::NightModeButton(){
@@ -60,11 +62,11 @@ NightModeButton::NightModeButton(){
                     bool mode=gsettings->get(NIGHT_MODE_KEY).toBool();
                     if(mode==true){
                     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-                        this->setToolTip("夜间模式开启");
+                        this->setToolTip(tr("nightmode open"));
                     }
                     else{
                     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
-                        this->setToolTip("夜间模式关闭");
+                        this->setToolTip(tr("nightmode close"));
                 }
 
                 }
