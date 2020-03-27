@@ -89,12 +89,11 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id)) {
-    //        qDebug()<<"isSchemaInstalled"<<endl;
             gsettings = new QGSettings(id);
 
             connect(gsettings, &QGSettings::changed, this, [=] (const QString &key) {
                 qDebug()<<"status changed ------------>"<<endl;
-                if (key == "hour-system")
+                if (key == "hoursystem")
                 {
                     updateTimeText();
                 }
@@ -225,7 +224,11 @@ void IndicatorCalendar::updateTimeText()
         if(QGSettings::isSchemaInstalled(id)) {
         //        qDebug()<<"isSchemaInstalled"<<endl;
                 gsettings = new QGSettings(id);
-        QString mode=gsettings->get("hour-system").toString();
+        QString mode;
+        QStringList keys = gsettings->keys();
+        if(keys.contains("hoursystem")){
+            mode=gsettings->get("hoursystem").toString();
+        }
         if(!gsettings)
         {
             qDebug()<<"gsettings  get error    :";
