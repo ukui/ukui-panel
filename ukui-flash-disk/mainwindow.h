@@ -45,6 +45,7 @@ public:
     static int twoVolumeDriveNum;
     static int threeVolumeDriveNum;
     static int fourVolumeDriveNum;
+    static int hign;
 
 private:
     Ui::MainWindow *ui;
@@ -80,7 +81,7 @@ private:
     quint64 totalDis3;
     quint64 totalDis4;
     QClickWidget *open_widget;
-    int hign;
+
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     int getPanelPosition(QString str);

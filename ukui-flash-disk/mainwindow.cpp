@@ -32,6 +32,7 @@ int MainWindow::oneVolumeDriveNum = 0;
 int MainWindow::twoVolumeDriveNum = 0;
 int MainWindow::threeVolumeDriveNum = 0;
 int MainWindow::fourVolumeDriveNum = 0;
+int MainWindow::hign;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -527,11 +528,11 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::Context:
       if (this->isHidden())
       {
-          hign = MainWindow::oneVolumeDriveNum*98+MainWindow::twoVolumeDriveNum*110+MainWindow::threeVolumeDriveNum*130+MainWindow::fourVolumeDriveNum*160;
+          MainWindow::hign = MainWindow::oneVolumeDriveNum*98+MainWindow::twoVolumeDriveNum*110+MainWindow::threeVolumeDriveNum*130+MainWindow::fourVolumeDriveNum*160;
           for(auto cacheDrive : *findDriveList())
           {
 
-              this->setFixedSize(250,hign);
+              this->resize(250,MainWindow::hign);
               qDebug()<<"drive name:"<<g_drive_get_name(cacheDrive->getGDrive());
               g_drive_get_volumes(cacheDrive->getGDrive());
               int DisNum = g_list_length(g_drive_get_volumes(cacheDrive->getGDrive()));
