@@ -94,8 +94,21 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
             connect(gsettings, &QGSettings::changed, this, [=] (const QString &key) {
                 qDebug()<<"status changed ------------>"<<endl;
-                if (key == "hour-system") {
+                if (key == "hour-system")
+                {
                     updateTimeText();
+                }
+                else if(key == "calendar")
+                {
+     
+                    mbHasCreatedWebView = false;
+                    initializeCalendar();
+                }
+                else if(key == "firstday")
+                {
+
+                    mbHasCreatedWebView = false;
+                    initializeCalendar();
                 }
             });
         }
@@ -227,7 +240,7 @@ void IndicatorCalendar::updateTimeText()
             }
 
         }
-
+        }
         else{
             if(panel()->isHorizontal()){
                 str=tzNow.toString(HOUR_SYSTEM_12_Horizontal);
@@ -235,7 +248,6 @@ void IndicatorCalendar::updateTimeText()
             else{
                 str=tzNow.toString(HOUR_SYSTEM_12_Vertical);
             }
-        }
         }
 
 
@@ -466,11 +478,53 @@ void IndicatorCalendar::wheelScrolled(int delta)
 /*when widget is loading need initialize here*/
 void IndicatorCalendar::initializeCalendar()
 {
+    QByteArray id(HOUR_SYSTEM_CONTROL);
+    CalendarShowMode showCalendar = defaultMode;
+    if(QGSettings::isSchemaInstalled(id))
+    {
+//        if(gsettings)
+//        {
+//            gsettings->deleteLater();
+//        }
+//        gsettings = new QGSettings(id);
+        if(!gsettings)
+        {
+            qDebug()<<"get gsetting error!!!";
+            return;
+        }
+        QString lunarOrsolar = gsettings->get("calendar").toString();
+        QString firstDay = gsettings->get("firstday").toString();
+        qDebug()<<"lunarOrsolar:"<<lunarOrsolar;
+        qDebug()<<"firstDay:"<<firstDay;
+        if(lunarOrsolar == "lunar")
+        {
+            if(firstDay == "sunday")
+            {
+                showCalendar = lunarSunday;
+            }
+            else if(firstDay == "monday")
+            {
+                showCalendar = lunarMonday;
+            }
+        }
+        else if(lunarOrsolar == "solarlunar")
+        {
+            if(firstDay == "sunday")
+            {
+                showCalendar = solarSunday;
+            }
+            else if(firstDay == "monday")
+            {
+                showCalendar = solarMonday;
+            }
+        }
+    }
+
     if(mWebViewDiag != NULL )
     {
         if(!mbHasCreatedWebView)
         {
-            mWebViewDiag->creatwebview();
+            mWebViewDiag->creatwebview(showCalendar);
             mbHasCreatedWebView = true;
         }
     }

@@ -83,7 +83,6 @@ function updateTime() {
         var timer = null;
         var today_time = new Date();
         datetime_container.children[0].innerHTML = getTime(today_time);
-        //alert(datetime_container.children[0].innerHTML);
         timer = setInterval(function() {
         var today_time = new Date();
         datetime_container.children[0].innerHTML = getTime(today_time);
@@ -428,34 +427,6 @@ function load_hl_script(year) {
 
 window.onload = function () {
 
-    var checkbox = document.getElementById('advice_checkbox');
-    if (localStorage.getItem('hl_table') == "display"){
-            checkbox.setAttribute("checked", true);    
-	    hl_table.setAttribute("style", "visibility:display");
-	    //var zodiac_icon = document.getElementById('zodiac_icon');
-            //zodiac_icon.setAttribute("style", "display:none");
-    }
-
-    checkbox.onclick = function(){
-        console.log("checkbox triggerd");
-        if(this.checked){
-            var hl_table = document.getElementById('hl_table');
-	    hl_table.setAttribute("style", "visibility:display");
-	    //var zodiac_icon = document.getElementById('zodiac_icon');
-            //zodiac_icon.setAttribute("style", "display:none");
-
-           localStorage.setItem('hl_table', "display");
-           
-        } else{
-            var hl_table = document.getElementById('hl_table');
-	   hl_table.setAttribute("style", "visibility:hidden");
-	  // var zodiac_icon = document.getElementById('zodiac_icon');
-          // zodiac_icon.setAttribute("style", "display:block");
-	   //zodiac_icon.setAttribute("style", "padding-top: 33px");
-           localStorage.setItem('hl_table', "hidden");
-       }
-    }
-    
     "use strict";
     
     load_hl_script(today.getFullYear());
@@ -482,91 +453,9 @@ window.onload = function () {
     month_button.addEventListener('click', popup_div);
     document.getElementById('year_div').addEventListener('mousewheel',scroll_div);
     document.getElementById('month_div').addEventListener('mousewheel',scroll_div);
-    // year_button = document.getElementById('year_button');
-    // year_button.addEventListener('click', popup_div);
-
-    // month_button = document.getElementById('month_button');
-    // month_button.addEventListener('click', popup_div);
-    // document.addEventListener('mousewheel', function(event)
-    // {
-    //     //alert("sroll??");
-    // })
     document.addEventListener('click', function(event) {
-        // var year_div = document.getElementById('year_div');
-        // var month_div = document.getElementById('month_div');
-        // var holiday_div = document.getElementById('holiday_div');
-        // var x = event.clientX;
-        // var y = event.clientY;
-
-        // if (year_div.className === 'visible_div') {
-        //     if (x > div_range.year.x_max || x < div_range.year.x_min ||
-        //         y > div_range.year.y_max || y < div_range.year.y_min) {
-        //         year_div.className = 'hidden_div';
-        //     }
-        // }
-        // if (month_div.className === 'visible_div') {
-        //     if (x > div_range.month.x_max || x < div_range.month.x_min ||
-        //         y > div_range.month.y_max || y < div_range.month.y_min ) {
-        //         month_div.className = 'hidden_div';
-        //     }
-        // }
-        // if (holiday_div.className === 'visible_div') {
-        //     if (x > div_range.holiday.x_max || x < div_range.holiday.x_min ||
-        //         y > div_range.holiday.y_max || y < div_range.holiday.y_min ) {
-        //         holiday_div.className = 'hidden_div';
-        //     }
-        // }
-	// var header_id=document.getElementById("header");
-	// var header_color=header_id.style.background;
-	// var x=document.getElementsByClassName("day_highlight");
-	// if (header_color == "rgb(0, 0, 0)"){
-	//     for (i = 0; i < x.length; i++) {
-	//     	x[i].style.backgroundColor = "#2b87a8";
-	//     }
-  //           var day_highlight_len=document.getElementsByClassName('day_highlight').length;
-  //           for (var i=0; i<day_today_len; i++){
-  //               document.getElementsByClassName('day_highlight')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';
-  //               document.getElementsByClassName('day_highlight')[i].getElementsByClassName('lunar_part ')[0].style.color='#ffffff';
-  //           }                               
-	// }
-	// else{
-	//     for (i = 0; i < x.length; i++) {
-	// 	x[i].style.backgroundColor = header_color;
-	//     }
-	// }
     });
 
-    //pre for show year list
-    // for (var index = year_range['low']; index <= year_range['high']; index++) {
-    //     var li = document.createElement('LI');
-    //     li.innerHTML = index + '年';
-    //     li.addEventListener('click', new_month_selected); // new year implies new month
-    //     year_list.appendChild(li);
-    //     if (index === year) {
-    //         year_selector.value = index + '年';
-    //     }
-    // }
-
-
-    // year_selector.value = year + '年';
-    // var li = document.getElementById('year_div');
-    // for (var index =  0;  index < 16;  index++) {
-    //     li.children[0].children[index].innerHTML= year + index + '年';
-    //     li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
-    //     // year_list.appendChild(li);
-    //     // if (index === year) {
-    //     //     year_selector.value = index + '年';
-    //     // }
-    // }
-    // li = document.getElementById('month_div');
-    // for (var index = 0; index < 12; index++) {
-    //     li.children[0].children[index].innerHTML = index +1+ '月';
-    //     li.children[0].children[index].addEventListener('click', new_month_selected);
-    //     // month_list.appendChild(li);
-    //     if (index === month + 1) {
-    //         month_selector.value = index + '月';
-    //     }
-    // }
     updateUi();
     var goto_arrows = document.getElementsByTagName('input');
     var n_months = (year_range['high'] - year_range['low'] + 1) * 12;
@@ -724,35 +613,7 @@ function create_page(year, month) {
             } else {
                 current_cell = current_row.cells[column];
             }
-	    // var header_id=document.getElementById("header");
-	    // var header_color=header_id.style.background;
-	    // if (header_color == "rgb(0, 0, 0)"){
-	    //     var x=document.getElementsByClassName("day_highlight");
-	    // 	for (i = 0; i < x.length; i++) {
-		  //   x[i].style.backgroundColor = "#151a1e";
-	    //     }
-	    // }
-	    // else{
-	    //     var x=document.getElementsByClassName("day_highlight");
-	    // 	for (i = 0; i < x.length; i++) {
-		  //   x[i].style.backgroundColor = "#ffffff";
-	    //     }
-        // }
-            // if((year == today.getFullYear()) && (month == today.getMonth()))
-            // {
 
-                // var x=document.getElementsByClassName("day_today");
-                // for (i = 0; i < x.length; i++) {
-                //     // x[i].style.backgroundColor = "#3593b5";
-                //     x[i].style.backgroundColor = "#3d6be5";
-                // }  
-
-            // }
-	        // x=document.getElementsByClassName("day_today");
-	        // for (i = 0; i < x.length; i++) {
-            //     // x[i].style.backgroundColor = "#3593b5";
-            //     x[i].style.backgroundColor = "#3d6be5";
-	        // }
             var index = (row - 1) * 7 + column; // [0, 7 * 6 - 1]
             /*
              * 注意判断顺序
@@ -804,33 +665,36 @@ function create_page(year, month) {
                                      '<span class="lunar_part">' +
                                      lunar_day +
                                      '</span>';*/
-            if (worktime && current_cell.className !== 'day_other_month') {
-                //current_cell.appendChild(worktime);
-                // <td><div id="aa"></div></td>
-                //  document.getElementById('aa').innerHTML = worktime.innerHTML;
-                 current_cell.innerHTML = worktime.innerHTML+
-                                    //   '<br />'+ 
-                                    '<span class="solar_part" > ' +
-                                     month_stuff['monthData'][index]['day'] +
-                                     '</span>' +
-                                     '<br />' +
-                                     '<span class="lunar_part">' +
-                                     lunar_day +
-                                     '</span>';
-                // current_cell.innerHTML =  '<tr style="background: green"><td>1</td><td>2</td><td>3</td></tr>'
-                // +'<br />' + '<tr style="background: green"><td>4</td><td>5</td><td>6</td></tr>'+
-                // '<br />' +'<tr style="background: green"><td>7</td><td>8</td><td>9</td></tr>';
-            }
-            else
-			{
-                 current_cell.innerHTML =   '<span class="solar_part">' +
-                                     month_stuff['monthData'][index]['day'] +
-                                     '</span>' +
-                                     '<br />' +
-                                     '<span class="lunar_part">' +
-                                     lunar_day +
-                                     '</span>';
-			}
+            // if (worktime && current_cell.className !== 'day_other_month') {
+            //     //current_cell.appendChild(worktime);
+            //     // <td><div id="aa"></div></td>
+            //     //  document.getElementById('aa').innerHTML = worktime.innerHTML;
+            //      current_cell.innerHTML = worktime.innerHTML+
+            //                         //   '<br />'+ 
+            //                         '<span class="solar_part" > ' +
+            //                          month_stuff['monthData'][index]['day'] +
+            //                          '</span>' +
+            //                          '<br />' +
+            //                          '<span class="lunar_part">' +
+            //                          lunar_day +
+            //                          '</span>';
+            //     // current_cell.innerHTML =  '<tr style="background: green"><td>1</td><td>2</td><td>3</td></tr>'
+            //     // +'<br />' + '<tr style="background: green"><td>4</td><td>5</td><td>6</td></tr>'+
+            //     // '<br />' +'<tr style="background: green"><td>7</td><td>8</td><td>9</td></tr>';
+            // }
+            // else
+			// {
+            //      current_cell.innerHTML =   '<span class="solar_part">' +
+            //                          month_stuff['monthData'][index]['day'] +
+            //                          '</span>' +
+            //                          '<br />' +
+            //                          '<span class="lunar_part">' +
+            //                          lunar_day +
+            //                          '</span>';
+            // }
+            current_cell.innerHTML =   '<span class="solar_part">' +
+            month_stuff['monthData'][index]['day'] +
+            '</span>'
         }
     }
 
@@ -955,15 +819,15 @@ function update_right_pane(year, month, day) {
     }
     if(NeedChangeCurrentTime)
     {
-        datetime_container.children[1].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday  + ' '+lunar_month_name + lunar_day_name;
+        datetime_container.children[1].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday /* + ' '+lunar_month_name + lunar_day_name*/;
         NeedChangeCurrentTime = 0;
     }
    /* general_datetime_list.children[0].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday;
     general_datetime_list.children[1].innerHTML = day_str; // e.g. 06
     general_datetime_list.children[2].innerHTML = lunar_month_name + lunar_day_name;*/
-    general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
+    //general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
    // general_datetime_list.children[1].innerHTML = ganzhi_month + '月 ' + ganzhi_day + '日';
-   updateTime();
+    updateTime();
     update_yiji_area();
 
     month_stuff = null;
