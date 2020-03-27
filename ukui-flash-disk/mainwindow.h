@@ -81,7 +81,7 @@ private:
     quint64 totalDis3;
     quint64 totalDis4;
     QClickWidget *open_widget;
-    //int hign;
+
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     int getPanelPosition(QString str);

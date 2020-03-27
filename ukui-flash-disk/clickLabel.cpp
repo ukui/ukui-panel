@@ -1,5 +1,3 @@
-#include "clickLabel.h"
-
 /*
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
@@ -17,6 +15,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
+
+#include "clickLabel.h"
 ClickLabel::ClickLabel(const QString &text, QWidget *parent)
 {
     setText(text);
