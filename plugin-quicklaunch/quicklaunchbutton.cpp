@@ -53,14 +53,14 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
     setDefaultAction(mAct);
     mAct->setParent(this);
 
-    mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("左移"), this);
+    mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("move to left"), this);
     connect(mMoveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
 
-    mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("右移"), this);
+    mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("move to right"), this);
     connect(mMoveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
 
 
-    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("从快速启动栏取消固定"), this);
+    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("delete from quicklaunch"), this);
     connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
     addAction(mDeleteAct);
     mMenu = new QuicklaunchMenu();

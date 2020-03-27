@@ -84,8 +84,10 @@ extern "C" {
 #include <dconf/dconf.h>
 }
 
-#define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.control-center.keybinding"
-#define KEYBINDINGS_CUSTOM_DIR "/org/ukui/desktop/keybindings/"
+#define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.panel.tray"
+#define KEYBINDINGS_CUSTOM_DIR "/org/ukui/tray/keybindings/"
+//#define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.control-center.keybinding"
+//#define KEYBINDINGS_CUSTOM_DIR "/org/ukui/desktop/keybindings/"
 
 #define MAX_CUSTOM_SHORTCUTS 30
 
@@ -93,6 +95,7 @@ extern "C" {
 #define RECORD_KEY "record"
 #define BINDING_KEY "binding"
 #define NAME_KEY "name"
+
 
 /************************************************
 
@@ -135,21 +138,30 @@ UKUITray::~UKUITray()
 }
 void UKUITray::storageBar()
 {
-    int availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
-    int avaliableWidth=QGuiApplication::screens().at(0)->availableVirtualGeometry().width();
+    QCursor::pos();
+    #define STORAGE_POSITION_BOTTOM_X QCursor::pos().x()-120
+    #define STORAGE_POSITION_BOTTOM_Y QCursor::pos().y()-120
+    #define STORAGE_POSITION_UP_X     QCursor::pos().x()-120
+    #define STORAGE_POSITION_UP_Y     QCursor::pos().y()+20
+    #define STORAGE_POSITION_LEFT_X   QCursor::pos().x()+40
+    #define STORAGE_POSITION_LEFT_Y   QCursor::pos().y()-20
+    #define STORAGE_POSITION_RIGHT_X  QCursor::pos().x()-150
+    #define STORAGE_POSITION_RIGHT_Y  QCursor::pos().y()-70
+    #define STORAGE_HIGHT 90
+    #define STORAGE_WIDGH 140
 
     switch (mPlugin->panel()->position()){
     case 0:
-        tys->setGeometry(avaliableWidth-300,availableHeight-90,150,90);
+        tys->setGeometry(STORAGE_POSITION_BOTTOM_X,STORAGE_POSITION_BOTTOM_Y,STORAGE_WIDGH,STORAGE_HIGHT);
         break;
     case 1:
-        tys->setGeometry(avaliableWidth-300,0,130,90);
+        tys->setGeometry(STORAGE_POSITION_UP_X,STORAGE_POSITION_UP_Y,STORAGE_WIDGH,STORAGE_HIGHT);
         break;
     case 2:
-        tys->setGeometry(0,availableHeight-390,130,90);
+        tys->setGeometry(STORAGE_POSITION_LEFT_X,STORAGE_POSITION_LEFT_Y,STORAGE_WIDGH,STORAGE_HIGHT);
         break;
     case 3:
-        tys->setGeometry(avaliableWidth-130,availableHeight-290,130,90);
+        tys->setGeometry(STORAGE_POSITION_RIGHT_X,STORAGE_POSITION_RIGHT_Y,STORAGE_WIDGH,STORAGE_HIGHT);
         break;
     default:
         break;
@@ -267,21 +279,6 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
             if(id){
             regulateIcon(&id);
             }
-            /*
-            //old  way to load trayApp  ,don't delete these code Until the new version is stable.
-            if(id)
-            {
-                if(xfitMan().getApplicationName(id)=="kylin-nm")
-                {
-                    addIcon(id);
-                }
-                else
-                {
-                    storageAddIcon(id);
-                }
-            }
-            */
-
 
         case SYSTEM_TRAY_BEGIN_MESSAGE:
         case SYSTEM_TRAY_CANCEL_MESSAGE:
@@ -511,7 +508,7 @@ void UKUITray::freezeTrayApp(Window winId)
 
     nameStr = xfitMan().getApplicationName(wid);
     for (char * path : existsPath){
-        QString p ="/org/ukui/desktop/keybindings/";
+        QString p =KEYBINDINGS_CUSTOM_DIR;
         std::string str = p.toStdString();
         const int len = str.length();
         char * prepath = new char[len+1];
@@ -644,13 +641,10 @@ void UKUITray::regulateIcon(Window *mid)
     QString nameStr;
     QString recordStr;
 
-//    char * prepath = QString(p).toLatin1().data();
-//    char * prepath = QString(KEYBINDINGS_CUSTOM_DIR).toLatin1().data();
-
     nameStr = xfitMan().getApplicationName(wid);
     //匹配表中存在的name与该wid的name，若相等则用新的wid覆盖旧的wid，否则在表中添加新的路径，写上新的wid，name，以及状态。
     for (char * path : existsPath){
-        QString p ="/org/ukui/desktop/keybindings/";
+        QString p =KEYBINDINGS_CUSTOM_DIR;
         std::string str = p.toStdString();
         const int len = str.length();
         char * prepath = new char[len+1];
@@ -660,8 +654,6 @@ void UKUITray::regulateIcon(Window *mid)
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray bba(allpath);
 
-//        connectGsetting(ba,bba,wid);
-//        qDebug()<<"all path :"<<allpath << "prepath:" << prepath << "path:" << path <<"appname:" <<xfitMan().getApplicationName(wid) << "存在path大小" << existsPath.count();
         QGSettings *settings;
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
         if(QGSettings::isSchemaInstalled(id)) {
@@ -680,14 +672,13 @@ void UKUITray::regulateIcon(Window *mid)
         {
             qDebug()<<"find the app "<<xfitMan().getApplicationName(wid)<<"and change it winid ;   path is :"<<bba;
             settings->set(BINDING_KEY, wid);
-//            actionStr=recordStr;
             bingdingStr=wid;
 
-            if(QString::compare(actionStr,"tray")){
+            if(QString::compare(actionStr,"tray")==0){
                 qDebug()<<"tray add Icon ";
                 addIcon(bingdingStr);
             }
-            else if(QString::compare(actionStr,"storage")){
+            else if(QString::compare(actionStr,"storage")==0){
                 qDebug()<<"storege add Icon ";
                 storageAddIcon(bingdingStr);
             }
@@ -695,32 +686,26 @@ void UKUITray::regulateIcon(Window *mid)
                 qDebug()<<"status changed ------------>" <<"name:" <<nameStr <<endl;
                 if(key=="action")
                 {
-                    if(QString::compare(settings->get(ACTION_KEY).toString(),"tray"))
+                    if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0)
                     {
 //                        qDebug()<<"***** action change to false; storage ->tray ******** window id is:"<<bingdingStr<<"  name is "<<xfitMan().getApplicationName(bingdingStr);
-                        moveIcon(bingdingStr);
-                    }
-                    else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")){
-//                        qDebug()<<"****action change to true; tray ->storage  ********  window id is:"<<bingdingStr<<"  name is "<<xfitMan() .getApplicationName(bingdingStr);
                         storageMoveIcon(bingdingStr);
+                    }
+                    else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
+//                        qDebug()<<"****action change to true; tray ->storage  ********  window id is:"<<bingdingStr<<"  name is "<<xfitMan() .getApplicationName(bingdingStr);
+                        moveIcon(bingdingStr);
                     }
                 }
             });
             break;
         }
         }
-//        delete settings;
                 count++;
-//        g_warning("full path: %s", allpath);
-//        qDebug() << ACTION_KEY << actionStr << BINDING_KEY << bingdingStr <<NAME_KEY << nameStr;
     }
 
     if(count>=existsPath.count())
     {
         QString availablepath = findFreePath();
-
-        qDebug() << "new app will be add" << availablepath;
-//        qDebug()<<"xfitMan().getApplicationName(wid):"<<xfitMan().getApplicationName(wid);
 
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray idd(availablepath.toUtf8().data());
@@ -730,8 +715,14 @@ void UKUITray::regulateIcon(Window *mid)
         newsetting=new QGSettings(id,idd);
         newsetting->set(BINDING_KEY,wid);
         newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
+        if(xfitMan().getApplicationName(wid)=="ukui-volume-control-applet-qt"){
+            newsetting->set(ACTION_KEY,"storage");
+            newsetting->set(RECORD_KEY,"storage");
+        }
+        else{
         newsetting->set(ACTION_KEY,"tray");
         newsetting->set(RECORD_KEY,"tray");
+        }
         }
         delete newsetting;
         addIcon(wid);
@@ -744,12 +735,12 @@ void UKUITray::regulateIcon(Window *mid)
             qDebug()<<"status changed ------------>" <<"name:" <<nameStr <<endl;
             if(key=="action")
             {
-                if(settings->get(ACTION_KEY).toString()=="tray")
+                if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0)
                 {
 //                        qDebug()<<"***** action change to false; storage ->tray ******** window id is:"<<bingdingStr<<"  name is "<<xfitMan().getApplicationName(bingdingStr);
                     moveIcon(bingdingStr);
                 }
-                else if(settings->get(ACTION_KEY).toString()=="storage"){
+                else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
 //                        qDebug()<<"****action change to true; tray ->storage  ********  window id is:"<<bingdingStr<<"  name is "<<xfitMan() .getApplicationName(bingdingStr);
                     storageMoveIcon(bingdingStr);
                 }
@@ -766,7 +757,7 @@ void UKUITray::freezeApp()
 {
     QList<char *> existsPath = listExistsPath();
     for (char * path : existsPath){
-        QString p ="/org/ukui/desktop/keybindings/";
+        QString p =KEYBINDINGS_CUSTOM_DIR;
         std::string str = p.toStdString();
         const int len = str.length();
         char * prepath = new char[len+1];

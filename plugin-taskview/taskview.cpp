@@ -41,7 +41,7 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     mButton->setStyle(new CustomStyle());
     mButton->setIcon(QIcon("/usr/share/ukui-panel/panel/img/taskview.svg"));
     mButton->paintTooltipStyle();
-    mButton->setToolTip("预览窗口");
+    mButton->setToolTip(tr("taskviewWindow"));
     realign();
 }
 

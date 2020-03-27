@@ -56,12 +56,12 @@ public:
     NightMode(const IUKUIPanelPluginStartupInfo &startupInfo);
     ~NightMode();
 
-    virtual QWidget *widget() { return &mButton; }
+    virtual QWidget *widget() { return mButton; }
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 private:
-    NightModeButton mButton;
+    NightModeButton *mButton;
 
 
 
