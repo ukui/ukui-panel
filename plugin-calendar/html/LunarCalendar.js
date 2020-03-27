@@ -641,11 +641,11 @@
 		res.monthData = creatLenArr(year,month+1,res.monthDays,1);
 
 		if(fill){
-			if(res.firstDay > 0){ //前补
+			if(res.firstDay != mode){ //前补
 				var preYear = month-1<0 ? year-1 : year;
 				var preMonth = month-1<0 ? 11 : month-1;
 				preMonthDays = getSolarMonthDays(preYear,preMonth);
-				if(mode > 0)
+				if(mode === 0)
 				{
 					preMonthData = creatLenArr(preYear,preMonth+1,res.firstDay,preMonthDays-res.firstDay+1);
 				}

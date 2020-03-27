@@ -28,6 +28,15 @@ namespace Ui {
 class UkuiWebviewDialog;
 }
 
+enum CalendarShowMode
+{
+    lunarSunday        = 0,//show lunar and first day a week is sunday
+    lunarMonday        = 1,//show lunar and first day a week is monday
+    solarSunday        = 2,//show solar and first day a week is sunday
+    solarMonday        = 3,//show solar and first day a week is monday
+    Unknown            = 0xff
+};
+
 class UkuiWebviewDialog : public QDialog
 {
     Q_OBJECT
@@ -35,7 +44,7 @@ class UkuiWebviewDialog : public QDialog
 public:
     explicit UkuiWebviewDialog(QWidget *parent = nullptr);
     ~UkuiWebviewDialog();
-    void creatwebview();
+    void creatwebview(int _mode);
     void showinfo(QString string);
     QWebView *webview(){return mWebView;}
 Q_SIGNALS:

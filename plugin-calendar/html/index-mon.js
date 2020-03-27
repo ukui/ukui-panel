@@ -697,7 +697,7 @@ function create_page(year, month) {
 
     if (year < year_range['low'] || year > year_range['high'])
         return;
-    var month_stuff = LunarCalendar.calendar(year, month, true,0);
+    var month_stuff = LunarCalendar.calendar(year, month, true,1);
     highlight_day = highlight_day > month_stuff['monthDays'] ? month_stuff['monthDays'] : highlight_day;
 
     var current_row = null;
@@ -762,17 +762,29 @@ function create_page(year, month) {
              * 4. 再次是属于周末的单元格
              * 5. 最后是其他普通单元格
              */
-            if (index < month_stuff['firstDay'] || index >= month_stuff['firstDay'] + month_stuff['monthDays']) {
+            if ((index < (month_stuff['firstDay'] -1) && month_stuff['firstDay'] != 0)//每周从周一开始,当月第一天不是星期天,上个月的日期
+                ||(index < 6 && month_stuff['firstDay'] === 0)//第一天是星期天
+                || (month_stuff['firstDay']===0 && index >= (month_stuff['monthDays'] + 6))//第一天是星期天下月的日期
+                ||( month_stuff['firstDay'] != 0 && index >= month_stuff['firstDay'] + month_stuff['monthDays']-1)) //第一天不是星期天下月日期
+            {
                 current_cell.className = 'day_other_month';
-            } else if (today.getDate() === month_stuff['monthData'][index]['day'] &&
+            } 
+            else if (today.getDate() === month_stuff['monthData'][index]['day'] &&
                        today.getMonth() === month - 1 &&
-                       today.getFullYear() === year) {
+                       today.getFullYear() === year) 
+            {
                 current_cell.className = 'day_today';
-            } else if (index === highlight_day + month_stuff['firstDay'] - 1) {
+            } 
+            else if (index === highlight_day + month_stuff['firstDay'] - 1) 
+            {
                 current_cell.className = 'day_highlight';
-            } else if (column === 0 || column === 6) {
+            } 
+            else if (column === 0 || column === 6) 
+            {
                 current_cell.className = 'day_weekend';
-            } else {
+            } 
+            else 
+            {
                 current_cell.className = 'day_this_month';
             }
 
@@ -932,7 +944,7 @@ function popup_div(event) {
 }
 
 function update_right_pane(year, month, day) {
-    var month_stuff = LunarCalendar.calendar(year, month, true, 0);
+    var month_stuff = LunarCalendar.calendar(year, month, true, 1);
 
     var general_datetime_list = document.getElementById('general_datetime_list');
     var datetime_container = document.getElementById('datetime_container');
@@ -975,7 +987,7 @@ function go_to_holiday () {
     var month = today.getMonth() + 1;
     var day = 0;
 
-    var month_stuff = LunarCalendar.calendar(year, month, false, 0);
+    var month_stuff = LunarCalendar.calendar(year, month, false, 1);
     var found = false;
     var target = this.innerHTML;
     do {
@@ -999,7 +1011,7 @@ function go_to_holiday () {
             month++;
         }
 
-        month_stuff = LunarCalendar.calendar(year, month, false, 0);
+        month_stuff = LunarCalendar.calendar(year, month, false, 1);
     } while (year - today.getFullYear() <= 1);
 
     if (!found) {
