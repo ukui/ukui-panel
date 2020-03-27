@@ -76,7 +76,6 @@ TrayStorage::TrayStorage( QWidget *parent):
     mIconSize(TRAY_ICON_SIZE_DEFAULT, TRAY_ICON_SIZE_DEFAULT),
     mDisplay(QX11Info::display())
 {
-    this->setGeometry(QRect(10, 20, 100, 121));
     mLayout = new UKUi::GridLayout(this);
     mLayout->setColumnCount(3);
     mLayout->setRowCount(3);

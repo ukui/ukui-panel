@@ -241,6 +241,7 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
 void UKUITray::realign()
 {
     mLayout->setEnabled(false);
+    mIconSize=QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2);
     IUKUIPanel *panel = mPlugin->panel();
 
     if (panel->isHorizontal())
@@ -304,6 +305,11 @@ TrayIcon* UKUITray::findIcon(Window id)
     {
         if (icon->iconId() == id || icon->windowId() == id)
             return icon;
+    }
+    for(TrayIcon* storageicon :qAsConst(mStorageIcons))
+    {
+        if (storageicon->iconId() == id || storageicon->windowId() == id)
+            return storageicon;
     }
     return 0;
 }
@@ -427,9 +433,6 @@ void UKUITray::startTray()
                         (unsigned char*)&visualId,
                         1);
     }
-    // ******************************************
-
-    setIconSize(mIconSize);
 
     XClientMessageEvent ev;
     ev.type = ClientMessage;
@@ -484,7 +487,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
 {
     //in the time QOjbect::destroyed is emitted, the child destructor
     //is already finished, so the qobject_cast to child will return nullptr in all cases
-//    qDebug()<<"tray icon destory";
+    qDebug()<<"tray icon destory";
     mIcons.removeAll(static_cast<TrayIcon *>(icon));
     mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
 }
@@ -553,6 +556,7 @@ void UKUITray::addIcon(Window winId)
         return;
     else
     icon = new TrayIcon(winId, mIconSize, this);
+
     mIcons.append(icon);
     mLayout->addWidget(icon);
 //    connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
@@ -564,11 +568,14 @@ void UKUITray::addIcon(Window winId)
 void UKUITray::moveIcon(Window winId)
 {
     TrayIcon *icon = findIcon(winId);
+    if(!icon){
+        return;
+    }
     if(icon)
     {
         mLayout->removeWidget(icon);
         mIcons.removeOne(icon);
-        disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+//        disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         mStorageIcons.append(icon);
         tys->mLayout->addWidget(icon);
         qDebug() << "从托盘移动到收纳";
@@ -580,7 +587,7 @@ void UKUITray::moveIcon(Window winId)
 
 void UKUITray::storageAddIcon(Window winId)
 {
-    TrayIcon *storageicon = findStorageIcon(winId);
+    TrayIcon *storageicon = findIcon(winId);
     if(storageicon)
         return;
     else
@@ -594,12 +601,15 @@ void UKUITray::storageAddIcon(Window winId)
 
 void UKUITray::storageMoveIcon(Window winId)
 {
-    TrayIcon *storageicon = findStorageIcon(winId);
+    TrayIcon *storageicon = findIcon(winId);
+    if(!storageicon){
+        return;
+    }
     if(storageicon)
     {
         mStorageIcons.removeOne(storageicon);
         tys->mLayout->removeWidget(storageicon);
-        disconnect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+//        disconnect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         mIcons.append(storageicon);
         mLayout->addWidget(storageicon);
         qDebug() << "从收纳栏移除到托盘";
@@ -668,8 +678,7 @@ void UKUITray::regulateIcon(Window *mid)
 
 
         settings->setObjectName(nameStr);
-        if(nameStr==xfitMan().getApplicationName(wid))
-        {
+        if(nameStr==xfitMan().getApplicationName(wid)){
             qDebug()<<"find the app "<<xfitMan().getApplicationName(wid)<<"and change it winid ;   path is :"<<bba;
             settings->set(BINDING_KEY, wid);
             bingdingStr=wid;
@@ -684,15 +693,11 @@ void UKUITray::regulateIcon(Window *mid)
             }
             connect(settings, &QGSettings::changed, this, [=] (const QString &key) {
                 qDebug()<<"status changed ------------>" <<"name:" <<nameStr <<endl;
-                if(key=="action")
-                {
-                    if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0)
-                    {
-//                        qDebug()<<"***** action change to false; storage ->tray ******** window id is:"<<bingdingStr<<"  name is "<<xfitMan().getApplicationName(bingdingStr);
+                if(key=="action"){
+                    if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0){
                         storageMoveIcon(bingdingStr);
                     }
                     else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
-//                        qDebug()<<"****action change to true; tray ->storage  ********  window id is:"<<bingdingStr<<"  name is "<<xfitMan() .getApplicationName(bingdingStr);
                         moveIcon(bingdingStr);
                     }
                 }
@@ -767,8 +772,6 @@ void UKUITray::freezeApp()
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray bba(allpath);
 
-//        connectGsetting(ba,bba,wid);
-//        qDebug()<<"all path :"<<allpath << "prepath:" << prepath << "path:" << path <<"appname:" <<xfitMan().getApplicationName(wid) << "存在path大小" << existsPath.count();
         QGSettings *settings;
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
         if(QGSettings::isSchemaInstalled(id)) {

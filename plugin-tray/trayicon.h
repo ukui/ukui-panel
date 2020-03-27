@@ -40,11 +40,12 @@
 
 class QWidget;
 class UKUIPanel;
+class IUKUIPanelPlugin;
 
 class TrayIcon: public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
+//    Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 
 public:
     TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent);
@@ -54,10 +55,11 @@ public:
     Window windowId() { return mWindowId; }
     void windowDestroyed(Window w);
 
-    QSize iconSize() const { return mIconSize; }
+//    QSize iconSize() const { return mIconSize; }
     void setIconSize(QSize iconSize);
 
     QSize sizeHint() const;
+    IUKUIPanelPlugin *mPlugin;
 
 public slots:
     void notifyAppFreeze();
