@@ -34,8 +34,7 @@ Build-Depends: debhelper-compat (= 12),
                libpoppler-dev,
                libpoppler-qt5-dev,
                libpeony-dev,
-               libdconf-dev,
-	       redshift
+               libdconf-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/ukui/ukui-panel
