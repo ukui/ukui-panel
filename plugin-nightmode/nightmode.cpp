@@ -39,7 +39,6 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     mButton->paintTooltipStyle();
     mButton->setToolTip(tr("nightmode"));
     realign();
-
 }
 
 

@@ -696,13 +696,6 @@ void IndicatorCalendar::setbackground()
     }
     if (!strcmp (color_hex, "#000000")){
         str=QString::asprintf("\
-                      var zodiac_icon = document.getElementById('zodiac_icon');\
-                      zodiac_icon.setAttribute('src', '/usr/share/ukui-panel/plugin-calendar/html/images/zodiac/black/mouse-black.png');\
-                      zodiac_icon.setAttribute('style', 'padding-top: 33px');\
-                      var checkbox = document.getElementById('checkbox');\
-                      if (checkbox.checked){\
-                          zodiac_icon.setAttribute('style', 'display:none');\
-                      }\
                       document.getElementById('container').style.background='%s';\
                       document.getElementById('header').style.background='%s';\
                       document.getElementById('day').style.color='%s';\
@@ -774,13 +767,6 @@ void IndicatorCalendar::setbackground()
     }
     else{
         str=QString::asprintf("\
-                      var zodiac_icon = document.getElementById('zodiac_icon');\
-                      zodiac_icon.setAttribute('src', '/usr/share/ukui-panel/plugin-calendar/html/images/zodiac/blue/mouse-white.png');\
-                      zodiac_icon.setAttribute('style', 'padding-top: 33px');\
-                      var checkbox = document.getElementById('checkbox');\
-                      if (checkbox.checked){\
-                          zodiac_icon.setAttribute('style', 'display:none');\
-                      }\
                                       document.getElementById('container').style.background='%s';\
                                       document.getElementById('header').style.background='%s';\
                                       document.getElementById('day').style.color='%s';\

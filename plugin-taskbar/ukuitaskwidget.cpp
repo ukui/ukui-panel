@@ -636,9 +636,9 @@ bool UKUITaskWidget::hasDragAndDropHover() const
 {
     return mDNDTimer->isActive();
 }
- void UKUITaskWidget::setTitle()
+ void UKUITaskWidget::updateTitle()
  {
-     mTitleLabel->setText("12345");
+     updateText();
  }
 
  void UKUITaskWidget::setThumbNail(QPixmap _pixmap)
