@@ -40,8 +40,9 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
     ejectinterface_h_BoxLayout = new QHBoxLayout();
     if(ejectinterface_h_BoxLayout)
     {
-        ejectinterface_h_BoxLayout->addStretch();
+        ejectinterface_h_BoxLayout->addSpacing(10);
         ejectinterface_h_BoxLayout->addWidget(eject_image_label);
+        ejectinterface_h_BoxLayout->addSpacing(5);
         ejectinterface_h_BoxLayout->addWidget(show_text_label);
         ejectinterface_h_BoxLayout->addStretch();
     }
@@ -109,6 +110,10 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
                 "border:none;"
                 "}");
     this->setLayout(main_V_BoxLayput);
+    interfaceHideTime = new QTimer(this);
+    interfaceHideTime->setTimerType(Qt::PreciseTimer);
+    connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_interface_hide()));
+    interfaceHideTime->start(1000);
 }
 
 ejectInterface::~ejectInterface()
@@ -126,3 +131,8 @@ void ejectInterface::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
     QWidget::paintEvent(event);
  }
+
+void ejectInterface::on_interface_hide()
+{
+    this->hide();
+}
