@@ -96,6 +96,15 @@ public:
         MiddleClick         = 4     ///< The plugin was clicked with the middle mouse button
     };
 
+   enum CalendarShowMode
+   {
+       lunarSunday        = 0,//show lunar and first day a week is sunday
+       lunarMonday        = 1,//show lunar and first day a week is monday
+       solarSunday        = 2,//show solar and first day a week is sunday
+       solarMonday        = 3,//show solar and first day a week is monday
+       defaultMode        = 0xff
+   };
+
     /**
      Constructs an IUKUIPanelPlugin object with the given startupInfo. You do not have to worry
      about the startupInfo parameters, IUKUIPanelPlugin processes the parameters itself.
