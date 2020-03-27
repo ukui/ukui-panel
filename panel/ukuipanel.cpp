@@ -577,19 +577,19 @@ void UKUIPanel::setMargins()
 void UKUIPanel::realign()
 {
     QStringList sheet;
-    QGSettings *gsettings;
-    gsettings= new QGSettings("org.mate.interface", "", this);
-    QString mode;
-    mode=gsettings->get("gtk-theme").toString();
-    qDebug()<<"ukui-theme:"<<mode;
-    if(mode=="ukui-blue")
-    {
-        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
-    }
-    else
-    {
+//    QGSettings *gsettings;
+//    gsettings= new QGSettings("org.mate.interface", "", this);
+//    QString mode;
+//    mode=gsettings->get("gtk-theme").toString();
+//    qDebug()<<"ukui-theme:"<<mode;
+//    if(mode=="ukui-blue")
+//    {
+//        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
+//    }
+//    else
+//    {
         sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
-    }
+//    }
     setStyleSheet(sheet.join("\n"));
     if (!isVisible())
         return;
@@ -1157,30 +1157,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
             delete m;
         }
     }
-    //old menu stytle
-//    menu->setStyleSheet(
-//                         "QMenu {"
-//                         "background-color:rgb(21,26,30);"
-//                         "border: 1px solid #626c6e;"
-//                         //"border-color:rgba(255,255,255,30);"    //边框颜色
-//                         "font:SimSun 14px;"                       //字体，字体大小
-//                         "color:rgba(255,255,255,100);"                //字体颜色
-//                        "padding: 4px 2px 4px 2px;"
-//                        " }"
-//                        "QMenu::item {"
-//                        "width: 244px;"
-//                        "height: 90px;"
-//                        "}"
-//                        //鼠标悬停样式
-//                        "QMenu:hover{"
-//                        "background-color:rgba(190,216,239,30%);"
-//                        "}"
-//                        //鼠标按下样式
-//                        "QMenu:selected{"
-//                        "background-color:rgba(190,216,239,30%);"
-//                        "}"
-
-//                        );
 
 
     // Panel menu ...............................
@@ -1227,41 +1203,20 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     QAction *pmenuaction_l;
 
     pmenuaction_s=new QAction(this);
-    pmenuaction_s->setText("小尺寸");
+    pmenuaction_s->setText(tr("Small"));
     pmenuaction_m=new QAction(this);
-    pmenuaction_m->setText("中尺寸");
+    pmenuaction_m->setText(tr("Media"));
     pmenuaction_l=new QAction(this);
-    pmenuaction_l->setText("大尺寸");
+    pmenuaction_l->setText(tr("Large"));
 
 
     QMenu *pmenu_panelsize;
     pmenu_panelsize=new QMenu(this);
-    pmenu_panelsize->setTitle("调整大小");
+    pmenu_panelsize->setTitle(tr("Adjustment Size"));
     pmenu_panelsize->addAction(pmenuaction_s);
     pmenu_panelsize->addAction(pmenuaction_m);
     pmenu_panelsize->addAction(pmenuaction_l);
     menu->addMenu(pmenu_panelsize);
-
-
-//    pmenu_panelsize->setStyleSheet(
-//                         "QMenu {"
-//                         "background-color:rgba(21,26,30,90%);"
-//                         "border-color:rgba(255,255,255,30);"    //边框颜色
-//                         "font:SimSun 14px;"                       //字体，字体大小
-//                         "color:rgba(255,255,255,100);"                //字体颜色
-//                         "padding:2px 2px; "                     //设置菜单项文字上下和左右的内边距，效果就是菜单中的条目左右上下有了间隔
-//                        " }"
-
-//                        //鼠标悬停样式
-//                        "QToolButton:hover{"
-//                        "background-color:rgba(190,216,239,30%);"
-//                        "}"
-//                        //鼠标按下样式
-//                        "QToolButton:pressed{"
-//                        "background-color:rgba(0,0,0,12%);"
-//                        "}"
-
-//                        );
 
     connect(pmenuaction_s,SIGNAL(triggered()),this,SLOT(panelsizechange_s()));
     connect(pmenuaction_m,SIGNAL(triggered()),this,SLOT(panelsizechange_m()));
@@ -1273,41 +1228,21 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     QAction *pmenuaction_left;
     QAction *pmenuaction_right;
     pmenuaction_top=new QAction(this);
-    pmenuaction_top->setText("上");
+    pmenuaction_top->setText(tr("Up"));
     pmenuaction_bottom=new QAction(this);
-    pmenuaction_bottom->setText("下");
+    pmenuaction_bottom->setText(tr("Bottom"));
     pmenuaction_left=new QAction(this);
-    pmenuaction_left->setText("左");
+    pmenuaction_left->setText(tr("Left"));
     pmenuaction_right=new QAction(this);
-    pmenuaction_right->setText("右");
+    pmenuaction_right->setText(tr("Right"));
     QMenu *pmenu_positon;
     pmenu_positon=new QMenu(this);
-    pmenu_positon->setTitle("调整位置");
+    pmenu_positon->setTitle(tr("Adjustment Position"));
     pmenu_positon->addAction(pmenuaction_top);
     pmenu_positon->addAction(pmenuaction_bottom);
     pmenu_positon->addAction(pmenuaction_left);
     pmenu_positon->addAction(pmenuaction_right);
     menu->addMenu(pmenu_positon);
-    //old menu style
-//    pmenu_positon->setStyleSheet(
-//                         "QMenu {"
-//                         "background-color:rgba(21,26,30,90%);"
-//                         "border-color:rgba(255,255,255,30);"    //边框颜色
-//                         "font:SimSun 14px;"                       //字体，字体大小
-//                         "color:rgba(255,255,255,100);"                //字体颜色
-//                         "padding:2px 2px; "                     //设置菜单项文字上下和左右的内边距，效果就是菜单中的条目左右上下有了间隔
-//                        " }"
-
-//                        //鼠标悬停样式
-//                        "QToolButton:hover{"
-//                        "background-color:rgba(190,216,239,30%);"
-//                        "}"
-//                        //鼠标按下样式
-//                        "QToolButton:pressed{"
-//                        "background-color:rgba(0,0,0,12%);"
-//                        "}"
-
-//                        );
 
     connect(pmenuaction_top,SIGNAL(triggered()),this,SLOT(changePosition_top()));
     connect(pmenuaction_bottom,SIGNAL(triggered()),this,SLOT(changePosition_bottom()));

@@ -94,8 +94,21 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
             connect(gsettings, &QGSettings::changed, this, [=] (const QString &key) {
                 qDebug()<<"status changed ------------>"<<endl;
-                if (key == "hour-system") {
+                if (key == "hour-system")
+                {
                     updateTimeText();
+                }
+                else if(key == "calendar")
+                {
+     
+                    mbHasCreatedWebView = false;
+                    initializeCalendar();
+                }
+                else if(key == "firstday")
+                {
+
+                    mbHasCreatedWebView = false;
+                    initializeCalendar();
                 }
             });
         }
@@ -107,7 +120,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
                 /*"background-color:rgba(100,225,100,80%);"//背景色（也可以设置图片）*/
                 "border-width:0px;"                     //边框宽度像素
                 "border-radius:6px;"                   //边框圆角半径像素
-                "font: SourceHanSansCN-Medium  12px;"                       //字体，字体大小
+//                "font: SourceHanSansCN-Medium  12px;"                       //字体，字体大小
                 "color:rgba(255,255,255,100%);"                //字体颜色
                 "padding:0px;"                          //填衬
                 "textalignment:aligncenter"               //文本居中
@@ -208,7 +221,10 @@ void IndicatorCalendar::updateTimeText()
 //    {
         const QSize old_size = mContent->sizeHint();
         QString str;
-        gsettings= new QGSettings("org.ukui.control-center.panel.plugins", "", this);
+        const QByteArray id(HOUR_SYSTEM_CONTROL);
+        if(QGSettings::isSchemaInstalled(id)) {
+        //        qDebug()<<"isSchemaInstalled"<<endl;
+                gsettings = new QGSettings(id);
         QString mode=gsettings->get("hour-system").toString();
         if(!gsettings)
         {
@@ -223,6 +239,7 @@ void IndicatorCalendar::updateTimeText()
                 str=tzNow.toString(HOUR_SYSTEM_24_Vertical);
             }
 
+        }
         }
         else{
             if(panel()->isHorizontal()){
@@ -461,11 +478,53 @@ void IndicatorCalendar::wheelScrolled(int delta)
 /*when widget is loading need initialize here*/
 void IndicatorCalendar::initializeCalendar()
 {
+    QByteArray id(HOUR_SYSTEM_CONTROL);
+    CalendarShowMode showCalendar = defaultMode;
+    if(QGSettings::isSchemaInstalled(id))
+    {
+//        if(gsettings)
+//        {
+//            gsettings->deleteLater();
+//        }
+//        gsettings = new QGSettings(id);
+        if(!gsettings)
+        {
+            qDebug()<<"get gsetting error!!!";
+            return;
+        }
+        QString lunarOrsolar = gsettings->get("calendar").toString();
+        QString firstDay = gsettings->get("firstday").toString();
+        qDebug()<<"lunarOrsolar:"<<lunarOrsolar;
+        qDebug()<<"firstDay:"<<firstDay;
+        if(lunarOrsolar == "lunar")
+        {
+            if(firstDay == "sunday")
+            {
+                showCalendar = lunarSunday;
+            }
+            else if(firstDay == "monday")
+            {
+                showCalendar = lunarMonday;
+            }
+        }
+        else if(lunarOrsolar == "solarlunar")
+        {
+            if(firstDay == "sunday")
+            {
+                showCalendar = solarSunday;
+            }
+            else if(firstDay == "monday")
+            {
+                showCalendar = solarMonday;
+            }
+        }
+    }
+
     if(mWebViewDiag != NULL )
     {
         if(!mbHasCreatedWebView)
         {
-            mWebViewDiag->creatwebview();
+            mWebViewDiag->creatwebview(showCalendar);
             mbHasCreatedWebView = true;
         }
     }
@@ -691,13 +750,6 @@ void IndicatorCalendar::setbackground()
     }
     if (!strcmp (color_hex, "#000000")){
         str=QString::asprintf("\
-                      var zodiac_icon = document.getElementById('zodiac_icon');\
-                      zodiac_icon.setAttribute('src', '/usr/share/ukui-panel/plugin-calendar/html/images/zodiac/black/mouse-black.png');\
-                      zodiac_icon.setAttribute('style', 'padding-top: 33px');\
-                      var checkbox = document.getElementById('checkbox');\
-                      if (checkbox.checked){\
-                          zodiac_icon.setAttribute('style', 'display:none');\
-                      }\
                       document.getElementById('container').style.background='%s';\
                       document.getElementById('header').style.background='%s';\
                       document.getElementById('day').style.color='%s';\
@@ -769,13 +821,6 @@ void IndicatorCalendar::setbackground()
     }
     else{
         str=QString::asprintf("\
-                      var zodiac_icon = document.getElementById('zodiac_icon');\
-                      zodiac_icon.setAttribute('src', '/usr/share/ukui-panel/plugin-calendar/html/images/zodiac/blue/mouse-white.png');\
-                      zodiac_icon.setAttribute('style', 'padding-top: 33px');\
-                      var checkbox = document.getElementById('checkbox');\
-                      if (checkbox.checked){\
-                          zodiac_icon.setAttribute('style', 'display:none');\
-                      }\
                                       document.getElementById('container').style.background='%s';\
                                       document.getElementById('header').style.background='%s';\
                                       document.getElementById('day').style.color='%s';\

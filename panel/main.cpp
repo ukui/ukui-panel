@@ -43,14 +43,13 @@ int main(int argc, char *argv[])
     app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     //Singleton
-
     QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
     QString lockPath = homePath.at(0) + "/.config/ukui-panel";
     int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     if (fd < 0) { exit(1); }
     if (lockf(fd, F_TLOCK, 0)) {
-        syslog(LOG_ERR, "Can't lock single file, kylin-network-manager is already running!");
-        qDebug()<<"Can't lock single file, kylin-network-manager is already running!";
+        syslog(LOG_ERR, "Can't lock single file, ukui-panel is already running!");
+        qDebug()<<"Can't lock single file, ukui-panel is already running!";
         exit(0);
     }
 
@@ -63,6 +62,7 @@ int main(int argc, char *argv[])
         else
             qDebug() << "Load translations file" << locale << "failed!";
     }
+
 
     return app.exec();
 }

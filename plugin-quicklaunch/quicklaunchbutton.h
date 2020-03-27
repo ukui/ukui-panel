@@ -35,10 +35,20 @@
 #include "../panel/customstyle.h"
 #include <QStyleOption>
 #include <QPainter>
+#include "popupmenu.h"
 
 class IUKUIPanelPlugin;
 //class CustomStyle;
+#include "../panel/ukuicontrolstyle.h"
+class QuicklaunchMenu:public QMenu
+{
+public:
+    QuicklaunchMenu();
+    ~QuicklaunchMenu();
+protected:
+    void contextMenuEvent(QContextMenuEvent*);
 
+};
 class QuickLaunchButton : public QToolButton
 {
     Q_OBJECT
@@ -62,6 +72,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
     void dragEnterEvent(QDragEnterEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
+    void contextMenuEvent(QContextMenuEvent*);
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
 
@@ -71,7 +82,7 @@ private:
     QAction *mDeleteAct;
     QAction *mMoveLeftAct;
     QAction *mMoveRightAct;
-    QMenu *mMenu;
+    QuicklaunchMenu *mMenu;
     QPoint mDragStart;
     enum QuickLaunchStatus{NORMAL, HOVER, PRESS};
     QuickLaunchStatus quicklanuchstatus;

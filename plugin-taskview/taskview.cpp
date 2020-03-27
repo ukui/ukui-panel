@@ -26,10 +26,22 @@
 #include <QStyle>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include "../panel/customstyle.h"
+#include <QPalette>
+#include <QToolTip>
+TaskViewButton::TaskViewButton(){
+}
+TaskViewButton::~TaskViewButton(){
+}
 TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    mButton =new TaskViewButton();
+    mButton->setStyle(new CustomStyle());
+    mButton->setIcon(QIcon("/usr/share/ukui-panel/panel/img/taskview.svg"));
+    mButton->paintTooltipStyle();
+    mButton->setToolTip(tr("taskviewWindow"));
     realign();
 }
 
@@ -41,66 +53,14 @@ TaskView::~TaskView()
 
 void TaskView::realign()
 {
-    mWidget.setFixedSize(panel()->panelSize(),panel()->panelSize());
+    mButton->setFixedSize(panel()->panelSize(),panel()->panelSize());
+    mButton->setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
 }
 
-TaskViewWidget::TaskViewWidget(QWidget *parent):
-    QFrame(parent)
-{
-    taskviewstatus=NORMAL;
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setContentsMargins (0, 0, 0, 0);
-    layout->setSpacing (1);
-    setLayout(layout);
-    layout->addWidget(&mButton);
-    mCapturing = false;
-    connect(&mButton, SIGNAL(clicked()), this, SLOT(captureMouse()));
-
-    QSize mBtnSize(92,92);
-//    mButton.setIcon(QIcon("/usr/share/ukui-panel/plugin-taskview/img/taskview.svg"));
-    mButton.setIconSize(mBtnSize);
-    mButton.setStyleSheet(
-                //正常状态样式
-                "QToolButton{"
-                "background-color:rgba(190,216,239,0%);"
-                "qproperty-icon:url(/usr/share/ukui-panel/panel/img/taskview.svg);"
-                //"qproperty-iconSize:28px 28px;"
-                "border-style:outset;"                  //边框样式（inset/outset）
-                "border-width:2px;"                     //边框宽度像素
-                "border-radius:6px;"                   //边框圆角半径像素
-                "border-color:rgba(190,216,239,0%);"    //边框颜色
-                "padding:7px;"
-
-                "}"
-                //鼠标悬停样式
-                "QToolButton:hover{"
-                "background-color:rgba(190,216,239,20%);"
-                "}"
-                //鼠标按下样式
-                "QToolButton:pressed{"
-                "background-color:rgba(190,216,239,12%);"
-                "}"
-
-                );
-
-}
-
-
-
-TaskViewWidget::~TaskViewWidget()
-{
-}
-
-
-void TaskViewWidget::mouseReleaseEvent(QMouseEvent *event)
-{
-}
-
-
-void TaskViewWidget::captureMouse()
+void TaskViewButton::mousePressEvent(QMouseEvent *event)
 {
     //Two ways to call the taskview
-    //system("ukui-window-switch --show-workspace");
+//    system("ukui-window-switch --show-workspace");
     QDBusInterface interface("org.ukui.WindowSwitch", "/org/ukui/WindowSwitch",
                                 "org.ukui.WindowSwitch",
                                 QDBusConnection::sessionBus());
@@ -116,26 +76,17 @@ void TaskViewWidget::captureMouse()
     } else {
         qCritical() << "Call Dbus method failed";
     }
+    QWidget::mousePressEvent(event);
 }
 
-void TaskViewWidget::contextMenuEvent(QContextMenuEvent *event) {
-}
 
-
-//void TaskViewWidget::enterEvent(QEvent *)
-//{
-//    taskviewstatus=HOVER;
-//    repaint();
-//}
-
-//void TaskViewWidget::leaveEvent(QEvent *)
-//{
-//    taskviewstatus=NORMAL;
-//    repaint();
-//}
-
-void TaskViewWidget::paintEvent(QPaintEvent *)
+void TaskViewButton::mouseMoveEvent(QMouseEvent *e)
 {
+    qDebug()<<"mouse move enent";
+    QWidget::mouseMoveEvent(e);
 }
 
+//void TaskViewButton::event(QEvent *e)
+//{
 
+//}

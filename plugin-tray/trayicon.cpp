@@ -444,3 +444,9 @@ void TrayIcon::paintEvent(QPaintEvent *)
         p.drawRoundedRect(opt.rect,6,6);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
+void TrayIcon::notifyAppFreeze()
+{
+    qDebug()<<"notifiAppFreeze : app is:"<<mIconId<<"     name is: "<<xfitMan().getApplicationName(mIconId);
+    emit notifyTray(mIconId);
+}

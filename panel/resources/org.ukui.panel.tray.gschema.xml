@@ -1,0 +1,24 @@
+<schemalist gettext-domain="ukui-panel">
+    <schema id="org.ukui.panel.tray">
+        <key name="binding" type="s">
+            <default>''</default>
+            <summary>Keybinding</summary>
+            <description>Keybinding associated with a custom shortcut.</description>
+        </key>
+        <key name="action" type="s">
+            <default>''</default>
+            <summary>Command</summary>
+            <description>Command associated with a custom keybinding.</description>
+        </key>
+        <key name="name" type="s">
+            <default>''</default>
+            <summary>Name</summary>
+            <description>Description associated with a custom keybinding.</description>
+    </key>
+	           <key name="record" type="s">
+            <default>''</default>
+            <summary>Record</summary>
+            <description>Description associated with a custom keybinding.</description>
+        </key>
+    </schema>
+</schemalist>

@@ -46,8 +46,7 @@ void StartMenu::realign()
     mButton->setFixedSize(panel()->panelSize(),panel()->panelSize());
     mButton->setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
 }
-StartMenuButton::StartMenuButton()
-{
+StartMenuButton::StartMenuButton(){
 }
 
 StartMenuButton::~StartMenuButton()
@@ -69,9 +68,10 @@ void StartMenuButton::mousePressEvent(QMouseEvent* event)
     }
     QWidget::mousePressEvent(event);
 }
+
 void StartMenuButton::contextMenuEvent(QContextMenuEvent *)
 {
-    PopupMenu *menuTaskview=new PopupMenu();
+    menuTaskview=new PopupMenu();
     menuTaskview->setAttribute(Qt::WA_DeleteOnClose);
 
 
@@ -99,11 +99,23 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *)
                    this, SLOT(SessionShutdown())
                   );
 
-    int availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
-    menuTaskview->setGeometry(50,availableHeight-140,140,140);
+//    int availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
+//    moveMenu();
+    QCursor::pos();
+    if(QCursor::pos().x()>500 && QCursor::pos().y()<100)
+        menuTaskview->setGeometry(QCursor::pos().x()-160,QCursor::pos().y(),140,160);
+    else if(QCursor::pos().x()<100 && QCursor::pos().y()>500)
+        menuTaskview->setGeometry(QCursor::pos().x(),QCursor::pos().y()-190,140,160);
+    else
+        menuTaskview->setGeometry(QCursor::pos().x(),QCursor::pos().y(),140,160);
     menuTaskview->show();
 }
 
+void StartMenuButton::moveMenu(QPointF pt)
+{
+//    menuTaskview->setGeometry(pt.x(),pt.y(),140,140);
+
+}
 void StartMenuButton::ScreenServer()
 {
     system("ukui-screensaver-command -l");

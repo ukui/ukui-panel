@@ -602,13 +602,13 @@
 	 * @param {Number} year,month 公历年，月
 	 * @param {Boolean} fill 是否用上下月数据补齐首尾空缺，首例数据从周日开始
 	 */
-	function calendar(_year,_month,fill){
+	function calendar(_year,_month,fill,mode){
 		var inputDate = formateDate(_year,_month);
 		if(inputDate.error)return inputDate;
 		var year = inputDate.year;
 		var month = inputDate.month;
 		
-		var calendarData = solarCalendar(year,month+1,fill);
+		var calendarData = solarCalendar(year,month+1,fill,mode);
 		for(var i=0;i<calendarData.monthData.length;i++){
 			var cData = calendarData.monthData[i];
 			var lunarData = solarToLunar(cData.year,cData.month,cData.day);
@@ -623,7 +623,7 @@
 	 * @param {Number} year,month 公历年，月
 	 * @param {Boolean} fill 是否用上下月数据补齐首尾空缺，首例数据从周日开始 (7*6阵列)
 	 */
-	function solarCalendar(_year,_month,fill){
+	function solarCalendar(_year,_month,fill,mode){
 		var inputDate = formateDate(_year,_month);
 		if(inputDate.error)return inputDate;
 		var year = inputDate.year;
@@ -641,11 +641,30 @@
 		res.monthData = creatLenArr(year,month+1,res.monthDays,1);
 
 		if(fill){
-			if(res.firstDay > 0){ //前补
+			if(res.firstDay != mode){ //前补
 				var preYear = month-1<0 ? year-1 : year;
 				var preMonth = month-1<0 ? 11 : month-1;
 				preMonthDays = getSolarMonthDays(preYear,preMonth);
-				preMonthData = creatLenArr(preYear,preMonth+1,res.firstDay,preMonthDays-res.firstDay+1);
+				if(mode === 0)
+				{
+					preMonthData = creatLenArr(preYear,preMonth+1,res.firstDay,preMonthDays-res.firstDay+1);
+				}
+
+				//prev version
+				//preMonthData = creatLenArr(preYear,preMonth+1,res.firstDay,preMonthDays-res.firstDay+1);
+				// res.monthData = preMonthData.concat(res.monthData);
+
+				else
+				{
+					if(res.firstDay > 0)//每周从周一开始,一号是星期一至星期六，补 n-1天
+					{
+						preMonthData = creatLenArr(preYear,preMonth+1,res.firstDay -1 ,preMonthDays-(res.firstDay-1)+1);
+					}
+					else//每周从周一开始,一号是星期一至星期六 补6天
+					{
+						preMonthData = creatLenArr(preYear,preMonth+1,res.firstDay + 6 ,preMonthDays-(res.firstDay + 6)+1);
+					}
+				}
 				res.monthData = preMonthData.concat(res.monthData);
 			}
 			

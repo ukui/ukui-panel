@@ -49,6 +49,7 @@ find_package(KF5WindowSystem ${KF5_MINIMUM_VERSION} REQUIRED)
 find_package(Qt5 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Widgets DBus X11Extras LinguistTools)
 find_package(Qt5Xdg ${QTXDG_MINIMUM_VERSION} REQUIRED)
 find_package(X11 REQUIRED)
+find_package(Qt5LinguistTools)
 
 # Patch Version
 set(UKUI_VERSION 3.0)
@@ -107,15 +108,6 @@ if(DESKTOPSWITCH_PLUGIN)
     add_definitions(-DWITH_DESKTOPSWITCH_PLUGIN)
     list(APPEND ENABLED_PLUGINS "Desktop Switcher")
     add_subdirectory(plugin-desktopswitch)
-endif()
-
-
-#setByDefault(MAINMENU_PLUGIN Yes)
-if(MAINMENU_PLUGIN)
-    list(APPEND STATIC_PLUGINS "mainmenu")
-    add_definitions(-DWITH_MAINMENU_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "Application menu")
-    add_subdirectory(plugin-mainmenu)
 endif()
 
 #setByDefault(MOUNT_PLUGIN Yes)
@@ -234,13 +226,6 @@ if(SEGMENTATION_PLUGIN)
     add_subdirectory(plugin-segmentation)
 endif(SEGMENTATION_PLUGIN)
 
-#setByDefault(PART_PLUGIN Yes)
-if(PART_PLUGIN)
-#    list(APPEND STATIC_PLUGINS "powerswitch")
-#    add_definitions(-DWITH_POWERSWITCH_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "part")
-    add_subdirectory(plugin-part)
-endif(PART_PLUGIN)
 #########################################################################
 
 message(STATUS  "**************** The following plugins will be built ****************")
@@ -251,9 +236,26 @@ message(STATUS "****************************************************************
 
 add_subdirectory(panel)
 
-# merged from ukui-common
-#add_subdirectory(autostart)
-#add_subdirectory(menu)
 file(GLOB_RECURSE QRC_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.qrc)
 
+# i18n
+set(UKUI_TRANSLATIONS_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/ukui/)
+add_definitions(
+    -DUKUI_TRANSLATIONS_DIR="${UKUI_TRANSLATIONS_DIR}"
+)
+if (NOT DEFINED UPDATE_TRANSLATIONS)
+    set(UPDATE_TRANSLATIONS "No")
+endif()
+
+# To create a new ts file: lupdate -recursive . -target-language zh_CN -ts panel/resources/ukui-panel_zh_CN.ts
+file(GLOB TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/panel/resources/*.ts")
+
+# cmake -DUPDATE_TRANSLATIONS=yes
+if (UPDATE_TRANSLATIONS)
+    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+else()
+    qt5_add_translation(QM_FILES ${TS_FILES})
+endif()
+add_custom_target(translations ALL DEPENDS ${QM_FILES})
+install(FILES ${QM_FILES} DESTINATION ${UKUI_TRANSLATIONS_DIR})
 

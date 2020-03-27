@@ -36,8 +36,9 @@
 
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
+#include "../panel/ukuicontrolstyle.h"
 
-class NightModeButton:public QToolButton
+class NightModeButton:public UkuiToolButton
 {
     Q_OBJECT
 public:
@@ -55,12 +56,12 @@ public:
     NightMode(const IUKUIPanelPluginStartupInfo &startupInfo);
     ~NightMode();
 
-    virtual QWidget *widget() { return &mButton; }
+    virtual QWidget *widget() { return mButton; }
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 private:
-    NightModeButton mButton;
+    NightModeButton *mButton;
 
 
 
