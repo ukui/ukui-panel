@@ -30,11 +30,12 @@
 #include <QDialog>
 #include <QLabel>
 #include <QtWebKitWidgets/QWebView>
-//#include <UKUi/RotatedWidget>
+#include <QGSettings>
+
 #include "../panel/common/ukuirotatedwidget.h"
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
-#include <QGSettings>
+#include "../panel/popupmenu.h"
 
 class QTimer;
 class CalendarActiveLabel;
@@ -100,6 +101,7 @@ private:
     QString preformat(const QDateTime &dateTime,const QString &format, const QTimeZone &timeZone);
     bool mbIsNeedUpdate;
     QGSettings *gsettings;
+    QString hourSystemMode;
 };
 
 
@@ -119,6 +121,11 @@ protected:
     void wheelEvent(QWheelEvent *);
     void mouseReleaseEvent(QMouseEvent* event);
     virtual void contextMenuEvent(QContextMenuEvent *event);
+
+private Q_SLOTS:
+    void setControlTime();
+    void setUpPanel();
+
 };
 
 class UKUICalendarPluginLibrary: public QObject, public IUKUIPanelPluginLibrary
