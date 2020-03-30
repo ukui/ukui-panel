@@ -112,9 +112,6 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
         showPlaceHolder();
 
     realign();
-    qDebug()<<"GetPanelPosition panel.position"<<mPlugin->panel()->position();
-
-
 }
 
 
@@ -346,33 +343,36 @@ void UKUIQuickLaunch::paintEvent(QPaintEvent *)
 
 bool UKUIQuickLaunch::AddToTaskbar(QString arg)
 {
-        const auto url=QUrl(arg);
-        QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-        QFileInfo fi(fileName);
-        XdgDesktopFile xdg;
-        //add by QuickLaunchAction(&xdg, this)
-        if (xdg.load(fileName))
-        {
-            if (xdg.isSuitable())
-                addButton(new QuickLaunchAction(&xdg, this));
-        }
-        else if (fi.exists() && fi.isExecutable() && !fi.isDir())
-        {
-            addButton(new QuickLaunchAction(fileName, fileName, "", this));
-        }
-        else if (fi.exists())
-        {
-            addButton(new QuickLaunchAction(fileName, this));
-        }
-        else
-        {
-            qWarning() << "XdgDesktopFile" << fileName << "is not valid";
-            QMessageBox::information(this, tr("Drop Error"),
-                              tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
-                            );
-        }
-        saveSettings();
-        return true;
+    const auto url=QUrl(arg);
+    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+    QFileInfo fi(fileName);
+    XdgDesktopFile xdg;
+    if (xdg.load(fileName))
+    {
+        /*This fuction returns true if the desktop file is applicable to the
+          current environment.
+          but I don't need this attributes now
+        */
+//        if (xdg.isSuitable())
+            addButton(new QuickLaunchAction(&xdg, this));
+    }
+    else if (fi.exists() && fi.isExecutable() && !fi.isDir())
+    {
+        addButton(new QuickLaunchAction(fileName, fileName, "", this));
+    }
+    else if (fi.exists())
+    {
+        addButton(new QuickLaunchAction(fileName, this));
+    }
+    else
+    {
+        qWarning() << "XdgDesktopFile" << fileName << "is not valid";
+        QMessageBox::information(this, tr("Drop Error"),
+                                 tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                                 );
+    }
+    saveSettings();
+    return true;
 }
 
 bool UKUIQuickLaunch::CheckIfExist(QString arg)
@@ -398,13 +398,11 @@ bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
 
 int UKUIQuickLaunch::GetPanelPosition(QString arg)
 {
-    qDebug()<<"GetPanelPosition panel.position"<<mPlugin->panel()->position();
     return mPlugin->panel()->position();
 }
 
 int UKUIQuickLaunch::GetPanelSize(QString arg)
 {
-    qDebug()<<"GetPanelPosition panel.position"<<mPlugin->panel()->position();
     return mPlugin->panel()->panelSize();
 }
 
@@ -479,7 +477,6 @@ void UKUIQuickLaunch::buttonMoveRight()
         mLayout->moveItem(index, index + 1);
         saveSettings();
     }
-
 }
 
 
