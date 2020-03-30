@@ -487,7 +487,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
 {
     //in the time QOjbect::destroyed is emitted, the child destructor
     //is already finished, so the qobject_cast to child will return nullptr in all cases
-    qDebug()<<"tray icon destory";
+    qDebug()<<"tray icon destroy";
     mIcons.removeAll(static_cast<TrayIcon *>(icon));
     mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
 }
@@ -495,7 +495,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
 void UKUITray::freezeIconSlot(TrayIcon *icon,Window winid)
 {
     connect(icon,&QFrame::destroyed,[=](){
-        qDebug() << "destory wind" << winid;
+        qDebug() << "destroy wind" << winid;
     });
 }
 
