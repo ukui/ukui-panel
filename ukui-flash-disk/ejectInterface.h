@@ -26,8 +26,6 @@
 #include <QStyle>
 #include <QStyleOption>
 #include <QPainter>
-#include <QTimer>
-
 QT_BEGIN_NAMESPACE
 namespace Ui { class ejectInterface; }
 QT_END_NAMESPACE
@@ -45,10 +43,6 @@ private:
     QHBoxLayout *ejectinterface_h_BoxLayout;
     QHBoxLayout *mountname_h_BoxLayout;
     QVBoxLayout *main_V_BoxLayput;
-    QTimer *interfaceHideTime;
-
-private Q_SLOTS:
-    void on_interface_hide();
 
 protected:
     void paintEvent(QPaintEvent *event);

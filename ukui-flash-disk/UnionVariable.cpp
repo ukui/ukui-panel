@@ -31,11 +31,3 @@ QList<std::shared_ptr<Peony::Volume> > *findVolumeList()
 {
     return &volumesList;
 }
-
-static QList<std::shared_ptr<Peony::Drive>> drivesList;
-
-QList<std::shared_ptr<Peony::Drive> > *findDriveList()
-{
-    return &drivesList;
-}
-

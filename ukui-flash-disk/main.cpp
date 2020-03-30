@@ -27,7 +27,6 @@
 #include "UnionVariable.h"
 #include "mainwindow.h"
 
-#include <blkid.h>
 
 
 int main(int argc, char *argv[])
@@ -36,13 +35,9 @@ int main(int argc, char *argv[])
     QString lockPath = homePath.at(0) + "/.config/ukui-flash-disk-lock";
     int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
-    if (fd < 0)
-    {
-        exit(1);
-    }
+    if (fd < 0) { exit(1); }
 
-    if (lockf(fd, F_TLOCK, 0))
-    {
+    if (lockf(fd, F_TLOCK, 0)) {
         syslog(LOG_ERR, "Can't lock single file, ukui-flash-disk is already running!");
         qDebug()<<"Can't lock single file, ukui-flash-disk is already running!";
         exit(0);

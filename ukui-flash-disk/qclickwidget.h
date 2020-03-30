@@ -25,31 +25,12 @@
 #include <QStyle>
 #include <QStyleOption>
 #include <QPainter>
-#include <QLabel>
-#include <QBoxLayout>
-#include <QPushButton>
-
-#include "clickLabel.h"
 class MainWindow;
 class QClickWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QClickWidget(QWidget *parent = nullptr,
-                          int num = 0,
-                          QString driveName=NULL,
-                          QString nameDis1=NULL,
-                          QString nameDis2 =NULL,
-                          QString nameDis3 = NULL,
-                          QString nameDis4 = NULL,
-                          qlonglong capacityDis1=NULL,
-                          qlonglong capacityDis2=NULL,
-                          qlonglong capacityDis3=NULL,
-                          qlonglong capacityDis4=NULL,
-                          QString pathDis1=NULL,
-                          QString pathDis2=NULL,
-                          QString pathDis3=NULL,
-                          QString pathDis4=NULL);
+    explicit QClickWidget(QWidget *parent = nullptr,bool is_eject = true, QString name=NULL, qlonglong capacity=NULL, QString path=NULL);
     ~QClickWidget();
 public Q_SLOTS:
     void mouseClicked();
@@ -59,50 +40,14 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
-    QString m_driveName;
-    QString m_nameDis1;
-    QString m_nameDis2;
-    QString m_nameDis3;
-    QString m_nameDis4;
-    qlonglong m_capacityDis1;
-    qlonglong m_capacityDis2;
-    qlonglong m_capacityDis3;
-    qlonglong m_capacityDis4;
-    QString m_pathDis1;
-    QString m_pathDis2;
-    QString m_pathDis3;
-    QString m_pathDis4;
+    bool m_is_eject;
+    QString m_name;
+    qlonglong m_capacity;
+    QString m_path;
     MainWindow *m_mainwindow;
     QPoint mousePos;
-    int m_Num;
-    QLabel *image_show_label;
-    QLabel *m_driveName_label;
-    ClickLabel *m_nameDis1_label;
-    ClickLabel *m_nameDis2_label;
-    ClickLabel *m_nameDis3_label;
-    ClickLabel *m_nameDis4_label;
-    QLabel *m_capacityDis1_label;
-    QLabel *m_capacityDis2_label;
-    QLabel *m_capacityDis3_label;
-    QLabel *m_capacityDis4_label;
-
-public:
-    QPushButton *m_eject_button;
 Q_SIGNALS:
     void clicked();
-    void clickedConvert();
-
-private Q_SLOTS:
-    void on_volume1_clicked();
-    void on_volume2_clicked();
-    void on_volume3_clicked();
-    void on_volume4_clicked();
-    void switchWidgetClicked();
-private:
-    QString size_human(qlonglong capacity);
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-
 };
 
 #endif
