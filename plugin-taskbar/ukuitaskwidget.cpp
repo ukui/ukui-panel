@@ -97,7 +97,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mTopBarLayout = new QHBoxLayout;
 
 
-    mTitleLabel->setAlignment(Qt::AlignLeft|Qt::AlignLeft);
+    mTitleLabel->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     mAppIcon->setAlignment(Qt::AlignLeft);
     mAppIcon->setScaledContents(false);
 
@@ -175,7 +175,7 @@ void UKUITaskWidget::updateIcon()
     {
         ico = KWindowSystem::icon(mWindow);
     }
-    mAppIcon->setPixmap(ico.pixmap(QSize(19,19)));
+    mAppIcon->setPixmap(ico.pixmap(QSize(32,32)));
     //mAppIcon->setWindowIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
     //setIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
 }
@@ -361,6 +361,7 @@ void UKUITaskWidget::raiseApplication()
             KWindowSystem::setCurrentDesktop(winDesktop);
     }
     KWindowSystem::activateWindow(mWindow);
+    emit windowMaximize();
 
     setUrgencyHint(false);
 }
@@ -614,7 +615,8 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
           }
       case HOVER:
           {
-              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+//              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x19)));
               p.setPen(Qt::black);
               break;
           }
