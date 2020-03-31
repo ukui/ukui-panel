@@ -713,7 +713,15 @@ function create_page(year, month) {
             if (current_row.cells.length === column) {
                 current_cell = current_row.insertCell(column);
                 current_cell.addEventListener('click', function() {
-                    highlight_day = parseInt(this.children[0].innerHTML);
+                    if(this.children[0].innerHTML === "")
+                    {
+                        highlight_day = parseInt(this.children[1].innerHTML);
+                    }
+                    else
+                    {
+                        highlight_day = parseInt(this.children[0].innerHTML);
+                    }
+                    //highlight_day = parseInt(this.children[0].innerText);
 
                     if (this.className === 'day_other_month') {
                         return;

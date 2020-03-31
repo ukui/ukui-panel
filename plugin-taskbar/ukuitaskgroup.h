@@ -37,6 +37,7 @@
 #include "ukuitaskwidget.h"
 #include "ukuitaskbutton.h"
 #include <KF5/KWindowSystem/kwindowsystem.h>
+#include <QTimer>
 
 class QVBoxLayout;
 class IUKUIPanelPlugin;
@@ -69,12 +70,14 @@ public:
     void setToolButtonsStyle(Qt::ToolButtonStyle style);
 
     void setPopupVisible(bool visible = true, bool fast = false);
-    void showPreview();
+
     void removeWidget();
     bool isSetMaxWindow();
+    void showPreview();
 
 public slots:
     void onWindowRemoved(WId window);
+    void timeout();
 
 protected:
     QMimeData * mimeData();
@@ -102,6 +105,7 @@ private slots:
     void refreshIconsGeometry();
     void refreshVisibility();
     void groupPopupShown(UKUITaskGroup* sender);
+    void handleSavedEvent();
 
 signals:
     void groupBecomeEmpty(QString name);
@@ -116,13 +120,18 @@ private:
     bool mPreventPopup;
     bool mSingleButton; //!< flag if this group should act as a "standard" button (no groupping or only one "shown" window in group)
     enum TaskGroupStatus{NORMAL, HOVER, PRESS};
+    enum TaskGroupEvent{ENTEREVENT, LEAVEEVENT, OTHEREVENT};
     TaskGroupStatus taskgroupStatus;
+    TaskGroupEvent  mTaskGroupEvent;
     QWidget *mpWidget;
+    QEvent * mEvent;
+    QTimer *mTimer;
     QSize recalculateFrameSize();
     QPoint recalculateFramePosition();
     void recalculateFrameIfVisible();
     void adjustPopWindowSize(int width, int height);
     void regroup();
+
 };
 
 #endif // UKUITASKGROUP_H

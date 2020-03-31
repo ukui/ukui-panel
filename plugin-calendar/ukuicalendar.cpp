@@ -245,18 +245,14 @@ void IndicatorCalendar::updateTimeText()
             }
 
         }
-        else
-        {
-                if(panel()->isHorizontal())
-                {
-                    str=tzNow.toString(HOUR_SYSTEM_12_Horizontal);
-                }
-                else
-                {
-                    str=tzNow.toString(HOUR_SYSTEM_12_Vertical);
-                }
-          }
-
+        else{
+            if(panel()->isHorizontal()){
+                str=tzNow.toString(HOUR_SYSTEM_12_Horizontal);
+            }
+            else{
+                str=tzNow.toString(HOUR_SYSTEM_12_Vertical);
+            }
+        }
         str.replace("-","/");
         str.replace("星期","周");
         str.remove("/上午");
@@ -269,7 +265,8 @@ void IndicatorCalendar::updateTimeText()
         mRotatedWidget->update();
         updatePopupContent();
         mbIsNeedUpdate = false;
-    }
+        }
+
 }
 
 void IndicatorCalendar::setTimeText()

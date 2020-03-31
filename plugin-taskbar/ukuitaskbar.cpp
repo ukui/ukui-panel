@@ -444,7 +444,7 @@ void UKUITaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
 
 void UKUITaskBar::setShowGroupOnHover(bool bFlag)
 {
-
+    mShowGroupOnHover = bFlag;
 }
 
 /************************************************
