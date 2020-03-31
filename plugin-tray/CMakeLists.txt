@@ -53,7 +53,7 @@ set(LIBRARIES
 )
 
 install(FILES
-    ../panel/resources/org.ukui.control-center.keybinding.gschema.xml
+    ../panel/resources/org.ukui.panel.tray.gschema.xml
     DESTINATION "/usr/share/glib-2.0/schemas/"
     COMPONENT Runtime
 )

@@ -51,6 +51,8 @@
 #define HOUR_SYSTEM_24_Vertical "hh:mm dddd  MM-dd"
 #define HOUR_SYSTEM_12_Horizontal   "hh/A:mm dddd  yyyy-MM-dd"
 #define HOUR_SYSTEM_12_Vertical   "hh/A:mm dddd  MM-dd"
+#define HOUR_SYSTEM_KEY "hoursystem"
+
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
     IUKUIPanelPlugin(startupInfo),
@@ -89,29 +91,28 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id)) {
-    //        qDebug()<<"isSchemaInstalled"<<endl;
-            gsettings = new QGSettings(id);
+    gsettings = new QGSettings(id);
 
-            connect(gsettings, &QGSettings::changed, this, [=] (const QString &key) {
-                qDebug()<<"status changed ------------>"<<endl;
-                if (key == "hour-system")
-                {
-                    updateTimeText();
-                }
-                else if(key == "calendar")
-                {
-     
-                    mbHasCreatedWebView = false;
-                    initializeCalendar();
-                }
-                else if(key == "firstday")
-                {
-
-                    mbHasCreatedWebView = false;
-                    initializeCalendar();
-                }
-            });
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key)
+    {
+        if (key == HOUR_SYSTEM_KEY)
+        {
+            hourSystemMode=gsettings->get("hoursystem").toString();
         }
+        else if(key == "calendar")
+        {
+
+            mbHasCreatedWebView = false;
+            initializeCalendar();
+        }
+        else if(key == "firstday")
+        {
+            qDebug()<<"key == firstday";
+            mbHasCreatedWebView = false;
+            initializeCalendar();
+        }
+    });
+    }
 
     setTimeShowStyle();
     mContent->setStyleSheet(
@@ -120,7 +121,6 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
                 /*"background-color:rgba(100,225,100,80%);"//背景色（也可以设置图片）*/
                 "border-width:0px;"                     //边框宽度像素
                 "border-radius:6px;"                   //边框圆角半径像素
-//                "font: SourceHanSansCN-Medium  12px;"                       //字体，字体大小
                 "color:rgba(255,255,255,100%);"                //字体颜色
                 "padding:0px;"                          //填衬
                 "textalignment:aligncenter"               //文本居中
@@ -140,10 +140,9 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
 IndicatorCalendar::~IndicatorCalendar()
 {
-     qDebug()<<"calend exit start";
     if(mMainWidget != NULL)
     {
-     mMainWidget->deleteLater();
+        mMainWidget->deleteLater();
     }
     if(mWebViewDiag != NULL)
     {
@@ -151,17 +150,16 @@ IndicatorCalendar::~IndicatorCalendar()
     }
     if(mRotatedWidget != NULL)
     {
-     mRotatedWidget->deleteLater();
+        mRotatedWidget->deleteLater();
     }
     if(mContent != NULL)
     {
-     mContent->deleteLater();
+        mContent->deleteLater();
     }
     if(mPopupContent != NULL)
     {
-     mPopupContent->deleteLater();
+        mPopupContent->deleteLater();
     }
-//    delete gsettings;
 }
 
 void IndicatorCalendar::timeout()
@@ -222,20 +220,27 @@ void IndicatorCalendar::updateTimeText()
         const QSize old_size = mContent->sizeHint();
         QString str;
         const QByteArray id(HOUR_SYSTEM_CONTROL);
-        if(QGSettings::isSchemaInstalled(id)) {
-        //        qDebug()<<"isSchemaInstalled"<<endl;
-                gsettings = new QGSettings(id);
-        QString mode=gsettings->get("hour-system").toString();
+        if(QGSettings::isSchemaInstalled(id))
+        {
+        gsettings = new QGSettings(id);
+        QString mode;
+        QStringList keys = gsettings->keys();
+        if(keys.contains("hoursystem")){
+            mode=gsettings->get("hoursystem").toString();
+        }
         if(!gsettings)
         {
             qDebug()<<"gsettings  get error    :";
             return;
         }
-        if(mode=="24"){
-            if(panel()->isHorizontal()){
+        if(!QString::compare("24",hourSystemMode))
+        {
+            if(panel()->isHorizontal())
+            {
                 str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
             }
-            else{
+            else
+            {
                 str=tzNow.toString(HOUR_SYSTEM_24_Vertical);
             }
 
@@ -249,9 +254,6 @@ void IndicatorCalendar::updateTimeText()
                 str=tzNow.toString(HOUR_SYSTEM_12_Vertical);
             }
         }
-
-
-        str.replace("-","/");
         str.replace("星期","周");
         str.remove("/上午");
         str.remove("/下午");
@@ -263,7 +265,7 @@ void IndicatorCalendar::updateTimeText()
         mRotatedWidget->update();
         updatePopupContent();
         mbIsNeedUpdate = false;
-//    }
+
 }
 
 void IndicatorCalendar::setTimeText()
@@ -890,5 +892,35 @@ void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 {
-    qDebug()<<"calendar right press";
+    PopupMenu *menuCalender=new PopupMenu(this);
+    menuCalender->setAttribute(Qt::WA_DeleteOnClose);
+
+    menuCalender->addAction(QIcon::fromTheme(QLatin1String("configure")),
+                   tr("Time and Date Setting"),
+                   this, SLOT(setControlTime())
+                  );
+    menuCalender->addAction(QIcon("/usr/share/ukui-panel/panel/img/setting.svg"),
+                   tr("Config panel"),
+                   this, SLOT(setUpPanel())
+                  );
+
+    QCursor::pos();
+    if(QCursor::pos().x()>500 && QCursor::pos().y()<100)
+        menuCalender->setGeometry(QCursor::pos().x()-120,QCursor::pos().y(),160,70);
+    else if(QCursor::pos().x()<100 && QCursor::pos().y()>500)
+        menuCalender->setGeometry(QCursor::pos().x(),QCursor::pos().y(),160,70);
+    else
+        menuCalender->setGeometry(QCursor::pos().x()-120,QCursor::pos().y()-90,160,70);
+    menuCalender->show();
 }
+
+void CalendarActiveLabel::setControlTime()
+{
+    system("ukui-control-center -m");
+}
+
+void CalendarActiveLabel::setUpPanel()
+{
+    system("ukui-control-center -m");
+}
+

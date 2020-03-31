@@ -97,7 +97,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mTopBarLayout = new QHBoxLayout;
 
 
-    mTitleLabel->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    mTitleLabel->setAlignment(Qt::AlignLeft|Qt::AlignLeft);
     mAppIcon->setAlignment(Qt::AlignLeft);
     mAppIcon->setScaledContents(false);
 
@@ -175,7 +175,7 @@ void UKUITaskWidget::updateIcon()
     {
         ico = KWindowSystem::icon(mWindow);
     }
-    mAppIcon->setPixmap(ico.pixmap(QSize(32,32)));
+    mAppIcon->setPixmap(ico.pixmap(QSize(19,19)));
     //mAppIcon->setWindowIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
     //setIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
 }

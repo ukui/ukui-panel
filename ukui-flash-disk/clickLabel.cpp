@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
@@ -16,26 +15,28 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
-#include "UnionVariable.h"
 
-static QList<std::shared_ptr<Peony::Mount>> mountsList;
-
-QList<std::shared_ptr<Peony::Mount> > *findList()
+#include "clickLabel.h"
+ClickLabel::ClickLabel(const QString &text, QWidget *parent)
 {
-    return &mountsList;
+    setText(text);
+    adjustSize();
 }
 
-static QList<std::shared_ptr<Peony::Volume>> volumesList;
-
-QList<std::shared_ptr<Peony::Volume> > *findVolumeList()
+ClickLabel::~ClickLabel()
 {
-    return &volumesList;
 }
 
-static QList<std::shared_ptr<Peony::Drive>> drivesList;
-
-QList<std::shared_ptr<Peony::Drive> > *findDriveList()
-{
-    return &drivesList;
+void ClickLabel::mousePressEvent(QMouseEvent *event){
+    if (event->button() == Qt::LeftButton)
+        Q_EMIT clicked();
+    QLabel::mousePressEvent(event);
 }
 
+//void ClickLabel::paintEvent(QPaintEvent *event){
+////    Q_UNUSED(event)
+////    QStyleOption opt;
+////    opt.init(this);
+////    QPainter p(this);
+////    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+//}

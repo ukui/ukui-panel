@@ -26,6 +26,7 @@
 #include "ejectInterface.h"
 #include <QSystemTrayIcon>
 #include <QIcon>
+#include <QProcess>
 
 namespace Ui {
 class MainWindow;
@@ -34,29 +35,58 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+private:
+    void getDeviceInfo();
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-        void setsystemTray(QSystemTrayIcon *_systray);
+    static int oneVolumeDriveNum;
+    static int twoVolumeDriveNum;
+    static int threeVolumeDriveNum;
+    static int fourVolumeDriveNum;
+    static int hign;
 
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *vboxlayout;
     QLabel *no_device_label;
     QPushButton *eject_image_button;
-    void newarea(QString name, qlonglong capacity, QString path,int linestatus);
+    void newarea(int No,
+                 QString Drivename,
+                 QString nameDis1,
+                 QString nameDis2,
+                 QString nameDis3,
+                 QString nameDis4,
+                 qlonglong capacityDis1,
+                 qlonglong capacityDis2,
+                 qlonglong capacityDis3,
+                 qlonglong capacityDis4,
+                 QString pathDis1,
+                 QString pathDis2,
+                 QString pathDis3,
+                 QString pathDis4,
+                 int linestatus);
     void moveBottomRight();
     QString size_human(qlonglong capacity);
     QSystemTrayIcon *m_systray;
     QIcon iconSystray;
     //void initUi();
-
+    QString UDiskPathDis1;
+    QString UDiskPathDis2;
+    QString UDiskPathDis3;
+    QString UDiskPathDis4;
+    quint64 totalDis1;
+    quint64 totalDis2;
+    quint64 totalDis3;
+    quint64 totalDis4;
+    QClickWidget *open_widget;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
+    void eject_drive();
 Q_SIGNALS:
     void clicked();
 };

@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
@@ -16,26 +15,28 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
-#include "UnionVariable.h"
+#ifndef CLICKLABEL_H
+#define CLICKLABEL_H
 
-static QList<std::shared_ptr<Peony::Mount>> mountsList;
+#include <QLabel>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QStyleOption>
 
-QList<std::shared_ptr<Peony::Mount> > *findList()
+class ClickLabel : public QLabel
 {
-    return &mountsList;
-}
+    Q_OBJECT
 
-static QList<std::shared_ptr<Peony::Volume>> volumesList;
+public:
+    explicit ClickLabel(const QString &text, QWidget *parent = 0);
+    ~ClickLabel();
 
-QList<std::shared_ptr<Peony::Volume> > *findVolumeList()
-{
-    return &volumesList;
-}
+protected:
+    void mousePressEvent(QMouseEvent * event);
+    //virtual void paintEvent(QPaintEvent * event);
 
-static QList<std::shared_ptr<Peony::Drive>> drivesList;
+Q_SIGNALS:
+    void clicked();
+};
 
-QList<std::shared_ptr<Peony::Drive> > *findDriveList()
-{
-    return &drivesList;
-}
-
+#endif // CLICKLABEL_H
