@@ -234,8 +234,8 @@ install(FILES
     COMPONENT Runtime
 )
 
-#install(FILES
-#    resources/org.ukui.panel.plugin.gschema.xml
-#    DESTINATION "/usr/share/glib-2.0/schemas"
-#    COMPONENT Runtime
-#)
+install(FILES
+    resources/org.ukui.panel.settings.gschema.xml
+    DESTINATION "/usr/share/glib-2.0/schemas"
+    COMPONENT Runtime
+)

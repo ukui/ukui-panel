@@ -1,0 +1,20 @@
+<schemalist gettext-domain="ukui-panel">
+	<schema id="org.ukui.panel.settings"  path="/org/ukui/panel/settings/">
+        <key name="panelsize" type="i">
+            <default>46</default>
+            <summary>panelsize</summary>
+            <description>the size of UKUI Panel</description>
+        </key>
+        <key name="iconsize" type="i">
+            <default>32</default>
+            <summary>IconSize</summary>
+            <description>the size of ukui-panel's icon</description>
+        </key>
+        <key name="panelposition" type="i">
+            <default>0</default>
+            <summary>PanelPosition</summary>
+            <description>The Position of ukui-panel</description>
+	 </key>
+    </schema>
+</schemalist>
+
