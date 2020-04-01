@@ -276,6 +276,7 @@ color: #78cdf7;
   width: 36px;
   height: 36px;
   background-color: #FFFFFF1A;
+  border-radius: 4px;
 }
 
 #selector_div #month_button:hover{
@@ -289,6 +290,7 @@ color: #78cdf7;
   width: 36px;
   height: 36px;
   background-color: #FFFFFF1A;
+  border-radius: 4px;
 }
 
 #selector_div #year_button:hover{
