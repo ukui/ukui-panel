@@ -137,6 +137,7 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     mPopup(new UKUIGroupPopup(this)),
     mPreventPopup(false),
     mSingleButton(true),
+    mTimer(new QTimer(this)),
     mpWidget(NULL)
 {
     Q_ASSERT(parent);
@@ -153,6 +154,8 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     connect(parent, &UKUITaskBar::buttonStyleRefreshed, this, &UKUITaskGroup::setToolButtonsStyle);
     connect(parent, &UKUITaskBar::showOnlySettingChanged, this, &UKUITaskGroup::refreshVisibility);
     connect(parent, &UKUITaskBar::popupShown, this, &UKUITaskGroup::groupPopupShown);
+    mTimer->setTimerType(Qt::PreciseTimer);
+    connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
 }
 
 UKUITaskGroup::~UKUITaskGroup()
@@ -189,7 +192,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    QAction *a = menu->addAction(XdgIcon::fromTheme("process-stop"), tr("关闭"));
+    QAction *a = menu->addAction(XdgIcon::fromTheme("process-stop"), tr("close"));
     connect(a, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {
         mPreventPopup = false;
@@ -222,6 +225,7 @@ QWidget * UKUITaskGroup::addWindow(WId id)
     mButtonHash.insert(id, btn);
 
     connect(btn, SIGNAL(clicked()), this, SLOT(onChildButtonClicked()));
+    connect(btn, SIGNAL(windowMaximize()), this, SLOT(onChildButtonClicked()));
     refreshVisibility();
 
     return btn;
@@ -354,6 +358,10 @@ void UKUITaskGroup::onWindowRemoved(WId window)
 void UKUITaskGroup::onChildButtonClicked()
 {
     setPopupVisible(false, true);
+    parentTaskBar()->setShowGroupOnHover(true);
+    //QToolButton::leaveEvent(event);
+    taskgroupStatus = NORMAL;
+    update();
 }
 
 /************************************************
@@ -545,6 +553,7 @@ void UKUITaskGroup::setPopupVisible(bool visible, bool fast)
 {
     if (visible && !mPreventPopup && !mSingleButton)
     {
+//        QTimer::singleShot(400, this,SLOT(showPreview()));
         showPreview();
         /* for origin preview
         plugin()->willShowWindow(mPopup);
@@ -653,19 +662,40 @@ QPoint UKUITaskGroup::recalculateFramePosition()
  ************************************************/
 void UKUITaskGroup::leaveEvent(QEvent *event)
 {
-    setPopupVisible(false);
-    QToolButton::leaveEvent(event);
-    taskgroupStatus = NORMAL;
-    update();
+    //QTimer::singleShot(300, this,SLOT(mouseLeaveOut()));
+    mTaskGroupEvent = LEAVEEVENT;
+    mEvent = event;
+    if(mTimer->isActive())
+    {
+        mTimer->stop();//stay time is no more than 400 ms need kill timer
+    }
+    else
+    {
+        mTimer->start(300);
+    }
 }
-
 /************************************************
 
  ************************************************/
 void UKUITaskGroup::enterEvent(QEvent *event)
 {
-    QToolButton::enterEvent(event);
+    //QToolButton::enterEvent(event);
+    mTaskGroupEvent = ENTEREVENT;
+    mEvent = event;
+    mTimer->start(400);
+//    if (sDraggging)
+//        return;
+//    if (parentTaskBar()->isShowGroupOnHover())
+//    {
+//        setPopupVisible(true);
+//        parentTaskBar()->setShowGroupOnHover(false);//enter this group other groups will be blocked
+//    }
+//    taskgroupStatus = HOVER;
+//    repaint();
+}
 
+void UKUITaskGroup::handleSavedEvent()
+{
     if (sDraggging)
         return;
     if (parentTaskBar()->isShowGroupOnHover())
@@ -674,6 +704,7 @@ void UKUITaskGroup::enterEvent(QEvent *event)
     }
     taskgroupStatus = HOVER;
     repaint();
+    QToolButton::enterEvent(mEvent);
 }
 
 //void UKUITaskGroup::paintEvent(QPaintEvent *)
@@ -861,6 +892,7 @@ void UKUITaskGroup::showPreview()
         removeWidget();
     }
     mpWidget = new QWidget;
+    mpWidget->setAttribute(Qt::WA_TranslucentBackground);
     setLayOutForPostion();
     /*begin catch preview picture*/
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
@@ -921,4 +953,21 @@ void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
         mPopup->setFixedSize(winWidth + 6,winHeight*mButtonHash.size() + (mButtonHash.size() + 1)*3);
     }
     mPopup->adjustSize();
+}
+
+void UKUITaskGroup::timeout()
+{
+    if(mTaskGroupEvent == ENTEREVENT)
+    {
+        mTimer->stop();
+        handleSavedEvent();
+    }
+    else if(mTaskGroupEvent == LEAVEEVENT)
+    {
+        mTimer->stop();
+        setPopupVisible(false);
+        QToolButton::leaveEvent(mEvent);
+        taskgroupStatus = NORMAL;
+        update();
+    }
 }

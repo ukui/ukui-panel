@@ -72,6 +72,9 @@ protected:
 private:
     UKUITaskGroup *mGroup;
     QTimer mCloseTimer;
+private slots:
+    void killTimerDelay();
+    void closeWindowDelay();
 };
 
 #endif // UKUITASKPOPUP_H

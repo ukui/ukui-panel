@@ -134,6 +134,7 @@ private slots:
 signals:
     void dropped(QObject * dragSource, QPoint const & pos);
     void dragging(QObject * dragSource, QPoint const & pos);
+    void windowMaximize();
 };
 
 typedef QHash<WId,UKUITaskWidget*> UKUITaskButtonHash;

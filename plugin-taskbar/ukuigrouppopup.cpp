@@ -35,6 +35,8 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QDebug>
+#include <QApplication>
+#include <QScreen>
 
 /************************************************
     this class is just a container of window buttons
@@ -59,6 +61,8 @@ UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     connect(&mCloseTimer, &QTimer::timeout, this, &UKUIGroupPopup::closeTimerSlot);
     mCloseTimer.setSingleShot(true);
     mCloseTimer.setInterval(400);
+    setMaximumWidth(QApplication::screens().at(0)->size().width());
+    setMaximumHeight(QApplication::screens().at(0)->size().height());
 }
 
 UKUIGroupPopup::~UKUIGroupPopup()
@@ -132,7 +136,10 @@ void UKUIGroupPopup::dragLeaveEvent(QDragLeaveEvent *event)
  ************************************************/
 void UKUIGroupPopup::leaveEvent(QEvent *event)
 {
-    mCloseTimer.start();
+//    qDebug()<<"UKUIGroupPopup::leaveEvent:"<<mCloseTimer.isActive();
+//    mCloseTimer.start();
+//    isSetByLeaveEvent = true;
+    QTimer::singleShot(300, this,SLOT(closeWindowDelay()));
 }
 
 /************************************************
@@ -140,7 +147,22 @@ void UKUIGroupPopup::leaveEvent(QEvent *event)
  ************************************************/
 void UKUIGroupPopup::enterEvent(QEvent *event)
 {
-    mCloseTimer.stop();
+    QTimer::singleShot(300, this,SLOT(killTimerDelay()));
+//    mCloseTimer.stop();
+}
+
+void UKUIGroupPopup::killTimerDelay()
+{
+      mCloseTimer.stop();
+}
+
+void UKUIGroupPopup::closeWindowDelay()
+{
+    if(mCloseTimer.isActive())
+    {
+        mCloseTimer.stop();
+    }
+    close();
 }
 
 void UKUIGroupPopup::paintEvent(QPaintEvent *event)
