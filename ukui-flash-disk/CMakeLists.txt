@@ -29,15 +29,18 @@ add_executable(ukui-flash-disk
     main.cpp
     mainwindow.cpp
     qclickwidget.cpp
+    qclickwidget.h
     UnionVariable.cpp
     UnionVariable.h
     ejectInterface.cpp
     ejectInterface.h
     clickLabel.h
     clickLabel.cpp
+    MainController.h
+    MainController.cpp
+    MacroFile.h
         mainwindow.ui
         mainwindow.h
-        qclickwidget.h
 
 )
 
