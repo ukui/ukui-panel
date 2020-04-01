@@ -464,10 +464,14 @@ window.onload = function () {
 
     year = today.getFullYear();
     month = today.getMonth();
+    var real_month = month + 1;
     //begin before modify year button
     selected_date_div = document.getElementById('selected_date_div');
     year_selector = document.createElement('year_selector');
     month_selector = document.createElement('month_selector');
+    year_selector.value = year + '年';
+    month_selector.value = real_month +'月';
+    selected_date_div.innerHTML = year_selector.value + month_selector.value;
     // year_selector = document.getElementById('year_selector');
     // // year_selector.addEventListener('click', popup_div);
 
