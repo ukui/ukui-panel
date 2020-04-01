@@ -98,6 +98,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addLayout(onevolume_h_BoxLayout);
             this->setLayout(main_V_BoxLayout);
+            this->setFixedHeight(75);
             connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
         }
 //when the drive has two volumes
@@ -156,6 +157,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             main_V_BoxLayout->addLayout(onevolume_h_BoxLayout);
             main_V_BoxLayout->addLayout(twovolume_h_BoxLayout);
             this->setLayout(main_V_BoxLayout);
+            this->setFixedHeight(110);
             connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
             connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
         }
@@ -240,6 +242,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             main_V_BoxLayout->addLayout(twovolume_h_BoxLayout);
             main_V_BoxLayout->addLayout(threevolume_h_BoxLayout);
             this->setLayout(main_V_BoxLayout);
+            this->setFixedHeight(145);
             connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
             connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
             connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
@@ -351,6 +354,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             main_V_BoxLayout->addLayout(threevolume_h_BoxLayout);
             main_V_BoxLayout->addLayout(fourvolume_h_BoxLayout);
             this->setLayout(main_V_BoxLayout);
+            this->setFixedHeight(180);
             connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
             connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
             connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
@@ -445,7 +449,6 @@ QString QClickWidget::size_human(qlonglong capacity)
             unit = i.next();
             capacity /= 1024.0;
         }
-        qDebug() << "capacity==============" << capacity << unit;
         QString str_capacity=QString(" %1%2").arg(capacity).arg(unit);
         return str_capacity;
      //   return QString().setNum(capacity,'f',2)+" "+unit;

@@ -32,6 +32,12 @@ namespace Ui {
 class MainWindow;
 }
 
+//struct UMount
+//{
+//    QString id;
+//    int count;
+//};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -41,11 +47,11 @@ private:
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    static int oneVolumeDriveNum;
-    static int twoVolumeDriveNum;
-    static int threeVolumeDriveNum;
-    static int fourVolumeDriveNum;
-    static int hign;
+//    static int oneVolumeDriveNum;
+//    static int twoVolumeDriveNum;
+//    static int threeVolumeDriveNum;
+//    static int fourVolumeDriveNum;
+//    static int hign;
 
 private:
     Ui::MainWindow *ui;
@@ -81,6 +87,7 @@ private:
     quint64 totalDis3;
     quint64 totalDis4;
     QClickWidget *open_widget;
+    int hign;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
