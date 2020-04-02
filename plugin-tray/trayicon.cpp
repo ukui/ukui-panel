@@ -447,5 +447,6 @@ void TrayIcon::paintEvent(QPaintEvent *)
 
 void TrayIcon::notifyAppFreeze()
 {
+    qDebug()<<"notifiAppFreeze : app is:"<<mIconId<<"     name is: "<<xfitMan().getApplicationName(mIconId);
     emit notifyTray(mIconId);
 }

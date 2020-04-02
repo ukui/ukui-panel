@@ -81,7 +81,9 @@ TrayStorage::TrayStorage( QWidget *parent):
     mLayout->setRowCount(3);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(/*Qt::FramelessWindowHint |*/ /*Qt::WindowStaysOnTopHint |*/ Qt::ToolTip);
+//    setWindowFlags(Qt::FramelessWindowHint );
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
+//    QTimer::singleShot(0, this, SLOT(startTray()));
 }
 
 
