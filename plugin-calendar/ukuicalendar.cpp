@@ -107,6 +107,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
         }
         else if(key == "firstday")
         {
+            qDebug()<<"key == firstday";
             mbHasCreatedWebView = false;
             initializeCalendar();
         }
@@ -252,7 +253,6 @@ void IndicatorCalendar::updateTimeText()
                 str=tzNow.toString(HOUR_SYSTEM_12_Vertical);
             }
         }
-
         str.replace("-","/");
         str.replace("星期","周");
         str.remove("/上午");
@@ -485,21 +485,18 @@ void IndicatorCalendar::initializeCalendar()
     CalendarShowMode showCalendar = defaultMode;
     if(QGSettings::isSchemaInstalled(id))
     {
+//        if(gsettings)
+//        {
+//            gsettings->deleteLater();
+//        }
+//        gsettings = new QGSettings(id);
         if(!gsettings)
         {
             qDebug()<<"get gsetting error!!!";
             return;
         }
-        QString lunarOrsolar;
-        QString firstDay;
-        if(gsettings->keys().contains("calendar"))
-        {
-            lunarOrsolar = gsettings->get("calendar").toString();
-        }
-        if(gsettings->keys().contains("firstday"))
-        {
-            lunarOrsolar = gsettings->get("firstday").toString();
-        }
+        QString lunarOrsolar = gsettings->get("calendar").toString();
+        QString firstDay = gsettings->get("firstday").toString();
         qDebug()<<"lunarOrsolar:"<<lunarOrsolar;
         qDebug()<<"firstDay:"<<firstDay;
         if(lunarOrsolar == "lunar")
