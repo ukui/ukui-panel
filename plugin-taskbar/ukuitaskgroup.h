@@ -74,6 +74,10 @@ public:
     void removeWidget();
     bool isSetMaxWindow();
     void showPreview();
+    int calcAverageWidth();
+    int calcAverageHeight();
+    void showAllWindowByList();//when number of window is more than 30,need show all window of app by a list
+    void showAllWindowByThumbnail();//when number of window is no more than 30,need show all window of app by a thumbnail
 
 public slots:
     void onWindowRemoved(WId window);
