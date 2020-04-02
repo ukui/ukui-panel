@@ -22,5 +22,4 @@
 QList<std::shared_ptr<Peony::Mount>> *findList();
 QList<std::shared_ptr<Peony::Volume>> *findVolumeList();
 QList<std::shared_ptr<Peony::Drive>> *findDriveList();
-QList<GMount *> *findGMountList();
 #endif

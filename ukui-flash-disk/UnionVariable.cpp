@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
@@ -36,11 +37,5 @@ static QList<std::shared_ptr<Peony::Drive>> drivesList;
 QList<std::shared_ptr<Peony::Drive> > *findDriveList()
 {
     return &drivesList;
-}
-
-static QList<GMount *> gmountList;
-QList<GMount *> *findGMountList()
-{
-    return &gmountList;
 }
 
