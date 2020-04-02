@@ -52,3 +52,21 @@ void UkuiToolButton::paintTooltipStyle()
 //    font.setPixelSize(12);
 //    QToolTip::setFont(font);  //设置ToolTip字体
 }
+
+UKUiFrame::UKUiFrame(){
+}
+
+UKUiFrame::~UKUiFrame(){
+}
+
+void UKUiFrame::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    p.setBrush(QBrush(Qt::red));
+    p.setPen(Qt::black);
+    p.drawRoundedRect(opt.rect,6,6);
+//    p.drawText(rect(), opt. Qt::AlignCenter,);
+    style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
+}

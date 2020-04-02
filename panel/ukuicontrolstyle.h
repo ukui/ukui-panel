@@ -20,6 +20,7 @@
 #define UKUICONTROLSTYLE_H
 #include <QMenu>
 #include <QToolButton>
+#include <QFrame>
 class UKUiMenu:public QMenu
 {
 public:
@@ -36,5 +37,14 @@ public:
     UkuiToolButton();
     ~UkuiToolButton();
     void paintTooltipStyle();
+};
+
+class UKUiFrame:public QFrame
+{
+public:
+    UKUiFrame();
+    ~UKUiFrame();
+protected:
+    void paintEvent(QPaintEvent*);
 };
 #endif

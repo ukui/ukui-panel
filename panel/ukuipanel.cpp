@@ -81,9 +81,20 @@
 #define CFG_KEY_SHOW_DELAY         "show-delay"
 #define CFG_KEY_LOCKPANEL          "lockPanel"
 
-
 #define GSETTINGS_SCHEMA_SCREENSAVER "org.mate.interface"
 #define KEY_MODE "gtk-theme"
+
+#define PANEL_SIZE_LARGE  92
+#define PANEL_SIZE_MEDIUM 70
+#define PANEL_SIZE_SMALL  46
+#define ICON_SIZE_LARGE   64
+#define ICON_SIZE_MEDIUM  48
+#define ICON_SIZE_SMALL   32
+
+#define PANEL_SETTINGS "org.ukui.panel.settings"
+#define PANEL_SIZE_KEY "panelsize"
+#define ICON_SIZE_KEY "iconsize"
+#define PANEL_POSITION_KEY "panelposition"
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -232,7 +243,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         showPanel(false);
         QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
     }
-   // mConfigDialog=new ConfigPanelDialog(this);
+    UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
+    connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
+    const QByteArray id(PANEL_SETTINGS);
+    gsettings = new QGSettings(id);
 }
 
 /************************************************
@@ -417,9 +431,15 @@ int UKUIPanel::getReserveDimension()
     return mHidable ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
 }
 
+/*
+ The setting frame of the old panel does not follow the main screen
+ but can be displayed on any screen
+ but the current desktop environment of ukui is set to follow the main screen
+ All default parameters desktop()->screenGeometry are 0
+ */
 void UKUIPanel::setPanelGeometry(bool animate)
 {
-    const QRect currentScreen = QApplication::desktop()->screenGeometry(mActualScreenNum);
+    const QRect currentScreen = QApplication::desktop()->screenGeometry(0);
     QRect rect;
 
     if (isHorizontal())
@@ -1218,9 +1238,9 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     pmenu_panelsize->addAction(pmenuaction_l);
     menu->addMenu(pmenu_panelsize);
 
-    connect(pmenuaction_s,SIGNAL(triggered()),this,SLOT(panelsizechange_s()));
-    connect(pmenuaction_m,SIGNAL(triggered()),this,SLOT(panelsizechange_m()));
-    connect(pmenuaction_l,SIGNAL(triggered()),this,SLOT(panelsizechange_l()));
+    connect(pmenuaction_s,SIGNAL(triggered()),this,SLOT(changeSizeToSmall()));
+    connect(pmenuaction_m,SIGNAL(triggered()),this,SLOT(changeSizeToMedium()));
+    connect(pmenuaction_l,SIGNAL(triggered()),this,SLOT(changeSizeToLarge()));
     menu->addSeparator();
 
     QAction *pmenuaction_top;
@@ -1244,10 +1264,10 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     pmenu_positon->addAction(pmenuaction_right);
     menu->addMenu(pmenu_positon);
 
-    connect(pmenuaction_top,SIGNAL(triggered()),this,SLOT(changePosition_top()));
-    connect(pmenuaction_bottom,SIGNAL(triggered()),this,SLOT(changePosition_bottom()));
-    connect(pmenuaction_left,SIGNAL(triggered()),this,SLOT(changePosition_left()));
-    connect(pmenuaction_right,SIGNAL(triggered()),this,SLOT(changePosition_right()));
+    connect(pmenuaction_top,SIGNAL(triggered()),this,SLOT(changePositionToTop()));
+    connect(pmenuaction_bottom,SIGNAL(triggered()),this,SLOT(changePositionToBottom()));
+    connect(pmenuaction_left,SIGNAL(triggered()),this,SLOT(changePositionToLeft()));
+    connect(pmenuaction_right,SIGNAL(triggered()),this,SLOT(changePositionToRight()));
     pmenu_positon->setDisabled(mLockPanel);
 
 /*
@@ -1270,6 +1290,8 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     act_lock->setCheckable(true);
     act_lock->setChecked(mLockPanel);
     connect(act_lock, &QAction::triggered, [this] { mLockPanel = !mLockPanel; saveSettings(false); });
+
+    //Hidden features, lock the panel
 /*
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                    tr("Reset Panel"),
@@ -1560,74 +1582,57 @@ bool UKUIPanel::isPluginSingletonAndRunnig(QString const & pluginId) const
         return plugin->iPlugin()->flags().testFlag(IUKUIPanelPlugin::SingleInstance);
 }
 
-void UKUIPanel::changePosition_top()
+void UKUIPanel::setPanelPosition(Position position)
 {
-    //mConfigWidget->positionChanged();
-     //qDebug()<<"mPanelPage"<<mConfigDialog->mPanelPage;
-    //mConfigDialog->mPanelPage->positionChanged();
-    if(mConfigDialog.isNull())
-    {
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    }
-    mConfigDialog->configPosition_top();
+    setPosition(0,position,true);
 }
 
-//change panel position
-void UKUIPanel::changePosition_bottom()
+void UKUIPanel::changePositionToTop()
 {
-    if(mConfigDialog.isNull())
-    {
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    }
-    mConfigDialog->configPosition_bottom();
+    setPosition(0,PositionTop,true);
+    gsettings->set(PANEL_POSITION_KEY,1);
 }
 
-void UKUIPanel::changePosition_left()
+void UKUIPanel::changePositionToBottom()
 {
-    if(mConfigDialog.isNull())
-    {
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    }
-    mConfigDialog->configPosition_left();
+    setPosition(0,PositionBottom,true);
+    gsettings->set(PANEL_POSITION_KEY,0);
 }
 
-void UKUIPanel::changePosition_right()
+void UKUIPanel::changePositionToLeft()
 {
-    if(mConfigDialog.isNull())
-    {
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    }
-    mConfigDialog->configPosition_right();
+    setPosition(0,PositionLeft,true);
+    gsettings->set(PANEL_POSITION_KEY,2);
 }
 
-//change panel size
-void UKUIPanel::panelsizechange_s()
+void UKUIPanel::changePositionToRight()
 {
-    if(mConfigDialog.isNull())
-    {
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    }
-    mConfigDialog->configPanelSize_S();
-
+    this->setPosition(0,PositionRight,true);
+    gsettings->set(PANEL_POSITION_KEY,3);
 }
 
-void UKUIPanel::panelsizechange_m()
+void UKUIPanel::changeSizeToSmall()
 {
-    if(mConfigDialog.isNull())
-    {
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    }
-    mConfigDialog->configPanelSize_m();
-
+    setPanelSize(PANEL_SIZE_SMALL,true);
+    setIconSize(ICON_SIZE_SMALL,true);
+    gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_SMALL);
+    gsettings->set(ICON_SIZE_KEY,ICON_SIZE_SMALL);
 }
 
-void UKUIPanel::panelsizechange_l()
+void UKUIPanel::changeSizeToMedium()
 {
-    if(mConfigDialog.isNull())
-    {
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    }
-    mConfigDialog->configPanelSize_l();
+    setPanelSize(PANEL_SIZE_MEDIUM,true);
+    setIconSize(ICON_SIZE_MEDIUM,true);
+    gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_MEDIUM);
+    gsettings->set(ICON_SIZE_KEY,ICON_SIZE_MEDIUM);
+}
+
+void UKUIPanel::changeSizeToLarge()
+{
+    setPanelSize(PANEL_SIZE_LARGE,true);
+    setIconSize(ICON_SIZE_MEDIUM,true);
+    gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_LARGE);
+    gsettings->set(ICON_SIZE_KEY,ICON_SIZE_LARGE);
 }
 
 void UKUIPanel::panelReset()

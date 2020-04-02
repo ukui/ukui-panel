@@ -33,7 +33,8 @@
 #include <QTimer>
 #include <QPropertyAnimation>
 #include <QPointer>
-//#include <UKUi/Settings>
+#include <QDesktopWidget>
+#include <QGSettings/QGSettings>
 #include "common/ukuisettings.h"
 #include "iukuipanel.h"
 #include "ukuipanelglobals.h"
@@ -699,18 +700,19 @@ private:
 
 
 private slots:
-    void changePosition_top();
-    void changePosition_bottom();
-    void changePosition_left();
-    void changePosition_right();
-    void panelsizechange_s();
-    void panelsizechange_m();
-    void panelsizechange_l();
+    void setPanelPosition(Position position);
+    void changePositionToTop();
+    void changePositionToBottom();
+    void changePositionToLeft();
+    void changePositionToRight();
+    void changeSizeToSmall();
+    void changeSizeToMedium();
+    void changeSizeToLarge();
     void panelReset();
     void panelBackgroundChange();
 
 public:
-    //ConfigPanelWidget *mconfigpanelwidget;
+    QGSettings *gsettings;
 
 };
 
