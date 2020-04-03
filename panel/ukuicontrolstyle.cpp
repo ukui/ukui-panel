@@ -64,9 +64,9 @@ void UKUiFrame::paintEvent(QPaintEvent *)
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
-    p.setBrush(QBrush(Qt::red));
-    p.setPen(Qt::black);
+    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+    p.setPen(Qt::NoPen);
+    p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,6,6);
-//    p.drawText(rect(), opt. Qt::AlignCenter,);
     style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
 }

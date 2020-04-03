@@ -52,6 +52,18 @@ class GridLayout;
  */
 class IUKUIPanelPlugin;
 
+class UKUIStorageFrame:public QWidget
+{
+    Q_OBJECT
+public:
+    UKUIStorageFrame();
+    ~UKUIStorageFrame();
+protected:
+    bool event(QEvent *e);
+//    bool eventFilter(QObject *watched, QEvent *event);
+    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+};
+
 class UKUITray: public QFrame, QAbstractNativeEventFilter
 {
     Q_OBJECT
@@ -67,7 +79,7 @@ public:
 
     void realign();
     IUKUIPanelPlugin *mPlugin;
-    TrayStorage *tys;
+//    TrayStorage *tys;
 
     //control app show in tray/traystorege  by ukui-control-center
     QList<char *> listExistsPath();
@@ -113,13 +125,13 @@ private:
     int mDamageError;
     QSize mIconSize;
     UKUi::GridLayout *mLayout;
-    UKUi::GridLayout *storageLayout;\
+    UKUi::GridLayout *storageLayout;
     QToolButton *bt;
 
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
     UKUiFrame *storageFrame;
-    enum storageBarStatus{ST_HIDE,ST_HOVER};
+    enum storageBarStatus{ST_HIDE,ST_SHOW};
     storageBarStatus storagebarstatus;
 };
 #endif
