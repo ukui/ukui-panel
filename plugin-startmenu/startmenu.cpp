@@ -24,36 +24,51 @@
 #include <QMenu>
 #include <QStyle>
 #include "../panel/customstyle.h"
-StartMenu::StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo) :
+
+UKUIStartMenuPlugin::UKUIStartMenuPlugin(const IUKUIPanelPluginStartupInfo &startupInfo):
     QObject(),
-    IUKUIPanelPlugin(startupInfo)
-{
-    qDebug()<<"StartMenu::StartMenu";
-    mButton =new StartMenuButton();
-    mButton->setStyle(new CustomStyle());
-    mButton->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
-    realign();
-
-}
-
-StartMenu::~StartMenu()
+    IUKUIPanelPlugin(startupInfo),
+    mWidget(new UKUIStartMenuButton(this))
 {
 }
 
-
-void StartMenu::realign()
+UKUIStartMenuPlugin::~UKUIStartMenuPlugin()
 {
-    mButton->setFixedSize(panel()->panelSize(),panel()->panelSize());
-    mButton->setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
-}
-StartMenuButton::StartMenuButton(){
+    delete mWidget;
 }
 
-StartMenuButton::~StartMenuButton()
+QWidget *UKUIStartMenuPlugin::widget()
+{
+    return mWidget;
+}
+
+void UKUIStartMenuPlugin::realign()
+{
+    mWidget->realign();
+}
+
+UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* parent ):
+    QToolButton(parent),
+    mPlugin(plugin)
+{
+    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
+    this->setStyle(new CustomStyle());
+}
+
+UKUIStartMenuButton::~UKUIStartMenuButton()
 {
 }
 
-void StartMenuButton::mousePressEvent(QMouseEvent* event)
+void UKUIStartMenuButton::realign()
+{
+    if (mPlugin->panel()->isHorizontal())
+        this->setFixedSize(mPlugin->panel()->panelSize()+14,mPlugin->panel()->panelSize());
+    else
+       this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()+14);
+    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+}
+
+void UKUIStartMenuButton::mousePressEvent(QMouseEvent* event)
 {
     const Qt::MouseButton b = event->button();
 
@@ -61,81 +76,67 @@ void StartMenuButton::mousePressEvent(QMouseEvent* event)
     {
         if(QFileInfo::exists(QString("/usr/bin/ukui-menu")))
         {
-        QProcess *process =new QProcess(this);
-        process->startDetached("/usr/bin/ukui-menu");
+            QProcess *process =new QProcess(this);
+            process->startDetached("/usr/bin/ukui-menu");
         }
         else{qDebug()<<"not find /usr/bin/ukui-start-menu"<<endl;}
     }
     QWidget::mousePressEvent(event);
 }
 
-void StartMenuButton::contextMenuEvent(QContextMenuEvent *)
+void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
 {
-    menuTaskview=new PopupMenu();
-    menuTaskview->setAttribute(Qt::WA_DeleteOnClose);
+    rightPressMenu=new QMenu();
+    rightPressMenu->setAttribute(Qt::WA_DeleteOnClose);
 
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-lock-screen")),
+                              tr("Lock The Screen"),
+                              this, SLOT(ScreenServer())
+                              );
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("stock-popple")),
+                              tr("Switch The User"),
+                              this, SLOT(SessionSwitch())
+                              );
 
-    menuTaskview->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                   tr("Lock The Screen"),
-                   this, SLOT(ScreenServer())
-                  );
-    menuTaskview->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                   tr("Switch The User"),
-                   this, SLOT(SessionSwitch())
-                  );
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-logout")),
+                              tr("Logout"),
+                              this, SLOT(SessionLogout())
+                              );
 
-    menuTaskview->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                   tr("Logout"),
-                   this, SLOT(SessionLogout())
-                  );
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-restart")),
+                              tr("Reboot"),
+                              this, SLOT(SessionReboot())
+                              );
 
-    menuTaskview->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                   tr("Reboot"),
-                   this, SLOT(SessionReboot())
-                  );
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("exit")),
+                              tr("Shutdown"),
+                              this, SLOT(SessionShutdown())
+                              );
 
-    menuTaskview->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                   tr("Shutdown"),
-                   this, SLOT(SessionShutdown())
-                  );
-
-//    int availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
-//    moveMenu();
-    QCursor::pos();
-    if(QCursor::pos().x()>500 && QCursor::pos().y()<100)
-        menuTaskview->setGeometry(QCursor::pos().x()-160,QCursor::pos().y(),140,160);
-    else if(QCursor::pos().x()<100 && QCursor::pos().y()>500)
-        menuTaskview->setGeometry(QCursor::pos().x(),QCursor::pos().y()-190,140,160);
-    else
-        menuTaskview->setGeometry(QCursor::pos().x(),QCursor::pos().y(),140,160);
-    menuTaskview->show();
+    rightPressMenu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), rightPressMenu->sizeHint()));
+    rightPressMenu->show();
 }
 
-void StartMenuButton::moveMenu(QPointF pt)
-{
-//    menuTaskview->setGeometry(pt.x(),pt.y(),140,140);
-
-}
-void StartMenuButton::ScreenServer()
+void UKUIStartMenuButton::ScreenServer()
 {
     system("ukui-screensaver-command -l");
 }
-void StartMenuButton::SessionSwitch()
+void UKUIStartMenuButton::SessionSwitch()
 {
     QProcess::startDetached(QString("ukui-session-tools --switchuser"));
 }
 
-void StartMenuButton::SessionLogout()
+void UKUIStartMenuButton::SessionLogout()
 {
     system("ukui-session-tools --logout");
 }
 
-void StartMenuButton::SessionReboot()
+void UKUIStartMenuButton::SessionReboot()
 {
     system("ukui-session-tools --reboot");
 }
 
-void StartMenuButton::SessionShutdown()
+void UKUIStartMenuButton::SessionShutdown()
 {
     system("ukui-session-tools --shutdown");
 }
