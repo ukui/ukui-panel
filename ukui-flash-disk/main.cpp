@@ -26,27 +26,29 @@
 #include <QTranslator>
 #include "UnionVariable.h"
 #include "mainwindow.h"
+#include "MainController.h"
 
 #include <blkid.h>
 
 
 int main(int argc, char *argv[])
 {
-    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-    QString lockPath = homePath.at(0) + "/.config/ukui-flash-disk-lock";
-    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    //file lock to complete the single process
+//    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+//    QString lockPath = homePath.at(0) + "/.config/ukui-flash-disk-lock";
+//    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
-    if (fd < 0)
-    {
-        exit(1);
-    }
+//    if (fd < 0)
+//    {
+//        exit(1);
+//    }
 
-    if (lockf(fd, F_TLOCK, 0))
-    {
-        syslog(LOG_ERR, "Can't lock single file, ukui-flash-disk is already running!");
-        qDebug()<<"Can't lock single file, ukui-flash-disk is already running!";
-        exit(0);
-    }
+//    if (lockf(fd, F_TLOCK, 0))
+//    {
+//        syslog(LOG_ERR, "Can't lock single file, ukui-flash-disk is already running!");
+//        qDebug()<<"Can't lock single file, ukui-flash-disk is already running!";
+//        exit(0);
+//    }
     QIcon::setThemeName("ukui-icon-theme-default");
     QDBusConnection connection = QDBusConnection::sessionBus();
 
@@ -77,6 +79,9 @@ int main(int argc, char *argv[])
         qDebug() << "加载失败";
     qApp->setStyleSheet(qss.readAll());
     qss.close();
-    MainWindow w;
-    return a.exec();
+    MainController *ctrl = MainController::self();
+
+    a.exec();
+    delete ctrl;
+    return 0;
 }
