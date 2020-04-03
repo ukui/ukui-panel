@@ -23,8 +23,8 @@
     <name>QClickWidget</name>
     <message>
         <location filename="qclickWidget.cpp" line="74"/>
-        <source>uninstall</source>
-        <translation>卸载</translation>
+        <source>eject</source>
+        <translation>弹出</translation>
     </message>
 </context>
 </TS>

@@ -71,7 +71,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         QIcon eject_icon(":picture/media-eject-symbolic.svg");
         m_eject_button->setFixedSize(40,40);
         m_eject_button->setIcon(eject_icon);
-        m_eject_button->setToolTip(tr("卸载"));
+        m_eject_button->setToolTip(tr("弹出"));
 
         drivename_H_BoxLayout->addWidget(image_show_label);
         drivename_H_BoxLayout->addWidget(m_driveName_label);
