@@ -37,12 +37,12 @@
 #include <QScreen>
 #include "traystorage.h"
 #include "../panel/customstyle.h"
+#include "../panel/ukuicontrolstyle.h"
 #include <QGSettings>
 #include <string.h>
 #include <string>
 class TrayIcon;
 class QSize;
-//class CustomStyle;
 namespace UKUi {
 class GridLayout;
 }
@@ -51,6 +51,18 @@ class GridLayout;
  * @brief This makes our trayplugin
  */
 class IUKUIPanelPlugin;
+
+class UKUIStorageFrame:public QWidget
+{
+    Q_OBJECT
+public:
+    UKUIStorageFrame();
+    ~UKUIStorageFrame();
+protected:
+    bool event(QEvent *e);
+//    bool eventFilter(QObject *watched, QEvent *event);
+    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+};
 
 class UKUITray: public QFrame, QAbstractNativeEventFilter
 {
@@ -67,7 +79,7 @@ public:
 
     void realign();
     IUKUIPanelPlugin *mPlugin;
-    TrayStorage *tys;
+//    TrayStorage *tys;
 
     //control app show in tray/traystorege  by ukui-control-center
     QList<char *> listExistsPath();
@@ -90,7 +102,6 @@ private slots:
     void stopStorageTray();
     void onIconDestroyed(QObject * icon);
     void freezeTrayApp(Window winId);
-    void freezeIconSlot(TrayIcon *icon,Window winid);
 private:
     VisualID getVisual();
     void clientMessageEvent(xcb_generic_event_t *e);
@@ -101,8 +112,8 @@ private:
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
     void addIcon(Window id);
-    void moveIcon(Window id);
-    void storageMoveIcon(Window winId);
+    void moveIconToStorage(Window id);
+    void moveIconToTray(Window winId);
     TrayIcon* findIcon(Window trayId);
     TrayIcon* findStorageIcon(Window trayId);
 
@@ -114,8 +125,13 @@ private:
     int mDamageError;
     QSize mIconSize;
     UKUi::GridLayout *mLayout;
+    UKUi::GridLayout *storageLayout;
+    QToolButton *bt;
+
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
-//    QGSettings *settings;
+    UKUiFrame *storageFrame;
+    enum storageBarStatus{ST_HIDE,ST_SHOW};
+    storageBarStatus storagebarstatus;
 };
 #endif
