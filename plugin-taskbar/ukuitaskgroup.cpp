@@ -430,14 +430,28 @@ void UKUITaskGroup::onClicked(bool)
 //    }
     if(mPopup->isVisible())
     {
-        mPopup->hide();
-        return;
+        if(HOVER == taskgroupStatus)
+        {
+            taskgroupStatus = NORMAL;
+            return;
+        }
+        else
+        {
+            mPopup->hide();
+            return;
+        }
     }
     else
     {
         showPreview();
     }
+    mTaskGroupEvent = OTHEREVENT;
+    if(mTimer->isActive())
+    {
+       mTimer->stop();
+    }
 }
+
 
 /************************************************
 
@@ -873,17 +887,36 @@ void UKUITaskGroup::showPreview()
     XWindowAttributes attr;
     int winWidth = 0;
     int winHeight = 0;
+    int iAverageWidth = calcAverageWidth();
+    int iAverageHeight = calcAverageHeight();
     /*begin get the winsize*/
     bool isMaxWinSize = isSetMaxWindow();
     if(isMaxWinSize)
     {
-        winWidth = PREVIEW_WIDGET_MAX_WIDTH;
-        winHeight = PREVIEW_WIDGET_MAX_HEIGHT;
+        if(0 == iAverageWidth)
+        {
+
+            winHeight = PREVIEW_WIDGET_MAX_HEIGHT < iAverageHeight?PREVIEW_WIDGET_MAX_HEIGHT:iAverageHeight;
+            winWidth = winHeight*PREVIEW_WIDGET_MAX_WIDTH/PREVIEW_WIDGET_MAX_HEIGHT;
+        }
+        else
+        {
+            winWidth = PREVIEW_WIDGET_MAX_WIDTH < iAverageWidth?PREVIEW_WIDGET_MAX_WIDTH:iAverageWidth;
+            winHeight = winWidth*PREVIEW_WIDGET_MAX_HEIGHT/PREVIEW_WIDGET_MAX_WIDTH;
+        }
     }
     else
     {
-        winWidth = PREVIEW_WIDGET_MIN_WIDTH;
-        winHeight = PREVIEW_WIDGET_MIN_HEIGHT;
+        if(0 == iAverageWidth)
+        {
+            winHeight = PREVIEW_WIDGET_MIN_HEIGHT < iAverageHeight?PREVIEW_WIDGET_MIN_HEIGHT:iAverageHeight;
+            winWidth = winHeight*PREVIEW_WIDGET_MIN_WIDTH/PREVIEW_WIDGET_MIN_HEIGHT;
+        }
+        else
+        {
+            winWidth = PREVIEW_WIDGET_MIN_WIDTH < iAverageWidth?PREVIEW_WIDGET_MIN_WIDTH:iAverageWidth;
+            winHeight = winWidth*PREVIEW_WIDGET_MIN_HEIGHT/PREVIEW_WIDGET_MIN_WIDTH;
+        }
     }
     /*end get the winsize*/
 
@@ -897,27 +930,25 @@ void UKUITaskGroup::showPreview()
     /*begin catch preview picture*/
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
+        UKUITaskWidget *btn = it.value();
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
         img = XGetImage(display, it.key(), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
-
-//        if(NULL == img)
-//        {
-//            qDebug()<<"can not catch picture";
-//            return;
-//        }
         if(img)
         {
             thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
-            thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));
+            //thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));  test picture if correct
+            btn->setThumbNail(thumbnail);
         }
         else
         {
+            QPixmap emptyThumbnail;
+            btn->setThumbNail(emptyThumbnail);
             qDebug()<<"can not catch picture";
         }
 
-        UKUITaskWidget *btn = it.value();
-        btn->setThumbNail(thumbnail);
+//        UKUITaskWidget *btn = it.value();
+//        btn->setThumbNail(thumbnail);
         btn->updateTitle();
         btn->setFixedSize(winWidth, winHeight);
         mpWidget->layout()->setContentsMargins(0,0,0,0);
@@ -957,17 +988,70 @@ void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
 
 void UKUITaskGroup::timeout()
 {
+
     if(mTaskGroupEvent == ENTEREVENT)
     {
-        mTimer->stop();
+        if(mTimer->isActive())
+        {
+            mTimer->stop();
+        }
         handleSavedEvent();
     }
     else if(mTaskGroupEvent == LEAVEEVENT)
     {
-        mTimer->stop();
+        if(mTimer->isActive())
+        {
+            mTimer->stop();
+        }
         setPopupVisible(false);
         QToolButton::leaveEvent(mEvent);
         taskgroupStatus = NORMAL;
         update();
     }
+    else
+    {
+        setPopupVisible(false);
+    }
+}
+
+int UKUITaskGroup::calcAverageHeight()
+{
+    if(plugin()->panel()->isHorizontal())
+    {
+        return 0;
+    }
+    else
+    {
+        int iScreenHeight = QApplication::screens().at(0)->size().height();
+        int iMarginHeight = (mButtonHash.size()+1)*3;
+        int iAverageHeight = (iScreenHeight - iMarginHeight)/mButtonHash.size();//calculate average width of window
+        return iAverageHeight;
+    }
+}
+
+int UKUITaskGroup::calcAverageWidth()
+{
+    if(plugin()->panel()->isHorizontal())
+    {
+        int iScreenWidth = QApplication::screens().at(0)->size().width();
+        int iMarginWidth = (mButtonHash.size()+1)*3;
+        int iAverageWidth = (iScreenWidth - iMarginWidth)/mButtonHash.size();//calculate average width of window
+        return iAverageWidth;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+void UKUITaskGroup::showAllWindowByList()
+{
+
+}
+
+
+void UKUITaskGroup::showAllWindowByThumbnail()
+{
+
 }
