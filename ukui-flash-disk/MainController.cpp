@@ -74,7 +74,8 @@ void MainController::creatDBusService()
     memset(service_name, 0, SERVICE_NAME_SIZE);
     snprintf(service_name, SERVICE_NAME_SIZE, "%s_%d",UKUI_FLASH_DISK_SERVICE,getuid());
 
-    if (!bus.registerService(service_name)) {  //注意命名规则-和_
+    if (!bus.registerService(service_name))
+    {  //注意命名规则-和_
             qDebug() << bus.lastError().message();
             exit(1);
     }
