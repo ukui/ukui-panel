@@ -28,7 +28,7 @@ class ClickLabel : public QLabel
     Q_OBJECT
 
 public:
-    explicit ClickLabel(const QString &text, QWidget *parent = 0);
+    explicit ClickLabel(QWidget *parent = 0);
     ~ClickLabel();
 
 protected:

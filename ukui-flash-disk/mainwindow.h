@@ -56,6 +56,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *vboxlayout;
+    //QHBoxLayout *hboxlayout;
     QLabel *no_device_label;
     QPushButton *eject_image_button;
     void newarea(int No,
@@ -75,6 +76,8 @@ private:
                  int linestatus);
     void moveBottomRight();
     QString size_human(qlonglong capacity);
+    void MainWindowShow();
+private:
     QSystemTrayIcon *m_systray;
     QIcon iconSystray;
     //void initUi();
@@ -96,6 +99,9 @@ public Q_SLOTS:
     void eject_drive();
 Q_SIGNALS:
     void clicked();
+
+protected:
+    void resizeEvent(QResizeEvent *event);
 };
 
 #endif

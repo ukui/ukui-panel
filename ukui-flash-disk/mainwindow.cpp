@@ -60,12 +60,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
                 "border-radius:6px;"
                 "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
+//                "margin:0px;"
+//                "border-width:0px;"
+//                "padding:0px;"
                 "}"
                 );
 
 
     iconSystray = QIcon::fromTheme("/usr/share/icons/ukui-icon-theme-default/scalable/devices/drive-removable-media.svg");
     vboxlayout = new QVBoxLayout();
+    //hboxlayout = new QHBoxLayout();
 
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setWindowOpacity(0.95);
@@ -77,6 +81,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_systray->setToolTip(tr("usb management tool"));
     getDeviceInfo();
     connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
+    //MainWindowShow();
     ui->centralWidget->setLayout(vboxlayout);
 }
 
@@ -100,7 +105,6 @@ void MainWindow::getDeviceInfo()
         {
             *findList()<<mount;
             *findGMountList()<<mount->getGMount();
-            hign = findGMountList()->size()*50+30;
         }
         current_device = current_device->next;
     }
@@ -166,7 +170,6 @@ void MainWindow::getDeviceInfo()
         {
             *findList()<<mount;
             *findGMountList()<<mount->getGMount();
-            hign = findGMountList()->size()*50+30;
         }
         m_systray->show();
 
@@ -184,7 +187,6 @@ void MainWindow::getDeviceInfo()
                 //cachedMount->name())
                 findList()->removeOne(cachedMount);
                 findGMountList()->removeOne(cachedMount->getGMount());
-                hign = findGMountList()->size()*50+30;
                 ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(g_mount_get_drive(cachedMount->getGMount())));
                 int screenNum = QGuiApplication::screens().count();
                 int panelHeight = getPanelHeight("PanelHeight");
@@ -354,8 +356,8 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
           //MainWindow::hign = MainWindow::oneVolumeDriveNum*98+MainWindow::twoVolumeDriveNum*110+MainWindow::threeVolumeDriveNum*130+MainWindow::fourVolumeDriveNum*160;
           for(auto cacheDrive : *findDriveList())
           {
-
-              this->setFixedSize(250,hign);
+              hign = findGMountList()->size()*30 + findDriveList()->size()*55;
+              this->setFixedSize(280,hign);
               g_drive_get_volumes(cacheDrive->getGDrive());
               int DisNum = g_list_length(g_drive_get_volumes(cacheDrive->getGDrive()));
               if (DisNum >0 )
@@ -600,6 +602,10 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
         break;
     }
     ui->centralWidget->show();
+    qDebug()<<ui->centralWidget->geometry()<<"-----------------------------------------";
+    qDebug()<<geometry();
+    qDebug()<<open_widget->geometry()<<"open widget"<<"--------------------------------";
+    //open_widget->setGeometry(2,9,open_widget->width(),open_widget->height());
 }
 
 void MainWindow::eject_drive()
@@ -626,6 +632,7 @@ void MainWindow::newarea(int No,
     open_widget = new QClickWidget(NULL,No,Drivename,nameDis1,nameDis2,nameDis3,nameDis4,
                                    capacityDis1,capacityDis2,capacityDis3,capacityDis4,
                                    pathDis1,pathDis2,pathDis3,pathDis4);
+    //open_widget->;
 
     QWidget *line = new QWidget;
     line->setFixedHeight(1);
@@ -635,15 +642,19 @@ void MainWindow::newarea(int No,
     {
         this->vboxlayout->addWidget(line);
     }
+    //hboxlayout->setSpacing(0);
+//    hboxlayout->setContentsMargins(0,0,0,0);
+//    hboxlayout->addWidget(open_widget);
 
+//    this->vboxlayout->addLayout(hboxlayout);
+//    open_widget->setContentsMargins(0,0,0,0);
     this->vboxlayout->addWidget(open_widget);
+    vboxlayout->setContentsMargins(2,8,2,8);
 
     if (linestatus == 0)
     {
         this->vboxlayout->addWidget(line);
     }
-
-
 
     open_widget->setStyleSheet(
                 //正常状态样式
@@ -790,3 +801,9 @@ int MainWindow::getPanelHeight(QString str)
     return reply;
 }
 
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+   qDebug()<<"1111111111111111111111111111111 mainwindow size "<<geometry();
+   qDebug()<<"2222222222222222222222222222222 openwidget size "<<open_widget->geometry();
+   qDebug()<<"333333333333333333333333333333333 centerwidget size "<<ui->centralWidget->geometry();
+}
