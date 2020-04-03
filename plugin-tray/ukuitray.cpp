@@ -111,6 +111,7 @@ UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     mPlugin(plugin),
     mDisplay(QX11Info::display())
 {
+    storagebarstatus=ST_HIDE;
     mLayout = new UKUi::GridLayout(this);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
@@ -118,14 +119,17 @@ UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     QTimer::singleShot(0, this, SLOT(startTray()));
     bt=new QToolButton();
     bt->setStyle(new CustomStyle());
-//    bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
-    mLayout->addWidget(bt);
+    bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+    layout()->addWidget(bt);
 
     storageFrame=new UKUiFrame;
+    storageFrame->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    storageFrame->setWindowFlags(Qt::FramelessWindowHint | /*Qt::WindowStaysOnTopHint | */Qt::X11BypassWindowManagerHint);
     storageLayout=new UKUi::GridLayout(storageFrame);
-//    storageFrame->setGeometry(0,0,100,100);
+    storageLayout->setColumnCount(3);
+    storageLayout->setRowCount(3);
 
-    tys= new TrayStorage();
+//    tys= new TrayStorage();
     connect(bt,SIGNAL(clicked()),this,SLOT(storageBar()));
     realign();
 }
@@ -141,65 +145,48 @@ UKUITray::~UKUITray()
 void UKUITray::storageBar()
 {
     QCursor::pos();
-#define STORAGE_POSITION_BOTTOM_X QCursor::pos().x()-120
-#define STORAGE_POSITION_BOTTOM_Y QCursor::pos().y()-120
-#define STORAGE_POSITION_UP_X     QCursor::pos().x()-120
-#define STORAGE_POSITION_UP_Y     QCursor::pos().y()+20
-#define STORAGE_POSITION_LEFT_X   QCursor::pos().x()+40
-#define STORAGE_POSITION_LEFT_Y   QCursor::pos().y()-20
-#define STORAGE_POSITION_RIGHT_X  QCursor::pos().x()-150
-#define STORAGE_POSITION_RIGHT_Y  QCursor::pos().y()-70
-#define STORAGE_HIGHT 90
-#define STORAGE_WIDGH 140
+    #define STORAGE_POSITION_BOTTOM_X QCursor::pos().x()-120
+    #define STORAGE_POSITION_BOTTOM_Y QCursor::pos().y()-115
+    #define STORAGE_POSITION_UP_X     QCursor::pos().x()-120
+    #define STORAGE_POSITION_UP_Y     QCursor::pos().y()+20
+    #define STORAGE_POSITION_LEFT_X   QCursor::pos().x()+40
+    #define STORAGE_POSITION_LEFT_Y   QCursor::pos().y()-20
+    #define STORAGE_POSITION_RIGHT_X  QCursor::pos().x()-150
+    #define STORAGE_POSITION_RIGHT_Y  QCursor::pos().y()-70
+    #define STORAGE_HIGHT 90
+    #define STORAGE_WIDGH 140
 
     switch (mPlugin->panel()->position()){
     case 0:
-        tys->setGeometry(STORAGE_POSITION_BOTTOM_X,STORAGE_POSITION_BOTTOM_Y,STORAGE_WIDGH,STORAGE_HIGHT);
-//        bt->setIcon(QIcon::fromTheme("gtk-go-down"));
+        storageFrame->setGeometry(STORAGE_POSITION_BOTTOM_X,STORAGE_POSITION_BOTTOM_Y,STORAGE_WIDGH,STORAGE_HIGHT);
         break;
     case 1:
-        tys->setGeometry(STORAGE_POSITION_UP_X,STORAGE_POSITION_UP_Y,STORAGE_WIDGH,STORAGE_HIGHT);
-//        bt->setIcon(QIcon::fromTheme("firefox"));
+        storageFrame->setGeometry(STORAGE_POSITION_UP_X,STORAGE_POSITION_UP_Y,STORAGE_WIDGH,STORAGE_HIGHT);
         break;
     case 2:
-        tys->setGeometry(STORAGE_POSITION_LEFT_X,STORAGE_POSITION_LEFT_Y,STORAGE_WIDGH,STORAGE_HIGHT);
-//        bt->setIcon(QIcon::fromTheme("gtk-go-left"));
+        storageFrame->setGeometry(STORAGE_POSITION_LEFT_X,STORAGE_POSITION_LEFT_Y,STORAGE_WIDGH,STORAGE_HIGHT);
         break;
     case 3:
-        tys->setGeometry(STORAGE_POSITION_RIGHT_X,STORAGE_POSITION_RIGHT_Y,STORAGE_WIDGH,STORAGE_HIGHT);
-//        bt->setIcon(QIcon::fromTheme("gtk-go-right"));
+        storageFrame->setGeometry(STORAGE_POSITION_RIGHT_X,STORAGE_POSITION_RIGHT_Y,STORAGE_WIDGH,STORAGE_HIGHT);
         break;
     default:
         break;
     }
 
-    switch (storagestatus) {
-    case HIDE:
-        tys->show();
-        storagestatus=HOVER;
-        break;
 
-    case HOVER:
-        tys->hide();
-        storagestatus=HIDE;
+    switch(storagebarstatus)
+    {
+    case ST_HIDE:
+        storageFrame->show();
+        storagebarstatus=ST_SHOW;
+        break;
+    case ST_SHOW:
+        storageFrame->hide();
+        storagebarstatus=ST_HIDE;
         break;
     default:
         break;
     }
-
-//    switch(storagebarstatus)
-//    {
-//    case ST_HIDE:
-//        storageFrame->show();
-//        storagebarstatus=ST_HOVER;
-//        break;
-//    case ST_HOVER:
-//        storageFrame->hide();
-//        storagebarstatus=ST_HIDE;
-//        break;
-//    default:
-//        break;
-//    }
 }
 
 /************************************************
@@ -270,22 +257,22 @@ void UKUITray::realign()
     case 0:
         mLayout->setRowCount(panel->lineCount());
         mLayout->setColumnCount(0);
-        bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+//        bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
         break;
     case 1:
         mLayout->setRowCount(panel->lineCount());
         mLayout->setColumnCount(0);
-        bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+//        bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
         break;
     case 2:
         mLayout->setColumnCount(panel->lineCount());
         mLayout->setRowCount(0);
-        bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+//        bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
         break;
     case 3:
         mLayout->setColumnCount(panel->lineCount());
         mLayout->setRowCount(0);
-        bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+//        bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
         break;
     default:
         break;
@@ -337,16 +324,16 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
  ************************************************/
 TrayIcon* UKUITray::findIcon(Window id)
 {
-    for(TrayIcon* icon : qAsConst(mIcons))
+    for(TrayIcon* icon : qAsConst(mIcons) )
     {
         if (icon->iconId() == id || icon->windowId() == id)
             return icon;
     }
-    for(TrayIcon* storageicon :qAsConst(mStorageIcons))
-    {
-        if (storageicon->iconId() == id || storageicon->windowId() == id)
-            return storageicon;
-    }
+//    for(TrayIcon* storageicon :qAsConst(mStorageIcons))
+//    {
+//        if (storageicon->iconId() == id || storageicon->windowId() == id)
+//            return storageicon;
+//    }
     return 0;
 }
 
@@ -570,68 +557,60 @@ void UKUITray::addIcon(Window winId)
         return;
     else
         icon = new TrayIcon(winId, mIconSize, this);
+        mIcons.append(icon);
+        mLayout->addWidget(icon);
 
-    mIcons.append(icon);
-    mLayout->addWidget(icon);
-    connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
-    connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
-    connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+        connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
+        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
 
 }
 
 void UKUITray::storageAddIcon(Window winId)
 {
-    TrayIcon *storageicon = findIcon(winId);
+    TrayIcon *storageicon = findStorageIcon(winId);
     if(storageicon)
         return;
     else
-    {
         storageicon = new TrayIcon(winId, mIconSize, this);
         mStorageIcons.append(storageicon);
-        tys->mLayout->addWidget(storageicon);
-    }
+        storageLayout->addWidget(storageicon);
 
-    connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-    connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
-    connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+        connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
+        connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
 }
 
 void UKUITray::moveIconToTray(Window winId)
 {
-    TrayIcon *storageicon = findIcon(winId);
-    if(!storageicon){
+    TrayIcon *storageicon = findStorageIcon(winId);
+    if(!storageicon)
         return;
-    }
-    if(storageicon)
-    {
+    else
         mStorageIcons.removeOne(storageicon);
-        tys->mLayout->removeWidget(storageicon);
+        storageLayout->removeWidget(storageicon);
         mIcons.append(storageicon);
         mLayout->addWidget(storageicon);
-    }
 
-    connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-    connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
-    connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+      connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
+      connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+      connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
 }
 
 void UKUITray::moveIconToStorage(Window winId)
 {
     TrayIcon *icon = findIcon(winId);
-    if(!icon){
+    if(!icon)
         return;
-    }
-    if(icon)
-    {
+    else
         mLayout->removeWidget(icon);
         mIcons.removeOne(icon);
         mStorageIcons.append(icon);
-        tys->mLayout->addWidget(icon);
-    }
+        storageLayout->addWidget(icon);
 
-    connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
-    connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
-    connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+        connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
+        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
 }
 
 
@@ -826,3 +805,55 @@ QString UKUITray::findFreePath(){
     }
     return QString("%1%2").arg(KEYBINDINGS_CUSTOM_DIR).arg(QString(dir));
 }
+
+UKUIStorageFrame::UKUIStorageFrame(){
+    installEventFilter(this);
+}
+
+UKUIStorageFrame::~UKUIStorageFrame(){
+}
+
+bool UKUIStorageFrame::event(QEvent *event)
+{
+    if (event->type() == QEvent::ActivationChange) {
+        if (QApplication::activeWindow() != this) {
+            this->hide();
+        }
+    }
+    return QWidget::event(event);
+}
+
+bool UKUIStorageFrame::nativeEvent(const QByteArray &eventType, void *message, long *result)
+{
+    Q_UNUSED(result);
+    if(eventType != "xcb_generic_event_t"){
+        return false;
+    }
+
+    xcb_generic_event_t *event = (xcb_generic_event_t*)message;
+
+    switch (event->response_type & ~0x80)
+    {
+    case XCB_FOCUS_OUT:
+        hide();
+        break;
+    default:
+        break;
+    }
+
+    return false;
+}
+
+//bool UKUIStorageFrame::eventFilter(QObject *watched, QEvent *event)
+//{
+//    qDebug()<<"eventFilter****************";
+//    if(watched==this)
+//    {
+//        if (event->type() == QEvent::ActivationChange) {
+//            if (QApplication::activeWindow() != this) {
+//                this->hide();
+//            }
+//        }
+//    }
+//    return QWidget::event(event);
+//}
