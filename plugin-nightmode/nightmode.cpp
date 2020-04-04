@@ -87,7 +87,7 @@ void NightModeButton::mousePressEvent(QMouseEvent* event)
         }
         if(mode==true){
         gsettings->set("nightmode", false);
-        system("killall redshift");
+        system("redshift -x");
         }
         else{
         gsettings->set("nightmode", true);
