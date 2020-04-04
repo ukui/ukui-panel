@@ -17,10 +17,8 @@
  */
 
 #include "clickLabel.h"
-ClickLabel::ClickLabel(const QString &text, QWidget *parent)
+ClickLabel::ClickLabel(QWidget *parent)
 {
-    setText(text);
-    adjustSize();
 }
 
 ClickLabel::~ClickLabel()
