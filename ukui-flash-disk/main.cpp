@@ -50,7 +50,6 @@ int main(int argc, char *argv[])
 //        exit(0);
 //    }
     QIcon::setThemeName("ukui-icon-theme-default");
-    QDBusConnection connection = QDBusConnection::sessionBus();
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication a(argc, argv);

@@ -47,6 +47,8 @@ private:
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void getDisConnectErrorMessage();
+    void getConnectErrorMessage();
 //    static int oneVolumeDriveNum;
 //    static int twoVolumeDriveNum;
 //    static int threeVolumeDriveNum;

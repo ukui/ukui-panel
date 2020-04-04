@@ -186,7 +186,41 @@ void MainWindow::getDeviceInfo()
                 //cachedMount->name())
                 findList()->removeOne(cachedMount);
                 findGMountList()->removeOne(cachedMount->getGMount());
-                ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(g_mount_get_drive(cachedMount->getGMount())));
+
+                if(findList()->size() == 0)
+                {
+                    m_systray->hide();
+                }
+            }
+        }
+    });
+
+    manager->connect(manager, &Peony::VolumeManager::driveConnected, [=](const std::shared_ptr<Peony::Drive> &drive)
+    {
+        g_drive_start(drive->getGDrive(),
+                       G_DRIVE_START_NONE,
+                       nullptr,
+                       nullptr,
+                       nullptr,
+                       nullptr);
+        if(g_drive_can_eject(drive->getGDrive()) || g_drive_can_stop(drive->getGDrive()))
+        {
+            *findDriveList()<<drive;
+        }
+
+    });
+
+
+    manager->connect(manager, &Peony::VolumeManager::driveDisconnected, [=](const std::shared_ptr<Peony::Drive> &drive)
+    {
+        for (auto cachedDrive : *findDriveList())
+        {
+            if (cachedDrive->name() == drive->name())
+            {
+                findDriveList()->removeOne(cachedDrive);
+
+                //ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(g_mount_get_drive(cachedMount->getGMount())));
+                ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(cachedDrive->getGDrive()));
                 int screenNum = QGuiApplication::screens().count();
                 int panelHeight = getPanelHeight("PanelHeight");
                 int position =0;
@@ -271,38 +305,7 @@ void MainWindow::getDeviceInfo()
                         ForEject->setGeometry(localX-DistanceToPanel,localY,ForEject->width(),ForEject->height());
                 }
                 ForEject->show();
-                if(findList()->size() == 0)
-                {
-                    m_systray->hide();
-                }
-            }
-        }
-    });
 
-    manager->connect(manager, &Peony::VolumeManager::driveConnected, [=](const std::shared_ptr<Peony::Drive> &drive)
-    {
-        g_drive_start(drive->getGDrive(),
-                       G_DRIVE_START_NONE,
-                       nullptr,
-                       nullptr,
-                       nullptr,
-                       nullptr);
-        if(g_drive_can_eject(drive->getGDrive()) || g_drive_can_stop(drive->getGDrive()))
-        {
-            *findDriveList()<<drive;
-        }
-
-        //MainWindowShow();
-    });
-
-
-    manager->connect(manager, &Peony::VolumeManager::driveDisconnected, [=](const std::shared_ptr<Peony::Drive> &drive)
-    {
-        for (auto cachedDrive : *findDriveList())
-        {
-            if (cachedDrive->name() == drive->name())
-            {
-                findDriveList()->removeOne(cachedDrive);
                 if(findDriveList()->size() == 0)
                 {
                     m_systray->hide();
@@ -567,6 +570,98 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                             findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),i)));
                             //notify:here,you should remove the element by hand to reduce the drivelists
                             findDriveList()->removeOne(cacheDrive);
+
+                            ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(cacheDrive->getGDrive()));
+                            int screenNum = QGuiApplication::screens().count();
+                            int panelHeight = getPanelHeight("PanelHeight");
+                            int position =0;
+                            position = getPanelPosition("PanelPosion");
+                            int screen = 0;
+                            QRect rect;
+                            int localX ,availableWidth,totalWidth;
+                            int localY,availableHeight,totalHeight;
+
+                            qDebug() << "任务栏位置"<< position;
+                            if (screenNum > 1)
+                            {
+                                if (position == rightPosition)                                  //on the right
+                                {
+                                    screen = screenNum - 1;
+
+                                    //Available screen width and height
+                                    availableWidth =QGuiApplication::screens().at(screen)->geometry().x() +  QGuiApplication::screens().at(screen)->size().width()-panelHeight;
+                                    availableHeight = QGuiApplication::screens().at(screen)->availableGeometry().height();
+
+                                    //total width
+                                    totalWidth =  QGuiApplication::screens().at(0)->size().width() + QGuiApplication::screens().at(screen)->size().width();
+                                    totalHeight = QGuiApplication::screens().at(screen)->size().height();
+                                }
+                                else if(position  ==downPosition || position ==upPosition)                  //above or bellow
+                                {
+                                    availableHeight = QGuiApplication::screens().at(0)->size().height() - panelHeight;
+                                    availableWidth = QGuiApplication::screens().at(0)->size().width();
+                                    totalHeight = QGuiApplication::screens().at(0)->size().height();
+                                    totalWidth = QGuiApplication::screens().at(0)->size().width();
+                                }
+                                else
+                                {
+                                    availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
+                                    availableWidth = QGuiApplication::screens().at(0)->availableGeometry().width();
+                                    totalHeight = QGuiApplication::screens().at(0)->size().height();
+                                    totalWidth = QGuiApplication::screens().at(0)->size().width();
+                                }
+                            }
+
+                            else
+                            {
+                                availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
+                                availableWidth = QGuiApplication::screens().at(0)->availableGeometry().width();
+                                totalHeight = QGuiApplication::screens().at(0)->size().height();
+                                totalWidth = QGuiApplication::screens().at(0)->size().width();
+                            }
+                            //show the location of the systemtray
+                            rect = m_systray->geometry();
+                            localX = rect.x() - (ForEject->width()/2 - rect.size().width()/2) ;
+                            localY = availableHeight - ForEject->height();
+                            //modify location
+                            if (position == downPosition)
+                            { //下
+                                if (availableWidth - rect.x() - rect.width()/2 < ForEject->width() / 2)
+                                    ForEject->setGeometry(availableWidth-ForEject->width(),availableHeight-ForEject->height()-DistanceToPanel,ForEject->width(),ForEject->height());
+                                else
+                                    ForEject->setGeometry(localX-16,availableHeight-ForEject->height()-DistanceToPanel,ForEject->width(),ForEject->height());
+                            }
+                            else if (position == upPosition)
+                            { //上
+                                if (availableWidth - rect.x() - rect.width()/2 < ForEject->width() / 2)
+                                    ForEject->setGeometry(availableWidth-ForEject->width(),totalHeight-availableHeight+DistanceToPanel,ForEject->width(),ForEject->height());
+                                else
+                                    ForEject->setGeometry(localX-16,totalHeight-availableHeight+DistanceToPanel,ForEject->width(),ForEject->height());
+                            }
+                            else if (position == leftPosition)
+                            {
+                                if (availableHeight - rect.y() - rect.height()/2 > ForEject->height() /2)
+                                    ForEject->setGeometry(panelHeight + DistanceToPanel,rect.y() + (rect.width() /2) -(ForEject->height()/2) ,ForEject->width(),ForEject->height());
+                                else
+                                    ForEject->setGeometry(panelHeight+DistanceToPanel,localY,ForEject->width(),ForEject->height());//左
+                            }
+                            else if (position == rightPosition)
+                            {
+                                localX = availableWidth - ForEject->width();
+                                if (availableHeight - rect.y() - rect.height()/2 > ForEject->height() /2)
+                                {
+                                    ForEject->setGeometry(availableWidth - ForEject->width() -DistanceToPanel,rect.y() + (rect.height() /2) -(ForEject->height()/2),ForEject->width(),ForEject->height());
+                                }
+                                else
+                                    ForEject->setGeometry(localX-DistanceToPanel,localY,ForEject->width(),ForEject->height());
+                            }
+                            ForEject->show();
+
+//                            if(findDriveList()->size() == 0)
+//                            {
+//                                m_systray->hide();
+//                            }
+
                         }
                         qDebug()<<"--------------------------------"<<"how many mounts,aaaaaaaaaaaaaaaaaa"<<findGMountList()->size();
                         this->hide();
@@ -1030,6 +1125,13 @@ void MainWindow::MainWindowShow()
                                                        nullptr,
                                                        nullptr);
                           findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),i)));
+
+                          g_drive_eject_with_operation(cacheDrive->getGDrive(),
+                                                       G_MOUNT_UNMOUNT_NONE,
+                                                       nullptr,
+                                                       nullptr,
+                                                       nullptr,
+                                                       nullptr);
                           //notify:here,you should remove the element by hand to reduce the drivelists
                           findDriveList()->removeOne(cacheDrive);
                       }
@@ -1065,4 +1167,9 @@ void MainWindow::MainWindowShow()
         this->hide();
     }
     ui->centralWidget->show();
+}
+
+void MainWindow::getDisConnectErrorMessage()
+{
+
 }
