@@ -26,31 +26,25 @@
 
 #include <QAction>
 #include <QtX11Extras/QX11Info>
-//#include <XdgIcon>
-#include "xdgicon.h"
-//#include <UKUi/Notification>
-#include "../panel/common/ukuinotification.h"
+#include <QStyleOption>
+#include <QPainter>
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
+#include "xdgicon.h"
 #include "showdesktop.h"
+#include "../panel/common/ukuinotification.h"
 #include "../panel/pluginsettings.h"
 
 #define DEFAULT_SHORTCUT "Control+Alt+D"
 
-#define DESKTOP_HEIGHT  (12)
-#define DESKTOP_WIDTH   (40)
+#define DESKTOP_WIDTH   (12)
+#define DESKTOP_WIDGET_HIGHT 100
 
 ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
-    QObject(),
+    QWidget(),
     IUKUIPanelPlugin(startupInfo)
 {
-
-    QAction * act = new QAction(XdgIcon::fromTheme("ukui-icon-theme-one"), tr(""), this);
-    connect(act, SIGNAL(triggered()), this, SLOT(toggleShowingDesktop()));
-
-    mButton.setDefaultAction(act);
-    mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mButton.setAutoRaise(true);
+    state=NORMAL;
     realign();
 
 }
@@ -59,40 +53,55 @@ void ShowDesktop::realign()
 {
     if(panel()->isHorizontal())
     {
-        mButton.setFixedSize(DESKTOP_HEIGHT,panel()->panelSize());
-        mButton.setStyleSheet(
-                    //正常状态样式
-                    "QToolButton{"
-                    "background-color:rgba(190,216,239,10%);" //背景色（也可以设置图片）
-                    "qproperty-iconSize:40px 40px;"
-                    "border-style:outset;"                  //边框样式（inset/outset）
-                    "border-width:0px;"                     //边框宽度像素
-                    "border-radius:0px;"                   //边框圆角半径像素
-                    "border-color:rgba(255,255,255,30);"    //边框颜色
-                    "font:SimSun 14px;"                       //字体，字体大小
-                    "color:rgba(0,0,0,100);"                //字体颜色
-                    "padding:0px;"                          //填衬
-                    "border-bottom-style:solid"
-                    "}"
-                    //鼠标悬停样式
-                    "QToolButton:hover{"
-                    "background-color:rgba(190,216,239,20%);"
-                    "}"
-                    //鼠标按下样式
-                    "QToolButton:pressed{"
-                    "background-color:rgba(190,216,239,12%);"
-                    "}"
-                    );
+        this->setFixedSize(DESKTOP_WIDTH,panel()->panelSize());
+        xEndPoint=0;
+        yEndPoint=100;
     }
     else
     {
-       mButton.setFixedSize(DESKTOP_WIDTH,DESKTOP_HEIGHT);
+       this->setFixedSize(panel()->panelSize(),DESKTOP_WIDTH);
+        xEndPoint=100;
+        yEndPoint=0;
     }
 }
 
-void ShowDesktop::toggleShowingDesktop()
+void ShowDesktop::mousePressEvent(QMouseEvent *)
 {
     KWindowSystem::setShowingDesktop(!KWindowSystem::showingDesktop());
 }
 
+void ShowDesktop::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    switch (state) {
+    case NORMAL:
+        p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
+        p.drawLine(0,0,xEndPoint,yEndPoint);
+        break;
+    case HOVER:
+        p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
+        p.drawLine(0,0,xEndPoint,yEndPoint);
+        break;
+    default:
+        break;
+    }
+    p.setPen(Qt::NoPen);
+    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    p.drawRect(opt.rect);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void ShowDesktop::enterEvent(QEvent *event)
+{
+    state=HOVER;
+    update();
+}
+
+void ShowDesktop::leaveEvent(QEvent *event)
+{
+    state=NORMAL;
+    update();
+}
 #undef DEFAULT_SHORTCUT
