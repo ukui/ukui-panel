@@ -24,6 +24,13 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+/*
+ * old ukui-panel plugin-tray storatge pattern
+ * but after ukui-panel-2.0.3-1
+ * new show storage bar is class UKUIStorageFrame
+ * i will delete the file in the near future
+*/
+
 #ifndef TRAYSTORAGE_H
 #define TRAYSTORAGE_H
 
