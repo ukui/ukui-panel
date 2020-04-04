@@ -93,7 +93,7 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                               tr("Lock The Screen"),
                               this, SLOT(ScreenServer())
                               );
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("stock-popple")),
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("stock-people")),
                               tr("Switch The User"),
                               this, SLOT(SessionSwitch())
                               );
