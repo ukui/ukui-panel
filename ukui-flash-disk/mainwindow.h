@@ -77,6 +77,8 @@ private:
                  QString pathDis4,
                  int linestatus);
     void moveBottomRight();
+    void moveBottomDirect();
+    void ejectInterfaceMoveRight(GDrive *);
     QString size_human(qlonglong capacity);
     void MainWindowShow();
 private:
