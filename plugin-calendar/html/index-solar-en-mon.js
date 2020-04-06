@@ -18,7 +18,7 @@
 
 // LunarCalendar.js currently supports this range
 var year_range = { 'low': 1891, 'high': 2100 };
-var weekdays = [ '日', '一', '二', '三', '四', '五', '六' ];
+var weekdays = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
 var calendar = null;
 var today = new Date();
 var highlight_day = today.getDate(); // 鼠标选中的日期值，范围1-31
@@ -83,7 +83,6 @@ function updateTime() {
         var timer = null;
         var today_time = new Date();
         datetime_container.children[0].innerHTML = getTime(today_time);
-        //alert(datetime_container.children[0].innerHTML);
         timer = setInterval(function() {
         var today_time = new Date();
         datetime_container.children[0].innerHTML = getTime(today_time);
@@ -120,8 +119,8 @@ function update_month_ui(mode)
             list = [5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8];   //show diff month by scroll  mouse
             bind_click_position = 0;//show prev years month,and year need  -1 from this time
             year--;
-            year_selector.value = year + '年';
-            selected_date_div.innerHTML = year_selector.value + month_selector.value;
+            year_selector.value = year;
+            selected_date_div.innerHTML = year_selector.value +'.' +month_selector.value;
        }
        else//roll down
        {
@@ -144,8 +143,8 @@ function update_month_ui(mode)
             list = [5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8];   //show diff month by scroll  mouse
             bind_click_position = 8;//show prev years month,and year need  -1 from this time
             year++;
-            year_selector.value = year +'年';
-            selected_date_div.innerHTML = year_selector.value + month_selector.value;
+            year_selector.value = year;
+            selected_date_div.innerHTML = year_selector.value +'.'+ month_selector.value;
         }
    }
    if(mode == 1)
@@ -163,7 +162,7 @@ function update_month_ui(mode)
    {
     //   li.children[0].children[index].innerHTML = '<br />';
        //li.children[0].children[index].innerHTML = '<br />'+ list[index]+ '月';
-       li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ list[index]+ '月' + '</span>';
+       li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ list[index] + '</span>';
     //    li.children[0].children[index].innerHTML =  list[index]+ '月';
     //    document.getElementsByTagName('span').style="float:left;width:250px;background:#6C3;";
 
@@ -208,7 +207,7 @@ function update_year_month_ui()
     for (var index =  0;  index < 16;  index++) {
         // li.children[0].children[index].innerHTML = '<br />'; 
         var  curretYear = year + index;
-        li.children[0].children[index].innerHTML=  '<span class="year_month_grid">'+curretYear+ '年' +'</span>' ;
+        li.children[0].children[index].innerHTML=  '<span class="year_month_grid">'+curretYear +'</span>' ;
         //li.children[0].children[index].innerHTML= '<br />'+curretYear+ '年';
         // if(index === 0)
         // {
@@ -231,14 +230,14 @@ function update_year_month_ui()
             var newIndex =  index -12 + 1;
             li.children[0].children[index].style.color  = "#FFFFFF33";
             //li.children[0].children[index].innerHTML = '<br />' +  new_index + '月';
-            li.children[0].children[index].innerHTML=  '<span class="year_month_grid">'+newIndex + '月' +'</span>' ;
+            li.children[0].children[index].innerHTML=  '<span class="year_month_grid">'+newIndex +'</span>' ;
             //li.children[0].children[index].innerHTML = "<font color=rgba(255,255,255,0.2)>1月</font>";
         }
         else
         {
             var newIndex =  index + 1;
             //li.children[0].children[index].innerHTML ='<br />' + newIndex+ '月';
-            li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ newIndex+ '月' + '</span>' ;
+            li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ newIndex + '</span>' ;
         }
         if(index < 12)
         {
@@ -246,14 +245,14 @@ function update_year_month_ui()
         }
         // month_list.appendChild(li);
         if (index === month + 1) {
-            month_selector.value = index + '月';
+            month_selector.value = index;
         }
     }
 }
 
 function updateUi()
 {
-    year_selector.value = year + '年';
+    year_selector.value = year;
     update_year_month_ui();
     // var li = document.getElementById('year_div');
     // for (var index =  0;  index < 16;  index++) {
@@ -345,7 +344,7 @@ function update_yiji_area() {
                 }
 
                 if (row === 1) {
-                    current_cell.innerHTML = '无数据';
+                    current_cell.innerHTML = '';
                 } else {
                     current_cell.innerHTML = '';
                 }
@@ -428,36 +427,7 @@ function load_hl_script(year) {
 
 window.onload = function () {
 
-    var checkbox = document.getElementById('advice_checkbox');
-    if (localStorage.getItem('hl_table') == "display"){
-            checkbox.setAttribute("checked", true);    
-	    hl_table.setAttribute("style", "visibility:display");
-	    //var zodiac_icon = document.getElementById('zodiac_icon');
-            //zodiac_icon.setAttribute("style", "display:none");
-    }
-
-    checkbox.onclick = function(){
-        console.log("checkbox triggerd");
-        if(this.checked){
-            var hl_table = document.getElementById('hl_table');
-	    hl_table.setAttribute("style", "visibility:display");
-	    //var zodiac_icon = document.getElementById('zodiac_icon');
-            //zodiac_icon.setAttribute("style", "display:none");
-
-           localStorage.setItem('hl_table', "display");
-           
-        } else{
-            var hl_table = document.getElementById('hl_table');
-	   hl_table.setAttribute("style", "visibility:hidden");
-	  // var zodiac_icon = document.getElementById('zodiac_icon');
-          // zodiac_icon.setAttribute("style", "display:block");
-	   //zodiac_icon.setAttribute("style", "padding-top: 33px");
-           localStorage.setItem('hl_table', "hidden");
-       }
-    }
-    
     "use strict";
-    
     load_hl_script(today.getFullYear());
     // var year_list = document.getElementById('year_list');
     // var month_list = document.getElementById('month_list');
@@ -465,13 +435,12 @@ window.onload = function () {
     year = today.getFullYear();
     month = today.getMonth();
     var real_month = month + 1;
-    //begin before modify year button
     selected_date_div = document.getElementById('selected_date_div');
     year_selector = document.createElement('year_selector');
     month_selector = document.createElement('month_selector');
-    year_selector.value = year + '年';
-    month_selector.value = real_month +'月';
-    selected_date_div.innerHTML = year_selector.value + month_selector.value;
+    year_selector.value = year;
+    month_selector.value = real_month;
+    selected_date_div.innerHTML = year_selector.value +'.'+month_selector.value;
     // year_selector = document.getElementById('year_selector');
     // // year_selector.addEventListener('click', popup_div);
 
@@ -486,91 +455,9 @@ window.onload = function () {
     month_button.addEventListener('click', popup_div);
     document.getElementById('year_div').addEventListener('mousewheel',scroll_div);
     document.getElementById('month_div').addEventListener('mousewheel',scroll_div);
-    // year_button = document.getElementById('year_button');
-    // year_button.addEventListener('click', popup_div);
-
-    // month_button = document.getElementById('month_button');
-    // month_button.addEventListener('click', popup_div);
-    // document.addEventListener('mousewheel', function(event)
-    // {
-    //     //alert("sroll??");
-    // })
     document.addEventListener('click', function(event) {
-        // var year_div = document.getElementById('year_div');
-        // var month_div = document.getElementById('month_div');
-        // var holiday_div = document.getElementById('holiday_div');
-        // var x = event.clientX;
-        // var y = event.clientY;
-
-        // if (year_div.className === 'visible_div') {
-        //     if (x > div_range.year.x_max || x < div_range.year.x_min ||
-        //         y > div_range.year.y_max || y < div_range.year.y_min) {
-        //         year_div.className = 'hidden_div';
-        //     }
-        // }
-        // if (month_div.className === 'visible_div') {
-        //     if (x > div_range.month.x_max || x < div_range.month.x_min ||
-        //         y > div_range.month.y_max || y < div_range.month.y_min ) {
-        //         month_div.className = 'hidden_div';
-        //     }
-        // }
-        // if (holiday_div.className === 'visible_div') {
-        //     if (x > div_range.holiday.x_max || x < div_range.holiday.x_min ||
-        //         y > div_range.holiday.y_max || y < div_range.holiday.y_min ) {
-        //         holiday_div.className = 'hidden_div';
-        //     }
-        // }
-	// var header_id=document.getElementById("header");
-	// var header_color=header_id.style.background;
-	// var x=document.getElementsByClassName("day_highlight");
-	// if (header_color == "rgb(0, 0, 0)"){
-	//     for (i = 0; i < x.length; i++) {
-	//     	x[i].style.backgroundColor = "#2b87a8";
-	//     }
-  //           var day_highlight_len=document.getElementsByClassName('day_highlight').length;
-  //           for (var i=0; i<day_today_len; i++){
-  //               document.getElementsByClassName('day_highlight')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';
-  //               document.getElementsByClassName('day_highlight')[i].getElementsByClassName('lunar_part ')[0].style.color='#ffffff';
-  //           }                               
-	// }
-	// else{
-	//     for (i = 0; i < x.length; i++) {
-	// 	x[i].style.backgroundColor = header_color;
-	//     }
-	// }
     });
 
-    //pre for show year list
-    // for (var index = year_range['low']; index <= year_range['high']; index++) {
-    //     var li = document.createElement('LI');
-    //     li.innerHTML = index + '年';
-    //     li.addEventListener('click', new_month_selected); // new year implies new month
-    //     year_list.appendChild(li);
-    //     if (index === year) {
-    //         year_selector.value = index + '年';
-    //     }
-    // }
-
-
-    // year_selector.value = year + '年';
-    // var li = document.getElementById('year_div');
-    // for (var index =  0;  index < 16;  index++) {
-    //     li.children[0].children[index].innerHTML= year + index + '年';
-    //     li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
-    //     // year_list.appendChild(li);
-    //     // if (index === year) {
-    //     //     year_selector.value = index + '年';
-    //     // }
-    // }
-    // li = document.getElementById('month_div');
-    // for (var index = 0; index < 12; index++) {
-    //     li.children[0].children[index].innerHTML = index +1+ '月';
-    //     li.children[0].children[index].addEventListener('click', new_month_selected);
-    //     // month_list.appendChild(li);
-    //     if (index === month + 1) {
-    //         month_selector.value = index + '月';
-    //     }
-    // }
     updateUi();
     var goto_arrows = document.getElementsByTagName('input');
     var n_months = (year_range['high'] - year_range['low'] + 1) * 12;
@@ -586,28 +473,28 @@ window.onload = function () {
                 if(this.id === 'go_prev_month')
                 {
                     year = year -16;
-                    year_selector.value = year + '年';
+                    year_selector.value = year;
                     // selected_date_div.innerHTML = year_selector.value + month_selector.value;
                     for (var index =  0;  index < 16;  index++) {
                         
                         // li.children[0].children[index].innerHTML = '<br />';
                         var currentYear = year + index;
                         //li.children[0].children[index].innerHTML= '<br />' + curretYear + '年';
-                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '月' + '</span>';
+                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear + '</span>';
                         li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
                     }
                 }
                 else if(this.id === 'go_next_month')
                 {
                     year = year + 16;
-                    year_selector.value = year + '年';
+                    year_selector.value = year;
                     // selected_date_div.innerHTML = year_selector.value + month_selector.value;
                     for (var index =  0;  index < 16;  index++) {
                         
                         // li.children[0].children[index].innerHTML = '<br />';
                         var currentYear = year + index;
                         //li.children[0].children[index].innerHTML=  '<br />'+ curretYear + '年';
-                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '月'  + '</span>';
+                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear + '</span>';
                         li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
                     }
                 }
@@ -618,14 +505,14 @@ window.onload = function () {
                 if(this.id === 'go_prev_month')
                 {
                     year --;
-                    year_selector.value = year + '年';
-                    selected_date_div.innerHTML = year_selector.value + month_selector.value;
+                    year_selector.value = year;
+                    selected_date_div.innerHTML = year_selector.value + '.' +month_selector.value;
                 }
                 else if(this.id === 'go_next_month')
                 {
                     year++;
-                    year_selector.value = year + '年';
-                    selected_date_div.innerHTML = year_selector.value + month_selector.value;
+                    year_selector.value = year;
+                    selected_date_div.innerHTML = year_selector.value + '.' + month_selector.value;
                 }     
                 return;
             }
@@ -649,9 +536,9 @@ window.onload = function () {
                 return;
             }
 
-            year_selector.value = Math.floor(month_offset / 12) + year_range['low'] + '年';
-            month_selector.value = month_offset % 12 === 0 ? 1 +'月': month_offset % 12 + 1 + '月';
-            selected_date_div.innerHTML = year_selector.value + month_selector.value;
+            year_selector.value = Math.floor(month_offset / 12) + year_range['low'];
+            month_selector.value = month_offset % 12 === 0 ? 1 : month_offset % 12 + 1;
+            selected_date_div.innerHTML = year_selector.value + '.' +month_selector.value;
             create_page(parseInt(year_selector.value), parseInt(month_selector.value));
         });
     }
@@ -668,9 +555,9 @@ window.onload = function () {
 
     var today_button = document.getElementById('today_button');
     today_button.addEventListener('click', function() {
-        year_selector.value = today.getFullYear() + '年';
-        month_selector.value = today.getMonth() + 1 + '月';
-        selected_date_div.innerHTML = year_selector.value + month_selector.value;
+        year_selector.value = today.getFullYear();
+        month_selector.value = today.getMonth() + 1;
+        selected_date_div.innerHTML = year_selector.value + '.' + month_selector.value;
         highlight_day = today.getDate();
         convertToNormal();
         year = today.getFullYear();
@@ -701,7 +588,7 @@ function create_page(year, month) {
 
     if (year < year_range['low'] || year > year_range['high'])
         return;
-    var month_stuff = LunarCalendar.calendar(year, month, true,0);
+    var month_stuff = LunarCalendar.calendar(year, month, true,1);
     highlight_day = highlight_day > month_stuff['monthDays'] ? month_stuff['monthDays'] : highlight_day;
 
     var current_row = null;
@@ -717,15 +604,7 @@ function create_page(year, month) {
             if (current_row.cells.length === column) {
                 current_cell = current_row.insertCell(column);
                 current_cell.addEventListener('click', function() {
-                    if(this.children[0].innerHTML === "")
-                    {
-                        highlight_day = parseInt(this.children[1].innerHTML);
-                    }
-                    else
-                    {
-                        highlight_day = parseInt(this.children[0].innerHTML);
-                    }
-                    //highlight_day = parseInt(this.children[0].innerText);
+                    highlight_day = parseInt(this.children[0].innerHTML);
 
                     if (this.className === 'day_other_month') {
                         return;
@@ -736,35 +615,7 @@ function create_page(year, month) {
             } else {
                 current_cell = current_row.cells[column];
             }
-	    // var header_id=document.getElementById("header");
-	    // var header_color=header_id.style.background;
-	    // if (header_color == "rgb(0, 0, 0)"){
-	    //     var x=document.getElementsByClassName("day_highlight");
-	    // 	for (i = 0; i < x.length; i++) {
-		  //   x[i].style.backgroundColor = "#151a1e";
-	    //     }
-	    // }
-	    // else{
-	    //     var x=document.getElementsByClassName("day_highlight");
-	    // 	for (i = 0; i < x.length; i++) {
-		  //   x[i].style.backgroundColor = "#ffffff";
-	    //     }
-        // }
-            // if((year == today.getFullYear()) && (month == today.getMonth()))
-            // {
 
-                // var x=document.getElementsByClassName("day_today");
-                // for (i = 0; i < x.length; i++) {
-                //     // x[i].style.backgroundColor = "#3593b5";
-                //     x[i].style.backgroundColor = "#3d6be5";
-                // }  
-
-            // }
-	        // x=document.getElementsByClassName("day_today");
-	        // for (i = 0; i < x.length; i++) {
-            //     // x[i].style.backgroundColor = "#3593b5";
-            //     x[i].style.backgroundColor = "#3d6be5";
-	        // }
             var index = (row - 1) * 7 + column; // [0, 7 * 6 - 1]
             /*
              * 注意判断顺序
@@ -774,7 +625,11 @@ function create_page(year, month) {
              * 4. 再次是属于周末的单元格
              * 5. 最后是其他普通单元格
              */
-            if (index < month_stuff['firstDay'] || index >= month_stuff['firstDay'] + month_stuff['monthDays']) {
+            if ((index < (month_stuff['firstDay'] -1) && month_stuff['firstDay'] != 0)//每周从周一开始,当月第一天不是星期天,上个月的日期
+                ||(index < 6 && month_stuff['firstDay'] === 0)//第一天是星期天
+                || (month_stuff['firstDay']===0 && index >= (month_stuff['monthDays'] + 6))//第一天是星期天下月的日期
+                ||( month_stuff['firstDay'] != 0 && index >= month_stuff['firstDay'] + month_stuff['monthDays']-1)) //第一天不是星期天下月日期
+            {
                 current_cell.className = 'day_other_month';
             } else if (today.getDate() === month_stuff['monthData'][index]['day'] &&
                        today.getMonth() === month - 1 &&
@@ -816,33 +671,36 @@ function create_page(year, month) {
                                      '<span class="lunar_part">' +
                                      lunar_day +
                                      '</span>';*/
-            if (worktime && current_cell.className !== 'day_other_month') {
-                //current_cell.appendChild(worktime);
-                // <td><div id="aa"></div></td>
-                //  document.getElementById('aa').innerHTML = worktime.innerHTML;
-                 current_cell.innerHTML = worktime.innerHTML+
-                                    //   '<br />'+ 
-                                    '<span class="solar_part" > ' +
-                                     month_stuff['monthData'][index]['day'] +
-                                     '</span>' +
-                                     '<br />' +
-                                     '<span class="lunar_part">' +
-                                     lunar_day +
-                                     '</span>';
-                // current_cell.innerHTML =  '<tr style="background: green"><td>1</td><td>2</td><td>3</td></tr>'
-                // +'<br />' + '<tr style="background: green"><td>4</td><td>5</td><td>6</td></tr>'+
-                // '<br />' +'<tr style="background: green"><td>7</td><td>8</td><td>9</td></tr>';
-            }
-            else
-			{
-                 current_cell.innerHTML =   '<span class="solar_part">' +
-                                     month_stuff['monthData'][index]['day'] +
-                                     '</span>' +
-                                     '<br />' +
-                                     '<span class="lunar_part">' +
-                                     lunar_day +
-                                     '</span>';
-			}
+            // if (worktime && current_cell.className !== 'day_other_month') {
+            //     //current_cell.appendChild(worktime);
+            //     // <td><div id="aa"></div></td>
+            //     //  document.getElementById('aa').innerHTML = worktime.innerHTML;
+            //      current_cell.innerHTML = worktime.innerHTML+
+            //                         //   '<br />'+ 
+            //                         '<span class="solar_part" > ' +
+            //                          month_stuff['monthData'][index]['day'] +
+            //                          '</span>' +
+            //                          '<br />' +
+            //                          '<span class="lunar_part">' +
+            //                          lunar_day +
+            //                          '</span>';
+            //     // current_cell.innerHTML =  '<tr style="background: green"><td>1</td><td>2</td><td>3</td></tr>'
+            //     // +'<br />' + '<tr style="background: green"><td>4</td><td>5</td><td>6</td></tr>'+
+            //     // '<br />' +'<tr style="background: green"><td>7</td><td>8</td><td>9</td></tr>';
+            // }
+            // else
+			// {
+            //      current_cell.innerHTML =   '<span class="solar_part">' +
+            //                          month_stuff['monthData'][index]['day'] +
+            //                          '</span>' +
+            //                          '<br />' +
+            //                          '<span class="lunar_part">' +
+            //                          lunar_day +
+            //                          '</span>';
+            // }
+            current_cell.innerHTML =   '<span class="solar_part">' +
+            month_stuff['monthData'][index]['day'] +
+            '</span>'
         }
     }
 
@@ -882,7 +740,7 @@ function new_month_selected() {
         document.getElementById('month_div').className = 'hidden_div';
         calendar.style.display = "";
     }
-    selected_date_div.innerHTML = year_selector.value + month_selector.value;
+    selected_date_div.innerHTML = year_selector.value + '.' + month_selector.value;
     create_page(parseInt(year_selector.value), parseInt(month_selector.value));
 }
 
@@ -944,7 +802,7 @@ function popup_div(event) {
 }
 
 function update_right_pane(year, month, day) {
-    var month_stuff = LunarCalendar.calendar(year, month, true, 0);
+    var month_stuff = LunarCalendar.calendar(year, month, true, 1);
 
     var general_datetime_list = document.getElementById('general_datetime_list');
     var datetime_container = document.getElementById('datetime_container');
@@ -955,7 +813,9 @@ function update_right_pane(year, month, day) {
     var ganzhi_month = month_stuff['monthData'][highlight_index]['GanZhiMonth'];
     var ganzhi_day = month_stuff['monthData'][highlight_index]['GanZhiDay'];
     var zodiac = month_stuff['monthData'][highlight_index]['zodiac'];
-    var weekday = weekdays[highlight_index % 7];
+    var weekday = weekdays[highlight_index % 7 - 1];
+
+    console.log(highlight_index);
 
     var month_str = month.toString();
     if (month <= 9) {
@@ -967,13 +827,13 @@ function update_right_pane(year, month, day) {
     }
     if(NeedChangeCurrentTime)
     {
-        datetime_container.children[1].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday  + ' '+lunar_month_name + lunar_day_name;
+        datetime_container.children[1].innerHTML = year + '-' + month_str + '-' + day_str + ' ' + weekday /* + ' '+lunar_month_name + lunar_day_name*/;
         NeedChangeCurrentTime = 0;
     }
    /* general_datetime_list.children[0].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday;
     general_datetime_list.children[1].innerHTML = day_str; // e.g. 06
     general_datetime_list.children[2].innerHTML = lunar_month_name + lunar_day_name;*/
-    general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
+    //general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
    // general_datetime_list.children[1].innerHTML = ganzhi_month + '月 ' + ganzhi_day + '日';
     updateTime();
     update_yiji_area();
@@ -987,7 +847,7 @@ function go_to_holiday () {
     var month = today.getMonth() + 1;
     var day = 0;
 
-    var month_stuff = LunarCalendar.calendar(year, month, false, 0);
+    var month_stuff = LunarCalendar.calendar(year, month, false, 1);
     var found = false;
     var target = this.innerHTML;
     do {
@@ -1011,15 +871,15 @@ function go_to_holiday () {
             month++;
         }
 
-        month_stuff = LunarCalendar.calendar(year, month, false, 0);
+        month_stuff = LunarCalendar.calendar(year, month, false, 1);
     } while (year - today.getFullYear() <= 1);
 
     if (!found) {
         return;
     }
 
-    year_selector.value = year + '年';
-    month_selector.value = month + '月';
+    year_selector.value = year;
+    month_selector.value = month;
     highlight_day = day;
     create_page(year, month);
 

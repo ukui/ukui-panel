@@ -106,6 +106,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
         }
         else if(key == "calendar")
         {
+
             mbHasCreatedWebView = false;
             initializeCalendar();
         }
@@ -503,26 +504,38 @@ void IndicatorCalendar::initializeCalendar()
         }
         if(gsettings->keys().contains("calendar"))
         {
-             lunarOrsolar= gsettings->get("calendar").toString();
+            lunarOrsolar= gsettings->get("calendar").toString();
         }
         if(gsettings->keys().contains("firstday"))
         {
-         firstDay= gsettings->get("firstday").toString();
+            firstDay= gsettings->get("firstday").toString();
         }
-        qDebug()<<"lunarOrsolar:"<<lunarOrsolar;
-        qDebug()<<"firstDay:"<<firstDay;
-        if(lunarOrsolar == "lunar")
+        if (QLocale::system().name() == "zh_CN")
         {
-            if(firstDay == "sunday")
+            if(lunarOrsolar == "lunar")
             {
-                showCalendar = lunarSunday;
+                if(firstDay == "sunday")
+                {
+                    showCalendar = lunarSunday;
+                }
+                else if(firstDay == "monday")
+                {
+                    showCalendar = lunarMonday;
+                }
             }
-            else if(firstDay == "monday")
+            else if(lunarOrsolar == "solarlunar")
             {
-                showCalendar = lunarMonday;
+                if(firstDay == "sunday")
+                {
+                    showCalendar = solarSunday;
+                }
+                else if(firstDay == "monday")
+                {
+                    showCalendar = solarMonday;
+                }
             }
         }
-        else if(lunarOrsolar == "solarlunar")
+        else// for internaitional
         {
             if(firstDay == "sunday")
             {
@@ -539,6 +552,7 @@ void IndicatorCalendar::initializeCalendar()
     {
         if(!mbHasCreatedWebView)
         {
+            qDebug()<<"showCalendar:"<<showCalendar;
             mWebViewDiag->creatwebview(showCalendar);
             mbHasCreatedWebView = true;
         }
