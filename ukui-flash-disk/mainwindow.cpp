@@ -30,6 +30,14 @@
 #include "clickLabel.h"
 #include "MacroFile.h"
 
+//typedef void(*GAsyncReadyCallback) (GObject *source_object,GAsyncResult *res,gpointer user_data);
+
+//void U_callback(GObject *source_object,GAsyncResult *res,gpointer user_data)
+//{
+//    qDebug()<<"U_callback:"<<"wowowowwowowo";
+//}
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -343,7 +351,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
             delete item;
         }
     }
-    
+
     switch (reason)
     {
     case QSystemTrayIcon::Trigger:
