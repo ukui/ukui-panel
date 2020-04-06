@@ -28,7 +28,6 @@
 #include "mainwindow.h"
 #include "MainController.h"
 
-#include <blkid.h>
 
 
 int main(int argc, char *argv[])
@@ -37,7 +36,6 @@ int main(int argc, char *argv[])
 //    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
 //    QString lockPath = homePath.at(0) + "/.config/ukui-flash-disk-lock";
 //    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-
 //    if (fd < 0)
 //    {
 //        exit(1);
@@ -49,6 +47,7 @@ int main(int argc, char *argv[])
 //        qDebug()<<"Can't lock single file, ukui-flash-disk is already running!";
 //        exit(0);
 //    }
+
     QIcon::setThemeName("ukui-icon-theme-default");
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -75,7 +74,7 @@ int main(int argc, char *argv[])
     QFile qss(":ukui-flash-disk.qss");
     bool ok = qss.open(QFile::ReadOnly);
     if (!ok)
-        qDebug() << "加载失败";
+    qDebug() << "加载失败";
     qApp->setStyleSheet(qss.readAll());
     qss.close();
     MainController *ctrl = MainController::self();

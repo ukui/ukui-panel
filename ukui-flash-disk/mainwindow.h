@@ -26,7 +26,6 @@
 #include "ejectInterface.h"
 #include <QSystemTrayIcon>
 #include <QIcon>
-#include <QProcess>
 
 namespace Ui {
 class MainWindow;
@@ -41,8 +40,6 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-private:
-    void getDeviceInfo();
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -71,10 +68,10 @@ private:
                  int linestatus);
     void moveBottomRight();
     QString size_human(qlonglong capacity);
+    void getDeviceInfo();
 private:
     QSystemTrayIcon *m_systray;
     QIcon iconSystray;
-    //void initUi();
     QString UDiskPathDis1;
     QString UDiskPathDis2;
     QString UDiskPathDis3;
@@ -90,7 +87,6 @@ public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
-    void eject_drive();
 Q_SIGNALS:
     void clicked();
 

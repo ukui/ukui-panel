@@ -271,28 +271,6 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
     }break;
 
 
-    case PE_PanelButtonCommand:{
-        painter->save();
-        painter->setRenderHint(QPainter::TextAntialiasing,true);
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(Qt::blue);
-        if (option->state & State_MouseOver) {
-            if (option->state & State_Sunken) {
-                painter->setRenderHint(QPainter::Antialiasing,true);
-                painter->setPen(Qt::NoPen);
-                painter->setBrush(QColor(0xff,0x00,0x00));
-                painter->drawRoundedRect(option->rect,6,6);
-            } else {
-                painter->setRenderHint(QPainter::Antialiasing,true);
-                painter->setPen(Qt::NoPen);
-                painter->setBrush(QColor(0x00,0xff,0x00));
-                painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
-            }
-        }
-        painter->restore();
-        return;
-    }break;
-
     }
     return QProxyStyle::drawPrimitive(element, option, painter, widget);
 

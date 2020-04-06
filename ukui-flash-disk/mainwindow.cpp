@@ -705,11 +705,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     ui->centralWidget->show();
 }
 
-void MainWindow::eject_drive()
-{
-    qDebug()<<"相应信号"<<"---------------------";
-}
-
 void MainWindow::newarea(int No,
                          QString Drivename,
                          QString nameDis1,
@@ -897,3 +892,4 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
 
 }
+
