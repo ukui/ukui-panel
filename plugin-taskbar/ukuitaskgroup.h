@@ -38,6 +38,7 @@
 #include "ukuitaskbutton.h"
 #include <KF5/KWindowSystem/kwindowsystem.h>
 #include <QTimer>
+#include <QScrollArea>
 
 class QVBoxLayout;
 class IUKUIPanelPlugin;
@@ -72,13 +73,14 @@ public:
     void setPopupVisible(bool visible = true, bool fast = false);
 
     void removeWidget();
+    void removeSrollWidget();
     bool isSetMaxWindow();
     void showPreview();
     int calcAverageWidth();
     int calcAverageHeight();
     void showAllWindowByList();//when number of window is more than 30,need show all window of app by a list
     void showAllWindowByThumbnail();//when number of window is no more than 30,need show all window of app by a thumbnail
-
+    void singleWindowClick();
 public slots:
     void onWindowRemoved(WId window);
     void timeout();
@@ -128,6 +130,7 @@ private:
     TaskGroupStatus taskgroupStatus;
     TaskGroupEvent  mTaskGroupEvent;
     QWidget *mpWidget;
+    QScrollArea *mpScrollArea;
     QEvent * mEvent;
     QTimer *mTimer;
     QSize recalculateFrameSize();

@@ -91,13 +91,20 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
     mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     mTitleLabel = new QLabel;
+    mTitleLabel->setMargin(0);
+//    mTitleLabel->setContentsMargins(0,0,0,10);
+//    mTitleLabel->adjustSize();
+//    mTitleLabel->setStyleSheet("QLabel{background-color: red;}");
+//    mTitleLabel->setFixedWidth(120);
     mThumbnailLabel = new QLabel;
     mAppIcon = new QLabel;
     mVWindowsLayout = new QVBoxLayout;
     mTopBarLayout = new QHBoxLayout;
+    mTopBarLayout->setContentsMargins(0,0,0,0);
+//    mTopBarLayout->setAlignment(Qt::AlignVCenter);
+//    mTopBarLayout->setDirection(QBoxLayout::LeftToRight);
 
-
-    mTitleLabel->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    mTitleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     mAppIcon->setAlignment(Qt::AlignLeft);
     mAppIcon->setScaledContents(false);
 
@@ -115,19 +122,22 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
 
 //    mTitleLabel->setAttribute(Qt::WA_TranslucentBackground, true);
 //    mAppIcon->setAttribute(Qt::WA_TranslucentBackground, true);
-    mAppIcon->resize(QSize(32,32));
+//    mAppIcon->resize(QSize(32,32));
 
     // 设置控件最大尺寸
-    mTitleLabel->setFixedHeight(32);
+    //mTitleLabel->setFixedHeight(32);
     mTitleLabel->setMinimumWidth(1);
     mThumbnailLabel->setMinimumSize(QSize(1, 1));
 
     mTitleLabel->setContentsMargins(0, 0, 5, 0);
-    mTopBarLayout->addWidget(mAppIcon);
-    mTopBarLayout->addWidget(mTitleLabel);
-    mTopBarLayout->addWidget(mCloseBtn);
+//    mTopBarLayout->setSpacing(5);
+    mTopBarLayout->addWidget(mAppIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    mTopBarLayout->addWidget(mTitleLabel, 1, Qt::AlignVCenter);
+//    mTopBarLayout->addStretch();
+    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
+//    mVWindowsLayout->setAlignment(Qt::AlignCenter);
     mVWindowsLayout->addLayout(mTopBarLayout);
-    mVWindowsLayout->addWidget(mThumbnailLabel);
+    mVWindowsLayout->addWidget(mThumbnailLabel/*, 0, Qt::AlignBottom*/);
     this->setLayout(mVWindowsLayout);
     updateText();
     updateIcon();
@@ -556,7 +566,11 @@ bool UKUITaskWidget::isOnCurrentScreen() const
 
 bool UKUITaskWidget::isMinimized() const
 {
+//    KWindowInfo info(mWindow, NET::WMState | NET::XAWMState);
+//    KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMState | NET::XAWMState);
+//    qDebug()<<"info.visibleNameWithState():"<<info.visibleNameWithState();
     return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
+//    qDebug <<"QWidget::isMinimized()"<<QWidget::isMinimized()
 }
 
 Qt::Corner UKUITaskWidget::origin() const
@@ -646,4 +660,31 @@ bool UKUITaskWidget::hasDragAndDropHover() const
  void UKUITaskWidget::setThumbNail(QPixmap _pixmap)
  {
      mThumbnailLabel->setPixmap(_pixmap);
+ }
+
+ void UKUITaskWidget::removeThumbNail()
+ {
+    if(mThumbnailLabel)
+    {
+        mVWindowsLayout->removeWidget(mThumbnailLabel);
+        mThumbnailLabel->setParent(NULL);
+        mThumbnailLabel->deleteLater();
+        mThumbnailLabel = NULL;
+    }
+ }
+
+ void UKUITaskWidget::addThumbNail()
+ {
+     if(!mThumbnailLabel)
+     {
+        mThumbnailLabel =  new QLabel;
+        mThumbnailLabel->setScaledContents(true);
+        mThumbnailLabel->setMinimumSize(QSize(1, 1));
+//        mVWindowsLayout->addLayout(mTopBarLayout, 100);
+        mVWindowsLayout->addWidget(mThumbnailLabel, 0, Qt::AlignBottom);
+     }
+     else
+     {
+         return;
+     }
  }
