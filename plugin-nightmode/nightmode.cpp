@@ -81,10 +81,13 @@ void NightModeButton::mousePressEvent(QMouseEvent* event)
 {
     const Qt::MouseButton b = event->button();
     if (Qt::LeftButton == b){
-        bool mode=gsettings->get("nightmode").toBool();
+        bool mode=true;
+        if(gsettings->keys().contains("nightmode")){
+        mode=gsettings->get("nightmode").toBool();
+        }
         if(mode==true){
         gsettings->set("nightmode", false);
-        system("killall redshift");
+        system("redshift -x");
         }
         else{
         gsettings->set("nightmode", true);

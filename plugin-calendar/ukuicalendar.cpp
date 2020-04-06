@@ -97,7 +97,12 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     {
         if (key == HOUR_SYSTEM_KEY)
         {
+            if(gsettings->keys().contains("hoursystem"))
+            {
             hourSystemMode=gsettings->get("hoursystem").toString();
+            }
+            else
+                hourSystemMode=24;
         }
         else if(key == "calendar")
         {
@@ -483,6 +488,8 @@ void IndicatorCalendar::initializeCalendar()
 {
     QByteArray id(HOUR_SYSTEM_CONTROL);
     CalendarShowMode showCalendar = defaultMode;
+    QString lunarOrsolar;
+    QString firstDay;
     if(QGSettings::isSchemaInstalled(id))
     {
 //        if(gsettings)
@@ -495,8 +502,14 @@ void IndicatorCalendar::initializeCalendar()
             qDebug()<<"get gsetting error!!!";
             return;
         }
-        QString lunarOrsolar = gsettings->get("calendar").toString();
-        QString firstDay = gsettings->get("firstday").toString();
+        if(gsettings->keys().contains("calendar"))
+        {
+             lunarOrsolar= gsettings->get("calendar").toString();
+        }
+        if(gsettings->keys().contains("firstday"))
+        {
+         firstDay= gsettings->get("firstday").toString();
+        }
         qDebug()<<"lunarOrsolar:"<<lunarOrsolar;
         qDebug()<<"firstDay:"<<firstDay;
         if(lunarOrsolar == "lunar")
