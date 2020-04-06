@@ -1052,6 +1052,7 @@ void UKUITaskGroup::showAllWindowByList()
 {
     int winWidth = 246;
     int winheight = 46;
+    int iPreviewPosition = 0;
     int popWindowheight = winheight*mButtonHash.size() + (mButtonHash.size()+1)*3;
     int screenAvailabelHeight = QApplication::screens().at(0)->size().height() - plugin()->panel()->panelSize();
     if(!plugin()->panel()->isHorizontal())
@@ -1103,7 +1104,16 @@ void UKUITaskGroup::showAllWindowByList()
 //     mPopup->setFixedWidth(winWidth);
     mPopup->adjustSize();
     qDebug()<<"mPopup size:"<<mPopup->width()<<","<<mPopup->height();
-    mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,0)), mPopup->size()));
+    if(plugin()->panel()->isHorizontal())
+    {
+        iPreviewPosition =  plugin()->panel()->panelSize()/2 - winWidth/2;
+        mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(iPreviewPosition,0)), mPopup->size()));
+    }
+    else
+    {
+        iPreviewPosition = plugin()->panel()->panelSize()/2 - winWidth/2;
+        mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,iPreviewPosition)), mPopup->size()));
+    }
     mPopup->show();
 
    emit popupShown(this);
