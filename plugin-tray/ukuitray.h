@@ -30,19 +30,21 @@
 #include <QFrame>
 #include <QWidget>
 #include <QAbstractNativeEventFilter>
-#include "../panel/iukuipanel.h"
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <xcb/xcb_event.h>
 #include "fixx11h.h"
 #include <QScreen>
-#include "traystorage.h"
-#include "../panel/customstyle.h"
-#include "../panel/ukuicontrolstyle.h"
 #include <QGSettings>
 #include <string.h>
 #include <string>
 #include <QToolButton>
+
+#include "../panel/iukuipanel.h"
+#include "../panel/customstyle.h"
+#include "../panel/ukuicontrolstyle.h"
+#include "traystorage.h"
+
 class TrayIcon;
 class QSize;
 namespace UKUi {
@@ -53,6 +55,10 @@ class GridLayout;
  * @brief This makes our trayplugin
  */
 class UKUITrayPlugin;
+
+/**
+ * @brief This makes our storage
+ */
 class UKUIStorageFrame:public QWidget
 {
     Q_OBJECT
@@ -60,9 +66,9 @@ public:
     UKUIStorageFrame(QWidget* parent =0);
     ~UKUIStorageFrame();
 protected:
-    bool event(QEvent *e);
-//    bool eventFilter(QObject *watched, QEvent *event);
-    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+    bool event(QEvent *);
+    bool eventFilter(QObject *, QEvent *);
+//    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
     void paintEvent(QPaintEvent *event);
 private:
     Atom _NET_SYSTEM_TRAY_OPCODE;
@@ -79,17 +85,13 @@ public:
     QSize iconSize() const { return mIconSize; }
     void setIconSize(QSize iconSize);
     void setStorageBar(TrayStorage *pTys);
-
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
-
     void realign();
     UKUITrayPlugin *mPlugin;
-//    TrayStorage *tys;
 
     //control app show in tray/traystorege  by ukui-control-center
     QList<char *> listExistsPath();
     QString findFreePath();
-
     void regulateIcon(Window *mid);
     void freezeApp();
 
@@ -116,6 +118,10 @@ private:
                       long unsigned int data2 = 0,
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
+
+    /*
+     * @brief Dynamic mobile tray application
+     */
     void addIcon(Window id);
     void moveIconToStorage(Window id);
     void moveIconToTray(Window winId);
@@ -134,8 +140,8 @@ private:
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
     UKUIStorageFrame *storageFrame;
-    enum storageBarStatus{ST_HIDE,ST_SHOW};
-    storageBarStatus storagebarstatus;
+//    enum storageBarStatus{ST_HIDE,ST_SHOW};
+//    storageBarStatus storagebarstatus;
     QWidget *m_pwidget;
     QToolButton *mBtn;
 };

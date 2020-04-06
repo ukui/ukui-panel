@@ -57,7 +57,6 @@
 
 #include "../panel/iukuipanelplugin.h"
 #include "traystorage.h"
-//#include "../panel/customstyle.h"
 
 #include <QPushButton>
 #include <QToolButton>
@@ -97,9 +96,8 @@ extern "C" {
 /************************************************
 
  ************************************************/
-
+bool flag=false;
 extern TrayStorageStatus storagestatus;
-
 UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     QFrame(parent),
     mValid(false),
@@ -111,8 +109,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mDisplay(QX11Info::display())
 {
     m_pwidget = NULL;
-//    storageFrame=NULL;
-    storagebarstatus=ST_HIDE;
+//    storagebarstatus=ST_HIDE;
     setLayout(new UKUi::GridLayout(this));
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
@@ -126,8 +123,9 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
 
     storageFrame=new UKUIStorageFrame;
     storageFrame->setLayout(new UKUi::GridLayout);
-    storageFrame->setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);//QTool
+//    storageFrame->setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);//QTool
     //storageFrame->setWindowFlags(/*Qt::FramelessWindowHint |*/ /*Qt::WindowStaysOnTopHint |*/ Qt::ToolTip);
+//        storageFrame->show();
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
     realign();
 }
@@ -142,20 +140,15 @@ UKUITray::~UKUITray()
 }
 void UKUITray::storageBar()
 {
-
-
-    switch(storagebarstatus)
+    if(flag==false)
     {
-    case ST_HIDE:
         storageFrame->show();
-        storagebarstatus=ST_SHOW;
-        break;
-    case ST_SHOW:
+        flag=true;
+    }
+    else
+    {
         storageFrame->hide();
-        storagebarstatus=ST_HIDE;
-        break;
-    default:
-        break;
+        flag=false;
     }
 }
 
@@ -676,6 +669,9 @@ void UKUITray::regulateIcon(Window *mid)
                         else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
                             moveIconToStorage(bingdingStr);
                         }
+                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"hide")==0){
+                            qDebug()<<"hide tray app ";
+                        }
                         else if(QString::compare(settings->get(ACTION_KEY).toString(),"freeze")==0){
                         }
                     }
@@ -699,17 +695,20 @@ void UKUITray::regulateIcon(Window *mid)
             newsetting=new QGSettings(id,idd);
             newsetting->set(BINDING_KEY,wid);
             newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
-            if(xfitMan().getApplicationName(wid)=="ukui-volume-control-applet-qt")
-            {
-                newsetting->set(ACTION_KEY,"storage");
-                newsetting->set(RECORD_KEY,"storage");
-                storageAddIcon(wid);
-            }
-            else
+
+            QStringList trayIconNameList;
+            trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather";
+            if(trayIconNameList.contains(xfitMan().getApplicationName(wid)))
             {
                 newsetting->set(ACTION_KEY,"tray");
                 newsetting->set(RECORD_KEY,"tray");
                 addIcon(wid);
+            }
+            else
+            {
+                newsetting->set(ACTION_KEY,"storage");
+                newsetting->set(RECORD_KEY,"storage");
+                storageAddIcon(wid);
             }
         }
         delete newsetting;
@@ -791,7 +790,7 @@ QString UKUITray::findFreePath(){
 
 void UKUITray::handleStorageUi()
 {
-    qDebug()<<"void UKUITray::handleStorageUi():"<<mStorageIcons.size();
+//    qDebug()<<"void UKUITray::handleStorageUi():"<<mStorageIcons.size();
     int winWidth = 0;
     int winHeight = 0;
     if(m_pwidget)
@@ -875,10 +874,10 @@ void UKUITray::handleStorageUi()
         m_pwidget->layout()->addWidget(*it);
     }
     storageFrame->layout()->addWidget(m_pwidget);
-    qDebug()<<"m_pwidget:"<<m_pwidget->size();
+//    qDebug()<<"m_pwidget:"<<m_pwidget->size();
     storageFrame->setFixedSize(winWidth,winHeight);
     storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,0)), storageFrame->size()));
-    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
+//    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
 }
 
 UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
@@ -891,7 +890,20 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
     setMinimumHeight(0);
     setMinimumWidth(0);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);//QTool
+    /*
+     * @brief setWindowFlags
+     * @import
+     * @bug resolved
+     * 冲突的窗口属性 这里本应使用Popup窗口属性，但是popup的属性与托盘有冲突
+     * 会使得点击事件无法生效
+     *
+     * 备选方案是使用QToolTip 这导致了无法进入事件过滤来检测活动窗口的变化
+     * Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint
+     * 这三个参数分别代表 设置窗体一直置顶，并且不会抢焦点 | 工具窗口 |设置窗体无边框，不可拖动拖拽拉伸
+     *
+     * 但是在某些情况下会出现在任务啦上依然会显示窗口，因此加入新的属性 X11BypassWindowManagerHint
+     */
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
 
 }
@@ -901,14 +913,17 @@ UKUIStorageFrame::~UKUIStorageFrame(){
 
 bool UKUIStorageFrame::event(QEvent *event)
 {
-    if (event->type() == QEvent::ActivationChange) {
-        if (QApplication::activeWindow() != this) {
+    if (event->type() == QEvent::WindowDeactivate) {
+        qDebug()<<"UKUIStorageFrame  enter";
+        if (QApplication::activeWindow() != this && flag==true) {
             this->hide();
+            qDebug()<<"UKUIStorageFrame  hide";
         }
     }
     return QWidget::event(event);
 }
 
+/*
 bool UKUIStorageFrame::nativeEvent(const QByteArray &eventType, void *message, long *result)
 {
     Q_UNUSED(result);
@@ -929,7 +944,29 @@ bool UKUIStorageFrame::nativeEvent(const QByteArray &eventType, void *message, l
 
     return false;
 }
+*/
 
+bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
+{
+    //    Q_UNUSED(obj);
+    //    Q_UNUSED(event);
+
+    if (obj == this)
+    {
+        if (event->type() == QEvent::WindowDeactivate &&flag==true )
+        {
+            this->hide();
+            return true;
+        } else if (event->type() == QEvent::StyleChange) {
+        }
+    }
+
+    if (!isActiveWindow())
+    {
+        activateWindow();
+    }
+    return false;
+}
 void UKUIStorageFrame::paintEvent(QPaintEvent *event)
 {
     QStyleOption opt;
