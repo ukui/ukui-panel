@@ -29,11 +29,6 @@
 
 #include "clickLabel.h"
 #include "MacroFile.h"
-//int MainWindow::oneVolumeDriveNum = 0;
-//int MainWindow::twoVolumeDriveNum = 0;
-//int MainWindow::threeVolumeDriveNum = 0;
-//int MainWindow::fourVolumeDriveNum = 0;
-//int MainWindow::hign;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -79,7 +74,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //m_systray->setIcon(QIcon("/usr/share/icons/ukui-icon-theme-default/22x22/devices/drive-removable-media.png"));
     m_systray->setIcon(iconSystray);
     m_systray->setToolTip(tr("usb management tool"));
-    MainWindowShow();
     getDeviceInfo();
     connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
     ui->centralWidget->setLayout(vboxlayout);
@@ -92,7 +86,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::getDeviceInfo()
 {
-
     auto g_volume_monitor = g_volume_monitor_get();
     // about the mounts
     GList *current_mount_list = g_volume_monitor_get_mounts(g_volume_monitor);
@@ -569,49 +562,53 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                                                          nullptr);
                             findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),i)));
                             //notify:here,you should remove the element by hand to reduce the drivelists
+                            g_drive_stop(cacheDrive->getGDrive(),
+                                         G_MOUNT_UNMOUNT_NONE,
+                                         NULL,
+                                         NULL,
+                                         NULL,
+                                         NULL);
+                            g_drive_eject_with_operation(cacheDrive->getGDrive(),
+                                         G_MOUNT_UNMOUNT_NONE,
+                                         NULL,
+                                         NULL,
+                                         NULL,
+                                         NULL);
                             findDriveList()->removeOne(cacheDrive);
+                        }
 
-                            ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(cacheDrive->getGDrive()));
-                            int screenNum = QGuiApplication::screens().count();
-                            int panelHeight = getPanelHeight("PanelHeight");
-                            int position =0;
-                            position = getPanelPosition("PanelPosion");
-                            int screen = 0;
-                            QRect rect;
-                            int localX ,availableWidth,totalWidth;
-                            int localY,availableHeight,totalHeight;
+                        ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(cacheDrive->getGDrive()));
+                        int screenNum = QGuiApplication::screens().count();
+                        int panelHeight = getPanelHeight("PanelHeight");
+                        int position =0;
+                        position = getPanelPosition("PanelPosion");
+                        int screen = 0;
+                        QRect rect;
+                        int localX ,availableWidth,totalWidth;
+                        int localY,availableHeight,totalHeight;
 
-                            qDebug() << "任务栏位置"<< position;
-                            if (screenNum > 1)
+                        qDebug() << "任务栏位置"<< position;
+                        if (screenNum > 1)
+                        {
+                            if (position == rightPosition)                                  //on the right
                             {
-                                if (position == rightPosition)                                  //on the right
-                                {
-                                    screen = screenNum - 1;
+                                screen = screenNum - 1;
 
-                                    //Available screen width and height
-                                    availableWidth =QGuiApplication::screens().at(screen)->geometry().x() +  QGuiApplication::screens().at(screen)->size().width()-panelHeight;
-                                    availableHeight = QGuiApplication::screens().at(screen)->availableGeometry().height();
+                                //Available screen width and height
+                                availableWidth =QGuiApplication::screens().at(screen)->geometry().x() +  QGuiApplication::screens().at(screen)->size().width()-panelHeight;
+                                availableHeight = QGuiApplication::screens().at(screen)->availableGeometry().height();
 
-                                    //total width
-                                    totalWidth =  QGuiApplication::screens().at(0)->size().width() + QGuiApplication::screens().at(screen)->size().width();
-                                    totalHeight = QGuiApplication::screens().at(screen)->size().height();
-                                }
-                                else if(position  ==downPosition || position ==upPosition)                  //above or bellow
-                                {
-                                    availableHeight = QGuiApplication::screens().at(0)->size().height() - panelHeight;
-                                    availableWidth = QGuiApplication::screens().at(0)->size().width();
-                                    totalHeight = QGuiApplication::screens().at(0)->size().height();
-                                    totalWidth = QGuiApplication::screens().at(0)->size().width();
-                                }
-                                else
-                                {
-                                    availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
-                                    availableWidth = QGuiApplication::screens().at(0)->availableGeometry().width();
-                                    totalHeight = QGuiApplication::screens().at(0)->size().height();
-                                    totalWidth = QGuiApplication::screens().at(0)->size().width();
-                                }
+                                //total width
+                                totalWidth =  QGuiApplication::screens().at(0)->size().width() + QGuiApplication::screens().at(screen)->size().width();
+                                totalHeight = QGuiApplication::screens().at(screen)->size().height();
                             }
-
+                            else if(position  ==downPosition || position ==upPosition)                  //above or bellow
+                            {
+                                availableHeight = QGuiApplication::screens().at(0)->size().height() - panelHeight;
+                                availableWidth = QGuiApplication::screens().at(0)->size().width();
+                                totalHeight = QGuiApplication::screens().at(0)->size().height();
+                                totalWidth = QGuiApplication::screens().at(0)->size().width();
+                            }
                             else
                             {
                                 availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
@@ -619,50 +616,52 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                                 totalHeight = QGuiApplication::screens().at(0)->size().height();
                                 totalWidth = QGuiApplication::screens().at(0)->size().width();
                             }
-                            //show the location of the systemtray
-                            rect = m_systray->geometry();
-                            localX = rect.x() - (ForEject->width()/2 - rect.size().width()/2) ;
-                            localY = availableHeight - ForEject->height();
-                            //modify location
-                            if (position == downPosition)
-                            { //下
-                                if (availableWidth - rect.x() - rect.width()/2 < ForEject->width() / 2)
-                                    ForEject->setGeometry(availableWidth-ForEject->width(),availableHeight-ForEject->height()-DistanceToPanel,ForEject->width(),ForEject->height());
-                                else
-                                    ForEject->setGeometry(localX-16,availableHeight-ForEject->height()-DistanceToPanel,ForEject->width(),ForEject->height());
-                            }
-                            else if (position == upPosition)
-                            { //上
-                                if (availableWidth - rect.x() - rect.width()/2 < ForEject->width() / 2)
-                                    ForEject->setGeometry(availableWidth-ForEject->width(),totalHeight-availableHeight+DistanceToPanel,ForEject->width(),ForEject->height());
-                                else
-                                    ForEject->setGeometry(localX-16,totalHeight-availableHeight+DistanceToPanel,ForEject->width(),ForEject->height());
-                            }
-                            else if (position == leftPosition)
-                            {
-                                if (availableHeight - rect.y() - rect.height()/2 > ForEject->height() /2)
-                                    ForEject->setGeometry(panelHeight + DistanceToPanel,rect.y() + (rect.width() /2) -(ForEject->height()/2) ,ForEject->width(),ForEject->height());
-                                else
-                                    ForEject->setGeometry(panelHeight+DistanceToPanel,localY,ForEject->width(),ForEject->height());//左
-                            }
-                            else if (position == rightPosition)
-                            {
-                                localX = availableWidth - ForEject->width();
-                                if (availableHeight - rect.y() - rect.height()/2 > ForEject->height() /2)
-                                {
-                                    ForEject->setGeometry(availableWidth - ForEject->width() -DistanceToPanel,rect.y() + (rect.height() /2) -(ForEject->height()/2),ForEject->width(),ForEject->height());
-                                }
-                                else
-                                    ForEject->setGeometry(localX-DistanceToPanel,localY,ForEject->width(),ForEject->height());
-                            }
-                            ForEject->show();
-
-//                            if(findDriveList()->size() == 0)
-//                            {
-//                                m_systray->hide();
-//                            }
-
                         }
+
+                        else
+                        {
+                            availableHeight = QGuiApplication::screens().at(0)->availableGeometry().height();
+                            availableWidth = QGuiApplication::screens().at(0)->availableGeometry().width();
+                            totalHeight = QGuiApplication::screens().at(0)->size().height();
+                            totalWidth = QGuiApplication::screens().at(0)->size().width();
+                        }
+                        //show the location of the systemtray
+                        rect = m_systray->geometry();
+                        localX = rect.x() - (ForEject->width()/2 - rect.size().width()/2) ;
+                        localY = availableHeight - ForEject->height();
+                        //modify location
+                        if (position == downPosition)
+                        { //下
+                            if (availableWidth - rect.x() - rect.width()/2 < ForEject->width() / 2)
+                                ForEject->setGeometry(availableWidth-ForEject->width(),availableHeight-ForEject->height()-DistanceToPanel,ForEject->width(),ForEject->height());
+                            else
+                                ForEject->setGeometry(localX-16,availableHeight-ForEject->height()-DistanceToPanel,ForEject->width(),ForEject->height());
+                        }
+                        else if (position == upPosition)
+                        { //上
+                            if (availableWidth - rect.x() - rect.width()/2 < ForEject->width() / 2)
+                                ForEject->setGeometry(availableWidth-ForEject->width(),totalHeight-availableHeight+DistanceToPanel,ForEject->width(),ForEject->height());
+                            else
+                                ForEject->setGeometry(localX-16,totalHeight-availableHeight+DistanceToPanel,ForEject->width(),ForEject->height());
+                        }
+                        else if (position == leftPosition)
+                        {
+                            if (availableHeight - rect.y() - rect.height()/2 > ForEject->height() /2)
+                                ForEject->setGeometry(panelHeight + DistanceToPanel,rect.y() + (rect.width() /2) -(ForEject->height()/2) ,ForEject->width(),ForEject->height());
+                            else
+                                ForEject->setGeometry(panelHeight+DistanceToPanel,localY,ForEject->width(),ForEject->height());//左
+                        }
+                        else if (position == rightPosition)
+                        {
+                            localX = availableWidth - ForEject->width();
+                            if (availableHeight - rect.y() - rect.height()/2 > ForEject->height() /2)
+                            {
+                                ForEject->setGeometry(availableWidth - ForEject->width() -DistanceToPanel,rect.y() + (rect.height() /2) -(ForEject->height()/2),ForEject->width(),ForEject->height());
+                            }
+                            else
+                                ForEject->setGeometry(localX-DistanceToPanel,localY,ForEject->width(),ForEject->height());
+                        }
+                        ForEject->show();
                         qDebug()<<"--------------------------------"<<"how many mounts,aaaaaaaaaaaaaaaaaa"<<findGMountList()->size();
                         this->hide();
                         QLayoutItem* item;
@@ -686,8 +685,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 
 
       }
-          qDebug()<<"now mainwindow's height"<<"hign"<<hign<<"---------------";
-          qDebug()<<"how many mounts?"<<findGMountList()->size()<<"-----------------";
     }
         else
         {
@@ -698,10 +695,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
         break;
     }
     ui->centralWidget->show();
-    qDebug()<<ui->centralWidget->geometry()<<"-----------------------------------------";
-    qDebug()<<geometry();
-    //qDebug()<<open_widget->geometry()<<"open widget"<<"--------------------------------";
-    //open_widget->setGeometry(2,9,open_widget->width(),open_widget->height());
 }
 
 void MainWindow::eject_drive()
@@ -893,283 +886,6 @@ int MainWindow::getPanelHeight(QString str)
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
-{
-   qDebug()<<"1111111111111111111111111111111 mainwindow size "<<geometry();
-   qDebug()<<"2222222222222222222222222222222 openwidget size "<<open_widget->geometry();
-   qDebug()<<"333333333333333333333333333333333 centerwidget size "<<ui->centralWidget->geometry();
-}
-
-void MainWindow::MainWindowShow()
-{
-    int num = 0;
-    if ( this->vboxlayout != NULL )
-    {
-        QLayoutItem* item;
-        while ((item = this->vboxlayout->takeAt(0)) != NULL)
-        {
-            delete item->widget();
-            delete item;
-        }
-    }
-
-    if (this->isHidden())
-    {
-        //MainWindow::hign = MainWindow::oneVolumeDriveNum*98+MainWindow::twoVolumeDriveNum*110+MainWindow::threeVolumeDriveNum*130+MainWindow::fourVolumeDriveNum*160;
-        for(auto cacheDrive : *findDriveList())
-        {
-            hign = findGMountList()->size()*30 + findDriveList()->size()*55;
-            this->setFixedSize(280,hign);
-            g_drive_get_volumes(cacheDrive->getGDrive());
-            int DisNum = g_list_length(g_drive_get_volumes(cacheDrive->getGDrive()));
-            if (DisNum >0 )
-            {
-              if (g_drive_can_eject(cacheDrive->getGDrive()) || g_drive_can_stop(cacheDrive->getGDrive()))
-              {
-
-                  if(DisNum == 1)
-                  {
-                     //this->resize(250, 98);
-                     num++;
-                     UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0))));
-                     QByteArray date = UDiskPathDis1.toLocal8Bit();
-                     char *p_Change = date.data();
-                     GFile *file = g_file_new_for_path(p_Change);
-                     GFileInfo *info = g_file_query_filesystem_info(file,"*",nullptr,nullptr);
-                     totalDis1 = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                     if(findDriveList()->size() == 1)
-                     {
-                         newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                 g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                 NULL,NULL,NULL, totalDis1,NULL,NULL,NULL, UDiskPathDis1,NULL,NULL,NULL,1);
-                     }
-                     else if(num == 1)
-                     {
-                         newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                 g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                 NULL,NULL,NULL, totalDis1,NULL,NULL,NULL, UDiskPathDis1,NULL,NULL,NULL,1);
-                     }
-                     else
-                     {
-                         newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                 g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                 NULL,NULL,NULL,totalDis1,NULL,NULL,NULL, UDiskPathDis1,NULL,NULL,NULL, 2);
-                     }
-                  }
-                  if(DisNum == 2)
-                  {
-                      num++;
-                      //this->resize(250,160);
-                      UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0))));
-                      QByteArray dateDis1 = UDiskPathDis1.toLocal8Bit();
-                      char *p_ChangeDis1 = dateDis1.data();
-                      GFile *fileDis1 = g_file_new_for_path(p_ChangeDis1);
-                      GFileInfo *infoDis1 = g_file_query_filesystem_info(fileDis1,"*",nullptr,nullptr);
-                      totalDis1 = g_file_info_get_attribute_uint64(infoDis1,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-
-                      UDiskPathDis2 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1))));
-                      QByteArray dateDis2 = UDiskPathDis2.toLocal8Bit();
-                      char *p_ChangeDis2 = dateDis2.data();
-                      GFile *fileDis2 = g_file_new_for_path(p_ChangeDis2);
-                      GFileInfo *infoDis2 = g_file_query_filesystem_info(fileDis2,"*",nullptr,nullptr);
-                      totalDis2 = g_file_info_get_attribute_uint64(infoDis2,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-
-                      if(findDriveList()->size() == 1)
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  NULL,NULL, totalDis1,totalDis2,NULL,NULL, UDiskPathDis1,UDiskPathDis2,NULL,NULL,1);
-                      }
-
-                      else if(num == 1)
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  NULL,NULL, totalDis1,totalDis2,NULL,NULL, UDiskPathDis1,UDiskPathDis2,NULL,NULL,1);
-                      }
-
-                      else
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  NULL,NULL, totalDis1,totalDis2,NULL,NULL, UDiskPathDis1,UDiskPathDis2,NULL,NULL,2);
-                      }
-
-                  }
-                  if(DisNum == 3)
-                  {
-                      num++;
-                      //this->resize(250,222);
-                      UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0))));
-                      QByteArray dateDis1 = UDiskPathDis1.toLocal8Bit();
-                      char *p_ChangeDis1 = dateDis1.data();
-                      GFile *fileDis1 = g_file_new_for_path(p_ChangeDis1);
-                      GFileInfo *infoDis1 = g_file_query_filesystem_info(fileDis1,"*",nullptr,nullptr);
-                      totalDis1 = g_file_info_get_attribute_uint64(infoDis1,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-
-                      UDiskPathDis2 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1))));
-                      QByteArray dateDis2 = UDiskPathDis2.toLocal8Bit();
-                      char *p_ChangeDis2 = dateDis2.data();
-                      GFile *fileDis2 = g_file_new_for_path(p_ChangeDis2);
-                      GFileInfo *infoDis2 = g_file_query_filesystem_info(fileDis2,"*",nullptr,nullptr);
-                      totalDis2 = g_file_info_get_attribute_uint64(infoDis2,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-
-                      UDiskPathDis3 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),2))));
-                      QByteArray dateDis3 = UDiskPathDis3.toLocal8Bit();
-                      char *p_ChangeDis3 = dateDis3.data();
-                      GFile *fileDis3 = g_file_new_for_path(p_ChangeDis3);
-                      GFileInfo *infoDis3 = g_file_query_filesystem_info(fileDis3,"*",nullptr,nullptr);
-                      totalDis3 = g_file_info_get_attribute_uint64(infoDis3,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                      if(findDriveList()->size() == 1)
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),2)),
-                                  NULL, totalDis1,totalDis2,totalDis3,NULL, UDiskPathDis1,UDiskPathDis2,UDiskPathDis3,NULL,1);
-                      }
-
-                      else if(num == 1)
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),2)),
-                                  NULL, totalDis1,totalDis2,totalDis3,NULL, UDiskPathDis1,UDiskPathDis2,UDiskPathDis3,NULL,1);
-                      }
-
-                      else
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),2)),
-                                  NULL, totalDis1,totalDis2,totalDis3,NULL, UDiskPathDis1,UDiskPathDis2,UDiskPathDis3,NULL,2);
-                      }
-
-                  }
-                  if(DisNum == 4)
-                  {
-                      num++;
-                      //this->resize(250,134);
-                      UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0))));
-                      QByteArray dateDis1 = UDiskPathDis1.toLocal8Bit();
-                      char *p_ChangeDis1 = dateDis1.data();
-                      GFile *fileDis1 = g_file_new_for_path(p_ChangeDis1);
-                      GFileInfo *infoDis1 = g_file_query_filesystem_info(fileDis1,"*",nullptr,nullptr);
-                      totalDis1 = g_file_info_get_attribute_uint64(infoDis1,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-
-                      UDiskPathDis2 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1))));
-                      QByteArray dateDis2 = UDiskPathDis2.toLocal8Bit();
-                      char *p_ChangeDis2 = dateDis2.data();
-                      GFile *fileDis2 = g_file_new_for_path(p_ChangeDis2);
-                      GFileInfo *infoDis2 = g_file_query_filesystem_info(fileDis2,"*",nullptr,nullptr);
-                      totalDis2 = g_file_info_get_attribute_uint64(infoDis2,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-
-                      UDiskPathDis3 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),2))));
-                      QByteArray dateDis3 = UDiskPathDis3.toLocal8Bit();
-                      char *p_ChangeDis3 = dateDis3.data();
-                      GFile *fileDis3 = g_file_new_for_path(p_ChangeDis3);
-                      GFileInfo *infoDis3 = g_file_query_filesystem_info(fileDis3,"*",nullptr,nullptr);
-                      totalDis3 = g_file_info_get_attribute_uint64(infoDis3,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-
-                      UDiskPathDis4 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),3))));
-                      QByteArray dateDis4 = UDiskPathDis4.toLocal8Bit();
-                      char *p_ChangeDis4 = dateDis4.data();
-                      GFile *fileDis4 = g_file_new_for_path(p_ChangeDis4);
-                      GFileInfo *infoDis4 = g_file_query_filesystem_info(fileDis4,"*",nullptr,nullptr);
-                      totalDis4 = g_file_info_get_attribute_uint64(infoDis4,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-
-                      if(findDriveList()->size() == 1)
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),2)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),3)),
-                                  totalDis1,totalDis2,totalDis3,totalDis4, UDiskPathDis1,UDiskPathDis2,UDiskPathDis3,UDiskPathDis4,1);
-                      }
-
-                      else if(num == 1)
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),2)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),3)),
-                                  totalDis1,totalDis2,totalDis3,totalDis4, UDiskPathDis1,UDiskPathDis2,UDiskPathDis3,UDiskPathDis4,1);
-                      }
-
-                      else
-                      {
-                          newarea(DisNum,g_drive_get_name(cacheDrive->getGDrive()),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),0)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),1)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),2)),
-                                  g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),3)),
-                                  totalDis1,totalDis2,totalDis3,totalDis4, UDiskPathDis1,UDiskPathDis2,UDiskPathDis3,UDiskPathDis4,2);
-                      }
-
-                  }
-                  connect(open_widget, &QClickWidget::clickedConvert,[=]()
-                  {
-                      qDebug()<<"相应信号";
-                      for(int i = 0;i<g_list_length(g_drive_get_volumes(cacheDrive->getGDrive()));i++)
-                      {
-                          g_mount_eject_with_operation(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),i)),
-                                                       G_MOUNT_UNMOUNT_NONE,
-                                                       nullptr,
-                                                       nullptr,
-                                                       nullptr,
-                                                       nullptr);
-                          findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive->getGDrive()),i)));
-
-                          g_drive_eject_with_operation(cacheDrive->getGDrive(),
-                                                       G_MOUNT_UNMOUNT_NONE,
-                                                       nullptr,
-                                                       nullptr,
-                                                       nullptr,
-                                                       nullptr);
-                          //notify:here,you should remove the element by hand to reduce the drivelists
-                          findDriveList()->removeOne(cacheDrive);
-                      }
-                      qDebug()<<"--------------------------------"<<"how many mounts,aaaaaaaaaaaaaaaaaa"<<findGMountList()->size();
-                      this->hide();
-                      QLayoutItem* item;
-                      while ((item = this->vboxlayout->takeAt(0)) != NULL)
-                      {
-                          delete item->widget();
-                          delete item;
-                      }
-
-                      //hign = findList()->size()*50+30;
-
-                  });
-              }
-
-              if(findDriveList()->size() != 0)
-              {
-                  this->showNormal();
-                  moveBottomRight();
-              }
-          }
-
-
-    }
-        qDebug()<<"now mainwindow's height"<<"hign"<<hign<<"---------------";
-        qDebug()<<"how many mounts?"<<findGMountList()->size()<<"-----------------";
-  }
-
-    else
-    {
-        this->hide();
-    }
-    ui->centralWidget->show();
-}
-
-void MainWindow::getDisConnectErrorMessage()
 {
 
 }

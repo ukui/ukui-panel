@@ -47,13 +47,6 @@ private:
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void getDisConnectErrorMessage();
-    void getConnectErrorMessage();
-//    static int oneVolumeDriveNum;
-//    static int twoVolumeDriveNum;
-//    static int threeVolumeDriveNum;
-//    static int fourVolumeDriveNum;
-//    static int hign;
 
 private:
     Ui::MainWindow *ui;
@@ -78,7 +71,6 @@ private:
                  int linestatus);
     void moveBottomRight();
     QString size_human(qlonglong capacity);
-    void MainWindowShow();
 private:
     QSystemTrayIcon *m_systray;
     QIcon iconSystray;
