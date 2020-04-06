@@ -15,28 +15,13 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
-#ifndef CLICKLABEL_H
-#define CLICKLABEL_H
+#ifndef _MACROFILE_H_
+#define _MACROFILE_H_
+typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 
-#include <QLabel>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
-
-class ClickLabel : public QLabel
-{
-    Q_OBJECT
-
-public:
-    explicit ClickLabel(QWidget *parent = 0);
-    ~ClickLabel();
-
-protected:
-    void mousePressEvent(QMouseEvent * event);
-    //virtual void paintEvent(QPaintEvent * event);
-
-Q_SIGNALS:
-    void clicked();
-};
-
-#endif // CLICKLABEL_H
+#define SERVICE_NAME_SIZE 64
+#define DistanceToPanel 3
+#define UKUI_FLASH_DISK_PATH "/"
+#define UKUI_FLASH_DISK_SERVICE "com.ukuiflashdisk.hotel"
+#define UKUI_FLASH_DISK_INTERFACE "com.flshdisk.hotel"
+#endif //_MACROFILE_H_

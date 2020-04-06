@@ -28,6 +28,7 @@
 #include <QLabel>
 #include <QBoxLayout>
 #include <QPushButton>
+#include <QToolButton>
 
 #include "clickLabel.h"
 class MainWindow;
@@ -102,6 +103,9 @@ private:
     QString size_human(qlonglong capacity);
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
+    void resizeEvent(QResizeEvent *event);
+public:
+    QString getElidedText(QFont font, QString str, int MaxWidth);
 
 };
 

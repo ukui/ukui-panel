@@ -52,3 +52,39 @@ void UkuiToolButton::paintTooltipStyle()
 //    font.setPixelSize(12);
 //    QToolTip::setFont(font);  //设置ToolTip字体
 }
+
+UKUiFrame::UKUiFrame(){
+}
+
+UKUiFrame::~UKUiFrame(){
+}
+
+void UKUiFrame::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+    p.setPen(Qt::NoPen);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.drawRoundedRect(opt.rect,6,6);
+    style()->drawPrimitive(QStyle::PE_Frame, &opt, &p, this);
+}
+
+UKUiWidget::UKUiWidget(){
+}
+
+UKUiWidget::~UKUiWidget(){
+}
+
+void UKUiWidget::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+    p.setPen(Qt::NoPen);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.drawRoundedRect(opt.rect,6,6);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
