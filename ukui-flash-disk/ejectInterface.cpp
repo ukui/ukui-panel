@@ -109,6 +109,10 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
                 "border:none;"
                 "}");
     this->setLayout(main_V_BoxLayput);
+    interfaceHideTime = new QTimer(this);
+    interfaceHideTime->setTimerType(Qt::PreciseTimer);
+    connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_interface_hide()));
+    interfaceHideTime->start(1000);
 }
 
 ejectInterface::~ejectInterface()
@@ -126,3 +130,8 @@ void ejectInterface::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
     QWidget::paintEvent(event);
  }
+
+void ejectInterface::on_interface_hide()
+{
+    this->hide();
+}
