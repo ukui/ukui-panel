@@ -77,13 +77,13 @@ private:
 class UKUITray: public QFrame, QAbstractNativeEventFilter
 {
     Q_OBJECT
-    Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
+//    Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 public:
     UKUITray(UKUITrayPlugin *plugin, QWidget* parent = 0);
     ~UKUITray();
 
     QSize iconSize() const { return mIconSize; }
-    void setIconSize(QSize iconSize);
+    void setIconSize();
     void setStorageBar(TrayStorage *pTys);
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
     void realign();
@@ -97,7 +97,6 @@ public:
 
 public slots:
     void storageBar();
-    void storageAddIcon(Window winId);
 
 signals:
     void iconSizeChanged(int iconSize);
@@ -122,17 +121,24 @@ private:
     /*
      * @brief Dynamic mobile tray application
      */
-    void addIcon(Window id);
+    void addTrayIcon(Window id);
+    void addStorageIcon(Window winId);
+    void addHideIcon(Window winId);
     void moveIconToStorage(Window id);
     void moveIconToTray(Window winId);
+    void moveIconToHide(Window winId);
     void handleStorageUi();
     TrayIcon* findIcon(Window trayId);
+    TrayIcon* findTrayIcon(Window trayId);
     TrayIcon* findStorageIcon(Window trayId);
+    TrayIcon* findHideIcon(Window trayId);
 
     bool mValid;
     Window mTrayId;
     QList<TrayIcon*> mIcons;
+    QList<TrayIcon*> mTrayIcons;
     QList<TrayIcon*> mStorageIcons;
+    QList<TrayIcon*> mHideIcons;
     int mDamageEvent;
     int mDamageError;
     QSize mIconSize;
