@@ -25,7 +25,7 @@
         <location filename="../config/addplugindialog.ui" line="105"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="118"/>
         <source>Close</source>
-        <translation></translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../config/addplugindialog.cpp" line="116"/>
@@ -813,7 +813,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="677"/>
         <source>&amp;Close</source>
-        <translation>关闭</translation>
+        <translation>&amp;关闭</translation>
     </message>
 </context>
 <context>
