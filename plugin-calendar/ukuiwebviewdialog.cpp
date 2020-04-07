@@ -56,26 +56,42 @@ void UkuiWebviewDialog::creatwebview(int _mode)
     if(mWebView != NULL)
     {
         QString  htmlFilePath = QLatin1String(PACKAGE_DATA_DIR);
-        if(_mode == lunarMonday)
+        if (QLocale::system().name() == "zh_CN")
         {
-            //first day a week is monday in lunar mode
-            htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-mon.html");
-        }
-        else if(_mode == solarSunday)
-        {
-            //first day a week is sunday in solar mode
-            htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-cn.html");
-        }
-        else if(_mode == solarMonday)
-        {
-            //first day a week is monday in solar mode
-            htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-cn-mon.html");
+            if(_mode == lunarMonday)
+            {
+                //first day a week is monday in lunar mode
+                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-mon.html");
+            }
+            else if(_mode == solarSunday)
+            {
+                //first day a week is sunday in solar mode
+                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-cn.html");
+            }
+            else if(_mode == solarMonday)
+            {
+                //first day a week is monday in solar mode
+                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-cn-mon.html");
+            }
+            else
+            {
+                //first day a week is sunday in lunar mode
+                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui.html");
+            }
         }
         else
         {
-            //first day a week is sunday in lunar mode
-            htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui.html");
+            if(_mode == solarSunday)
+            {
+                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-en.html");
+            }
+            else
+            {
+                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-en-mon.html");
+            }
         }
+//        htmlFilePath = QLatin1String("file://") + QLatin1String(PACKAGE_DATA_DIR) + QLatin1String("/plugin-calendar/html/ukui-solar-en.html");
+        qDebug()<<"load html-----------------------------"<<htmlFilePath;
         /*set window no margins*/
         mWebView->setWindowFlags(Qt::FramelessWindowHint);
         /*set window size*/

@@ -1,3 +1,19 @@
+ukui-panel (2.0.5-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+    - Fix that disk popup window don't disappear.
+    - Fix calendar i18n issue.
+    - Fix the sorting issue of applets.
+    - Fix that sometimes applets disappear.
+    - Fix the wrong time of calendar.
+    - Fix the error when select holiday.
+    - Fix that panel doesn't follow the primary screen.
+    - Fix the wrong position of preview windows.
+    - Fix the error when adding application to quick launch area.
+    - Fix the wrong gsettings key.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 06 Apr 2020 19:53:00 +0800
+
 ukui-panel (2.0.4-1) unstable; urgency=medium
 
   * New upstream bugfix-only release.
