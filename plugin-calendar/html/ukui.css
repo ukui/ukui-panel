@@ -56,7 +56,8 @@ body {
 
 #date_banner {
   font-size: 14px;
-  color: #9F9EAE;
+  /* color: #9F9EAE; */
+  color: #FFFFFF49;
 }
 
 
@@ -410,7 +411,7 @@ color: #78cdf7;
 }
 
 .item:active {
-  background: #e4f0fc;
+  /* background: #e4f0fc; */
 }
 .item span{
   /* height: 20;

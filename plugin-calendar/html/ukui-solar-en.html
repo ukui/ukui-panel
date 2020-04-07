@@ -1,0 +1,107 @@
+<!--
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
+ *
+ -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link href="ukui-en.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="LunarCalendar.js"></script>
+  <script type="text/javascript" src="index-solar-en.js" defer = "defer"></script>
+
+</head>
+<body>
+<!--  -->
+
+<div id="datetime_container">
+    <p id="time_banner">12:42:53</p>
+    <p id="date_banner">2020-01-01</p>
+</div>
+
+<div id="selector_div">
+  <!-- <input type="button" id="year_selector" class="effect_button" />
+  <input type="button" id="month_selector" class="effect_button" /> -->
+  <div id = "selected_date_div"> 2020.3</div>
+  <input type="button" id="go_prev_month" class="effect_button" />
+  <input type="button" id="go_next_month" class="effect_button" />
+
+  <div id="holiday_div" class="hidden_div">
+    <ol id="holiday_list" class="no_style_list">
+    </ol>
+  </div>
+
+  <input type="button" id="year_button" value="Year" class="effect_button" />
+  <input type="button" id="month_button" value="Mon" class="effect_button" />
+  <input type="button" id="today_button" value="Today" class="effect_button" />
+</div>
+
+<table id="calendar_table">
+  <tr id="weekday_name">
+    <td>Sun</td>
+    <td>Mon</td>
+    <td>Tue</td>
+    <td>Wed</td>
+    <td>Thur</td>
+    <td>Fri</td>
+    <td>Sat</td>
+  </tr>
+</table>
+
+<div id="year_div" class="hidden_div">
+  <div  class="show_years">
+      <div class="item item-1"><span>1</span></div>
+      <div class="item item-2"><span>2</span></div>
+      <div class="item item-3"><span>3</span></div>
+      <div class="item item-4"><span>4</span></div>
+      <div class="item item-5"><span>5</span></div>
+      <div class="item item-6"><span>6</span></div>
+      <div class="item item-7"><span>7</span></div>
+      <div class="item item-8"><span>8</span></div>
+      <div class="item item-9"><span>9</span></div>
+      <div class="item item-10"><span>10</span></div>
+      <div class="item item-11"><span>11</span></div>
+      <div class="item item-12"><span>12</span></div>
+      <div class="item item-13"><span>13</span></div>
+      <div class="item item-14"><span>14</span></div>
+      <div class="item item-15"><span>15</span></div>
+      <div class="item item-16"><span>16</span></div> 
+  </div>
+</div>
+
+  <div id="month_div" class="hidden_div">
+      <div  class="show_months">
+          <div class="item item-1"><span>1</span></div>
+          <div class="item item-2"><span>2</span></div>
+          <div class="item item-3"><span>3</span></div>
+          <div class="item item-4"><span>4</span></div>
+          <div class="item item-5"><span>5</span></div>
+          <div class="item item-6"><span>6</span></div>
+          <div class="item item-7"><span>7</span></div>
+          <div class="item item-8"><span>8</span></div>
+          <div class="item item-9"><span>9</span></div>
+          <div class="item item-10"><span>10</span></div>
+          <div class="item item-11"><span>11</span></div>
+          <div class="item item-12"><span>12</span></div>
+          <div class="item item-13"><span>13</span></div>
+          <div class="item item-14"><span>14</span></div>
+          <div class="item item-15"><span>15</span></div>
+          <div class="item item-16"><span>16</span></div> 
+    </div>
+  </div>
+</body>
+</html>
