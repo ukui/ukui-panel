@@ -18,7 +18,7 @@
 
 // LunarCalendar.js currently supports this range
 var year_range = { 'low': 1891, 'high': 2100 };
-var weekdays = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+var weekdays = ['Sun','Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
 var calendar = null;
 var today = new Date();
 var highlight_day = today.getDate(); // 鼠标选中的日期值，范围1-31
@@ -813,7 +813,7 @@ function update_right_pane(year, month, day) {
     var ganzhi_month = month_stuff['monthData'][highlight_index]['GanZhiMonth'];
     var ganzhi_day = month_stuff['monthData'][highlight_index]['GanZhiDay'];
     var zodiac = month_stuff['monthData'][highlight_index]['zodiac'];
-    var weekday = weekdays[highlight_index % 7 - 1];
+    var weekday = weekdays[highlight_index % 7];
 
     console.log(highlight_index);
 
