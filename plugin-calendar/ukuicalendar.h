@@ -81,6 +81,9 @@ private:
     QTimer *mTimer;
     int mUpdateInterval;
 
+    int16_t mViewWidht;
+    int16_t mViewHeight;
+
     QStringList mTimeZones;
     QMap<QString, QString> mTimeZoneCustomNames;
     QString mDefaultTimeZone;
@@ -110,7 +113,7 @@ class CalendarActiveLabel : public QLabel
 Q_OBJECT
 
 public:
-    explicit CalendarActiveLabel(QWidget * = NULL);
+    explicit CalendarActiveLabel(IUKUIPanelPlugin *plugin,QWidget * = NULL);
 
 Q_SIGNALS:
     void wheelScrolled(int);
@@ -125,6 +128,9 @@ protected:
 private Q_SLOTS:
     void setControlTime();
     void setUpPanel();
+
+private:
+    IUKUIPanelPlugin * mPlugin;
 
 };
 

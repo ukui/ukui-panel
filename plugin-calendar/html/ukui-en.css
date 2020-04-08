@@ -15,258 +15,525 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
-
 @charset "UTF-8";
 
 body, div, table {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-size: 12px;
-    background: #fff;
-    -webkit-user-select: none;
-    cursor: default;
-    overflow: hidden;
-    color: #444;
+  font-size: 12px;
+  background: #1C1C1E;
+  -webkit-user-select: none;
+  cursor: default;
+  overflow: hidden;
+  color: #444;
+  display: grid;
+  grid-template-columns: 400px;;
+  grid-template-rows: 60px 32px 320px 40px 58px;
+  width:454px;
+ height: 704px;
 }
 
-#header {
-    width: 100%;
-    height: 38px;
-    background: #3b9dc5;
-/*    border: 2px solid #155670;*/
-/*    border-bottom: 0;*/
+#datetime_container {
+  display: grid;
+  text-align: center;
+  justify-items: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
-#container {
-    position: absolute;
-    top: 38px;
-    bottom: 0;
-    width: 100%;
-    overflow: hidden;
-/*    background: #f33;*/
-/*    border: 2px solid #155670;*/
-/*    border-top: 0;*/
+#datetime_container p{
+  margin: 0;
 }
 
+#time_banner {
+  font-size: 30px;
+  /* font-weight: bold; */
+  color: #F5F4F7;
+}
+
+#date_banner {
+  font-size: 14px;
+  /* color: #9F9EAE; */
+  color: #FFFFFF49;
+  margin-top: 16px;
+}
+
+
+/* 第二栏，切换选择年、月 */
+#selector_div {
+  height: 40px;
+  width: 454;
+  display: grid;
+  text-align: center;
+  grid-template-columns: 20% 15% 15% 15% 15% 20%;
+  margin-top: 16px;
+}
+
+#year_selector {
+  margin-left: 30px;
+  padding:0;
+  text-align: right;
+  height: 36px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  float:left
+}
+#month_selector {
+  padding:0;
+  text-align: left;
+  height: 36px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  float:left
+}
+
+
+.effect_button {
+  height: 20px;
+  text-align: center;
+  -webkit-appearance: none;
+  background: #1C1C1E;
+  color: #F5F4F7;
+  vertical-align: middle;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.hidden_div {
+  display: none;
+}
+
+
+
+/* 第三栏，展示具体日期表 */
 #left_pane {
-/*    width: 75%;*/
-    background: #fff;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
+  background: #fff;
 }
 
 #right_pane {
-/*    width: 110px;*/
-/*    height: 300px;*/
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background: #eff0f1;
-    padding: 5px;
+  background: #1C1C1E;
 }
 
 #calendar_table {
-    padding: 5px;
-    width: 100%;
-    border-spacing: 0;
+  padding: 5px;
+  width: 420px;
+  height: 420px;
+  border-spacing: 0;
+  margin-bottom: 18px;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
-td {
-    position: relative;
-    left: 0;
-    top: 0;
-    border: 1px solid transparent;
-    border-top: 1px solid #ddd;
-    padding: 2px 12px;
-    text-align: center;
-/*    width: 44px;*/
+#calendar_table td {
+ /* display:grid;
+  grid-template-columns:1fr 2fr 1fr;
+  padding: 3px 12px;*/
+width:56px;
+height:56px;
+text-align: center;
+/* margin-left: 4px;
+margin-right: 4px;
+margin-top: 4px;
+margin-bottom: 4px; */
+border: 1px solid transparent;
+ /*width:60px;*/
 }
 
-td:hover {
-    border: 1px solid #7eb4ea;
+#calendar_table td:hover {
+  border: 1px solid #7eb4ea;
+  border-radius: 4px;
 }
 
-td:active {
-    background: #e4f0fc;
+#calendar_table td:active {
+  background:none;
+  border: 1px solid #7eb4ea;
 }
 
 #weekday_name td {
-    border: 0;
+  border: 0;
+  color: #F5F4F7;
 }
 
 #weekday_name td:hover {
-    border: 0;
+  border: 0;
 }
 
 #weekday_name td:active {
     border: 0;
-    background-color: transparent;
+  background-color: transparent;
 }
 
-.day_this_month .solar_part { color: #000; font-size: 18px; }
+.day_this_month .solar_part { color: #F5F4F7; font-size: 18px; }
 .day_this_month .lunar_part { color: #aaa; font-size: 11px; }
-.day_other_month .solar_part { color: #ccc; font-size: 18px; }
-.day_other_month .lunar_part { color: #ccc; font-size: 11px; }
-.day_today .solar_part { color: #000; font-size: 18px; }
+.day_other_month .solar_part { color: #F5F4F733; font-size: 18px; }
+.day_other_month .lunar_part { color: #cccccc33; font-size: 11px; }
+.day_other_month .solar_part { font-size: 18px; }
+.day_other_month .lunar_part { font-size: 11px; }
+.day_today .solar_part { color: #F5F4F7; font-size: 18px; }
 .day_today .lunar_part { color: #aaa; font-size: 11px; }
 .day_today {
-    background: #d9ebfc;
-    border: 1px solid #7eb4ea;
+  /* background: #d9ebfc; */
+  background:#3d6be5;
+  border: 1px solid #7eb4ea;
+  border-radius: 4px;
 }
 .day_today:hover { border: 1px solid #7eb4ea; }
 .day_today:active{ background: #d9ebfc; }
-.day_weekend .solar_part { color: #f5412b; font-size: 18px; }
+.day_weekend .solar_part { color: #F5F4F7; font-size: 18px; }
 .day_weekend .lunar_part { color: #ccc; font-size: 11px; }
 
 .day_highlight {
-    background: #e4f0fc;
-    border: 1px solid #7eb4ea;
+  /* background: #e4f0fc; */
+  background:none;
+  border: 1px solid #7eb4ea;
 }
-.day_highlight .solar_part { color: #000; font-size: 18px; }
+.day_highlight .solar_part { color: #F5F4F7; font-size: 18px; }
 .day_highlight .lunar_part { color: #aaa; font-size: 11px; }
 
-#selector_div {
-    padding-top: 8px;
-    padding-left: 30px;
-    padding-right: 30px;
-    height: 38px;
-}
-
+/* year_month_grid{
+padding:10px 10px 10px 10px;
+color: #78cdf7;
+} */
 #holiday_button {
-    float: right;
-}
-
-.effect_button {
-    width: 64px;
-    height: 20px;
-    text-align: center;
-    -webkit-appearance: none;
-    color: #eee;
-    vertical-align: middle;
-    background: #358db1;
-    border: 1px solid #2d7897;
-    float: left;
+  margin-left: 10px;
 }
 
 .effect_button:hover {
-    border: 1px solid #78cdf7;
+  /* border: 1px solid #78cdf7; */
+  border: none;
 }
 
 .effect_button:active {
-    border: 1px solid #2a6f8c;
-    background: #3183a4;
+  /* border: 1px solid #2a6f8c; */
+  border: none;
+  background: #3183a4;
+}
+
+#selector_div #selected_date_div {
+  margin-left: 32px;
+  width: 60px;
+  height: 32px;
+  font-size: 18px; 
+  border: none;
+  font-weight: bold;
+  color: #FFFFFFFF;
+  float: left;
+  text-align: left;
+  line-height: 32px;
 }
 
 #selector_div #go_prev_month {
-    margin-right: 10px;
-    width: 15px;
-    background-image: url("images/prev.png");
-    background-repeat: no-repeat;
-    background-position: center;
+  margin-right: 10px;
+  width: 32px;
+  height: 32px;
+  background-image: url("images/up.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size:100% 100%;
+  /* float: left; */
 }
+
+#selector_div #go_prev_month:hover{
+  background-image: url("images/up_hover.png");
+}
+
+#selector_div #go_prev_month:active{
+  background-image: url("images/up_click.png");
+  background: none;
+}
+
 
 #selector_div #go_next_month {
-    margin-left: 10px;
-    width: 15px;
-    background-image: url("images/next.png");
-    background-repeat: no-repeat;
-    background-position: center;
+  margin-left: 10px;
+  width: 32px;
+  height: 32px;
+  background-image: url("images/down.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size:100% 100%;
+  /* float: left; */
 }
+
+#selector_div #go_next_month:hover{
+  background-image: url("images/down_hover.png");
+}
+
+#selector_div #go_next_month:active{
+  background-image: url("images/down_click.png");
+  background: none;
+}
+
 
 #selector_div #today_button {
-    margin-left: 30px;
+  /* margin-right: 30px; */
+  margin-left: 8px;
+  width: 48px;
+  height: 36px;
+  text-align: left;
+  /* float: right; */
 }
 
-.hidden_div {
-    display: none;
+#selector_div #month_button {
+  margin-left: 8px;
+  width: 48px;
+  height: 36px;
+  background-color: #FFFFFF1A;
+  border-radius: 4px;
 }
 
-.visible_div {
-    display: block;
-    position: absolute;
-    width: 64px;
-    height: 170px;
-    z-index: 2;
-    background: #fff;
-    border: 1px solid #2d7897;
-    overflow-y: auto;
-    overflow-x: hidden;
+#selector_div #month_button:hover{
+  /* font */
+  background-color: #3d6be5;
+  border-radius: 4px;
 }
 
-.no_style_list {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
+#selector_div #year_button {
+  margin-left: 30px;
+  width: 48px;
+  height: 36px;
+  background-color: #FFFFFF1A;
+  border-radius: 4px;
 }
 
-.no_style_list li {
-    text-align: center;
+#selector_div #year_button:hover{
+  /* font */
+  background-color: #3d6be5;
+  border-radius: 4px;
 }
 
-.no_style_list li:hover {
-    background: #bee6fd;
+#selector_div #today_button:hover{
+  /* font */
+  background-color: #3d6be5;
+  /* text-emphasis-color: #3d6be5; */
+  border-radius: 4px;
 }
 
-#general_datetime_list {
-    margin: 0;
-    padding: 5px 5px 20px 5px;
-    list-style-type: none;
-    border-bottom: 1px solid #ddd;
+/* 第四栏，显示农历日期，宜忌信息 */
+#chinese_date_container {
+  color: #F5F4F7;
+  margin: 0;
+  padding: 0;
+  /* margin-top: 18px; */
+  /* background-color: #78cdf7; */
+  width: 420px;
+  height:48px;
+  /*margin:16px;*/
 }
+/* #chinese_date_container tr{
 
-#general_datetime_list li {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
+} */
 
-#general_datetime_list #day {
-    font-size: 64px;
-    color: #0c7ba9;
+#chinese_date {
+  font-size: 16px;
+  font-weight: bold;
+  float: left;
 }
 
 #hl_table {
-    width: 110px;
-    height: 110px;
-    padding: 5px;
+    /* padding: 5px; */
     border: 0;
-    text-align: center;
+    /* text-align: center; */
+    width: 420px;
+    height: 48px;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+#hl_table tr {
+  height: 24px;
+  width: 420px;
+  margin-left: 16px;
 }
 
 #hl_table td {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    background: rgba(0, 0, 0, 0);
+  height: 24px;
+  width: 60px;
+  font-size: 14px;
+  text-align: left;
+  color: #FFFFFFA6;
+  border: 1px;
+}
+
+#hl_table.yiji{
+  /* padding-left: 20px; */
+  text-align: center;
+  }
+
+/* 显示年份的下拉选择 */
+.visible_div {
+  width: 420;
+  height:420;
+  z-index: 2;
+  background: #1C1C1E;
+  /* margin-bottom: 16px;*/
+  margin-top: 16px;
+
+}
+.show_years
+{
+  display: grid;
+  width:420px;
+  height: 420px;
+  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 25% 25% 25% 25%;
+  justify-content: center;
+  align-content: center;
+  margin-left: 16px;
+  margin-right: 16px;
+
+  /* display: grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows: repeat(4,1fr);
+  height: 500;
+  width:454px;
+  grid-gap: 20px; */
+}
+.item {
+  height: 100px;
+  width: 100px;
+  font-size: 1.6em;
+  color: #F5F4F7;
+  text-align: center;
+  /* align-self: center;
+  justify-self: center; */
+  /* padding-top: 2%;
+  padding-bottom: 2%;
+  padding-left: 2%;
+  padding-right: 2%; */
+  /* padding-left: ; */
+  /* padding: 20px 10px 10px 10px; */
+  float: left;
+  border: 1px solid #1C1C1E;
+}
+
+
+.item:hover {
+  border: 1px solid #7eb4ea;
+}
+
+.item:active {
+  /* background: #e4f0fc; */
+}
+.item span{
+  /* height: 20;
+  width: 80; */
+  display:block;
+  /* background-color:#7eb4ea; */
+  margin-top: 32px; 
+}
+/* .visible_div {
+  width: 454;
+  height:440;
+  z-index: 2;
+  background: #1C1C1E;
+} */
+.show_months
+{
+  /* /* display: grid;
+  width:454;
+  grid-template-columns: 100px 100px 100px 100px;
+  grid-row-gap: 10px; 
+  display: grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows: repeat(4,1fr);
+  height: 500;
+  width:454px;
+  grid-gap: 10px; */
+  display: grid;
+  width:420px;
+  height: 420px;
+  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 25% 25% 25% 25%;
+  justify-content: center;
+  align-content: center;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+/* .item {
+  height: 20%;
+  width: 25%;
+  font-size: 1.6em;
+  color: #F5F4F7;
+  text-align: center;
+} */
+.no_style_list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.no_style_list li {
+  text-align: center;
+}
+
+.no_style_list li:hover {
+  background: #bee6fd;
+}
+
+#general_datetime_list {
+  margin: 0;
+  list-style-type: none;
+  float: left;
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+
+#general_datetime_list li {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  color: #FFFFFFFF;
+  border: none;
+  font-weight: bold;
+}
+
+#advice_checkbox {
+  float: right;
+  margin-right: 16px;
+  /* margin-bottom: 6px;*/
+  margin-top: 16px;
+  /* width: 20px;
+  height: 20px; */
+}
+
+#advice_title {
+  font-size: 14px;
+  float: right;
+  line-height: 48px;
+  /* margin-top: 6px;
+  margin-bottom: 6px; */
+  margin-right: 10px;
+}
+
+
+#general_datetime_list #day {
+  font-size: 64px;
+  color: #0c7ba9;
 }
 
 #sep {
-    width: 90%;
-    color: #ddd;
+  width: 90%;
+  color: #ddd;
 }
-
 .worktime1 {
-/*    display: block;*/
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 11px;
-    background: #999;
-    color: #fff;
+ /*position: absolute;
+    left:0;
+   bottom:0;
+   font-size: 11px;
+  background: #999;
+  color: #fff;*/
 }
 
 .worktime2 {
-/*    display: block;*/
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 11px;
-    background: #f43;
-    color: #fff;
+ /*position: absolute;
+    left:0;
+    bottom:0;
+  font-size: 11px;
+  background: #f43;
+  color: #fff;*/
 }
