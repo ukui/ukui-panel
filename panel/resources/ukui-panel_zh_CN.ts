@@ -36,12 +36,12 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="912"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="954"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="916"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="958"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>
@@ -427,7 +427,7 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>IndicatorCalendar</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="371"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="394"/>
         <source>&apos;&lt;b&gt;&apos;HH:mm:ss&apos;&lt;/b&gt;&lt;br/&gt;&lt;font size=&quot;-2&quot;&gt;&apos;ddd, d MMM yyyy&apos;&lt;br/&gt;&apos;TT&apos;&lt;/font&gt;&apos;</source>
         <translation></translation>
     </message>
@@ -574,29 +574,24 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>StartMenuButton</name>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="79"/>
         <source>Lock The Screen</source>
-        <translation>锁定屏幕</translation>
+        <translation type="vanished">锁定屏幕</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="83"/>
         <source>Switch The User</source>
-        <translation>切换用户</translation>
+        <translation type="vanished">切换用户</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="88"/>
         <source>Logout</source>
-        <translation>注销</translation>
+        <translation type="vanished">注销</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="93"/>
         <source>Reboot</source>
-        <translation>重启</translation>
+        <translation type="vanished">重启</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="98"/>
         <source>Shutdown</source>
-        <translation>关机</translation>
+        <translation type="vanished">关机</translation>
     </message>
 </context>
 <context>
@@ -716,6 +711,34 @@ Do you want to remove this panel?</source>
         <source>Drop application
 icons here</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>UKUIStartMenuButton</name>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="93"/>
+        <source>Lock Screen</source>
+        <translation>锁屏</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="97"/>
+        <source>Switch User</source>
+        <translation>切换用户</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="102"/>
+        <source>LogOut</source>
+        <translation>注销</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="107"/>
+        <source>Restart</source>
+        <translation>重启</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="112"/>
+        <source>Power Off</source>
+        <translation>关机</translation>
     </message>
 </context>
 <context>
