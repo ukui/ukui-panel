@@ -95,6 +95,7 @@
 #define PANEL_SIZE_KEY "panelsize"
 #define ICON_SIZE_KEY "iconsize"
 #define PANEL_POSITION_KEY "panelposition"
+
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -1191,6 +1192,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                    this, SLOT(showAddPluginDialog())
                   )->setDisabled(mLockPanel);
 */
+    /*
     menu->setWindowOpacity(0.9);
     menu->addAction(QIcon("/usr/share/ukui-panel/panel/img/setting.svg"),
                    tr("Set up Panel"),
@@ -1198,7 +1200,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                   )->setDisabled(mLockPanel);
 
     menu->addSeparator();
-
+*/
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                    tr("Show Taskview"),
                    this, SLOT(showTaskView())
