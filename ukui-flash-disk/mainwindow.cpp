@@ -58,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 );
 
 
-    iconSystray = QIcon::fromTheme("/usr/share/icons/ukui-icon-theme-default/scalable/devices/drive-removable-media.svg");
+    iconSystray = QIcon::fromTheme("drive-removable-media");
     vboxlayout = new QVBoxLayout();
     ui->centralWidget->setLayout(vboxlayout);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
