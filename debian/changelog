@@ -1,3 +1,14 @@
+ukui-panel (2.0.6-1) unstable; urgency=medium
+
+  * New upstream bugfix release:
+    - Fix that the applet window not autohide.
+    - Fix the i18n issue in night mode and calendar.
+    - Fix the coffliction between preview window and warkspace.
+    - Fix the wrong position of right-click menu.
+    - Fix the missing icon of disk.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 09 Apr 2020 17:35:53 +0800
+
 ukui-panel (2.0.5-1) unstable; urgency=medium
 
   * New upstream bugfix release.
