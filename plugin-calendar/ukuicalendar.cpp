@@ -234,10 +234,9 @@ void IndicatorCalendar::updateTimeText()
         if(QGSettings::isSchemaInstalled(id))
         {
         gsettings = new QGSettings(id);
-        QString mode;
         QStringList keys = gsettings->keys();
         if(keys.contains("hoursystem")){
-            mode=gsettings->get("hoursystem").toString();
+            hourSystemMode=gsettings->get("hoursystem").toString();
         }
         if(!gsettings)
         {
