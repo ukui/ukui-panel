@@ -100,7 +100,8 @@ extern "C" {
  ************************************************/
 
 extern TrayStorageStatus storagestatus;
-
+storageBarStatus storagebarstatus;
+bool flag;
 UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     QFrame(parent),
     mValid(false),
@@ -112,6 +113,7 @@ UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     mDisplay(QX11Info::display())
 {
     storagebarstatus=ST_HIDE;
+    flag =false;
     mLayout = new UKUi::GridLayout(this);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
@@ -122,9 +124,9 @@ UKUITray::UKUITray(IUKUIPanelPlugin *plugin, QWidget *parent):
     bt->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
     layout()->addWidget(bt);
 
-    storageFrame=new UKUiFrame;
-    storageFrame->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    storageFrame->setWindowFlags(Qt::FramelessWindowHint | /*Qt::WindowStaysOnTopHint | */Qt::X11BypassWindowManagerHint);
+    storageFrame=new UKUIStorageFrame;
+//    storageFrame->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    //setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint);
     storageLayout=new UKUi::GridLayout(storageFrame);
     storageLayout->setColumnCount(3);
     storageLayout->setRowCount(3);
@@ -174,15 +176,15 @@ void UKUITray::storageBar()
     }
 
 
-    switch(storagebarstatus)
+    switch(flag)
     {
     case ST_HIDE:
         storageFrame->show();
-        storagebarstatus=ST_SHOW;
+        flag=true;
         break;
     case ST_SHOW:
         storageFrame->hide();
-        storagebarstatus=ST_HIDE;
+        flag=false;
         break;
     default:
         break;
@@ -714,17 +716,21 @@ void UKUITray::regulateIcon(Window *mid)
             newsetting=new QGSettings(id,idd);
             newsetting->set(BINDING_KEY,wid);
             newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
-            if(xfitMan().getApplicationName(wid)=="ukui-volume-control-applet-qt")
-            {
-                newsetting->set(ACTION_KEY,"storage");
-                newsetting->set(RECORD_KEY,"storage");
-                storageAddIcon(wid);
-            }
-            else
+
+            QStringList trayIconNameList;
+            trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather";
+            if(trayIconNameList.contains(xfitMan().getApplicationName(wid)))
             {
                 newsetting->set(ACTION_KEY,"tray");
                 newsetting->set(RECORD_KEY,"tray");
                 addIcon(wid);
+
+            }
+            else
+            {
+                newsetting->set(ACTION_KEY,"storage");
+                newsetting->set(RECORD_KEY,"storage");
+                storageAddIcon(wid);
             }
         }
         delete newsetting;
@@ -806,22 +812,32 @@ QString UKUITray::findFreePath(){
     return QString("%1%2").arg(KEYBINDINGS_CUSTOM_DIR).arg(QString(dir));
 }
 
-UKUIStorageFrame::UKUIStorageFrame(){
+UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
+    QWidget(parent, Qt::Popup)
+{
     installEventFilter(this);
+    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool |Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint);
+    _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
+
 }
 
 UKUIStorageFrame::~UKUIStorageFrame(){
 }
 
-bool UKUIStorageFrame::event(QEvent *event)
-{
-    if (event->type() == QEvent::ActivationChange) {
-        if (QApplication::activeWindow() != this) {
-            this->hide();
-        }
-    }
-    return QWidget::event(event);
-}
+//bool UKUIStorageFrame::event(QEvent *event)
+//{
+////    if (event->type() == QEvent::ActivationChange) {
+////        if (event->type() == QEvent::WindowDeactivate) {
+////            if (QApplication::activeWindow() != this && storagebarstatus==ST_SHOW) {
+////                this->hide();
+////                storagebarstatus==ST_HIDE;
+////            }
+////        }
+////        return QWidget::event(event);
+////    }
+////    return QWidget::event(event);
+//}
 
 bool UKUIStorageFrame::nativeEvent(const QByteArray &eventType, void *message, long *result)
 {
@@ -844,16 +860,37 @@ bool UKUIStorageFrame::nativeEvent(const QByteArray &eventType, void *message, l
     return false;
 }
 
-//bool UKUIStorageFrame::eventFilter(QObject *watched, QEvent *event)
-//{
-//    qDebug()<<"eventFilter****************";
-//    if(watched==this)
-//    {
-//        if (event->type() == QEvent::ActivationChange) {
-//            if (QApplication::activeWindow() != this) {
-//                this->hide();
-//            }
-//        }
-//    }
-//    return QWidget::event(event);
-//}
+bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
+{
+    //    Q_UNUSED(obj);
+    //    Q_UNUSED(event);
+
+    if (obj == this)
+    {
+        if (event->type() == QEvent::WindowDeactivate &&flag==true )
+        {
+            this->hide();
+            flag=false;
+            return true;
+        } else if (event->type() == QEvent::StyleChange) {
+        }
+    }
+
+    if (!isActiveWindow())
+    {
+        activateWindow();
+    }
+    return false;
+}
+
+void UKUIStorageFrame::paintEvent(QPaintEvent *event)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+    p.setPen(Qt::black);
+    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    p.drawRoundedRect(opt.rect,6,6);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
