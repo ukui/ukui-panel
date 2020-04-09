@@ -47,6 +47,7 @@ namespace UKUi {
 class GridLayout;
 }
 
+enum storageBarStatus{ST_HIDE,ST_SHOW};
 /**
  * @brief This makes our trayplugin
  */
@@ -56,12 +57,16 @@ class UKUIStorageFrame:public QWidget
 {
     Q_OBJECT
 public:
-    UKUIStorageFrame();
+    UKUIStorageFrame(QWidget* parent =0);
     ~UKUIStorageFrame();
 protected:
-    bool event(QEvent *e);
-//    bool eventFilter(QObject *watched, QEvent *event);
+//    bool event(QEvent *e);
+    bool eventFilter(QObject *watched, QEvent *event);
     bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+    void paintEvent(QPaintEvent *event);
+private:
+    Atom _NET_SYSTEM_TRAY_OPCODE;
+    UKUi::GridLayout *storageLayout;
 };
 
 class UKUITray: public QFrame, QAbstractNativeEventFilter
@@ -130,8 +135,6 @@ private:
 
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
-    UKUiFrame *storageFrame;
-    enum storageBarStatus{ST_HIDE,ST_SHOW};
-    storageBarStatus storagebarstatus;
+    UKUIStorageFrame *storageFrame;
 };
 #endif

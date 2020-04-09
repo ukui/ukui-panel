@@ -36,7 +36,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
 {
     mButton=new NightModeButton;
     mButton->setStyle(new CustomStyle());
-    mButton->paintTooltipStyle();
+//    mButton->paintTooltipStyle();
     mButton->setToolTip(tr("nightmode"));
     realign();
 }
@@ -98,7 +98,7 @@ void NightModeButton::mousePressEvent(QMouseEvent* event)
         process->startDetached("redshift -t 5700:3600 -g 0.8 -m randr -v");
         }
         else{
-            QMessageBox::information(this,"Error","请先安装redshift");
+            QMessageBox::information(this,"Error",tr("please install redshift first"));
         }
         }
     }
