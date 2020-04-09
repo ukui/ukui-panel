@@ -270,8 +270,6 @@ void IndicatorCalendar::updateTimeText()
                 str.replace("PM","PM ");
             }
         }
-        qDebug()<<"tzNow is:"<<tzNow/*.toString("Ahh:mm ddd  yyyy/MM/dd")*/;
-        qDebug()<<"str is:"<<str;
 //        if(QLocale::system().name() == "zh_CN")
 //        {
 //            str.replace("-","/");
@@ -964,11 +962,11 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 
 void CalendarActiveLabel::setControlTime()
 {
-    system("ukui-control-center -m");
+    system("ukui-control-center -t");
 }
 
 void CalendarActiveLabel::setUpPanel()
 {
-    system("ukui-control-center -m");
+    system("ukui-control-center -d");
 }
 
