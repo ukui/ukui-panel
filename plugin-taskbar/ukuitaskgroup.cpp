@@ -459,9 +459,7 @@ void UKUITaskGroup::singleWindowClick()
     UKUITaskWidget *btn = mButtonHash.begin().value();
     if(btn)
     {
-        qDebug()<<"isMinimized:"<<btn->isMinimized();
-        //KWindowSystem::activateWindow(mButtonHash.begin().key());
-        if(btn->isMinimized())
+        if(!btn->isFocusState())
         {
             if(mPopup->isVisible())
             {
@@ -965,7 +963,6 @@ bool UKUITaskGroup::isSetMaxWindow()
 
 void UKUITaskGroup::showPreview()
 {
-    qDebug()<<"mButtonHash.size():"<<mButtonHash.size();
     if(mButtonHash.size()<=13)
     {
         showAllWindowByThumbnail();
@@ -1059,7 +1056,6 @@ void UKUITaskGroup::showAllWindowByList()
     {
         screenAvailabelHeight = QApplication::screens().at(0)->size().height();//panel is vect
     }
-    qDebug()<<"screenAvailabelHeight:"<<screenAvailabelHeight;
     if(mPopup->layout()->count() > 0)
     {
         removeSrollWidget();
@@ -1089,21 +1085,13 @@ void UKUITaskGroup::showAllWindowByList()
         btn->removeThumbNail();
         btn->updateTitle();
         btn->setFixedSize(mpScrollArea->width(),winheight);
-//        btn->setFixedHeight(winheight);
-//        btn->setThumbNail(thumbnail);
         mpWidget->layout()->setContentsMargins(0,0,0,0);
         mpWidget->layout()->addWidget(btn);
     }
     /*end*/
     plugin()->willShowWindow(mPopup);
-
-
-//    adjustPopWindowSize(winWidth, winHeight);
-//    mPopup->setFixedSize(winWidth, 650);  //winheight*mButtonHash.size() + (mButtonHash.size()+1)*3);
     mPopup->setFixedSize(winWidth,  popWindowheight < screenAvailabelHeight? popWindowheight : screenAvailabelHeight);
-//     mPopup->setFixedWidth(winWidth);
     mPopup->adjustSize();
-    qDebug()<<"mPopup size:"<<mPopup->width()<<","<<mPopup->height();
     if(plugin()->panel()->isHorizontal())
     {
         iPreviewPosition =  plugin()->panel()->panelSize()/2 - winWidth/2;
@@ -1207,7 +1195,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     plugin()->willShowWindow(mPopup);
     mPopup->layout()->addWidget(mpWidget);
     adjustPopWindowSize(winWidth, winHeight);
-    if(plugin()->panel()->isHorizontal())
+    if(plugin()->panel()->isHorizontal())//set preview window position
     {
         if(mPopup->size().width()/2 < QCursor::pos().x())
         {

@@ -566,11 +566,14 @@ bool UKUITaskWidget::isOnCurrentScreen() const
 
 bool UKUITaskWidget::isMinimized() const
 {
-//    KWindowInfo info(mWindow, NET::WMState | NET::XAWMState);
-//    KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMState | NET::XAWMState);
-//    qDebug()<<"info.visibleNameWithState():"<<info.visibleNameWithState();
-    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
-//    qDebug <<"QWidget::isMinimized()"<<QWidget::isMinimized()
+//    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
+    return NET::Focused == (KWindowInfo(mWindow,NET::WMState).state()&NET::Focused);
+}
+
+bool UKUITaskWidget::isFocusState() const
+{
+    qDebug()<<"KWindowInfo(mWindow,NET::WMState).state():"<<KWindowInfo(mWindow,NET::WMState).state();
+    return NET::Focused == (KWindowInfo(mWindow,NET::WMState).state()&NET::Focused);
 }
 
 Qt::Corner UKUITaskWidget::origin() const
