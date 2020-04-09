@@ -34,6 +34,7 @@ var scrollUp_count = 0;
 var scrollDown_count = 0;
 var selected_date_div = null;
 var NeedChangeCurrentTime = 1;
+var NeedUpdateYijiArea = true;
 
 var div_range = {
     year: {
@@ -652,7 +653,9 @@ window.onload = function () {
             year_selector.value = Math.floor(month_offset / 12) + year_range['low'] + '年';
             month_selector.value = month_offset % 12 === 0 ? 1 +'月': month_offset % 12 + 1 + '月';
             selected_date_div.innerHTML = year_selector.value + month_selector.value;
+            NeedUpdateYijiArea = false;
             create_page(parseInt(year_selector.value), parseInt(month_selector.value));
+            NeedUpdateYijiArea = true;
         });
     }
     var holidays = ['元旦节', '春节', '清明节', '劳动节', '端午节', '中秋节', '国庆节'];
@@ -717,14 +720,14 @@ function create_page(year, month) {
             if (current_row.cells.length === column) {
                 current_cell = current_row.insertCell(column);
                 current_cell.addEventListener('click', function() {
-                    if(this.children[0].innerHTML === "")
-                    {
-                        highlight_day = parseInt(this.children[1].innerHTML);
-                    }
-                    else
-                    {
+                    // if(this.children[0].innerHTML === "")
+                    // {
+                    //     highlight_day = parseInt(this.children[1].innerHTML);
+                    // }
+                    // else
+                    // {
                         highlight_day = parseInt(this.children[0].innerHTML);
-                    }
+                    // }
                     //highlight_day = parseInt(this.children[0].innerText);
 
                     if (this.className === 'day_other_month') {
@@ -801,48 +804,59 @@ function create_page(year, month) {
             if (month_stuff['monthData'][index]['worktime'] === 2) {
                 worktime = document.createElement("SPAN");
                 worktime.className = 'worktime2';
-                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/xiuxi.png" align="left" width = "14px" height = "16px"></td> </tr>';
+                worktime.innerHTML = '休';
             } else if (month_stuff['monthData'][index]['worktime'] === 1) {
                 worktime = document.createElement("SPAN");
                 worktime.className = 'worktime1';
-                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/shangban.png" align="left" width = "16px" height = "16px"></td> </tr>';
+                worktime.innerHTML = '班';
             } else {
 
             }
-                 /*myworktime.innerHTML =   '<span class="solar_part">' +
+
+            current_cell.innerHTML = '<span class="solar_part">' +
                                      month_stuff['monthData'][index]['day'] +
                                      '</span>' +
                                      '<br />' +
                                      '<span class="lunar_part">' +
                                      lunar_day +
-                                     '</span>';*/
+                                     '</span>';
             if (worktime && current_cell.className !== 'day_other_month') {
-                //current_cell.appendChild(worktime);
-                // <td><div id="aa"></div></td>
-                //  document.getElementById('aa').innerHTML = worktime.innerHTML;
-                 current_cell.innerHTML = worktime.innerHTML+
-                                    //   '<br />'+ 
-                                    '<span class="solar_part" > ' +
-                                     month_stuff['monthData'][index]['day'] +
-                                     '</span>' +
-                                     '<br />' +
-                                     '<span class="lunar_part">' +
-                                     lunar_day +
-                                     '</span>';
-                // current_cell.innerHTML =  '<tr style="background: green"><td>1</td><td>2</td><td>3</td></tr>'
-                // +'<br />' + '<tr style="background: green"><td>4</td><td>5</td><td>6</td></tr>'+
-                // '<br />' +'<tr style="background: green"><td>7</td><td>8</td><td>9</td></tr>';
+                current_cell.appendChild(worktime);
             }
-            else
-			{
-                 current_cell.innerHTML =   '<span class="solar_part">' +
-                                     month_stuff['monthData'][index]['day'] +
-                                     '</span>' +
-                                     '<br />' +
-                                     '<span class="lunar_part">' +
-                                     lunar_day +
-                                     '</span>';
-			}
+
+            // if (month_stuff['monthData'][index]['worktime'] === 2) {
+            //     worktime = document.createElement("SPAN");
+            //     worktime.className = 'worktime2';
+            //     worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/xiuxi.png" align="left" width = "14px" height = "16px"></td> </tr>';
+            // } else if (month_stuff['monthData'][index]['worktime'] === 1) {
+            //     worktime = document.createElement("SPAN");
+            //     worktime.className = 'worktime1';
+            //     worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/shangban.png" align="left" width = "16px" height = "16px"></td> </tr>';
+            // } else {
+
+            // }
+            // if (worktime && current_cell.className !== 'day_other_month') {
+            //      current_cell.innerHTML = worktime.innerHTML+
+            //                         '<span class="solar_part" > ' +
+            //                          month_stuff['monthData'][index]['day'] +
+            //                          '</span>' +
+            //                          '<br />' +
+            //                          '<span class="lunar_part">' +
+            //                          lunar_day +
+            //                          '</span>';
+            // }
+            // else
+			// {
+            //      current_cell.innerHTML =   '<span class="solar_part">' +
+            //                          month_stuff['monthData'][index]['day'] +
+            //                          '</span>' +
+            //                          '<br />' +
+            //                          '<span class="lunar_part">' +
+            //                          lunar_day +
+            //                          '</span>';
+            // }
+            
+
         }
     }
 
@@ -973,11 +987,15 @@ function update_right_pane(year, month, day) {
    /* general_datetime_list.children[0].innerHTML = year + '-' + month_str + '-' + day_str + ' 星期' + weekday;
     general_datetime_list.children[1].innerHTML = day_str; // e.g. 06
     general_datetime_list.children[2].innerHTML = lunar_month_name + lunar_day_name;*/
-    general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
+    //general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
    // general_datetime_list.children[1].innerHTML = ganzhi_month + '月 ' + ganzhi_day + '日';
     updateTime();
-    update_yiji_area();
-
+    if(NeedUpdateYijiArea)
+    {
+        general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
+        update_yiji_area();
+    }
+    NeedUpdateYijiArea = true;
     month_stuff = null;
 }
 
