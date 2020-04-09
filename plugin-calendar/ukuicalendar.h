@@ -127,7 +127,7 @@ protected:
 
 private Q_SLOTS:
     void setControlTime();
-    void setUpPanel();
+    //void setUpPanel();
 
 private:
     IUKUIPanelPlugin * mPlugin;

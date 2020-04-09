@@ -951,21 +951,23 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
                    tr("Time and Date Setting"),
                    this, SLOT(setControlTime())
                   );
+    /*
     menuCalender->addAction(QIcon::fromTheme("document-page-setup"),
                    tr("Config panel"),
                    this, SLOT(setUpPanel())
                   );
+    */
     menuCalender->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menuCalender->sizeHint()));
     menuCalender->show();
 }
 
 void CalendarActiveLabel::setControlTime()
 {
-    system("ukui-control-center -t");
+    system("ukui-control-center");
 }
-
+/*
 void CalendarActiveLabel::setUpPanel()
 {
     system("ukui-control-center -d");
 }
-
+*/
