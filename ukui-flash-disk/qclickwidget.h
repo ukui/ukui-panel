@@ -28,7 +28,6 @@
 #include <QLabel>
 #include <QBoxLayout>
 #include <QPushButton>
-#include <QToolButton>
 
 #include "clickLabel.h"
 class MainWindow;
