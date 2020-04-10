@@ -49,7 +49,6 @@ private:
 
 private Q_SLOTS:
     void on_interface_hide();
-
 protected:
     void paintEvent(QPaintEvent *event);
 

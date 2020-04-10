@@ -90,7 +90,6 @@ QClickWidget::QClickWidget(QWidget *parent,
             //m_nameDis1_label->setFixedSize(120,18);
             QString VolumeName = getElidedText(m_nameDis1_label->font(), m_nameDis1, 120);
             m_nameDis1_label->adjustSize();
-            qDebug()<<m_nameDis1_label->width()<<"wwjjjjjjjjjjjjjjjj,nisjozjemderamgwpwuyule"<<m_nameDis1_label->height();
             m_nameDis1_label->setText("- "+VolumeName+":");
             m_nameDis1_label->setStyleSheet(
                                     //正常状态样式
@@ -143,7 +142,6 @@ QClickWidget::QClickWidget(QWidget *parent,
             m_nameDis1_label->setFont(QFont("Microsoft YaHei",14));
             QString VolumeNameDis1 = getElidedText(m_nameDis1_label->font(), m_nameDis1, 120);
             m_nameDis1_label->adjustSize();
-            qDebug()<<m_nameDis1_label->width()<<"wwj,nisjozjemderamgwpwuyule"<<m_nameDis1_label->height();
             m_nameDis1_label->setText("- "+VolumeNameDis1+":");
             m_nameDis1_label->setStyleSheet(
                                     //正常状态样式
@@ -192,7 +190,6 @@ QClickWidget::QClickWidget(QWidget *parent,
                                     "}"
                                     );
             m_nameDis2_label->adjustSize();
-            qDebug()<<m_nameDis2_label->width()<<"wwj,nisjozjemderamgwpwuyule"<<m_nameDis2_label->height();
             m_nameDis2_label->installEventFilter(this);
             m_capacityDis2_label = new QLabel();
             QString str_capacityDis2 = size_human(m_capacityDis2);
@@ -502,7 +499,6 @@ void QClickWidget::mouseClicked()
     //处理代码
 //        std::string str = m_path.toStdString();
 //        const char* ch = str.c_str();
-    qDebug() << "打开" << m_pathDis1;
     QProcess::startDetached("peony "+m_pathDis1);
     this->topLevelWidget()->hide();
 }
@@ -731,5 +727,4 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
 
 void QClickWidget::resizeEvent(QResizeEvent *event)
 {
-    qDebug()<<m_eject_button->geometry();
 }
