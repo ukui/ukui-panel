@@ -55,6 +55,7 @@ public:
     bool isOnDesktop(int desktop) const;
     bool isOnCurrentScreen() const;
     bool isMinimized() const;
+    bool isFocusState() const;
     void updateText();
 
     Qt::Corner origin() const;
@@ -69,6 +70,8 @@ public:
     bool hasDragAndDropHover() const;
     void setThumbNail(QPixmap _pixmap);
     void updateTitle();
+    void removeThumbNail();
+    void addThumbNail();
 
 public slots:
     void raiseApplication();

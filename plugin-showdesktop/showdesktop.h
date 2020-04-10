@@ -30,25 +30,31 @@
 
 #include "../panel/iukuipanelplugin.h"
 #include <QToolButton>
+#include <QWidget>
 
 
-
-class ShowDesktop :  public QObject, public IUKUIPanelPlugin
+class ShowDesktop :  public QWidget, public IUKUIPanelPlugin
 {
     Q_OBJECT
 
 public:
     ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo);
 
-    virtual QWidget *widget() { return &mButton; }
+    virtual QWidget *widget() { return this; }
     virtual QString themeId() const { return "ShowDesktop"; }
     void realign()override;
-
-private slots:
-    void toggleShowingDesktop();
+protected:
+    void paintEvent(QPaintEvent *);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
+    void mousePressEvent(QMouseEvent *);
 
 private:
-    QToolButton mButton;
+    enum showDeskTopState{NORMAL,HOVER};
+    showDeskTopState state;
+
+    int xEndPoint;
+    int yEndPoint;
 };
 
 class ShowDesktopLibrary: public QObject, public IUKUIPanelPluginLibrary

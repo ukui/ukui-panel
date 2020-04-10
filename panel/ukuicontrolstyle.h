@@ -21,6 +21,7 @@
 #include <QMenu>
 #include <QToolButton>
 #include <QFrame>
+#include <QWidget>
 class UKUiMenu:public QMenu
 {
 public:
@@ -44,6 +45,15 @@ class UKUiFrame:public QFrame
 public:
     UKUiFrame();
     ~UKUiFrame();
+protected:
+    void paintEvent(QPaintEvent*);
+};
+
+class UKUiWidget:public QWidget
+{
+public:
+    UKUiWidget();
+    ~UKUiWidget();
 protected:
     void paintEvent(QPaintEvent*);
 };

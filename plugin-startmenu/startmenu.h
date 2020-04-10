@@ -35,22 +35,58 @@
 #include "../panel/ukuipanel.h"
 #include "../panel/config/configpanelwidget.h"
 #include <../panel/popupmenu.h>
+#include "../panel/iukuipanelplugin.h"
 #include <QMenu>
 #include <QPointF>
 
-class StartMenuButton:public QToolButton
+class UKUIStartMenuButton;
+class UKUIStartMenuPlugin: public QObject, public IUKUIPanelPlugin
 {
     Q_OBJECT
 public:
-    StartMenuButton();
-    ~StartMenuButton();
+    explicit UKUIStartMenuPlugin(const IUKUIPanelPluginStartupInfo &startupInfo);
+    ~UKUIStartMenuPlugin();
+
+    virtual QWidget *widget();
+    virtual QString themeId() const { return "StartMenu"; }
+    virtual Flags flags() const { return NeedsHandle; }
+
+    void realign();
+
+    bool isSeparate() const { return true; }
+
+private:
+    UKUIStartMenuButton *mWidget;
+};
+
+
+class StartMenuLibrary: public QObject, public IUKUIPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "ukui.org/Panel/PluginInterface/3.0")
+    Q_INTERFACES(IUKUIPanelPluginLibrary)
+public:
+    IUKUIPanelPlugin *mPlugin;
+    IUKUIPanelPlugin *instance(const IUKUIPanelPluginStartupInfo &startupInfo) const
+    {
+        return new UKUIStartMenuPlugin(startupInfo);
+    }
+};
+
+class UKUIStartMenuButton:public QToolButton
+{
+    Q_OBJECT
+public:
+    UKUIStartMenuButton(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
+    ~UKUIStartMenuButton();
+    void realign();
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mousePressEvent(QMouseEvent* event);
 
 private:
-    void moveMenu(QPointF pt);
-    PopupMenu *menuTaskview;
+    QMenu *rightPressMenu;
+    IUKUIPanelPlugin * mPlugin;
 
 private slots:
     void ScreenServer();
@@ -59,33 +95,4 @@ private slots:
     void SessionReboot();
     void SessionShutdown();
 };
-
-class StartMenu : public QObject, public IUKUIPanelPlugin
-{
-    Q_OBJECT
-public:
-    StartMenu(const IUKUIPanelPluginStartupInfo &startupInfo);
-    ~StartMenu();
-
-    virtual QWidget *widget() { return mButton; }
-    virtual QString themeId() const { return QStringLiteral("startmenu"); }
-    void realign();
-    virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
-private:
-    StartMenuButton *mButton;
-};
-
-class StartMenuLibrary: public QObject, public IUKUIPanelPluginLibrary
-{
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "ukui.org/Panel/PluginInterface/3.0")
-    Q_INTERFACES(IUKUIPanelPluginLibrary)
-public:
-    IUKUIPanelPlugin *instance(const IUKUIPanelPluginStartupInfo &startupInfo) const
-    {
-        return new StartMenu(startupInfo);
-    }
-};
-
-
 #endif

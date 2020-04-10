@@ -44,13 +44,16 @@
 #include <glib.h>
 #include <gio/gio.h>
 #define CALENDAR_HEIGHT (40)
-#define CALENDAR_WIDTH (85)
+#define CALENDAR_WIDTH (104)
 
+#define WEBVIEW_WIDTH (454)
+#define WEBVIEW_MAX_HEIGHT (704)
+#define WEBVIEW_MIN_HEIGHT (600)
 #define HOUR_SYSTEM_CONTROL "org.ukui.control-center.panel.plugins"
-#define HOUR_SYSTEM_24_Horizontal "hh:mm dddd  yyyy-MM-dd"
-#define HOUR_SYSTEM_24_Vertical "hh:mm dddd  MM-dd"
-#define HOUR_SYSTEM_12_Horizontal   "hh/A:mm dddd  yyyy-MM-dd"
-#define HOUR_SYSTEM_12_Vertical   "hh/A:mm dddd  MM-dd"
+#define HOUR_SYSTEM_24_Horizontal "hh:mm ddd  yyyy/MM/dd"
+#define HOUR_SYSTEM_24_Vertical "hh:mm ddd  MM/dd"
+#define HOUR_SYSTEM_12_Horizontal   "Ahh:mm ddd  yyyy/MM/dd"
+#define HOUR_SYSTEM_12_Vertical   "Ahh:mm ddd  MM/dd"
 #define HOUR_SYSTEM_KEY "hoursystem"
 
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
@@ -62,12 +65,14 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mbActived(false),
     mbIsNeedUpdate(false),
     mbHasCreatedWebView(false),
+    mViewWidht(WEBVIEW_WIDTH),
+    mViewHeight(0),
     mPopupContent(NULL),
     mWebViewDiag(NULL)
 {
 
     mMainWidget = new QWidget();
-    mContent = new CalendarActiveLabel;
+    mContent = new CalendarActiveLabel(this);
     mWebViewDiag = new UkuiWebviewDialog;
 
     mRotatedWidget = new UKUi::RotatedWidget(*mContent, mMainWidget);
@@ -97,7 +102,12 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     {
         if (key == HOUR_SYSTEM_KEY)
         {
+            if(gsettings->keys().contains("hoursystem"))
+            {
             hourSystemMode=gsettings->get("hoursystem").toString();
+            }
+            else
+                hourSystemMode=24;
         }
         else if(key == "calendar")
         {
@@ -178,6 +188,7 @@ void IndicatorCalendar::updateTimeText()
     QTimeZone timeZone(timeZoneName.toLatin1());
     QDateTime tzNow = now.toTimeZone(timeZone);
 
+
     bool isUpToDate(true);
     if (!mShownTime.isValid()) // first time or forced update
     {
@@ -223,10 +234,9 @@ void IndicatorCalendar::updateTimeText()
         if(QGSettings::isSchemaInstalled(id))
         {
         gsettings = new QGSettings(id);
-        QString mode;
         QStringList keys = gsettings->keys();
         if(keys.contains("hoursystem")){
-            mode=gsettings->get("hoursystem").toString();
+            hourSystemMode=gsettings->get("hoursystem").toString();
         }
         if(!gsettings)
         {
@@ -238,6 +248,7 @@ void IndicatorCalendar::updateTimeText()
             if(panel()->isHorizontal())
             {
                 str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
+//                str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
             }
             else
             {
@@ -245,18 +256,31 @@ void IndicatorCalendar::updateTimeText()
             }
 
         }
-        else{
-            if(panel()->isHorizontal()){
+        else
+        {
+            if(panel()->isHorizontal())
+            {
                 str=tzNow.toString(HOUR_SYSTEM_12_Horizontal);
             }
-            else{
-                str=tzNow.toString(HOUR_SYSTEM_12_Vertical);
+            else
+            {
+                str = tzNow.toString(HOUR_SYSTEM_12_Vertical);
+                str.replace("AM","AM ");
+                str.replace("PM","PM ");
             }
         }
-        str.replace("-","/");
-        str.replace("星期","周");
-        str.remove("/上午");
-        str.remove("/下午");
+//        if(QLocale::system().name() == "zh_CN")
+//        {
+//            str.replace("-","/");
+//            str.replace("星期","周");
+//            str.remove("/上午");
+//            str.remove("/下午");
+//            mContent->setText(str);
+//        }
+//        else
+//        {
+//            mContent->setText(tzNow.toString("Ahh:mm ddd  yyyy/MM/dd"));
+//        }
         mContent->setText(str);
         if (old_size != mContent->sizeHint())
         {
@@ -483,6 +507,8 @@ void IndicatorCalendar::initializeCalendar()
 {
     QByteArray id(HOUR_SYSTEM_CONTROL);
     CalendarShowMode showCalendar = defaultMode;
+    QString lunarOrsolar;
+    QString firstDay;
     if(QGSettings::isSchemaInstalled(id))
     {
 //        if(gsettings)
@@ -495,22 +521,44 @@ void IndicatorCalendar::initializeCalendar()
             qDebug()<<"get gsetting error!!!";
             return;
         }
-        QString lunarOrsolar = gsettings->get("calendar").toString();
-        QString firstDay = gsettings->get("firstday").toString();
-        qDebug()<<"lunarOrsolar:"<<lunarOrsolar;
-        qDebug()<<"firstDay:"<<firstDay;
-        if(lunarOrsolar == "lunar")
+        if(gsettings->keys().contains("calendar"))
         {
-            if(firstDay == "sunday")
+            lunarOrsolar= gsettings->get("calendar").toString();
+        }
+        if(gsettings->keys().contains("firstday"))
+        {
+            firstDay= gsettings->get("firstday").toString();
+        }
+        qDebug()<<"QLocale::system().name():"<<QLocale::system().name();
+        if (QLocale::system().name() == "zh_CN")
+        {
+
+            if(lunarOrsolar == "lunar")
             {
-                showCalendar = lunarSunday;
+                if(firstDay == "sunday")
+                {
+                    showCalendar = lunarSunday;
+                }
+                else if(firstDay == "monday")
+                {
+                    showCalendar = lunarMonday;
+                }
+                mViewHeight = WEBVIEW_MAX_HEIGHT;
             }
-            else if(firstDay == "monday")
+            else if(lunarOrsolar == "solarlunar")
             {
-                showCalendar = lunarMonday;
+                if(firstDay == "sunday")
+                {
+                    showCalendar = solarSunday;
+                }
+                else if(firstDay == "monday")
+                {
+                    showCalendar = solarMonday;
+                }
+                mViewHeight = WEBVIEW_MIN_HEIGHT;
             }
         }
-        else if(lunarOrsolar == "solarlunar")
+        else// for internaitional
         {
             if(firstDay == "sunday")
             {
@@ -520,6 +568,7 @@ void IndicatorCalendar::initializeCalendar()
             {
                 showCalendar = solarMonday;
             }
+            mViewHeight = WEBVIEW_MIN_HEIGHT;
         }
     }
 
@@ -527,6 +576,7 @@ void IndicatorCalendar::initializeCalendar()
     {
         if(!mbHasCreatedWebView)
         {
+            qDebug()<<"showCalendar:"<<showCalendar;
             mWebViewDiag->creatwebview(showCalendar);
             mbHasCreatedWebView = true;
         }
@@ -540,7 +590,7 @@ void IndicatorCalendar::activated(ActivationReason reason)
 //        QString  htmlFilePath = QLatin1String(PACKAGE_DATA_DIR);
 //        htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui.html");
 
-        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(454,704)));
+        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht,mViewHeight)));
         mWebViewDiag->show();
         setbackground();
         if(!mbActived)
@@ -861,8 +911,9 @@ void IndicatorCalendar::setbackground()
 }
 
 
-CalendarActiveLabel::CalendarActiveLabel(QWidget *parent) :
-    QLabel(parent)
+CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *parent) :
+    QLabel(parent),
+    mPlugin(plugin)
 {
 }
 
@@ -896,32 +947,25 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
     PopupMenu *menuCalender=new PopupMenu(this);
     menuCalender->setAttribute(Qt::WA_DeleteOnClose);
 
-    menuCalender->addAction(QIcon::fromTheme(QLatin1String("configure")),
+    menuCalender->addAction(QIcon::fromTheme("document-page-setup"),
                    tr("Time and Date Setting"),
                    this, SLOT(setControlTime())
                   );
-    menuCalender->addAction(QIcon("/usr/share/ukui-panel/panel/img/setting.svg"),
+    menuCalender->addAction(QIcon::fromTheme("document-page-setup"),
                    tr("Config panel"),
                    this, SLOT(setUpPanel())
                   );
-
-    QCursor::pos();
-    if(QCursor::pos().x()>500 && QCursor::pos().y()<100)
-        menuCalender->setGeometry(QCursor::pos().x()-120,QCursor::pos().y(),160,70);
-    else if(QCursor::pos().x()<100 && QCursor::pos().y()>500)
-        menuCalender->setGeometry(QCursor::pos().x(),QCursor::pos().y(),160,70);
-    else
-        menuCalender->setGeometry(QCursor::pos().x()-120,QCursor::pos().y()-90,160,70);
+    menuCalender->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menuCalender->sizeHint()));
     menuCalender->show();
 }
 
 void CalendarActiveLabel::setControlTime()
 {
-    system("ukui-control-center -m");
+    system("ukui-control-center -t");
 }
 
 void CalendarActiveLabel::setUpPanel()
 {
-    system("ukui-control-center -m");
+    system("ukui-control-center -d");
 }
 
