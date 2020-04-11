@@ -55,6 +55,7 @@ public:
     bool isOnDesktop(int desktop) const;
     bool isOnCurrentScreen() const;
     bool isMinimized() const;
+    bool isFocusState() const;
     void updateText();
 
     Qt::Corner origin() const;
