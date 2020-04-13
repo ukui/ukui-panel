@@ -21,14 +21,16 @@
 #include <QtWidgets>
 #include <QLabel>
 #include <QPushButton>
-#include "qclickwidget.h"
-#include "UnionVariable.h"
-#include "ejectInterface.h"
 #include <QSystemTrayIcon>
 #include <QIcon>
 #include <PeonyVolumeManager>
 #include <gio/gio.h>
 #include <glib.h>
+#include <QApplication>
+
+#include "qclickwidget.h"
+#include "UnionVariable.h"
+#include "ejectInterface.h"
 
 namespace Ui {
 class MainWindow;

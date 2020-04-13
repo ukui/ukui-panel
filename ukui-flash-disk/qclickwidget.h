@@ -29,6 +29,7 @@
 #include <QBoxLayout>
 #include <QPushButton>
 
+
 #include "clickLabel.h"
 class MainWindow;
 class QClickWidget : public QWidget
@@ -56,7 +57,7 @@ public Q_SLOTS:
 protected:
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);
-    void paintEvent(QPaintEvent *);
+    //void paintEvent(QPaintEvent *);
 
 private:
     QString m_driveName;
@@ -85,6 +86,10 @@ private:
     QLabel *m_capacityDis2_label;
     QLabel *m_capacityDis3_label;
     QLabel *m_capacityDis4_label;
+    QWidget *disWidgetNumOne;
+    QWidget *disWidgetNumTwo;
+    QWidget *disWidgetNumThree;
+    QWidget *disWidgetNumFour;
 
 public:
     QPushButton *m_eject_button;

@@ -17,8 +17,8 @@
  */
 #include "MainController.h"
 
-MainController* MainController::mSelf = 0;
-MainController* MainController::self()
+MainController* MainController::mSelf = 0;  //static variable
+MainController* MainController::self()      //static function    //complete the singleton object
 {
     if (!mSelf)
     {
@@ -30,23 +30,23 @@ MainController* MainController::self()
 MainController::MainController()
 {
     init();
-    m_DiskWindow = new MainWindow;
+    m_DiskWindow = new MainWindow;         //main process singleton object
 }
 
 MainController::~MainController()
 {
 }
 
-void MainController::init()
+void MainController::init()                   //init select
 {
     if(IsNotRunning())
     {
-        creatDBusService();
+        creatDBusService();                 //create connect
         qDebug()<<"--------------creatDBusService";
     }
     else
     {
-        qDebug()<<"ukui-flash-disk is running";
+        qDebug()<<"ukui-flash-disk is running";  //or finish the process
         exit(0);
     }
 }
