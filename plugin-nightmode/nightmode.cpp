@@ -30,6 +30,7 @@
 #define NIGHT_MODE_KEY "nightmode"
 #define NIGHT_MODE_CONTROL "org.ukui.control-center.panel.plugins"
 
+
 NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
@@ -52,56 +53,53 @@ void NightMode::realign()
 }
 
 NightModeButton::NightModeButton(){
-    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
+//    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
+
     const QByteArray id(NIGHT_MODE_CONTROL);
     if(QGSettings::isSchemaInstalled(id)) {
             gsettings = new QGSettings(id);
+            mode=gsettings->get(NIGHT_MODE_KEY).toBool();
+            nightModeChange(mode);
             connect(gsettings, &QGSettings::changed, this, [=] (const QString &key) {
                 if (key == "nightmode") {
-                    bool mode=gsettings->get(NIGHT_MODE_KEY).toBool();
-                    if(mode==true){
-                    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-                        this->setToolTip(tr("nightmode open"));
-                    }
-                    else{
-                    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
-                        this->setToolTip(tr("nightmode close"));
-                }
-
+                    mode=gsettings->get(NIGHT_MODE_KEY).toBool();
+                    nightModeChange(mode);
                 }
             });
         }
-    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
 }
 NightModeButton::~NightModeButton(){
     delete gsettings;
 }
 
-void NightModeButton::mousePressEvent(QMouseEvent* event)
+void NightModeButton::mousePressEvent(QMouseEvent *)
 {
-    const Qt::MouseButton b = event->button();
-    if (Qt::LeftButton == b){
-        bool mode=true;
-        if(gsettings->keys().contains("nightmode")){
-        mode=gsettings->get("nightmode").toBool();
-        }
-        if(mode==true){
+    if(mode)
+    {
         gsettings->set("nightmode", false);
-        system("redshift -x");
-        }
-        else{
-        gsettings->set("nightmode", true);
-//        system("redshift -t 5700:3600 -g 0.8 -m randr -v");
-        if(QFileInfo::exists(QString("/usr/bin/redshift")))
-        {
-        QProcess *process =new QProcess(this);
-        process->startDetached("redshift -t 5700:3600 -g 0.8 -m randr -v");
-        }
-        else{
-            QMessageBox::information(this,"Error","请先安装redshift");
-        }
-        }
     }
-    QWidget::mousePressEvent(event);
+    else
+    {
+        gsettings->set("nightmode", true);
+    }
 }
 
+void NightModeButton::nightModeChange(bool mode)
+{
+    if(mode)
+    {
+        this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
+        this->setToolTip(tr("nightmode open"));
+        QProcess *nightprocess =new QProcess(this);
+        nightprocess->startDetached("redshift -O 3600");
+        nightprocess->deleteLater();
+    }
+    else
+    {
+        this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
+        this->setToolTip(tr("nightmode close"));
+        QProcess *lightprocess =new QProcess(this);
+        lightprocess->startDetached("redshift -x");
+        lightprocess->deleteLater();
+    }
+}

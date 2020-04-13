@@ -46,7 +46,10 @@ public:
     ~NightModeButton();
 protected:
     void mousePressEvent(QMouseEvent* event);
+    void nightModeChange(bool);
     QGSettings *gsettings;
+private:
+    bool mode;
 };
 
 class NightMode : public QObject, public IUKUIPanelPlugin
