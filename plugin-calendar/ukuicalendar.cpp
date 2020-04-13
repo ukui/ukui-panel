@@ -36,6 +36,7 @@
 #include <QScopedArrayPointer>
 #include <QTimer>
 #include <QWheelEvent>
+#include <QProcess>
 #include "../panel/pluginsettings.h"
 #include <QDebug>
 #include <QApplication>
@@ -961,11 +962,13 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 
 void CalendarActiveLabel::setControlTime()
 {
-    system("ukui-control-center -t");
+    QProcess *process =new QProcess(this);
+    process->startDetached("ukui-control-center -t");
 }
 
 void CalendarActiveLabel::setUpPanel()
 {
-    system("ukui-control-center -d");
+    QProcess *process =new QProcess(this);
+    process->startDetached("ukui-control-center -d");
 }
 
