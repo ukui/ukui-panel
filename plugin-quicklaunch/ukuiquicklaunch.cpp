@@ -140,7 +140,6 @@ int UKUIQuickLaunch::countOfButtons() const
 
 void UKUIQuickLaunch::realign()
 {
-//    btn->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
     for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
     {
         (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
@@ -173,13 +172,15 @@ void UKUIQuickLaunch::realign()
 void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
 {
     mLayout->setEnabled(false);
-
-    btn = new QuickLaunchButton(action, mPlugin, this);
+    QuickLaunchButton *btn = new QuickLaunchButton(action, mPlugin, this);
     btn->setArrowType(Qt::NoArrow);
-//    btn->setMenu(Qt::InstantPopup);
+    /*＠bug
+     * 快速启动栏右键菜单原本的样式有对于不可选项有置灰效果，
+     * 后跟随主题框架之后置灰效果消失，可能与此属性相关
+     */
+    //        btn->setMenu(Qt::InstantPopup);
     mVBtn.push_back(btn);
     mLayout->addWidget(btn);
-    btn->setIconSize(QSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()));
     connect(btn, SIGNAL(switchButtons(QuickLaunchButton*,QuickLaunchButton*)), this, SLOT(switchButtons(QuickLaunchButton*,QuickLaunchButton*)));
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
@@ -200,22 +201,30 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
     int i = 0;
     QLayoutItem *child;
 
-    while ((child = mLayout->layout()->itemAt(i))) {
-        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-        if (b->file_name == btn->file_name)
-        {
-            qDebug()<<" already  insert  ";
-            checkresult=true;
-            break;
+    if(mLayout->layout()->count()>0)
+    {
+        while ((child = mLayout->layout()->itemAt(i))) {
+            QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
+            if (b->file_name == btn->file_name)
+            {
+                qDebug()<<" already  insert  ";
+                checkresult=true;
+                break;
+            }
+            else {
+                ++i;
+                qDebug()<<"don't insert ";
+                checkresult=false;
+            }
+
         }
-        else {
-            ++i;
-            qDebug()<<"don't insert ";
-            checkresult=false;
-        }
-     }
-    saveSettings();
-    return checkresult;
+        return checkresult;
+    }
+    else
+    {
+        return true;
+    }
+
 }
 
 //check by filename
@@ -227,6 +236,8 @@ void UKUIQuickLaunch::checkButton(QString *filename)
     while ((child = mLayout->layout()->itemAt(i))) {
         qDebug()<<i;
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
+        if(b)
+        {
             if (b->file_name == filename) {
                 qDebug()<<" already  insert  "<<child;                //mLayout->removeItem(child);
             } else {
@@ -234,31 +245,31 @@ void UKUIQuickLaunch::checkButton(QString *filename)
                 qDebug()<<"not insert  ";
             }
         }
-     saveSettings();
+    }
 }
 
 void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
 {
-
     QuickLaunchButton* btn = new QuickLaunchButton(action, mPlugin, this);
-    qDebug()<<"btn->file_name  *** >>>"<<btn->file_name;
     int i = 0;
     QLayoutItem *child;
 
     while ((child = mLayout->layout()->itemAt(i))) {
-        qDebug()<<i;
+        qDebug()<<" mLayout->layout()->itemAt(i)";
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-        qDebug()<<"b->file_name   ---"<<b;
-            if (b->file_name == btn->file_name) {
-                qDebug()<<"child   >>>"<<child;
-                //mLayout->removeItem(child);
+        if (b->file_name == btn->file_name) {
+            //mLayout->removeItem(child);
+            if(mLayout->layout()->count()>1)
+            {
                 mLayout->removeWidget(b);
-                //b->deleteLater();
-            } else {
-                ++i;
+                qDebug()<<"removeButton   ****";
             }
+            //b->deleteLater();
+        } else {
+            ++i;
         }
-     saveSettings();
+    }
+    saveSettings();
 }
 
 //remove by filename
@@ -271,16 +282,16 @@ void UKUIQuickLaunch::removeButton(QString *filename)
         qDebug()<<i;
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
         qDebug()<<"b->file_name   ---"<<b->file_name;
-            if (b->file_name == filename) {
-                qDebug()<<"child   >>>"<<child;
-                //mLayout->removeItem(child);
-                mLayout->removeWidget(b);
-                b->deleteLater();
-            } else {
-                ++i;
-            }
+        if (b->file_name == filename) {
+            qDebug()<<"child   >>>"<<child;
+            //mLayout->removeItem(child);
+            mLayout->removeWidget(b);
+            b->deleteLater();
+        } else {
+            ++i;
         }
-     saveSettings();
+    }
+    saveSettings();
 }
 
 void UKUIQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
@@ -301,6 +312,7 @@ void UKUIQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
 
 void UKUIQuickLaunch::dropEvent(QDropEvent *e)
 {
+    qDebug()<<"UKUIQuickLaunch::dropEvent";
     const auto urls = e->mimeData()->urls().toSet();
     for (const QUrl &url : urls)
     {
@@ -324,8 +336,8 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
         {
             qWarning() << "XdgDesktopFile" << fileName << "is not valid";
             QMessageBox::information(this, tr("Drop Error"),
-                              tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
-                            );
+                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                                     );
         }
     }
     saveSettings();
@@ -343,6 +355,7 @@ void UKUIQuickLaunch::paintEvent(QPaintEvent *)
 
 bool UKUIQuickLaunch::AddToTaskbar(QString arg)
 {
+    qDebug()<<"AddToTaskbar                  *************8";
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
@@ -353,8 +366,8 @@ bool UKUIQuickLaunch::AddToTaskbar(QString arg)
           current environment.
           but I don't need this attributes now
         */
-//        if (xdg.isSuitable())
-            addButton(new QuickLaunchAction(&xdg, this));
+        //        if (xdg.isSuitable())
+        addButton(new QuickLaunchAction(&xdg, this));
     }
     else if (fi.exists() && fi.isExecutable() && !fi.isDir())
     {
@@ -375,25 +388,41 @@ bool UKUIQuickLaunch::AddToTaskbar(QString arg)
     return true;
 }
 
+/*
+ * @need resolved bug
+ * 为开始菜单提供检测应用是否在任务栏上面的接口
+ * 由于在删除最后一个应用的时候会出现任务栏崩溃的问题，
+ * 所以暂定　mLayout->count()>0的情况下才进行checkButton操作
+ * 在mLayout->count()>0的情况下才进行removeButton操作
+ */
 bool UKUIQuickLaunch::CheckIfExist(QString arg)
 {
-    const auto url=QUrl(arg);
-    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-    QFileInfo fi(fileName);
-    XdgDesktopFile xdg;
-    xdg.load(fileName);
-    return  checkButton(new QuickLaunchAction(&xdg, this));
+    if (mLayout->count()>0)
+    {
+        const auto url=QUrl(arg);
+        QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+        XdgDesktopFile xdg;
+        xdg.load(fileName);
+        bool state;
+        state=checkButton(new QuickLaunchAction(&xdg, this));
+        return state;
+    }
+    else
+        return false;
 }
 
 bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
 {
-    const auto url=QUrl(arg);
-    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-    QFileInfo fi(fileName);
-    XdgDesktopFile xdg;
-    xdg.load(fileName);
-    removeButton(new QuickLaunchAction(&xdg, this));
-    return true;
+    if(mLayout->count()>1)
+    {
+        qDebug()<<"RemoveFromTaskbar  ****";
+        const auto url=QUrl(arg);
+        QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+        XdgDesktopFile xdg;
+        xdg.load(fileName);
+        removeButton(new QuickLaunchAction(&xdg, this));
+        return true;
+    }
 }
 
 int UKUIQuickLaunch::GetPanelPosition(QString arg)
@@ -425,28 +454,34 @@ void UKUIQuickLaunch::switchButtons(QuickLaunchButton *button1, QuickLaunchButto
 
 void UKUIQuickLaunch::buttonDeleted()
 {
-    QuickLaunchButton *btn = qobject_cast<QuickLaunchButton*>(sender());
-    if (!btn)
-        return;
-    mLayout->removeWidget(btn);
-    for(auto it = mVBtn.begin(); it != mVBtn.end();)
+    if(mLayout->count()>1)
     {
-        if(*it == btn)
+        QuickLaunchButton *btn = qobject_cast<QuickLaunchButton*>(sender());
+        if (!btn)
+            return;
+        for(auto it = mVBtn.begin();it != mVBtn.end();it++)
         {
-            mVBtn.erase(it);
-            break;
+            if(mLayout->layout()->count()>0)
+            {
+                if(*it == btn)
+                {
+                    mVBtn.erase(it);
+                    break;
+                }
+            }
+            else
+                qDebug()<<"can 't buttonDeleted   ";
         }
-        else
-        {
-            it++;
-        }
-    }
-    btn->deleteLater();
-    saveSettings();
 
-    if (mLayout->isEmpty())
-        showPlaceHolder();
-    realign();
+        btn->deleteLater();
+        mLayout->removeWidget(btn);
+        saveSettings();
+
+        if (mLayout->isEmpty())
+            showPlaceHolder();
+        realign();
+    }
+
 }
 
 
@@ -505,8 +540,6 @@ void UKUIQuickLaunch::saveSettings()
     }
 
     settings->setArray("apps", hashList);
-    hashList.removeLast();
-
 }
 
 
@@ -545,16 +578,13 @@ FilectrlAdaptor::~FilectrlAdaptor()
 
 bool FilectrlAdaptor::AddToTaskbar(const QString &arg)
 {
-    // handle method call com.kylin.security.controller.filectrl.AddToTaskbar
     bool out0;
     QMetaObject::invokeMethod(parent(), "AddToTaskbar", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
-    emit addtak(3);
     return out0;
 }
 
 bool FilectrlAdaptor::CheckIfExist(const QString &arg)
 {
-    // handle method call com.kylin.security.controller.filectrl.CheckIfExist
     bool out0;
     QMetaObject::invokeMethod(parent(), "CheckIfExist", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
     return out0;
@@ -562,16 +592,13 @@ bool FilectrlAdaptor::CheckIfExist(const QString &arg)
 
 bool FilectrlAdaptor::RemoveFromTaskbar(const QString &arg)
 {
-    // handle method call com.kylin.security.controller.filectrl.RemoveFromTaskbar
     bool out0;
     QMetaObject::invokeMethod(parent(), "RemoveFromTaskbar", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
-    qDebug()<<"revove set is here"<<arg;
     return out0;
 }
 
 int FilectrlAdaptor::GetPanelPosition(const QString &arg)
 {
-    // handle method call com.kylin.security.controller.filectrl.RemoveFromTaskbar
     int out0;
     QMetaObject::invokeMethod(parent(), "GetPanelPosition", Q_RETURN_ARG(int, out0), Q_ARG(QString, arg));
     return out0;
@@ -579,7 +606,6 @@ int FilectrlAdaptor::GetPanelPosition(const QString &arg)
 
 int FilectrlAdaptor::GetPanelSize(const QString &arg)
 {
-    // handle method call com.kylin.security.controller.filectrl.RemoveFromTaskbar
     int out0;
     QMetaObject::invokeMethod(parent(), "GetPanelSize", Q_RETURN_ARG(int, out0), Q_ARG(QString, arg));
     return out0;
