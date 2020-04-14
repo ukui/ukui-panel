@@ -46,9 +46,13 @@ public:
     ~NightModeButton();
 protected:
     void mousePressEvent(QMouseEvent* event);
-    void nightModeChange(bool);
-    QGSettings *gsettings;
+//    void nightModeChange(bool);
 private:
+    void setNightMode(const bool nightMode);
+    void setUkuiStyle(QString );
+    QGSettings *gsettings;
+    QGSettings *mstyleGsettings;
+    QSettings *mqsettings;
     bool mode;
 };
 
