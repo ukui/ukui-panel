@@ -90,26 +90,26 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     rightPressMenu->setAttribute(Qt::WA_DeleteOnClose);
 
     rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-lock-screen")),
-                              tr("Lock The Screen"),
+                              tr("Lock Screen"),
                               this, SLOT(ScreenServer())
                               );
     rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("stock-people")),
-                              tr("Switch The User"),
+                              tr("Switch User"),
                               this, SLOT(SessionSwitch())
                               );
 
     rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-logout")),
-                              tr("Logout"),
+                              tr("LogOut"),
                               this, SLOT(SessionLogout())
                               );
 
     rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-restart")),
-                              tr("Reboot"),
+                              tr("Restart"),
                               this, SLOT(SessionReboot())
                               );
 
     rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("exit")),
-                              tr("Shutdown"),
+                              tr("Power Off"),
                               this, SLOT(SessionShutdown())
                               );
 
