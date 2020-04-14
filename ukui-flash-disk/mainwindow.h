@@ -23,7 +23,6 @@
 #include <QPushButton>
 #include <QSystemTrayIcon>
 #include <QIcon>
-#include <PeonyVolumeManager>
 #include <gio/gio.h>
 #include <glib.h>
 #include <QApplication>
@@ -78,9 +77,15 @@ private:
     QString size_human(qlonglong capacity);
     void getDeviceInfo();
     static void frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,MainWindow *p_this);
+    //static void frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,gpointer);
+    static void drive_connected_callback (GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this);
+    static void drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this);
+    static void volume_added_callback (GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this);
+    static void volume_removed_callback (GVolumeMonitor *monitor, GVolume *volume, gpointer);
+    static void mount_added_callback (GVolumeMonitor *monitor, GMount *mount, gpointer);
+    static void mount_removed_callback (GVolumeMonitor *, GMount *mount, gpointer);
 
 private:
-    QSystemTrayIcon *m_systray;
     QIcon iconSystray;
     QString UDiskPathDis1;
     QString UDiskPathDis2;
@@ -95,6 +100,8 @@ private:
     int VolumeNum;
     QTimer *interfaceHideTime;
     QScreen *screen;
+public:
+    QSystemTrayIcon *m_systray;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);

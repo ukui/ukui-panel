@@ -138,7 +138,7 @@ QClickWidget::QClickWidget(QWidget *parent,
 
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,68);
-            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
+//            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
         }
 //when the drive has two volumes
         if(m_Num == 2)
@@ -228,8 +228,8 @@ QClickWidget::QClickWidget(QWidget *parent,
             main_V_BoxLayout->addStretch();
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,97);
-            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
-            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
+//            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
+//            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
         }
 //when the drive has three volumes
         if(m_Num == 3)
@@ -354,9 +354,9 @@ QClickWidget::QClickWidget(QWidget *parent,
 
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,136);
-            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
-            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
-            connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
+//            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
+//            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
+//            connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
         }
 //when the drive has four volumes
         if(m_Num == 4)
@@ -516,10 +516,10 @@ QClickWidget::QClickWidget(QWidget *parent,
             main_V_BoxLayout->addWidget(disWidgetNumFour);
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,165);
-            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
-            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
-            connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
-            connect(m_nameDis4_label,SIGNAL(clicked()),this,SLOT(on_volume4_clicked()));
+//            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
+//            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
+//            connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
+//            connect(m_nameDis4_label,SIGNAL(clicked()),this,SLOT(on_volume4_clicked()));
         }
         //connect(this, SIGNAL(clicked()), this, SLOT(mouseClicked()));
 

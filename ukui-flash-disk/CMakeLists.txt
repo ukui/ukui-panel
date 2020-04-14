@@ -15,11 +15,10 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 
-pkg_check_modules(PEONY REQUIRED peony)
+pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
 message(${PEONY_INCLUDE_DIRS})
-message(${PEONY_LIBRARIES})
 
-include_directories(${PEONY_INCLUDE_DIRS})
+include_directories(${GLIB2_INCLUDE_DIRS})
 add_executable(ukui-flash-disk
     ukui-flash-disk.qrc
     disk-resources/ukui-flash-disk_zh_CN.ts
@@ -43,7 +42,7 @@ add_executable(ukui-flash-disk
 
 add_definitions(-DQT_NO_KEYWORDS)
 
-target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${PEONY_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} )
 
 install(TARGETS ukui-flash-disk DESTINATION bin)
 
