@@ -1248,10 +1248,13 @@ void UKUIStorageFrame::paintEvent(QPaintEvent *event)
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
-    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x4d)));
     p.setPen(Qt::NoPen);
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    QPainterPath path;
     p.drawRoundedRect(opt.rect,6,6);
+    path.addRoundedRect(opt.rect,6,6);
+    setProperty("blurRegion",QRegion(path.toFillPolygon().toPolygon()));
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
@@ -1267,7 +1270,7 @@ void UKUiStorageWidget::paintEvent(QPaintEvent *)
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
-    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x4d)));
     p.setPen(Qt::NoPen);
     p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,6,6);
