@@ -50,7 +50,7 @@ class QSize;
 namespace UKUi {
 class GridLayout;
 }
-
+class UKUiStorageWidget;
 /**
  * @brief This makes our trayplugin
  */
@@ -148,7 +148,16 @@ private:
     UKUIStorageFrame *storageFrame;
 //    enum storageBarStatus{ST_HIDE,ST_SHOW};
 //    storageBarStatus storagebarstatus;
-    QWidget *m_pwidget;
+    UKUiStorageWidget *m_pwidget;
     QToolButton *mBtn;
+};
+
+class UKUiStorageWidget:public QWidget
+{
+public:
+    UKUiStorageWidget();
+    ~UKUiStorageWidget();
+protected:
+    void paintEvent(QPaintEvent*);
 };
 #endif

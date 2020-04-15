@@ -27,6 +27,11 @@
 #include <QStyleOption>
 #include <QPainter>
 #include <QTimer>
+#include <QApplication>
+#include <QScreen>
+#include <QDebug>
+
+#include "MacroFile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ejectInterface; }
@@ -46,12 +51,14 @@ private:
     QHBoxLayout *mountname_h_BoxLayout;
     QVBoxLayout *main_V_BoxLayput;
     QTimer *interfaceHideTime;
+    QScreen *EjectScreen;
 
 private Q_SLOTS:
     void on_interface_hide();
-
 protected:
     void paintEvent(QPaintEvent *event);
+private:
+    void moveEjectInterfaceRight();
 
 };
 

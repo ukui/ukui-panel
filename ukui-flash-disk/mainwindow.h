@@ -21,12 +21,16 @@
 #include <QtWidgets>
 #include <QLabel>
 #include <QPushButton>
+#include <QSystemTrayIcon>
+#include <QIcon>
+#include <PeonyVolumeManager>
+#include <gio/gio.h>
+#include <glib.h>
+#include <QApplication>
+
 #include "qclickwidget.h"
 #include "UnionVariable.h"
 #include "ejectInterface.h"
-#include <QSystemTrayIcon>
-#include <QIcon>
-#include <QProcess>
 
 namespace Ui {
 class MainWindow;
@@ -41,20 +45,11 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-private:
-    void getDeviceInfo();
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void getDisConnectErrorMessage();
-    void getConnectErrorMessage();
-//    static int oneVolumeDriveNum;
-//    static int twoVolumeDriveNum;
-//    static int threeVolumeDriveNum;
-//    static int fourVolumeDriveNum;
-//    static int hign;
-
+    void MainWindowShow();
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *vboxlayout;
@@ -77,12 +72,16 @@ private:
                  QString pathDis4,
                  int linestatus);
     void moveBottomRight();
+    void moveBottomDirect(GDrive *drive);
+    void moveBottomNoBase();
+
     QString size_human(qlonglong capacity);
-    void MainWindowShow();
+    void getDeviceInfo();
+    static void frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,MainWindow *p_this);
+
 private:
     QSystemTrayIcon *m_systray;
     QIcon iconSystray;
-    //void initUi();
     QString UDiskPathDis1;
     QString UDiskPathDis2;
     QString UDiskPathDis3;
@@ -93,14 +92,19 @@ private:
     quint64 totalDis4;
     QClickWidget *open_widget;
     int hign;
+    int VolumeNum;
+    QTimer *interfaceHideTime;
+    QScreen *screen;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
-    void eject_drive();
+    void onConvertShowWindow();
+    void on_Maininterface_hide();
 Q_SIGNALS:
     void clicked();
+    void convertShowWindow();
 
 protected:
     void resizeEvent(QResizeEvent *event);

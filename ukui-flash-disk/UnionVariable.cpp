@@ -44,3 +44,10 @@ QList<GMount *> *findGMountList()
     return &gmountList;
 }
 
+static QList<GDrive *> gdriveList;
+QList<GDrive *> *findGDriveList()
+{
+    return &gdriveList;
+}
+
+

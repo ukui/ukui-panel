@@ -93,8 +93,8 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     // (upon starting the app the window for receiving clicks wasn't correctly sized
     //  no matter what we've done)
     QTimer::singleShot(200, [this] { init(); update(); });
-    mRectSize.setWidth(32);
-    mRectSize.setHeight(40);
+//    mRectSize.setWidth(32);
+//    mRectSize.setHeight(40);
 }
 
 
@@ -235,8 +235,8 @@ TrayIcon::~TrayIcon()
 QSize TrayIcon::sizeHint() const
 {
     QMargins margins = contentsMargins();
-    return QSize(margins.left() + mRectSize.width() + margins.right(),
-                 margins.top() + mRectSize.height() + margins.bottom()
+    return QSize(margins.left() + mIconSize.width()/2 + margins.right()/2,
+                 margins.top() + mIconSize.height()/2 + margins.bottom()/2
                 );
 }
 
@@ -258,10 +258,7 @@ void TrayIcon::setIconSize(QSize iconSize)
     {
         xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
     }
-    QSize mysize(8,8);
-    mIconSize=mysize;
 }
-
 
 /************************************************
 

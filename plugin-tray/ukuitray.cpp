@@ -96,6 +96,19 @@ extern "C" {
 /************************************************
 
  ************************************************/
+
+/*
+ * @Note 托盘应用共分为三个区域 Tray Storage Hide
+ * Tray区域 ：UKUITray ； Storage区域：UKUIStorageFrame ； Hide区域没有界面
+ * 图标可存放在三个区域中的任何一个区域，如果应用退出则被销毁
+ *
+ * @bug:
+ * 1.图标移动过程中可能存在重影（一个图标的轮廓显示在另一个图标上方）
+ * 2.图标模糊现象，目前存在的情况是安装系统起来的时候可能会有托盘图标模糊
+ *   注销后模糊现象消失（已经修改改变图标大小的方式）
+ *
+ *
+*/
 bool flag=false;
 extern TrayStorageStatus storagestatus;
 
@@ -164,6 +177,9 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
 
     switch (event_type)
     {
+    /* 监听到托盘应用的启动事件
+     * tr:Listen to the launch event of the tray application
+     */
     case ClientMessage:
         clientMessageEvent(event);
         break;
@@ -174,42 +190,98 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
         //                icon->configureEvent(&(event->xconfigure));
         //            break;
 
-        case DestroyNotify: {
-            unsigned long event_window;
-            event_window = reinterpret_cast<xcb_destroy_notify_event_t*>(event)->window;
-            icon = findIcon(event_window);
-            if (icon)
-            {
-                icon->windowDestroyed(event_window);
-                mHideIcons.removeAll(icon);
-                mTrayIcons.removeAll(icon);
-                mStorageIcons.removeAll(icon);
-                delete icon;
-            }
-            break;
+
+        /*
+         * 监听到托盘应用的退出事件
+         * tr:Listen to the exit event of the tray application
+         */
+    case DestroyNotify: {
+        /*
+         * 不清楚托盘栏区域UKUITray 是如何检测到应用崩溃之后刷新布局的
+         * 在这里本应该刷新收纳栏 handleStorageUi()
+         * 由于收纳栏不刷新可能会导致任务栏的崩溃
+         * 在freeze信号接受的地方freezeTrayApp（）同样进行刷新收纳栏的操作
+         * 但是如果在这里刷新收纳栏目会导致收纳栏的应用异常退出
+         *
+         * tr:
+         * If there is a tray application exit, refresh the storage bar in time,
+         * The reason for entering this step is because it is not clear
+         * how the tray bar area UKUITray detected the app crash and refreshed the layout
+         * The panel may crash because the storage bar is not refreshed
+         * So refresh the storage bar in freezeTrayApp()
+         */
+
+        unsigned long event_window;
+        event_window = reinterpret_cast<xcb_destroy_notify_event_t*>(event)->window;
+        icon = findIcon(event_window);
+        if (icon)
+        {
+            icon->windowDestroyed(event_window);
+            mHideIcons.removeAll(icon);
+            mTrayIcons.removeAll(icon);
+            mStorageIcons.removeAll(icon);
+            delete icon;
         }
-        default:
-            if (event_type == mDamageEvent + XDamageNotify)
-            {
-                xcb_damage_notify_event_t* dmg = reinterpret_cast<xcb_damage_notify_event_t*>(event);
-                icon = findIcon(dmg->drawable);
-                if (icon)
-                    icon->update();
-            }
-            break;
+        break;
+    }
+    default:
+        if (event_type == mDamageEvent + XDamageNotify)
+        {
+            xcb_damage_notify_event_t* dmg = reinterpret_cast<xcb_damage_notify_event_t*>(event);
+            icon = findIcon(dmg->drawable);
+            if (icon)
+                icon->update();
+        }
+        break;
     }
 
     return false;
 }
 
 
-/************************************************
-
- ************************************************/
+/*
+ * @brief Adjust the size of the tray in real time
+ * @Note
+ * 关于设置托盘栏图标大小的方法
+ * ukui采用与lxqt-panel不同的方式
+ * 直接在realign函数中进行设置每个托盘应用所在的位置的大小和位置
+ *
+ * tr:
+ * About the method of setting the icon size of the tray bar
+ * ukui takes a different approach from lxqt-panel
+ * Set the size and position of each tray application location directly
+ * in the realign function
+ */
 void UKUITray::realign()
 {
     layout()->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
+
+    for(int i=0;i<mTrayIcons.size();i++)
+    {
+        if(mTrayIcons.at(i))
+        {
+            mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }
+        else
+        {
+            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+        }
+    }
+    for(int i=0;i<mStorageIcons.size();i++)
+    {
+        if(mStorageIcons.at(i))
+        {
+            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }
+        else
+        {
+            qDebug()<<"mStorageIcons add error   :  "<<mStorageIcons.at(i);
+        }
+    }
+    handleStorageUi();
 
     if (panel->isHorizontal())
     {
@@ -226,10 +298,6 @@ void UKUITray::realign()
     {
         storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,0)), storageFrame->size()));
     }
-//    mIconSize=QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2);
-    int iconsize=mPlugin->panel()->iconSize()/2;
-    mIconSize=QSize(iconsize,iconsize);
-    setIconSize();
 }
 
 
@@ -250,16 +318,22 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
 
     switch (opcode)
     {
-        case SYSTEM_TRAY_REQUEST_DOCK:
-            id = data32[2];
-            if(id){
+    case SYSTEM_TRAY_REQUEST_DOCK:
+        id = data32[2];
+        if(id){
             regulateIcon(&id);
-            }
+            Window winId=44040845;
+            QSize iconSize(32,32);
+            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
+            //            icon->setFixedSize(40,40);
+            icon->setIconSize(QSize(32,32));
+        }
 
-        case SYSTEM_TRAY_BEGIN_MESSAGE:
-        case SYSTEM_TRAY_CANCEL_MESSAGE:
-            qDebug() << "we don't show balloon messages.";
-            break;
+
+    case SYSTEM_TRAY_BEGIN_MESSAGE:
+    case SYSTEM_TRAY_CANCEL_MESSAGE:
+        qDebug() << "we don't show balloon messages.";
+        break;
 
     default:
         //            if (opcode == xfitMan().atom("_NET_SYSTEM_TRAY_MESSAGE_DATA"))
@@ -489,6 +563,16 @@ void UKUITray::onIconDestroyed(QObject * icon)
 
 void UKUITray::freezeTrayApp(Window winId)
 {
+    /*
+     * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
+     * 不在监听到托盘应用的退出事件 DestroyNotify 中进行刷新的的原因已经说明
+     * 由于监听托盘应用destory信号的方式有待改进
+     * 所以在遇到托盘应用异常退出但是界面未刷新的情况需要重点关注
+     * 这可能会导致panel的崩溃
+     *
+    */
+    handleStorageUi();
+
     QList<char *> existsPath = listExistsPath();
     int bingdingStr;
 
@@ -535,8 +619,8 @@ void UKUITray::addTrayIcon(Window winId)
         mTrayIcons.append(icon);
         layout()->addWidget(icon);
 
-        //        connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
-        //        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
+        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
 }
@@ -553,8 +637,8 @@ void UKUITray::addStorageIcon(Window winId)
         mStorageIcons.append(storageicon);
         //storageLayout->addWidget(storageicon);
 
-        //        connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-        //        connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
+        connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         if(mStorageIcons.size() > 0)
         {
@@ -567,6 +651,20 @@ void UKUITray::addStorageIcon(Window winId)
     }
 }
 
+/*
+ * @brief It is not yet clear whether the feature will be released
+ * Note:
+ * 关于完全隐藏托盘图标（不在任务栏中也不在收纳栏中）
+ * 与设计师沟通过，这个功能的逻辑是有问题的，
+ * 因此目前暂定不需要此功能，依然采用“隐藏托盘图标即放置到收纳栏”的方案
+ *
+ * 此处没有注释掉这项功能是因为此项功能并不影响到其他功能
+ * 并且可以作为隐藏功能
+ * hide区域是一个在tray和storage之外的区域，没有界面
+ *
+ * 在moveIconToTray ，moveIconToStorage 中均判断是否为一个hide图标
+ *
+*/
 void UKUITray::addHideIcon(Window winId)
 {
     TrayIcon *hideicon = findHideIcon(winId);
@@ -604,8 +702,8 @@ void UKUITray::moveIconToTray(Window winId)
             mBtn->setVisible(false);
         }
 
-        //      connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-        //      connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
+        connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
 
     }
@@ -623,19 +721,6 @@ void UKUITray::moveIconToTray(Window winId)
         //      connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
         connect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
-    for(int i=0;i<mTrayIcons.size();i++)
-    {
-        qDebug()<<"mTrayIcons:"<<xfitMan().getApplicationName(mTrayIcons.at(i)->iconId());
-    }
-    for(int i=0;i<mStorageIcons.size();i++)
-    {
-        qDebug()<<"storageicon"<<xfitMan().getApplicationName(mStorageIcons.at(i)->iconId());
-    }
-    for(int i=0;i<mHideIcons.size();i++)
-    {
-        qDebug()<<"mHideIcons:"<<xfitMan().getApplicationName(mHideIcons.at(i)->iconId());
-    }
-    qDebug()<<"";
 }
 
 void UKUITray::moveIconToStorage(Window winId)
@@ -665,14 +750,13 @@ void UKUITray::moveIconToStorage(Window winId)
             mBtn->setVisible(false);
         }
 
-        //        connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
-        //        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
+        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
 
     else if(hideicon)
     {
-        qDebug()<<"moveIconToStorage  is hide icon";
         mHideIcons.removeOne(hideicon);
         //storageLayout->removeWidget(storageicon);
         disconnect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
@@ -695,20 +779,6 @@ void UKUITray::moveIconToStorage(Window winId)
         //      connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
         connect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
-
-    for(int i=0;i<mTrayIcons.size();i++)
-    {
-        qDebug()<<"mTrayIcons:"<<xfitMan().getApplicationName(mTrayIcons.at(i)->iconId());
-    }
-    for(int i=0;i<mStorageIcons.size();i++)
-    {
-        qDebug()<<"storageicon"<<xfitMan().getApplicationName(mStorageIcons.at(i)->iconId());
-    }
-    for(int i=0;i<mHideIcons.size();i++)
-    {
-        qDebug()<<"mHideIcons:"<<xfitMan().getApplicationName(mHideIcons.at(i)->iconId());
-    }
-    qDebug()<<"";
 }
 
 void UKUITray::moveIconToHide(Window winId)
@@ -746,20 +816,6 @@ void UKUITray::moveIconToHide(Window winId)
         }
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
-
-    for(int i=0;i<mTrayIcons.size();i++)
-    {
-        qDebug()<<"mTrayIcons:"<<xfitMan().getApplicationName(mTrayIcons.at(i)->iconId());
-    }
-    for(int i=0;i<mStorageIcons.size();i++)
-    {
-        qDebug()<<"storageicon"<<xfitMan().getApplicationName(mStorageIcons.at(i)->iconId());
-    }
-    for(int i=0;i<mHideIcons.size();i++)
-    {
-        qDebug()<<"mHideIcons:"<<xfitMan().getApplicationName(mHideIcons.at(i)->iconId());
-    }
-    qDebug()<<"";
 }
 
 QList<char *> UKUITray::listExistsPath(){
@@ -966,9 +1022,17 @@ QString UKUITray::findFreePath(){
     return QString("%1%2").arg(KEYBINDINGS_CUSTOM_DIR).arg(QString(dir));
 }
 
+/*
+ * @brief  收纳栏样式
+ *
+ * 根据panel的大小自动调节收纳栏
+ * 未设置m_pwidget的透明属性会导致收纳栏异常（布局混乱）
+ * 因此不使用QWidget，而是继承 QWidget 写一个 UKUiStorageWidget，并设置其基础样式
+ *
+*/
 void UKUITray::handleStorageUi()
 {
-//    qDebug()<<"void UKUITray::handleStorageUi():"<<mStorageIcons.size();
+    //    qDebug()<<"void UKUITray::handleStorageUi():"<<mStorageIcons.size();
     int winWidth = 0;
     int winHeight = 0;
     if(m_pwidget)
@@ -985,63 +1049,94 @@ void UKUITray::handleStorageUi()
         m_pwidget->deleteLater();
         m_pwidget = NULL;
     }
-    m_pwidget =  new QWidget;
+    m_pwidget =  new UKUiStorageWidget;
     m_pwidget->setLayout(new UKUi::GridLayout);
 
     switch(mStorageIcons.size())
     {
-        case 1:
-        {
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(1);
-            //m_pwidget->setFixedSize(20,20);
-            winWidth = 30;
-            winHeight = 30;
-        }
+    case 1:
+        winWidth = mPlugin->panel()->panelSize();
+        winHeight = mPlugin->panel()->panelSize();
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(1);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
         break;
-        case 2:
-        {
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(2);
-            //m_pwidget->setFixedSize(40,20);
-            winWidth = 60;
-            winHeight = 30;
-        }
+    case 2:
+        winWidth = mPlugin->panel()->panelSize()*2;
+        winHeight = mPlugin->panel()->panelSize();
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(2);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
         break;
-        case 3:
-        {
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-            //m_pwidget->setFixedSize(60,20);
-            winWidth = 90;
-            winHeight = 30;
-        }
+    case 3:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize();
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
         break;
-        case 4:
-        case 5:
-        case 6:
-        {
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-            //m_pwidget->setFixedSize(60,40);
-            winWidth = 90;
-            winHeight = 60;
-        }
+    case 4:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*2;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
         break;
-        case 7:
-        case 8:
-        case 9:
-        {
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
-            dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-            //m_pwidget->setFixedSize(60,60);
-            winWidth = 90;
-            winHeight = 90;
-        }
+    case 5:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*2;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
         break;
-        case 10:
-        case 11:
-        case 12:
+    case 6:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*2;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
+        break;
+    case 7:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*3;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
+        break;
+    case 8:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*3;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
+        break;
+    case 9:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*3;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
+        break;
+    case 10:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*4;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
+        break;
+    case 11:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*4;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
+        break;
+    case 12:
+        winWidth = mPlugin->panel()->panelSize()*3;
+        winHeight = mPlugin->panel()->panelSize()*4;
+        m_pwidget->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
+        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
         break;
     default:
         break;
@@ -1052,10 +1147,10 @@ void UKUITray::handleStorageUi()
         m_pwidget->layout()->addWidget(*it);
     }
     storageFrame->layout()->addWidget(m_pwidget);
-//    qDebug()<<"m_pwidget:"<<m_pwidget->size();
+    //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
     storageFrame->setFixedSize(winWidth,winHeight);
-    storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,0)), storageFrame->size()));
-//    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
+    storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,50)), storageFrame->size()));
+    //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
 }
 
 UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
@@ -1124,6 +1219,9 @@ bool UKUIStorageFrame::nativeEvent(const QByteArray &eventType, void *message, l
 }
 */
 
+/*
+ * 事件过滤，检测鼠标点击外部活动区域则收回收纳栏
+*/
 bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
 {
     //    Q_UNUSED(obj);
@@ -1151,8 +1249,27 @@ void UKUIStorageFrame::paintEvent(QPaintEvent *event)
     opt.init(this);
     QPainter p(this);
     p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
-    p.setPen(Qt::black);
+    p.setPen(Qt::NoPen);
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    p.drawRoundedRect(opt.rect,6,6);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+UKUiStorageWidget::UKUiStorageWidget(){
+    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+}
+
+UKUiStorageWidget::~UKUiStorageWidget(){
+}
+
+void UKUiStorageWidget::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+    p.setPen(Qt::NoPen);
+    p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,6,6);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

@@ -21,6 +21,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
     mount_name_label(nullptr)
 {
 //interface layout
+    EjectScreen = qApp->primaryScreen();
     eject_image_label = new QLabel();
     QPixmap pixmap(":/picture/tip-32.svg");
     if(eject_image_label)
@@ -40,9 +41,8 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
     ejectinterface_h_BoxLayout = new QHBoxLayout();
     if(ejectinterface_h_BoxLayout)
     {
-        ejectinterface_h_BoxLayout->addSpacing(10);
+        ejectinterface_h_BoxLayout->addStretch();
         ejectinterface_h_BoxLayout->addWidget(eject_image_label);
-        ejectinterface_h_BoxLayout->addSpacing(5);
         ejectinterface_h_BoxLayout->addWidget(show_text_label);
         ejectinterface_h_BoxLayout->addStretch();
     }
@@ -110,10 +110,12 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
                 "border:none;"
                 "}");
     this->setLayout(main_V_BoxLayput);
+
     interfaceHideTime = new QTimer(this);
     interfaceHideTime->setTimerType(Qt::PreciseTimer);
     connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_interface_hide()));
     interfaceHideTime->start(1000);
+    moveEjectInterfaceRight();
 }
 
 ejectInterface::~ejectInterface()
@@ -135,4 +137,37 @@ void ejectInterface::paintEvent(QPaintEvent *event)
 void ejectInterface::on_interface_hide()
 {
     this->hide();
+}
+
+void ejectInterface::moveEjectInterfaceRight()
+{
+    if(EjectScreen->availableGeometry().x() == EjectScreen->availableGeometry().y() && EjectScreen->availableSize().height() < EjectScreen->size().height())
+    {
+        qDebug()<<"the positon of panel is down";
+        this->move(EjectScreen->availableGeometry().x() + EjectScreen->size().width() -
+                   this->width() - DistanceToPanel,EjectScreen->availableGeometry().y() +
+                   EjectScreen->availableSize().height() - this->height() - DistanceToPanel);
+    }
+
+    if(EjectScreen->availableGeometry().x() < EjectScreen->availableGeometry().y() && EjectScreen->availableSize().height() < EjectScreen->size().height())
+    {
+        qDebug()<<"this position of panel is up";
+        this->move(EjectScreen->availableGeometry().x() + EjectScreen->size().width() -
+                   this->width() - DistanceToPanel,EjectScreen->availableGeometry().y());
+    }
+
+    if(EjectScreen->availableGeometry().x() > EjectScreen->availableGeometry().y() && EjectScreen->availableSize().width() < EjectScreen->size().width())
+    {
+        qDebug()<<"this position of panel is left";
+        this->move(EjectScreen->availableGeometry().x() + DistanceToPanel,EjectScreen->availableGeometry().y()
+                   + EjectScreen->availableSize().height() - this->height());
+    }
+
+    if(EjectScreen->availableGeometry().x() == EjectScreen->availableGeometry().y() && EjectScreen->availableSize().width() < EjectScreen->size().width())
+    {
+        qDebug()<<"this position of panel is right";
+        this->move(EjectScreen->availableGeometry().x() + EjectScreen->availableSize().width() -
+                   DistanceToPanel - this->width(),EjectScreen->availableGeometry().y() +
+                   EjectScreen->availableSize().height() - (this->height())*(DistanceToPanel - 1));
+    }
 }

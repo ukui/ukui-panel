@@ -49,10 +49,9 @@ public:
     TaskViewButton();
     ~TaskViewButton();
 protected:
-//    void contextMenuEvent(QContextMenuEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event);
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent*);
-//    bool event(QEvent *e);
 private:
     void paintTaskViewStyle();
 
