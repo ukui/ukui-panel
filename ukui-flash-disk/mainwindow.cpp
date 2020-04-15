@@ -141,7 +141,7 @@ void MainWindow::getDeviceInfo()
     GList *current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
     while(current_drive_list)
     {
-        qDebug()<<"if i can go";
+        qDebug()<<"if gdrive can go";
         GDrive *gdrive = (GDrive *)current_drive_list->data;
         if(g_drive_can_stop(gdrive) || g_drive_can_eject(gdrive))
         {
@@ -149,30 +149,36 @@ void MainWindow::getDeviceInfo()
             qDebug()<<"findGDriveList()->size():"<<findGDriveList()->size();
         }
         current_drive_list = current_drive_list->next;
-        qDebug()<<"may be i can go";
+        qDebug()<<"gdrive can go";
         //if(g_drive_can_eject)
     }
 //about volume
     GList *current_volume_list = g_volume_monitor_get_volumes(g_volume_monitor);
+    qDebug()<<"how many volumes do i have?"<<g_list_length(current_volume_list);
     while(current_volume_list)
     {
-        qDebug()<<"if i can go";
+        qDebug()<<"if gvolume can go";
         GVolume *gvolume = (GVolume *)current_volume_list->data;
-        if(g_volume_can_eject(gvolume))
+        if(g_volume_can_eject(gvolume) || g_drive_can_eject(g_volume_get_drive(gvolume)))
         {
             *findGVolumeList()<<gvolume;
-            qDebug()<<"findGVolumeList()->size():"<<findGVolumeList()->size();
+            g_volume_mount(gvolume,
+                           G_MOUNT_MOUNT_NONE,
+                           nullptr,
+                           nullptr,
+                           nullptr,
+                           nullptr);
         }
         current_volume_list = current_volume_list->next;
-        qDebug()<<"may be i can go";
+        qDebug()<<"gvolume can go";
     }
 
 
-    if(findGDriveList()->size() >= 1)
+    if(findGVolumeList()->size() >= 1)
     {
         m_systray->show();
     }
-    if(findGDriveList()->size() == 0)
+    if(findGVolumeList()->size() == 0)
     {
         m_systray->hide();
     }
@@ -210,6 +216,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *, GDrive *drive, M
 
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
+    qDebug()<<"volume is to be added";
     g_volume_mount(volume,
                    G_MOUNT_MOUNT_NONE,
                    nullptr,
@@ -224,15 +231,6 @@ void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volum
     qDebug()<<"findGVolumeList:"<<findGVolumeList()->size();
 }
 
-void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, gpointer)
-{
-
-}
-
-void MainWindow::mount_removed_callback(GVolumeMonitor *, GMount *mount, gpointer)
-{
-
-}
 void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,MainWindow *p_this)
 {
     qDebug()<<"p_this:"<<p_this;
@@ -251,7 +249,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
     }
     else
     {
-        qDebug()<<"oh no no no no no"<<err->message<<err->code;
+        qDebug()<<"oh no no no no no sorry i'm wrong"<<err->message<<err->code;
         g_volume_mount(source_object,
                        G_MOUNT_MOUNT_NONE,
                        nullptr,
@@ -497,41 +495,12 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                     connect(open_widget, &QClickWidget::clickedConvert,[=]()
                     {
                         qDebug()<<"相应信号";
-//                        for(int i = 0;i<g_list_length(g_drive_get_volumes(cacheDrive));i++)
-//                        {
-//                            g_mount_eject_with_operation(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),i)),
-//                                                         G_MOUNT_UNMOUNT_NONE,
-//                                                         nullptr,
-//                                                         nullptr,
-//                                                         nullptr,
-//                                                         nullptr);
-//                            findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),i)));
-//                            notify:here,you should remove the element by hand to reduce the drivelists
-//                            g_drive_stop(cacheDrive,
-//                                         G_MOUNT_UNMOUNT_NONE,
-//                                         NULL,
-//                                         NULL,
-//                                         NULL,
-//                                         NULL);
-//                            g_drive_eject_with_operation(cacheDrive,
-//                                         G_MOUNT_UNMOUNT_NONE,
-//                                         NULL,
-//                                         NULL,
-//                                         GAsyncReadyCallback(frobnitz_result_func),
-//                                         NULL);
-
-//                            findGDriveList()->removeOne(cacheDrive);
-//                        }
-
                         g_drive_eject_with_operation(cacheDrive,
                                      G_MOUNT_UNMOUNT_NONE,
                                      NULL,
                                      NULL,
                                      GAsyncReadyCallback(frobnitz_result_func),
                                      this);
-
-                        findGDriveList()->removeOne(cacheDrive);
-                        qDebug()<<"findGDriveList->size():"<<findGDriveList()->size();
                         this->hide();
                         ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(cacheDrive));
                         ForEject->show();
@@ -541,9 +510,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                             delete item->widget();
                             delete item;
                         }
-
-                        //hign = findList()->size()*50+30;
-
                     });
                 }
 
@@ -748,7 +714,6 @@ void MainWindow::moveBottomRight()
     int panelHeight = getPanelHeight("PanelHeight");
     int position =0;
     position = getPanelPosition("PanelPosion");
-    int d = 2; //窗口边沿到任务栏距离
 
     if (screenGeometry.width() == availableGeometry.width() && screenGeometry.height() == availableGeometry.height())
     {
@@ -757,17 +722,17 @@ void MainWindow::moveBottomRight()
         if(position == downPosition)
         {
             //任务栏在下侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - panelHeight - d);
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - panelHeight - DistanceToPanel);
         }
         else if(position == 1)
         {
             //任务栏在上侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + panelHeight + d);
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + panelHeight + DistanceToPanel);
         }
         else if (position == 2)
         {
             //任务栏在左侧
-            this->move(panelHeight + d, screenMainRect.y() + screenMainRect.height() - this->height());
+            this->move(panelHeight + DistanceToPanel, screenMainRect.y() + screenMainRect.height() - this->height());
 //            if (screenGeometry.x() == 0){//主屏在左侧
 //                this->move(screenGeometry.width() - availableGeometry.width() + m + d, screenMainRect.y() + screenMainRect.height() - this->height());
 //            }else{//主屏在右侧
@@ -777,7 +742,7 @@ void MainWindow::moveBottomRight()
         else if (position == 3)
         {
             //任务栏在右侧
-            this->move(screenMainRect.width() - this->width() - panelHeight - d, screenMainRect.y() + screenMainRect.height() - this->height());
+            this->move(screenMainRect.width() - this->width() - panelHeight - DistanceToPanel, screenMainRect.y() + screenMainRect.height() - this->height());
 //            if (screenGeometry.x() == 0){//主屏在左侧
 //                this->move(screenMainRect.width() + screenDupRect.width() - this->width() - m - d, screenDupRect.y() + screenDupRect.height() - this->height());
 //            }else{//主屏在右侧
@@ -792,10 +757,10 @@ void MainWindow::moveBottomRight()
         if (m_systray->geometry().y() > availableGeometry.height()/2)
         {
             //任务栏在下侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - d);
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - DistanceToPanel);
         }else{
             //任务栏在上侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + d);
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + DistanceToPanel);
         }
     }
     else if (screenGeometry.height() == availableGeometry.height())
@@ -803,12 +768,12 @@ void MainWindow::moveBottomRight()
         if (m_systray->geometry().x() > availableGeometry.width()/2)
         {
             //任务栏在右侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width() - d, screenMainRect.y() + screenGeometry.height() - this->height());
+            this->move(availableGeometry.x() + availableGeometry.width() - this->width() - DistanceToPanel, screenMainRect.y() + screenGeometry.height() - this->height());
         }
         else
         {
             //任务栏在左侧
-            this->move(screenGeometry.width() - availableGeometry.width() + d, screenMainRect.y() + screenGeometry.height() - this->height());
+            this->move(screenGeometry.width() - availableGeometry.width() + DistanceToPanel, screenMainRect.y() + screenGeometry.height() - this->height());
         }
     }
 
@@ -1207,7 +1172,6 @@ void MainWindow::MainWindowShow()
 void MainWindow::on_Maininterface_hide()
 {
     ui->centralWidget->hide();
-    //delete interfaceHideTime;
 }
 
 void MainWindow::moveBottomNoBase()
