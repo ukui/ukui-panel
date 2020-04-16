@@ -61,11 +61,11 @@ NightModeButton::NightModeButton(){
                     bool mode=gsettings->get(NIGHT_MODE_KEY).toBool();
                     if(mode==true){
                     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-                        this->setToolTip(tr("nightmode open"));
+                    this->setToolTip(tr("nightmode open"));
                     }
                     else{
                     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
-                        this->setToolTip(tr("nightmode close"));
+                    this->setToolTip(tr("nightmode close"));
                 }
 
                 }
@@ -87,15 +87,15 @@ void NightModeButton::mousePressEvent(QMouseEvent* event)
         }
         if(mode==true){
         gsettings->set("nightmode", false);
-        system("killall redshift");
+        system("redshift -x");
         }
         else{
         gsettings->set("nightmode", true);
-//        system("redshift -t 5700:3600 -g 0.8 -m randr -v");
+//        system("redshift -x");
         if(QFileInfo::exists(QString("/usr/bin/redshift")))
         {
         QProcess *process =new QProcess(this);
-        process->startDetached("redshift -t 5700:3600 -g 0.8 -m randr -v");
+        process->startDetached("redshift -O 4500k");
         }
         else{
             QMessageBox::information(this,"Error",tr("please install redshift first"));
