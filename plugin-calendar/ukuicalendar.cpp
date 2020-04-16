@@ -965,7 +965,7 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 void CalendarActiveLabel::setControlTime()
 {
     QProcess *process =new QProcess(this);
-    process->startDetached("ukui-control-center -d");
+    process->startDetached("ukui-control-center");
 }
 /*
 void CalendarActiveLabel::setUpPanel()
