@@ -1,3 +1,14 @@
+ukui-panel (2.0.7-1) unstable; urgency=medium
+
+  * New upstream bugfix release:
+    - Fix that panel stuck after invoke ukui-control-center.
+    - Fix that night mode causes the screen flicker.
+    - Don't exit if ukui-window-switch does not exist.
+  * debian/control:
+    - Add ukui-window-switch to suggests.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 16 Apr 2020 16:33:48 +0800
+
 ukui-panel (2.0.6-1) unstable; urgency=medium
 
   * New upstream bugfix release:
