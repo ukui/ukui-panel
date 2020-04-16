@@ -38,22 +38,29 @@
 #include "../panel/ukuipanel.h"
 #include "../panel/ukuicontrolstyle.h"
 
-class NightModeButton:public UkuiToolButton
+class NightModeButton:public QToolButton
 {
     Q_OBJECT
 public:
-    NightModeButton();
+    NightModeButton(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     ~NightModeButton();
 protected:
     void mousePressEvent(QMouseEvent* event);
-//    void nightModeChange(bool);
+    void contextMenuEvent(QContextMenuEvent *event);
 private:
     void setNightMode(const bool nightMode);
     void setUkuiStyle(QString );
+
+    IUKUIPanelPlugin * mPlugin;
+    QMenu *nightModeMenu;
     QGSettings *gsettings;
     QGSettings *mstyleGsettings;
     QSettings *mqsettings;
     bool mode;
+
+private slots:
+    void turnNightMode();
+    void setUpNightMode();
 };
 
 class NightMode : public QObject, public IUKUIPanelPlugin
