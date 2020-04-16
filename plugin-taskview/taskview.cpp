@@ -70,11 +70,10 @@ void TaskViewButton::mousePressEvent(QMouseEvent *event)
                                     QDBusConnection::sessionBus());
         if (!interface.isValid()) {
             qCritical() << QDBusConnection::sessionBus().lastError().message();
-            exit(1);
         }
         //调用远程的value方法
         QDBusReply<bool> reply = interface.call("handleWorkspace");
-        if (reply.isValid()) {
+        if (reply.isValid()&& interface.isValid()) {
             if (!reply.value())
                 qWarning() << "Handle Workspace View Failed";
         } else {
