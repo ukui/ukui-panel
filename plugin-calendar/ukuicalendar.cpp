@@ -41,6 +41,7 @@
 #include <QApplication>
 #include <QtWebKit/qwebsettings.h>
 #include <QStyleOption>
+#include <QProcess>
 #include <glib.h>
 #include <gio/gio.h>
 #define CALENDAR_HEIGHT (40)
@@ -963,7 +964,8 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 
 void CalendarActiveLabel::setControlTime()
 {
-    system("ukui-control-center");
+    QProcess *process =new QProcess(this);
+    process->startDetached("ukui-control-center -d");
 }
 /*
 void CalendarActiveLabel::setUpPanel()
