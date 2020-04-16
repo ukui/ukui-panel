@@ -24,7 +24,7 @@ body, div, table {
 }
 
 body {
-  font-size: 12px;
+  /* font-size: 12px; */
   background: #1C1C1E;
   -webkit-user-select: none;
   cursor: default;
@@ -60,7 +60,7 @@ body {
 #date_banner {
   font-size: 14px;
   /* color: #9F9EAE; */
-  color: #FFFFFF4A;
+  color: #aaa;
   margin-top: 16px;
 }
 
@@ -147,7 +147,7 @@ border: 1px solid transparent;
 }
 
 #calendar_table td:hover {
-  border: 1px solid #7eb4ea;
+  border: 1px solid #3d6be5;
   border-radius: 4px;
 }
 
@@ -230,13 +230,14 @@ color: #78cdf7;
 }
 
 #selector_div #go_prev_month {
-  margin-right: 10px;
+  /* margin-right: 2px; */
   width: 32px;
   height: 32px;
   background-image: url("images/up.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size:100% 100%;
+  outline: none;
   /* float: left; */
 }
 
@@ -258,6 +259,7 @@ color: #78cdf7;
   background-repeat: no-repeat;
   background-position: center;
   background-size:100% 100%;
+  outline: none;
   /* float: left; */
 }
 
@@ -277,6 +279,7 @@ color: #78cdf7;
   width: 48px;
   height: 36px;
   text-align: left;
+  outline: none;
   /* float: right; */
 }
 
@@ -286,6 +289,7 @@ color: #78cdf7;
   height: 36px;
   background-color: #FFFFFF1A;
   border-radius: 4px;
+  outline: none;
 }
 
 #selector_div #month_button:hover{
@@ -300,6 +304,7 @@ color: #78cdf7;
   height: 36px;
   background-color: #FFFFFF1A;
   border-radius: 4px;
+  outline: none;
 }
 
 #selector_div #year_button:hover{
@@ -417,7 +422,7 @@ color: #78cdf7;
 
 
 .item:hover {
-  border: 1px solid #7eb4ea;
+  border: 1px solid #3d6be5;
 }
 
 .item:active {
