@@ -60,8 +60,8 @@ body {
 
 #date_banner {
   font-size: 14px;
-  /* color: #9F9EAE; */
-  color: #FFFFFF4A;
+  color: #aaa;
+  /* color: #FFFFFF73; */
 }
 
 
@@ -155,7 +155,7 @@ margin-bottom: 4px; */
 }
 
 #calendar_table td:hover {
-  border: 1px solid #7eb4ea;
+  border: 1px solid #3d6be5;
   border-radius: 4px;
 }
 
@@ -195,7 +195,8 @@ margin-bottom: 4px; */
 .day_today:hover { border: 1px solid #7eb4ea; }
 .day_today:active{ background: #d9ebfc; }
 .day_weekend .solar_part { color: #F5F4F7; font-size: 16px; font-weight: middle;}
-.day_weekend .lunar_part { color: #ccc; font-size: 12px; }
+.day_weekend .lunar_part { color: #aaa; font-size: 12px; }
+/* .day_weekend .lunar_part { color: #ccc; font-size: 12px; } */
 
 .day_highlight {
   /* background: #e4f0fc; */
@@ -226,7 +227,7 @@ color: #78cdf7;
 
 #selector_div #selected_date_div {
   margin-left: 32px;
-  width: 110px;
+  width: 100px;
   height: 48px;
   font-size: 18px; 
   border: none;
@@ -237,13 +238,14 @@ color: #78cdf7;
 }
 
 #selector_div #go_prev_month {
-  margin-right: 10px;
+  /* margin-right: 10px; */
   width: 32px;
   height: 32px;
   background-image: url("images/up.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size:100% 100%;
+  outline: none;
   /* float: left; */
 }
 
@@ -265,6 +267,7 @@ color: #78cdf7;
   background-repeat: no-repeat;
   background-position: center;
   background-size:100% 100%;
+  outline: none;
   /* float: left; */
 }
 
@@ -283,6 +286,7 @@ color: #78cdf7;
   margin-left: 8px;
   width: 36px;
   height: 36px;
+  outline: none;
   /* float: right; */
 }
 
@@ -292,6 +296,7 @@ color: #78cdf7;
   height: 36px;
   background-color: #FFFFFF1A;
   border-radius: 4px;
+  outline: none;
 }
 
 #selector_div #month_button:hover{
@@ -301,11 +306,12 @@ color: #78cdf7;
 }
 
 #selector_div #year_button {
-  margin-left: 30px;
+  margin-left: 64px;
   width: 36px;
   height: 36px;
   background-color: #FFFFFF1A;
   border-radius: 4px;
+  outline: none;
 }
 
 #selector_div #year_button:hover{
@@ -427,7 +433,7 @@ color: #78cdf7;
 
 
 .item:hover {
-  border: 1px solid #7eb4ea;
+  border: 1px solid #3d6be5;
 }
 
 .item:active {

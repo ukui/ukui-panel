@@ -56,6 +56,7 @@
 #define HOUR_SYSTEM_12_Horizontal   "Ahh:mm ddd  yyyy/MM/dd"
 #define HOUR_SYSTEM_12_Vertical   "Ahh:mm ddd  MM/dd"
 #define HOUR_SYSTEM_KEY "hoursystem"
+#define CURRENT_DATE "yyyy/MM/dd dddd"
 
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
@@ -147,6 +148,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
                 );
     mContent->setWordWrap(true);
+    setToolTip();
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -171,6 +173,17 @@ IndicatorCalendar::~IndicatorCalendar()
     {
         mPopupContent->deleteLater();
     }
+}
+
+void IndicatorCalendar::setToolTip()
+{
+    QDateTime now = QDateTime::currentDateTime();
+    QString timeZoneName = mActiveTimeZone;
+    if (timeZoneName == QLatin1String("local"))
+        timeZoneName = QString::fromLatin1(QTimeZone::systemTimeZoneId());
+    QTimeZone timeZone(timeZoneName.toLatin1());
+    QDateTime tzNow = now.toTimeZone(timeZone);
+    mContent->setToolTip(tzNow.toString(CURRENT_DATE));
 }
 
 void IndicatorCalendar::timeout()

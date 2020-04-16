@@ -96,8 +96,6 @@ void UkuiWebviewDialog::creatwebview(int _mode)
             }
             iViewHeight = 600;
         }
-//        htmlFilePath = QLatin1String("file://") + QLatin1String(PACKAGE_DATA_DIR) + QLatin1String("/plugin-calendar/html/ukui-solar-en.html");
-        qDebug()<<"load html-----------------------------"<<htmlFilePath;
         /*set window no margins*/
         mWebView->setWindowFlags(Qt::FramelessWindowHint);
         /*set window size*/
