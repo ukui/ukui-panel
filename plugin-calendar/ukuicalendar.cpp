@@ -44,6 +44,9 @@
 #include <QStyleOption>
 #include <glib.h>
 #include <gio/gio.h>
+#include <QSize>
+#include <QScreen>
+
 #define CALENDAR_HEIGHT (40)
 #define CALENDAR_WIDTH (104)
 
@@ -56,6 +59,7 @@
 #define HOUR_SYSTEM_12_Horizontal   "Ahh:mm ddd  yyyy/MM/dd"
 #define HOUR_SYSTEM_12_Vertical   "Ahh:mm ddd  MM/dd"
 #define HOUR_SYSTEM_KEY "hoursystem"
+#define CURRENT_DATE "yyyy/MM/dd dddd"
 
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
@@ -147,6 +151,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
                 );
     mContent->setWordWrap(true);
+    setToolTip();
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -171,6 +176,17 @@ IndicatorCalendar::~IndicatorCalendar()
     {
         mPopupContent->deleteLater();
     }
+}
+
+void IndicatorCalendar::setToolTip()
+{
+    QDateTime now = QDateTime::currentDateTime();
+    QString timeZoneName = mActiveTimeZone;
+    if (timeZoneName == QLatin1String("local"))
+        timeZoneName = QString::fromLatin1(QTimeZone::systemTimeZoneId());
+    QTimeZone timeZone(timeZoneName.toLatin1());
+    QDateTime tzNow = now.toTimeZone(timeZone);
+    mContent->setToolTip(tzNow.toString(CURRENT_DATE));
 }
 
 void IndicatorCalendar::timeout()
@@ -510,13 +526,9 @@ void IndicatorCalendar::initializeCalendar()
     CalendarShowMode showCalendar = defaultMode;
     QString lunarOrsolar;
     QString firstDay;
+    int iScreenHeight = QApplication::screens().at(0)->size().height();
     if(QGSettings::isSchemaInstalled(id))
     {
-//        if(gsettings)
-//        {
-//            gsettings->deleteLater();
-//        }
-//        gsettings = new QGSettings(id);
         if(!gsettings)
         {
             qDebug()<<"get gsetting error!!!";
@@ -544,7 +556,14 @@ void IndicatorCalendar::initializeCalendar()
                 {
                     showCalendar = lunarMonday;
                 }
-                mViewHeight = WEBVIEW_MAX_HEIGHT;
+                if(iScreenHeight > WEBVIEW_MAX_HEIGHT)
+                {
+                    mViewHeight = WEBVIEW_MAX_HEIGHT;
+                }
+                else
+                {
+                    mViewHeight = WEBVIEW_MIN_HEIGHT;
+                }
             }
             else if(lunarOrsolar == "solarlunar")
             {

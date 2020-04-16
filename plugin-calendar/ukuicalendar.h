@@ -59,6 +59,7 @@ public:
     void initializeCalendar();
     void setbackground();
     void setTimeShowStyle();
+    void setToolTip();
 //signals:
 Q_SIGNALS:
     void deactivated();
