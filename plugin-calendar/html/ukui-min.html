@@ -1,0 +1,193 @@
+<!--
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
+ *
+ -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link href="ukui-min.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="LunarCalendar.js"></script>
+  <script type="text/javascript" src="index.js" defer = "defer"></script>
+
+</head>
+<body>
+<!--  -->
+
+<div id="datetime_container">
+    <p id="time_banner">12:42:53</p>
+    <p id="date_banner">2020年1月1日 星期三 腊月初七</p>
+</div>
+
+<div id="selector_div">
+  <!-- <input type="button" id="year_selector" class="effect_button" />
+  <input type="button" id="month_selector" class="effect_button" /> -->
+  <div id = "selected_date_div"> 2020年3月</div>
+  <input type="button" id="go_prev_month" class="effect_button" />
+  <input type="button" id="go_next_month" class="effect_button" />
+
+  <!--<div id="year_div" class="hidden_div">
+    <ol id="year_list" class="no_style_list">
+    </ol>
+  </div>
+
+  <div id="month_div" class="hidden_div">
+    <ol id="month_list" class="no_style_list">
+    </ol>
+  </div>
+
+  <div id="holiday_div" class="hidden_div">
+    <ol id="holiday_list" class="no_style_list">
+    </ol>
+  </div>-->
+
+  <div id="holiday_div" class="hidden_div">
+    <ol id="holiday_list" class="no_style_list">
+    </ol>
+  </div>
+
+  <input type="button" id="year_button" value="年" class="effect_button" />
+  <input type="button" id="month_button" value="月" class="effect_button" />
+  <input type="button" id="today_button" value="今天" class="effect_button" />
+  <!-- <input type="button" id="holiday_button" value="假期" class="effect_button" />-->
+  <!-- <div id="checkbox_div">
+  <span style="color:#eee; font-size:14px">宜忌</span>
+  <input type="checkbox" id="checkbox" value="宜忌" style="color: #eee"/>
+  </div> -->
+</div>
+
+<table id="calendar_table">
+  <tr id="weekday_name">
+    <td>日</td>
+    <td>一</td>
+    <td>二</td>
+    <td>三</td>
+    <td>四</td>
+    <td>五</td>
+    <td>六</td>
+  </tr>
+</table>
+
+<!-- <div id="year_div" class="hidden_div">
+  <div  class="show_years">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+      <div class="item item-10">10</div>
+      <div class="item item-11">11</div>
+      <div class="item item-12">12</div>
+      <div class="item item-13">13</div>
+      <div class="item item-14">14</div>
+      <div class="item item-15">15</div>
+      <div class="item item-16">16</div>     
+  </div>
+</div> -->
+
+<div id="year_div" class="hidden_div">
+  <div  class="show_years">
+      <div class="item item-1"><span>1</span></div>
+      <div class="item item-2"><span>2</span></div>
+      <div class="item item-3"><span>3</span></div>
+      <div class="item item-4"><span>4</span></div>
+      <div class="item item-5"><span>5</span></div>
+      <div class="item item-6"><span>6</span></div>
+      <div class="item item-7"><span>7</span></div>
+      <div class="item item-8"><span>8</span></div>
+      <div class="item item-9"><span>9</span></div>
+      <div class="item item-10"><span>10</span></div>
+      <div class="item item-11"><span>11</span></div>
+      <div class="item item-12"><span>12</span></div>
+      <div class="item item-13"><span>13</span></div>
+      <div class="item item-14"><span>14</span></div>
+      <div class="item item-15"><span>15</span></div>
+      <div class="item item-16"><span>16</span></div> 
+  </div>
+</div>
+
+  <div id="month_div" class="hidden_div">
+      <div  class="show_months">
+          <!-- <div class="item item-1">1</div>
+          <div class="item item-2">2</div>
+          <div class="item item-3">3</div>
+          <div class="item item-4">4</div>
+          <div class="item item-5">5</div>
+          <div class="item item-6">6</div>
+          <div class="item item-7">7</div>
+          <div class="item item-8">8</div>
+          <div class="item item-9">9</div>
+          <div class="item item-10">10</div>
+          <div class="item item-11">11</div>
+          <div class="item item-12">12</div>
+          <div class="item item-13">13</div>
+          <div class="item item-14">14</div>
+          <div class="item item-15">15</div>
+          <div class="item item-16">16</div>           -->
+          <div class="item item-1"><span>1</span></div>
+          <div class="item item-2"><span>2</span></div>
+          <div class="item item-3"><span>3</span></div>
+          <div class="item item-4"><span>4</span></div>
+          <div class="item item-5"><span>5</span></div>
+          <div class="item item-6"><span>6</span></div>
+          <div class="item item-7"><span>7</span></div>
+          <div class="item item-8"><span>8</span></div>
+          <div class="item item-9"><span>9</span></div>
+          <div class="item item-10"><span>10</span></div>
+          <div class="item item-11"><span>11</span></div>
+          <div class="item item-12"><span>12</span></div>
+          <div class="item item-13"><span>13</span></div>
+          <div class="item item-14"><span>14</span></div>
+          <div class="item item-15"><span>15</span></div>
+          <div class="item item-16"><span>16</span></div> 
+    </div>
+  </div>
+
+<div id="chinese_date_container">
+ 
+    <ol id="general_datetime_list">
+      <li>甲午年【马年】丙子月 庚辰日</li>
+    </ol>
+    <input type="checkbox" id="advice_checkbox" />
+    <div id="advice_title">宜忌</div>
+
+</div>
+
+
+
+<table id="hl_table" style="visibility:hidden">
+  <tr >
+    <td style = "padding-left: 12px;">【宜】</td>
+    <td>迁徙 </td> 
+    <td >祭祀</td>
+    <td>开光</td>
+    <td>祈福</td>
+  </tr>
+  <tr>
+    <td style = "padding-left: 12px;">【忌】</td>
+    <td>嫁娶 </td> 
+    <td>安葬</td>
+    <td>开光</td>
+    <td >破土</td>
+  </tr>
+</table>
+</body>
+</html>

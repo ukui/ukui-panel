@@ -24,6 +24,14 @@
 #include <QMessageBox>
 #include <QColor>
 #include <QTime>
+#include <QApplication>
+#include <QSize>
+#include <QScreen>
+
+#define CALENDAR_MAX_HEIGHT 704
+#define CALENDAR_MIN_HEIGHT 600
+
+#define CALENDAR_MAX_WIDTH 454
 
 UkuiWebviewDialog::UkuiWebviewDialog(QWidget *parent) :
     QDialog(parent, Qt::Popup),
@@ -45,8 +53,9 @@ UkuiWebviewDialog::~UkuiWebviewDialog()
 
 void UkuiWebviewDialog::creatwebview(int _mode)
 {
-    int iViewWidth = 454;
-    int iViewHeight = 704;
+    int iViewWidth = CALENDAR_MAX_WIDTH;
+    int iViewHeight = CALENDAR_MAX_HEIGHT;
+    int iScreenHeight = QApplication::screens().at(0)->size().height();
     if(!mWebView)
     {
          mWebView = new QWebView(this);
@@ -63,8 +72,15 @@ void UkuiWebviewDialog::creatwebview(int _mode)
             if(_mode == lunarMonday)
             {
                 //first day a week is monday in lunar mode
-                iViewHeight = 704;
-                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-mon.html");
+                if(CALENDAR_MAX_HEIGHT < iScreenHeight)
+                {
+                    htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-mon.html");
+                }
+                else
+                {
+                    iViewHeight = CALENDAR_MIN_HEIGHT;
+                    htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-mon-min.html");
+                }
             }
             else if(_mode == solarSunday)
             {
@@ -81,7 +97,15 @@ void UkuiWebviewDialog::creatwebview(int _mode)
             else
             {
                 //first day a week is sunday in lunar mode
-                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui.html");
+                if(CALENDAR_MAX_HEIGHT < iScreenHeight)
+                {
+                    htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui.html");
+                }
+                else
+                {
+                    iViewHeight = 600;
+                    htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-min.html");
+                }
             }
         }
         else

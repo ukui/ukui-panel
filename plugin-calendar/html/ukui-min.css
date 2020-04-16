@@ -34,18 +34,18 @@ body {
   grid-template-columns: 400px;;
   grid-template-rows: 60px 32px 320px 40px 58px;
   width:454px;
- height: 704px;
+ height: 600px;
 }
 
 #datetime_container {
   display: grid;
   text-align: center;
   justify-items: center;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  /* margin-top: 4px;
+  margin-bottom: 4px; */
   border-bottom: 1px solid;
   border-color:#FFFFFF0F;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 }
 
 #datetime_container p{
@@ -67,7 +67,7 @@ body {
 
 /* 第二栏，切换选择年、月 */
 #selector_div {
-  height: 48px;
+  height: 40px;
   width: 454px;
   display: grid;
   text-align: center;
@@ -126,9 +126,9 @@ body {
 #calendar_table {
   padding: 0px 5px 10px;
   width: 420px;
-  height: 420px;
+  /* height: 336px; */
   border-spacing: 0;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
   margin-left: 16px;
   margin-right: 16px;
   /* border-top: 1px solid;
@@ -144,7 +144,7 @@ body {
   padding: 3px 12px;*/
   position: relative;
   width:56px;
-  height:56px;
+  height:46px;
   text-align: center;
 /* margin-left: 4px;
 margin-right: 4px;
@@ -167,7 +167,6 @@ margin-bottom: 4px; */
 #weekday_name td {
   border: 0;
   color: #F5F4F7;
-  /* font-size: 20px; */
 }
 
 #weekday_name td:hover {
@@ -331,11 +330,11 @@ color: #78cdf7;
 #chinese_date_container {
   color: #F5F4F7;
   margin: 0;
-  padding: 0px 0px 0px;
+  padding: 6px 0px 0px;
   /* margin-top: 18px; */
   /* background-color: #78cdf7; */
   /* width: 420px; */
-  height:40px;
+  height:32px;
   border-top: 1px solid;
   border-color:#FFFFFF0F;
   /*margin:16px;*/
@@ -500,8 +499,8 @@ color: #78cdf7;
   margin: 0;
   list-style-type: none;
   float: left;
-  margin-bottom: 6px;
-  margin-top: 6px;
+  /* margin-bottom: 6px;
+  margin-top: 6px; */
 }
 
 #general_datetime_list li {
@@ -517,7 +516,7 @@ color: #78cdf7;
   float: right;
   margin-right: 16px;
   /* margin-bottom: 6px;*/
-  margin-top: 16px;
+  margin-top: 8px;
   /* width: 20px;
   height: 20px; */
 }
@@ -525,7 +524,7 @@ color: #78cdf7;
 #advice_title {
   font-size: 14px;
   float: right;
-  line-height: 48px;
+  line-height: 32px;
   /* margin-top: 6px;
   margin-bottom: 6px; */
   margin-right: 10px;

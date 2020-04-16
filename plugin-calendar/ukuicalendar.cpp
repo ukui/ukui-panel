@@ -44,6 +44,9 @@
 #include <QStyleOption>
 #include <glib.h>
 #include <gio/gio.h>
+#include <QSize>
+#include <QScreen>
+
 #define CALENDAR_HEIGHT (40)
 #define CALENDAR_WIDTH (104)
 
@@ -523,13 +526,9 @@ void IndicatorCalendar::initializeCalendar()
     CalendarShowMode showCalendar = defaultMode;
     QString lunarOrsolar;
     QString firstDay;
+    int iScreenHeight = QApplication::screens().at(0)->size().height();
     if(QGSettings::isSchemaInstalled(id))
     {
-//        if(gsettings)
-//        {
-//            gsettings->deleteLater();
-//        }
-//        gsettings = new QGSettings(id);
         if(!gsettings)
         {
             qDebug()<<"get gsetting error!!!";
@@ -557,7 +556,14 @@ void IndicatorCalendar::initializeCalendar()
                 {
                     showCalendar = lunarMonday;
                 }
-                mViewHeight = WEBVIEW_MAX_HEIGHT;
+                if(iScreenHeight > WEBVIEW_MAX_HEIGHT)
+                {
+                    mViewHeight = WEBVIEW_MAX_HEIGHT;
+                }
+                else
+                {
+                    mViewHeight = WEBVIEW_MIN_HEIGHT;
+                }
             }
             else if(lunarOrsolar == "solarlunar")
             {

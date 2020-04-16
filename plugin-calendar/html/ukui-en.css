@@ -24,7 +24,7 @@ body, div, table {
 }
 
 body {
-  font-size: 12px;
+  /* font-size: 12px; */
   background: #1C1C1E;
   -webkit-user-select: none;
   cursor: default;
