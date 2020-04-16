@@ -16,7 +16,6 @@ find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
-message(${PEONY_INCLUDE_DIRS})
 
 include_directories(${GLIB2_INCLUDE_DIRS})
 add_executable(ukui-flash-disk

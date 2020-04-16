@@ -99,6 +99,7 @@ private:
     int hign;
     int VolumeNum;
     QTimer *interfaceHideTime;
+    int num = 0;
     QScreen *screen;
 public:
     QSystemTrayIcon *m_systray;

@@ -28,8 +28,6 @@
 #include "clickLabel.h"
 #include "MacroFile.h"
 
-static int i = 0;
-
 //typedef void(*GAsyncReadyCallback) (GDrive *source_object,GAsyncResult *res,gpointer user_data);
 
 void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_this)
@@ -50,7 +48,7 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
       qDebug()<<"oh no"<<err->message<<err->code;
     }
 
-    if(findGDriveList()->size() == 0)
+    if(findGDriveList()->size() == 0 || findGDriveList()->size() == 0)
     {
         p_this->m_systray->hide();
     }
@@ -178,7 +176,7 @@ void MainWindow::getDeviceInfo()
     {
         m_systray->show();
     }
-    if(findGVolumeList()->size() == 0)
+    if(findGVolumeList()->size() == 0 || findGDriveList()->size() == 0)
     {
         m_systray->hide();
     }
@@ -186,8 +184,7 @@ void MainWindow::getDeviceInfo()
 
 void MainWindow::onConvertShowWindow()
 {
-    i= 0;
-    qDebug()<<"I:"<<i;
+    num = 0;
     MainWindowShow();
 }
 
@@ -208,6 +205,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *, GDrive *drive, M
     char *drive_name = g_drive_get_name(drive);
     qDebug()<<"name: "<<drive_name;
     findGDriveList()->removeOne(drive);
+    p_this->hide();
     if(findGDriveList()->size() == 0)
     {
         p_this->m_systray->hide();
@@ -233,6 +231,7 @@ void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volum
 
 void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,MainWindow *p_this)
 {
+
     qDebug()<<"p_this:"<<p_this;
     gboolean success =  FALSE;
     GError *err = nullptr;
@@ -243,26 +242,27 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
     {
         qDebug()<<"ysysyssyeysysysysyssyeyseyseyseys";
         *findGVolumeList()<<source_object;
-        i = i + 1;
+        p_this->num++;
         qDebug()<<findGVolumeList()->size()<<"dfsdsdadadadsdasdadadada";
-        qDebug()<<i<<"---------------------------";
+        qDebug()<<p_this->num<<"---------------------------";
+        if (p_this->num >= g_list_length(g_drive_get_volumes(g_volume_get_drive(source_object))))
+        {
+            qDebug()<<g_list_length(g_drive_get_volumes(g_volume_get_drive(source_object)))<<"-=-=-=_+_+_+_+_+_+_+";
+            Q_EMIT p_this->convertShowWindow();
+        }
     }
     else
     {
         qDebug()<<"oh no no no no no sorry i'm wrong"<<err->message<<err->code;
-        g_volume_mount(source_object,
-                       G_MOUNT_MOUNT_NONE,
-                       nullptr,
-                       nullptr,
-                       GAsyncReadyCallback(frobnitz_result_func_volume),
-                       nullptr);
+//        g_volume_mount(source_object,
+//                       G_MOUNT_MOUNT_NONE,
+//                       nullptr,
+//                       nullptr,
+//                       GAsyncReadyCallback(frobnitz_result_func_volume),
+//                       nullptr);
     }
 
-    if (i >= g_list_length(g_drive_get_volumes(g_volume_get_drive(source_object))))
-    {
-        qDebug()<<g_list_length(g_drive_get_volumes(g_volume_get_drive(source_object)))<<"-=-=-=_+_+_+_+_+_+_+";
-        Q_EMIT p_this->convertShowWindow();
-    }
+
 
 }
 
@@ -274,7 +274,10 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 //        delete this->interfaceHideTime;
 //    }
     //int hign = 200;
-    disconnect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_Maininterface_hide()));
+    if(ui->centralWidget != NULL)
+    {
+        disconnect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_Maininterface_hide()));
+    }
     int num = 0;
     if ( this->vboxlayout != NULL )
     {
@@ -285,7 +288,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
             delete item;
         }
     }
-
+    qDebug()<<"reason"<<reason;
     switch (reason)
     {
     case QSystemTrayIcon::Trigger:
@@ -523,14 +526,16 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 
       }
     }
-        else
-        {
-            this->hide();
-        }
-        break;
+    else
+    {
+      qDebug()<<"hidden now" ;
+      this->hide();
+    }
+    break;
     default:
         break;
     }
+    qDebug()<<"1111111111111111111 now" ;
     ui->centralWidget->show();
 }
 
@@ -724,12 +729,12 @@ void MainWindow::moveBottomRight()
             //任务栏在下侧
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - panelHeight - DistanceToPanel);
         }
-        else if(position == 1)
+        else if(position == upPosition)
         {
             //任务栏在上侧
             this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + panelHeight + DistanceToPanel);
         }
-        else if (position == 2)
+        else if (position == leftPosition)
         {
             //任务栏在左侧
             this->move(panelHeight + DistanceToPanel, screenMainRect.y() + screenMainRect.height() - this->height());
@@ -739,7 +744,7 @@ void MainWindow::moveBottomRight()
 //                this->move(screenGeometry.width() - availableGeometry.width() + m + d,screenDupRect.y() + screenDupRect.height() - this->height());
 //            }
         }
-        else if (position == 3)
+        else if (position == rightPosition)
         {
             //任务栏在右侧
             this->move(screenMainRect.width() - this->width() - panelHeight - DistanceToPanel, screenMainRect.y() + screenMainRect.height() - this->height());
@@ -1165,13 +1170,19 @@ void MainWindow::MainWindowShow()
 //        }
     ui->centralWidget->show();
     interfaceHideTime->setTimerType(Qt::PreciseTimer);
-    connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_Maininterface_hide()));
+    if(ui->centralWidget != NULL)
+    {
+        connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_Maininterface_hide()));
+    }
     interfaceHideTime->start(2000);
+
 }
 
 void MainWindow::on_Maininterface_hide()
 {
-    ui->centralWidget->hide();
+    qDebug()<<"hiddddddddddddddddddd";
+    this->hide();
+    interfaceHideTime->stop();
 }
 
 void MainWindow::moveBottomNoBase()
