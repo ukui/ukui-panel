@@ -82,7 +82,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     setMinimumWidth(1);
     setMinimumHeight(1);
     setAcceptDrops(true);
-//    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+    //    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
     status=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
@@ -90,19 +90,20 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     //for layout
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
     mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    mCloseBtn->setIconSize(QSize(19,19));
     mTitleLabel = new QLabel;
     mTitleLabel->setMargin(0);
-//    mTitleLabel->setContentsMargins(0,0,0,10);
-//    mTitleLabel->adjustSize();
-//    mTitleLabel->setStyleSheet("QLabel{background-color: red;}");
-//    mTitleLabel->setFixedWidth(120);
+    //    mTitleLabel->setContentsMargins(0,0,0,10);
+    //    mTitleLabel->adjustSize();
+    //    mTitleLabel->setStyleSheet("QLabel{background-color: red;}");
+    //    mTitleLabel->setFixedWidth(120);
     mThumbnailLabel = new QLabel;
     mAppIcon = new QLabel;
     mVWindowsLayout = new QVBoxLayout;
     mTopBarLayout = new QHBoxLayout;
     mTopBarLayout->setContentsMargins(0,0,0,0);
-//    mTopBarLayout->setAlignment(Qt::AlignVCenter);
-//    mTopBarLayout->setDirection(QBoxLayout::LeftToRight);
+    //    mTopBarLayout->setAlignment(Qt::AlignVCenter);
+    //    mTopBarLayout->setDirection(QBoxLayout::LeftToRight);
 
     mTitleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     mAppIcon->setAlignment(Qt::AlignLeft);
@@ -120,9 +121,9 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mAppIcon->setSizePolicy(sizePolicy);
     sizePolicy.setVerticalPolicy(QSizePolicy::Expanding);
 
-//    mTitleLabel->setAttribute(Qt::WA_TranslucentBackground, true);
-//    mAppIcon->setAttribute(Qt::WA_TranslucentBackground, true);
-//    mAppIcon->resize(QSize(32,32));
+    //    mTitleLabel->setAttribute(Qt::WA_TranslucentBackground, true);
+    //    mAppIcon->setAttribute(Qt::WA_TranslucentBackground, true);
+    //    mAppIcon->resize(QSize(32,32));
 
     // 设置控件最大尺寸
     //mTitleLabel->setFixedHeight(32);
@@ -130,12 +131,12 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mThumbnailLabel->setMinimumSize(QSize(1, 1));
 
     mTitleLabel->setContentsMargins(0, 0, 5, 0);
-//    mTopBarLayout->setSpacing(5);
+    //    mTopBarLayout->setSpacing(5);
     mTopBarLayout->addWidget(mAppIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
     mTopBarLayout->addWidget(mTitleLabel, 1, Qt::AlignVCenter);
-//    mTopBarLayout->addStretch();
-    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
-//    mVWindowsLayout->setAlignment(Qt::AlignCenter);
+    //    mTopBarLayout->addStretch();
+//    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
+    //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
     mVWindowsLayout->addLayout(mTopBarLayout);
     mVWindowsLayout->addWidget(mThumbnailLabel/*, 0, Qt::AlignBottom*/);
     this->setLayout(mVWindowsLayout);
@@ -167,8 +168,8 @@ void UKUITaskWidget::updateText()
     QPalette pa;
     pa.setColor(QPalette::WindowText,Qt::white);
     mTitleLabel->setPalette(pa);
-//    setText(title.replace("&", "&&"));
-//    setToolTip(title);
+    //    setText(title.replace("&", "&&"));
+    //    setToolTip(title);
 }
 
 /************************************************
@@ -185,7 +186,7 @@ void UKUITaskWidget::updateIcon()
     {
         ico = KWindowSystem::icon(mWindow);
     }
-    mAppIcon->setPixmap(ico.pixmap(QSize(32,32)));
+    mAppIcon->setPixmap(ico.pixmap(QSize(19,19)));
     //mAppIcon->setWindowIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
     //setIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
 }
@@ -283,12 +284,13 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-//        if (isChecked())
-//            minimizeApplication();
-//        else
-            raiseApplication();
+        //        if (isChecked())
+        //            minimizeApplication();
+        //        else
+        raiseApplication();
     }
     status = NORMAL;
+    mTopBarLayout->removeWidget(mCloseBtn);
     update();
     QWidget::mouseReleaseEvent(event);
 
@@ -301,13 +303,17 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 void UKUITaskWidget::enterEvent(QEvent *)
 {
     status = HOVER;
+    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
+    mCloseBtn->show();
     repaint();
 }
 
 void UKUITaskWidget::leaveEvent(QEvent *)
 {
     status = NORMAL;
-    update();
+    mTopBarLayout->removeWidget(mCloseBtn);
+    mCloseBtn->hide();
+    repaint();
 }
 QMimeData * UKUITaskWidget::mimeData()
 {
@@ -396,17 +402,17 @@ void UKUITaskWidget::maximizeApplication()
     int state = act->data().toInt();
     switch (state)
     {
-        case NET::MaxHoriz:
-            KWindowSystem::setState(mWindow, NET::MaxHoriz);
-            break;
+    case NET::MaxHoriz:
+        KWindowSystem::setState(mWindow, NET::MaxHoriz);
+        break;
 
-        case NET::MaxVert:
-            KWindowSystem::setState(mWindow, NET::MaxVert);
-            break;
+    case NET::MaxVert:
+        KWindowSystem::setState(mWindow, NET::MaxVert);
+        break;
 
-        default:
-            KWindowSystem::setState(mWindow, NET::Max);
-            break;
+    default:
+        KWindowSystem::setState(mWindow, NET::Max);
+        break;
     }
 
     if (!isApplicationActive())
@@ -462,20 +468,20 @@ void UKUITaskWidget::setApplicationLayer()
     int layer = act->data().toInt();
     switch(layer)
     {
-        case NET::KeepAbove:
-            KWindowSystem::clearState(mWindow, NET::KeepBelow);
-            KWindowSystem::setState(mWindow, NET::KeepAbove);
-            break;
+    case NET::KeepAbove:
+        KWindowSystem::clearState(mWindow, NET::KeepBelow);
+        KWindowSystem::setState(mWindow, NET::KeepAbove);
+        break;
 
-        case NET::KeepBelow:
-            KWindowSystem::clearState(mWindow, NET::KeepAbove);
-            KWindowSystem::setState(mWindow, NET::KeepBelow);
-            break;
+    case NET::KeepBelow:
+        KWindowSystem::clearState(mWindow, NET::KeepAbove);
+        KWindowSystem::setState(mWindow, NET::KeepBelow);
+        break;
 
-        default:
-            KWindowSystem::clearState(mWindow, NET::KeepBelow);
-            KWindowSystem::clearState(mWindow, NET::KeepAbove);
-            break;
+    default:
+        KWindowSystem::clearState(mWindow, NET::KeepBelow);
+        KWindowSystem::clearState(mWindow, NET::KeepAbove);
+        break;
     }
 }
 
@@ -566,7 +572,7 @@ bool UKUITaskWidget::isOnCurrentScreen() const
 
 bool UKUITaskWidget::isMinimized() const
 {
-//    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
+    //    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
     return NET::Focused == (KWindowInfo(mWindow,NET::WMState).state()&NET::Focused);
 }
 
@@ -617,37 +623,106 @@ void UKUITaskWidget::setAutoRotation(bool value, IUKUIPanel::Position position)
 void UKUITaskWidget::paintEvent(QPaintEvent *event)
 {
 
-
+    /*旧的设置预览三态的方式，注释掉的原因是其未能设置阴影*/
+#if 0
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
 
     switch(status)
-      {
-      case NORMAL:
-          {
-              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
-              p.setPen(Qt::black);
-              break;
-          }
-      case HOVER:
-          {
-//              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-              p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x19)));
-              p.setPen(Qt::black);
-              break;
-          }
-      case PRESS:
-          {
-              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-              p.setPen(Qt::white);
-              break;
-          }
-      }
+    {
+    case NORMAL:
+    {
+        p.setBrush(QBrush(QColor(0x13,0x14,0x14,0xb2)));
+        p.setPen(Qt::black);
+        break;
+    }
+    case HOVER:
+    {
+        //              p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+        p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x19)));
+        p.setPen(Qt::black);
+        break;
+    }
+    case PRESS:
+    {
+        p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+        p.setPen(Qt::white);
+        break;
+    }
+    }
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
     p.drawRoundedRect(opt.rect,6,6);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 
+#endif
+
+#if 1
+
+    /*
+     * 预览图的设置阴影的方式与其他控件有所不同
+     * 由于涉及到UKUITaskWidget　中心是一张截图
+     * 此处设置阴影的方式不是一种通用的方式
+     * tr:
+     * The way of setting shadow in preview image is different from other controls
+     * As it involves UKUITaskWidget center is a screenshot
+     * The way to set the shadow here is not a general way
+*/
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect(),6,6);
+    // 画一个黑底
+    QPixmap pixmap(this->rect().size());
+    pixmap.fill(Qt::transparent);
+    QPainter pixmapPainter(&pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing);
+
+    pixmapPainter.drawPath(rectPath);
+    pixmapPainter.end();
+
+    // 模糊这个黑底
+    extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+    QImage img = pixmap.toImage();
+    qt_blurImage(img, 10, false, false);
+
+    // 挖掉中心
+    pixmap = QPixmap::fromImage(img);
+    QPainter pixmapPainter2(&pixmap);
+    pixmapPainter2.setRenderHint(QPainter::Antialiasing);
+    pixmapPainter2.setCompositionMode(QPainter::CompositionMode_Clear);
+    /*在Qt中定义了一个常量，用于设置透明的颜色，即Qt::transparent，表示RGBA值为(0,0,0,0)的透明色。*/
+    //    pixmapPainter2.setPen(Qt::transparent);
+    //    pixmapPainter2.setBrush(Qt::transparent);
+    pixmapPainter2.drawPath(rectPath);
+
+    // 绘制阴影
+    p.drawPixmap(this->rect(), pixmap, pixmap.rect());
+
+    // 绘制底色
+    p.save();
+    switch(status)
+    {
+    case NORMAL:
+    {
+        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
+        mTopBarLayout->removeWidget(mCloseBtn);
+        break;
+    }
+    case HOVER:
+    {
+        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
+        break;
+    }
+    case PRESS:
+    {
+        p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+
+        break;
+    }
+    }
+    p.restore();
+#endif
 }
 
 
@@ -655,18 +730,18 @@ bool UKUITaskWidget::hasDragAndDropHover() const
 {
     return mDNDTimer->isActive();
 }
- void UKUITaskWidget::updateTitle()
- {
-     updateText();
- }
+void UKUITaskWidget::updateTitle()
+{
+    updateText();
+}
 
- void UKUITaskWidget::setThumbNail(QPixmap _pixmap)
- {
-     mThumbnailLabel->setPixmap(_pixmap);
- }
+void UKUITaskWidget::setThumbNail(QPixmap _pixmap)
+{
+    mThumbnailLabel->setPixmap(_pixmap);
+}
 
- void UKUITaskWidget::removeThumbNail()
- {
+void UKUITaskWidget::removeThumbNail()
+{
     if(mThumbnailLabel)
     {
         mVWindowsLayout->removeWidget(mThumbnailLabel);
@@ -674,20 +749,20 @@ bool UKUITaskWidget::hasDragAndDropHover() const
         mThumbnailLabel->deleteLater();
         mThumbnailLabel = NULL;
     }
- }
+}
 
- void UKUITaskWidget::addThumbNail()
- {
-     if(!mThumbnailLabel)
-     {
+void UKUITaskWidget::addThumbNail()
+{
+    if(!mThumbnailLabel)
+    {
         mThumbnailLabel =  new QLabel;
         mThumbnailLabel->setScaledContents(true);
         mThumbnailLabel->setMinimumSize(QSize(1, 1));
-//        mVWindowsLayout->addLayout(mTopBarLayout, 100);
+        //        mVWindowsLayout->addLayout(mTopBarLayout, 100);
         mVWindowsLayout->addWidget(mThumbnailLabel, 0, Qt::AlignBottom);
-     }
-     else
-     {
-         return;
-     }
- }
+    }
+    else
+    {
+        return;
+    }
+}

@@ -47,6 +47,7 @@
 #include <KWindowSystem/NETWM>
 #include <QStyleOption>
 #include <QPainter>
+#include <QtDBus/QtDBus>
 
 class QSignalMapper;
 class UKUITaskButton;
@@ -59,6 +60,13 @@ class GridLayout;
 class UKUITaskBar : public QFrame
 {
     Q_OBJECT
+
+    /*
+     * 负责与ukui桌面环境应用通信的dbus
+     * 在点击任务栏的时候发给其他UKUI DE APP 点击信号
+     * 以适应特殊的设计需求以及
+　　　*/
+    Q_CLASSINFO("D-Bus Interface", "com.ukui.panel.plugins.taskbar")
 
 public:
     explicit UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
@@ -92,6 +100,7 @@ signals:
     void showOnlySettingChanged();
     void iconByClassChanged();
     void popupShown(UKUITaskGroup* sender);
+    void sendToUkuiDEApp(void);
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent * event);
@@ -99,6 +108,7 @@ protected:
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *);
 
 private slots:
     void refreshTaskList();
