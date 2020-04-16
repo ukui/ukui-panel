@@ -132,13 +132,13 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumOne->setLayout(onevolume_h_BoxLayout);
             disWidgetNumOne->installEventFilter(this);
 
-            main_V_BoxLayout->setContentsMargins(0,0,0,0);
+            main_V_BoxLayout->setContentsMargins(8,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
 
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,68);
-            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
+//            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
         }
 //when the drive has two volumes
         if(m_Num == 2)
@@ -221,15 +221,15 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumTwo->setLayout(twovolume_h_BoxLayout);
             disWidgetNumTwo->installEventFilter(this);
 
-            main_V_BoxLayout->setContentsMargins(0,0,0,0);
+            main_V_BoxLayout->setContentsMargins(8,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
             main_V_BoxLayout->addWidget(disWidgetNumTwo);
             main_V_BoxLayout->addStretch();
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,97);
-            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
-            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
+//            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
+//            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
         }
 //when the drive has three volumes
         if(m_Num == 3)
@@ -347,6 +347,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumThree->setLayout(threevolume_h_BoxLayout);
             disWidgetNumThree->installEventFilter(this);
 
+            main_V_BoxLayout->setContentsMargins(8,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
             main_V_BoxLayout->addWidget(disWidgetNumTwo);
@@ -354,9 +355,9 @@ QClickWidget::QClickWidget(QWidget *parent,
 
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,136);
-            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
-            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
-            connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
+//            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
+//            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
+//            connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
         }
 //when the drive has four volumes
         if(m_Num == 4)
@@ -509,6 +510,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumFour->setLayout(fourvolume_h_BoxLayout);
             disWidgetNumFour->installEventFilter(this);
 
+            main_V_BoxLayout->setContentsMargins(8,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
             main_V_BoxLayout->addWidget(disWidgetNumTwo);
@@ -516,10 +518,10 @@ QClickWidget::QClickWidget(QWidget *parent,
             main_V_BoxLayout->addWidget(disWidgetNumFour);
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,165);
-            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
-            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
-            connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
-            connect(m_nameDis4_label,SIGNAL(clicked()),this,SLOT(on_volume4_clicked()));
+//            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
+//            connect(m_nameDis2_label,SIGNAL(clicked()),this,SLOT(on_volume2_clicked()));
+//            connect(m_nameDis3_label,SIGNAL(clicked()),this,SLOT(on_volume3_clicked()));
+//            connect(m_nameDis4_label,SIGNAL(clicked()),this,SLOT(on_volume4_clicked()));
         }
         //connect(this, SIGNAL(clicked()), this, SLOT(mouseClicked()));
 
@@ -638,151 +640,38 @@ QString QClickWidget::size_human(qlonglong capacity)
 
 bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
 {
-    if(obj == m_nameDis1_label)
-    {
-        if(event->type() == QEvent::Enter)
-        {
-            m_nameDis1_label->setStyleSheet(
-            //正常状态样式
-            "QLabel{"
-            "font-size:14px;"
-            "font-family:Microsoft YaHei;"
-            "font-weight:400;"
-            "color:rgba(255,255,255,1);"
-            "line-height:28px;"
-            "}"
-            );
-        }
-        else if(event->type() == QEvent::Leave)
-        {
-            m_nameDis1_label->setStyleSheet(
-            //正常状态样式
-            "QLabel{"
-            "font-size:14px;"
-            "font-family:Microsoft YaHei;"
-            "font-weight:400;"
-            "color:rgba(255,255,255,0.35);"
-            "line-height:28px;"
-            "opacity:0.35;"
-            "}");
-        }
-    }
-    if(obj == m_nameDis2_label)
-    {
-        if(event->type() == QEvent::Enter)
-        {
-            m_nameDis2_label->setStyleSheet(
-            //正常状态样式
-            "QLabel{"
-            "font-size:14px;"
-            "font-family:Microsoft YaHei;"
-            "font-weight:400;"
-            "color:rgba(255,255,255,1);"
-            "line-height:28px;"
-            "}"
-            );
-
-        }
-        else if(event->type() == QEvent::Leave)
-        {
-            m_nameDis2_label->setStyleSheet(
-            //正常状态样式
-            "QLabel{"
-            "font-size:14px;"
-            "font-family:Microsoft YaHei;"
-            "font-weight:400;"
-            "color:rgba(255,255,255,0.35);"
-            "line-height:28px;"
-            "opacity:0.35;"
-            "}");
-        }
-    }
-
-    if(obj == m_nameDis3_label)
-    {
-        if(event->type() == QEvent::Enter)
-        {
-            m_nameDis3_label->setStyleSheet(
-            //正常状态样式
-            "QLabel{"
-            "font-size:14px;"
-            "font-family:Microsoft YaHei;"
-            "font-weight:400;"
-            "color:rgba(255,255,255,1);"
-            "line-height:28px;"
-            "}"
-            );
-
-        }
-        else if(event->type() == QEvent::Leave)
-        {
-            m_nameDis3_label->setStyleSheet(
-            //正常状态样式
-            "QLabel{"
-            "font-size:14px;"
-            "font-family:Microsoft YaHei;"
-            "font-weight:400;"
-            "color:rgba(255,255,255,0.35);"
-            "line-height:28px;"
-            "opacity:0.35;"
-            "}");
-        }
-    }
-
-    if(obj == m_nameDis4_label)
-    {
-        if(event->type() == QEvent::Enter)
-        {
-            m_nameDis4_label->setStyleSheet(
-            //正常状态样式
-            "QLabel{"
-            "font-size:14px;"
-            "font-family:Microsoft YaHei;"
-            "font-weight:400;"
-            "color:rgba(255,255,255,1);"
-            "line-height:28px;"
-            "}"
-            );
-
-        }
-        else if(event->type() == QEvent::Leave)
-        {
-            m_nameDis4_label->setStyleSheet(
-            //正常状态样式
-            "QLabel{"
-            "font-size:14px;"
-            "font-family:Microsoft YaHei;"
-            "font-weight:400;"
-            "color:rgba(255,255,255,0.35);"
-            "line-height:28px;"
-            "opacity:0.35;"
-            "}");
-        }
-    }
     if(obj == m_eject_button)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
+            m_eject_button->setIconSize(QSize(14,14));
             m_eject_button->setFixedSize(38,38);
             m_eject_button->setStyleSheet(
                     "background:rgba(255,255,255,0.08);"
-                    "border-radius:4px;");
+                    "border-radius:4px;"
+                    );
         }
 
         if(event->type() == QEvent::Enter)
         {
+            m_eject_button->setIconSize(QSize(16,16));
             m_eject_button->setFixedSize(40,40);
             m_eject_button->setStyleSheet(
+                    "background-color:rgba(255,255,255,0.91);"
                     "background:rgba(255,255,255,0.12);"
                     "border-radius:4px;");
         }
 
         if(event->type() == QEvent::Leave)
         {
+            m_eject_button->setIconSize(QSize(16,16));
             m_eject_button->setFixedSize(40,40);
             m_eject_button->setStyleSheet(
+                    "background-color:rgba(255,255,255,0.75);"
+                    "background-color:rgba(255,255,255,0.57);"
                     "background:rgba(255,255,255,0);"
                     "border-radius:4px;");
+
         }
     }
 
@@ -792,12 +681,53 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
        {
            disWidgetNumOne->setStyleSheet(
                        "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
+           if(m_nameDis1_label)
+           {
+           m_nameDis1_label->setStyleSheet(
+           //正常状态样式
+           "QLabel{"
+           "font-size:14px;"
+           "font-family:Microsoft YaHei;"
+           "font-weight:400;"
+           "color:rgba(255,255,255,1);"
+           "line-height:28px;"
+           "}");
+           }
+           m_capacityDis1_label->setStyleSheet(
+           //正常状态样式
+           "QLabel{"
+           "font-size:14px;"
+           "font-family:Microsoft YaHei;"
+           "font-weight:400;"
+           "color:rgba(255,255,255,1);"
+           "line-height:28px;"
+           "}");
        }
 
        if(event->type() == QEvent::Leave)
        {
            disWidgetNumOne->setStyleSheet(
                        "");
+           m_nameDis1_label->setStyleSheet(
+           //正常状态样式
+           "QLabel{"
+           "font-size:14px;"
+           "font-family:Microsoft YaHei;"
+           "font-weight:400;"
+           "color:rgba(255,255,255,0.35);"
+           "line-height:28px;"
+           "opacity:0.35;"
+           "}");
+           m_capacityDis1_label->setStyleSheet(
+           //正常状态样式
+           "QLabel{"
+           "font-size:14px;"
+           "font-family:Microsoft YaHei;"
+           "font-weight:400;"
+           "color:rgba(255,255,255,0.35);"
+           "line-height:28px;"
+           "opacity:0.35;"
+           "}");
        }
 
        if(event->type() == QEvent::MouseButtonPress)
@@ -812,12 +742,52 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
         {
             disWidgetNumTwo->setStyleSheet(
                         "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
+            m_nameDis2_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,1);"
+            "line-height:28px;"
+            "}");
+
+            m_capacityDis2_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,1);"
+            "line-height:28px;"
+            "}");
         }
 
         if(event->type() == QEvent::Leave)
         {
             disWidgetNumTwo->setStyleSheet(
                         "");
+            m_nameDis2_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,0.35);"
+            "line-height:28px;"
+            "opacity:0.35;"
+            "}");
+
+            m_capacityDis2_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,0.35);"
+            "line-height:28px;"
+            "opacity:0.35;"
+            "}");
         }
 
         if(event->type() == QEvent::MouseButtonPress)
@@ -832,12 +802,52 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
         {
             disWidgetNumThree->setStyleSheet(
                         "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
+            m_nameDis3_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,1);"
+            "line-height:28px;"
+            "}");
+
+            m_capacityDis3_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,1);"
+            "line-height:28px;"
+            "}");
         }
 
         if(event->type() == QEvent::Leave)
         {
             disWidgetNumThree->setStyleSheet(
                         "");
+            m_nameDis3_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,0.35);"
+            "line-height:28px;"
+            "opacity:0.35;"
+            "}");
+
+            m_capacityDis3_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,0.35);"
+            "line-height:28px;"
+            "opacity:0.35;"
+            "}");
         }
 
         if(event->type() == QEvent::MouseButtonPress)
@@ -852,12 +862,52 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
         {
             disWidgetNumFour->setStyleSheet(
                         "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
+            m_nameDis4_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,1);"
+            "line-height:28px;"
+            "}");
+
+            m_capacityDis4_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,1);"
+            "line-height:28px;"
+            "}");
         }
 
         if(event->type() == QEvent::Leave)
         {
             disWidgetNumFour->setStyleSheet(
                         "");
+            m_nameDis4_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,0.35);"
+            "line-height:28px;"
+            "opacity:0.35;"
+            "}");
+
+            m_capacityDis4_label->setStyleSheet(
+            //正常状态样式
+            "QLabel{"
+            "font-size:14px;"
+            "font-family:Microsoft YaHei;"
+            "font-weight:400;"
+            "color:rgba(255,255,255,0.35);"
+            "line-height:28px;"
+            "opacity:0.35;"
+            "}");
         }
 
         if(event->type() == QEvent::MouseButtonPress)
