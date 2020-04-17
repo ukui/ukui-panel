@@ -257,32 +257,36 @@ void UKUITray::realign()
     layout()->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
 
-    for(int i=0;i<mTrayIcons.size();i++)
+#if 0
+    for(auto it=mTrayIcons.begin();it!=mTrayIcons.end();it++)
     {
-        if(mTrayIcons.at(i))
+        if(*it)
         {
-            mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            //          mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            //            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            (*it)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
         }
         else
         {
-            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+            qDebug()<<"mTrayIcons add error   : ";
         }
     }
+
     for(int i=0;i<mStorageIcons.size();i++)
     {
         if(mStorageIcons.at(i))
         {
-            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
-            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            //            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+            //          mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
         }
         else
         {
             qDebug()<<"mStorageIcons add error   :  "<<mStorageIcons.at(i);
         }
     }
+#endif
     handleStorageUi();
-
     if (panel->isHorizontal())
     {
         dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
@@ -296,8 +300,13 @@ void UKUITray::realign()
     layout()->setEnabled(true);
     if(storageFrame)
     {
-        storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,0)), storageFrame->size()));
+        storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-30,0)), storageFrame->size()));
     }
+
+    int iconsize=mPlugin->panel()->iconSize()/2;
+    mIconSize=QSize(iconsize,iconsize);
+    setIconSize();
+
 }
 
 
@@ -322,11 +331,11 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
         id = data32[2];
         if(id){
             regulateIcon(&id);
-            Window winId=44040845;
-            QSize iconSize(32,32);
-            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
-            //            icon->setFixedSize(40,40);
-            icon->setIconSize(QSize(32,32));
+//            Window winId=44040845;
+//            QSize iconSize(32,32);
+//            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
+//            //            icon->setFixedSize(40,40);
+//            icon->setIconSize(QSize(32,32));
         }
 
 
@@ -563,16 +572,6 @@ void UKUITray::onIconDestroyed(QObject * icon)
 
 void UKUITray::freezeTrayApp(Window winId)
 {
-    /*
-     * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
-     * 不在监听到托盘应用的退出事件 DestroyNotify 中进行刷新的的原因已经说明
-     * 由于监听托盘应用destory信号的方式有待改进
-     * 所以在遇到托盘应用异常退出但是界面未刷新的情况需要重点关注
-     * 这可能会导致panel的崩溃
-     *
-    */
-    handleStorageUi();
-
     QList<char *> existsPath = listExistsPath();
     int bingdingStr;
 
@@ -601,6 +600,19 @@ void UKUITray::freezeTrayApp(Window winId)
         }
         delete settings;
     }
+
+    /*
+     * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
+     * 不在监听到托盘应用的退出事件 DestroyNotify 中进行刷新的的原因已经说明
+     * 由于监听托盘应用destory信号的方式有待改进
+     * 所以在遇到托盘应用异常退出但是界面未刷新的情况需要重点关注
+     * 这可能会导致panel的崩溃
+     *
+     * @crash bug
+     * 在此处　调用handleStorageUi()  会导致panel 在退出的时候段错误
+     * commit　＃6704745　出现此错误　　将handleStorageUi　放到freezeTrayApp　函数最后调用以避免此问题
+    */
+    handleStorageUi();
 }
 
 
@@ -924,7 +936,7 @@ void UKUITray::regulateIcon(Window *mid)
             newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
 
             QStringList trayIconNameList;
-            trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather";
+            trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk";
             if(trayIconNameList.contains(xfitMan().getApplicationName(wid)))
             {
                 newsetting->set(ACTION_KEY,"tray");
@@ -1149,7 +1161,7 @@ void UKUITray::handleStorageUi()
     storageFrame->layout()->addWidget(m_pwidget);
     //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
     storageFrame->setFixedSize(winWidth,winHeight);
-    storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,50)), storageFrame->size()));
+//    storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(pos().x()-30,pos().y())), storageFrame->size()));
     //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
 }
 
