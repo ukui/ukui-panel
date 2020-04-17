@@ -98,6 +98,11 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
             , this, &UKUITaskBar::onWindowChanged);
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &UKUITaskBar::onWindowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
+
+    /**/
+    QDBusConnection::sessionBus().unregisterService("com.ukui.panel.plugins.service");
+    QDBusConnection::sessionBus().registerService("com.ukui.panel.plugins.service");
+    QDBusConnection::sessionBus().registerObject("/taskbar/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
 }
 
 /************************************************
@@ -755,7 +760,34 @@ void UKUITaskBar::paintEvent(QPaintEvent *)
                   break;
               }
           }
-        p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        p.setRenderHint(QPainter::Antialiasing);
         p.drawRoundedRect(opt.rect,6,6);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
+void UKUITaskBar::mousePressEvent(QMouseEvent *)
+{
+    /*创建QT的DBus信号*/
+    QDBusMessage message =QDBusMessage::createSignal("/taskbar/click", "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp");
+    /*
+     * 发射信号,此处不给信号赋值　　message << QString("clicked");的原因是
+     * 侧边栏和开始菜单仅需要点击信号
+     * 若后期有特殊的设计需求，例如对鼠标左键，右键，滚轮　进行不同的处理就需要给信号赋值
+     * tr:
+     * Transmit the signal, the signal is not assigned here The reason is
+     * The sidebar and start menu only need to click the signal
+     * If there are special design requirements in the later stage,
+     * such as different processing for the left mouse button, right mouse button, and scroll wheel,
+     * the signal needs to be assigned and processed
+     *
+     * 需要此点击信号的应用需要做如下绑定
+     * QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(client_get(void)));
+     * 在槽函数client_get(void)　中处理接受到的点击信号
+     * tr:
+     * Applications that require this click signal need to do the following binding
+     * Process the received click signal in the slot function client_get (void)
+     * NOTE:https://blog.csdn.net/czhzasui/article/details/81071383
+　　　*/
+    QDBusConnection::sessionBus().send(message);
+}
+

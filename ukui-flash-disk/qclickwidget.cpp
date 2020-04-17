@@ -348,6 +348,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumThree->setLayout(threevolume_h_BoxLayout);
             disWidgetNumThree->installEventFilter(this);
 
+
             main_V_BoxLayout->setContentsMargins(0,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
