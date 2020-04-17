@@ -165,7 +165,7 @@ void UKUITaskButton::updateIcon()
 //        ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
 
     }
-    setIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
+    setIcon(ico.isNull() ? XdgIcon::fromTheme("application-x-desktop") : ico);
 }
 
 /************************************************
