@@ -257,36 +257,32 @@ void UKUITray::realign()
     layout()->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
 
-#if 0
-    for(auto it=mTrayIcons.begin();it!=mTrayIcons.end();it++)
+    for(int i=0;i<mTrayIcons.size();i++)
     {
-        if(*it)
+        if(mTrayIcons.at(i))
         {
-            //          mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-            //            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-            (*it)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-            (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
         }
         else
         {
-            qDebug()<<"mTrayIcons add error   : ";
+            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
         }
     }
-
     for(int i=0;i<mStorageIcons.size();i++)
     {
         if(mStorageIcons.at(i))
         {
-            //            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
-            //          mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
         }
         else
         {
             qDebug()<<"mStorageIcons add error   :  "<<mStorageIcons.at(i);
         }
     }
-#endif
-    handleStorageUi();
+    //在realign中反复刷新收纳栏界面会有隐患
+//    handleStorageUi();
     if (panel->isHorizontal())
     {
         dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
@@ -297,15 +293,13 @@ void UKUITray::realign()
         dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
         dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
     }
-    layout()->setEnabled(true);
+
     if(storageFrame)
     {
         storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-30,0)), storageFrame->size()));
     }
 
-    int iconsize=mPlugin->panel()->iconSize()/2;
-    mIconSize=QSize(iconsize,iconsize);
-    setIconSize();
+    layout()->setEnabled(true);
 
 }
 
@@ -587,20 +581,34 @@ void UKUITray::freezeTrayApp(Window winId)
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray bba(allpath);
 
-        QGSettings *settings;
+        QGSettings *settings = NULL;
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
-        if(QGSettings::isSchemaInstalled(id)) {
+        if(QGSettings::isSchemaInstalled(id))
+        {
+            if(bba.isEmpty())
+            {
+                continue;
+            }
             settings= new QGSettings(ba, bba,this);
-            bingdingStr=settings->get(BINDING_KEY).toInt();
+            if(settings)
+            {
+                if(settings->keys().contains(BINDING_KEY))
+                {
+                    bingdingStr=settings->get(BINDING_KEY).toInt();
+                }
+            }
 
             if(winId==bingdingStr)
             {
                 settings->set(ACTION_KEY,"freeze");
             }
         }
-        delete settings;
-    }
 
+        if(settings)
+        {
+            settings->deleteLater();
+        }
+    }
     /*
      * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
      * 不在监听到托盘应用的退出事件 DestroyNotify 中进行刷新的的原因已经说明
@@ -612,6 +620,8 @@ void UKUITray::freezeTrayApp(Window winId)
      * 在此处　调用handleStorageUi()  会导致panel 在退出的时候段错误
      * commit　＃6704745　出现此错误　　将handleStorageUi　放到freezeTrayApp　函数最后调用以避免此问题
     */
+    TrayIcon *storageicon = findStorageIcon(winId);
+    mStorageIcons.removeOne(storageicon);
     handleStorageUi();
 }
 
