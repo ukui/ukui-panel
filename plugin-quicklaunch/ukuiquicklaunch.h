@@ -94,7 +94,6 @@ private:
     void dropEvent(QDropEvent *e);
     void paintEvent(QPaintEvent *);
     QVector<QuickLaunchButton*> mVBtn;
-    QuickLaunchButton* btn;
 
 
 

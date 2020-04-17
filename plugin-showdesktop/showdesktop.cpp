@@ -45,6 +45,7 @@ ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
     IUKUIPanelPlugin(startupInfo)
 {
     state=NORMAL;
+    this->setToolTip(tr("Show Desktop"));
     realign();
 
 }
@@ -75,9 +76,11 @@ void ShowDesktop::paintEvent(QPaintEvent *)
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
+    /*设置画笔的颜色，此处画笔作用与Line，所以必须在drawLine　之前调用*/
+    p.setPen(QColor(0x62,0x6C,0x6E,0xcc));
     switch (state) {
     case NORMAL:
-        p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
+
         p.drawLine(0,0,xEndPoint,yEndPoint);
         break;
     case HOVER:
@@ -87,8 +90,7 @@ void ShowDesktop::paintEvent(QPaintEvent *)
     default:
         break;
     }
-    p.setPen(Qt::NoPen);
-    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    p.setRenderHint(QPainter::Antialiasing);
     p.drawRect(opt.rect);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

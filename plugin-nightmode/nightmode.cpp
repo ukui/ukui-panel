@@ -38,7 +38,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
-    mButton=new NightModeButton;
+    mButton=new NightModeButton(this);
     mButton->setStyle(new CustomStyle());
     realign();
 }
@@ -53,7 +53,11 @@ void NightMode::realign()
     mButton->setIconSize(QSize(24,24));
 }
 
-NightModeButton::NightModeButton(){
+NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
+    QToolButton(parent),
+    mPlugin(plugin)
+{  
+    /*redshift的配置文件*/
     QString filename = QDir::homePath() +"/.config/redshift.conf";
     mqsettings = new QSettings(filename, QSettings::IniFormat);
 
@@ -73,24 +77,41 @@ NightModeButton::NightModeButton(){
     const QByteArray id(NIGHT_MODE_CONTROL);
     if(QGSettings::isSchemaInstalled(id)) {
         gsettings = new QGSettings(id);
-        if(gsettings->get(NIGHT_MODE_KEY).toBool())
+        if(gsettings->keys().contains(NIGHT_MODE_KEY))
         {
-            this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
-            this->setToolTip(tr("nightmode open"));
-            mode=true;
+            if(gsettings->get(NIGHT_MODE_KEY).toBool())
+            {
+                setNightMode(true);
+            }
+            else
+            {
+                setNightMode(false);
+            }
         }
         else
         {
-            this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-            this->setToolTip(tr("nightmode close"));
-            mode=false;
+            QMessageBox::information(this,"Error",tr("please install Newest ukui-control-center first"));
         }
-    }
 
-    /*系统主题gsettings*/
-    const QByteArray styleid(UKUI_STYLE);
-    if(QGSettings::isSchemaInstalled(styleid)) {
-        mstyleGsettings = new QGSettings(styleid);
+        connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+            if(key==NIGHT_MODE_KEY)
+            {
+                if(gsettings->get(NIGHT_MODE_KEY).toBool())
+                {
+                    setNightMode(true);
+                }
+                else
+                {
+                    setNightMode(false);
+                }
+            }
+        });
+
+        /*系统主题gsettings*/
+        const QByteArray styleid(UKUI_STYLE);
+        if(QGSettings::isSchemaInstalled(styleid)) {
+            mstyleGsettings = new QGSettings(styleid);
+        }
     }
 }
 NightModeButton::~NightModeButton(){
@@ -98,43 +119,65 @@ NightModeButton::~NightModeButton(){
     delete mstyleGsettings;
 }
 
-void NightModeButton::mousePressEvent(QMouseEvent *)
+/*NOTE:目前夜间模式的点击按钮实现的是　设置夜间模式＋切换主题*/
+void NightModeButton::mousePressEvent(QMouseEvent *event)
 {
-    if(mode)
+    if(event->button()==Qt::LeftButton)
     {
-        setNightMode(false);
-        setUkuiStyle("ukui-white");
-        mode=false;
+        if(mode)
+        {
+            if(gsettings->keys().contains(NIGHT_MODE_KEY))
+            {
+                gsettings->set("nightmode", true);
+                setNightMode(true);
+                setUkuiStyle("ukui-black");
+                mode=false;
+            }
+
+        }
+        else
+        {
+            if(gsettings->keys().contains(NIGHT_MODE_KEY))
+            {
+                gsettings->set("nightmode", false);
+                setNightMode(false);
+                setUkuiStyle("ukui-white");
+                mode=true;
+            }
+
+        }
     }
-    else
-    {
-        setNightMode(true);
-        setUkuiStyle("ukui-black");
-        mode=true;
-    }
+}
+void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
+{
+    nightModeMenu=new QMenu();
+    nightModeMenu->setAttribute(Qt::WA_DeleteOnClose);
+
+    nightModeMenu->addAction(QIcon::fromTheme("document-page-setup"),
+                             tr("Turn On NightMode"),
+                             this, SLOT(turnNightMode())
+                             );
+    nightModeMenu->addAction(QIcon::fromTheme("document-page-setup"),
+                             tr("Set Up NightMode"),
+                             this, SLOT(setUpNightMode())
+                             );
+    nightModeMenu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), nightModeMenu->sizeHint()));
+    nightModeMenu->show();
 }
 
-/*
-void NightModeButton::nightModeChange(bool mode)
+void NightModeButton::turnNightMode()
 {
-    if(mode)
-    {
-        this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-        this->setToolTip(tr("nightmode open"));
-        QProcess *nightprocess =new QProcess(this);
-        nightprocess->startDetached("redshift -O 3600");
-        nightprocess->deleteLater();
-    }
-    else
-    {
-        this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
-        this->setToolTip(tr("nightmode close"));
-        QProcess *lightprocess =new QProcess(this);
-        lightprocess->startDetached("redshift -x");
-        lightprocess->deleteLater();
-    }
+    setNightMode(true);
+    setUkuiStyle("ukui-black");
+    mode=true;
 }
-*/
+
+void NightModeButton::setUpNightMode()
+{
+    QProcess *process =new QProcess(this);
+    process->startDetached("ukui-control-center -m");
+    process->deleteLater();
+}
 
 /*
  * 设置夜间模式
@@ -145,27 +188,28 @@ void NightModeButton::setNightMode(const bool nightMode){
     QString cmd;
     QString serverCmd;
 
-    if(nightMode) {
+    if(nightMode)
+    {
         cmd = "restart";
         serverCmd = "enable";
-        gsettings->set("nightmode", true);
-        this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg"));
+        QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
+        this->setIcon(icon);
         this->setToolTip(tr("nightmode open"));
-
-    } else {
+    }
+    else
+    {
         cmd = "stop";
         serverCmd = "disable";
-        gsettings->set("nightmode", false);
         this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
         this->setToolTip(tr("nightmode close"));
     }
 
     process.startDetached("systemctl", QStringList() << "--user" << serverCmd << "redshift.service");
-
     process.startDetached("systemctl", QStringList() << "--user" << cmd << "redshift.service");
 
 }
 
+/*设置主题*/
 void NightModeButton::setUkuiStyle(QString style)
 {
     if(QString::compare(style,"ukui-white")==0)
