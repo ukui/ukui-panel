@@ -812,12 +812,13 @@ void UKUIPanel::setUpPanel()
     if(QFileInfo::exists(QString("/usr/bin/ukui-control-center")))
     {
         QProcess *process =new QProcess(this);
-        process->startDetached("/usr/bin/ukui-control-center -m");
+        process->startDetached("/usr/bin/ukui-control-center  -d");
         process->deleteLater();
     }
     else
         qDebug()<<"not find /usr/bin/ukui-control-center";
 }
+
 void UKUIPanel::systeMonitor()
 {
     if(QFileInfo::exists(QString("/usr/bin/mate-system-monitor")) || QFileInfo::exists(QString("/usr/bin/ukui-system-monitor")))
@@ -828,7 +829,8 @@ void UKUIPanel::systeMonitor()
         else
             process->startDetached("/usr/bin/mate-system-monitor");
     }
-    else{qDebug()<<"not find /usr/bin/mate-system-monitor or /usr/bin/ukui-system-monitor"<<endl;}
+    else
+        qDebug()<<"not find /usr/bin/mate-system-monitor or /usr/bin/ukui-system-monitor";
 }
 
 void UKUIPanel::showDesktop()
