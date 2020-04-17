@@ -73,6 +73,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_eject_button->setIcon(eject_icon);
         m_eject_button->setToolTip(tr("弹出"));
 
+        drivename_H_BoxLayout->addSpacing(8);
         drivename_H_BoxLayout->addWidget(image_show_label);
         drivename_H_BoxLayout->addWidget(m_driveName_label);
         drivename_H_BoxLayout->addStretch();
@@ -132,7 +133,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumOne->setLayout(onevolume_h_BoxLayout);
             disWidgetNumOne->installEventFilter(this);
 
-            main_V_BoxLayout->setContentsMargins(8,0,0,0);
+            main_V_BoxLayout->setContentsMargins(0,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
 
@@ -221,7 +222,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumTwo->setLayout(twovolume_h_BoxLayout);
             disWidgetNumTwo->installEventFilter(this);
 
-            main_V_BoxLayout->setContentsMargins(8,0,0,0);
+            main_V_BoxLayout->setContentsMargins(0,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
             main_V_BoxLayout->addWidget(disWidgetNumTwo);
@@ -347,7 +348,8 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumThree->setLayout(threevolume_h_BoxLayout);
             disWidgetNumThree->installEventFilter(this);
 
-            main_V_BoxLayout->setContentsMargins(8,0,0,0);
+
+            main_V_BoxLayout->setContentsMargins(0,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
             main_V_BoxLayout->addWidget(disWidgetNumTwo);
@@ -510,7 +512,7 @@ QClickWidget::QClickWidget(QWidget *parent,
             disWidgetNumFour->setLayout(fourvolume_h_BoxLayout);
             disWidgetNumFour->installEventFilter(this);
 
-            main_V_BoxLayout->setContentsMargins(8,0,0,0);
+            main_V_BoxLayout->setContentsMargins(0,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
             main_V_BoxLayout->addWidget(disWidgetNumOne);
             main_V_BoxLayout->addWidget(disWidgetNumTwo);
