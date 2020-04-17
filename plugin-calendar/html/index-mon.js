@@ -728,9 +728,9 @@ function create_page(year, month) {
                         highlight_day = parseInt(this.children[0].innerHTML);
                     }
 
-                    if (this.className === 'day_other_month') {
-                        return;
-                    }
+                    // if (this.className === 'day_other_month') {
+                    //     return;
+                    // }
 
                     create_page(parseInt(year_selector.value), parseInt(month_selector.value));
                 });

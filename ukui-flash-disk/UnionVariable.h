@@ -18,9 +18,8 @@
 #ifndef UNIONVARIABLE_H
 #define UNIONVARIABLE_H
 #include <QList>
-#include <PeonyVolumeManager>
-QList<std::shared_ptr<Peony::Mount>> *findList();
-QList<std::shared_ptr<Peony::Volume>> *findVolumeList();
-QList<std::shared_ptr<Peony::Drive>> *findDriveList();
+#include <gio/gio.h>
 QList<GMount *> *findGMountList();
+QList<GVolume *> *findGVolumeList();
+QList<GDrive *> *findGDriveList();
 #endif

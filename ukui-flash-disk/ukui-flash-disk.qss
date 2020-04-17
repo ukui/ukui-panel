@@ -30,8 +30,6 @@ opacity:0.91;
 }
 
 QLabel#capacityLabel{
-width:60px;
-height:18px;
 font-size:14px;
 font-family:Microsoft YaHei;
 font-weight:400;

@@ -16,32 +16,22 @@
  *
  */
 #include "UnionVariable.h"
-
-static QList<std::shared_ptr<Peony::Mount>> mountsList;
-
-QList<std::shared_ptr<Peony::Mount> > *findList()
-{
-    return &mountsList;
-}
-
-static QList<std::shared_ptr<Peony::Volume>> volumesList;
-
-QList<std::shared_ptr<Peony::Volume> > *findVolumeList()
-{
-    return &volumesList;
-}
-
-static QList<std::shared_ptr<Peony::Drive>> drivesList;
-
-QList<std::shared_ptr<Peony::Drive> > *findDriveList()
-{
-    return &drivesList;
-}
-
 static QList<GMount *> gmountList;
 QList<GMount *> *findGMountList()
 {
     return &gmountList;
+}
+
+static QList<GVolume *> gvolumeList;
+QList<GVolume *> *findGVolumeList()
+{
+    return &gvolumeList;
+}
+
+static QList<GDrive *> gdriveList;
+QList<GDrive *> *findGDriveList()
+{
+    return &gdriveList;
 }
 
 
