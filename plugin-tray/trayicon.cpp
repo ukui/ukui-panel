@@ -77,7 +77,6 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     mDamage(0),
     mDisplay(QX11Info::display())
 {
-    traystatus=NORMAL;
     // NOTE:
     // it's a good idea to save the return value of QX11Info::display().
     // In Qt 5, this API is slower and has some limitations which can trigger crashes.
@@ -86,16 +85,13 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     // QX11Info::display() will fail and cause crash. Storing this value improves the efficiency and
     // also prevent potential crashes caused by this bug.
 
+    traystatus=NORMAL;
     setObjectName("TrayIcon");
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    // NOTE:
-    // see https://github.com/ukui/ukui/issues/945
-    // workaround: delayed init because of weird behaviour of some icons/windows (claws-mail)
-    // (upon starting the app the window for receiving clicks wasn't correctly sized
-    //  no matter what we've done)
+
     QTimer::singleShot(200, [this] { init(); update(); });
-    mRectSize.setWidth(46);
-    mRectSize.setHeight(46);
+//    mRectSize.setWidth(32);
+//    mRectSize.setHeight(40);
 }
 
 
@@ -143,16 +139,12 @@ void TrayIcon::init()
 
     if (xError)
     {
-        qWarning() << "****************************************";
         qWarning() << "* Not icon_swallow                     *";
-        qWarning() << "****************************************";
         XDestroyWindow(dsp, mWindowId);
         mWindowId = 0;
         deleteLater();
         return;
     }
-
-
     {
         Atom acttype;
         int actfmt;
@@ -236,9 +228,9 @@ TrayIcon::~TrayIcon()
 QSize TrayIcon::sizeHint() const
 {
     QMargins margins = contentsMargins();
-    return QSize(margins.left() + mRectSize.width()/2 + margins.right()/2,
-                 margins.top() + mRectSize.height()/2 + margins.bottom()/2
-                 );
+    return QSize(margins.left() + mIconSize.width()/2 + margins.right()/2,
+                 margins.top() + mIconSize.height()/2 + margins.bottom()/2
+                );
 }
 
 
@@ -259,8 +251,8 @@ void TrayIcon::setIconSize(QSize iconSize)
     {
         xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
     }
-    QSize mysize(8,8);
-    mIconSize=mysize;
+    //QSize mysize(8,8);
+    //mIconSize=mysize;
 }
 
 /************************************************
