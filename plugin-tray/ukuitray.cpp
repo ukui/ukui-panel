@@ -281,8 +281,8 @@ void UKUITray::realign()
             qDebug()<<"mStorageIcons add error   :  "<<mStorageIcons.at(i);
         }
     }
-    handleStorageUi();
-
+    //在realign中反复刷新收纳栏界面会有隐患
+//    handleStorageUi();
     if (panel->isHorizontal())
     {
         dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
@@ -293,11 +293,14 @@ void UKUITray::realign()
         dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
         dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
     }
-    layout()->setEnabled(true);
+
     if(storageFrame)
     {
-        storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,0)), storageFrame->size()));
+        storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-30,0)), storageFrame->size()));
     }
+
+    layout()->setEnabled(true);
+
 }
 
 
@@ -322,11 +325,11 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
         id = data32[2];
         if(id){
             regulateIcon(&id);
-            Window winId=44040845;
-            QSize iconSize(32,32);
-            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
-            //            icon->setFixedSize(40,40);
-            icon->setIconSize(QSize(32,32));
+//            Window winId=44040845;
+//            QSize iconSize(32,32);
+//            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
+//            //            icon->setFixedSize(40,40);
+//            icon->setIconSize(QSize(32,32));
         }
 
 
@@ -563,16 +566,6 @@ void UKUITray::onIconDestroyed(QObject * icon)
 
 void UKUITray::freezeTrayApp(Window winId)
 {
-    /*
-     * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
-     * 不在监听到托盘应用的退出事件 DestroyNotify 中进行刷新的的原因已经说明
-     * 由于监听托盘应用destory信号的方式有待改进
-     * 所以在遇到托盘应用异常退出但是界面未刷新的情况需要重点关注
-     * 这可能会导致panel的崩溃
-     *
-    */
-    handleStorageUi();
-
     QList<char *> existsPath = listExistsPath();
     int bingdingStr;
 
@@ -588,19 +581,48 @@ void UKUITray::freezeTrayApp(Window winId)
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray bba(allpath);
 
-        QGSettings *settings;
+        QGSettings *settings = NULL;
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
-        if(QGSettings::isSchemaInstalled(id)) {
+        if(QGSettings::isSchemaInstalled(id))
+        {
+            if(bba.isEmpty())
+            {
+                continue;
+            }
             settings= new QGSettings(ba, bba,this);
-            bingdingStr=settings->get(BINDING_KEY).toInt();
+            if(settings)
+            {
+                if(settings->keys().contains(BINDING_KEY))
+                {
+                    bingdingStr=settings->get(BINDING_KEY).toInt();
+                }
+            }
 
             if(winId==bingdingStr)
             {
                 settings->set(ACTION_KEY,"freeze");
             }
         }
-        delete settings;
+
+        if(settings)
+        {
+            settings->deleteLater();
+        }
     }
+    /*
+     * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
+     * 不在监听到托盘应用的退出事件 DestroyNotify 中进行刷新的的原因已经说明
+     * 由于监听托盘应用destory信号的方式有待改进
+     * 所以在遇到托盘应用异常退出但是界面未刷新的情况需要重点关注
+     * 这可能会导致panel的崩溃
+     *
+     * @crash bug
+     * 在此处　调用handleStorageUi()  会导致panel 在退出的时候段错误
+     * commit　＃6704745　出现此错误　　将handleStorageUi　放到freezeTrayApp　函数最后调用以避免此问题
+    */
+    TrayIcon *storageicon = findStorageIcon(winId);
+    mStorageIcons.removeOne(storageicon);
+    handleStorageUi();
 }
 
 
@@ -924,7 +946,7 @@ void UKUITray::regulateIcon(Window *mid)
             newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
 
             QStringList trayIconNameList;
-            trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather";
+            trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk";
             if(trayIconNameList.contains(xfitMan().getApplicationName(wid)))
             {
                 newsetting->set(ACTION_KEY,"tray");
@@ -1149,7 +1171,7 @@ void UKUITray::handleStorageUi()
     storageFrame->layout()->addWidget(m_pwidget);
     //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
     storageFrame->setFixedSize(winWidth,winHeight);
-    storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,50)), storageFrame->size()));
+//    storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(pos().x()-30,pos().y())), storageFrame->size()));
     //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
 }
 

@@ -91,6 +91,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
     mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     mCloseBtn->setIconSize(QSize(19,19));
+    mCloseBtn->setFixedSize(QSize(19,19));
     mTitleLabel = new QLabel;
     mTitleLabel->setMargin(0);
     //    mTitleLabel->setContentsMargins(0,0,0,10);
