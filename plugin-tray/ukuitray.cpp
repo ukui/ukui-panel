@@ -182,6 +182,7 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
      */
     case ClientMessage:
         clientMessageEvent(event);
+        repaint();
         break;
 
         //        case ConfigureNotify:
@@ -275,6 +276,18 @@ void UKUITray::realign()
      * 这些应该在handleStorageUi()函数中执行
      * handleStorageUi();
     */
+//    for(int i=0;i<mStorageIcons.size();i++)
+//    {
+//        if(mStorageIcons.at(i))
+//        {
+//            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+//            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+//        }
+//        else
+//        {
+//            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+//        }
+//    }
     if (panel->isHorizontal())
     {
         dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
@@ -453,12 +466,12 @@ void UKUITray::startTray()
     QString s = QString("_NET_SYSTEM_TRAY_S%1").arg(DefaultScreen(dsp));
     Atom _NET_SYSTEM_TRAY_S = XfitMan::atom(s.toLatin1());
     //this limit the tray apps  | will not run more Same apps
-    //    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != None)
-    //    {
-    //        qWarning() << "Another systray is running";
-    //        mValid = false;
-    //        return;
-    //    }
+    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != None)
+    {
+        qWarning() << "Another systray is running";
+        mValid = false;
+        return;
+    }
 
     // init systray protocol
     mTrayId = XCreateSimpleWindow(dsp, root, -1, -1, 1, 1, 0, 0, 0);
@@ -1173,6 +1186,7 @@ void UKUITray::handleStorageUi()
     for(auto it = mStorageIcons.begin();it != mStorageIcons.end();++it)
     {
         m_pwidget->layout()->addWidget(*it);
+        (*it)->setFixedSize(mWinWidth,mWinHeight);
     }
     storageFrame->layout()->addWidget(m_pwidget);
     //    qDebug()<<"m_pwidget:"<<m_pwidget->size();

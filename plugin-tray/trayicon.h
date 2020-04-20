@@ -65,27 +65,6 @@ public:
     QSize sizeHint() const;
     IUKUIPanelPlugin *mPlugin;
 
-    static void setSkipEffect(QWidget *w, bool skip = true);
-    static bool isPixmapPureColor(const QImage &image);
-    static bool isWidgetIconUseHighlightEffect(const QWidget *w);
-
-    static void setSymoblicColor(const QColor &color);
-    static void setWidgetIconFillSymbolicColor(QWidget *widget, bool fill);
-
-    static const QColor getCurrentSymbolicColor();
-    QColor getImageColor(QImage &img);
-
-    static QPixmap generatePixmap(const QPixmap &pixmap,
-                                  const QStyleOption *option,
-                                  const QWidget *widget = nullptr,
-                                  bool force = false,
-                                  EffectMode mode = HighlightOnly);
-
-private:
-
-    static QPixmap filledSymbolicColoredPixmap(QImage &source, QColor &baseColor);
-    static QPixmap paintSymbolicColoredPixmap(QImage &source, QColor &baseColor);
-
 
 public slots:
     void notifyAppFreeze();

@@ -6,7 +6,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -164,7 +164,7 @@ void HighLightEffect::setWidgetIconFillSymbolicColor(QWidget *widget, bool fill)
 
 const QColor HighLightEffect::getCurrentSymbolicColor()
 {
-    QIcon symbolic = QIcon::fromTheme("audio-volume-high");
+    QIcon symbolic = QIcon::fromTheme("nm-device-wired");
     QPixmap pix = symbolic.pixmap(QSize(16, 16));
     QImage img = pix.toImage();
     for (int x = 0; x < img.width(); x++) {
@@ -344,15 +344,16 @@ QPixmap HighLightEffect::filledSymbolicColoredPixmap(const QPixmap &source, cons
     return QPixmap::fromImage(img);
 }
 
-QPixmap HighLightEffect::drawSymbolicColoredPixmap(const QPixmap &source, const QColor &baseColor)
+QPixmap HighLightEffect::drawSymbolicColoredPixmap(const QPixmap &source)
 {
     QColor currentcolor=HighLightEffect::getCurrentSymbolicColor();
+    QColor gray(128,128,128);
     QImage img = source.toImage();
     for (int x = 0; x < img.width(); x++) {
         for (int y = 0; y < img.height(); y++) {
             auto color = img.pixelColor(x, y);
             if (color.alpha() > 0) {
-                if (qAbs(color.red()-currentcolor.red())<10 && qAbs(color.green()-currentcolor.green())<10 && qAbs(color.blue()-currentcolor.blue())<10) {
+                if (qAbs(color.red()-gray.red())<20 && qAbs(color.green()-gray.green())<20 && qAbs(color.blue()-gray.blue())<20) {
                     color.setRed(255);
                     color.setGreen(255);
                     color.setBlue(255);
