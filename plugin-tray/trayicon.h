@@ -35,7 +35,7 @@
 
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
-
+#include "highlight-effect.h"
 #define TRAY_ICON_SIZE_DEFAULT 16
 
 class QWidget;
@@ -73,6 +73,7 @@ public:
     static void setWidgetIconFillSymbolicColor(QWidget *widget, bool fill);
 
     static const QColor getCurrentSymbolicColor();
+    QColor getImageColor(QImage &img);
 
     static QPixmap generatePixmap(const QPixmap &pixmap,
                                   const QStyleOption *option,
@@ -83,6 +84,7 @@ public:
 private:
 
     static QPixmap filledSymbolicColoredPixmap(QImage &source, QColor &baseColor);
+    static QPixmap paintSymbolicColoredPixmap(QImage &source, QColor &baseColor);
 
 
 public slots:
