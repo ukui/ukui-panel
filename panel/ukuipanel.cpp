@@ -597,19 +597,19 @@ void UKUIPanel::setMargins()
 void UKUIPanel::realign()
 {
     QStringList sheet;
-//    QGSettings *gsettings;
-//    gsettings= new QGSettings("org.mate.interface", "", this);
-//    QString mode;
-//    mode=gsettings->get("gtk-theme").toString();
-//    qDebug()<<"ukui-theme:"<<mode;
-//    if(mode=="ukui-blue")
-//    {
-//        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
-//    }
-//    else
-//    {
-        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
-//    }
+    //    QGSettings *gsettings;
+    //    gsettings= new QGSettings("org.mate.interface", "", this);
+    //    QString mode;
+    //    mode=gsettings->get("gtk-theme").toString();
+    //    qDebug()<<"ukui-theme:"<<mode;
+    //    if(mode=="ukui-blue")
+    //    {
+    //        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
+    //    }
+    //    else
+    //    {
+    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
+    //    }
     setStyleSheet(sheet.join("\n"));
     if (!isVisible())
         return;
@@ -657,7 +657,7 @@ void UKUIPanel::updateWmStrut()
                                             /* Right  */  0, 0, 0,
                                             /* Top    */  rect.top() + getReserveDimension(), rect.left(), rect.right(),
                                             /* Bottom */  0, 0, 0
-                                           );
+                                            );
             break;
 
         case UKUIPanel::PositionBottom:
@@ -666,7 +666,7 @@ void UKUIPanel::updateWmStrut()
                                             /* Right  */  0, 0, 0,
                                             /* Top    */  0, 0, 0,
                                             /* Bottom */  wholeScreen.bottom() - rect.bottom() + getReserveDimension(), rect.left(), rect.right()
-                                           );
+                                            );
             break;
 
         case UKUIPanel::PositionLeft:
@@ -675,7 +675,7 @@ void UKUIPanel::updateWmStrut()
                                             /* Right  */  0, 0, 0,
                                             /* Top    */  0, 0, 0,
                                             /* Bottom */  0, 0, 0
-                                           );
+                                            );
 
             break;
 
@@ -685,9 +685,9 @@ void UKUIPanel::updateWmStrut()
                                             /* Right  */  wholeScreen.right() - rect.right() + getReserveDimension(), rect.top(), rect.bottom(),
                                             /* Top    */  0, 0, 0,
                                             /* Bottom */  0, 0, 0
-                                           );
+                                            );
             break;
-    }
+        }
     } else
     {
         KWindowSystem::setExtendedStrut(wid,
@@ -695,7 +695,7 @@ void UKUIPanel::updateWmStrut()
                                         /* Right  */  0, 0, 0,
                                         /* Top    */  0, 0, 0,
                                         /* Bottom */  0, 0, 0
-                                       );
+                                        );
     }
 }
 
@@ -764,22 +764,22 @@ int UKUIPanel::findAvailableScreen(UKUIPanel::Position position)
  ************************************************/
 void UKUIPanel::showConfigDialog()
 {
-//    if (mConfigDialog.isNull())
-//        mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
+    //    if (mConfigDialog.isNull())
+    //        mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
 
-//    mConfigDialog->showConfigPanelPage();
-//    mStandaloneWindows->observeWindow(mConfigDialog.data());
-//    mConfigDialog->show();
-//    mConfigDialog->raise();
-//    mConfigDialog->activateWindow();
-//    WId wid = mConfigDialog->windowHandle()->winId();
+    //    mConfigDialog->showConfigPanelPage();
+    //    mStandaloneWindows->observeWindow(mConfigDialog.data());
+    //    mConfigDialog->show();
+    //    mConfigDialog->raise();
+    //    mConfigDialog->activateWindow();
+    //    WId wid = mConfigDialog->windowHandle()->winId();
 
-//    KWindowSystem::activateWindow(wid);
-//    KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
+    //    KWindowSystem::activateWindow(wid);
+    //    KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
 
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-        mConfigDialog->show();
-        //mConfigWidget->positionChanged();
+    mConfigDialog = new ConfigPanelDialog(this, nullptr);
+    mConfigDialog->show();
+    //mConfigWidget->positionChanged();
 
 }
 
@@ -807,24 +807,32 @@ void UKUIPanel::showAddPluginDialog()
 /************************************************
 
  ************************************************/
-
-void UKUIPanel::setPanelStyle()
+void UKUIPanel::setUpPanel()
 {
-
+    if(QFileInfo::exists(QString("/usr/bin/ukui-control-center")))
+    {
+        QProcess *process =new QProcess(this);
+        process->startDetached("/usr/bin/ukui-control-center  -d");
+        process->deleteLater();
+    }
+    else
+        qDebug()<<"not find /usr/bin/ukui-control-center";
 }
 
 void UKUIPanel::systeMonitor()
 {
-//    system("mate-system-monitor");
-    if(QFileInfo::exists(QString("/usr/bin/mate-system-monitor")))
+    if(QFileInfo::exists(QString("/usr/bin/mate-system-monitor")) || QFileInfo::exists(QString("/usr/bin/ukui-system-monitor")))
     {
-    QProcess *process =new QProcess(this);
-    process->startDetached("/usr/bin/mate-system-monitor");
+        QProcess *process =new QProcess(this);
+        if(QFileInfo::exists(QString("/usr/bin/ukui-system-monitor")))
+            process->startDetached("/usr/bin/ukui-system-monitor");
+        else
+            process->startDetached("/usr/bin/mate-system-monitor");
     }
-    else{qDebug()<<"not find /usr/bin/mate-system-monitor"<<endl;}
+    else
+        qDebug()<<"not find /usr/bin/mate-system-monitor or /usr/bin/ukui-system-monitor";
 }
-#include <KWindowSystem/KWindowSystem>
-#include <KWindowSystem/NETWM>
+
 void UKUIPanel::showDesktop()
 {
     KWindowSystem::setShowingDesktop(!KWindowSystem::showingDesktop());
@@ -836,35 +844,35 @@ void UKUIPanel::showTaskView()
 void UKUIPanel::updateStyleSheet()
 {
 
-//    sheet << QString("Plugin > QAbstractButton, UKUiTray { qproperty-iconSize: %1px %1px; }").arg(mIconSize);
-//    sheet << QString("Plugin > * > QAbstractButton, TrayIcon { qproperty-iconSize: %1px %1px; }").arg(mIconSize);
+    //    sheet << QString("Plugin > QAbstractButton, UKUiTray { qproperty-iconSize: %1px %1px; }").arg(mIconSize);
+    //    sheet << QString("Plugin > * > QAbstractButton, TrayIcon { qproperty-iconSize: %1px %1px; }").arg(mIconSize);
 
-//    if (mFontColor.isValid())
-//        sheet << QString("Plugin * { color: " + mFontColor.name() + "; }");
+    //    if (mFontColor.isValid())
+    //        sheet << QString("Plugin * { color: " + mFontColor.name() + "; }");
 
-//    QString object = UKUIPanelWidget->objectName();
+    //    QString object = UKUIPanelWidget->objectName();
 
-//    if (mBackgroundColor.isValid())
-//    {
-//        QString color = QString("%1, %2, %3, %4")
-//            .arg(mBackgroundColor.red())
-//            .arg(mBackgroundColor.green())
-//            .arg(mBackgroundColor.blue())
-//            .arg((float) mOpacity / 100);
-////        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(" + color + "); }");
+    //    if (mBackgroundColor.isValid())
+    //    {
+    //        QString color = QString("%1, %2, %3, %4")
+    //            .arg(mBackgroundColor.red())
+    //            .arg(mBackgroundColor.green())
+    //            .arg(mBackgroundColor.blue())
+    //            .arg((float) mOpacity / 100);
+    ////        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(" + color + "); }");
 
-//    }
-//   sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(8,10,12,90%); }");
-//        GSettings *settings = NULL;
-//        QString str;
-//        char *path;
-//        char color_hex[10];
-//        path = g_strdup_printf ("%s/","/org/mate/desktop/interface");
-//        settings = g_settings_new_with_path ("org.mate.interface",path);
-//        if(!strcmp(g_settings_get_string(settings, "gtk-theme"),"ukui-white"))
-//        {
-//            qDebug()<<"ukui-white";
-//        }
+    //    }
+    //   sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(8,10,12,90%); }");
+    //        GSettings *settings = NULL;
+    //        QString str;
+    //        char *path;
+    //        char color_hex[10];
+    //        path = g_strdup_printf ("%s/","/org/mate/desktop/interface");
+    //        settings = g_settings_new_with_path ("org.mate.interface",path);
+    //        if(!strcmp(g_settings_get_string(settings, "gtk-theme"),"ukui-white"))
+    //        {
+    //            qDebug()<<"ukui-white";
+    //        }
 
 }
 
@@ -1157,9 +1165,12 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     PopupMenu * menu = new PopupMenu(tr("Panel"), this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
-    menu->setIcon(XdgIcon::fromTheme("configure-toolbars"));
-
-    // Plugin Menu ..............................
+    /* @new features
+     * //Plugin Menu  负责显示插件的菜单项，ukui３.0的设计暂时不需要插件菜单项
+     * 关于后续的插件右键菜单的详细调整
+     * 如果需要在任务栏菜单项上面添加 插件的菜单选项就放开此功能
+     * 放开此功能可以丰富插件右键菜单，windows是这样做的
+     *
     if (plugin)
     {
         QMenu *m = plugin->popupMenu();
@@ -1177,10 +1188,9 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
             delete m;
         }
     }
+    */
 
-
-    // Panel menu ...............................
-/*
+    /*
     menu->addTitle(QIcon(), tr("Panel"));
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                    tr("Configure Panel"),
@@ -1190,31 +1200,31 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                    tr("Manage Widgets"),
                    this, SLOT(showAddPluginDialog())
                   )->setDisabled(mLockPanel);
-*/
+    */
     menu->setWindowOpacity(0.9);
-    menu->addAction(QIcon("/usr/share/ukui-panel/panel/img/setting.svg"),
-                   tr("Set up Panel"),
-                   this, SLOT(panelBackgroundChange())
-                  )->setDisabled(mLockPanel);
+    menu->addAction(QIcon::fromTheme("document-page-setup"),
+                    tr("Set up Panel"),
+                    this, SLOT(setUpPanel())
+                    )->setDisabled(mLockPanel);
 
     menu->addSeparator();
 
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                   tr("Show Taskview"),
-                   this, SLOT(showTaskView())
-                  )->setDisabled(mLockPanel);
+                    tr("Show Taskview"),
+                    this, SLOT(showTaskView())
+                    )->setDisabled(mLockPanel);
 
-        menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                       tr("Show Desktop"),
-                       this, SLOT(showDesktop())
-                      )->setDisabled(mLockPanel);
+    menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
+                    tr("Show Desktop"),
+                    this, SLOT(showDesktop())
+                    )->setDisabled(mLockPanel);
 
     menu->addSeparator();
 
-    menu->addAction(XdgIcon::fromTheme(QLatin1String("list-remove")),               
-    tr("Show System Monitor"),
-                   this, SLOT(systeMonitor())
-                  )->setDisabled(mLockPanel);
+    menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
+                    tr("Show System Monitor"),
+                    this, SLOT(systeMonitor())
+                    )->setDisabled(mLockPanel);
 
     menu->addSeparator();
 
@@ -1270,7 +1280,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     connect(pmenuaction_right,SIGNAL(triggered()),this,SLOT(changePositionToRight()));
     pmenu_positon->setDisabled(mLockPanel);
 
-/*
+    /*
     UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
     menu->addAction(XdgIcon::fromTheme(QLatin1String("list-add")),
                    tr("Add New Panel"),
@@ -1292,7 +1302,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     connect(act_lock, &QAction::triggered, [this] { mLockPanel = !mLockPanel; saveSettings(false); });
 
     //Hidden features, lock the panel
-/*
+    /*
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                    tr("Reset Panel"),
                    this, SLOT(panelReset())
@@ -1446,9 +1456,9 @@ void UKUIPanel::pluginMoved(Plugin * plug)
 void UKUIPanel::userRequestForDeletion()
 {
     const QMessageBox::StandardButton ret
-        = QMessageBox::warning(this, tr("Remove Panel", "Dialog Title") ,
-            tr("Removing a panel can not be undone.\nDo you want to remove this panel?"),
-            QMessageBox::Yes | QMessageBox::No);
+            = QMessageBox::warning(this, tr("Remove Panel", "Dialog Title") ,
+                                   tr("Removing a panel can not be undone.\nDo you want to remove this panel?"),
+                                   QMessageBox::Yes | QMessageBox::No);
 
     if (ret != QMessageBox::Yes) {
         return;
@@ -1484,7 +1494,7 @@ void UKUIPanel::hidePanel()
 {
     if (mHidable && !mHidden
             && !mStandaloneWindows->isAnyWindowShown()
-       )
+            )
         mHideTimer.start();
 }
 
@@ -1638,7 +1648,6 @@ void UKUIPanel::changeSizeToLarge()
 void UKUIPanel::panelReset()
 {
     QFile::remove(QString(qgetenv("HOME"))+"/.config/lxqt/panel.conf");
-    system("killall ukui-panel");
 }
 void UKUIPanel::panelBackgroundChange()
 {

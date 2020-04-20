@@ -43,9 +43,10 @@
 #include <X11/Xutil.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xrender.h>
-
+#include "qmath.h"
+#include <QToolButton>
 #define XEMBED_EMBEDDED_NOTIFY 0
-
+#define TORLERANCE 36
 
 static bool xError;
 
@@ -76,7 +77,6 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     mDamage(0),
     mDisplay(QX11Info::display())
 {
-    traystatus=NORMAL;
     // NOTE:
     // it's a good idea to save the return value of QX11Info::display().
     // In Qt 5, this API is slower and has some limitations which can trigger crashes.
@@ -85,13 +85,10 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     // QX11Info::display() will fail and cause crash. Storing this value improves the efficiency and
     // also prevent potential crashes caused by this bug.
 
+    traystatus=NORMAL;
     setObjectName("TrayIcon");
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    // NOTE:
-    // see https://github.com/ukui/ukui/issues/945
-    // workaround: delayed init because of weird behaviour of some icons/windows (claws-mail)
-    // (upon starting the app the window for receiving clicks wasn't correctly sized
-    //  no matter what we've done)
+
     QTimer::singleShot(200, [this] { init(); update(); });
 //    mRectSize.setWidth(32);
 //    mRectSize.setHeight(40);
@@ -113,11 +110,11 @@ void TrayIcon::init()
         return;
     }
 
-//    qDebug() << "New tray icon ***********************************";
-//    qDebug() << "  * window id:  " << hex << mIconId;
-//    qDebug() << "  * window name:" << xfitMan().getName(mIconId);
-//    qDebug() << "  * size (WxH): " << attr.width << "x" << attr.height;
-//    qDebug() << "  * color depth:" << attr.depth;
+    //    qDebug() << "New tray icon ***********************************";
+    //    qDebug() << "  * window id:  " << hex << mIconId;
+    //    qDebug() << "  * window name:" << xfitMan().getName(mIconId);
+    //    qDebug() << "  * size (WxH): " << attr.width << "x" << attr.height;
+    //    qDebug() << "  * color depth:" << attr.depth;
 
     unsigned long mask = 0;
     XSetWindowAttributes set_attr;
@@ -142,16 +139,12 @@ void TrayIcon::init()
 
     if (xError)
     {
-        qWarning() << "****************************************";
         qWarning() << "* Not icon_swallow                     *";
-        qWarning() << "****************************************";
         XDestroyWindow(dsp, mWindowId);
         mWindowId = 0;
         deleteLater();
         return;
     }
-
-
     {
         Atom acttype;
         int actfmt;
@@ -258,6 +251,8 @@ void TrayIcon::setIconSize(QSize iconSize)
     {
         xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
     }
+    //QSize mysize(8,8);
+    //mIconSize=mysize;
 }
 
 /************************************************
@@ -338,25 +333,25 @@ void TrayIcon::draw(QPaintEvent* /*event*/)
         image = qApp->primaryScreen()->grabWindow(mIconId).toImage();
     }
 
-//    qDebug() << "Paint icon **************************************";
-//    qDebug() << "  * XComposite: " << isXCompositeAvailable();
-//    qDebug() << "  * Icon geometry:" << iconGeometry();
-//    qDebug() << "  Icon";
-//    qDebug() << "    * window id:  " << hex << mIconId;
-//    qDebug() << "    * window name:" << xfitMan().getName(mIconId);
-//    qDebug() << "    * size (WxH): " << attr.width << "x" << attr.height;
-//    qDebug() << "    * pos (XxY):  " << attr.x << attr.y;
-//    qDebug() << "    * color depth:" << attr.depth;
-//    qDebug() << "  XImage";
-//    qDebug() << "    * size (WxH):  " << ximage->width << "x" << ximage->height;
-//    switch (ximage->format)
-//    {
-//        case XYBitmap: qDebug() << "    * format:   XYBitmap"; break;
-//        case XYPixmap: qDebug() << "    * format:   XYPixmap"; break;
-//        case ZPixmap:  qDebug() << "    * format:   ZPixmap"; break;
-//    }
-//    qDebug() << "    * color depth:  " << ximage->depth;
-//    qDebug() << "    * bits per pixel:" << ximage->bits_per_pixel;
+    //    qDebug() << "Paint icon **************************************";
+    //    qDebug() << "  * XComposite: " << isXCompositeAvailable();
+    //    qDebug() << "  * Icon geometry:" << iconGeometry();
+    //    qDebug() << "  Icon";
+    //    qDebug() << "    * window id:  " << hex << mIconId;
+    //    qDebug() << "    * window name:" << xfitMan().getName(mIconId);
+    //    qDebug() << "    * size (WxH): " << attr.width << "x" << attr.height;
+    //    qDebug() << "    * pos (XxY):  " << attr.x << attr.y;
+    //    qDebug() << "    * color depth:" << attr.depth;
+    //    qDebug() << "  XImage";
+    //    qDebug() << "    * size (WxH):  " << ximage->width << "x" << ximage->height;
+    //    switch (ximage->format)
+    //    {
+    //        case XYBitmap: qDebug() << "    * format:   XYBitmap"; break;
+    //        case XYPixmap: qDebug() << "    * format:   XYPixmap"; break;
+    //        case ZPixmap:  qDebug() << "    * format:   ZPixmap"; break;
+    //    }
+    //    qDebug() << "    * color depth:  " << ximage->depth;
+    //    qDebug() << "    * bits per pixel:" << ximage->bits_per_pixel;
 
     // Draw QImage ...........................
     QPainter painter(this);
@@ -368,13 +363,15 @@ void TrayIcon::draw(QPaintEvent* /*event*/)
         r.moveCenter(iconRect.center());
         iconRect = r;
     }
-//    qDebug() << " Draw rect:" << iconRect;
-
+    if(isPixmapPureColor(image))
+    {
+        QColor white(255,255,255);
+        this->filledSymbolicColoredPixmap(image,white);
+    }
     painter.drawImage(iconRect, image);
 
     if(ximage)
         XDestroyImage(ximage);
-//    debug << "End paint icon **********************************";
 }
 
 
@@ -412,37 +409,171 @@ void TrayIcon::leaveEvent(QEvent *)
 
 void TrayIcon::paintEvent(QPaintEvent *)
 {
-        QStyleOption opt;
-        opt.initFrom(this);
-        QPainter p(this);
+    QStyleOption opt;
+    opt.initFrom(this);
+    QPainter p(this);
 
-        switch(traystatus)
-          {
-          case NORMAL:
-              {
-//                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-                  p.setPen(Qt::NoPen);
-                  break;
-              }
-          case HOVER:
-              {
-//                  p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x1f)));
-                  p.setPen(Qt::NoPen);
-                  break;
-              }
-          case PRESS:
-              {
-//                  p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
-                  p.setPen(Qt::NoPen);
-                  break;
-              }
-          }
-        p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-        p.drawRoundedRect(opt.rect,6,6);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+    switch(traystatus)
+    {
+    case NORMAL:
+    {
+        //                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+        p.setPen(Qt::NoPen);
+        break;
+    }
+    case HOVER:
+    {
+        //                  p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x1f)));
+        p.setPen(Qt::NoPen);
+        break;
+    }
+    case PRESS:
+    {
+        //                  p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
+        p.setPen(Qt::NoPen);
+        break;
+    }
+    }
+    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    p.drawRoundedRect(opt.rect,6,6);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 void TrayIcon::notifyAppFreeze()
 {
     emit notifyTray(mIconId);
+}
+
+
+
+/*设置托盘栏颜色*/
+static QColor symbolic_color = Qt::gray;
+bool TrayIcon::isPixmapPureColor(const QImage &img)
+{
+    //    QImage img = qimage;
+    bool init = false;
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+    qreal variance = 0;
+    qreal mean = 0;
+    qreal standardDeviation = 0;
+    QVector<int> pixels;
+    bool isPure = true;
+    bool isFullyPure = true;
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() != 0) {
+                int hue = color.hue();
+                pixels<<hue;
+                mean += hue;
+                if (!init) {
+                    red = color.red();
+                    green = color.green();
+                    blue = color.blue();
+                    init = true;
+                } else {
+                    color.setAlpha(255);
+                    int r = color.red();
+                    int g = color.green();
+                    int b = color.blue();
+                    int dr = qAbs(r - red);
+                    int dg = qAbs(g - green);
+                    int db = qAbs(b - blue);
+                    bool same = dr < TORLERANCE && dg < TORLERANCE && db < TORLERANCE;
+                    if (isFullyPure) {
+                        if (dr > 0 || dg > 0 || db > 0) {
+                            isFullyPure = false;
+                        }
+                    }
+                    if (!same) {
+                        if (isPure || isFullyPure) {
+                            isPure = false;
+                            isFullyPure = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (isPure)
+        return true;
+
+    mean = mean/pixels.count();
+    for (auto hue : pixels) {
+        variance += (hue - mean)*(hue - mean);
+    }
+
+    standardDeviation = qSqrt(variance/pixels.count());
+
+    isFullyPure = standardDeviation == 0 || variance == 0;
+    isPure = standardDeviation < 1 || variance == 0;
+
+    return isPure;
+}
+
+
+
+void TrayIcon::setSkipEffect(QWidget *w, bool skip)
+{
+    w->setProperty("skipHighlightIconEffect", skip);
+}
+
+bool TrayIcon::isWidgetIconUseHighlightEffect(const QWidget *w)
+{
+    if (w) {
+        return w->property("useIconHighlightEffect").toBool();
+    }
+    return false;
+}
+
+void TrayIcon::setSymoblicColor(const QColor &color)
+{
+    qApp->setProperty("symbolicColor", color);
+    symbolic_color = color;
+}
+
+void TrayIcon::setWidgetIconFillSymbolicColor(QWidget *widget, bool fill)
+{
+    widget->setProperty("fillIconSymbolicColor", fill);
+}
+
+const QColor TrayIcon::getCurrentSymbolicColor()
+{
+    QIcon symbolic = QIcon::fromTheme("window-new-symbolic");
+    QPixmap pix = symbolic.pixmap(QSize(16, 16));
+    QImage img = pix.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            QColor color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                symbolic_color = color;
+                return color;
+            }
+        }
+    }
+    return symbolic_color;
+}
+
+QPixmap TrayIcon::filledSymbolicColoredPixmap(QImage &img, QColor &baseColor)
+{
+    //    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                int hue = color.hue();
+                if (qAbs(hue - symbolic_color.hue()) < 255) {
+                    color.setRed(baseColor.red());
+                    color.setGreen(baseColor.green());
+                    color.setBlue(baseColor.blue());
+                    img.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
 }

@@ -40,12 +40,12 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="952"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="971"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="956"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="975"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>
@@ -482,7 +482,7 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>IndicatorCalendar</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="392"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="408"/>
         <source>&apos;&lt;b&gt;&apos;HH:mm:ss&apos;&lt;/b&gt;&lt;br/&gt;&lt;font size=&quot;-2&quot;&gt;&apos;ddd, d MMM yyyy&apos;&lt;br/&gt;&apos;TT&apos;&lt;/font&gt;&apos;</source>
         <translation></translation>
     </message>
@@ -498,7 +498,7 @@ Colorize icons based on widget style (palette)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../ukui-flash-disk/mainwindow.cpp" line="113"/>
+        <location filename="../../ukui-flash-disk/mainwindow.cpp" line="117"/>
         <source>usb management tool</source>
         <translation></translation>
     </message>
@@ -506,22 +506,48 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>NightMode</name>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="41"/>
         <source>nightmode</source>
-        <translation>夜间模式</translation>
+        <translation type="vanished">夜间模式</translation>
     </message>
 </context>
 <context>
     <name>NightModeButton</name>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="92"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="93"/>
+        <source>please install Newest ukui-control-center first</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="157"/>
+        <source>Turn On NightMode</source>
+        <translation>打开夜间模式</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="161"/>
+        <source>Set Up NightMode</source>
+        <translation>设置夜间模式</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="197"/>
         <source>nightmode open</source>
         <translation>夜间模式开启</translation>
     </message>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="100"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="204"/>
         <source>nightmode close</source>
         <translation>夜间模式关闭</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="223"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="235"/>
+        <source>don&apos;t contains the keys style-name</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="224"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="236"/>
+        <source>please install ukui-theme first</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -585,6 +611,14 @@ Colorize icons based on widget style (palette)</source>
         <location filename="../../plugin-quicklaunch/quicklaunchbutton.cpp" line="63"/>
         <source>delete from quicklaunch</source>
         <translation>从任务栏取消固定</translation>
+    </message>
+</context>
+<context>
+    <name>ShowDesktop</name>
+    <message>
+        <location filename="../../plugin-showdesktop/showdesktop.cpp" line="48"/>
+        <source>Show Desktop</source>
+        <translation>显示桌面</translation>
     </message>
 </context>
 <context>
@@ -666,96 +700,100 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>TaskView</name>
     <message>
-        <location filename="../../plugin-taskview/taskview.cpp" line="44"/>
         <source>taskviewWindow</source>
-        <translation>预览窗口</translation>
+        <translation type="vanished">预览窗口</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-taskview/taskview.cpp" line="44"/>
+        <source>Show Taskview</source>
+        <translation>显示预览窗口</translation>
     </message>
 </context>
 <context>
     <name>UKUIPanel</name>
     <message>
-        <location filename="../ukuipanel.cpp" line="1157"/>
+        <location filename="../ukuipanel.cpp" line="1163"/>
         <source>Panel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1196"/>
+        <location filename="../ukuipanel.cpp" line="1204"/>
         <source>Set up Panel</source>
         <translation>设置任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1203"/>
+        <location filename="../ukuipanel.cpp" line="1211"/>
         <source>Show Taskview</source>
-        <translation>显示预览</translation>
+        <translation>显示任务视图</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1208"/>
+        <location filename="../ukuipanel.cpp" line="1216"/>
         <source>Show Desktop</source>
         <translation>显示桌面</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1215"/>
+        <location filename="../ukuipanel.cpp" line="1223"/>
         <source>Show System Monitor</source>
         <translation>系统监视器</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1226"/>
+        <location filename="../ukuipanel.cpp" line="1234"/>
         <source>Small</source>
         <translation>小尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1228"/>
+        <location filename="../ukuipanel.cpp" line="1236"/>
         <source>Media</source>
         <translation>中尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1230"/>
+        <location filename="../ukuipanel.cpp" line="1238"/>
         <source>Large</source>
         <translation>大尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1235"/>
+        <location filename="../ukuipanel.cpp" line="1243"/>
         <source>Adjustment Size</source>
         <translation>调整大小</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1251"/>
+        <location filename="../ukuipanel.cpp" line="1259"/>
         <source>Up</source>
         <translation>上</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1253"/>
+        <location filename="../ukuipanel.cpp" line="1261"/>
         <source>Bottom</source>
         <translation>下</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1255"/>
+        <location filename="../ukuipanel.cpp" line="1263"/>
         <source>Left</source>
         <translation>左</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1257"/>
+        <location filename="../ukuipanel.cpp" line="1265"/>
         <source>Right</source>
         <translation>右</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1260"/>
+        <location filename="../ukuipanel.cpp" line="1268"/>
         <source>Adjustment Position</source>
         <translation>调整位置</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1289"/>
+        <location filename="../ukuipanel.cpp" line="1297"/>
         <source>Lock This Panel</source>
         <translation>锁定任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1449"/>
+        <location filename="../ukuipanel.cpp" line="1457"/>
         <source>Remove Panel</source>
         <comment>Dialog Title</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1450"/>
+        <location filename="../ukuipanel.cpp" line="1458"/>
         <source>Removing a panel can not be undone.
 Do you want to remove this panel?</source>
         <translation></translation>
@@ -764,19 +802,19 @@ Do you want to remove this panel?</source>
 <context>
     <name>UKUIQuickLaunch</name>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="324"/>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="368"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="338"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="383"/>
         <source>Drop Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="325"/>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="369"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="339"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="384"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="524"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="553"/>
         <source>Drop application
 icons here</source>
         <translation></translation>
@@ -1254,7 +1292,7 @@ icons here</source>
 <context>
     <name>ejectInterface</name>
     <message>
-        <location filename="../../ukui-flash-disk/ejectInterface.cpp" line="34"/>
+        <location filename="../../ukui-flash-disk/ejectInterface.cpp" line="35"/>
         <source>usb has been unplugged safely</source>
         <translation></translation>
     </message>
