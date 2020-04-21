@@ -96,7 +96,8 @@ QClickWidget::QClickWidget(QWidget *parent,
 
             m_nameDis1_label->setStyleSheet(
                                     //正常状态样式
-                                    "QLabel{"
+                                    "QLabel"
+                                    "{"
                                     "font-size:14px;"
                                     "font-family:Microsoft YaHei;"
                                     "font-weight:400;"
