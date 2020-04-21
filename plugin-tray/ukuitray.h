@@ -56,6 +56,7 @@ class UKUiStorageWidget;
  */
 class UKUITrayPlugin;
 
+//enum storageBarStatus{ST_HIDE,ST_SHOW};
 /**
  * @brief This makes our storage
  */
@@ -66,10 +67,9 @@ public:
     UKUIStorageFrame(QWidget* parent =0);
     ~UKUIStorageFrame();
 protected:
-    bool event(QEvent *);
+//    bool event(QEvent *);
     bool eventFilter(QObject *, QEvent *);
-//    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event)override;
 private:
     Atom _NET_SYSTEM_TRAY_OPCODE;
 };
@@ -146,8 +146,6 @@ private:
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
     UKUIStorageFrame *storageFrame;
-//    enum storageBarStatus{ST_HIDE,ST_SHOW};
-//    storageBarStatus storagebarstatus;
     UKUiStorageWidget *m_pwidget;
     QToolButton *mBtn;
 };
