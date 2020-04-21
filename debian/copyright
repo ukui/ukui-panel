@@ -94,6 +94,7 @@ Files: AUTHORS
        plugin-taskbar/resources/taskbar.desktop.in
        plugin-taskbar/ukuitaskclosebutton.*
        plugin-taskbar/ukuitaskwidget.*
+       plugin-tray/highlight-effect.*
        ukui-flash-disk/*
 Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 License: LGPL-2.1+

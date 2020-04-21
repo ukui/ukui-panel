@@ -27,7 +27,7 @@ set(HEADERS
     trayicon.h
     xfitman.h
     traystorage.h
-#    ../panel/customstyle.h
+    highlight-effect.h
 )
 
 set(SOURCES
@@ -36,7 +36,7 @@ set(SOURCES
     trayicon.cpp
     xfitman.cpp
     traystorage.cpp
-#    ../panel/customstyle.cpp
+    highlight-effect.cpp
 )
 
 set(LIBRARIES

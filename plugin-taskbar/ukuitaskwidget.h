@@ -72,6 +72,8 @@ public:
     void updateTitle();
     void removeThumbNail();
     void addThumbNail();
+    void setPixmap(QPixmap mPixmap);
+    QPixmap getPixmap();
 
 public slots:
     void raiseApplication();
