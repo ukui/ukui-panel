@@ -92,7 +92,7 @@ extern "C" {
 #define BINDING_KEY "binding"
 #define NAME_KEY "name"
 
-#define TRAY_APP_COUNT 8
+#define TRAY_APP_COUNT 16
 
 /************************************************
 
@@ -381,7 +381,7 @@ void UKUITray::realign()
     }
     else
     {
-        if(mTrayIcons.size()<TRAY_APP_COUNT)
+        if(mTrayIcons.size()<TRAY_APP_COUNT/2)
         {
             dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
             dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
