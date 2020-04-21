@@ -151,6 +151,7 @@ margin-right: 4px;
 margin-top: 4px;
 margin-bottom: 4px; */
   border: 1px solid transparent;
+  font-size: 0px;
  /*width:60px;*/
 }
 
@@ -167,6 +168,7 @@ margin-bottom: 4px; */
 #weekday_name td {
   border: 0;
   color: #F5F4F7;
+  font-size: 18px;
   /* font-size: 20px; */
 }
 
@@ -179,14 +181,14 @@ margin-bottom: 4px; */
   background-color: transparent;
 }
 
-.day_this_month .solar_part { color: #F5F4F7; font-size: 16px; font-weight: middle;}
-.day_this_month .lunar_part { color: #aaa; font-size: 12px; }
-.day_other_month .solar_part { color: #FFFFFF4D; font-size: 16px; font-weight: middle;}
-.day_other_month .lunar_part { color: #FFFFFF4D; font-size: 12px;}
-.day_other_month .solar_part { font-size: 16px; font-weight: middle;}
-.day_other_month .lunar_part { font-size: 12px; }
-.day_today .solar_part { color: #F5F4F7; font-size: 16px; font-weight: middle;}
-.day_today .lunar_part { color: #aaa; font-size: 12px; }
+.day_this_month .solar_part { color: #F5F4F7; font-size: 18px; font-weight: middle;line-height: 18px;}
+.day_this_month .lunar_part { color: #aaa; font-size: 14px; }
+.day_other_month .solar_part { color: #FFFFFF4D; font-size: 18px; font-weight: middle;line-height: 18px;}
+.day_other_month .lunar_part { color: #FFFFFF4D; font-size: 14px;}
+/* .day_other_month .solar_part { font-size: 16px; font-weight: middle;}
+.day_other_month .lunar_part { font-size: 12px; } */
+.day_today .solar_part { color: #F5F4F7; font-size: 18px; font-weight: middle;line-height: 18px;}
+.day_today .lunar_part { color: #aaa; font-size: 14px; }
 .day_today {
   /* background: #d9ebfc; */
   background:#3d6be5;
@@ -195,8 +197,8 @@ margin-bottom: 4px; */
 }
 .day_today:hover { border: 1px solid #7eb4ea; }
 .day_today:active{ background: #d9ebfc; }
-.day_weekend .solar_part { color: #F5F4F7; font-size: 16px; font-weight: middle;}
-.day_weekend .lunar_part { color: #aaa; font-size: 12px; }
+.day_weekend .solar_part { color: #F5F4F7; font-size: 18px; font-weight: middle;line-height: 18px;}
+.day_weekend .lunar_part { color: #aaa; font-size: 14px; }
 /* .day_weekend .lunar_part { color: #ccc; font-size: 12px; } */
 
 .day_highlight {
@@ -204,8 +206,8 @@ margin-bottom: 4px; */
   background:none;
   border: 1px solid #7eb4ea;
 }
-.day_highlight .solar_part { color: #F5F4F7; font-size: 16px; font-weight: middle;}
-.day_highlight .lunar_part { color: #aaa; font-size: 12px; }
+.day_highlight .solar_part { color: #F5F4F7; font-size: 18px; font-weight: middle;line-height: 18px;}
+.day_highlight .lunar_part { color: #aaa; font-size: 14px; }
 
 /* year_month_grid{
 padding:10px 10px 10px 10px;
@@ -416,7 +418,7 @@ color: #78cdf7;
 .item {
   height: 100px;
   width: 100px;
-  font-size: 1.6em;
+  font-size: 18px;
   color: #F5F4F7;
   text-align: center;
   /* align-self: center;
@@ -507,7 +509,7 @@ color: #78cdf7;
 #general_datetime_list li {
   margin: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 14px;
   color: #FFFFFFFF;
   border: none;
   font-weight: bold;

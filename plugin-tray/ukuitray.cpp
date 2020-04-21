@@ -111,7 +111,8 @@ extern "C" {
  *
 */
 bool flag=false;
-extern TrayStorageStatus storagestatus;
+//extern TrayStorageStatus storagestatus;
+storageBarStatus status;
 
 UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     QFrame(parent),
@@ -124,6 +125,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mDisplay(QX11Info::display())
 {
     m_pwidget = NULL;
+    status=ST_HIDE;
     setLayout(new UKUi::GridLayout(this));
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
@@ -151,18 +153,32 @@ UKUITray::~UKUITray()
 }
 void UKUITray::storageBar()
 {
-    if(flag==false)
+    qDebug()<<"storageBar   **************"<<status;
+    if(status==ST_HIDE)
+    {
+        status = ST_SHOW;
+        showAndHideStorage(true);
+    }
+    else
+    {
+        status = ST_HIDE;
+        showAndHideStorage(false);
+    }
+    //    showAndHideStorage(true);
+}
+
+void UKUITray::showAndHideStorage(bool storageStatus)
+{
+    qDebug()<<"showAndHideStorage"<<storageStatus;
+    if(storageStatus)
     {
         storageFrame->show();
-        flag=true;
     }
     else
     {
         storageFrame->hide();
-        flag=false;
     }
 }
-
 /************************************************
 
  ************************************************/
@@ -266,18 +282,18 @@ void UKUITray::realign()
      * 这些应该在handleStorageUi()函数中执行
      * handleStorageUi();
     */
-//    for(int i=0;i<mStorageIcons.size();i++)
-//    {
-//        if(mStorageIcons.at(i))
-//        {
-//            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-//            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-//        }
-//        else
-//        {
-//            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-//        }
-//    }
+    //    for(int i=0;i<mStorageIcons.size();i++)
+    //    {
+    //        if(mStorageIcons.at(i))
+    //        {
+    //            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+    //            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+    //        }
+    //        else
+    //        {
+    //            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+    //        }
+    //    }
     if (panel->isHorizontal())
     {
         if(mTrayIcons.size()<TRAY_APP_COUNT)
@@ -390,11 +406,11 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
         id = data32[2];
         if(id){
             regulateIcon(&id);
-//            Window winId=44040845;
-//            QSize iconSize(32,32);
-//            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
-//            //            icon->setFixedSize(40,40);
-//            icon->setIconSize(QSize(32,32));
+            //            Window winId=44040845;
+            //            QSize iconSize(32,32);
+            //            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
+            //            //            icon->setFixedSize(40,40);
+            //            icon->setIconSize(QSize(32,32));
         }
 
 
@@ -629,6 +645,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
     }
 }
 
+
 void UKUITray::freezeTrayApp(Window winId)
 {
     QList<char *> existsPath = listExistsPath();
@@ -676,9 +693,6 @@ void UKUITray::freezeTrayApp(Window winId)
     }
     /*
      * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
-     * 不在监听到托盘应用的退出事件 DestroyNotify 中进行刷新的的原因已经说明
-     * 由于监听托盘应用destory信号的方式有待改进
-     * 所以在遇到托盘应用异常退出但是界面未刷新的情况需要重点关注
      * 这可能会导致panel的崩溃
      *
      * 将handleStorageUi　放到freezeTrayApp　函数最后以避免崩溃问题
@@ -740,11 +754,7 @@ void UKUITray::addStorageIcon(Window winId)
  * @brief It is not yet clear whether the feature will be released
  * Note:
  * 关于完全隐藏托盘图标（不在任务栏中也不在收纳栏中）
- * 与设计师沟通过，这个功能的逻辑是有问题的，
- * 因此目前暂定不需要此功能，依然采用“隐藏托盘图标即放置到收纳栏”的方案
- *
- * 此处没有注释掉这项功能是因为此项功能并不影响到其他功能
- * 并且可以作为隐藏功能
+ * 目前依然采用“隐藏托盘图标即放置到收纳栏”的方案
  * hide区域是一个在tray和storage之外的区域，没有界面
  *
  * 在moveIconToTray ，moveIconToStorage 中均判断是否为一个hide图标
@@ -1160,8 +1170,8 @@ void UKUITray::handleStorageUi()
     m_pwidget =  new UKUiStorageWidget;
     m_pwidget->setLayout(new UKUi::GridLayout);
 
-    #define mWinWidth 46
-    #define mWinHeight 46
+#define mWinWidth 46
+#define mWinHeight 46
     switch(mStorageIcons.size())
     {
     case 1:
@@ -1316,10 +1326,11 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
 
     if (obj == this)
     {
-        if (event->type() == QEvent::WindowDeactivate &&flag==true )
+        if (event->type() == QEvent::WindowDeactivate &&status==ST_SHOW )
         {
             this->hide();
-            flag==false;
+            status==ST_HIDE;
+            emit windowClicked(true);
             return true;
         } else if (event->type() == QEvent::StyleChange) {
         }
@@ -1329,6 +1340,7 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
     {
         activateWindow();
     }
+    status==ST_HIDE;
     return false;
 }
 

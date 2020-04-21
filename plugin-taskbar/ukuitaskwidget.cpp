@@ -92,6 +92,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     mCloseBtn->setIconSize(QSize(19,19));
     mCloseBtn->setFixedSize(QSize(19,19));
+    mCloseBtn->hide();
     mTitleLabel = new QLabel;
     mTitleLabel->setMargin(0);
     //    mTitleLabel->setContentsMargins(0,0,0,10);
@@ -187,10 +188,24 @@ void UKUITaskWidget::updateIcon()
     {
         ico = KWindowSystem::icon(mWindow);
     }
-    mAppIcon->setPixmap(ico.pixmap(QSize(19,19)));
+    mAppIcon->setPixmap(ico.pixmap(QSize(32,32)));
+    setPixmap(KWindowSystem::icon(mWindow));
+//    mPixmap = ico.pixmap(QSize(64,64);
     //mAppIcon->setWindowIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
     //setIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
 }
+
+
+void UKUITaskWidget::setPixmap(QPixmap _pixmap)
+{
+    mPixmap = _pixmap;
+}
+
+QPixmap UKUITaskWidget::getPixmap()
+{
+    return mPixmap;
+}
+
 
 /************************************************
 

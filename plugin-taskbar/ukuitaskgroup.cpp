@@ -1068,8 +1068,6 @@ void UKUITaskGroup::showAllWindowByList()
     mpScrollArea->setWidgetResizable(true);
     mpScrollArea->setFixedWidth(winWidth-10);
     mpScrollArea->setFrameStyle(QFrame::NoFrame);
-    mpScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    mpScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     mPopup->layout()->addWidget(mpScrollArea);
     mpWidget = new QWidget();
@@ -1169,14 +1167,13 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         {
             thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
             //thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));  test picture if correct
-            btn->setThumbNail(thumbnail);
         }
         else
         {
-            QPixmap emptyThumbnail;
-            btn->setThumbNail(emptyThumbnail);
+            thumbnail = btn->getPixmap().scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
             qDebug()<<"can not catch picture";
         }
+		btn->setThumbNail(thumbnail);
         btn->updateTitle();
         btn->setFixedSize(winWidth, winHeight);
         mpWidget->layout()->setContentsMargins(0,0,0,0);
