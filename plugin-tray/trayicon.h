@@ -35,7 +35,7 @@
 
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
-
+#include "highlight-effect.h"
 #define TRAY_ICON_SIZE_DEFAULT 16
 
 class QWidget;
@@ -64,25 +64,6 @@ public:
 
     QSize sizeHint() const;
     IUKUIPanelPlugin *mPlugin;
-
-    static void setSkipEffect(QWidget *w, bool skip = true);
-    static bool isPixmapPureColor(const QImage &image);
-    static bool isWidgetIconUseHighlightEffect(const QWidget *w);
-
-    static void setSymoblicColor(const QColor &color);
-    static void setWidgetIconFillSymbolicColor(QWidget *widget, bool fill);
-
-    static const QColor getCurrentSymbolicColor();
-
-    static QPixmap generatePixmap(const QPixmap &pixmap,
-                                  const QStyleOption *option,
-                                  const QWidget *widget = nullptr,
-                                  bool force = false,
-                                  EffectMode mode = HighlightOnly);
-
-private:
-
-    static QPixmap filledSymbolicColoredPixmap(QImage &source, QColor &baseColor);
 
 
 public slots:

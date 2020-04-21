@@ -16,22 +16,26 @@
  *
  */
 
-
-#include "nightmode.h"
 #include <QMouseEvent>
 #include <QHBoxLayout>
 #include <QScreen>
 #include <QDebug>
 #include <QMessageBox>
-#include "../panel/customstyle.h"
 #include <QDir>
-#define NIGHT_MODE_LIGHT "light"
-#define NIGHE_MODE_NIGHT "night"
-#define NIGHT_MODE_KEY "nightmode"
-#define NIGHT_MODE_CONTROL "org.ukui.control-center.panel.plugins"
-#define UKUI_STYLE         "org.ukui.style"
-#define UKUI_STYLE_NAME    "style-name"
-#define DEFAULT_STYLE_NAME "styleName"
+#include "nightmode.h"
+#include "../panel/customstyle.h"
+
+#define NIGHT_MODE_KEY        "nightmode"
+#define NIGHT_MODE_LIGHT 　　　"light"
+#define NIGHE_MODE_NIGHT      "night"
+#define NIGHT_MODE_CONTROL    "org.ukui.control-center.panel.plugins"
+
+#define UKUI_QT_STYLE          "org.ukui.style"
+#define GTK_STYLE              "org.mate.interface"
+#define UKUI_QT_STYLE_NAME     "style-name"
+#define DEFAULT_QT_STYLE_NAME  "styleName"
+#define GTK_STYLE_NAME         "gtk-theme"
+#define DEFAULT_GTK_STYLE_NAME "gtkTheme"
 
 
 NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
@@ -107,16 +111,21 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
             }
         });
 
-        /*系统主题gsettings*/
-        const QByteArray styleid(UKUI_STYLE);
+        /*系统主题gsettings  qt+gtk*/
+        const QByteArray styleid(UKUI_QT_STYLE);
         if(QGSettings::isSchemaInstalled(styleid)) {
-            mstyleGsettings = new QGSettings(styleid);
+            mqtstyleGsettings = new QGSettings(styleid);
+        }
+        const QByteArray gtkstyleid(GTK_STYLE);
+        if(QGSettings::isSchemaInstalled(gtkstyleid)) {
+            mgtkstyleGsettings = new QGSettings(gtkstyleid);
         }
     }
 }
 NightModeButton::~NightModeButton(){
     delete gsettings;
-    delete mstyleGsettings;
+    delete mqtstyleGsettings;
+    delete mgtkstyleGsettings;
 }
 
 /*NOTE:目前夜间模式的点击按钮实现的是　设置夜间模式＋切换主题*/
@@ -148,6 +157,7 @@ void NightModeButton::mousePressEvent(QMouseEvent *event)
         }
     }
 }
+
 void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
 {
     nightModeMenu=new QMenu();
@@ -214,21 +224,41 @@ void NightModeButton::setUkuiStyle(QString style)
 {
     if(QString::compare(style,"ukui-white")==0)
     {
-        if(mstyleGsettings->keys().contains(DEFAULT_STYLE_NAME) || mstyleGsettings->keys().contains(UKUI_STYLE_NAME))
+        if(mqtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || mqtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
         {
-            mstyleGsettings->set(UKUI_STYLE_NAME,"ukui-white");
+            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,"ukui-white");
         }
         else
         {
             qWarning()<<tr("don't contains the keys style-name");
             QMessageBox::information(this,"Error",tr("please install ukui-theme first"));
         }
+
+        if(mgtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || mgtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
+        {
+            mgtkstyleGsettings->set(GTK_STYLE_NAME,"ukui-white");
+        }
+        else
+        {
+            qWarning()<<tr("don't contains the keys style-name");
+            QMessageBox::information(this,"Error",tr("please install gtk-theme first"));
+        }
     }
     else
     {
-        if(mstyleGsettings->keys().contains(DEFAULT_STYLE_NAME) || mstyleGsettings->keys().contains(UKUI_STYLE_NAME))
+        if(mqtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || mqtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
         {
-            mstyleGsettings->set(UKUI_STYLE_NAME,"ukui-black");
+            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,"ukui-black");
+        }
+        else
+        {
+            qWarning()<<tr("don't contains the keys style-name");
+            QMessageBox::information(this,"Error",tr("please install ukui-theme first"));
+        }
+
+        if(mgtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || mgtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
+        {
+            mgtkstyleGsettings->set(GTK_STYLE_NAME,"ukui-black");
         }
         else
         {
