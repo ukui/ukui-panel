@@ -212,6 +212,8 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *, GDrive *drive, M
     {
         p_this->m_systray->hide();
     }
+    ejectInterface *ForEject = new ejectInterface(p_this,g_drive_get_name(drive));
+    ForEject->show();
 }
 
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)

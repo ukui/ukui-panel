@@ -593,7 +593,7 @@ window.onload = function () {
                         // li.children[0].children[index].innerHTML = '<br />';
                         var currentYear = year + index;
                         //li.children[0].children[index].innerHTML= '<br />' + curretYear + '年';
-                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '月' + '</span>';
+                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '年' + '</span>';
                         li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
                     }
                 }
@@ -607,7 +607,7 @@ window.onload = function () {
                         // li.children[0].children[index].innerHTML = '<br />';
                         var currentYear = year + index;
                         //li.children[0].children[index].innerHTML=  '<br />'+ curretYear + '年';
-                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '月'  + '</span>';
+                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '年'  + '</span>';
                         li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
                     }
                 }

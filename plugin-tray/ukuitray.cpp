@@ -87,11 +87,12 @@ extern "C" {
 #define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.panel.tray"
 #define KEYBINDINGS_CUSTOM_DIR "/org/ukui/tray/keybindings/"
 #define MAX_CUSTOM_SHORTCUTS 30
-
 #define ACTION_KEY "action"
 #define RECORD_KEY "record"
 #define BINDING_KEY "binding"
 #define NAME_KEY "name"
+
+#define TRAY_APP_COUNT 8
 
 /************************************************
 
@@ -110,7 +111,8 @@ extern "C" {
  *
 */
 bool flag=false;
-extern TrayStorageStatus storagestatus;
+//extern TrayStorageStatus storagestatus;
+storageBarStatus status;
 
 UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     QFrame(parent),
@@ -123,6 +125,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mDisplay(QX11Info::display())
 {
     m_pwidget = NULL;
+    status=ST_HIDE;
     setLayout(new UKUi::GridLayout(this));
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
@@ -150,18 +153,32 @@ UKUITray::~UKUITray()
 }
 void UKUITray::storageBar()
 {
-    if(flag==false)
+    qDebug()<<"storageBar   **************"<<status;
+    if(status==ST_HIDE)
+    {
+        status = ST_SHOW;
+        showAndHideStorage(true);
+    }
+    else
+    {
+        status = ST_HIDE;
+        showAndHideStorage(false);
+    }
+    //    showAndHideStorage(true);
+}
+
+void UKUITray::showAndHideStorage(bool storageStatus)
+{
+    qDebug()<<"showAndHideStorage"<<storageStatus;
+    if(storageStatus)
     {
         storageFrame->show();
-        flag=true;
     }
     else
     {
         storageFrame->hide();
-        flag=false;
     }
 }
-
 /************************************************
 
  ************************************************/
@@ -258,49 +275,104 @@ void UKUITray::realign()
     layout()->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
 
-    for(int i=0;i<mTrayIcons.size();i++)
-    {
-        if(mTrayIcons.at(i))
-        {
-            mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-        }
-        else
-        {
-            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-        }
-    }
+
 
     /*　刷新托盘收纳栏界面
      * 不要在这里对收纳栏的图标执setFixedSize和setIconSize的操作
      * 这些应该在handleStorageUi()函数中执行
      * handleStorageUi();
     */
-//    for(int i=0;i<mStorageIcons.size();i++)
-//    {
-//        if(mStorageIcons.at(i))
-//        {
-//            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-//            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-//        }
-//        else
-//        {
-//            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-//        }
-//    }
+    //    for(int i=0;i<mStorageIcons.size();i++)
+    //    {
+    //        if(mStorageIcons.at(i))
+    //        {
+    //            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+    //            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+    //        }
+    //        else
+    //        {
+    //            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+    //        }
+    //    }
     if (panel->isHorizontal())
     {
-        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
-        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
-        //mBtn->setIcon(QIcon::fromTheme("firefox"));
-        //qDebug()<<"panel->isHorizontal()";
+        if(mTrayIcons.size()<TRAY_APP_COUNT)
+        {
+            dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
+            dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
+            for(int i=0;i<mTrayIcons.size();i++)
+            {
+                if(mTrayIcons.at(i))
+                {
+                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+                    mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                }
+                else
+                {
+                    qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+                }
+            }
+            mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+        }
+        else
+        {
+            dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(2);
+            dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
+            for(int i=0;i<mTrayIcons.size();i++)
+            {
+                if(mTrayIcons.at(i))
+                {
+                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->panelSize()/2);
+                    mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                }
+                else
+                {
+                    qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+                }
+            }
+        }
+
+
     }
     else
     {
-        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
-        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
-        //mBtn->setIcon(QIcon::fromTheme("vim"));
-        //qDebug()<<"panel->isVorizontal()";
+        if(mTrayIcons.size()<TRAY_APP_COUNT/2)
+        {
+            dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
+            dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
+
+            for(int i=0;i<mTrayIcons.size();i++)
+            {
+                if(mTrayIcons.at(i))
+                {
+                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+                    mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                }
+                else
+                {
+                    qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+                }
+            }
+        }
+        else
+        {
+            dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(2);
+            dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
+            for(int i=0;i<mTrayIcons.size();i++)
+            {
+                if(mTrayIcons.at(i))
+                {
+                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize()/2);
+                    mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                }
+                else
+                {
+                    qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+                }
+            }
+        }
+        mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+
     }
 
     if(storageFrame)
@@ -334,11 +406,11 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
         id = data32[2];
         if(id){
             regulateIcon(&id);
-//            Window winId=44040845;
-//            QSize iconSize(32,32);
-//            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
-//            //            icon->setFixedSize(40,40);
-//            icon->setIconSize(QSize(32,32));
+            //            Window winId=44040845;
+            //            QSize iconSize(32,32);
+            //            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
+            //            //            icon->setFixedSize(40,40);
+            //            icon->setIconSize(QSize(32,32));
         }
 
 
@@ -573,6 +645,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
     }
 }
 
+
 void UKUITray::freezeTrayApp(Window winId)
 {
     QList<char *> existsPath = listExistsPath();
@@ -620,9 +693,6 @@ void UKUITray::freezeTrayApp(Window winId)
     }
     /*
      * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
-     * 不在监听到托盘应用的退出事件 DestroyNotify 中进行刷新的的原因已经说明
-     * 由于监听托盘应用destory信号的方式有待改进
-     * 所以在遇到托盘应用异常退出但是界面未刷新的情况需要重点关注
      * 这可能会导致panel的崩溃
      *
      * 将handleStorageUi　放到freezeTrayApp　函数最后以避免崩溃问题
@@ -684,11 +754,7 @@ void UKUITray::addStorageIcon(Window winId)
  * @brief It is not yet clear whether the feature will be released
  * Note:
  * 关于完全隐藏托盘图标（不在任务栏中也不在收纳栏中）
- * 与设计师沟通过，这个功能的逻辑是有问题的，
- * 因此目前暂定不需要此功能，依然采用“隐藏托盘图标即放置到收纳栏”的方案
- *
- * 此处没有注释掉这项功能是因为此项功能并不影响到其他功能
- * 并且可以作为隐藏功能
+ * 目前依然采用“隐藏托盘图标即放置到收纳栏”的方案
  * hide区域是一个在tray和storage之外的区域，没有界面
  *
  * 在moveIconToTray ，moveIconToStorage 中均判断是否为一个hide图标
@@ -879,50 +945,57 @@ void UKUITray::regulateIcon(Window *mid)
     QString nameStr;
 
     //匹配表中存在的name与该wid的name，若相等则用新的wid覆盖旧的wid，否则在表中添加新的路径，写上新的wid，name，以及状态。
-    for (char * path : existsPath){
+    for (char * path : existsPath)
+    {
         QString p =KEYBINDINGS_CUSTOM_DIR;
         std::string str = p.toStdString();
         const int len = str.length();
         char * prepath = new char[len+1];
         strcpy(prepath,str.c_str());
         char * allpath = strcat(prepath, path);
-
-        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray bba(allpath);
 
-        QGSettings *settings;
+        QGSettings *settings = NULL;
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
         if(QGSettings::isSchemaInstalled(id))
         {
-            settings= new QGSettings(ba, bba,this);
-            settings->set(ACTION_KEY,settings->get(RECORD_KEY).toString());
-            actionStr = settings->get(ACTION_KEY).toString();
-            nameStr = settings->get(NAME_KEY).toString();
-
-            /*＠import bug
-             * i don't know why nameStr.isEmpty()
-             * it's action key & bindings is not empty
-             * provide that it was application,but now application name turn error
-             * 这可能导致开启启动panel崩溃一次的问题
-　　　　　　　　*/
-            if(nameStr.isEmpty())
+            if(bba.isEmpty())
             {
-                settings->set(NAME_KEY,"ErrorApplication");
-                return;
+                continue;
+            }
+            settings= new QGSettings(id, bba);
+            if(settings)
+            {
+                if(settings->keys().contains(RECORD_KEY))
+                {
+                    settings->set(ACTION_KEY,settings->get(RECORD_KEY).toString());
+                }
+
+                if(settings->keys().contains(ACTION_KEY))
+                {
+                    actionStr = settings->get(ACTION_KEY).toString();
+                }
+
+                if(settings->keys().contains(NAME_KEY))
+                {
+                    nameStr = settings->get(NAME_KEY).toString();
+                }
             }
 
             if(nameStr==xfitMan().getApplicationName(wid))
             {
                 settings->set(BINDING_KEY, wid);
                 bingdingStr=wid;
-
-                if(QString::compare(actionStr,"tray")==0){
+                if(QString::compare(actionStr,"tray")==0)
+                {
                     addTrayIcon(bingdingStr);
                 }
-                if(QString::compare(actionStr,"storage")==0){
+                if(QString::compare(actionStr,"storage")==0)
+                {
                     addStorageIcon(bingdingStr);
                 }
-                if(QString::compare(actionStr,"hide")==0){
+                if(QString::compare(actionStr,"hide")==0)
+                {
                     addHideIcon(bingdingStr);
                 }
                 connect(settings, &QGSettings::changed, this, [=] (const QString &key)
@@ -931,24 +1004,30 @@ void UKUITray::regulateIcon(Window *mid)
                         if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0){
                             moveIconToTray(bingdingStr);
                         }
-                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
+                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0)
+                        {
                             moveIconToStorage(bingdingStr);
                         }
-                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"hide")==0){
-                            qDebug()<<"moveIconToHide";
+                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"hide")==0)
+                        {
+
                             moveIconToHide(bingdingStr);
                         }
-                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"freeze")==0){
+                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"freeze")==0)
+                        {
+
                         }
                     }
                 });
                 break;
             }
         }
+        settings->deleteLater();
+        delete  prepath;
         count++;
     }
 
-    if(count>=existsPath.count())
+    if(count >= existsPath.count())
     {
         QString availablepath = findFreePath();
 
@@ -1091,8 +1170,8 @@ void UKUITray::handleStorageUi()
     m_pwidget =  new UKUiStorageWidget;
     m_pwidget->setLayout(new UKUi::GridLayout);
 
-    #define mWinWidth 46
-    #define mWinHeight 46
+#define mWinWidth 46
+#define mWinHeight 46
     switch(mStorageIcons.size())
     {
     case 1:
@@ -1225,40 +1304,17 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
 UKUIStorageFrame::~UKUIStorageFrame(){
 }
 
-bool UKUIStorageFrame::event(QEvent *event)
-{
-    if (event->type() == QEvent::WindowDeactivate) {
-        qDebug()<<"UKUIStorageFrame  enter";
-        if (QApplication::activeWindow() != this && flag==true) {
-            this->hide();
-            qDebug()<<"UKUIStorageFrame  hide";
-        }
-    }
-    return QWidget::event(event);
-}
-
-/*
-bool UKUIStorageFrame::nativeEvent(const QByteArray &eventType, void *message, long *result)
-{
-    Q_UNUSED(result);
-    if(eventType != "xcb_generic_event_t"){
-        return false;
-    }
-
-    xcb_generic_event_t *event = (xcb_generic_event_t*)message;
-
-    switch (event->response_type & ~0x80)
-    {
-    case XCB_FOCUS_OUT:
-        hide();
-        break;
-    default:
-        break;
-    }
-
-    return false;
-}
-*/
+//bool UKUIStorageFrame::event(QEvent *event)
+//{
+//    if (event->type() == QEvent::WindowDeactivate) {
+//        qDebug()<<"UKUIStorageFrame  enter";
+//        if (QApplication::activeWindow() != this && flag==true) {
+//            this->hide();
+//            qDebug()<<"UKUIStorageFrame  hide";
+//        }
+//    }
+//    return QWidget::event(event);
+//}
 
 /*
  * 事件过滤，检测鼠标点击外部活动区域则收回收纳栏
@@ -1270,9 +1326,11 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
 
     if (obj == this)
     {
-        if (event->type() == QEvent::WindowDeactivate &&flag==true )
+        if (event->type() == QEvent::WindowDeactivate &&status==ST_SHOW )
         {
             this->hide();
+            status==ST_HIDE;
+            emit windowClicked(true);
             return true;
         } else if (event->type() == QEvent::StyleChange) {
         }
@@ -1282,8 +1340,10 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
     {
         activateWindow();
     }
+    status==ST_HIDE;
     return false;
 }
+
 void UKUIStorageFrame::paintEvent(QPaintEvent *event)
 {
     QStyleOption opt;
