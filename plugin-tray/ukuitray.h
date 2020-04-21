@@ -39,6 +39,7 @@
 #include <string.h>
 #include <string>
 #include <QToolButton>
+#include <QMap>
 
 #include "../panel/iukuipanel.h"
 #include "../panel/customstyle.h"
@@ -55,8 +56,7 @@ class UKUiStorageWidget;
  * @brief This makes our trayplugin
  */
 class UKUITrayPlugin;
-
-//enum storageBarStatus{ST_HIDE,ST_SHOW};
+enum storageBarStatus{ST_HIDE,ST_SHOW};
 /**
  * @brief This makes our storage
  */
@@ -94,13 +94,16 @@ public:
     QString findFreePath();
     void regulateIcon(Window *mid);
     void freezeApp();
+    void showAndHideStorage(bool);
 
 public slots:
     void storageBar();
+    void changeIcon();
 
 signals:
     void iconSizeChanged(int iconSize);
     void freezeIcon(TrayIcon *icon,Window winid);
+    void positionChanged();
 
 private slots:
     void startTray();
@@ -132,6 +135,7 @@ private:
     TrayIcon* findTrayIcon(Window trayId);
     TrayIcon* findStorageIcon(Window trayId);
     TrayIcon* findHideIcon(Window trayId);
+    void createIconMap();
 
     bool mValid;
     Window mTrayId;
@@ -148,6 +152,9 @@ private:
     UKUIStorageFrame *storageFrame;
     UKUiStorageWidget *m_pwidget;
     QToolButton *mBtn;
+    IUKUIPanel::Position mCurPosition;
+    QMap<IUKUIPanel::Position, QIcon> mMapIcon;
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
 };
 
 class UKUiStorageWidget:public QWidget
