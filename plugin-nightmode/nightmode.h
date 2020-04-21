@@ -44,17 +44,19 @@ class NightModeButton:public QToolButton
 public:
     NightModeButton(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     ~NightModeButton();
+
 protected:
     void mousePressEvent(QMouseEvent* event);
     void contextMenuEvent(QContextMenuEvent *event);
+
 private:
     void setNightMode(const bool nightMode);
     void setUkuiStyle(QString );
-
     IUKUIPanelPlugin * mPlugin;
     QMenu *nightModeMenu;
     QGSettings *gsettings;
-    QGSettings *mstyleGsettings;
+    QGSettings *mqtstyleGsettings;
+    QGSettings *mgtkstyleGsettings;
     QSettings *mqsettings;
     bool mode;
 
@@ -74,11 +76,9 @@ public:
     virtual QString themeId() const { return QStringLiteral("startmenu"); }
     void realign();
     virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+
 private:
     NightModeButton *mButton;
-
-
-
 };
 
 class NightModeLibrary: public QObject, public IUKUIPanelPluginLibrary

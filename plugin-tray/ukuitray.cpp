@@ -182,6 +182,7 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
      */
     case ClientMessage:
         clientMessageEvent(event);
+        repaint();
         break;
 
         //        case ConfigureNotify:
@@ -269,29 +270,37 @@ void UKUITray::realign()
             qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
         }
     }
-    for(int i=0;i<mStorageIcons.size();i++)
-    {
-        if(mStorageIcons.at(i))
-        {
-            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
-            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-        }
-        else
-        {
-            qDebug()<<"mStorageIcons add error   :  "<<mStorageIcons.at(i);
-        }
-    }
-    //在realign中反复刷新收纳栏界面会有隐患
-//    handleStorageUi();
+
+    /*　刷新托盘收纳栏界面
+     * 不要在这里对收纳栏的图标执setFixedSize和setIconSize的操作
+     * 这些应该在handleStorageUi()函数中执行
+     * handleStorageUi();
+    */
+//    for(int i=0;i<mStorageIcons.size();i++)
+//    {
+//        if(mStorageIcons.at(i))
+//        {
+//            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+//            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+//        }
+//        else
+//        {
+//            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+//        }
+//    }
     if (panel->isHorizontal())
     {
         dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
         dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
+        //mBtn->setIcon(QIcon::fromTheme("firefox"));
+        //qDebug()<<"panel->isHorizontal()";
     }
     else
     {
         dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
         dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
+        //mBtn->setIcon(QIcon::fromTheme("vim"));
+        //qDebug()<<"panel->isVorizontal()";
     }
 
     if(storageFrame)
@@ -457,12 +466,12 @@ void UKUITray::startTray()
     QString s = QString("_NET_SYSTEM_TRAY_S%1").arg(DefaultScreen(dsp));
     Atom _NET_SYSTEM_TRAY_S = XfitMan::atom(s.toLatin1());
     //this limit the tray apps  | will not run more Same apps
-    //    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != None)
-    //    {
-    //        qWarning() << "Another systray is running";
-    //        mValid = false;
-    //        return;
-    //    }
+    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != None)
+    {
+        qWarning() << "Another systray is running";
+        mValid = false;
+        return;
+    }
 
     // init systray protocol
     mTrayId = XCreateSimpleWindow(dsp, root, -1, -1, 1, 1, 0, 0, 0);
@@ -616,9 +625,7 @@ void UKUITray::freezeTrayApp(Window winId)
      * 所以在遇到托盘应用异常退出但是界面未刷新的情况需要重点关注
      * 这可能会导致panel的崩溃
      *
-     * @crash bug
-     * 在此处　调用handleStorageUi()  会导致panel 在退出的时候段错误
-     * commit　＃6704745　出现此错误　　将handleStorageUi　放到freezeTrayApp　函数最后调用以避免此问题
+     * 将handleStorageUi　放到freezeTrayApp　函数最后以避免崩溃问题
     */
     TrayIcon *storageicon = findStorageIcon(winId);
     mStorageIcons.removeOne(storageicon);
@@ -892,6 +899,18 @@ void UKUITray::regulateIcon(Window *mid)
             actionStr = settings->get(ACTION_KEY).toString();
             nameStr = settings->get(NAME_KEY).toString();
 
+            /*＠import bug
+             * i don't know why nameStr.isEmpty()
+             * it's action key & bindings is not empty
+             * provide that it was application,but now application name turn error
+             * 这可能导致开启启动panel崩溃一次的问题
+　　　　　　　　*/
+            if(nameStr.isEmpty())
+            {
+                settings->set(NAME_KEY,"ErrorApplication");
+                return;
+            }
+
             if(nameStr==xfitMan().getApplicationName(wid))
             {
                 settings->set(BINDING_KEY, wid);
@@ -906,8 +925,6 @@ void UKUITray::regulateIcon(Window *mid)
                 if(QString::compare(actionStr,"hide")==0){
                     addHideIcon(bingdingStr);
                 }
-                //            else
-                //                return;
                 connect(settings, &QGSettings::changed, this, [=] (const QString &key)
                 {
                     if(key=="action"){
@@ -1074,88 +1091,90 @@ void UKUITray::handleStorageUi()
     m_pwidget =  new UKUiStorageWidget;
     m_pwidget->setLayout(new UKUi::GridLayout);
 
+    #define mWinWidth 46
+    #define mWinHeight 46
     switch(mStorageIcons.size())
     {
     case 1:
-        winWidth = mPlugin->panel()->panelSize();
-        winHeight = mPlugin->panel()->panelSize();
+        winWidth  = mWinWidth;
+        winHeight = mWinHeight;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(1);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
         break;
     case 2:
-        winWidth = mPlugin->panel()->panelSize()*2;
-        winHeight = mPlugin->panel()->panelSize();
+        winWidth  = mWinWidth*2;
+        winHeight = mWinHeight;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(2);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
         break;
     case 3:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize();
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
         break;
     case 4:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*2;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*2;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
         break;
     case 5:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*2;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*2;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
         break;
     case 6:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*2;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*2;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
         break;
     case 7:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*3;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*3;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
         break;
     case 8:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*3;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*3;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
         break;
     case 9:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*3;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*3;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
         break;
     case 10:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*4;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*4;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
         break;
     case 11:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*4;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*4;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
         break;
     case 12:
-        winWidth = mPlugin->panel()->panelSize()*3;
-        winHeight = mPlugin->panel()->panelSize()*4;
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*4;
         m_pwidget->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
@@ -1167,11 +1186,11 @@ void UKUITray::handleStorageUi()
     for(auto it = mStorageIcons.begin();it != mStorageIcons.end();++it)
     {
         m_pwidget->layout()->addWidget(*it);
+        (*it)->setFixedSize(mWinWidth,mWinHeight);
     }
     storageFrame->layout()->addWidget(m_pwidget);
     //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
     storageFrame->setFixedSize(winWidth,winHeight);
-//    storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(pos().x()-30,pos().y())), storageFrame->size()));
     //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
 }
 
