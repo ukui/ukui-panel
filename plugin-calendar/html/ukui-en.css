@@ -41,10 +41,11 @@ body {
   display: grid;
   text-align: center;
   justify-items: center;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   border-bottom: 1px solid;
   border-color:#FFFFFF0F;
+  padding-bottom: 16px;
 }
 
 #datetime_container p{
