@@ -124,6 +124,9 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mDisplay(QX11Info::display())
 {
     mMapIcon.clear();
+    mTrayIcons.clear();
+    mStorageIcons.clear();
+    mHideIcons.clear();
     m_pwidget = NULL;
     status=ST_HIDE;
     setLayout(new UKUi::GridLayout(this));
