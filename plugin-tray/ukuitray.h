@@ -67,6 +67,7 @@ public:
     UKUIStorageFrame(QWidget* parent =0);
     ~UKUIStorageFrame();
 protected:
+//    bool event(QEvent *);
     bool eventFilter(QObject *, QEvent *);
     void paintEvent(QPaintEvent *event)override;
 private:
@@ -98,13 +99,11 @@ public:
 public slots:
     void storageBar();
     void changeIcon();
-    void changeIconSize();
 
 signals:
     void iconSizeChanged(int iconSize);
     void freezeIcon(TrayIcon *icon,Window winid);
     void positionChanged();
-    void panelSizeChanged();
 
 private slots:
     void startTray();
@@ -154,7 +153,6 @@ private:
     UKUiStorageWidget *m_pwidget;
     QToolButton *mBtn;
     IUKUIPanel::Position mCurPosition;
-    int mCurPanelSize;
     QMap<IUKUIPanel::Position, QIcon> mMapIcon;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
 };
