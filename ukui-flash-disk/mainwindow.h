@@ -103,6 +103,7 @@ private:
     QScreen *screen;
 public:
     QSystemTrayIcon *m_systray;
+    ejectInterface *m_eject;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
