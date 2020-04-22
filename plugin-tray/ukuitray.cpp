@@ -40,7 +40,7 @@
 #include <QTimer>
 #include <QtX11Extras/QX11Info>
 #include "trayicon.h"
-//#include "../panel/iukuipanel.h"
+#include "../panel/iukuipanel.h"
 #include "../panel/common/ukuigridlayout.h"
 #include "ukuitray.h"
 #include "xfitman.h"
@@ -198,18 +198,16 @@ UKUITray::~UKUITray()
 }
 void UKUITray::storageBar()
 {
-    qDebug()<<"storageBar   **************"<<status;
     if(status==ST_HIDE)
     {
         status = ST_SHOW;
-        showAndHideStorage(true);
+        showAndHideStorage(false);
     }
     else
     {
         status = ST_HIDE;
-        showAndHideStorage(false);
+        showAndHideStorage(true);
     }
-    //    showAndHideStorage(true);
 }
 
 void UKUITray::showAndHideStorage(bool storageStatus)
@@ -217,11 +215,11 @@ void UKUITray::showAndHideStorage(bool storageStatus)
     qDebug()<<"showAndHideStorage"<<storageStatus;
     if(storageStatus)
     {
-        storageFrame->show();
+        storageFrame->hide();
     }
     else
     {
-        storageFrame->hide();
+        storageFrame->show();
     }
 }
 /************************************************
@@ -1398,7 +1396,7 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
         if (event->type() == QEvent::WindowDeactivate &&status==ST_SHOW )
         {
             this->hide();
-            status==ST_HIDE;
+            status=ST_HIDE;
             return true;
         } else if (event->type() == QEvent::StyleChange) {
         }
@@ -1408,7 +1406,6 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
     {
         activateWindow();
     }
-    status==ST_HIDE;
     return false;
 }
 
