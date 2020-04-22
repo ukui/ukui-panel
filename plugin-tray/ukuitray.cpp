@@ -92,7 +92,7 @@ extern "C" {
 #define BINDING_KEY "binding"
 #define NAME_KEY "name"
 
-#define TRAY_APP_COUNT 8
+#define TRAY_APP_COUNT 16
 
 /************************************************
 
@@ -124,6 +124,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mPlugin(plugin),
     mDisplay(QX11Info::display())
 {
+    mMapIcon.clear();
     m_pwidget = NULL;
     status=ST_HIDE;
     setLayout(new UKUi::GridLayout(this));
@@ -136,11 +137,18 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mBtn->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
     mBtn->setVisible(false);
     layout()->addWidget(mBtn);
+    if(mPlugin)
+    {
+        mCurPosition = mPlugin->panel()->position();
+    }
 
     storageFrame=new UKUIStorageFrame;
     storageFrame->setLayout(new UKUi::GridLayout);
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
+    connect(this,SIGNAL(positionChanged()),this,SLOT(changeIcon()));
+    createIconMap();
     realign();
+    changeIcon();
 }
 
 
@@ -148,23 +156,58 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
  ************************************************/
 UKUITray::~UKUITray()
 {
+    for(int i  = 0; i < mTrayIcons.size(); i++)
+    {
+        if(mTrayIcons[i])
+        {
+            mTrayIcons[i]->deleteLater();
+            mTrayIcons[i] = NULL;
+        }
+    }
+    for(int i  = 0; i < mStorageIcons.size(); i++)
+    {
+        if(mStorageIcons[i])
+        {
+            mStorageIcons[i]->deleteLater();
+            mStorageIcons[i] = NULL;
+        }
+    }
+    for(int i  = 0; i < mHideIcons.size(); i++)
+    {
+        if(mHideIcons[i])
+        {
+            mHideIcons[i]->deleteLater();
+            mHideIcons[i] = NULL;
+        }
+    }
+    for(int i  = 0; i < mIcons.size(); i++)
+    {
+        if(mIcons[i])
+        {
+            mIcons[i]->deleteLater();
+            mIcons[i] = NULL;
+        }
+    }
+    mIcons.clear();
+    mStorageIcons.clear();
+    mHideIcons.clear();
+    mTrayIcons.clear();
+    mMapIcon.clear();
     freezeApp();
     stopTray();
 }
 void UKUITray::storageBar()
 {
-    qDebug()<<"storageBar   **************"<<status;
     if(status==ST_HIDE)
     {
         status = ST_SHOW;
-        showAndHideStorage(true);
+        showAndHideStorage(false);
     }
     else
     {
         status = ST_HIDE;
-        showAndHideStorage(false);
+        showAndHideStorage(true);
     }
-    //    showAndHideStorage(true);
 }
 
 void UKUITray::showAndHideStorage(bool storageStatus)
@@ -172,11 +215,11 @@ void UKUITray::showAndHideStorage(bool storageStatus)
     qDebug()<<"showAndHideStorage"<<storageStatus;
     if(storageStatus)
     {
-        storageFrame->show();
+        storageFrame->hide();
     }
     else
     {
-        storageFrame->hide();
+        storageFrame->show();
     }
 }
 /************************************************
@@ -380,11 +423,35 @@ void UKUITray::realign()
         storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-30,0)), storageFrame->size()));
     }
 
+    if(mCurPosition != panel->position())
+    {
+        mCurPosition = panel->position();
+        emit positionChanged();
+    }
     layout()->setEnabled(true);
 
 }
 
+void UKUITray::createIconMap()
+{
+    mMapIcon[IUKUIPanel::PositionBottom] = QIcon("/usr/share/ukui-panel/panel/img/tray-up.svg");
+    mMapIcon[IUKUIPanel::PositionLeft] = QIcon("/usr/share/ukui-panel/panel/img/tray-right.svg");
+    mMapIcon[IUKUIPanel::PositionTop] = QIcon("/usr/share/ukui-panel/panel/img/tray-down.svg");
+    mMapIcon[IUKUIPanel::PositionRight] = QIcon("/usr/share/ukui-panel/panel/img/tray-left.svg");
+}
 
+void UKUITray::changeIcon()
+{
+    qDebug()<<"change icon now";
+    QIcon icon;
+    QMap<IUKUIPanel::Position, QIcon>::const_iterator it = mMapIcon.find(mCurPosition);
+    if(it != mMapIcon.end())
+    {
+        icon = it.value();
+    }
+    mBtn->setIcon(icon);
+    mBtn->setFixedSize(QSize(30,mPlugin->panel()->panelSize()));
+}
 /************************************************
 
  ************************************************/
@@ -1329,8 +1396,7 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
         if (event->type() == QEvent::WindowDeactivate &&status==ST_SHOW )
         {
             this->hide();
-            status==ST_HIDE;
-            emit windowClicked(true);
+            status=ST_HIDE;
             return true;
         } else if (event->type() == QEvent::StyleChange) {
         }
@@ -1340,7 +1406,6 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
     {
         activateWindow();
     }
-    status==ST_HIDE;
     return false;
 }
 

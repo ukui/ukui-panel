@@ -91,10 +91,10 @@
 #define ICON_SIZE_MEDIUM  48
 #define ICON_SIZE_SMALL   32
 
-#define PANEL_SETTINGS "org.ukui.panel.settings"
-#define PANEL_SIZE_KEY "panelsize"
-#define ICON_SIZE_KEY "iconsize"
-#define PANEL_POSITION_KEY "panelposition"
+#define PANEL_SETTINGS      "org.ukui.panel.settings"
+#define PANEL_SIZE_KEY      "panelsize"
+#define ICON_SIZE_KEY       "iconsize"
+#define PANEL_POSITION_KEY  "panelposition"
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -219,7 +219,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     // connecting to QDesktopWidget::workAreaResized shouldn't be necessary,
     // as we've already connceted to QDesktopWidget::resized, but it actually
-    // is. Read mode on https://github.com/ukui/ukui-panel/pull/310
     connect(QApplication::desktop(), &QDesktopWidget::workAreaResized,
             this, &UKUIPanel::ensureVisible);
 
@@ -236,7 +235,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     loadPlugins();
 
     show();
-
     // show it the first time, despite setting
     if (mHidable)
     {
@@ -247,6 +245,9 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
+    qDebug()<<"mSettings->value(CFG_KEY_POSITION).toString()"<<mSettings->value(CFG_KEY_PANELSIZE, PANEL_DEFAULT_SIZE).toInt();
+    changeSizeToMedium();
+    changeSizeToSmall();
 }
 
 /************************************************
@@ -594,22 +595,17 @@ void UKUIPanel::setMargins()
     }
 }
 
+/*
+ *　ukui-panel　的实时调整功能
+ *　QEvent::LayoutRequest　能监听到widget should be relayouted时候的信号
+ *　emit realigned()　信号在PanelPluginsModel类中传给插件的realign函数
+ * 所有的插件类都需要重写这个函数用以跟任务栏的位置保持一致
+ * UKUIPanel::event -> UKUIPanel::realign() -> Plugin::realign() ->UKUITrayPlugin:realign
+*/
 void UKUIPanel::realign()
 {
     QStringList sheet;
-    //    QGSettings *gsettings;
-    //    gsettings= new QGSettings("org.mate.interface", "", this);
-    //    QString mode;
-    //    mode=gsettings->get("gtk-theme").toString();
-    //    qDebug()<<"ukui-theme:"<<mode;
-    //    if(mode=="ukui-blue")
-    //    {
-    //        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
-    //    }
-    //    else
-    //    {
     sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
-    //    }
     setStyleSheet(sheet.join("\n"));
     if (!isVisible())
         return;
@@ -1647,7 +1643,8 @@ void UKUIPanel::changeSizeToLarge()
 
 void UKUIPanel::panelReset()
 {
-    QFile::remove(QString(qgetenv("HOME"))+"/.config/lxqt/panel.conf");
+    QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
+    QFile::copy("/usr/share/ukui/panel.conf",QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
 }
 void UKUIPanel::panelBackgroundChange()
 {
