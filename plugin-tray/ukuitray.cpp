@@ -834,7 +834,19 @@ void UKUITray::freezeTrayApp(Window winId)
      * 将handleStorageUi　放到freezeTrayApp　函数最后以避免崩溃问题
     */
     TrayIcon *storageicon = findStorageIcon(winId);
-    mStorageIcons.removeOne(storageicon);
+    if(storageicon)
+    {
+        mStorageIcons.removeOne(storageicon);
+        storageicon->deleteLater();
+        storageicon=NULL;
+    }
+    TrayIcon *trayicon = findTrayIcon(winId);
+    if(trayicon)
+    {
+        mTrayIcons.removeOne(trayicon);
+        trayicon->deleteLater();
+        trayicon=NULL;
+    }
     handleStorageUi();
 }
 
