@@ -140,11 +140,6 @@ int UKUIQuickLaunch::countOfButtons() const
 
 void UKUIQuickLaunch::realign()
 {
-    for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
-    {
-        (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
-        (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
-    }
     mLayout->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
 
@@ -155,15 +150,57 @@ void UKUIQuickLaunch::realign()
     }
     else
     {
+        /*这里可能存在cpu占用过高的情况*/
         if (panel->isHorizontal())
         {
+            if(mVBtn.size()<10)
+            {
             mLayout->setRowCount(panel->lineCount());
             mLayout->setColumnCount(0);
+            for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
+            {
+                (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+                (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+            }
+            }
+            else
+            {
+                mLayout->setRowCount(2);
+                mLayout->setColumnCount(0);
+                for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
+                {
+                    (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
+                    (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                }
+            }
         }
         else
         {
+//            mLayout->setColumnCount(panel->lineCount());
+//            mLayout->setRowCount(0);
+            if(mVBtn.size()<6)
+            {
             mLayout->setColumnCount(panel->lineCount());
             mLayout->setRowCount(0);
+            for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
+            {
+                (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+                (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+            }
+            }
+            else
+            {
+                mLayout->setColumnCount(2);
+                mLayout->setRowCount(0);
+                for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
+                {
+                    (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
+                    (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                }
+            }
+
+
+
         }
     }
     mLayout->setEnabled(true);
