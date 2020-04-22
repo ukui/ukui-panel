@@ -92,8 +92,6 @@ extern "C" {
 #define BINDING_KEY "binding"
 #define NAME_KEY "name"
 
-#define TRAY_APP_COUNT 16
-
 /************************************************
 
  ************************************************/
@@ -125,6 +123,9 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mDisplay(QX11Info::display())
 {
     mMapIcon.clear();
+    mTrayIcons.clear();
+    mStorageIcons.clear();
+    mHideIcons.clear();
     m_pwidget = NULL;
     status=ST_HIDE;
     setLayout(new UKUi::GridLayout(this));
@@ -134,21 +135,27 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     QTimer::singleShot(0, this, SLOT(startTray()));
     mBtn =new QToolButton;
     mBtn->setStyle(new CustomStyle());
-    mBtn->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+    mBtn->setFixedSize(30,46);
     mBtn->setVisible(false);
     layout()->addWidget(mBtn);
     if(mPlugin)
     {
         mCurPosition = mPlugin->panel()->position();
+        mCurPanelSize=0;
     }
+
 
     storageFrame=new UKUIStorageFrame;
     storageFrame->setLayout(new UKUi::GridLayout);
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
     connect(this,SIGNAL(positionChanged()),this,SLOT(changeIcon()));
+    connect(this,SIGNAL(panelSizeChanged()),this,SLOT(changeIcon()));
+    connect(this,SIGNAL(panelSizeChanged()),this,SLOT(changeIconSize()));
+    connect(this,SIGNAL(positionChanged()),this,SLOT(changeIconSize()));
     createIconMap();
     realign();
     changeIcon();
+    changeIconSize();
 }
 
 
@@ -319,24 +326,24 @@ void UKUITray::realign()
     IUKUIPanel *panel = mPlugin->panel();
 
 
-
+#if 0
     /*　刷新托盘收纳栏界面
      * 不要在这里对收纳栏的图标执setFixedSize和setIconSize的操作
      * 这些应该在handleStorageUi()函数中执行
      * handleStorageUi();
     */
-    //    for(int i=0;i<mStorageIcons.size();i++)
-    //    {
-    //        if(mStorageIcons.at(i))
-    //        {
-    //            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-    //            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-    //        }
-    //        else
-    //        {
-    //            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-    //        }
-    //    }
+        for(int i=0;i<mStorageIcons.size();i++)
+        {
+            if(mStorageIcons.at(i))
+            {
+                mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+                mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            }
+            else
+            {
+                qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+            }
+        }
     if (panel->isHorizontal())
     {
         if(mTrayIcons.size()<TRAY_APP_COUNT)
@@ -355,7 +362,6 @@ void UKUITray::realign()
                     qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
                 }
             }
-            mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
         }
         else
         {
@@ -414,7 +420,6 @@ void UKUITray::realign()
                 }
             }
         }
-        mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
 
     }
 
@@ -423,10 +428,20 @@ void UKUITray::realign()
         storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-30,0)), storageFrame->size()));
     }
 
+#endif
     if(mCurPosition != panel->position())
     {
         mCurPosition = panel->position();
         emit positionChanged();
+    }
+    if(mCurPanelSize != panel->panelSize())
+    {
+        mCurPanelSize =panel->panelSize();
+        emit panelSizeChanged();
+    }
+    if(storageFrame)
+    {
+        storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-30,0)), storageFrame->size()));
     }
     layout()->setEnabled(true);
 
@@ -450,7 +465,60 @@ void UKUITray::changeIcon()
         icon = it.value();
     }
     mBtn->setIcon(icon);
-    mBtn->setFixedSize(QSize(30,mPlugin->panel()->panelSize()));
+    if (mPlugin->panel()->isHorizontal())
+    {
+        mBtn->setFixedSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize()));
+    }
+    else
+    {
+        mBtn->setFixedSize(QSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize()));
+    }
+}
+
+void UKUITray::changeIconSize()
+{
+    qDebug()<<"change iconsize  now";
+    if(!mPlugin->panel())
+    {
+        return;
+    }
+    if (mPlugin->panel()->isHorizontal())
+    {
+        qDebug()<<"**************8****";
+        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(1);
+        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
+        for(int i=0;i<mTrayIcons.size();i++)
+        {
+            if(mTrayIcons.at(i))
+            {
+                mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+                mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            }
+            else
+            {
+                qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+            }
+        }
+    }
+    else
+    {
+        qDebug()<<"**************8";
+        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(1);
+        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
+        for(int i=0;i<mTrayIcons.size();i++)
+        {
+            if(mTrayIcons.at(i))
+            {
+                mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+                mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            }
+            else
+            {
+                qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+            }
+        }
+    }
+
 }
 /************************************************
 
@@ -472,6 +540,7 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
     case SYSTEM_TRAY_REQUEST_DOCK:
         id = data32[2];
         if(id){
+            qDebug()<<"addTrayIcon  **"<<xfitMan().getApplicationName(id);
             regulateIcon(&id);
             //            Window winId=44040845;
             //            QSize iconSize(32,32);
@@ -777,10 +846,23 @@ void UKUITray::addTrayIcon(Window winId)
     // decline to add an icon for a window we already manage
     TrayIcon *icon = findTrayIcon(winId);
     if(icon)
+    {
+        qDebug()<<"addTrayIcon winId   "<<xfitMan().getApplicationName(winId);
         return;
+    }
     else
     {
         icon = new TrayIcon(winId, mIconSize, this);
+        if(mPlugin->panel()->isHorizontal())
+        {
+            icon->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            icon->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }
+        else
+        {
+            icon->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+            icon->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }
         mIcons.append(icon);
         mTrayIcons.append(icon);
         layout()->addWidget(icon);
@@ -799,6 +881,16 @@ void UKUITray::addStorageIcon(Window winId)
     else
     {
         storageicon = new TrayIcon(winId, mIconSize, this);
+        if(mPlugin->panel()->isHorizontal())
+        {
+            storageicon->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            storageicon->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }
+        else
+        {
+            storageicon->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+            storageicon->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }
         mIcons.append(storageicon);
         mStorageIcons.append(storageicon);
         //storageLayout->addWidget(storageicon);
@@ -852,6 +944,16 @@ void UKUITray::moveIconToTray(Window winId)
         mStorageIcons.removeOne(storageicon);
         //storageLayout->removeWidget(storageicon);
         disconnect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+
+        storageicon->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        if(mPlugin->panel()->isHorizontal())
+        {
+            storageicon->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+        }
+        else
+        {
+            storageicon->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+        }
         mTrayIcons.append(storageicon);
         layout()->addWidget(storageicon);
 
@@ -1047,6 +1149,15 @@ void UKUITray::regulateIcon(Window *mid)
                 {
                     nameStr = settings->get(NAME_KEY).toString();
                 }
+
+                if(nameStr=="" || nameStr=="ErrorApplication")
+                {
+                    settings->reset(NAME_KEY);
+                    settings->reset(BINDING_KEY);
+                    settings->reset(ACTION_KEY);
+                    settings->reset(RECORD_KEY);
+                    return;
+                }
             }
 
             if(nameStr==xfitMan().getApplicationName(wid))
@@ -1056,10 +1167,12 @@ void UKUITray::regulateIcon(Window *mid)
                 if(QString::compare(actionStr,"tray")==0)
                 {
                     addTrayIcon(bingdingStr);
+                    qDebug()<<"addTrayIcon   nameStr   is :"<<nameStr;
                 }
                 if(QString::compare(actionStr,"storage")==0)
                 {
                     addStorageIcon(bingdingStr);
+                    qDebug()<<"addStorageIcon   nameStr   is :"<<nameStr;
                 }
                 if(QString::compare(actionStr,"hide")==0)
                 {
@@ -1169,12 +1282,12 @@ void UKUITray::freezeApp()
         const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
         const QByteArray bba(allpath);
 
-        QGSettings *settings;
+        QGSettings *freezesettings;
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
         if(QGSettings::isSchemaInstalled(id)) {
-            settings= new QGSettings(ba, bba,this);
-
-            settings->set(ACTION_KEY,"freeze");
+            freezesettings= new QGSettings(ba, bba,this);
+            freezesettings->set(ACTION_KEY,"freeze");
+            delete freezesettings;
         }
     }
 }
@@ -1334,10 +1447,12 @@ void UKUITray::handleStorageUi()
         m_pwidget->layout()->addWidget(*it);
         (*it)->setFixedSize(mWinWidth,mWinHeight);
     }
-    storageFrame->layout()->addWidget(m_pwidget);
-    //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
-    storageFrame->setFixedSize(winWidth,winHeight);
-    //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
+
+    if(storageFrame)
+    {
+        storageFrame->layout()->addWidget(m_pwidget);
+        storageFrame->setFixedSize(winWidth,winHeight);
+    }
 }
 
 UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
@@ -1370,18 +1485,6 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
 
 UKUIStorageFrame::~UKUIStorageFrame(){
 }
-
-//bool UKUIStorageFrame::event(QEvent *event)
-//{
-//    if (event->type() == QEvent::WindowDeactivate) {
-//        qDebug()<<"UKUIStorageFrame  enter";
-//        if (QApplication::activeWindow() != this && flag==true) {
-//            this->hide();
-//            qDebug()<<"UKUIStorageFrame  hide";
-//        }
-//    }
-//    return QWidget::event(event);
-//}
 
 /*
  * 事件过滤，检测鼠标点击外部活动区域则收回收纳栏
