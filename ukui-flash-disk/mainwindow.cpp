@@ -41,6 +41,8 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
       qDebug()<<"Hurray!";
       findGDriveList()->removeOne(source_object);
       qDebug()<<findGDriveList()->size()<<"+-+-+-+-+-+-+-+-+-";
+      p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object));
+      p_this->m_eject->show();
     }
 
     else
@@ -48,7 +50,7 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
       qDebug()<<"oh no"<<err->message<<err->code;
     }
 
-    if(findGDriveList()->size() == 0 || findGDriveList()->size() == 0)
+    if(findGDriveList()->size() == 0 || findGVolumeList()->size() == 0)
     {
         p_this->m_systray->hide();
     }
@@ -141,10 +143,13 @@ void MainWindow::getDeviceInfo()
     {
         qDebug()<<"if gdrive can go";
         GDrive *gdrive = (GDrive *)current_drive_list->data;
-        if(g_drive_can_stop(gdrive) || g_drive_can_eject(gdrive))
+        if(g_drive_can_eject(gdrive))
         {
-            *findGDriveList()<<gdrive;
-            qDebug()<<"findGDriveList()->size():"<<findGDriveList()->size();
+            if(g_volume_can_eject((GVolume *)g_list_nth_data(g_drive_get_volumes(gdrive),0)))
+            {
+                *findGDriveList()<<gdrive;
+                qDebug()<<"findGDriveList()->size():"<<findGDriveList()->size();
+            }
         }
         current_drive_list = current_drive_list->next;
         qDebug()<<"gdrive can go";
@@ -171,12 +176,12 @@ void MainWindow::getDeviceInfo()
         qDebug()<<"gvolume can go";
     }
 
-
-    if(findGVolumeList()->size() >= 1)
+    qDebug()<<"findGDriveList.size:"<<findGDriveList()->size()<<"11111111111111";
+    if(findGVolumeList()->size() >= 1 || findGDriveList()->size() >= 1)
     {
         m_systray->show();
     }
-    if(findGVolumeList()->size() == 0 || findGDriveList()->size() == 0)
+    if(findGDriveList()->size() == 0)
     {
         m_systray->hide();
     }
@@ -210,8 +215,6 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *, GDrive *drive, M
     {
         p_this->m_systray->hide();
     }
-    ejectInterface *ForEject = new ejectInterface(p_this,g_drive_get_name(drive));
-    ForEject->show();
 }
 
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
@@ -1142,8 +1145,6 @@ void MainWindow::MainWindowShow()
                         findGDriveList()->removeOne(cacheDrive);
                         qDebug()<<"findGDriveList()->size():"<<findGDriveList()->size();
                         this->hide();
-                        ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(cacheDrive));
-                        ForEject->show();
                         QLayoutItem* item;
                         while ((item = this->vboxlayout->takeAt(0)) != NULL)
                         {
