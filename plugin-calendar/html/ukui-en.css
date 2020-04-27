@@ -223,7 +223,7 @@ color: #78cdf7;
   height: 32px;
   font-size: 18px; 
   border: none;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: #FFFFFFFF;
   float: left;
   text-align: left;
@@ -495,11 +495,11 @@ color: #78cdf7;
 
 #general_datetime_list li {
   margin: 0;
-  padding: 0;
+  padding: 8px 0 0 0;
   font-size: 14px;
   color: #FFFFFFFF;
   border: none;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 #advice_checkbox {
