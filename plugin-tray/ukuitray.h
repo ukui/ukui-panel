@@ -93,6 +93,7 @@ public:
     QList<char *> listExistsPath();
     QString findFreePath();
     void regulateIcon(Window *mid);
+    void newAppDetect(int wid);
     void freezeApp();
     void showAndHideStorage(bool);
 
