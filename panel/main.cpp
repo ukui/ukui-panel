@@ -63,7 +63,7 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
                   txt = QString("Fatal: %1").arg(msg);
                   abort();
           }
-    QFile outFile(qgetenv("HOME") +"/.config/ukui/ukui-panel.log")
+    QFile outFile(qgetenv("HOME") +"/.config/ukui/ukui-panel.log");
     outFile.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream ts(&outFile);  //
     ts << txt << endl;
