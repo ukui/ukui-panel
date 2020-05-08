@@ -267,7 +267,7 @@ bool TrayIcon::event(QEvent *event)
         switch (event->type())
         {
         case QEvent::Paint:
-//            draw(static_cast<QPaintEvent*>(event));
+            draw(static_cast<QPaintEvent*>(event));
             break;
 
         case QEvent::Move:
@@ -407,46 +407,6 @@ void TrayIcon::leaveEvent(QEvent *)
 
 void TrayIcon::paintEvent(QPaintEvent *)
 {
-    Display* dsp = mDisplay;
-
-    XWindowAttributes attr;
-    if (!XGetWindowAttributes(dsp, mIconId, &attr))
-    {
-        qWarning() << "Paint error";
-        return;
-    }
-
-    QImage image;
-    XImage* ximage = XGetImage(dsp, mIconId, 0, 0, attr.width, attr.height, AllPlanes, ZPixmap);
-    if(ximage)
-    {
-        image = QImage((const uchar*) ximage->data, ximage->width, ximage->height, ximage->bytes_per_line,  QImage::Format_ARGB32_Premultiplied);
-    }
-    else
-    {
-        qWarning() << "    * Error image is NULL";
-
-        XClearArea(mDisplay, (Window)winId(), 0, 0, attr.width, attr.height, False);
-        image = qApp->primaryScreen()->grabWindow(mIconId).toImage();
-    }
-
-    QPainter painter(this);
-    QRect iconRect = iconGeometry();
-    if (image.size() != iconRect.size())
-    {
-        image = image.scaled(iconRect.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        QRect r = image.rect();
-        r.moveCenter(iconRect.center());
-        iconRect = r;
-    }
-
-    image=HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
-    painter.drawImage(iconRect, image);
-
-    if(ximage)
-        XDestroyImage(ximage);
-
-
     QStyleOption opt;
     opt.initFrom(this);
     QPainter p(this);
