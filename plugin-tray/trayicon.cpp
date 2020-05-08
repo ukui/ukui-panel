@@ -267,6 +267,7 @@ bool TrayIcon::event(QEvent *event)
         switch (event->type())
         {
         case QEvent::Paint:
+            /*必须在draw函数中绘制图标，若在paintEvent中绘制则XGetImage 会出错*/
             draw(static_cast<QPaintEvent*>(event));
             break;
 
