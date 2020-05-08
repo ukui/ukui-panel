@@ -14,7 +14,12 @@
             <default>0</default>
             <summary>PanelPosition</summary>
             <description>The Position of ukui-panel</description>
-	 </key>
+        </key>
+        <key name="showtaskview" type="b">
+            <default>true</default>
+            <summary>show TsskView</summary>
+            <description>control taskview show or hide</description>
+        </key>
     </schema>
 </schemalist>
 

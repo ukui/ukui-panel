@@ -95,6 +95,7 @@
 #define PANEL_SIZE_KEY      "panelsize"
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
+#define SHOW_TASKVIEW       "showtaskview"
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -835,7 +836,15 @@ void UKUIPanel::showDesktop()
 }
 void UKUIPanel::showTaskView()
 {
-    system("ukui-window-switch --show-workspace");
+//    system("ukui-window-switch --show-workspace");
+    if(gsettings->keys().contains(SHOW_TASKVIEW))
+    {
+        if(gsettings->get(SHOW_TASKVIEW).toBool()){
+            gsettings->set(SHOW_TASKVIEW,false);
+        }
+        else
+            gsettings->set(SHOW_TASKVIEW,true);
+    }
 }
 void UKUIPanel::updateStyleSheet()
 {
@@ -1205,10 +1214,11 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
 
     menu->addSeparator();
 
-    menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                    tr("Show Taskview"),
-                    this, SLOT(showTaskView())
-                    )->setDisabled(mLockPanel);
+    QAction * showtaskview = menu->addAction(tr("Show Taskview"));
+    showtaskview->setCheckable(true);
+    showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
+    connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
+
 
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                     tr("Show Desktop"),

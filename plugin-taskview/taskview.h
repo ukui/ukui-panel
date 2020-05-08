@@ -37,6 +37,8 @@
 #include <QProcess>
 #include <QStyleOption>
 #include <QPainter>
+#include <QGSettings>
+
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
 #include "../panel/ukuicontrolstyle.h"
@@ -71,6 +73,7 @@ public:
 
 private:
     TaskViewButton *mButton;
+    QGSettings *gsettings;
 
 
 };

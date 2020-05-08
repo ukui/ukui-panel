@@ -37,6 +37,13 @@ find_package(Qt5Xdg ${QTXDG_MINIMUM_VERSION} REQUIRED)
 find_package(X11 REQUIRED)
 find_package(Qt5LinguistTools)
 
+find_package(PkgConfig)
+pkg_check_modules(Gsetting REQUIRED gsettings-qt)
+include_directories(${Gsetting_INCLUDE_DIRS})
+set(LIBRARIES
+    ${Gsetting_LIBRARIES}
+)
+
 # Patch Version
 set(UKUI_VERSION 3.0)
 set(UKUI_PANEL_PATCH_VERSION 0)
