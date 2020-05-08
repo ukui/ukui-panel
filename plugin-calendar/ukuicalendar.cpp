@@ -243,35 +243,25 @@ void IndicatorCalendar::updateTimeText()
         }
     }
 
-//    if (!isUpToDate || mbIsNeedUpdate)
-//    {
-        const QSize old_size = mContent->sizeHint();
-        QString str;
-        const QByteArray id(HOUR_SYSTEM_CONTROL);
-        if(QGSettings::isSchemaInstalled(id))
-        {
+    //    if (!isUpToDate || mbIsNeedUpdate)
+    //    {
+    const QSize old_size = mContent->sizeHint();
+    QString str;
+    const QByteArray id(HOUR_SYSTEM_CONTROL);
+    if(QGSettings::isSchemaInstalled(id))
+    {
         gsettings = new QGSettings(id);
         QStringList keys = gsettings->keys();
-        if(keys.contains("hoursystem")){
+        if(keys.contains("hoursystem"))
             hourSystemMode=gsettings->get("hoursystem").toString();
-        }
         if(!gsettings)
-        {
-            qDebug()<<"gsettings  get error    :";
             return;
-        }
         if(!QString::compare("24",hourSystemMode))
         {
             if(panel()->isHorizontal())
-            {
                 str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
-//                str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
-            }
             else
-            {
                 str=tzNow.toString(HOUR_SYSTEM_24_Vertical);
-            }
-
         }
         else
         {
@@ -286,28 +276,20 @@ void IndicatorCalendar::updateTimeText()
                 str.replace("PM","PM ");
             }
         }
-//        if(QLocale::system().name() == "zh_CN")
-//        {
-//            str.replace("-","/");
-//            str.replace("星期","周");
-//            str.remove("/上午");
-//            str.remove("/下午");
-//            mContent->setText(str);
-//        }
-//        else
-//        {
-//            mContent->setText(tzNow.toString("Ahh:mm ddd  yyyy/MM/dd"));
-//        }
-        mContent->setText(str);
-        if (old_size != mContent->sizeHint())
-        {
-            mRotatedWidget->adjustContentSize();
-        }
-        mRotatedWidget->update();
-        updatePopupContent();
-        mbIsNeedUpdate = false;
-        }
-
+    }
+    else
+    {
+        if(panel()->isHorizontal())
+            str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
+        else
+            str=tzNow.toString(HOUR_SYSTEM_24_Vertical);
+    }
+    mContent->setText(str);
+    if (old_size != mContent->sizeHint())
+        mRotatedWidget->adjustContentSize();
+    mRotatedWidget->update();
+    updatePopupContent();
+    mbIsNeedUpdate = false;
 }
 
 void IndicatorCalendar::setTimeText()

@@ -31,11 +31,43 @@
 #include <fcntl.h>
 #include <syslog.h>
 #include <QStandardPaths>
+#include <QDateTime>
+#include <QMutex>
+#include <QFile>
+#include <QDir>
 /*! The ukui-panel is the panel of UKUI.
   Usage: ukui-panel [CONFIG_ID]
     CONFIG_ID      Section name in config file ~/.config/ukui/panel.conf
                    (default main)
  */
+void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+
+    QString txt;
+          switch (type) {
+          //调试信息提示
+          case QtDebugMsg:
+                  txt = QString("Debug: %1").arg(msg);
+                  break;
+
+          //一般的warning提示
+          case QtWarningMsg:
+                  txt = QString("Warning: %1").arg(msg);
+          break;
+          //严重错误提示
+          case QtCriticalMsg:
+                  txt = QString("Critical: %1").arg(msg);
+          break;
+          //致命错误提示
+          case QtFatalMsg:
+                  txt = QString("Fatal: %1").arg(msg);
+                  abort();
+          }
+    QFile outFile(qgetenv("HOME") +"/.config/ukui/ukui-panel.log")
+    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream ts(&outFile);  //
+    ts << txt << endl;
+}
 
 int main(int argc, char *argv[])
 {
@@ -64,6 +96,8 @@ int main(int argc, char *argv[])
             qDebug() << "Load translations file" << locale << "failed!";
     }
 
+    //注册MessageHandler
+    //qInstallMessageHandler(outputMessage);
 
     return app.exec();
 }
