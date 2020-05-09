@@ -570,7 +570,7 @@
 		//除夕
 		if(lunarDate[1] == lunarMonthDays.length-1 && lunarDate[2]==lunarMonthDays[lunarMonthDays.length-1]){
 			lunarFtv = lunarFestival['d0100'];
-		}else if(lunarLeapMonth>0 && lunarDate[1]>lunarLeapMonth){
+		}else if(lunarLeapMonth>0 && lunarDate[1]>=lunarLeapMonth){
 			lunarFtv = lunarFestival[formateDayD4(lunarDate[1]-1,lunarDate[2])];
 		}else{
 			lunarFtv = lunarFestival[formateDayD4(lunarDate[1],lunarDate[2])];
