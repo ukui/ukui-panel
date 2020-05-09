@@ -31,9 +31,6 @@ Build-Depends: debhelper-compat (= 12),
                qttools5-dev,
                libqt5xdg-dev,
                libgsettings-qt-dev,
-               libpoppler-dev,
-               libpoppler-qt5-dev,
-               libpeony-dev,
                libdconf-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no

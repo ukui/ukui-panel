@@ -188,7 +188,7 @@ void UKUITaskWidget::updateIcon()
     {
         ico = KWindowSystem::icon(mWindow);
     }
-    mAppIcon->setPixmap(ico.pixmap(QSize(32,32)));
+    mAppIcon->setPixmap(ico.pixmap(QSize(19,19)));
     setPixmap(KWindowSystem::icon(mWindow));
 //    mPixmap = ico.pixmap(QSize(64,64);
     //mAppIcon->setWindowIcon(ico.isNull() ? XdgIcon::defaultApplicationIcon() : ico);
