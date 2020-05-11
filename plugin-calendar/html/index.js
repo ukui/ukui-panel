@@ -792,13 +792,24 @@ function create_page(year, month) {
             }
 
             var lunar_day;
-            if (month_stuff['monthData'][index]['lunarFestival']) {
+            if ((month_stuff['monthData'][index]['lunarFestival'])&&(month_stuff['monthData'][index]['solarFestival'])){
+                lunar_day = month_stuff['monthData'][index]['solarFestival'];
+            }else if (month_stuff['monthData'][index]['solarFestival']) {
+               lunar_day = month_stuff['monthData'][index]['solarFestival'];
+            }else if(month_stuff['monthData'][index]['lunarFestival']){
                 lunar_day = month_stuff['monthData'][index]['lunarFestival'];
-//            } else if (month_stuff['monthData'][index]['solarFestival']) {
-//                lunar_day = month_stuff['monthData'][index]['solarFestival'];
-            } else {
+            }else {
                 lunar_day = month_stuff['monthData'][index]['lunarDayName'];
             }
+
+//             if (month_stuff['monthData'][index]['lunarFestival']) 
+//             {
+//                 lunar_day = month_stuff['monthData'][index]['lunarFestival'];
+// //            } else if (month_stuff['monthData'][index]['solarFestival']) {
+// //                lunar_day = month_stuff['monthData'][index]['solarFestival'];
+//             } else {
+//                 lunar_day = month_stuff['monthData'][index]['lunarDayName'];
+//             }
 
             var worktime = null;
             if (month_stuff['monthData'][index]['worktime'] === 2) {
