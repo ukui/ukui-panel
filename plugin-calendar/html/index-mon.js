@@ -810,6 +810,8 @@ function create_page(year, month) {
                lunar_day = month_stuff['monthData'][index]['solarFestival'];
             }else if(month_stuff['monthData'][index]['lunarFestival']){
                 lunar_day = month_stuff['monthData'][index]['lunarFestival'];
+            }else if(month_stuff['monthData'][index]['term']){
+                lunar_day = month_stuff['monthData'][index]['term'];
             }else {
                 lunar_day = month_stuff['monthData'][index]['lunarDayName'];
             }
