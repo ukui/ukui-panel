@@ -244,6 +244,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     }
     UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
     connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
+
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
     qDebug()<<"mSettings->value(CFG_KEY_POSITION).toString()"<<mSettings->value(CFG_KEY_PANELSIZE, PANEL_DEFAULT_SIZE).toInt();
@@ -1280,10 +1281,10 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     pmenu_positon->addAction(pmenuaction_right);
     menu->addMenu(pmenu_positon);
 
-    connect(pmenuaction_top,SIGNAL(triggered()),this,SLOT(changePositionToTop()));
-    connect(pmenuaction_bottom,SIGNAL(triggered()),this,SLOT(changePositionToBottom()));
-    connect(pmenuaction_left,SIGNAL(triggered()),this,SLOT(changePositionToLeft()));
-    connect(pmenuaction_right,SIGNAL(triggered()),this,SLOT(changePositionToRight()));
+    connect(pmenuaction_top,&QAction::triggered, [this] { setPanelPosition(PositionTop);});
+    connect(pmenuaction_bottom,&QAction::triggered, [this] { setPanelPosition(PositionBottom);});
+    connect(pmenuaction_left,&QAction::triggered, [this] { setPanelPosition(PositionLeft);});
+    connect(pmenuaction_right,&QAction::triggered, [this] { setPanelPosition(PositionRight);});
     pmenu_positon->setDisabled(mLockPanel);
 
     /*
@@ -1314,6 +1315,19 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                    this, SLOT(panelReset())
                   )->setDisabled(mLockPanel);
 */
+
+    if(QFileInfo::exists(QString("/usr/bin/ukui-about")))
+    {
+        QAction *about;
+        about=new QAction(this);
+        about->setText("关于麒麟");
+        menu->addAction(about);
+        connect(about,&QAction::triggered, [this] {
+            QProcess *process =new QProcess(this);
+            process->startDetached("/usr/bin/ukui-about");
+        });
+
+    }
 #ifdef DEBUG
     menu->addSeparator();
     menu->addAction("Exit (debug only)", qApp, SLOT(quit()));
@@ -1600,31 +1614,35 @@ bool UKUIPanel::isPluginSingletonAndRunnig(QString const & pluginId) const
 
 void UKUIPanel::setPanelPosition(Position position)
 {
-    setPosition(0,position,true);
-}
-
-void UKUIPanel::changePositionToTop()
-{
-    setPosition(0,PositionTop,true);
-    gsettings->set(PANEL_POSITION_KEY,1);
-}
-
-void UKUIPanel::changePositionToBottom()
-{
-    setPosition(0,PositionBottom,true);
-    gsettings->set(PANEL_POSITION_KEY,0);
-}
-
-void UKUIPanel::changePositionToLeft()
-{
-    setPosition(0,PositionLeft,true);
-    gsettings->set(PANEL_POSITION_KEY,2);
-}
-
-void UKUIPanel::changePositionToRight()
-{
-    this->setPosition(0,PositionRight,true);
-    gsettings->set(PANEL_POSITION_KEY,3);
+    QDBusMessage message=QDBusMessage::createSignal("/panel/settings", "com.ukui.panel.settings", "SendPanelSetings");
+    if(position==PositionTop)
+    {
+        setPosition(0,PositionTop,true);
+        gsettings->set(PANEL_POSITION_KEY,1);
+        message<<1;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else if(position==PositionLeft)
+    {
+        setPosition(0,PositionLeft,true);
+        gsettings->set(PANEL_POSITION_KEY,2);
+        message<<2;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else if(position==PositionRight)
+    {
+        this->setPosition(0,PositionRight,true);
+        gsettings->set(PANEL_POSITION_KEY,3);
+        message<<3;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else
+    {
+        setPosition(0,PositionBottom,true);
+        gsettings->set(PANEL_POSITION_KEY,0);
+        message<<0;
+        QDBusConnection::sessionBus().send(message);
+    }
 }
 
 void UKUIPanel::changeSizeToSmall()
