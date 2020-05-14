@@ -89,26 +89,26 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     rightPressMenu=new QMenu();
     rightPressMenu->setAttribute(Qt::WA_DeleteOnClose);
 
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-lock-screen")),
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-lock-screen-symbolic")),
                               tr("Lock Screen"),
                               this, SLOT(ScreenServer())
                               );
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("stock-people")),
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("stock-people-symbolic")),
                               tr("Switch User"),
                               this, SLOT(SessionSwitch())
                               );
 
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-logout")),
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-logout-symbolic")),
                               tr("LogOut"),
                               this, SLOT(SessionLogout())
                               );
 
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-restart")),
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-restart-symbolic")),
                               tr("Restart"),
                               this, SLOT(SessionReboot())
                               );
 
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("exit")),
+    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("exit_symbolic")),
                               tr("Power Off"),
                               this, SLOT(SessionShutdown())
                               );

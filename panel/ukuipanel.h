@@ -35,6 +35,7 @@
 #include <QPointer>
 #include <QDesktopWidget>
 #include <QGSettings/QGSettings>
+#include <QtDBus/QtDBus>
 #include "common/ukuisettings.h"
 #include "iukuipanel.h"
 #include "ukuipanelglobals.h"
@@ -80,6 +81,8 @@ class UKUI_PANEL_API UKUIPanel : public QFrame, public IUKUIPanel
     Q_OBJECT
 
     Q_PROPERTY(QString position READ qssPosition)
+
+    Q_CLASSINFO("D-Bus Interface", "com.ukui.panel.settings")
 
     // for configuration dialog
     friend class ConfigPanelWidget;
@@ -698,13 +701,8 @@ private:
     // settings should be kept private for security
     UKUi::Settings *settings() const { return mSettings; }
 
-
 private slots:
     void setPanelPosition(Position position);
-    void changePositionToTop();
-    void changePositionToBottom();
-    void changePositionToLeft();
-    void changePositionToRight();
     void changeSizeToSmall();
     void changeSizeToMedium();
     void changeSizeToLarge();
