@@ -336,6 +336,8 @@ void UKUITray::realign()
                 if(mTrayIcons.at(i))
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+//                    qDebug()<<"mPlugin->panel()->iconSize()  :  "<<mPlugin->panel()->iconSize();
+//                    qDebug()<<"mPlugin->panel()->iconSize()/2  :  "<<mPlugin->panel()->iconSize()/2;
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
                 else
@@ -440,7 +442,6 @@ void UKUITray::createIconMap()
 
 void UKUITray::changeIcon()
 {
-    qDebug()<<"change icon now";
     QIcon icon;
     QMap<IUKUIPanel::Position, QIcon>::const_iterator it = mMapIcon.find(mCurPosition);
     if(it != mMapIcon.end())
@@ -851,7 +852,6 @@ void UKUITray::addHideIcon(Window winId)
 
 void UKUITray::moveIconToTray(Window winId)
 {
-    qDebug()<<"inter moveIconToTray";
     TrayIcon *storageicon = findStorageIcon(winId);
     TrayIcon *hideicon = findHideIcon(winId);
 
