@@ -3,6 +3,12 @@ project(ukui-panel)
 
 option(WITH_SCREENSAVER_FALLBACK "Include support for converting the deprecated 'screensaver' plugin to 'quicklaunch'. This requires the ukui-leave (ukui-session) to be installed in runtime." OFF)
 
+#判断编译器类型,如果是gcc编译器,则在编译选项中加入c++11支持
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+    message(STATUS "optional:-std=c++11")   
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
 # additional cmake files
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -14,17 +20,20 @@ endmacro()
 
 include(GNUInstallDirs)
 
+setByDefault(CUSTOM_QT_5_6_VERSION Yes)
+setByDefault(CUSTOM_QT_5_12_VERSION No)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-set(REQUIRED_QT_VERSION "5.7.1")
-set(KF5_MINIMUM_VERSION "5.36.0")
+set(REQUIRED_QT_VERSION "5.6.1")
+set(KF5_MINIMUM_VERSION "5.18.0")
+set(QT_MINIMUM_VERSION "5.6.1")
 set(UKUI_MINIMUM_VERSION "0.14.1")
 set(QTXDG_MINIMUM_VERSION "3.3.1")
-set(QT_MINIMUM_VERSION "5.7.1")
 
 find_package(Qt5DBus ${REQUIRED_QT_VERSION} REQUIRED)
 find_package(Qt5LinguistTools ${REQUIRED_QT_VERSION} REQUIRED)
@@ -33,7 +42,7 @@ find_package(Qt5X11Extras ${REQUIRED_QT_VERSION} REQUIRED)
 find_package(Qt5Xml ${REQUIRED_QT_VERSION} REQUIRED)
 find_package(KF5WindowSystem ${KF5_MINIMUM_VERSION} REQUIRED)
 find_package(Qt5 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Widgets DBus X11Extras LinguistTools)
-find_package(Qt5Xdg ${QTXDG_MINIMUM_VERSION} REQUIRED)
+#find_package(Qt5Xdg ${QTXDG_MINIMUM_VERSION} REQUIRED)
 find_package(X11 REQUIRED)
 find_package(Qt5LinguistTools)
 
@@ -55,6 +64,7 @@ set(UKUI_PANEL_VERSION ${UKUI_MAJOR_VERSION}.${UKUI_MINOR_VERSION}.${UKUI_PANEL_
 add_definitions("-DUKUI_PANEL_VERSION=\"${UKUI_PANEL_VERSION}\"")
 
 include(./cmake/ukui-build-tools/modules/UKUiPreventInSourceBuilds.cmake)
+#include(./cmake/ukui-build-tools/modules/UKUiTranslate.cmake)
 
 # All UKUiCompilerSettings except CMAKE_MODULE_LINKER_FLAGS work just fine
 # So we reset only these Flags after loading UKUiCompilerSettings

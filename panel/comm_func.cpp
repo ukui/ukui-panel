@@ -394,8 +394,13 @@ void removefilesindir(const QString& path)
 {
   QDir dir(path);
   QFileInfoList info_list = dir.entryInfoList(QDir::Files | QDir::Hidden | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::AllDirs);
-  for(QFileInfo file_info:qAsConst(info_list))
-  {
+ #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+  for(int i=0;i<info_list.size();i++){
+    QFileInfo file_info=info_list[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+ for(QFileInfo file_info:qAsConst(info_list)){
+#endif
     if (file_info.isDir())
     {
       removefilesindir(file_info.absoluteFilePath());
@@ -421,7 +426,13 @@ bool removeDir(const QString & dirName)
 
     if (dir.exists(dirName)) {
         QFileInfoList fileInfoList = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst);
-        for(QFileInfo info:qAsConst(fileInfoList)) {
+    #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<fileInfoList.size();i++){
+        QFileInfo info=fileInfoList[i];
+    #endif
+    #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(QFileInfo info:qAsConst(fileInfoList)) {
+    #endif
             if (info.isDir()) {
                 result = removeDir(info.absoluteFilePath());
             }
@@ -524,8 +535,13 @@ bool qCopyDirectory(const QDir& fromDir, const QDir& toDir, bool bCoverIfFileExi
     }
 
     QFileInfoList fileInfoList = formDir_.entryInfoList();
-    for(QFileInfo fileInfo:qAsConst(fileInfoList))
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<fileInfoList.size();i++){
+        QFileInfo fileInfo=fileInfoList[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(QFileInfo fileInfo:qAsConst(fileInfoList)){
+#endif
         if(fileInfo.fileName() == "." || fileInfo.fileName() == "..")
             continue;
 
@@ -575,7 +591,13 @@ pid_t getPidByName(const char* processName)
     int pid = 0;
     bool findPid = false;
     QStringList dirLists = procDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<dirLists.size();i++){
+        auto & dir=dirLists[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     for(auto & dir : qAsConst(dirLists)) {
+#endif
         bool ok;
         pid = dir.toInt(&ok, 10);
         if(ok == false)

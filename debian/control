@@ -17,7 +17,6 @@ Build-Depends: debhelper-compat (= 12),
                libqt5x11extras5-dev,
                libsensors4-dev [!hurd-any],
                libstatgrab-dev [linux-any],
-               libsysstat-qt5-0-dev (>= 0.4.2),
                libx11-dev,
                libxcb-damage0-dev,
                libxcb-util0-dev,
@@ -29,9 +28,12 @@ Build-Depends: debhelper-compat (= 12),
                libxrender-dev,
                libqt5webkit5-dev,
                qttools5-dev,
-               libqt5xdg-dev,
                libgsettings-qt-dev,
-               libdconf-dev
+               libdconf-dev,
+               qtbase5-dev,
+               qtbase5-dev-tools,
+               qttools5-dev-tools,
+               qtbase5-private-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/ukui/ukui-panel
