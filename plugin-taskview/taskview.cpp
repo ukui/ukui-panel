@@ -29,6 +29,9 @@
 #include "../panel/customstyle.h"
 #include <QPalette>
 #include <QToolTip>
+
+#define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
+#define SHOW_TASKVIEW       "showtaskview"
 TaskViewButton::TaskViewButton(){
 }
 TaskViewButton::~TaskViewButton(){
@@ -42,6 +45,15 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     mButton->setIcon(QIcon("/usr/share/ukui-panel/panel/img/taskview.svg"));
    // mButton->paintTooltipStyle();
     mButton->setToolTip(tr("Show Taskview"));
+
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+        gsettings = new QGSettings(id);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+    if(key==SHOW_TASKVIEW)
+        realign();
+    });
+
     realign();
 }
 
@@ -53,7 +65,10 @@ TaskView::~TaskView()
 
 void TaskView::realign()
 {
-    mButton->setFixedSize(panel()->panelSize(),panel()->panelSize());
+    if(gsettings->get(SHOW_TASKVIEW).toBool())
+        mButton->setFixedSize(panel()->panelSize(),panel()->panelSize());
+    else
+        mButton->setFixedSize(0,panel()->panelSize());
     mButton->setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
 }
 
