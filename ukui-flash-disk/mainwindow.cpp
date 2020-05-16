@@ -64,7 +64,7 @@ void frobnitz_result_func_drive(GDrive *source_object,GAsyncResult *res,MainWind
     success = g_drive_start_finish (source_object, res, &err);
     if(!err)
     {
-        qDebug()<<"drive start sucess";
+        qDebug()<<"drive start success";
     }
     else
     {
@@ -1194,7 +1194,7 @@ void MainWindow::moveBottomNoBase()
     screen->availableSize();
     if(screen->availableGeometry().x() == screen->availableGeometry().y() && screen->availableSize().height() < screen->size().height())
     {
-        qDebug()<<"the positon of panel is down";
+        qDebug()<<"the position of panel is down";
         this->move(screen->availableGeometry().x() + screen->size().width() -
                    this->width() - DistanceToPanel,screen->availableGeometry().y() +
                    screen->availableSize().height() - this->height() - DistanceToPanel);
