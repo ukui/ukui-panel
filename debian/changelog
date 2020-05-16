@@ -1,3 +1,47 @@
+ukui-panel (2.0.7-1) unstable; urgency=medium
+
+  * New upstream bugfix release:
+    - Fix that panel stuck after invoke ukui-control-center.
+    - Fix that night mode causes the screen flicker.
+    - Don't exit if ukui-window-switch does not exist.
+  * debian/control:
+    - Add ukui-window-switch to suggests.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 16 Apr 2020 16:33:48 +0800
+
+ukui-panel (2.0.6-1) unstable; urgency=medium
+
+  * New upstream bugfix release:
+    - Fix that the applet window not autohide.
+    - Fix the i18n issue in night mode and calendar.
+    - Fix the coffliction between preview window and warkspace.
+    - Fix the wrong position of right-click menu.
+    - Fix the missing icon of disk.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 09 Apr 2020 17:35:53 +0800
+
+ukui-panel (2.0.5-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+    - Fix that disk popup window don't disappear.
+    - Fix calendar i18n issue.
+    - Fix the sorting issue of applets.
+    - Fix that sometimes applets disappear.
+    - Fix the wrong time of calendar.
+    - Fix the error when select holiday.
+    - Fix that panel doesn't follow the primary screen.
+    - Fix the wrong position of preview windows.
+    - Fix the error when adding application to quick launch area.
+    - Fix the wrong gsettings key.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 06 Apr 2020 19:53:00 +0800
+
+ukui-panel (2.0.4-1) unstable; urgency=medium
+
+  * New upstream bugfix-only release.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 30 Mar 2020 21:34:53 +0800
+
 ukui-panel (2.0.3-1) unstable; urgency=medium
 
   * New upstream bugfix-only release.

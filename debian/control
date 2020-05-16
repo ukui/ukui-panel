@@ -31,6 +31,9 @@ Build-Depends: debhelper-compat (= 12),
                qttools5-dev,
                libqt5xdg-dev,
                libgsettings-qt-dev,
+               libpoppler-dev,
+               libpoppler-qt5-dev,
+               libpeony-dev,
                libdconf-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
@@ -43,6 +46,7 @@ Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends}
 Provides: ukui-indicators
+Suggests: ukui-window-switch
 Description: ukui desktop panel
  The ukui desktop panel is used on ukui desktop and has some plugins like
  starmenu, quicklaunch and other useful tools.
