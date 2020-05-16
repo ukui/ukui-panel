@@ -1,0 +1,161 @@
+libQt5Xdg.so.3 libqt5xdg3 #MINVER#
+* Build-Depends-Package: libqt5xdg-dev
+ (c++)"XdgAction::XdgAction(QObject*)@Base" 1.0.0
+ (c++)"XdgAction::XdgAction(QString const&, QObject*)@Base" 1.0.0
+ (c++)"XdgAction::XdgAction(XdgAction const&, QObject*)@Base" 1.0.0
+ (c++)"XdgAction::XdgAction(XdgDesktopFile const&, QObject*)@Base" 1.0.0
+ (c++)"XdgAction::XdgAction(XdgDesktopFile const*, QObject*)@Base" 1.0.0
+ (c++)"XdgAction::isValid() const@Base" 1.0.0
+ (c++)"XdgAction::load(XdgDesktopFile const&)@Base" 1.0.0
+ (c++)"XdgAction::metaObject() const@Base" 1.0.0
+ (c++)"XdgAction::operator=(XdgAction const&)@Base" 1.0.0
+ (c++)"XdgAction::qt_metacall(QMetaObject::Call, int, void**)@Base" 1.0.0
+ (c++)"XdgAction::qt_metacast(char const*)@Base" 1.0.0
+ (c++)"XdgAction::runConmmand() const@Base" 1.0.0
+ (c++)"XdgAction::staticMetaObject@Base" 1.0.0
+ (c++)"XdgAction::updateIcon()@Base" 1.0.0
+ (c++)"XdgAction::~XdgAction()@Base" 1.0.0
+ (c++)"XdgAutoStart::desktopFileList(QStringList, bool)@Base" 1.0.0
+ (c++)"XdgAutoStart::desktopFileList(bool)@Base" 1.0.0
+ (c++)"XdgAutoStart::localPath(XdgDesktopFile const&)@Base" 1.0.0
+ (c++)"XdgDesktopFile::XdgDesktopFile()@Base" 1.0.0
+ (c++)"XdgDesktopFile::XdgDesktopFile(XdgDesktopFile const&)@Base" 1.0.0
+ (c++)"XdgDesktopFile::XdgDesktopFile(XdgDesktopFile::Type, QString const&, QString const&)@Base" 1.0.0
+ (c++)"XdgDesktopFile::actionActivate(QString const&, QStringList const&) const@Base" 3.1.0
+ (c++)"XdgDesktopFile::actionIcon(QString const&, QIcon const&) const@Base" 3.1.0
+ (c++)"XdgDesktopFile::actionIconName(QString const&) const@Base" 3.1.0
+ (c++)"XdgDesktopFile::actionName(QString const&) const@Base" 3.1.0
+ (c++)"XdgDesktopFile::actions() const@Base" 3.1.0
+ (c++)"XdgDesktopFile::categories() const@Base" 1.2.0
+ (c++)"XdgDesktopFile::contains(QString const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::expandExecString(QStringList const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::fileName() const@Base" 1.0.0
+ (c++)"XdgDesktopFile::icon(QIcon const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::iconName() const@Base" 1.0.0
+ (c++)"XdgDesktopFile::id(QString const&, bool)@Base" 2.0.0
+ (c++)"XdgDesktopFile::isShown(QString const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::isSuitable(bool, QString const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::isValid() const@Base" 1.0.0
+ (c++)"XdgDesktopFile::load(QString const&)@Base" 1.0.0
+ (c++)"XdgDesktopFile::localizedKey(QString const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::localizedValue(QString const&, QVariant const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::mimeTypes() const@Base" 1.3.0
+ (c++)"XdgDesktopFile::operator=(XdgDesktopFile const&)@Base" 1.0.0
+ (c++)"XdgDesktopFile::operator==(XdgDesktopFile const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::removeEntry(QString const&)@Base" 1.0.0
+ (c++)"XdgDesktopFile::save(QIODevice*) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::save(QString const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::setLocalizedValue(QString const&, QVariant const&)@Base" 1.0.0
+ (c++)"XdgDesktopFile::setValue(QString const&, QVariant const&)@Base" 1.0.0
+ (c++)"XdgDesktopFile::startDetached(QString const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::startDetached(QStringList const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::type() const@Base" 1.0.0
+ (c++)"XdgDesktopFile::url() const@Base" 1.0.0
+ (c++)"XdgDesktopFile::value(QString const&, QVariant const&) const@Base" 1.0.0
+ (c++)"XdgDesktopFile::~XdgDesktopFile()@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::XdgDesktopFileCache()@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::desktopFileSettingsFormat()@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::getAllFiles()@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::getApps(QString const&)@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::getAppsOfCategory(QString const&)@Base" 1.2.0
+ (c++)"XdgDesktopFileCache::getDefaultApp(QString const&)@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::getFile(QString const&)@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::initialize()@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::initialize(QString const&)@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::instance()@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::load(QString const&)@Base" 1.0.0
+ (c++)"XdgDesktopFileCache::~XdgDesktopFileCache()@Base" 1.0.0
+ (c++)"XdgDirs::autostartDirs(QString const&)@Base" 1.0.0
+ (c++)"XdgDirs::autostartHome(bool)@Base" 1.0.0
+ (c++)"XdgDirs::cacheHome(bool)@Base" 1.0.0
+ (c++)"XdgDirs::configDirs(QString const&)@Base" 1.0.0
+ (c++)"XdgDirs::configHome(bool)@Base" 1.0.0
+ (c++)"XdgDirs::dataDirs(QString const&)@Base" 1.0.0
+ (c++)"XdgDirs::dataHome(bool)@Base" 1.0.0
+ (c++)"XdgDirs::runtimeDir()@Base" 1.0.0
+ (c++)"XdgDirs::setUserDir(XdgDirs::UserDirectory, QString const&, bool)@Base" 1.0.0
+ (c++)"XdgDirs::userDir(XdgDirs::UserDirectory)@Base" 1.0.0
+ (c++)"XdgDirs::userDirDefault(XdgDirs::UserDirectory)@Base" 1.3.0
+ (c++)"XdgIcon::XdgIcon()@Base" 1.0.0
+ (c++)"XdgIcon::defaultApplicationIcon()@Base" 1.0.0
+ (c++)"XdgIcon::defaultApplicationIconName()@Base" 1.0.0
+ (c++)"XdgIcon::followColorScheme()@Base" 3.0.0
+ (c++)"XdgIcon::fromTheme(QString const&, QIcon const&)@Base" 1.0.0
+ (c++)"XdgIcon::fromTheme(QString const&, QString const&, QString const&, QString const&, QString const&)@Base" 1.0.0
+ (c++)"XdgIcon::fromTheme(QStringList const&, QIcon const&)@Base" 1.0.0
+ (c++)"XdgIcon::setFollowColorScheme(bool)@Base" 3.0.0
+ (c++)"XdgIcon::~XdgIcon()@Base" 1.0.0
+ (c++)"XdgMenu::XdgMenu(QObject*)@Base" 1.0.0
+ (c++)"XdgMenu::addWatchPath(QString const&)@Base" 1.0.0
+ (c++)"XdgMenu::changed()@Base" 1.0.0
+ (c++)"XdgMenu::environments()@Base" 1.0.0
+ (c++)"XdgMenu::errorString() const@Base" 1.0.0
+ (c++)"XdgMenu::findMenu(QDomElement&, QString const&, bool)@Base" 1.0.0
+ (c++)"XdgMenu::getMenuFileName(QString const&)@Base" 1.0.0
+ (c++)"XdgMenu::isOutDated() const@Base" 1.0.0
+ (c++)"XdgMenu::logDir() const@Base" 1.0.0
+ (c++)"XdgMenu::menuFileName() const@Base" 1.0.0
+ (c++)"XdgMenu::metaObject() const@Base" 1.0.0
+ (c++)"XdgMenu::qt_metacall(QMetaObject::Call, int, void**)@Base" 1.0.0
+ (c++)"XdgMenu::qt_metacast(char const*)@Base" 1.0.0
+ (c++)"XdgMenu::read(QString const&)@Base" 1.0.0
+ (c++)"XdgMenu::save(QString const&)@Base" 1.0.0
+ (c++)"XdgMenu::setEnvironments(QString const&)@Base" 1.0.0
+ (c++)"XdgMenu::setEnvironments(QStringList const&)@Base" 1.0.0
+ (c++)"XdgMenu::setLogDir(QString const&)@Base" 1.0.0
+ (c++)"XdgMenu::staticMetaObject@Base" 1.0.0
+ (c++)"XdgMenu::xml() const@Base" 1.0.0
+ (c++)"XdgMenu::~XdgMenu()@Base" 1.0.0
+ (c++)"XdgMenuWidget::XdgMenuWidget(QDomElement const&, QWidget*)@Base" 1.0.0
+ (c++)"XdgMenuWidget::XdgMenuWidget(XdgMenu const&, QString const&, QWidget*)@Base" 1.0.0
+ (c++)"XdgMenuWidget::XdgMenuWidget(XdgMenuWidget const&, QWidget*)@Base" 1.0.0
+ (c++)"XdgMenuWidget::event(QEvent*)@Base" 1.0.0
+ (c++)"XdgMenuWidget::metaObject() const@Base" 1.0.0
+ (c++)"XdgMenuWidget::operator=(XdgMenuWidget const&)@Base" 1.0.0
+ (c++)"XdgMenuWidget::qt_metacall(QMetaObject::Call, int, void**)@Base" 1.0.0
+ (c++)"XdgMenuWidget::qt_metacast(char const*)@Base" 1.0.0
+ (c++)"XdgMenuWidget::staticMetaObject@Base" 1.0.0
+ (c++)"XdgMenuWidget::~XdgMenuWidget()@Base" 1.0.0
+ (c++)"XdgMimeApps::XdgMimeApps(QObject*)@Base" 3.4.0~
+ (c++)"XdgMimeApps::addSupport(QString const&, XdgDesktopFile const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::allApps()@Base" 3.4.0~
+ (c++)"XdgMimeApps::apps(QString const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::categoryApps(QString const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::changed()@Base" 3.4.0~
+ (c++)"XdgMimeApps::defaultApp(QString const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::fallbackApps(QString const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::metaObject() const@Base" 3.4.0~
+ (c++)"XdgMimeApps::qt_metacall(QMetaObject::Call, int, void**)@Base" 3.4.0~
+ (c++)"XdgMimeApps::qt_metacast(char const*)@Base" 3.4.0~
+ (c++)"XdgMimeApps::recommendedApps(QString const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::removeSupport(QString const&, XdgDesktopFile const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::reset(QString const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::setDefaultApp(QString const&, XdgDesktopFile const&)@Base" 3.4.0~
+ (c++)"XdgMimeApps::staticMetaObject@Base" 3.4.0~
+ (c++)"XdgMimeApps::~XdgMimeApps()@Base" 3.4.0~
+ (c++)"XdgMimeType::XdgMimeType()@Base" 1.0.0
+ (c++)"XdgMimeType::XdgMimeType(QMimeType const&)@Base" 1.0.0
+ (c++)"XdgMimeType::XdgMimeType(XdgMimeType const&)@Base" 1.0.0
+ (c++)"XdgMimeType::icon() const@Base" 1.0.0
+ (c++)"XdgMimeType::iconName() const@Base" 1.0.0
+ (c++)"XdgMimeType::operator=(XdgMimeType const&)@Base" 1.0.0
+ (c++)"XdgMimeType::~XdgMimeType()@Base" 1.0.0
+ (c++)"non-virtual thunk to XdgMenuWidget::~XdgMenuWidget()@Base" 1.0.0
+ (c++)"typeinfo for XdgAction@Base" 1.0.0
+ (c++)"typeinfo for XdgDesktopFile@Base" 1.0.0
+ (c++)"typeinfo for XdgIcon@Base" 1.0.0
+ (c++)"typeinfo for XdgMenu@Base" 1.0.0
+ (c++)"typeinfo for XdgMenuWidget@Base" 1.0.0
+ (c++)"typeinfo for XdgMimeApps@Base" 3.4.0~
+ (c++)"typeinfo name for XdgAction@Base" 1.0.0
+ (c++)"typeinfo name for XdgDesktopFile@Base" 1.0.0
+ (c++)"typeinfo name for XdgIcon@Base" 1.0.0
+ (c++)"typeinfo name for XdgMenu@Base" 1.0.0
+ (c++)"typeinfo name for XdgMenuWidget@Base" 1.0.0
+ (c++)"typeinfo name for XdgMimeApps@Base" 3.4.0~
+ (c++)"vtable for XdgAction@Base" 1.0.0
+ (c++)"vtable for XdgDesktopFile@Base" 1.0.0
+ (c++)"vtable for XdgIcon@Base" 1.0.0
+ (c++)"vtable for XdgMenu@Base" 1.0.0
+ (c++)"vtable for XdgMenuWidget@Base" 1.0.0
+ (c++)"vtable for XdgMimeApps@Base" 3.4.0~

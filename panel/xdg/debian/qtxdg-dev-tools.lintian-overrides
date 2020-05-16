@@ -1,0 +1,5 @@
+# Yeah, we know
+
+qtxdg-dev-tools: binary-without-manpage usr/bin/qtxdg-desktop-file-start
+qtxdg-dev-tools: binary-without-manpage usr/bin/qtxdg-iconfinder
+
