@@ -1,18 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
-# CMP0000: Call the cmake_minimum_required() command at the beginning of the top-level
-# CMakeLists.txt file even before calling the project() command.
-# The cmake_minimum_required(VERSION) command implicitly invokes the cmake_policy(VERSION)
-# command to specify that the current project code is written for the given range of CMake
-# versions.
 project(ukui-panel)
 
-
-option(UPDATE_TRANSLATIONS "Update source translation translations/*.ts files" OFF)
 option(WITH_SCREENSAVER_FALLBACK "Include support for converting the deprecated 'screensaver' plugin to 'quicklaunch'. This requires the ukui-leave (ukui-session) to be installed in runtime." OFF)
-# plugin-mainmenu
-option(USE_MENU_CACHE "Use menu-cached (no noticable penalty even on a 2004 single core pentium if not used)" OFF)
-
-
 
 # additional cmake files
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -43,13 +32,17 @@ find_package(Qt5Widgets ${REQUIRED_QT_VERSION} REQUIRED)
 find_package(Qt5X11Extras ${REQUIRED_QT_VERSION} REQUIRED)
 find_package(Qt5Xml ${REQUIRED_QT_VERSION} REQUIRED)
 find_package(KF5WindowSystem ${KF5_MINIMUM_VERSION} REQUIRED)
-#find_package(ukui ${UKUI_MINIMUM_VERSION} REQUIRED)
-#find_package(ukui-globalkeys ${UKUI_MINIMUM_VERSION} REQUIRED)
-#find_package(ukui-globalkeys-ui ${UKUI_MINIMUM_VERSION} REQUIRED)
 find_package(Qt5 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Widgets DBus X11Extras LinguistTools)
 find_package(Qt5Xdg ${QTXDG_MINIMUM_VERSION} REQUIRED)
 find_package(X11 REQUIRED)
 find_package(Qt5LinguistTools)
+
+find_package(PkgConfig)
+pkg_check_modules(Gsetting REQUIRED gsettings-qt)
+include_directories(${Gsetting_INCLUDE_DIRS})
+set(LIBRARIES
+    ${Gsetting_LIBRARIES}
+)
 
 # Patch Version
 set(UKUI_VERSION 3.0)
@@ -57,12 +50,11 @@ set(UKUI_PANEL_PATCH_VERSION 0)
 set(UKUI_MAJOR_VERSION 3)
 set(UKUI_MINOR_VERSION 0)
 
-set(UKUI_TRANSLATIONS_DIR "${CMAKE_INSTALL_FULL_DATAROOTDIR}/ukui/translations/")
+#set(UKUI_TRANSLATIONS_DIR "${CMAKE_INSTALL_FULL_DATAROOTDIR}/ukui/translations/")
 set(UKUI_PANEL_VERSION ${UKUI_MAJOR_VERSION}.${UKUI_MINOR_VERSION}.${UKUI_PANEL_PATCH_VERSION})
 add_definitions("-DUKUI_PANEL_VERSION=\"${UKUI_PANEL_VERSION}\"")
 
 include(./cmake/ukui-build-tools/modules/UKUiPreventInSourceBuilds.cmake)
-#include(./cmake/ukui-build-tools/modules/UKUiTranslate.cmake)
 
 # All UKUiCompilerSettings except CMAKE_MODULE_LINKER_FLAGS work just fine
 # So we reset only these Flags after loading UKUiCompilerSettings
@@ -70,7 +62,6 @@ include(./cmake/ukui-build-tools/modules/UKUiPreventInSourceBuilds.cmake)
 #  set(CMAKE_MODULE_LINKER_FLAGS "-Wl,--no-undefined ${SYMBOLIC_FLAGS} ${CMAKE_MODULE_LINKER_FLAGS}")
 message(STATUS "==OLD== CMAKE_MODULE_LINKER_FLAGS: ${CMAKE_MODULE_LINKER_FLAGS}")
 set( OLD_CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS}")
-#include(UKUiCompilerSettings NO_POLICY_SCOPE)
 set(CMAKE_MODULE_LINKER_FLAGS "${OLD_CMAKE_MODULE_LINKER_FLAGS} ${SYMBOLIC_FLAGS}")
 
 # Warning: This must be before add_subdirectory(panel). Move with caution.
@@ -94,27 +85,10 @@ message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
 #    cmake -DWORLDCLOCK_PLUGIN=No ..  # Disable worldclock plugin
 
 include("cmake/BuildPlugin.cmake")
-#include(./cmake/ukui-build-tools/modules/UKUiTranslateDesktop.cmake)
 include(./cmake/ukui-build-tools/modules/UKUiTranslateDesktop.cmake)
-#include(./cmake/ukui-build-tools/modules/UKUiTranslationLoader.cmake)
 include(./cmake/ukui-build-tools/modules/UKUiTranslationLoader.cmake)
 set(ENABLED_PLUGINS) # list of enabled plugins
 set(STATIC_PLUGINS) # list of statically linked plugins
-
-
-#setByDefault(DESKTOPSWITCH_PLUGIN Yes)
-if(DESKTOPSWITCH_PLUGIN)
-    list(APPEND STATIC_PLUGINS "desktopswitch")
-    add_definitions(-DWITH_DESKTOPSWITCH_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "Desktop Switcher")
-    add_subdirectory(plugin-desktopswitch)
-endif()
-
-#setByDefault(MOUNT_PLUGIN Yes)
-if(MOUNT_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "Mount")
-    add_subdirectory(plugin-mount)
-endif(MOUNT_PLUGIN)
 
 setByDefault(QUICKLAUNCH_PLUGIN Yes)
 if(QUICKLAUNCH_PLUGIN)
@@ -152,33 +126,6 @@ if(TRAY_PLUGIN)
     add_subdirectory(plugin-tray)
 endif()
 
-#setByDefault(VOLUME_PLUGIN Yes)
-setByDefault(VOLUME_USE_PULSEAUDIO Yes)
-setByDefault(VOLUME_USE_ALSA Yes)
-if(VOLUME_PLUGIN)
-    if (VOLUME_USE_PULSEAUDIO)
-        find_package(PulseAudio)
-        if (NOT PULSEAUDIO_FOUND)
-            message(FATAL_ERROR "PulseAudio not found, but required (VOLUME_USE_PULSEAUDIO) for Volume plugin!")
-        endif ()
-    endif(VOLUME_USE_PULSEAUDIO)
-
-    if(VOLUME_USE_ALSA)
-        find_package(ALSA)
-        if (NOT ALSA_FOUND)
-            message(FATAL_ERROR "ALSA not found, but required (VOLUME_USE_ALSA) for Volume plugin!")
-        endif ()
-    endif()
-
-    list(APPEND ENABLED_PLUGINS   "Volume")
-    message(STATUS "")
-    message(STATUS "Volume plugin will be built")
-    message(STATUS "    ALSA: ${ALSA_FOUND}")
-    message(STATUS "    PulseAudio: ${PULSEAUDIO_FOUND}")
-    message(STATUS "")
-    add_subdirectory(plugin-volume)
-endif()
-
 
 setByDefault(SPACER_PLUGIN Yes)
 if(SPACER_PLUGIN)
@@ -190,16 +137,12 @@ endif()
 
 setByDefault(CALENDAR_PLUGIN Yes)
 if(CALENDAR_PLUGIN)
-#   list(APPEND STATIC_PLUGINS "calendar")
-#    add_definitions(-DWITH_CALENDAR_PLUGIN)
     list(APPEND ENABLED_PLUGINS "calendar")
     add_subdirectory(plugin-calendar)
 endif(CALENDAR_PLUGIN)
 
 setByDefault(STARTMENU_PLUGIN Yes)
 if(STARTMENU_PLUGIN)
-#    list(APPEND STATIC_PLUGINS "startmenu")
-#    add_definitions(-DWITH_STARTMENU_PLUGIN)
     list(APPEND ENABLED_PLUGINS "startmenu")
     add_subdirectory(plugin-startmenu)
 endif(STARTMENU_PLUGIN)
@@ -212,16 +155,12 @@ endif(NIGHTMODE_PLUGIN)
 
 setByDefault(TASKVIEW_PLUGIN Yes)
 if(TASKVIEW_PLUGIN)
-#    list(APPEND STATIC_PLUGINS "taskview")
-#    add_definitions(-DWITH_TASKVIEW_PLUGIN)
     list(APPEND ENABLED_PLUGINS "taskview")
     add_subdirectory(plugin-taskview)
 endif(TASKVIEW_PLUGIN)
 
 setByDefault(SEGMENTATION_PLUGIN Yes)
 if(SEGMENTATION_PLUGIN)
-#    list(APPEND STATIC_PLUGINS "segmentation")
-#    add_definitions(-DWITH_SEGMENTATION_PLUGIN)
     list(APPEND ENABLED_PLUGINS "segmentation")
     add_subdirectory(plugin-segmentation)
 endif(SEGMENTATION_PLUGIN)
@@ -238,7 +177,7 @@ add_subdirectory(panel)
 
 file(GLOB_RECURSE QRC_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.qrc)
 
-# i18n
+# translation
 set(UKUI_TRANSLATIONS_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/ukui/)
 add_definitions(
     -DUKUI_TRANSLATIONS_DIR="${UKUI_TRANSLATIONS_DIR}"

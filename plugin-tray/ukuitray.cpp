@@ -86,7 +86,7 @@ extern "C" {
 
 #define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.panel.tray"
 #define KEYBINDINGS_CUSTOM_DIR "/org/ukui/tray/keybindings/"
-#define MAX_CUSTOM_SHORTCUTS 30
+#define MAX_CUSTOM_SHORTCUTS 100
 #define ACTION_KEY "action"
 #define RECORD_KEY "record"
 #define BINDING_KEY "binding"
@@ -325,18 +325,6 @@ void UKUITray::realign()
      * 这些应该在handleStorageUi()函数中执行
      * handleStorageUi();
     */
-    //    for(int i=0;i<mStorageIcons.size();i++)
-    //    {
-    //        if(mStorageIcons.at(i))
-    //        {
-    //            mStorageIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-    //            mStorageIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-    //        }
-    //        else
-    //        {
-    //            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-    //        }
-    //    }
     if (panel->isHorizontal())
     {
         if(mTrayIcons.size()<TRAY_APP_COUNT)
@@ -348,6 +336,8 @@ void UKUITray::realign()
                 if(mTrayIcons.at(i))
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+//                    qDebug()<<"mPlugin->panel()->iconSize()  :  "<<mPlugin->panel()->iconSize();
+//                    qDebug()<<"mPlugin->panel()->iconSize()/2  :  "<<mPlugin->panel()->iconSize()/2;
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
                 else
@@ -420,7 +410,17 @@ void UKUITray::realign()
 
     if(storageFrame)
     {
-        storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-30,0)), storageFrame->size()));
+        int storageFramePosition;
+        if(mPlugin->panel()->isHorizontal())
+        {
+            storageFramePosition=(storageFrame->size().width()-mBtn->size().width())/2;
+            storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-storageFramePosition,0)), storageFrame->size()));
+        }
+        else
+        {
+            storageFramePosition=(storageFrame->size().height()-mBtn->size().height())/2;
+            storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,-storageFramePosition)), storageFrame->size()));
+        }
     }
 
     if(mCurPosition != panel->position())
@@ -442,7 +442,6 @@ void UKUITray::createIconMap()
 
 void UKUITray::changeIcon()
 {
-    qDebug()<<"change icon now";
     QIcon icon;
     QMap<IUKUIPanel::Position, QIcon>::const_iterator it = mMapIcon.find(mCurPosition);
     if(it != mMapIcon.end())
@@ -765,7 +764,19 @@ void UKUITray::freezeTrayApp(Window winId)
      * 将handleStorageUi　放到freezeTrayApp　函数最后以避免崩溃问题
     */
     TrayIcon *storageicon = findStorageIcon(winId);
-    mStorageIcons.removeOne(storageicon);
+    if(storageicon)
+    {
+        mStorageIcons.removeOne(storageicon);
+        storageicon->deleteLater();
+        storageicon=NULL;
+    }
+    TrayIcon *trayicon = findTrayIcon(winId);
+    if(trayicon)
+    {
+        mTrayIcons.removeOne(trayicon);
+        trayicon->deleteLater();
+        trayicon=NULL;
+    }
     handleStorageUi();
 }
 
@@ -841,7 +852,6 @@ void UKUITray::addHideIcon(Window winId)
 
 void UKUITray::moveIconToTray(Window winId)
 {
-    qDebug()<<"inter moveIconToTray";
     TrayIcon *storageicon = findStorageIcon(winId);
     TrayIcon *hideicon = findHideIcon(winId);
 
@@ -1047,6 +1057,13 @@ void UKUITray::regulateIcon(Window *mid)
                 {
                     nameStr = settings->get(NAME_KEY).toString();
                 }
+                if(nameStr=="" || nameStr=="ErrorApplication")
+                {
+                    settings->reset(NAME_KEY);
+                    settings->reset(BINDING_KEY);
+                    settings->reset(ACTION_KEY);
+                    settings->reset(RECORD_KEY);
+                }
             }
 
             if(nameStr==xfitMan().getApplicationName(wid))
@@ -1096,62 +1113,67 @@ void UKUITray::regulateIcon(Window *mid)
 
     if(count >= existsPath.count())
     {
-        QString availablepath = findFreePath();
-
-        const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray idd(availablepath.toUtf8().data());
-        QGSettings *newsetting;
-        const QByteArray keyid(KEYBINDINGS_CUSTOM_SCHEMA);
-        if(QGSettings::isSchemaInstalled(keyid))
-        {
-            newsetting=new QGSettings(id,idd);
-            newsetting->set(BINDING_KEY,wid);
-            newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
-
-            QStringList trayIconNameList;
-            trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk";
-            if(trayIconNameList.contains(xfitMan().getApplicationName(wid)))
-            {
-                newsetting->set(ACTION_KEY,"tray");
-                newsetting->set(RECORD_KEY,"tray");
-                addTrayIcon(wid);
-            }
-            else
-            {
-                newsetting->set(ACTION_KEY,"storage");
-                newsetting->set(RECORD_KEY,"storage");
-                addStorageIcon(wid);
-            }
-        }
-        delete newsetting;
-
-        QGSettings* settings;
-        const QByteArray keyId(KEYBINDINGS_CUSTOM_SCHEMA);
-        if(QGSettings::isSchemaInstalled(keyId))
-        {
-            settings= new QGSettings(id, idd,this);
-            connect(settings, &QGSettings::changed, this, [=] (const QString &key)
-            {
-                if(key=="action")
-                {
-                    if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0)
-                    {
-                        moveIconToTray(wid);
-                    }
-                    else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
-                        moveIconToStorage(wid);
-                    }
-                    else if(QString::compare(settings->get(ACTION_KEY).toString(),"hide")==0){
-                        moveIconToHide(wid);
-                    }
-                    else{
-                        qDebug()<<"get error action";
-                        qWarning()<<"get error action";
-                    }
-                }
-            });
-        }
+        newAppDetect(wid);
         count++;
+    }
+}
+
+void UKUITray::newAppDetect(int wid)
+{
+    QString availablepath = findFreePath();
+
+    const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
+    const QByteArray idd(availablepath.toUtf8().data());
+    QGSettings *newsetting;
+    const QByteArray keyid(KEYBINDINGS_CUSTOM_SCHEMA);
+    if(QGSettings::isSchemaInstalled(keyid))
+    {
+        newsetting=new QGSettings(id,idd);
+        newsetting->set(BINDING_KEY,wid);
+        newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
+
+        QStringList trayIconNameList;
+        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel";
+        if(trayIconNameList.contains(xfitMan().getApplicationName(wid)))
+        {
+            newsetting->set(ACTION_KEY,"tray");
+            newsetting->set(RECORD_KEY,"tray");
+            addTrayIcon(wid);
+        }
+        else
+        {
+            newsetting->set(ACTION_KEY,"storage");
+            newsetting->set(RECORD_KEY,"storage");
+            addStorageIcon(wid);
+        }
+    }
+    delete newsetting;
+
+    QGSettings* settings;
+    const QByteArray keyId(KEYBINDINGS_CUSTOM_SCHEMA);
+    if(QGSettings::isSchemaInstalled(keyId))
+    {
+        settings= new QGSettings(id, idd,this);
+        connect(settings, &QGSettings::changed, this, [=] (const QString &key)
+        {
+            if(key=="action")
+            {
+                if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0)
+                {
+                    moveIconToTray(wid);
+                }
+                else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
+                    moveIconToStorage(wid);
+                }
+                else if(QString::compare(settings->get(ACTION_KEY).toString(),"hide")==0){
+                    moveIconToHide(wid);
+                }
+                else{
+                    qDebug()<<"get error action";
+                    qWarning()<<"get error action";
+                }
+            }
+        });
     }
 }
 
