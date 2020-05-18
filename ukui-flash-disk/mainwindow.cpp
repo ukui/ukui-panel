@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
+    installEventFilter(this);
     ui->setupUi(this);
     //框架的样式设置
     int hign = 0;
@@ -202,6 +202,8 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
     {
         p_this->m_systray->show();
     }
+
+    p_this->triggerType = 0;
 }
 
 void MainWindow::drive_disconnected_callback (GVolumeMonitor *, GDrive *drive, MainWindow *p_this)
@@ -279,6 +281,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 //        delete this->interfaceHideTime;
 //    }
     //int hign = 200;
+    triggerType = 1;
     if(ui->centralWidget != NULL)
     {
         disconnect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_Maininterface_hide()));
@@ -1222,3 +1225,26 @@ void MainWindow::moveBottomNoBase()
                    screen->availableSize().height() - (this->height())*(DistanceToPanel - 1));
     }
 }
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if(triggerType == 0)
+    {
+        if(event->type() == QEvent::Enter)
+        {
+            disconnect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_Maininterface_hide()));
+            this->show();
+        }
+
+        if(event->type() == QEvent::Leave)
+        {
+            connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_Maininterface_hide()));
+            interfaceHideTime->start(2000);
+        }
+    }
+
+    if(triggerType == 1){}
+    return false;
+}
+
+
