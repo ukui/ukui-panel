@@ -26,6 +26,7 @@
 #include <gio/gio.h>
 #include <glib.h>
 #include <QApplication>
+#include <QEvent>
 
 #include "qclickwidget.h"
 #include "UnionVariable.h"
@@ -101,6 +102,7 @@ private:
     QTimer *interfaceHideTime;
     int num = 0;
     QScreen *screen;
+    int triggerType = 0; //detective the type of MainWinow(insert USB disk or click systemtray icon)
 public:
     QSystemTrayIcon *m_systray;
     ejectInterface *m_eject;
@@ -117,6 +119,9 @@ Q_SIGNALS:
 
 protected:
     void resizeEvent(QResizeEvent *event);
+    //void enterEvent(QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event);
+    //void leaveEvent(QEvent *event);
 };
 
 #endif

@@ -22,7 +22,7 @@
 #include <QPainter>
 #include <QApplication>
 
-#if QT_CONFIG(toolbutton)
+//#if QT_CONFIG(toolbutton)
 static void drawArrow(const QStyle *style, const QStyleOptionToolButton *toolbutton,
                       const QRect &rect, QPainter *painter, const QWidget *widget = 0)
 {
@@ -47,7 +47,7 @@ static void drawArrow(const QStyle *style, const QStyleOptionToolButton *toolbut
     arrowOpt.rect = rect;
     style->drawPrimitive(pe, &arrowOpt, painter, widget);
 }
-#endif // QT_CONFIG(toolbutton)
+//#endif // QT_CONFIG(toolbutton)
 
 CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
 {

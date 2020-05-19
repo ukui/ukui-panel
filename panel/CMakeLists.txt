@@ -4,6 +4,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 add_subdirectory(common)
+#add_subdirectory(xdg)
 
 set(PRIV_HEADERS
     panelpluginsmodel.h

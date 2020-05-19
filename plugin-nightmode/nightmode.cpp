@@ -53,8 +53,15 @@ NightMode::~NightMode(){
 
 void NightMode::realign()
 {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    mButton->setFixedSize(0,0);
+    mButton->setIconSize(QSize(0,0));
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     mButton->setFixedSize(32,32);
     mButton->setIconSize(QSize(24,24));
+#endif
 }
 
 NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
@@ -121,6 +128,11 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
             mgtkstyleGsettings = new QGSettings(gtkstyleid);
         }
     }
+    else
+    {
+        QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
+        this->setIcon(icon);
+    }
 }
 NightModeButton::~NightModeButton(){
     delete gsettings;
@@ -133,28 +145,37 @@ void NightModeButton::mousePressEvent(QMouseEvent *event)
 {
     if(event->button()==Qt::LeftButton)
     {
-        if(mode)
+        if(QGSettings::isSchemaInstalled(NIGHT_MODE_CONTROL))
         {
-            if(gsettings->keys().contains(NIGHT_MODE_KEY))
+            if(mode)
             {
-                gsettings->set("nightmode", true);
-                setNightMode(true);
-                setUkuiStyle("ukui-black");
-                mode=false;
-            }
+                qDebug()<<"NightModeButton::mousePressEvent   mode = true ";
+                if(gsettings->keys().contains(NIGHT_MODE_KEY))
+                {
+                    qDebug()<<"NightModeButton::mousePressEvent   mode = true contains(NIGHT_MODE_KEY)";
+                    gsettings->set("nightmode", true);
+                    setNightMode(true);
+                    setUkuiStyle("ukui-black");
+                    mode=false;
+                }
 
+            }
+            else
+            {
+                qDebug()<<"NightModeButton::mousePressEvent   mode = false ";
+                if(gsettings->keys().contains(NIGHT_MODE_KEY))
+                {
+                    qDebug()<<"NightModeButton::mousePressEvent   mode = false   contains(NIGHT_MODE_KEY) ";
+                    gsettings->set("nightmode", false);
+                    setNightMode(false);
+                    setUkuiStyle("ukui-white");
+                    mode=true;
+                }
+
+            }
         }
         else
-        {
-            if(gsettings->keys().contains(NIGHT_MODE_KEY))
-            {
-                gsettings->set("nightmode", false);
-                setNightMode(false);
-                setUkuiStyle("ukui-white");
-                mode=true;
-            }
-
-        }
+            QMessageBox::information(this,"Error",tr("please install new ukui-control-center first"));
     }
 }
 

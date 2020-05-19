@@ -17,7 +17,6 @@ Build-Depends: debhelper-compat (= 12),
                libqt5x11extras5-dev,
                libsensors4-dev [!hurd-any],
                libstatgrab-dev [linux-any],
-               libsysstat-qt5-0-dev (>= 0.4.2),
                libx11-dev,
                libxcb-damage0-dev,
                libxcb-util0-dev,
@@ -28,10 +27,14 @@ Build-Depends: debhelper-compat (= 12),
                libxkbcommon-x11-dev,
                libxrender-dev,
                libqt5webkit5-dev,
-               qttools5-dev,
                libqt5xdg-dev,
+               qttools5-dev,
                libgsettings-qt-dev,
-               libdconf-dev
+               libdconf-dev,
+               qtbase5-dev,
+               qtbase5-dev-tools,
+               qttools5-dev-tools,
+               qtbase5-private-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/ukui/ukui-panel
@@ -43,6 +46,7 @@ Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends}
 Provides: ukui-indicators
+Suggests: ukui-window-switch
 Description: ukui desktop panel
  The ukui desktop panel is used on ukui desktop and has some plugins like
  starmenu, quicklaunch and other useful tools.

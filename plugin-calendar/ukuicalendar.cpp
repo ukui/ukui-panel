@@ -509,6 +509,14 @@ void IndicatorCalendar::initializeCalendar()
     QString lunarOrsolar;
     QString firstDay;
     int iScreenHeight = QApplication::screens().at(0)->size().height();
+    if(iScreenHeight>WEBVIEW_MAX_HEIGHT)
+    {
+        mViewHeight=WEBVIEW_MAX_HEIGHT;
+    }
+    else
+    {
+        mViewHeight=WEBVIEW_MIN_HEIGHT;
+    }
     if(QGSettings::isSchemaInstalled(id))
     {
         if(!gsettings)
@@ -637,7 +645,13 @@ void IndicatorCalendar::updatePopupContent()
         QStringList allTimeZones;
         bool hasTimeZone = formatHasTimeZone(mFormat);
 
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        QString timeZoneName;
+        for (QStringList::iterator it = mTimeZones.begin(); it != mTimeZones.end(); ++it)
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
         for (QString timeZoneName : qAsConst(mTimeZones))
+#endif
         {
             if (timeZoneName == QLatin1String("local"))
                 timeZoneName = QString::fromLatin1(QTimeZone::systemTimeZoneId());
