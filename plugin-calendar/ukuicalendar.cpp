@@ -194,6 +194,7 @@ void IndicatorCalendar::timeout()
     if (QDateTime{}.time().msec() > 500)
         restartTimer();
     updateTimeText();
+    setToolTip();
 }
 
 void IndicatorCalendar::updateTimeText()
@@ -508,14 +509,14 @@ void IndicatorCalendar::initializeCalendar()
     CalendarShowMode showCalendar = defaultMode;
     QString lunarOrsolar;
     QString firstDay;
-    int iScreenHeight = QApplication::screens().at(0)->size().height();
-    if(iScreenHeight>WEBVIEW_MAX_HEIGHT)
+    int iScreenHeight = QApplication::screens().at(0)->size().height() - panel()->panelSize();
+    if(iScreenHeight > WEBVIEW_MAX_HEIGHT)
     {
-        mViewHeight=WEBVIEW_MAX_HEIGHT;
+        mViewHeight = WEBVIEW_MAX_HEIGHT;
     }
     else
     {
-        mViewHeight=WEBVIEW_MIN_HEIGHT;
+        mViewHeight = WEBVIEW_MIN_HEIGHT;
     }
     if(QGSettings::isSchemaInstalled(id))
     {
