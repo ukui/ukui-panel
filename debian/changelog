@@ -1,3 +1,9 @@
+ukui-panel (2.0.8-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Sat, 16 May 2020 15:22:10 +0800
+
 ukui-panel (2.0.7-1) unstable; urgency=medium
 
   * New upstream bugfix release:

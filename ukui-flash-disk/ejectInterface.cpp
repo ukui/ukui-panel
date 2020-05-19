@@ -143,7 +143,7 @@ void ejectInterface::moveEjectInterfaceRight()
 {
     if(EjectScreen->availableGeometry().x() == EjectScreen->availableGeometry().y() && EjectScreen->availableSize().height() < EjectScreen->size().height())
     {
-        qDebug()<<"the positon of panel is down";
+        qDebug()<<"the position of panel is down";
         this->move(EjectScreen->availableGeometry().x() + EjectScreen->size().width() -
                    this->width() - DistanceToPanel,EjectScreen->availableGeometry().y() +
                    EjectScreen->availableSize().height() - this->height() - DistanceToPanel);
