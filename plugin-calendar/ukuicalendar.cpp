@@ -58,9 +58,15 @@
 #define HOUR_SYSTEM_24_Vertical "hh:mm ddd  MM/dd"
 #define HOUR_SYSTEM_12_Horizontal   "Ahh:mm ddd  yyyy/MM/dd"
 #define HOUR_SYSTEM_12_Vertical   "Ahh:mm ddd  MM/dd"
-#define HOUR_SYSTEM_KEY "hoursystem"
 #define CURRENT_DATE "yyyy/MM/dd dddd"
 
+#define HOUR_SYSTEM_24_Horizontal_EN "hh:mm ddd  yyyy-MM-dd"
+#define HOUR_SYSTEM_24_Vertical_EN "hh:mm ddd  MM-dd"
+#define HOUR_SYSTEM_12_Horizontal_EN   "Ahh:mm ddd  yyyy-MM-dd"
+#define HOUR_SYSTEM_12_Vertical_EN   "Ahh:mm ddd  MM-dd"
+#define CURRENT_DATE_EN "yyyy-MM-dd dddd"
+
+#define HOUR_SYSTEM_KEY "hoursystem"
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
     IUKUIPanelPlugin(startupInfo),
@@ -96,6 +102,13 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     settingsChanged();
     initializeCalendar();
     mTimer->setTimerType(Qt::PreciseTimer);
+
+    hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
+    hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
+    hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
+    hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
+    current_date=CURRENT_DATE;
+
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
     connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
@@ -125,6 +138,32 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
             qDebug()<<"key == firstday";
             mbHasCreatedWebView = false;
             initializeCalendar();
+        }
+        else if(key == "date")
+        {
+            qDebug()<<"key == date";
+            if(gsettings->keys().contains("date"))
+            {
+                if(QString::compare(gsettings->get("date").toString(),"en"))
+                {
+                    qDebug()<<" date   en ";
+                    hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_EN;
+                    hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_EN;
+                    hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_EN;
+                    hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_EN;
+                    current_date=CURRENT_DATE_EN;
+                }
+                else
+                {
+                    qDebug()<<" date   cn ";
+                    hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
+                    hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
+                    hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
+                    hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
+                    current_date=CURRENT_DATE;
+                }
+            }
+            updateTimeText();
         }
     });
     }
@@ -259,19 +298,19 @@ void IndicatorCalendar::updateTimeText()
         if(!QString::compare("24",hourSystemMode))
         {
             if(panel()->isHorizontal())
-                str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
+                str=tzNow.toString(hourSystem_24_horzontal);
             else
-                str=tzNow.toString(HOUR_SYSTEM_24_Vertical);
+                str=tzNow.toString(hourSystem_24_vartical);
         }
         else
         {
             if(panel()->isHorizontal())
             {
-                str=tzNow.toString(HOUR_SYSTEM_12_Horizontal);
+                str=tzNow.toString(hourSystem_12_horzontal);
             }
             else
             {
-                str = tzNow.toString(HOUR_SYSTEM_12_Vertical);
+                str = tzNow.toString(hourSystem_12_vartical);
                 str.replace("AM","AM ");
                 str.replace("PM","PM ");
             }
@@ -280,9 +319,9 @@ void IndicatorCalendar::updateTimeText()
     else
     {
         if(panel()->isHorizontal())
-            str=tzNow.toString(HOUR_SYSTEM_24_Horizontal);
+            str=tzNow.toString(hourSystem_24_horzontal);
         else
-            str=tzNow.toString(HOUR_SYSTEM_24_Vertical);
+            str=tzNow.toString(hourSystem_24_vartical);
     }
     mContent->setText(str);
     if (old_size != mContent->sizeHint())
@@ -509,14 +548,6 @@ void IndicatorCalendar::initializeCalendar()
     QString lunarOrsolar;
     QString firstDay;
     int iScreenHeight = QApplication::screens().at(0)->size().height();
-    if(iScreenHeight>WEBVIEW_MAX_HEIGHT)
-    {
-        mViewHeight=WEBVIEW_MAX_HEIGHT;
-    }
-    else
-    {
-        mViewHeight=WEBVIEW_MIN_HEIGHT;
-    }
     if(QGSettings::isSchemaInstalled(id))
     {
         if(!gsettings)
@@ -645,13 +676,7 @@ void IndicatorCalendar::updatePopupContent()
         QStringList allTimeZones;
         bool hasTimeZone = formatHasTimeZone(mFormat);
 
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-        QString timeZoneName;
-        for (QStringList::iterator it = mTimeZones.begin(); it != mTimeZones.end(); ++it)
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
         for (QString timeZoneName : qAsConst(mTimeZones))
-#endif
         {
             if (timeZoneName == QLatin1String("local"))
                 timeZoneName = QString::fromLatin1(QTimeZone::systemTimeZoneId());
