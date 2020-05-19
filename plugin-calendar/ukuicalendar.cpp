@@ -60,11 +60,11 @@
 #define HOUR_SYSTEM_12_Vertical   "Ahh:mm ddd  MM/dd"
 #define CURRENT_DATE "yyyy/MM/dd dddd"
 
-#define HOUR_SYSTEM_24_Horizontal_EN "hh:mm ddd  yyyy-MM-dd"
-#define HOUR_SYSTEM_24_Vertical_EN "hh:mm ddd  MM-dd"
-#define HOUR_SYSTEM_12_Horizontal_EN   "Ahh:mm ddd  yyyy-MM-dd"
-#define HOUR_SYSTEM_12_Vertical_EN   "Ahh:mm ddd  MM-dd"
-#define CURRENT_DATE_EN "yyyy-MM-dd dddd"
+#define HOUR_SYSTEM_24_Horizontal_CN "hh:mm ddd  yyyy-MM-dd"
+#define HOUR_SYSTEM_24_Vertical_CN "hh:mm ddd  MM-dd"
+#define HOUR_SYSTEM_12_Horizontal_CN   "Ahh:mm ddd  yyyy-MM-dd"
+#define HOUR_SYSTEM_12_Vertical_CN   "Ahh:mm ddd  MM-dd"
+#define CURRENT_DATE_CN "yyyy-MM-dd dddd"
 
 #define HOUR_SYSTEM_KEY "hoursystem"
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
@@ -144,14 +144,14 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
             qDebug()<<"key == date";
             if(gsettings->keys().contains("date"))
             {
-                if(QString::compare(gsettings->get("date").toString(),"en"))
+                if(QString::compare(gsettings->get("date").toString(),"cn"))
                 {
                     qDebug()<<" date   en ";
-                    hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_EN;
-                    hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_EN;
-                    hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_EN;
-                    hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_EN;
-                    current_date=CURRENT_DATE_EN;
+                    hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
+                    hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
+                    hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
+                    hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
+                    current_date=CURRENT_DATE_CN;
                 }
                 else
                 {
