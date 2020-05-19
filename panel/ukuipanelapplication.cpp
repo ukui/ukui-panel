@@ -108,7 +108,7 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
 
     if (configFile.isEmpty())
     {
-        qDebug()<<"configFile.is not Empty"<<endl;
+        qDebug()<<"configFile.is Empty"<<endl;
         QString defaultConf = QString(PLUGIN_DESKTOPS_DIR)+"/../";
         QString loaclCong = QString(qgetenv("HOME"))+"/.config/ukui/";
         QFile file(loaclCong+"panel.conf");
@@ -147,8 +147,14 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
         panels << "panel1";
     }
 
-    for(const QString& i : qAsConst(panels))
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int it=0;it<panels.size();it++){
+        const QString &i=panels[it];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(const QString& i : qAsConst(panels)){
+#endif
+
         addPanel(i);
     }
 //    updateStylesheet("default");
@@ -227,8 +233,13 @@ void UKUIPanelApplication::reloadPanelsAsNeeded()
     for(const QString& name : names)
     {
         bool found = false;
-        for(UKUIPanel* panel : qAsConst(mPanels))
-        {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        for(int i=0;i<mPanels.size();i++){
+            UKUIPanel* panel=mPanels[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+        for(UKUIPanel* panel : qAsConst(mPanels)){
+#endif
             if(panel->name() == name)
             {
                 found = true;
@@ -274,8 +285,13 @@ void UKUIPanelApplication::screenDestroyed(QObject* screenObj)
     QScreen* screen = static_cast<QScreen*>(screenObj);
     bool reloadNeeded = false;
     qApp->setQuitOnLastWindowClosed(false);
-    for(UKUIPanel* panel : qAsConst(mPanels))
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mPanels.size();i++){
+        UKUIPanel *panel=mPanels[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(UKUIPanel* panel : qAsConst(mPanels)){
+#endif
         QWindow* panelWindow = panel->windowHandle();
         if(panelWindow && panelWindow->screen() == screen)
         {
@@ -328,8 +344,13 @@ void UKUIPanelApplication::setIconTheme(const QString &iconTheme)
     if (newTheme != QIcon::themeName())
     {
         QIcon::setThemeName(newTheme);
-        for(UKUIPanel* panel : qAsConst(mPanels))
-        {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        for(int i=0;i<mPanels.size();i++){
+            UKUIPanel *panel=mPanels[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+        for(UKUIPanel* panel : qAsConst(mPanels)){
+#endif
             panel->update();
             panel->updateConfigDialog();
         }

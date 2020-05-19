@@ -640,8 +640,13 @@ void GridLayout::setGeometry(const QRect &geometry)
     if (d->mDirection == LeftToRight)
     {
         int height = itemHeight + (0 < remain_height-- ? 1 : 0);
-        for (QLayoutItem *item : qAsConst(d->mItems))
-        {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        for(int i=0;i<d->mItems.size();i++){
+		QLayoutItem *item=d->mItems[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+        for (QLayoutItem *item : qAsConst(d->mItems)){
+#endif
             if (!item->widget() || item->widget()->isHidden())
                 continue;
             int width = itemWidth + (0 < remain_width-- ? 1 : 0);
@@ -663,8 +668,15 @@ void GridLayout::setGeometry(const QRect &geometry)
     else
     {
         int width = itemWidth + (0 < remain_width-- ? 1 : 0);
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        for(int i=0;i<d->mItems.size();i++)
+        {
+            QLayoutItem *item=d->mItems[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
         for (QLayoutItem *item : qAsConst(d->mItems))
         {
+#endif
             if (!item->widget() || item->widget()->isHidden())
                 continue;
             int height = itemHeight + (0 < remain_height-- ? 1 : 0);

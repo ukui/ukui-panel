@@ -143,8 +143,14 @@ Plugin::Plugin(const UKUi::PluginInfo &desktopFile, UKUi::Settings *settings, co
     else {
         // this plugin is a dynamically loadable module
         QString baseName = QString("lib%1.so").arg(desktopFile.id());
-        for(const QString &dirName : qAsConst(dirs))
-        {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        for(int i=0;i<dirs.size();i++){
+            const QString &dirName=dirs.at(i);
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+        for(const QString &dirName : qAsConst(dirs)){
+#endif
+
             QFileInfo fi(QDir(dirName), baseName);
             if (fi.exists())
             {

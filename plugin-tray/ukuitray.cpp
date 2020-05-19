@@ -336,8 +336,6 @@ void UKUITray::realign()
                 if(mTrayIcons.at(i))
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-//                    qDebug()<<"mPlugin->panel()->iconSize()  :  "<<mPlugin->panel()->iconSize();
-//                    qDebug()<<"mPlugin->panel()->iconSize()/2  :  "<<mPlugin->panel()->iconSize()/2;
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
                 else
@@ -499,8 +497,13 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
  ************************************************/
 TrayIcon* UKUITray::findIcon(Window id)
 {
-    for(TrayIcon* icon : qAsConst(mIcons) )
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mIcons.size();i++){
+        TrayIcon *icon=mIcons[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(TrayIcon* icon : qAsConst(mIcons) ){
+#endif
         if (icon->iconId() == id || icon->windowId() == id)
             return icon;
     }
@@ -509,8 +512,13 @@ TrayIcon* UKUITray::findIcon(Window id)
 
 TrayIcon* UKUITray::findTrayIcon(Window id)
 {
-    for(TrayIcon* trayicon : qAsConst(mTrayIcons) )
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mTrayIcons.size();i++){
+	TrayIcon *trayicon = mTrayIcons[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(TrayIcon* trayicon : qAsConst(mTrayIcons) ){
+#endif
         if (trayicon->iconId() == id || trayicon->windowId() == id)
             return trayicon;
     }
@@ -519,8 +527,13 @@ TrayIcon* UKUITray::findTrayIcon(Window id)
 
 TrayIcon* UKUITray::findStorageIcon(Window id)
 {
-    for(TrayIcon* storageicon :qAsConst(mStorageIcons))
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mStorageIcons.size();i++){
+	TrayIcon *storageicon=mStorageIcons[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(TrayIcon* storageicon :qAsConst(mStorageIcons)){
+#endif
         if (storageicon->iconId() == id || storageicon->windowId() == id)
             return storageicon;
     }
@@ -529,8 +542,13 @@ TrayIcon* UKUITray::findStorageIcon(Window id)
 
 TrayIcon* UKUITray::findHideIcon(Window id)
 {
-    for(TrayIcon* hideicon :qAsConst(mHideIcons))
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mHideIcons.size();i++){
+	TrayIcon* hideicon=mHideIcons[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(TrayIcon* hideicon :qAsConst(mHideIcons)){
+#endif
         if (hideicon->iconId() == id || hideicon->windowId() == id)
             return hideicon;
     }
