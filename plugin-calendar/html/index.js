@@ -833,10 +833,12 @@ function create_page(year, month) {
                                      '<span class="lunar_part">' +
                                      lunar_day +
                                      '</span>';
-            if (worktime && current_cell.className !== 'day_other_month') {
+            // if (worktime && current_cell.className !== 'day_other_month') {
+            //     current_cell.appendChild(worktime);
+            // }
+            if (worktime) {
                 current_cell.appendChild(worktime);
             }
-
             // if (month_stuff['monthData'][index]['worktime'] === 2) {
             //     worktime = document.createElement("SPAN");
             //     worktime.className = 'worktime2';
@@ -1005,7 +1007,7 @@ function update_right_pane(year, month, day) {
     updateTime();
     if(NeedUpdateYijiArea)
     {
-        general_datetime_list.children[0].innerHTML = ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
+        general_datetime_list.children[0].innerHTML = lunar_month_name + lunar_day_name +'&nbsp;&nbsp;&nbsp;&nbsp'+ ganzhi_year + '年' + '【' + zodiac + '年' + '】' + ganzhi_month + '月 ' + ganzhi_day + '日';
         update_yiji_area();
     }
     NeedUpdateYijiArea = true;
