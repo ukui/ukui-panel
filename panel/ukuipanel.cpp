@@ -904,6 +904,7 @@ void UKUIPanel::setPanelSize(int value, bool save)
 /************************************************
 
  ************************************************/
+
 void UKUIPanel::setIconSize(int value, bool save)
 {
     if (mIconSize != value)
@@ -1255,9 +1256,9 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     pmenu_panelsize->addAction(pmenuaction_l);
     menu->addMenu(pmenu_panelsize);
 
-    connect(pmenuaction_s,SIGNAL(triggered()),this,SLOT(changeSizeToSmall()));
-    connect(pmenuaction_m,SIGNAL(triggered()),this,SLOT(changeSizeToMedium()));
-    connect(pmenuaction_l,SIGNAL(triggered()),this,SLOT(changeSizeToLarge()));
+    connect(pmenuaction_s,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_SMALL,true);setIconSize(ICON_SIZE_SMALL,true);});
+    connect(pmenuaction_m,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_MEDIUM,true);setIconSize(ICON_SIZE_MEDIUM,true);});
+    connect(pmenuaction_l,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_LARGE,true);setIconSize(ICON_SIZE_LARGE,true);});
     menu->addSeparator();
 
     QAction *pmenuaction_top;
@@ -1645,6 +1646,10 @@ void UKUIPanel::setPanelPosition(Position position)
     }
 }
 
+void UKUIPanel::setPanelsize(int panelsize)
+{
+
+}
 void UKUIPanel::changeSizeToSmall()
 {
     setPanelSize(PANEL_SIZE_SMALL,true);

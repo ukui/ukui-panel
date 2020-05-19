@@ -703,6 +703,7 @@ private:
 
 private slots:
     void setPanelPosition(Position position);
+    void setPanelsize(int panelsize);
     void changeSizeToSmall();
     void changeSizeToMedium();
     void changeSizeToLarge();
