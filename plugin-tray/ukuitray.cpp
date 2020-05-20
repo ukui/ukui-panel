@@ -94,6 +94,8 @@ extern "C" {
 
 #define TRAY_APP_COUNT 16
 
+#define PANEL_SETTINGS "org.ukui.panel.settings"
+#define PANEL_LINES    "panellines"
 /************************************************
 
  ************************************************/
@@ -127,6 +129,18 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mMapIcon.clear();
     m_pwidget = NULL;
     status=ST_HIDE;
+
+    const QByteArray id(PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+    {
+        settings=new QGSettings(id);
+        qDebug()<<"panel settinngs *********************8"<<settings->get(PANEL_LINES).toInt();
+    }
+    connect(settings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==PANEL_LINES)
+            realign();
+    });
+
     setLayout(new UKUi::GridLayout(this));
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
@@ -327,7 +341,7 @@ void UKUITray::realign()
     */
     if (panel->isHorizontal())
     {
-        if(mTrayIcons.size()<TRAY_APP_COUNT)
+        if(settings->get(PANEL_LINES).toInt()==1)
         {
             dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
             dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
@@ -361,13 +375,13 @@ void UKUITray::realign()
                     qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
                 }
             }
+            mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize()/2);
         }
-
 
     }
     else
     {
-        if(mTrayIcons.size()<TRAY_APP_COUNT/2)
+        if(settings->get(PANEL_LINES).toInt()==1)
         {
             dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
             dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
@@ -376,7 +390,7 @@ void UKUITray::realign()
             {
                 if(mTrayIcons.at(i))
                 {
-                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),(mPlugin->panel()->iconSize()));
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
                 else
@@ -384,6 +398,7 @@ void UKUITray::realign()
                     qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
                 }
             }
+            mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
         }
         else
         {
@@ -402,7 +417,7 @@ void UKUITray::realign()
                 }
             }
         }
-        mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+        mBtn->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize());
 
     }
 
