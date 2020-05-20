@@ -76,8 +76,8 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
 
     mqsettings->setValue("dawn-time", "17:54");
     mqsettings->setValue("dusk-time", "17:55");
-    mqsettings->setValue("temp-day", "3500");
-    mqsettings->setValue("temp-night", "3500");
+//    mqsettings->setValue("temp-day", "3500");
+//    mqsettings->setValue("temp-night", "3500");
 
     mqsettings->endGroup();
     mqsettings->sync();
@@ -184,10 +184,12 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
     nightModeMenu=new QMenu();
     nightModeMenu->setAttribute(Qt::WA_DeleteOnClose);
 
-    nightModeMenu->addAction(QIcon::fromTheme("document-page-setup"),
-                             tr("Turn On NightMode"),
-                             this, SLOT(turnNightMode())
-                             );
+    QAction * opennightmode = nightModeMenu->addAction(tr("Turn On NightMode"));
+
+    opennightmode->setCheckable(true);
+    opennightmode->setChecked(gsettings->get("nightmode").toBool());
+    connect(opennightmode, &QAction::triggered, [this] { turnNightMode(); });
+
     nightModeMenu->addAction(QIcon::fromTheme("document-page-setup"),
                              tr("Set Up NightMode"),
                              this, SLOT(setUpNightMode())
@@ -198,9 +200,37 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
 
 void NightModeButton::turnNightMode()
 {
-    setNightMode(true);
-    setUkuiStyle("ukui-black");
-    mode=true;
+    if(QGSettings::isSchemaInstalled(NIGHT_MODE_CONTROL))
+    {
+        if(mode)
+        {
+            qDebug()<<"NightModeButton::mousePressEvent   mode = true ";
+            if(gsettings->keys().contains(NIGHT_MODE_KEY))
+            {
+                qDebug()<<"NightModeButton::mousePressEvent   mode = true contains(NIGHT_MODE_KEY)";
+                gsettings->set("nightmode", true);
+                setNightMode(true);
+                setUkuiStyle("ukui-black");
+                mode=false;
+            }
+
+        }
+        else
+        {
+            qDebug()<<"NightModeButton::mousePressEvent   mode = false ";
+            if(gsettings->keys().contains(NIGHT_MODE_KEY))
+            {
+                qDebug()<<"NightModeButton::mousePressEvent   mode = false   contains(NIGHT_MODE_KEY) ";
+                gsettings->set("nightmode", false);
+                setNightMode(false);
+                setUkuiStyle("ukui-white");
+                mode=true;
+            }
+
+        }
+    }
+    else
+        QMessageBox::information(this,"Error",tr("please install new ukui-control-center first"));
 }
 
 void NightModeButton::setUpNightMode()
@@ -221,6 +251,8 @@ void NightModeButton::setNightMode(const bool nightMode){
 
     if(nightMode)
     {
+        mqsettings->setValue("temp-day", mqsettings->value("temp-day", "").toString());
+        mqsettings->setValue("temp-night", mqsettings->value("temp-night", "").toString());
         cmd = "restart";
         serverCmd = "enable";
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");

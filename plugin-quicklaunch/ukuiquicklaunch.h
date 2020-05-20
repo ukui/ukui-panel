@@ -94,6 +94,7 @@ private:
     void dropEvent(QDropEvent *e);
     void paintEvent(QPaintEvent *);
     QVector<QuickLaunchButton*> mVBtn;
+    QGSettings *settings;
 
 
 

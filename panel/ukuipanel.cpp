@@ -175,7 +175,9 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     // To workaround this regression bug, we need to add this window flag here.
     // However, since the panel gets no keyboard focus, this may decrease accessibility since
     // it's not possible to use the panel with keyboards. We need to find a better solution later.
-    flags |= Qt::WindowDoesNotAcceptFocus;
+
+    //部分组建在点击任务栏空白位置的时候，无法收回窗口，想要正常收回窗口，需要取消下面的窗口属性或者其他应用监听点击taskbar的点击信号
+//    flags |= Qt::WindowDoesNotAcceptFocus;
 
     setWindowFlags(flags);
     //Adds _NET_WM_WINDOW_TYPE_DOCK to the window's _NET_WM_WINDOW_TYPE X11 window property. See https://standards.freedesktop.org/wm-spec/ for more details.
@@ -904,6 +906,7 @@ void UKUIPanel::setPanelSize(int value, bool save)
 /************************************************
 
  ************************************************/
+
 void UKUIPanel::setIconSize(int value, bool save)
 {
     if (mIconSize != value)
@@ -1255,9 +1258,9 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     pmenu_panelsize->addAction(pmenuaction_l);
     menu->addMenu(pmenu_panelsize);
 
-    connect(pmenuaction_s,SIGNAL(triggered()),this,SLOT(changeSizeToSmall()));
-    connect(pmenuaction_m,SIGNAL(triggered()),this,SLOT(changeSizeToMedium()));
-    connect(pmenuaction_l,SIGNAL(triggered()),this,SLOT(changeSizeToLarge()));
+    connect(pmenuaction_s,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_SMALL,true);setIconSize(ICON_SIZE_SMALL,true);});
+    connect(pmenuaction_m,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_MEDIUM,true);setIconSize(ICON_SIZE_MEDIUM,true);});
+    connect(pmenuaction_l,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_LARGE,true);setIconSize(ICON_SIZE_LARGE,true);});
     menu->addSeparator();
 
     QAction *pmenuaction_top;
@@ -1645,6 +1648,10 @@ void UKUIPanel::setPanelPosition(Position position)
     }
 }
 
+void UKUIPanel::setPanelsize(int panelsize)
+{
+
+}
 void UKUIPanel::changeSizeToSmall()
 {
     setPanelSize(PANEL_SIZE_SMALL,true);

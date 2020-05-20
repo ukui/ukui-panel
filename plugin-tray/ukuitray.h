@@ -156,6 +156,7 @@ private:
     IUKUIPanel::Position mCurPosition;
     QMap<IUKUIPanel::Position, QIcon> mMapIcon;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
+    QGSettings *settings;
 };
 
 class UKUiStorageWidget:public QWidget
