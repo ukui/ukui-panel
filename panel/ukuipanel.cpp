@@ -175,7 +175,9 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     // To workaround this regression bug, we need to add this window flag here.
     // However, since the panel gets no keyboard focus, this may decrease accessibility since
     // it's not possible to use the panel with keyboards. We need to find a better solution later.
-    flags |= Qt::WindowDoesNotAcceptFocus;
+
+    //部分组建在点击任务栏空白位置的时候，无法收回窗口，想要正常收回窗口，需要取消下面的窗口属性或者其他应用监听点击taskbar的点击信号
+//    flags |= Qt::WindowDoesNotAcceptFocus;
 
     setWindowFlags(flags);
     //Adds _NET_WM_WINDOW_TYPE_DOCK to the window's _NET_WM_WINDOW_TYPE X11 window property. See https://standards.freedesktop.org/wm-spec/ for more details.
