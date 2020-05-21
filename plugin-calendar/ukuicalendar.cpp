@@ -627,7 +627,7 @@ void IndicatorCalendar::initializeCalendar()
         if(!mbHasCreatedWebView)
         {
             qDebug()<<"showCalendar:"<<showCalendar;
-            mWebViewDiag->creatwebview(showCalendar);
+            mWebViewDiag->creatwebview(showCalendar,panel()->panelSize());
             mbHasCreatedWebView = true;
         }
     }

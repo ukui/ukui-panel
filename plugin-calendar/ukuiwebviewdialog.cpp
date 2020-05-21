@@ -51,11 +51,11 @@ UkuiWebviewDialog::~UkuiWebviewDialog()
     }
 }
 
-void UkuiWebviewDialog::creatwebview(int _mode)
+void UkuiWebviewDialog::creatwebview(int _mode, int _panelSize)
 {
     int iViewWidth = CALENDAR_MAX_WIDTH;
     int iViewHeight = CALENDAR_MAX_HEIGHT;
-    int iScreenHeight = QApplication::screens().at(0)->size().height();
+    int iScreenHeight = QApplication::screens().at(0)->size().height() - _panelSize;
     if(!mWebView)
     {
          mWebView = new QWebView(this);

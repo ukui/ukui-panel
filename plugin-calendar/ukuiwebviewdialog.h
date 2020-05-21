@@ -44,7 +44,7 @@ class UkuiWebviewDialog : public QDialog
 public:
     explicit UkuiWebviewDialog(QWidget *parent = nullptr);
     ~UkuiWebviewDialog();
-    void creatwebview(int _mode);
+    void creatwebview(int _mode, int _panelSize);
     void showinfo(QString string);
     QWebView *webview(){return mWebView;}
 Q_SIGNALS:
