@@ -69,6 +69,7 @@ public:
                                   EffectMode mode = HighlightOnly);
     static QPixmap filledSymbolicColoredPixmap(const QPixmap &source, const QColor &baseColor);
     static QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
+    static QIcon drawSymbolicColoredIcon(const QIcon &source);
 private:
     explicit HighLightEffect(QObject *parent = nullptr);
 
