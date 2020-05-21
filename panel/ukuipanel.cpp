@@ -249,9 +249,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
-    qDebug()<<"mSettings->value(CFG_KEY_POSITION).toString()"<<mSettings->value(CFG_KEY_PANELSIZE, PANEL_DEFAULT_SIZE).toInt();
-    changeSizeToMedium();
-    changeSizeToSmall();
 }
 
 /************************************************
@@ -1165,10 +1162,9 @@ void UKUIPanel::showEvent(QShowEvent *event)
     realign();
 }
 
-
-/************************************************
-
- ************************************************/
+/*Right-Clicked Menu of ukui-panel
+ * it's a Popup Menu
+*/
 void UKUIPanel::showPopupMenu(Plugin *plugin)
 {
     PopupMenu * menu = new PopupMenu(tr("Panel"), this);
@@ -1211,7 +1207,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                   )->setDisabled(mLockPanel);
     */
     menu->setWindowOpacity(0.9);
-    menu->addAction(QIcon::fromTheme("document-page-setup"),
+    menu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
                     tr("Set up Panel"),
                     this, SLOT(setUpPanel())
                     )->setDisabled(mLockPanel);
@@ -1256,11 +1252,12 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     pmenu_panelsize->addAction(pmenuaction_s);
     pmenu_panelsize->addAction(pmenuaction_m);
     pmenu_panelsize->addAction(pmenuaction_l);
+    pmenu_panelsize->setWindowOpacity(0.9);
     menu->addMenu(pmenu_panelsize);
 
-    connect(pmenuaction_s,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_SMALL,true);setIconSize(ICON_SIZE_SMALL,true);});
-    connect(pmenuaction_m,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_MEDIUM,true);setIconSize(ICON_SIZE_MEDIUM,true);});
-    connect(pmenuaction_l,&QAction::triggered,[this] {setPanelSize(PANEL_SIZE_LARGE,true);setIconSize(ICON_SIZE_LARGE,true);});
+    connect(pmenuaction_s,&QAction::triggered,[this] {setPanelsize(PANEL_SIZE_SMALL);setIconsize(ICON_SIZE_SMALL);});
+    connect(pmenuaction_m,&QAction::triggered,[this] {setPanelsize(PANEL_SIZE_MEDIUM);setIconsize(ICON_SIZE_MEDIUM);});
+    connect(pmenuaction_l,&QAction::triggered,[this] {setPanelsize(PANEL_SIZE_LARGE);setIconsize(ICON_SIZE_LARGE);});
     menu->addSeparator();
 
     QAction *pmenuaction_top;
@@ -1288,6 +1285,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     connect(pmenuaction_bottom,&QAction::triggered, [this] { setPanelPosition(PositionBottom);});
     connect(pmenuaction_left,&QAction::triggered, [this] { setPanelPosition(PositionLeft);});
     connect(pmenuaction_right,&QAction::triggered, [this] { setPanelPosition(PositionRight);});
+    pmenu_positon->setWindowOpacity(0.9);
     pmenu_positon->setDisabled(mLockPanel);
 
     /*
@@ -1648,10 +1646,23 @@ void UKUIPanel::setPanelPosition(Position position)
     }
 }
 
+/*ukui-panel use gsettings to set panelsize & iconsize
+ * it need to emit signals to other application
+ * and for users to adjust through the command lines
+*/
 void UKUIPanel::setPanelsize(int panelsize)
 {
-
+    setPanelSize(panelsize,true);
+    gsettings->set(PANEL_SIZE_KEY,panelsize);
 }
+
+void UKUIPanel::setIconsize(int iconsize)
+{
+    setIconSize(iconsize,true);
+    gsettings->set(ICON_SIZE_KEY,iconsize);
+}
+
+/*Extra code will be deleted*/
 void UKUIPanel::changeSizeToSmall()
 {
     setPanelSize(PANEL_SIZE_SMALL,true);
