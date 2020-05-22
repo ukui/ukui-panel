@@ -33,6 +33,7 @@
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define SHOW_TASKVIEW       "showtaskview"
 TaskViewButton::TaskViewButton(){
+        setFocusPolicy(Qt::NoFocus);
 }
 TaskViewButton::~TaskViewButton(){
 }

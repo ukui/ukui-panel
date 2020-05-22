@@ -54,6 +54,7 @@ using namespace  std;
 
 #define PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANEL_LINES    "panellines"
+#define QUICKLAUCH_SIZZE "quicklaunchsize"
 
 UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     QFrame(parent),
@@ -175,6 +176,7 @@ void UKUIQuickLaunch::realign()
             {
                 (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
                 (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+                settings->set(QUICKLAUCH_SIZZE,mVBtn.size()*mPlugin->panel()->panelSize());
             }
             }
             else
@@ -185,6 +187,7 @@ void UKUIQuickLaunch::realign()
                 {
                     (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                    settings->set(QUICKLAUCH_SIZZE,mVBtn.size()*mPlugin->panel()->panelSize()/4);
                 }
             }
         }
@@ -200,6 +203,7 @@ void UKUIQuickLaunch::realign()
             {
                 (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
                 (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+                settings->set(QUICKLAUCH_SIZZE,mVBtn.size()*mPlugin->panel()->panelSize());
             }
             }
             else
@@ -210,6 +214,7 @@ void UKUIQuickLaunch::realign()
                 {
                     (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                    settings->set(QUICKLAUCH_SIZZE,mVBtn.size()*mPlugin->panel()->panelSize()/4);
                 }
             }
 
