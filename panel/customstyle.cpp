@@ -23,6 +23,7 @@
 #include <QApplication>
 
 //#if QT_CONFIG(toolbutton)
+/*以下代码是为了处理toolbutton 的箭头*/
 static void drawArrow(const QStyle *style, const QStyleOptionToolButton *toolbutton,
                       const QRect &rect, QPainter *painter, const QWidget *widget = 0)
 {
@@ -49,9 +50,10 @@ static void drawArrow(const QStyle *style, const QStyleOptionToolButton *toolbut
 }
 //#endif // QT_CONFIG(toolbutton)
 
-CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
+CustomStyle::CustomStyle(const QString &proxyStyleName, bool multileWins, QObject *parent) : QProxyStyle (proxyStyleName)
 {
-
+    pluginName=proxyStyleName;
+    multileWindow=multileWins;
 }
 CustomStyle::~CustomStyle()
 {
@@ -137,6 +139,7 @@ void CustomStyle::drawComplexControl(QStyle::ComplexControl cc, const QStyleOpti
 
 }
 
+/*下面对于CE_ToolButtonLabel　的处理是因为quicklaunch 插件出现了箭头*/
 void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption *opt, QPainter *p, const QWidget *widget) const
 {
     switch (element) {
@@ -246,29 +249,65 @@ void CustomStyle::drawItemText(QPainter *painter, const QRect &rectangle, int al
 void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     switch (element) {
-    //绘制 ToolButton
+    /*绘制 ToolButton
+     * 任务栏的不同插件需要的样式存在差异
+     * 在同一个PE中有两个toolbutton 的样式
+    */
     case PE_PanelButtonTool:{
-        painter->save();
-        painter->setRenderHint(QPainter::Antialiasing,true);
-        painter->setPen(Qt::NoPen);
-//        painter->setBrush(QColor(0xff,0xff,0xff,0xff));
-        painter->drawRoundedRect(option->rect,6,6);
-        if (option->state & State_MouseOver) {
-           if (option->state & State_Sunken) {
-               painter->setRenderHint(QPainter::Antialiasing,true);
-               painter->setPen(Qt::NoPen);
-               painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
-               painter->drawRoundedRect(option->rect,6,6);
-           } else {
-               painter->setRenderHint(QPainter::Antialiasing,true);
-               painter->setPen(Qt::NoPen);
-               painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
-               painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
-           }
+        qDebug()<<"pluginName  :           "<<pluginName;
+        if(QString::compare(pluginName,"taskbutton")!=0)
+        {
+            painter->save();
+            painter->setRenderHint(QPainter::Antialiasing,true);
+            painter->setPen(Qt::NoPen);
+            //        painter->setBrush(QColor(0xff,0xff,0xff,0xff));
+            painter->drawRoundedRect(option->rect,6,6);
+            if (option->state & State_MouseOver) {
+                if (option->state & State_Sunken) {
+                    painter->setRenderHint(QPainter::Antialiasing,true);
+                    painter->setPen(Qt::NoPen);
+                    painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
+                    painter->drawRoundedRect(option->rect,6,6);
+                } else {
+                    painter->setRenderHint(QPainter::Antialiasing,true);
+                    painter->setPen(Qt::NoPen);
+                    painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
+                    painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
+                }
+            }
+            painter->restore();
+            return;
         }
-    painter->restore();
-    return;
-    }break;
+        if(QString::compare(pluginName,"taskbutton")==0)
+        {
+            painter->save();
+            painter->setRenderHint(QPainter::Antialiasing,true);
+            painter->setPen(Qt::NoPen);
+            if (option->state & State_Sunken) {
+                painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
+            } else if (option->state & State_MouseOver) {
+                painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
+            } else if (option->state & State_On) {
+                painter->setBrush(QColor(0xff,0xff,0xff,0x33));
+            }
+            painter->drawRoundedRect(option->rect, 6, 6);
+            painter->restore();
+#if 1
+            if(multileWindow)
+            {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing, true);
+                painter->setPen(Qt::NoPen);
+                painter->setBrush(option->palette.color(QPalette::Highlight));
+                painter->drawEllipse(option->rect.topLeft() + QPointF(8.5, 4.5), 2.5, 2.5);
+                painter->setBrush(option->palette.color(QPalette::Highlight).light(125));
+                painter->drawEllipse(option->rect.topLeft() + QPointF(4.5, 4.5), 2.5, 2.5);
+                painter->restore();
+            }
+#endif
+            return;
+        }
+    }
 
 
     case PE_PanelButtonCommand:{
@@ -292,7 +331,6 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
         painter->restore();
         return;
     }break;
-
     }
     return QProxyStyle::drawPrimitive(element, option, painter, widget);
 
@@ -331,7 +369,7 @@ int CustomStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *opt
     return QProxyStyle::pixelMetric(metric, option, widget);
 }
 
-//
+/*使悬浮点击等样式生效*/
 void CustomStyle::polish(QWidget *widget)
 {
     widget->setAttribute(Qt::WA_Hover);
