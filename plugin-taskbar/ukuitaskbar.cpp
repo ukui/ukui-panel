@@ -312,7 +312,7 @@ void UKUITaskBar::addWindow(WId window)
             buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
         });
 
-        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
+        //group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         mLayout->addWidget(group);
         group->setToolButtonsStyle(mButtonStyle);
     }
@@ -524,8 +524,8 @@ void UKUITaskBar::realign()
 
     IUKUIPanel *panel = mPlugin->panel();
     //set taskbar width by panel
-    QSize maxSize = QSize(100, mButtonHeight);
-    QSize minSize = QSize(0, 0);
+    QSize maxSize = QSize(mPlugin->panel()->panelSize(), mPlugin->panel()->panelSize());
+    QSize minSize = QSize(mPlugin->panel()->iconSize()/2, mPlugin->panel()->iconSize()/2);
     int iconsize = panel->iconSize();
     int panelsize = panel->panelSize();
 
@@ -566,9 +566,9 @@ void UKUITaskBar::realign()
     for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
     {
         UKUITaskGroup *group = it.value();
-        group->setFixedSize(panelsize, panelsize);
+        //group->setFixedSize(panelsize, panelsize);
         group->setIconSize(QSize(iconsize,iconsize));
-        group->updateIcon();
+//        group->updateIcon();
     }
     mLayout->setCellMinimumSize(minSize);
     mLayout->setCellMaximumSize(maxSize);
