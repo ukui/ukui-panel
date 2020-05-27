@@ -17,17 +17,22 @@
  */
 #include "ejectInterface.h"
 
-ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(parent),eject_image_label(nullptr),show_text_label(nullptr),
+ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(parent),eject_image_button(nullptr),show_text_label(nullptr),
     mount_name_label(nullptr)
 {
 //interface layout
     EjectScreen = qApp->primaryScreen();
-    eject_image_label = new QLabel();
-    QPixmap pixmap(":/picture/tip-32.svg");
-    if(eject_image_label)
+    eject_image_button = new QPushButton();
+    eject_image_button->setFixedSize(30,30);
+    //QPixmap pixmap("kylin-media-removable-symbolic");
+    eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
+
+    if(eject_image_button)
     {
-        eject_image_label->setPixmap(pixmap);
+        eject_image_button->setIcon(eject_image_icon);
     }
+
+    eject_image_button->setIconSize(QSize(25,25));
 
     show_text_label = new QLabel;
     if(show_text_label)
@@ -42,7 +47,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
     if(ejectinterface_h_BoxLayout)
     {
         ejectinterface_h_BoxLayout->addStretch();
-        ejectinterface_h_BoxLayout->addWidget(eject_image_label);
+        ejectinterface_h_BoxLayout->addWidget(eject_image_button);
         ejectinterface_h_BoxLayout->addWidget(show_text_label);
         ejectinterface_h_BoxLayout->addStretch();
     }
@@ -76,9 +81,9 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
                         "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
                         "border-radius:6px"
                         "}");
-    eject_image_label->setStyleSheet(
+    eject_image_button->setStyleSheet(
                 //正常状态样式
-                "QLabel{"
+                "QPushButton{"
                 "color:rgba(255,255,255,1);"
                 "line-height:24px;"
                 "opacity:1;"
