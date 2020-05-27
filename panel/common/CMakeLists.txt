@@ -266,9 +266,13 @@ elseif (WITH_XDG_DIRS_FALLBACK)
 endif ()
 if (WITH_XDG_DIRS_FALLBACK)
     message(STATUS "Building with homemade QSettings XDG fallback workaround")
-    target_compile_definitions(${UKUI_LIBRARY_NAME}
-        PRIVATE "WITH_XDG_DIRS_FALLBACK"
-    )
+
+setByDefault(CUSTOM_QT_5_12_VERSION Yes)
+if (CUSTOM_QT_5_12_VERSION )
+	#target_compile_definitions(${UKUI_LIBRARY_NAME}
+	#PRIVATE "WITH_XDG_DIRS_FALLBACK"
+	#)
+endif(CUSTOM_QT_5_12_VERSION)
 endif ()
 
 #install(FILES

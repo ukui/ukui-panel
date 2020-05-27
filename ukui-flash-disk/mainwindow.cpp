@@ -236,7 +236,6 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
 void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
     findGVolumeList()->removeOne(volume);
-    qDebug()<<"findGVolumeList: cnm,wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwjjjjjj"<<findGVolumeList()->size();
 //    if(findGVolumeList()->size() >= 0)
 //    {
 //        p_this->m_systray->show();
@@ -250,7 +249,6 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     {
         *findGMountList()<<mount;
     }
-    qDebug()<<findGMountList()->size()<<"cnm,wjwjwwjjwwjwjwjwjwjwj i lao hu you ";
 //    if(findGMountList())
 //    *findGMountList()<<mount;
 //    qDebug()<<
@@ -314,7 +312,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 //        delete this->interfaceHideTime;
 //    }
     //int hign = 200;
-    qDebug()<<findGMountList()->size()<<"-----wwj----";
     triggerType = 1;
     if(ui->centralWidget != NULL)
     {

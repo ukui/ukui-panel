@@ -210,9 +210,19 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 void UKUITaskGroup::closeGroup()
 {
     //To Do
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(auto it=mButtonHash.begin();it!=mButtonHash.end();it++)
+    {  
+    UKUITaskWidget *button =it.value();
+  if (button->isOnDesktop(KWindowSystem::currentDesktop()))
+            button->closeApplication();
+    }
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     for (UKUITaskWidget *button : qAsConst(mButtonHash) )
         if (button->isOnDesktop(KWindowSystem::currentDesktop()))
             button->closeApplication();
+#endif
 }
 
 /************************************************
@@ -405,9 +415,19 @@ int UKUITaskGroup::buttonsCount() const
 int UKUITaskGroup::visibleButtonsCount() const
 {
     int i = 0;
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for (auto it=mButtonHash.begin();it!=mButtonHash.end();it++)
+     {
+        UKUITaskWidget *btn=it.value();
+        if (btn->isVisibleTo(mPopup))
+            i++;
+    }
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     for (UKUITaskWidget *btn : qAsConst(mButtonHash))
         if (btn->isVisibleTo(mPopup))
             i++;
+#endif
     return i;
 }
 
@@ -557,8 +577,14 @@ void UKUITaskGroup::refreshVisibility()
     bool will = false;
     UKUITaskBar const * taskbar = parentTaskBar();
     const int showDesktop = taskbar->showDesktopNum();
-    for(UKUITaskWidget * btn : qAsConst(mButtonHash))
-    {
+
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(auto i=mButtonHash.begin();i!=mButtonHash.end();i++){
+	UKUITaskWidget * btn=i.value();
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(UKUITaskWidget * btn : qAsConst(mButtonHash)){
+#endif
         bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
         visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
         visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;

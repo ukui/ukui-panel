@@ -106,6 +106,13 @@ private:
     bool mbIsNeedUpdate;
     QGSettings *gsettings;
     QString hourSystemMode;
+
+    QString hourSystem_24_horzontal;
+    QString hourSystem_24_vartical;
+    QString hourSystem_12_horzontal;
+    QString hourSystem_12_vartical;
+    QString current_date;
+
 };
 
 

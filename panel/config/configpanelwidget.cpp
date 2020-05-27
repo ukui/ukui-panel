@@ -122,7 +122,9 @@ ConfigPanelWidget::ConfigPanelWidget(UKUIPanel *panel, QWidget *parent) :
     connect(ui->checkBox_reserveSpace, &QAbstractButton::toggled, [this](bool checked) { mPanel->setReserveSpace(checked, true); });
 
     connect(ui->groupBox_icon, &QGroupBox::clicked, this, &ConfigPanelWidget::editChanged);
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     connect(ui->comboBox_icon, QOverload<int>::of(&QComboBox::activated), this, &ConfigPanelWidget::editChanged);
+#endif
     QStringList sheet;
     QGSettings *gsettings;
     gsettings= new QGSettings("org.mate.interface", "", this);

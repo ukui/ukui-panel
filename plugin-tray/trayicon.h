@@ -35,7 +35,7 @@
 
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
-#include "highlight-effect.h"
+#include "../panel/highlight-effect.h"
 #define TRAY_ICON_SIZE_DEFAULT 16
 
 class QWidget;

@@ -20,6 +20,41 @@
             <summary>show TsskView</summary>
             <description>control taskview show or hide</description>
         </key>
+        <key name="quicklaunchlines" type="i">
+            <default>1</default>
+            <summary>show Quicklaunch Lines</summary>
+            <description>show Quicklaunch Lines</description>
+        </key>
+        <key name="taskbarlines" type="i">
+            <default>1</default>
+            <summary>show Taskbar Lines</summary>
+            <description>show Taskbar Lines</description>
+        </key>
+        <key name="traylines" type="i">
+            <default>1</default>
+            <summary>show Tray Lines</summary>
+            <description>show Tray Lines</description>
+        </key>
+        <key name="panellines" type="i">
+            <default>1</default>
+            <summary>show Panel Lines</summary>
+            <description>show Panel Lines</description>
+    	</key>
+	<key name="quicklaunchsize" type="i">
+            <default>0</default>
+            <summary>show Panel Quicklaunch size</summary>
+            <description>show Panel Quicklaunch size</description>
+   	 </key>
+	 <key name="taskbarsize" type="i">
+            <default>0</default>
+            <summary>show Panel Taskbar size</summary>
+            <description>show Panel Taskbar size</description>
+    	</key>
+	<key name="traysize" type="i">
+            <default>0</default>
+            <summary>show Panel Tray size</summary>
+            <description>show Panel Tray size</description>
+    	</key>
     </schema>
 </schemalist>
 

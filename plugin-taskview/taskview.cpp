@@ -33,6 +33,7 @@
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define SHOW_TASKVIEW       "showtaskview"
 TaskViewButton::TaskViewButton(){
+        setFocusPolicy(Qt::NoFocus);
 }
 TaskViewButton::~TaskViewButton(){
 }
@@ -68,7 +69,7 @@ void TaskView::realign()
     if(gsettings->get(SHOW_TASKVIEW).toBool())
         mButton->setFixedSize(panel()->panelSize(),panel()->panelSize());
     else
-        mButton->setFixedSize(0,panel()->panelSize());
+        mButton->setFixedSize(0,0);
     mButton->setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
 }
 

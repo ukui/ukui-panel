@@ -94,6 +94,9 @@ extern "C" {
 
 #define TRAY_APP_COUNT 16
 
+#define PANEL_SETTINGS "org.ukui.panel.settings"
+#define PANEL_LINES    "panellines"
+#define TRAY_SIZE      "traylines"
 /************************************************
 
  ************************************************/
@@ -127,6 +130,18 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mMapIcon.clear();
     m_pwidget = NULL;
     status=ST_HIDE;
+
+    const QByteArray id(PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+    {
+        settings=new QGSettings(id);
+        qDebug()<<"panel settinngs *********************8"<<settings->get(PANEL_LINES).toInt();
+    }
+    connect(settings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==PANEL_LINES)
+            realign();
+    });
+
     setLayout(new UKUi::GridLayout(this));
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
@@ -196,6 +211,8 @@ UKUITray::~UKUITray()
     freezeApp();
     stopTray();
 }
+
+/*slot funtion of clicked mBtn*/
 void UKUITray::storageBar()
 {
     if(status==ST_HIDE)
@@ -210,6 +227,9 @@ void UKUITray::storageBar()
     }
 }
 
+/*when clicked mBtn , show or hide storageFrame
+ * 在取消了panel的WindowDoesNotAcceptFocus属性之后，托盘栏会有点击之后的隐藏并再次弹出的操作
+ */
 void UKUITray::showAndHideStorage(bool storageStatus)
 {
     qDebug()<<"showAndHideStorage"<<storageStatus;
@@ -222,9 +242,14 @@ void UKUITray::showAndHideStorage(bool storageStatus)
         storageFrame->show();
     }
 }
-/************************************************
 
- ************************************************/
+/*托盘应用的事件过滤器
+ * 通过继承QAbstractNativeEventFilter的类中重新实现nativeEventFilter接口:
+ * 安装　：　void QCoreApplication::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
+ * 或者　　　void QAbstractEventDispatcher::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
+ * XCB(Linux)　对应的eventType 类型如下：
+ * 事件类型(eventType)：“xcb_generic_event_t”　　　消息类型(message)：xcb_generic_event_t *	　结果类型(result)：无
+*/
 bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, long *)
 {
     if (eventType != "xcb_generic_event_t")
@@ -327,7 +352,7 @@ void UKUITray::realign()
     */
     if (panel->isHorizontal())
     {
-        if(mTrayIcons.size()<TRAY_APP_COUNT)
+        if(settings->get(PANEL_LINES).toInt()==1)
         {
             dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
             dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
@@ -336,9 +361,8 @@ void UKUITray::realign()
                 if(mTrayIcons.at(i))
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-//                    qDebug()<<"mPlugin->panel()->iconSize()  :  "<<mPlugin->panel()->iconSize();
-//                    qDebug()<<"mPlugin->panel()->iconSize()/2  :  "<<mPlugin->panel()->iconSize()/2;
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                    settings->set(TRAY_SIZE,mTrayIcons.size()*mPlugin->panel()->panelSize());
                 }
                 else
                 {
@@ -357,19 +381,20 @@ void UKUITray::realign()
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->panelSize()/2);
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                    settings->set(TRAY_SIZE,mTrayIcons.size()*mPlugin->panel()->panelSize()/4);
                 }
                 else
                 {
                     qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
                 }
             }
+            mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize()/2);
         }
-
 
     }
     else
     {
-        if(mTrayIcons.size()<TRAY_APP_COUNT/2)
+        if(settings->get(PANEL_LINES).toInt()==1)
         {
             dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
             dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
@@ -378,14 +403,16 @@ void UKUITray::realign()
             {
                 if(mTrayIcons.at(i))
                 {
-                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),(mPlugin->panel()->iconSize()));
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                    settings->set(TRAY_SIZE,mTrayIcons.size()*mPlugin->panel()->panelSize());
                 }
                 else
                 {
                     qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
                 }
             }
+            mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
         }
         else
         {
@@ -397,6 +424,7 @@ void UKUITray::realign()
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize()/2);
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                    settings->set(TRAY_SIZE,mTrayIcons.size()*mPlugin->panel()->panelSize()/4);
                 }
                 else
                 {
@@ -404,7 +432,7 @@ void UKUITray::realign()
                 }
             }
         }
-        mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+        mBtn->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize());
 
     }
 
@@ -432,6 +460,7 @@ void UKUITray::realign()
 
 }
 
+/*creat iconMap of four  direction*/
 void UKUITray::createIconMap()
 {
     mMapIcon[IUKUIPanel::PositionBottom] = QIcon("/usr/share/ukui-panel/panel/img/tray-up.svg");
@@ -451,9 +480,8 @@ void UKUITray::changeIcon()
     mBtn->setIcon(icon);
     mBtn->setFixedSize(QSize(30,mPlugin->panel()->panelSize()));
 }
-/************************************************
 
- ************************************************/
+/*监听托盘事件*/
 void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
 {
     unsigned long opcode;
@@ -497,10 +525,16 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
 /************************************************
 
  ************************************************/
+/*遍历mIcons中的TrayIcon*/
 TrayIcon* UKUITray::findIcon(Window id)
 {
-    for(TrayIcon* icon : qAsConst(mIcons) )
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mIcons.size();i++){
+        TrayIcon *icon=mIcons[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(TrayIcon* icon : qAsConst(mIcons) ){
+#endif
         if (icon->iconId() == id || icon->windowId() == id)
             return icon;
     }
@@ -509,8 +543,13 @@ TrayIcon* UKUITray::findIcon(Window id)
 
 TrayIcon* UKUITray::findTrayIcon(Window id)
 {
-    for(TrayIcon* trayicon : qAsConst(mTrayIcons) )
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mTrayIcons.size();i++){
+	TrayIcon *trayicon = mTrayIcons[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(TrayIcon* trayicon : qAsConst(mTrayIcons) ){
+#endif
         if (trayicon->iconId() == id || trayicon->windowId() == id)
             return trayicon;
     }
@@ -519,8 +558,13 @@ TrayIcon* UKUITray::findTrayIcon(Window id)
 
 TrayIcon* UKUITray::findStorageIcon(Window id)
 {
-    for(TrayIcon* storageicon :qAsConst(mStorageIcons))
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mStorageIcons.size();i++){
+	TrayIcon *storageicon=mStorageIcons[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(TrayIcon* storageicon :qAsConst(mStorageIcons)){
+#endif
         if (storageicon->iconId() == id || storageicon->windowId() == id)
             return storageicon;
     }
@@ -529,8 +573,13 @@ TrayIcon* UKUITray::findStorageIcon(Window id)
 
 TrayIcon* UKUITray::findHideIcon(Window id)
 {
-    for(TrayIcon* hideicon :qAsConst(mHideIcons))
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mHideIcons.size();i++){
+	TrayIcon* hideicon=mHideIcons[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(TrayIcon* hideicon :qAsConst(mHideIcons)){
+#endif
         if (hideicon->iconId() == id || hideicon->windowId() == id)
             return hideicon;
     }
@@ -539,6 +588,7 @@ TrayIcon* UKUITray::findHideIcon(Window id)
 /************************************************
 
 ************************************************/
+/*目前托盘应用不使用此方式设置控件的大小而是使用setIconSize和setFixedSize来设置*/
 void UKUITray::setIconSize()
 {
     int iconSize=16;
@@ -696,9 +746,8 @@ void UKUITray::stopStorageTray()
         mTrayId = 0;
     }
 }
-/************************************************
 
- ************************************************/
+/*将托盘图标从托盘栏/收纳栏中移除*/
 void UKUITray::onIconDestroyed(QObject * icon)
 {
     //in the time QOjbect::destroyed is emitted, the child destructor
@@ -711,7 +760,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
     }
 }
 
-
+/*将托盘应用置为freeze的状态*/
 void UKUITray::freezeTrayApp(Window winId)
 {
     QList<char *> existsPath = listExistsPath();
@@ -781,7 +830,7 @@ void UKUITray::freezeTrayApp(Window winId)
 }
 
 
-/*
+/*add*Icon  是添加托盘应用到托盘栏/收纳栏
 */
 void UKUITray::addTrayIcon(Window winId)
 {
@@ -850,6 +899,7 @@ void UKUITray::addHideIcon(Window winId)
     }
 }
 
+/*与控制面板交互，移动应用到托盘栏或者收纳栏*/
 void UKUITray::moveIconToTray(Window winId)
 {
     TrayIcon *storageicon = findStorageIcon(winId);
@@ -990,6 +1040,7 @@ void UKUITray::moveIconToHide(Window winId)
     }
 }
 
+/*列出存在的可供gsettings使用的路径*/
 QList<char *> UKUITray::listExistsPath(){
     char ** childs;
     int len;
@@ -1011,7 +1062,7 @@ QList<char *> UKUITray::listExistsPath(){
     return vals;
 }
 
-
+/*调节图标，监听图标所在的位置*/
 void UKUITray::regulateIcon(Window *mid)
 {
     int wid=(int)*mid;
@@ -1118,6 +1169,7 @@ void UKUITray::regulateIcon(Window *mid)
     }
 }
 
+/*检测到新的应用（第一次添加应用）*/
 void UKUITray::newAppDetect(int wid)
 {
     QString availablepath = findFreePath();
@@ -1177,6 +1229,9 @@ void UKUITray::newAppDetect(int wid)
     }
 }
 
+/*将所有的托盘应用的状态至为freeze
+ * 一般存在与在任务栏退出的时候
+*/
 void UKUITray::freezeApp()
 {
     QList<char *> existsPath = listExistsPath();
@@ -1362,6 +1417,7 @@ void UKUITray::handleStorageUi()
     //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
 }
 
+/*收纳栏*/
 UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
     QWidget(parent, Qt::Popup)
 {

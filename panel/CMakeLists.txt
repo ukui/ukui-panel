@@ -4,6 +4,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 add_subdirectory(common)
+#add_subdirectory(xdg)
 
 set(PRIV_HEADERS
     panelpluginsmodel.h
@@ -22,6 +23,7 @@ set(PRIV_HEADERS
     config/configpanelwidget.h
     config/configpluginswidget.h
     config/addplugindialog.h
+    highlight-effect.h
 )
 
 # using UKUi namespace in the public headers.
@@ -35,8 +37,6 @@ set(PUB_HEADERS
     common/ukuihtmldelegate.h
     common/ukuisettings.h
     common/ukuiplugininfo.h
-    #common/ukuipowermanager.h
-    #common/ukuiscreensaver.h
     common/ukuiapplication.h
     common/ukuisingleapplication.h
     common/ukuitranslator.h
@@ -46,14 +46,13 @@ set(PUB_HEADERS
     common/configdialog/ukuiconfigdialogcmdlineoptions.h
     common/configdialog/ukuipageselectwidget.h
 
-    #common/ukuipower/ukuipower.h
     common/ukuinotification.h
     common/ukuiautostartentry.h
     common/ukuigridlayout.h
     common/ukuirotatedwidget.h
     common/ukuiglobals.h
-    #common/ukuibacklight.h
     ukuicontrolstyle.h
+    highlight-effect.cpp
 )
 
 set(SOURCES
@@ -76,9 +75,7 @@ set(SOURCES
 
     common/ukuihtmldelegate.cpp
     common/ukuiplugininfo.cpp
-    #common/ukuipowermanager.cpp
     common/ukuisettings.cpp
-    #common/ukuiscreensaver.cpp
     common/ukuiapplication.cpp
     common/ukuisingleapplication.cpp
     common/ukuitranslator.cpp
@@ -88,15 +85,10 @@ set(SOURCES
     common/configdialog/ukuiconfigdialogcmdlineoptions.cpp
     common/configdialog/ukuipageselectwidget.cpp
 
-    #common/ukuipower/ukuipower.cpp    
-    #common/ukuipower/ukuipowerproviders.cpp
     common/ukuiautostartentry.cpp
     common/ukuinotification.cpp
     common/ukuigridlayout.cpp
     common/ukuirotatedwidget.cpp
-    #common/ukuibacklight.cpp
-    #common/ukuibacklight/virtual_backend.cpp
-    #common/ukuibacklight/linux_backend/linuxbackend.cpp
     ukuicontrolstyle.cpp
 )
 
@@ -107,9 +99,6 @@ set(UI
     common/configdialog/ukuiconfigdialog.ui
 )
 
-#set(LIBRARIES
-#    ukui
-#)
 
 file(GLOB CONFIG_FILES resources/*.conf resources/*.qss)
 ############################################

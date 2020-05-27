@@ -219,8 +219,13 @@ void LayoutItemGrid::rebuild()
 {
     clear();
 
-    for(QLayoutItem *item : qAsConst(mItems))
-    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    for(int i=0;i<mItems.size();i++){
+        QLayoutItem *item=mItems[i];
+#endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    for(QLayoutItem *item : qAsConst(mItems)){
+#endif
         doAddToGrid(item);
     }
 }

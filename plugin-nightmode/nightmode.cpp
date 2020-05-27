@@ -25,7 +25,7 @@
 #include "nightmode.h"
 #include "../panel/customstyle.h"
 
-#define NIGHT_MODE_KEY        "nightmode"
+#define NIGHT_MODE_KEY        "nightmodestatus"
 #define NIGHT_MODE_LIGHT 　　　"light"
 #define NIGHE_MODE_NIGHT      "night"
 #define NIGHT_MODE_CONTROL    "org.ukui.control-center.panel.plugins"
@@ -53,8 +53,15 @@ NightMode::~NightMode(){
 
 void NightMode::realign()
 {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    mButton->setFixedSize(0,0);
+    mButton->setIconSize(QSize(0,0));
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     mButton->setFixedSize(32,32);
     mButton->setIconSize(QSize(24,24));
+#endif
 }
 
 NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
@@ -69,8 +76,8 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
 
     mqsettings->setValue("dawn-time", "17:54");
     mqsettings->setValue("dusk-time", "17:55");
-    mqsettings->setValue("temp-day", "3500");
-    mqsettings->setValue("temp-night", "3500");
+//    mqsettings->setValue("temp-day", "3500");
+//    mqsettings->setValue("temp-night", "3500");
 
     mqsettings->endGroup();
     mqsettings->sync();
@@ -121,6 +128,11 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
             mgtkstyleGsettings = new QGSettings(gtkstyleid);
         }
     }
+    else
+    {
+        QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
+        this->setIcon(icon);
+    }
 }
 NightModeButton::~NightModeButton(){
     delete gsettings;
@@ -133,28 +145,37 @@ void NightModeButton::mousePressEvent(QMouseEvent *event)
 {
     if(event->button()==Qt::LeftButton)
     {
-        if(mode)
+        if(QGSettings::isSchemaInstalled(NIGHT_MODE_CONTROL))
         {
-            if(gsettings->keys().contains(NIGHT_MODE_KEY))
+            if(mode)
             {
-                gsettings->set("nightmode", true);
-                setNightMode(true);
-                setUkuiStyle("ukui-black");
-                mode=false;
-            }
+                qDebug()<<"NightModeButton::mousePressEvent   mode = true ";
+                if(gsettings->keys().contains(NIGHT_MODE_KEY))
+                {
+                    qDebug()<<"NightModeButton::mousePressEvent   mode = true contains(NIGHT_MODE_KEY)";
+                    gsettings->set(NIGHT_MODE_KEY, true);
+                    setNightMode(true);
+                    setUkuiStyle("ukui-black");
+                    mode=false;
+                }
 
+            }
+            else
+            {
+                qDebug()<<"NightModeButton::mousePressEvent   mode = false ";
+                if(gsettings->keys().contains(NIGHT_MODE_KEY))
+                {
+                    qDebug()<<"NightModeButton::mousePressEvent   mode = false   contains(NIGHT_MODE_KEY) ";
+                    gsettings->set(NIGHT_MODE_KEY, false);
+                    setNightMode(false);
+                    setUkuiStyle("ukui-white");
+                    mode=true;
+                }
+
+            }
         }
         else
-        {
-            if(gsettings->keys().contains(NIGHT_MODE_KEY))
-            {
-                gsettings->set("nightmode", false);
-                setNightMode(false);
-                setUkuiStyle("ukui-white");
-                mode=true;
-            }
-
-        }
+            QMessageBox::information(this,"Error",tr("please install new ukui-control-center first"));
     }
 }
 
@@ -163,10 +184,12 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
     nightModeMenu=new QMenu();
     nightModeMenu->setAttribute(Qt::WA_DeleteOnClose);
 
-    nightModeMenu->addAction(QIcon::fromTheme("document-page-setup"),
-                             tr("Turn On NightMode"),
-                             this, SLOT(turnNightMode())
-                             );
+    QAction * opennightmode = nightModeMenu->addAction(tr("Turn On NightMode"));
+
+    opennightmode->setCheckable(true);
+    opennightmode->setChecked(gsettings->get(NIGHT_MODE_KEY).toBool());
+    connect(opennightmode, &QAction::triggered, [this] { turnNightMode(); });
+
     nightModeMenu->addAction(QIcon::fromTheme("document-page-setup"),
                              tr("Set Up NightMode"),
                              this, SLOT(setUpNightMode())
@@ -177,9 +200,37 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
 
 void NightModeButton::turnNightMode()
 {
-    setNightMode(true);
-    setUkuiStyle("ukui-black");
-    mode=true;
+    if(QGSettings::isSchemaInstalled(NIGHT_MODE_CONTROL))
+    {
+        if(mode)
+        {
+            qDebug()<<"NightModeButton::mousePressEvent   mode = true ";
+            if(gsettings->keys().contains(NIGHT_MODE_KEY))
+            {
+                qDebug()<<"NightModeButton::mousePressEvent   mode = true contains(NIGHT_MODE_KEY)";
+                gsettings->set(NIGHT_MODE_KEY, true);
+                setNightMode(true);
+                setUkuiStyle("ukui-black");
+                mode=false;
+            }
+
+        }
+        else
+        {
+            qDebug()<<"NightModeButton::mousePressEvent   mode = false ";
+            if(gsettings->keys().contains(NIGHT_MODE_KEY))
+            {
+                qDebug()<<"NightModeButton::mousePressEvent   mode = false   contains(NIGHT_MODE_KEY) ";
+                gsettings->set(NIGHT_MODE_KEY, false);
+                setNightMode(false);
+                setUkuiStyle("ukui-white");
+                mode=true;
+            }
+
+        }
+    }
+    else
+        QMessageBox::information(this,"Error",tr("please install new ukui-control-center first"));
 }
 
 void NightModeButton::setUpNightMode()
@@ -200,6 +251,8 @@ void NightModeButton::setNightMode(const bool nightMode){
 
     if(nightMode)
     {
+        mqsettings->setValue("temp-day", mqsettings->value("temp-day", "").toString());
+        mqsettings->setValue("temp-night", mqsettings->value("temp-night", "").toString());
         cmd = "restart";
         serverCmd = "enable";
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");

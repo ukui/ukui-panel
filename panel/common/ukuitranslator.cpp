@@ -82,6 +82,56 @@ void Translator::setTranslationSearchPaths(const QStringList &paths)
 /************************************************
 
  ************************************************/
+
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+bool translate(const QString &name, const QString &owner)
+{
+    const QString locale = QLocale::system().name();
+    QTranslator *appTranslator = new QTranslator(qApp);
+
+    QStringList *paths = getSearchPaths();
+//    for(const QString &path : qAsConst(*paths))
+    for(int i=0 ;i<(*paths).size();i++)
+    {
+        QStringList subPaths;
+
+        if (!owner.isEmpty())
+        {
+            subPaths << (*paths)[i] + QL1C('/') + owner + QL1C('/') + name;
+        }
+        else
+        {
+            subPaths << (*paths)[i] + QL1C('/') + name;
+            subPaths << (*paths)[i];
+        }
+
+//        for(const QString &p : qAsConst(subPaths))
+        for(int i=0;i<subPaths.size();i++)
+        {
+            const QString &p=subPaths[i];
+            if (appTranslator->load(name + QL1C('_') + locale, p))
+            {
+                QCoreApplication::installTranslator(appTranslator);
+                return true;
+            }
+            else if (locale == QLatin1String("C") ||
+                        locale.startsWith(QLatin1String("en")))
+            {
+                // English is the default. Even if there isn't an translation
+                // file, we return true. It's translated anyway.
+                delete appTranslator;
+                return true;
+            }
+        }
+    }
+
+    // If we got here, no translation was loaded. appTranslator has no use.
+    delete appTranslator;
+    return false;
+}
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
 bool translate(const QString &name, const QString &owner)
 {
     const QString locale = QLocale::system().name();
@@ -124,6 +174,7 @@ bool translate(const QString &name, const QString &owner)
     delete appTranslator;
     return false;
 }
+#endif
 
 
 /************************************************
