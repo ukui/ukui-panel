@@ -149,9 +149,9 @@ void UKUITaskButton::updateText()
     setToolTip(title);
 }
 
-/************************************************
-
- ************************************************/
+/* int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF()是由ico =KWindowSystem:ico(mwindow)更改的
+ * 目的是为了能够显示正确的application-x-desktop的图标的大小
+*/
 void UKUITaskButton::updateIcon()
 {
     QIcon ico;
@@ -161,9 +161,12 @@ void UKUITaskButton::updateIcon()
     }
     if (ico.isNull())
     {
-        ico = KWindowSystem::icon(mWindow);
-//        ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
-
+#if QT_VERSION >= 0x050600
+        int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF();
+#else
+        int devicePixels = 32 * devicePixelRatio();
+#endif
+        ico = KWindowSystem::icon(mWindow, devicePixels, devicePixels);
     }
     setIcon(ico.isNull() ? XdgIcon::fromTheme("application-x-desktop") : ico);
 }

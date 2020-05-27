@@ -59,6 +59,7 @@ CustomStyle::~CustomStyle()
 {
 };
 
+/*Draws the given control using the provided painter with the style options specified by option.*/
 void CustomStyle::drawComplexControl(QStyle::ComplexControl cc, const QStyleOptionComplex *opt, QPainter *p, const QWidget *widget) const
 {
 
@@ -254,7 +255,6 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
      * 在同一个PE中有两个toolbutton 的样式
     */
     case PE_PanelButtonTool:{
-        qDebug()<<"pluginName  :           "<<pluginName;
         if(QString::compare(pluginName,"taskbutton")!=0)
         {
             painter->save();
@@ -290,7 +290,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
             } else if (option->state & State_On) {
                 painter->setBrush(QColor(0xff,0xff,0xff,0x33));
             }
-            painter->drawRoundedRect(option->rect, 6, 6);
+            painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
             painter->restore();
 #if 1
             if(multileWindow)
