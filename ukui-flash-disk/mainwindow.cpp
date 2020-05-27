@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -105,7 +105,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 );
 
 
-    iconSystray = QIcon::fromTheme("drive-removable-media");
+    iconSystray = QIcon::fromTheme("media-removable-symbolic");
     vboxlayout = new QVBoxLayout();
     //hboxlayout = new QHBoxLayout();
 
@@ -122,6 +122,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
     connect(this,&MainWindow::convertShowWindow,this,&MainWindow::onConvertShowWindow);
     ui->centralWidget->setLayout(vboxlayout);
+    qDebug()<<"qAppName()"<<qAppName();
 }
 
 MainWindow::~MainWindow()
@@ -136,7 +137,9 @@ void MainWindow::getDeviceInfo()
     g_signal_connect (g_volume_monitor, "drive-connected", G_CALLBACK (drive_connected_callback), this);
     g_signal_connect (g_volume_monitor, "drive-disconnected", G_CALLBACK (drive_disconnected_callback), this);
     g_signal_connect (g_volume_monitor, "volume-added", G_CALLBACK (volume_added_callback), this);
-    g_signal_connect (g_volume_monitor, "volume-removed", G_CALLBACK (volume_removed_callback), NULL);
+    g_signal_connect (g_volume_monitor, "volume-removed", G_CALLBACK (volume_removed_callback), this);
+    g_signal_connect (g_volume_monitor, "mount-added", G_CALLBACK (mount_added_callback), this);
+    g_signal_connect (g_volume_monitor, "mount-removed", G_CALLBACK (mount_removed_callback), this);
 //about drive
     GList *current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
     while(current_drive_list)
@@ -230,10 +233,40 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                    p_this);
 }
 
-void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volume, gpointer)
+void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
     findGVolumeList()->removeOne(volume);
-    qDebug()<<"findGVolumeList:"<<findGVolumeList()->size();
+    qDebug()<<"findGVolumeList: cnm,wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwjjjjjj"<<findGVolumeList()->size();
+//    if(findGVolumeList()->size() >= 0)
+//    {
+//        p_this->m_systray->show();
+//    }
+}
+
+void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this)
+{
+    qDebug()<<"mount is added";
+    if(g_mount_can_eject(mount) && g_drive_can_eject(g_mount_get_drive(mount)))
+    {
+        *findGMountList()<<mount;
+    }
+    qDebug()<<findGMountList()->size()<<"cnm,wjwjwwjjwwjwjwjwjwjwj i lao hu you ";
+//    if(findGMountList())
+//    *findGMountList()<<mount;
+//    qDebug()<<
+    if(findGMountList()->size() >= 1)
+    {
+        p_this->m_systray->show();
+    }
+}
+
+void MainWindow::mount_removed_callback(GVolumeMonitor *, GMount *mount, MainWindow *p_this)
+{
+    findGMountList()->removeOne(mount);
+    if(findGMountList()->size() == 0)
+    {
+        p_this->m_systray->hide();
+    }
 }
 
 void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,MainWindow *p_this)
@@ -281,6 +314,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 //        delete this->interfaceHideTime;
 //    }
     //int hign = 200;
+    qDebug()<<findGMountList()->size()<<"-----wwj----";
     triggerType = 1;
     if(ui->centralWidget != NULL)
     {
@@ -308,7 +342,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
           {
               qDebug()<<"findGDriveList():"<<findGDriveList()->size();
               qDebug()<<"findGVolumeList():"<<findGVolumeList()->size();
-              hign = findGVolumeList()->size()*40 + findGDriveList()->size()*55;
+              hign = findGMountList()->size()*40 + findGDriveList()->size()*55;
               this->setFixedSize(280,hign);
               int DisNum = g_list_length(g_drive_get_volumes(cacheDrive));
               if (DisNum >0 )
