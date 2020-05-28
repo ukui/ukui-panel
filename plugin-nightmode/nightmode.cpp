@@ -25,7 +25,7 @@
 #include "nightmode.h"
 #include "../panel/customstyle.h"
 
-#define NIGHT_MODE_KEY        "nightmode"
+#define NIGHT_MODE_KEY        "nightmodestatus"
 #define NIGHT_MODE_LIGHT 　　　"light"
 #define NIGHE_MODE_NIGHT      "night"
 #define NIGHT_MODE_CONTROL    "org.ukui.control-center.panel.plugins"
@@ -153,7 +153,7 @@ void NightModeButton::mousePressEvent(QMouseEvent *event)
                 if(gsettings->keys().contains(NIGHT_MODE_KEY))
                 {
                     qDebug()<<"NightModeButton::mousePressEvent   mode = true contains(NIGHT_MODE_KEY)";
-                    gsettings->set("nightmode", true);
+                    gsettings->set(NIGHT_MODE_KEY, true);
                     setNightMode(true);
                     setUkuiStyle("ukui-black");
                     mode=false;
@@ -166,7 +166,7 @@ void NightModeButton::mousePressEvent(QMouseEvent *event)
                 if(gsettings->keys().contains(NIGHT_MODE_KEY))
                 {
                     qDebug()<<"NightModeButton::mousePressEvent   mode = false   contains(NIGHT_MODE_KEY) ";
-                    gsettings->set("nightmode", false);
+                    gsettings->set(NIGHT_MODE_KEY, false);
                     setNightMode(false);
                     setUkuiStyle("ukui-white");
                     mode=true;
@@ -187,7 +187,7 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
     QAction * opennightmode = nightModeMenu->addAction(tr("Turn On NightMode"));
 
     opennightmode->setCheckable(true);
-    opennightmode->setChecked(gsettings->get("nightmode").toBool());
+    opennightmode->setChecked(gsettings->get(NIGHT_MODE_KEY).toBool());
     connect(opennightmode, &QAction::triggered, [this] { turnNightMode(); });
 
     nightModeMenu->addAction(QIcon::fromTheme("document-page-setup"),
@@ -208,7 +208,7 @@ void NightModeButton::turnNightMode()
             if(gsettings->keys().contains(NIGHT_MODE_KEY))
             {
                 qDebug()<<"NightModeButton::mousePressEvent   mode = true contains(NIGHT_MODE_KEY)";
-                gsettings->set("nightmode", true);
+                gsettings->set(NIGHT_MODE_KEY, true);
                 setNightMode(true);
                 setUkuiStyle("ukui-black");
                 mode=false;
@@ -221,7 +221,7 @@ void NightModeButton::turnNightMode()
             if(gsettings->keys().contains(NIGHT_MODE_KEY))
             {
                 qDebug()<<"NightModeButton::mousePressEvent   mode = false   contains(NIGHT_MODE_KEY) ";
-                gsettings->set("nightmode", false);
+                gsettings->set(NIGHT_MODE_KEY, false);
                 setNightMode(false);
                 setUkuiStyle("ukui-white");
                 mode=true;

@@ -47,6 +47,8 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAcceptDrops(true);
+    /*设置快速启动栏的按键不接受焦点　　*/
+    setFocusPolicy(Qt::NoFocus);
     setAutoRaise(true);
     quicklanuchstatus = NORMAL;
 

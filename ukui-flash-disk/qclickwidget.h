@@ -29,7 +29,6 @@
 #include <QBoxLayout>
 #include <QPushButton>
 
-
 #include "clickLabel.h"
 class MainWindow;
 class QClickWidget : public QWidget
@@ -60,6 +59,7 @@ protected:
     //void paintEvent(QPaintEvent *);
 
 private:
+    QIcon imgIcon;
     QString m_driveName;
     QString m_nameDis1;
     QString m_nameDis2;
@@ -76,7 +76,7 @@ private:
     MainWindow *m_mainwindow;
     QPoint mousePos;
     int m_Num;
-    QLabel *image_show_label;
+    QPushButton *image_show_label;
     QLabel *m_driveName_label;
     ClickLabel *m_nameDis1_label;
     ClickLabel *m_nameDis2_label;

@@ -39,7 +39,22 @@
             <default>1</default>
             <summary>show Panel Lines</summary>
             <description>show Panel Lines</description>
-        </key>
+    	</key>
+	<key name="quicklaunchsize" type="i">
+            <default>0</default>
+            <summary>show Panel Quicklaunch size</summary>
+            <description>show Panel Quicklaunch size</description>
+   	 </key>
+	 <key name="taskbarsize" type="i">
+            <default>0</default>
+            <summary>show Panel Taskbar size</summary>
+            <description>show Panel Taskbar size</description>
+    	</key>
+	<key name="traysize" type="i">
+            <default>0</default>
+            <summary>show Panel Tray size</summary>
+            <description>show Panel Tray size</description>
+    	</key>
     </schema>
 </schemalist>
 

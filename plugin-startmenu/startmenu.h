@@ -38,6 +38,7 @@
 #include "../panel/iukuipanelplugin.h"
 #include <QMenu>
 #include <QPointF>
+#include "../panel/highlight-effect.h"
 
 class UKUIStartMenuButton;
 class UKUIStartMenuPlugin: public QObject, public IUKUIPanelPlugin

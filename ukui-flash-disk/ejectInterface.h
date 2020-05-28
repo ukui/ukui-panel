@@ -30,6 +30,7 @@
 #include <QApplication>
 #include <QScreen>
 #include <QDebug>
+#include <QPushButton>
 
 #include "MacroFile.h"
 
@@ -44,7 +45,8 @@ public:
     ~ejectInterface();
 
 private:
-    QLabel *eject_image_label;
+    QPushButton *eject_image_button;
+    QIcon eject_image_icon;
     QLabel *show_text_label;
     QLabel *mount_name_label;
     QHBoxLayout *ejectinterface_h_BoxLayout;

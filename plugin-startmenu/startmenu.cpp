@@ -53,12 +53,17 @@ UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* par
 {
     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     this->setStyle(new CustomStyle());
+//    this->setWindowFlags(Qt::NoFocus);
+    setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
+    setAttribute(Qt::WA_ShowWithoutActivating,true);
+    setFocusPolicy(Qt::NoFocus);
 }
 
 UKUIStartMenuButton::~UKUIStartMenuButton()
 {
 }
 
+/*plugin-startmenu refresh function*/
 void UKUIStartMenuButton::realign()
 {
     if (mPlugin->panel()->isHorizontal())
@@ -89,26 +94,26 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     rightPressMenu=new QMenu();
     rightPressMenu->setAttribute(Qt::WA_DeleteOnClose);
 
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-lock-screen-symbolic")),
+    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-lock-screen-symbolic").pixmap(24,24).toImage()))),
                               tr("Lock Screen"),
                               this, SLOT(ScreenServer())
                               );
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("stock-people-symbolic")),
+    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("stock-people-symbolic").pixmap(24,24).toImage()))),
                               tr("Switch User"),
                               this, SLOT(SessionSwitch())
                               );
 
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-logout-symbolic")),
+    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-logout-symbolic").pixmap(24,24).toImage()))),
                               tr("LogOut"),
                               this, SLOT(SessionLogout())
                               );
 
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("system-restart-symbolic")),
+    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-restart-symbolic").pixmap(24,24).toImage()))),
                               tr("Restart"),
                               this, SLOT(SessionReboot())
                               );
 
-    rightPressMenu->addAction(XdgIcon::fromTheme(QLatin1String("exit_symbolic")),
+    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("exit_symbolic").pixmap(24,24).toImage()))),
                               tr("Power Off"),
                               this, SLOT(SessionShutdown())
                               );
@@ -117,6 +122,7 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     rightPressMenu->show();
 }
 
+/*开始菜单按钮右键菜单选项，与开始菜单中电源按钮的右键功能是相同的*/
 void UKUIStartMenuButton::ScreenServer()
 {
     system("ukui-screensaver-command -l");

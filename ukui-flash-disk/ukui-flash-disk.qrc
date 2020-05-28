@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>ukui-flash-disk.qss</file>
-        <file>picture/tip-32.svg</file>
         <file>picture/media-eject-symbolic.svg</file>
         <file>picture/drive-removable-media.svg</file>
         <file>picture/drive-removable-media-usb.png</file>
