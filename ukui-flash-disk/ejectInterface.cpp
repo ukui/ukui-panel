@@ -85,7 +85,9 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
                         "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
                         "border-radius:6px"
                         "}");
+
     //set the style of the ejecet-image-button
+
     eject_image_button->setStyleSheet(
                 //正常状态样式
                 "QPushButton{"

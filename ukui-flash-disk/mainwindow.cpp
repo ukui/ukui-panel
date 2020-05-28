@@ -107,6 +107,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //to get the picture from the theme
+
     iconSystray = QIcon::fromTheme("media-removable-symbolic");
     vboxlayout = new QVBoxLayout();
     //hboxlayout = new QHBoxLayout();

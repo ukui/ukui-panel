@@ -51,7 +51,8 @@
 
 #include "ukuitaskgroup.h"
 #include "ukuitaskbar.h"
-
+#include "../panel/customstyle.h"
+#include "ukuitaskbaricon.h"
 #include <KWindowSystem/KWindowSystem>
 // Necessary for closeApplication()
 #include <KWindowSystem/NETWM>
@@ -74,9 +75,10 @@ void LeftAlignedTextStyle::drawItemText(QPainter * painter, const QRect & rect, 
 /************************************************
 
 ************************************************/
-UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget *parent) :
+UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * taskbar, QWidget *parent) :
     QToolButton(parent),
     mWindow(window),
+    mAppName(appName),
     mUrgencyHint(false),
     mOrigin(Qt::TopLeftCorner),
     mDrawPixmap(false),
@@ -103,32 +105,8 @@ UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget 
     connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
     connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskButton::updateIcon);
-    mParentTaskBar->setStyleSheet(
-                //正常状态样式
-                "QFrame{"
-                "border-width:2px;"                     //边框宽度像素
-                "}"
-                );
-    this->setStyleSheet(
-                //正常状态样式
-                "QToolButton{"
-                "background-color:rgba(190,216,239,8%);"
-                                "border-style:outset;"                  //边框样式（inset/outset）
-                                "border-color:rgba(190,216,239,0%);"    //边框颜色
-                                "qproperty-iconSize: 28px 28px;"
-                                "border-width:4px;"                     //边框宽度像素
-                                "border-radius:6px;"                   //边框圆角半径像素
-                                "padding:0px;"
-                "}"
-                //鼠标悬停样式
-                "QToolButton:hover{"
-                "background-color:rgba(190,216,239,12%);"
-                "}"
-                //鼠标按下样式
-                "QToolButton:pressed{"
-                "background-color:rgba(190,216,239,6%);"
-                "}"
-                );
+    /*传入参数　bool　是开启　打开多个窗口　的样式*/
+    this->setStyle(new CustomStyle("taskbutton",false));
 }
 
 /************************************************
@@ -149,9 +127,9 @@ void UKUITaskButton::updateText()
     setToolTip(title);
 }
 
-/************************************************
-
- ************************************************/
+/* int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF()是由ico =KWindowSystem:ico(mwindow)更改的
+ * 目的是为了能够显示正确的application-x-desktop的图标的大小
+*/
 void UKUITaskButton::updateIcon()
 {
     QIcon ico;
@@ -159,13 +137,30 @@ void UKUITaskButton::updateIcon()
     {
         ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
     }
+    if(ico.isNull())
+    {
+        ico = XdgIcon::fromTheme(mParentTaskBar->fetchIcon()->getIconName(mAppName.replace(" ","").toLower()));
+    }
     if (ico.isNull())
     {
-        ico = KWindowSystem::icon(mWindow);
-//        ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
-
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF();
+#else
+        int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatio();
+#endif
+        ico = KWindowSystem::icon(mWindow, devicePixels, devicePixels);
     }
-    setIcon(ico.isNull() ? XdgIcon::fromTheme("application-x-desktop") : ico);
+    if(ico.isNull())
+    {
+        ico = XdgIcon::fromTheme("application-x-desktop");
+    }
+
+    if(mIcon.isNull())
+    {
+        mIcon = ico;
+    }
+//    setIcon(ico.isNull() ? XdgIcon::fromTheme("application-x-desktop") : ico);
+    setIcon(mIcon);
 }
 
 /************************************************
@@ -776,7 +771,7 @@ void UKUITaskButton::paintEvent(QPaintEvent *event)
 //    }
 
     QSize sz = size();
-    QSize adjSz (mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+    QSize adjSz =sz;
     QTransform transform;
     QPoint originPoint;
 

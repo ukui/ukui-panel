@@ -45,6 +45,7 @@
 
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
+#include "ukuitaskbaricon.h"
 using namespace UKUi;
 
 /************************************************
@@ -76,6 +77,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
     setStyle(mStyle);
+    mpTaskBarIcon = new UKUITaskBarIcon;
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
     mLayout->setMargin(0);
@@ -111,6 +113,11 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
 UKUITaskBar::~UKUITaskBar()
 {
     delete mStyle;
+    if(mpTaskBarIcon)
+    {
+        delete mpTaskBarIcon;
+        mpTaskBarIcon = nullptr;
+    }
 }
 
 /************************************************
@@ -278,7 +285,13 @@ void UKUITaskBar::addWindow(WId window)
 {
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
-
+    qDebug()<<"UKUITaskBar::addWindow(WId window)"<<group_id;
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    if(!group_id.compare("peony-qt-desktop"))
+    {
+        return;
+    }
+#endif
     UKUITaskGroup *group = nullptr;
     auto i_group = mKnownWindows.find(window);
     if (mKnownWindows.end() != i_group)
@@ -312,7 +325,7 @@ void UKUITaskBar::addWindow(WId window)
             buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
         });
 
-        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
+        //group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         mLayout->addWidget(group);
         group->setToolButtonsStyle(mButtonStyle);
     }
@@ -524,8 +537,8 @@ void UKUITaskBar::realign()
 
     IUKUIPanel *panel = mPlugin->panel();
     //set taskbar width by panel
-    QSize maxSize = QSize(100, mButtonHeight);
-    QSize minSize = QSize(0, 0);
+    QSize maxSize = QSize(mPlugin->panel()->panelSize(), mPlugin->panel()->panelSize());
+    QSize minSize = QSize(mPlugin->panel()->iconSize()/2, mPlugin->panel()->iconSize()/2);
     int iconsize = panel->iconSize();
     int panelsize = panel->panelSize();
 
@@ -566,9 +579,9 @@ void UKUITaskBar::realign()
     for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
     {
         UKUITaskGroup *group = it.value();
-        group->setFixedSize(panelsize, panelsize);
+        //group->setFixedSize(panelsize, panelsize);
         group->setIconSize(QSize(iconsize,iconsize));
-        group->updateIcon();
+//        group->updateIcon();
     }
     mLayout->setCellMinimumSize(minSize);
     mLayout->setCellMaximumSize(maxSize);

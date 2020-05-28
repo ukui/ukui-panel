@@ -41,7 +41,7 @@ class CustomStyle : public QProxyStyle
 {
     Q_OBJECT
 public:
-    explicit CustomStyle(const QString &proxyStyleName = "windows", QObject *parent = nullptr);
+    explicit CustomStyle(const QString &proxyStyleName = "windows",bool multileWins=false, QObject *parent = nullptr);
     ~CustomStyle();
     /*!
      * \brief drawComplexControl
@@ -151,6 +151,8 @@ public:
 signals:
 
 public slots:
+private:
+    QString pluginName;
+    bool multileWindow = false;
 };
-
 #endif // CUSTOMSTYLE_H

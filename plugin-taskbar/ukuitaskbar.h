@@ -52,6 +52,7 @@
 class QSignalMapper;
 class UKUITaskButton;
 class ElidedButtonStyle;
+class UKUITaskBarIcon;
 
 namespace UKUi {
 class GridLayout;
@@ -89,6 +90,7 @@ public:
     void setShowGroupOnHover(bool bFlag);
     inline IUKUIPanel * panel() const { return mPlugin->panel(); }
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
+    inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
 
 public slots:
     void settingsChanged();
@@ -165,6 +167,7 @@ private:
     IUKUIPanelPlugin *mPlugin;
     QWidget *mPlaceHolder;
     LeftAlignedTextStyle *mStyle;
+    UKUITaskBarIcon *mpTaskBarIcon;
 };
 
 #endif // UKUITASKBAR_H
