@@ -143,7 +143,7 @@ void UKUITaskButton::updateIcon()
     }
     if (ico.isNull())
     {
-#if QT_VERSION >= 0x050600
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
         int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF();
 #else
         int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatio();
