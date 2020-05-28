@@ -285,6 +285,7 @@ void UKUITaskBar::addWindow(WId window)
 {
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
+    qDebug()<<"UKUITaskBar::addWindow(WId window)"<<group_id;
 #if QT_VERSION < 0x050600
     if(!group_id.compare("penoy-qt-desktop"))
     {
