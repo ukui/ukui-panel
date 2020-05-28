@@ -9,6 +9,7 @@ set(HEADERS
     ukuigrouppopup.h
     ukuitaskwidget.h
     ukuitaskclosebutton.h
+	ukuitaskbaricon.h
 )
 
 set(SOURCES
@@ -20,6 +21,7 @@ set(SOURCES
     ukuigrouppopup.cpp
     ukuitaskwidget.cpp
     ukuitaskclosebutton.cpp
+    ukuitaskbaricon.cpp
 )
 
 set(UIS
@@ -37,5 +39,12 @@ find_package(X11 REQUIRED)
 #include_directories(${TASKBAR_DEPS_INCLUDE_DIRS})
 #ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
 #link_libraries(libQt5X11Extras.so)
+
+pkg_check_modules(GLIB2 REQUIRED glib-2.0)
+include_directories(${GLIB2_INCLUDE_DIRS})
+#ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
+link_libraries(glib-2.0.so)
+
+
 
 BUILD_UKUI_PLUGIN(${PLUGIN})

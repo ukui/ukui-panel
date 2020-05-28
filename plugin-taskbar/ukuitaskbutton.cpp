@@ -52,6 +52,7 @@
 #include "ukuitaskgroup.h"
 #include "ukuitaskbar.h"
 #include "../panel/customstyle.h"
+#include "ukuitaskbaricon.h"
 #include <KWindowSystem/KWindowSystem>
 // Necessary for closeApplication()
 #include <KWindowSystem/NETWM>
@@ -74,9 +75,10 @@ void LeftAlignedTextStyle::drawItemText(QPainter * painter, const QRect & rect, 
 /************************************************
 
 ************************************************/
-UKUITaskButton::UKUITaskButton(const WId window, UKUITaskBar * taskbar, QWidget *parent) :
+UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * taskbar, QWidget *parent) :
     QToolButton(parent),
     mWindow(window),
+    mAppName(appName),
     mUrgencyHint(false),
     mOrigin(Qt::TopLeftCorner),
     mDrawPixmap(false),
@@ -135,16 +137,30 @@ void UKUITaskButton::updateIcon()
     {
         ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
     }
+    if(ico.isNull())
+    {
+        ico = XdgIcon::fromTheme(mParentTaskBar->fetchIcon()->getIconName(mAppName.replace(" ","").toLower()));
+    }
     if (ico.isNull())
     {
-#if QT_VERSION >= 0x050600
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
         int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF();
 #else
         int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatio();
 #endif
         ico = KWindowSystem::icon(mWindow, devicePixels, devicePixels);
     }
-    setIcon(ico.isNull() ? QIcon::fromTheme("application-x-desktop") : ico);
+    if(ico.isNull())
+    {
+        ico = XdgIcon::fromTheme("application-x-desktop");
+    }
+
+    if(mIcon.isNull())
+    {
+        mIcon = ico;
+    }
+//    setIcon(ico.isNull() ? XdgIcon::fromTheme("application-x-desktop") : ico);
+    setIcon(mIcon);
 }
 
 /************************************************

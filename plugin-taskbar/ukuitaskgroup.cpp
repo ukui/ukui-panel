@@ -133,7 +133,7 @@ QPixmap qimageFromXImage(XImage* ximage)
 
  ************************************************/
 UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *parent)
-    : UKUITaskButton(window, parent, parent),
+    : UKUITaskButton(groupName,window, parent, parent),
     mGroupName(groupName),
     mPopup(new UKUIGroupPopup(this)),
     mPreventPopup(false),
@@ -345,7 +345,7 @@ void UKUITaskGroup::onWindowRemoved(WId window)
         {
             if(mPopup->isVisible())
             {
-                mPopup->hide();
+//                mPopup->hide(true);
                 showPreview();
             }
             else
@@ -1218,6 +1218,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     plugin()->willShowWindow(mPopup);
     mPopup->layout()->addWidget(mpWidget);
     adjustPopWindowSize(winWidth, winHeight);
+
     if(plugin()->panel()->isHorizontal())//set preview window position
     {
         if(mPopup->size().width()/2 < QCursor::pos().x())
@@ -1242,7 +1243,14 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         }
         mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,previewPosition)), mPopup->size()));
     }
-    mPopup->show();
+    if(mPopup->isVisible())
+    {
+//        mPopup-
+    }
+    else
+    {
+        mPopup->show();
+    }
 
    emit popupShown(this);
 }
