@@ -50,6 +50,9 @@ QClickWidget::QClickWidget(QWidget *parent,
 
 {
 //union layout
+/*
+ * it's the to set the title interface,we get the drive name and add picture of a u disk
+*/
         QHBoxLayout *drivename_H_BoxLayout = new QHBoxLayout();
         drivename_H_BoxLayout = new QHBoxLayout();
         image_show_label = new QPushButton();
@@ -84,8 +87,10 @@ QClickWidget::QClickWidget(QWidget *parent,
         QVBoxLayout *main_V_BoxLayout = new QVBoxLayout();
         main_V_BoxLayout->setContentsMargins(0,0,0,0);
 
-        connect(m_eject_button,SIGNAL(clicked()),SLOT(switchWidgetClicked()));
+        connect(m_eject_button,SIGNAL(clicked()),SLOT(switchWidgetClicked()));  // this signal-slot function is to emit a signal which
+                                                                                //is to trigger a slot in mainwindow interface
 //when the drive only has one vlolume
+//we set the information and set all details of the U disk in main interface
         if(m_Num == 1)
         {
             QHBoxLayout *onevolume_h_BoxLayout = new QHBoxLayout();
@@ -576,6 +581,7 @@ QClickWidget::~QClickWidget()
 
 }
 
+//to show the text,when the contents is too much,we use the "..."to replace it
 QString QClickWidget::getElidedText(QFont font, QString str, int MaxWidth)
 {
     if (str.isEmpty())
@@ -594,15 +600,18 @@ QString QClickWidget::getElidedText(QFont font, QString str, int MaxWidth)
     if (width >= MaxWidth)
     {
         //右部显示省略号
+        //show by ellipsis in right
         str = fontWidth.elidedText(str, Qt::ElideRight, MaxWidth);
     }
     //返回处理后的字符串
+    //return the string that is been handled
     return str;
 }
 
 void QClickWidget::mouseClicked()
 {
     //处理代码
+    //Processing code
 //        std::string str = m_path.toStdString();
 //        const char* ch = str.c_str();
 //    QProcess::startDetached("peony "+m_pathDis1);
@@ -610,6 +619,7 @@ void QClickWidget::mouseClicked()
     system(aaa.toUtf8().data());
     this->topLevelWidget()->hide();
 }
+
 
 void QClickWidget::mousePressEvent(QMouseEvent *ev)
 {
@@ -631,6 +641,7 @@ void QClickWidget::mouseReleaseEvent(QMouseEvent *ev)
 //     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 // }
 
+//click the first area to show the interface
 void QClickWidget::on_volume1_clicked()
 {
 //    QProcess::startDetached("caja "+m_pathDis1);
@@ -640,6 +651,7 @@ void QClickWidget::on_volume1_clicked()
     this->topLevelWidget()->hide();
 }
 
+//click the second area to show the interface
 void QClickWidget::on_volume2_clicked()
 {
     //QProcess::startDetached("caja "+m_pathDis2);
@@ -649,12 +661,14 @@ void QClickWidget::on_volume2_clicked()
     this->topLevelWidget()->hide();
 }
 
+//click the third area to show the interface
 void QClickWidget::on_volume3_clicked()
 {
     QProcess::startDetached("peony "+m_pathDis3);
     this->topLevelWidget()->hide();
 }
 
+//click the forth area to show the interface
 void QClickWidget::on_volume4_clicked()
 {
     QProcess::startDetached("peony "+m_pathDis4);
@@ -668,9 +682,12 @@ void QClickWidget::switchWidgetClicked()
 
 }
 
+//to convert the capacity by another type
 QString QClickWidget::size_human(qlonglong capacity)
 {
     //    float capacity = this->size();
+    if(capacity != NULL)
+    {
         QStringList list;
         list << "KB" << "MB" << "GB" << "TB";
 
@@ -685,8 +702,16 @@ QString QClickWidget::size_human(qlonglong capacity)
         QString str_capacity=QString(" %1%2").arg(capacity).arg(unit);
         return str_capacity;
      //   return QString().setNum(capacity,'f',2)+" "+unit;
+    }
+
+    if(capacity == NULL)
+    {
+       QString str_capaticity = "the capacity is null";
+       return str_capaticity;
+    }
 }
 
+//set the style of the eject button and label when the mouse doing some different operations
 bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
 {
     if(obj == m_eject_button)
@@ -734,6 +759,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
            {
            m_nameDis1_label->setStyleSheet(
            //正常状态样式
+           //nomal state style
            "QLabel{"
            "font-size:14px;"
            "font-family:Microsoft YaHei;"
@@ -853,6 +879,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
                         "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
             m_nameDis3_label->setStyleSheet(
             //正常状态样式
+            //normal state style
             "QLabel{"
             "font-size:14px;"
             "font-family:Microsoft YaHei;"
@@ -863,6 +890,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
 
             m_capacityDis3_label->setStyleSheet(
             //正常状态样式
+            //normal state style
             "QLabel{"
             "font-size:14px;"
             "font-family:Microsoft YaHei;"
@@ -878,6 +906,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
                         "");
             m_nameDis3_label->setStyleSheet(
             //正常状态样式
+            //normal state stlyle
             "QLabel{"
             "font-size:14px;"
             "font-family:Microsoft YaHei;"
@@ -889,6 +918,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
 
             m_capacityDis3_label->setStyleSheet(
             //正常状态样式
+            //normal state style
             "QLabel{"
             "font-size:14px;"
             "font-family:Microsoft YaHei;"
