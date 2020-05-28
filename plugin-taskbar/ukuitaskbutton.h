@@ -60,7 +60,7 @@ class UKUITaskButton : public QToolButton
     Q_PROPERTY(Qt::Corner origin READ origin WRITE setOrigin)
 
 public:
-    explicit UKUITaskButton(const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
+    explicit UKUITaskButton(QString appName,const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
     virtual ~UKUITaskButton();
 
     bool isApplicationHidden() const;
@@ -124,6 +124,7 @@ protected:
 
 private:
     WId mWindow;
+    QString mAppName;
     bool mUrgencyHint;
     QPoint mDragStartPosition;
     Qt::Corner mOrigin;
@@ -133,6 +134,7 @@ private:
     IUKUIPanelPlugin * mPlugin;
     enum TaskButtonStatus{NORMAL, HOVER, PRESS};
     TaskButtonStatus taskbuttonstatus;
+    QIcon mIcon;
 
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
