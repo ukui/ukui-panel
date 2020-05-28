@@ -113,6 +113,11 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
 UKUITaskBar::~UKUITaskBar()
 {
     delete mStyle;
+    if(mpTaskBarIcon)
+    {
+        delete mpTaskBarIcon;
+        mpTaskBarIcon = nullptr;
+    }
 }
 
 /************************************************
