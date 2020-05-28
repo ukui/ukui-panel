@@ -52,9 +52,12 @@ QClickWidget::QClickWidget(QWidget *parent,
 //union layout
         QHBoxLayout *drivename_H_BoxLayout = new QHBoxLayout();
         drivename_H_BoxLayout = new QHBoxLayout();
-        image_show_label = new QLabel();
-        QPixmap pixmap(":picture/drive-removable-media-usb.png");
-        image_show_label->setPixmap(pixmap);
+        image_show_label = new QPushButton();
+        //QPixmap pixmap(":picture/drive-removable-media-usb.png");
+        imgIcon = QIcon::fromTheme("drive-removable-media-usb");
+        //QPixmap pixmap()
+        //QPixmap pixmap = static_cast(QPixmap)QIcon::fromTheme("media-removable-symbolic");
+        image_show_label->setIcon(imgIcon);
         image_show_label->setFixedSize(40,40);
         m_driveName_label = new QLabel();
         m_driveName_label->setFont(QFont("Noto Sans CJK SC",14));
@@ -225,8 +228,16 @@ QClickWidget::QClickWidget(QWidget *parent,
 
             main_V_BoxLayout->setContentsMargins(0,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
-            main_V_BoxLayout->addWidget(disWidgetNumOne);
-            main_V_BoxLayout->addWidget(disWidgetNumTwo);
+            if(m_pathDis1 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumOne);
+            }
+
+            if(m_pathDis2 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumTwo);
+            }
+
             main_V_BoxLayout->addStretch();
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,97);
@@ -352,9 +363,20 @@ QClickWidget::QClickWidget(QWidget *parent,
 
             main_V_BoxLayout->setContentsMargins(0,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
-            main_V_BoxLayout->addWidget(disWidgetNumOne);
-            main_V_BoxLayout->addWidget(disWidgetNumTwo);
-            main_V_BoxLayout->addWidget(disWidgetNumThree);
+            if(m_pathDis1 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumOne);
+            }
+
+            if(m_pathDis2 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumTwo);
+            }
+
+            if(m_pathDis3 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumThree);
+            }
 
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,136);
@@ -515,10 +537,26 @@ QClickWidget::QClickWidget(QWidget *parent,
 
             main_V_BoxLayout->setContentsMargins(0,0,0,0);
             main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
-            main_V_BoxLayout->addWidget(disWidgetNumOne);
-            main_V_BoxLayout->addWidget(disWidgetNumTwo);
-            main_V_BoxLayout->addWidget(disWidgetNumThree);
-            main_V_BoxLayout->addWidget(disWidgetNumFour);
+            if(m_pathDis1 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumOne);
+            }
+
+            if(m_pathDis2 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumTwo);
+            }
+
+            if(m_pathDis3 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumThree);
+            }
+
+            if(m_pathDis4 != "")
+            {
+                main_V_BoxLayout->addWidget(disWidgetNumFour);
+            }
+
             this->setLayout(main_V_BoxLayout);
             this->setFixedSize(276,165);
 //            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
@@ -567,7 +605,9 @@ void QClickWidget::mouseClicked()
     //处理代码
 //        std::string str = m_path.toStdString();
 //        const char* ch = str.c_str();
-    QProcess::startDetached("peony "+m_pathDis1);
+//    QProcess::startDetached("peony "+m_pathDis1);
+    QString aaa = "caja "+m_pathDis1;
+    system(aaa.toUtf8().data());
     this->topLevelWidget()->hide();
 }
 
@@ -593,13 +633,19 @@ void QClickWidget::mouseReleaseEvent(QMouseEvent *ev)
 
 void QClickWidget::on_volume1_clicked()
 {
-    QProcess::startDetached("peony "+m_pathDis1);
+//    QProcess::startDetached("caja "+m_pathDis1);
+    QString aaa = "peony "+m_pathDis1;
+    QProcess::startDetached(aaa.toUtf8().data());
+    qDebug()<<"------1-------QString"<<aaa;
     this->topLevelWidget()->hide();
 }
 
 void QClickWidget::on_volume2_clicked()
 {
-    QProcess::startDetached("peony "+m_pathDis2);
+    //QProcess::startDetached("caja "+m_pathDis2);
+    QString aaa = "peony "+m_pathDis2;
+    QProcess::startDetached(aaa.toUtf8().data());
+    qDebug()<<"-------2------QString"<<aaa;
     this->topLevelWidget()->hide();
 }
 
