@@ -96,7 +96,8 @@ extern "C" {
 
 #define PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANEL_LINES    "panellines"
-#define TRAY_SIZE      "traylines"
+#define TRAY_LINE      "traylines"
+#define TRAY_SIZE      "traysize"
 /************************************************
 
  ************************************************/
@@ -135,7 +136,6 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     if(QGSettings::isSchemaInstalled(id))
     {
         settings=new QGSettings(id);
-        qDebug()<<"panel settinngs *********************8"<<settings->get(PANEL_LINES).toInt();
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==PANEL_LINES)
@@ -431,8 +431,9 @@ void UKUITray::realign()
                     qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
                 }
             }
+            mBtn->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize());
         }
-        mBtn->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize());
+
 
     }
 
