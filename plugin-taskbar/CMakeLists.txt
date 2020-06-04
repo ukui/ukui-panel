@@ -40,10 +40,13 @@ find_package(X11 REQUIRED)
 #ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
 #link_libraries(libQt5X11Extras.so)
 
-pkg_check_modules(GLIB2 REQUIRED glib-2.0)
+#pkg_check_modules(GLIB2 REQUIRED glib-2.0)
+#include_directories(${GLIB2_INCLUDE_DIRS})
+pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
+
 include_directories(${GLIB2_INCLUDE_DIRS})
 #ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
-link_libraries(glib-2.0.so)
+#link_libraries(glib-2.0.so)
 
 
 
