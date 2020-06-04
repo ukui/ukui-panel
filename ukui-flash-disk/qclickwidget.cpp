@@ -56,8 +56,10 @@ QClickWidget::QClickWidget(QWidget *parent,
         QHBoxLayout *drivename_H_BoxLayout = new QHBoxLayout();
         drivename_H_BoxLayout = new QHBoxLayout();
         image_show_label = new QPushButton();
+        image_show_label->adjustSize();
         //QPixmap pixmap(":picture/drive-removable-media-usb.png");
         imgIcon = QIcon::fromTheme("drive-removable-media-usb");
+        image_show_label->setIconSize(QSize(25,25));
         //QPixmap pixmap()
         //QPixmap pixmap = static_cast(QPixmap)QIcon::fromTheme("media-removable-symbolic");
         image_show_label->setIcon(imgIcon);
@@ -706,7 +708,7 @@ QString QClickWidget::size_human(qlonglong capacity)
 
     if(capacity == NULL)
     {
-       QString str_capaticity = "the capacity is null";
+       QString str_capaticity = tr("the capacity is empty");
        return str_capaticity;
     }
 }
