@@ -53,6 +53,7 @@ void MainController::init()                   //init select
 
 int MainController::IsNotRunning()
 {
+    //determine the session bus that if it has been connected
     char service_name[SERVICE_NAME_SIZE];
     memset(service_name, 0, SERVICE_NAME_SIZE);
     snprintf(service_name, SERVICE_NAME_SIZE, "%s_%d",UKUI_FLASH_DISK_SERVICE,getuid());
@@ -67,8 +68,10 @@ int MainController::IsNotRunning()
 void MainController::creatDBusService()
 {
     // 用于建立到session bus的连接
+    //to be used for creating the session bus connection
     QDBusConnection bus = QDBusConnection::sessionBus();
     // 在session bus上注册名为"com.kylin_user_guide.hotel"的service
+    // register the service in session bus that named by "com.kylin_user_guide.hotel"
 
     char service_name[SERVICE_NAME_SIZE];
     memset(service_name, 0, SERVICE_NAME_SIZE);
@@ -76,9 +79,11 @@ void MainController::creatDBusService()
 
     if (!bus.registerService(service_name))
     {  //注意命名规则-和_
+       //Note the naming convention.
             qDebug() << bus.lastError().message();
             exit(1);
     }
     // "QDBusConnection::ExportAllSlots"表示把类Hotel的所有Slot都导出为这个Object的method
+    // "QDBusConnection::ExportAllSlots" stands for that it makes all the slot in class hotel export to the method of this object
     bus.registerObject("/", this ,QDBusConnection::ExportAllSlots);
 }

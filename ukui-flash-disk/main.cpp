@@ -52,7 +52,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication a(argc, argv);
-    a.setQuitOnLastWindowClosed(false);        //进程不隐式退出
+    a.setQuitOnLastWindowClosed(false);        //Process does not exit implicitly
+
 
     //load translation file
     QString locale = QLocale::system().name();
