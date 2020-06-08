@@ -316,6 +316,100 @@ function scroll_div(event)
     updateUi();
 }
 
+function update_yiji_area_by_date(cur_year,cur_month)
+{
+    "use strict";
+    var year = cur_year;
+    var month = cur_month;
+
+    var hl_table = document.getElementById('hl_table');
+    var current_row;
+    var current_cell;
+
+    if (year !== parseInt(hl_script.id, 10)) {
+        load_hl_script(year);
+        return;
+    }
+
+    if (typeof HuangLi['y' + year] === 'undefined') {
+        for (var row = 0; row < 2; row++) {
+            if (hl_table.rows.length === row) {
+                current_row = hl_table.insertRow(row);
+            } else {
+                current_row = hl_table.rows[row];
+            }
+
+            for (var column = 1; column < 5; column++) {
+                if (current_row.cells.length === column) {
+                    current_cell = current_row.insertCell(column);
+                } else {
+                    current_cell = current_row.cells[column];
+                }
+
+                if (row === 1) {
+                    current_cell.innerHTML = '无数据';
+                } else {
+                    current_cell.innerHTML = '';
+                }
+            }
+        }
+    }
+
+    var day = highlight_day;
+    var month_str = month.toString();
+    var day_str = day.toString();
+    if (month <= 9) {
+        month_str = '0' + month;
+    }
+    if (day <= 9) {
+        day_str = '0' + day;
+    }
+
+    var yi_str = HuangLi['y' + year]['d' + month_str + day_str]['y'];
+    var ji_str = HuangLi['y' + year]['d' + month_str + day_str]['j'];
+    var hl_yi_data = yi_str.split('.');
+    var hl_ji_data = ji_str.split('.');
+
+    for (var row = 0; row < 2; row++) {
+        if (hl_table.rows.length === row) {
+            current_row = hl_table.insertRow(row);
+        } else {
+            current_row = hl_table.rows[row];
+        }
+
+        for (var column = 1; column < 5; column++) {
+            if (current_row.cells.length === column) {
+                current_cell = current_row.insertCell(column);
+            } else {
+                current_cell = current_row.cells[column];
+            }
+                if(0 == row )
+                {
+                    if(hl_yi_data[column-1])
+                    {
+                        current_cell.innerHTML = hl_yi_data[column-1]; 
+                    }
+                    else
+                    {
+                        current_cell.innerHTML =  ''; 
+                    }
+                    
+                }
+                else
+                {
+                    if(hl_ji_data[column-1])
+                    {
+                        current_cell.innerHTML = hl_ji_data[column-1];
+                    }
+                    else
+                    {
+                        current_cell.innerHTML =''; 
+                    }       
+                }
+        }
+    }  
+}
+
 function update_yiji_area() {
     "use strict";
     var year = parseInt(year_selector.value, 10);
@@ -729,12 +823,48 @@ function create_page(year, month) {
                         highlight_day = parseInt(this.children[0].innerHTML);
                     // }
                     //highlight_day = parseInt(this.children[0].innerText);
+                    var cur_month = parseInt(month_selector.value);
+                    var cur_year = parseInt(year_selector.value);
+                    if (this.className === 'day_other_month' && highlight_day > 20) {
+                        // var cur_month = parseInt(month_selector.value);
+                        // var cur_year = parseInt(year_selector.value);
+                        if(1 == cur_month)
+                        {
+                            cur_month = 12;
+                            cur_year = cur_year - 1;
 
-                    // if (this.className === 'day_other_month') {
-                    //     return;
-                    // }
+                        }
+                        else
+                        {
+                            cur_month = cur_month - 1;
+                        }
+                        // create_page(cur_year, cur_month);
+                        update_right_pane(cur_year, cur_month, highlight_day);
+                        update_yiji_area_by_date(cur_year,cur_month);
+                    }
+                    else if(this.className === 'day_other_month' && highlight_day < 15)
+                    {
+                        // var cur_month = parseInt(month_selector.value);
+                        // var cur_year = parseInt(year_selector.value);
+                        if(12 == cur_month)
+                        {
+                            cur_month = 1;
+                            cur_year = cur_year + 1;
 
-                    create_page(parseInt(year_selector.value), parseInt(month_selector.value));
+                        }
+                        else
+                        {
+                            cur_month = cur_month + 1; 
+                        }
+                        // create_page(cur_year, cur_month);
+                        update_right_pane(cur_year, cur_month, highlight_day);
+                        update_yiji_area_by_date(cur_year,cur_month);
+                    }
+                    else
+                    {
+                        create_page(parseInt(year_selector.value), parseInt(month_selector.value));
+                    }
+                    // create_page(cur_year, cur_month);
                 });
             } else {
                 current_cell = current_row.cells[column];
