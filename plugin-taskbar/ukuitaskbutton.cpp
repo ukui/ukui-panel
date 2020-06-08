@@ -699,9 +699,6 @@ void UKUITaskButton::setUrgencyHint(bool set)
     update();
 }
 
-/************************************************
-
- ************************************************/
 bool UKUITaskButton::isOnDesktop(int desktop) const
 {
     return KWindowInfo(mWindow, NET::WMDesktop).isOnDesktop(desktop);
