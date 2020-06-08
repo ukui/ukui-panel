@@ -105,8 +105,6 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
     connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
     connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskButton::updateIcon);
-    /*传入参数　bool　是开启　打开多个窗口　的样式*/
-    this->setStyle(new CustomStyle("taskbutton",false));
 }
 
 /************************************************
@@ -161,6 +159,13 @@ void UKUITaskButton::updateIcon()
     }
 //    setIcon(ico.isNull() ? XdgIcon::fromTheme("application-x-desktop") : ico);
     setIcon(mIcon);
+
+    /*传入参数　bool　是开启　打开多个窗口　的样式*/
+//    if(mButtonHash.size()>1)
+
+    //        this->setStyle(new CustomStyle("taskbutton",true));
+//    else
+//        this->setStyle(new CustomStyle("taskbutton",false));
 }
 
 /************************************************

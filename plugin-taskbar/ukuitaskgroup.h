@@ -119,6 +119,7 @@ signals:
     void popupShown(UKUITaskGroup* sender);
 
 private:
+    void changeTaskButtonStyle();
     QString mGroupName;
     UKUIGroupPopup * mPopup;
     QVBoxLayout *VLayout;
