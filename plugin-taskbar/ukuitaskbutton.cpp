@@ -767,43 +767,43 @@ void UKUITaskButton::leaveEvent(QEvent *)
     update();
 }
 
+/*在paintEvent中执行绘图事件会造成高分屏下图片模糊
+ * 高分屏的图片模糊问题大概率与svg/png图片无关
+ * */
 void UKUITaskButton::paintEvent(QPaintEvent *event)
 {
-//    if (mOrigin == Qt::TopLeftCorner)
-//    {
-//        QToolButton::paintEvent(event);
-//        return;
-//    }
-
+        QToolButton::paintEvent(event);
+        return;
+/*
     QSize sz = size();
     QSize adjSz =sz;
     QTransform transform;
     QPoint originPoint;
 
-//    switch (mOrigin)
-//    {
-//    case Qt::TopLeftCorner:
-//        transform.rotate(0.0);
-//        originPoint = QPoint(0.0, 0.0);
-//        break;
+    switch (mOrigin)
+    {
+    case Qt::TopLeftCorner:
+        transform.rotate(0.0);
+        originPoint = QPoint(0.0, 0.0);
+        break;
 
-//    case Qt::TopRightCorner:
-//        transform.rotate(90.0);
-//        originPoint = QPoint(0.0, -sz.width());
-//        adjSz.transpose();
-//        break;
+    case Qt::TopRightCorner:
+        transform.rotate(90.0);
+        originPoint = QPoint(0.0, -sz.width());
+        adjSz.transpose();
+        break;
 
-//    case Qt::BottomRightCorner:
-//        transform.rotate(180.0);
-//        originPoint = QPoint(-sz.width(), -sz.height());
-//        break;
+    case Qt::BottomRightCorner:
+        transform.rotate(180.0);
+        originPoint = QPoint(-sz.width(), -sz.height());
+        break;
 
-//    case Qt::BottomLeftCorner:
-//        transform.rotate(270.0);
-//        originPoint = QPoint(-sz.height(), 0.0);
-//        adjSz.transpose();
-//        break;
-//    }
+    case Qt::BottomLeftCorner:
+        transform.rotate(270.0);
+        originPoint = QPoint(-sz.height(), 0.0);
+        adjSz.transpose();
+        break;
+    }
 
     bool drawPixmapNextTime = false;
 
@@ -841,6 +841,7 @@ void UKUITaskButton::paintEvent(QPaintEvent *event)
     }
 
     mDrawPixmap = drawPixmapNextTime;
+    */
 }
 
 bool UKUITaskButton::hasDragAndDropHover() const
