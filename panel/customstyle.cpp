@@ -260,6 +260,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
             painter->save();
             painter->setRenderHint(QPainter::Antialiasing,true);
             painter->setPen(Qt::NoPen);
+	    painter->setBrush(QColor(0xff,0xff,0xff,0x14));
             if (option->state & State_Sunken) {
                 painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
             } else if (option->state & State_MouseOver) {
