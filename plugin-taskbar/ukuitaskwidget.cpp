@@ -89,7 +89,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
 
     //for layout
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
-    mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+//    mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     mCloseBtn->setIconSize(QSize(19,19));
     mCloseBtn->setFixedSize(QSize(19,19));
     mCloseBtn->hide();
