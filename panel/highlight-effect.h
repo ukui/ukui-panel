@@ -46,7 +46,7 @@ public:
      * \param skip
      * \details
      * in ukui-style, some widget such as menu will be set use highlight
-     * icon effect automaticlly,
+     * icon effect automatically,
      * but we might not want to compose a special pure color image.
      * This function is use to skip the effect.
      */
