@@ -43,6 +43,7 @@
 #include <QHBoxLayout>
 #include "fixx11h.h"
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOption>
 class TrayIcon;
 class QSize;
