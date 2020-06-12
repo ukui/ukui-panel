@@ -53,6 +53,7 @@
 #include "../panel/iukuipanelplugin.h"
 #include <QSize>
 #include <QScreen>
+#include "../panel/customstyle.h"
 
 #define PREVIEW_WIDTH		468
 #define PREVIEW_HEIGHT		428
@@ -125,7 +126,6 @@ QPixmap qimageFromXImage(XImage* ximage)
 
     return QPixmap::fromImage(image);
 }
-
 
 
 
@@ -240,6 +240,7 @@ QWidget * UKUITaskGroup::addWindow(WId id)
     connect(btn, SIGNAL(windowMaximize()), this, SLOT(onChildButtonClicked()));
     refreshVisibility();
 
+    changeTaskButtonStyle();
     return btn;
 }
 
@@ -255,6 +256,17 @@ QWidget * UKUITaskGroup::checkedButton() const
     return NULL;
 }
 
+/*changeTaskButtonStyle in class UKUITaskGroup not class UKUITaskButton
+ * because class UKUITaskButton can not get mButtonHash.size
+ */
+void UKUITaskGroup::changeTaskButtonStyle()
+{
+    qDebug()<<"**********************";
+    if(mButtonHash.size()>1)
+        this->setStyle(new CustomStyle("taskbutton",true));
+    else
+        this->setStyle(new CustomStyle("taskbutton",false));
+}
 /************************************************
 
  ************************************************/
@@ -361,6 +373,7 @@ void UKUITaskGroup::onWindowRemoved(WId window)
             emit groupBecomeEmpty(groupName());
 
         }
+        changeTaskButtonStyle();
     }
 }
 

@@ -26,5 +26,10 @@
         <source>eject</source>
         <translation>弹出</translation>
     </message>
+    <message>
+        <location filename="qclickWidget.cpp" line="711"/>
+        <source>the capacity is empty</source>
+        <translation>容量为空</translation>
+    </message>
 </context>
 </TS>

@@ -449,8 +449,7 @@ QString UKUiThemeData::findTheme(const QString &themeName)
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(int i=0;i<paths.size();i++){
         const QString &path=paths[i];
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+#else
     for(const QString &path : qAsConst(paths)){
 #endif
         QDir dir(QString::fromLatin1("%1/ukui/themes/%2").arg(path, themeName));
@@ -616,8 +615,7 @@ QList<UKUiTheme> UKUiTheme::allThemes()
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(int i=0;i<paths.size();i++){
         const QString &path=paths[i];
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+#else
     for(const QString &path : qAsConst(paths)){
 #endif
         QDir dir(QString::fromLatin1("%1/ukui/themes").arg(path));
@@ -697,6 +695,8 @@ GlobalSettings::GlobalSettings():
     Settings(QL1S("ukui")),
     d_ptr(new GlobalSettingsPrivate(this))
 {
+/*ukui-control-center change the theme rather than panel*/
+/*
     if (value(QL1S("icon_theme")).toString().isEmpty())
     {
         qWarning() << QString::fromLatin1("Icon Theme not set. Fallbacking to Oxygen, if installed");
@@ -715,6 +715,7 @@ GlobalSettings::GlobalSettings():
     }
 
     fileChanged();
+*/
 }
 
 GlobalSettings::~GlobalSettings()
@@ -728,6 +729,8 @@ GlobalSettings::~GlobalSettings()
  ************************************************/
 void GlobalSettings::fileChanged()
 {
+/*ukcc change the theme rather than panel*/
+	/*
     Q_D(GlobalSettings);
     sync();
 
@@ -748,5 +751,6 @@ void GlobalSettings::fileChanged()
 
     emit settingsChangedFromExternal();
     emit settingsChanged();
+    */
 }
 

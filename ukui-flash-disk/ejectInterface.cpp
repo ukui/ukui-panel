@@ -27,14 +27,17 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
     //QPixmap pixmap("kylin-media-removable-symbolic");
     eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
 
+    //add it to show the eject button
     if(eject_image_button)
     {
         eject_image_button->setIcon(eject_image_icon);
     }
 
+    //set the size of the picture
     eject_image_button->setIconSize(QSize(25,25));
 
     show_text_label = new QLabel;
+    //add the text of the eject interface
     if(show_text_label)
     {
         show_text_label->setText(tr("usb has been unplugged safely"));
@@ -74,6 +77,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
     path.addRoundedRect(rect, 6, 6);
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
 
+    //set the mian style of the ejecet interface
     this->setStyleSheet("QWidget{"
                         "background:rgba(19,19,20,1);"
                         "border:1px solid rgba(255, 255, 255, 0.05);"
@@ -81,6 +85,9 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
                         "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
                         "border-radius:6px"
                         "}");
+
+    //set the style of the ejecet-image-button
+
     eject_image_button->setStyleSheet(
                 //正常状态样式
                 "QPushButton{"
@@ -90,6 +97,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
                 "border:none;"
                 "}"
                 );
+    //set the syle of show_text_label
     show_text_label->setStyleSheet(
                 //正常状态样式
                 "QLabel{"
@@ -116,6 +124,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
                 "}");
     this->setLayout(main_V_BoxLayput);
 
+    //set the main signal-slot function to complete the eject interface to let it disappear automatically
     interfaceHideTime = new QTimer(this);
     interfaceHideTime->setTimerType(Qt::PreciseTimer);
     connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_interface_hide()));
@@ -139,11 +148,13 @@ void ejectInterface::paintEvent(QPaintEvent *event)
     QWidget::paintEvent(event);
  }
 
+//slot function to hide eject interface
 void ejectInterface::on_interface_hide()
 {
     this->hide();
 }
 
+//set the location of the eject interface
 void ejectInterface::moveEjectInterfaceRight()
 {
     if(EjectScreen->availableGeometry().x() == EjectScreen->availableGeometry().y() && EjectScreen->availableSize().height() < EjectScreen->size().height())

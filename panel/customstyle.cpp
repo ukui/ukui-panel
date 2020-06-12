@@ -255,12 +255,65 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
      * 在同一个PE中有两个toolbutton 的样式
     */
     case PE_PanelButtonTool:{
-        if(QString::compare(pluginName,"taskbutton")!=0)
+        if(QString::compare(pluginName,"taskbutton")==0)
+        {
+            painter->save();
+            painter->setRenderHint(QPainter::Antialiasing,true);
+            painter->setPen(Qt::NoPen);
+	    painter->setBrush(QColor(0xff,0xff,0xff,0x14));
+            if (option->state & State_Sunken) {
+                painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
+            } else if (option->state & State_MouseOver) {
+                painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
+            } else if (option->state & State_On) {
+                painter->setBrush(QColor(0xff,0xff,0xff,0x33));
+            }
+            painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
+            painter->restore();
+
+            if(multileWindow)
+            {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing, true);
+                painter->setPen(Qt::NoPen);
+                painter->setBrush(option->palette.color(QPalette::Highlight));
+                painter->drawEllipse(option->rect.topLeft() + QPointF(8.5, 4.5), 2.5, 2.5);
+                painter->setBrush(option->palette.color(QPalette::Highlight).light(125));
+                painter->drawEllipse(option->rect.topLeft() + QPointF(4.5, 4.5), 2.5, 2.5);
+                painter->restore();
+            }
+            return;
+        }
+
+        else if(QString::compare(pluginName,"closebutton")==0)
         {
             painter->save();
             painter->setRenderHint(QPainter::Antialiasing,true);
             painter->setPen(Qt::NoPen);
             //        painter->setBrush(QColor(0xff,0xff,0xff,0xff));
+            painter->drawRoundedRect(option->rect,6,6);
+            if (option->state & State_MouseOver) {
+                if (option->state & State_Sunken) {
+                    painter->setRenderHint(QPainter::Antialiasing,true);
+                    painter->setPen(Qt::NoPen);
+                    painter->setBrush(QColor(0xd7,0x34,0x35));
+                    painter->drawRoundedRect(option->rect,6,6);
+                } else {
+                    painter->setRenderHint(QPainter::Antialiasing,true);
+                    painter->setPen(Qt::NoPen);
+                    painter->setBrush(QColor(0xf0,0x41,0x34));
+                    painter->drawRoundedRect(option->rect,4,4);
+                }
+            }
+            painter->restore();
+            return;
+        }
+
+        else
+        {
+            painter->save();
+            painter->setRenderHint(QPainter::Antialiasing,true);
+            painter->setPen(Qt::NoPen);
             painter->drawRoundedRect(option->rect,6,6);
             if (option->state & State_MouseOver) {
                 if (option->state & State_Sunken) {
@@ -276,35 +329,6 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
                 }
             }
             painter->restore();
-            return;
-        }
-        if(QString::compare(pluginName,"taskbutton")==0)
-        {
-            painter->save();
-            painter->setRenderHint(QPainter::Antialiasing,true);
-            painter->setPen(Qt::NoPen);
-            if (option->state & State_Sunken) {
-                painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
-            } else if (option->state & State_MouseOver) {
-                painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
-            } else if (option->state & State_On) {
-                painter->setBrush(QColor(0xff,0xff,0xff,0x33));
-            }
-            painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
-            painter->restore();
-#if 1
-            if(multileWindow)
-            {
-                painter->save();
-                painter->setRenderHint(QPainter::Antialiasing, true);
-                painter->setPen(Qt::NoPen);
-                painter->setBrush(option->palette.color(QPalette::Highlight));
-                painter->drawEllipse(option->rect.topLeft() + QPointF(8.5, 4.5), 2.5, 2.5);
-                painter->setBrush(option->palette.color(QPalette::Highlight).light(125));
-                painter->drawEllipse(option->rect.topLeft() + QPointF(4.5, 4.5), 2.5, 2.5);
-                painter->restore();
-            }
-#endif
             return;
         }
     }

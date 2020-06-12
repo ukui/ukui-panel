@@ -15,13 +15,17 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
-
-#include "ukuitaskclosebutton.h"
 #include <QDebug>
+#include "ukuitaskclosebutton.h"
+#include "../panel/customstyle.h"
+#include "../panel/highlight-effect.h"
 UKUITaskCloseButton::UKUITaskCloseButton(const WId window, QWidget *parent):
     QToolButton(parent),
     mWindow(window)
 {
+    this->setStyle(new CustomStyle("closebutton"));
+    this->setIcon(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("window-close-symbolic").pixmap(24,24).toImage()))));
+    this->setIconSize(QSize(9,9));
     //connect(parent, &UKUITaskBar::buttonRotationRefreshed, this, &UKUITaskGroup::setAutoRotation);
 }
 

@@ -79,6 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
     installEventFilter(this);
     ui->setupUi(this);
     //框架的样式设置
+    //set the style of the framework
     int hign = 0;
     interfaceHideTime = new QTimer(this);
     QPainterPath path;
@@ -105,6 +106,8 @@ MainWindow::MainWindow(QWidget *parent) :
                 );
 
 
+    //to get the picture from the theme
+
     iconSystray = QIcon::fromTheme("media-removable-symbolic");
     vboxlayout = new QVBoxLayout();
     //hboxlayout = new QHBoxLayout();
@@ -117,8 +120,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //m_systray->setIcon(QIcon("/usr/share/icons/ukui-icon-theme-default/22x22/devices/drive-removable-media.png"));
     m_systray->setIcon(iconSystray);
     m_systray->setToolTip(tr("usb management tool"));
+    //init the srceen
     screen = qApp->primaryScreen();
+    //underlying code to get the information of the usb device
     getDeviceInfo();
+
     connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
     connect(this,&MainWindow::convertShowWindow,this,&MainWindow::onConvertShowWindow);
     ui->centralWidget->setLayout(vboxlayout);
@@ -132,7 +138,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::getDeviceInfo()
 {
-
+//callback function that to monitor the insertion and removal of the underlying equipment
     GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
     g_signal_connect (g_volume_monitor, "drive-connected", G_CALLBACK (drive_connected_callback), this);
     g_signal_connect (g_volume_monitor, "drive-disconnected", G_CALLBACK (drive_disconnected_callback), this);
@@ -180,6 +186,7 @@ void MainWindow::getDeviceInfo()
     }
 
     qDebug()<<"findGDriveList.size:"<<findGDriveList()->size()<<"11111111111111";
+ //determine the systray icon should be showed  or be hieded
     if(findGVolumeList()->size() >= 1 || findGDriveList()->size() >= 1)
     {
         m_systray->show();
@@ -196,6 +203,8 @@ void MainWindow::onConvertShowWindow()
     MainWindowShow();
 }
 
+//the drive-connected callback function the is triggered when the usb device is inseted
+
 void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this)
 {
     *findGDriveList()<<drive;
@@ -209,7 +218,8 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
     p_this->triggerType = 0;
 }
 
-void MainWindow::drive_disconnected_callback (GVolumeMonitor *, GDrive *drive, MainWindow *p_this)
+//the drive-disconnected callback function the is triggered when the usb device is pull out
+void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this)
 {
     qDebug()<<"drive disconnected";
     char *drive_name = g_drive_get_name(drive);
@@ -222,6 +232,8 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *, GDrive *drive, M
     }
 }
 
+//when the usb device is identified,we should mount every partition
+
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
     qDebug()<<"volume is to be added";
@@ -233,6 +245,8 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                    p_this);
 }
 
+
+//when the U disk is pull out we should reduce all its partitions
 void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
     findGVolumeList()->removeOne(volume);
@@ -242,6 +256,7 @@ void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volum
 //    }
 }
 
+//when the volumes were mounted we add its mounts number
 void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this)
 {
     qDebug()<<"mount is added";
@@ -258,7 +273,8 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     }
 }
 
-void MainWindow::mount_removed_callback(GVolumeMonitor *, GMount *mount, MainWindow *p_this)
+//when the mountes were uninstalled we reduce mounts number
+void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this)
 {
     findGMountList()->removeOne(mount);
     if(findGMountList()->size() == 0)
@@ -267,6 +283,7 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *, GMount *mount, MainWin
     }
 }
 
+//it stands that when you insert a usb device when all the  U disk partitions
 void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,MainWindow *p_this)
 {
 
@@ -286,7 +303,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
         if (p_this->num >= g_list_length(g_drive_get_volumes(g_volume_get_drive(source_object))))
         {
             qDebug()<<g_list_length(g_drive_get_volumes(g_volume_get_drive(source_object)))<<"-=-=-=_+_+_+_+_+_+_+";
-            Q_EMIT p_this->convertShowWindow();
+            Q_EMIT p_this->convertShowWindow();     //emit a signal to trigger the MainMainShow slot
         }
     }
     else
@@ -299,11 +316,9 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
 //                       GAsyncReadyCallback(frobnitz_result_func_volume),
 //                       nullptr);
     }
-
-
-
 }
 
+//here we begin painting the main interface
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
 
@@ -312,9 +327,10 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 //        delete this->interfaceHideTime;
 //    }
     //int hign = 200;
-    triggerType = 1;
+    triggerType = 1;  //It represents how we open the interface
     if(ui->centralWidget != NULL)
     {
+        //cancel the connection between the timeout signal and main interface hiding
         disconnect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_Maininterface_hide()));
     }
     int num = 0;
@@ -334,7 +350,8 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::Context:
       if (this->isHidden())
       {
-          //MainWindow::hign = MainWindow::oneVolumeDriveNum*98+MainWindow::twoVolumeDriveNum*110+MainWindow::threeVolumeDriveNum*130+MainWindow::fourVolumeDriveNum*160;
+          //Convenient interface layout for all drives
+
           for(auto cacheDrive : *findGDriveList())
           {
               qDebug()<<"findGDriveList():"<<findGDriveList()->size();
@@ -346,17 +363,24 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
               {
                 if (g_drive_can_eject(cacheDrive) || g_drive_can_stop(cacheDrive))
                 {
+                    /*
+                     * to get the U disk partition's path,name,capacity and U disk's name,then we layout by the
+                     * number of its volume
+                     * */
 
+                    //when the drive's volume number is 1
                     if(DisNum == 1)
                     {
-                       //this->resize(250, 98);
-                       num++;
+                       num++; 
                        UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
                        QByteArray date = UDiskPathDis1.toLocal8Bit();
                        char *p_Change = date.data();
                        GFile *file = g_file_new_for_path(p_Change);
                        GFileInfo *info = g_file_query_filesystem_info(file,"*",nullptr,nullptr);
                        totalDis1 = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                       //when the drive's volume number is 1
+                       /*determine whether the drive is only one and whether if the drive is the fisrst one,
+                        *if the answer is yes,we set the last parameter is 1.*/
                        if(findGDriveList()->size() == 1)
                        {
                            newarea(DisNum,g_drive_get_name(cacheDrive),
@@ -376,10 +400,10 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                                    NULL,NULL,NULL,totalDis1,NULL,NULL,NULL, UDiskPathDis1,NULL,NULL,NULL, 2);
                        }
                     }
+                    //when the drive's volume number is 2
                     if(DisNum == 2)
                     {
                         num++;
-                        //this->resize(250,160);
                         UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
                         QByteArray dateDis1 = UDiskPathDis1.toLocal8Bit();
                         char *p_ChangeDis1 = dateDis1.data();
@@ -419,10 +443,10 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                         }
 
                     }
+                    //when the drive's volume number is 3
                     if(DisNum == 3)
                     {
                         num++;
-                        //this->resize(250,222);
                         UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
                         QByteArray dateDis1 = UDiskPathDis1.toLocal8Bit();
                         char *p_ChangeDis1 = dateDis1.data();
@@ -471,10 +495,10 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                         }
 
                     }
+                    //when the drive's volume number is 4
                     if(DisNum == 4)
                     {
                         num++;
-                        //this->resize(250,134);
                         UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
                         QByteArray dateDis1 = UDiskPathDis1.toLocal8Bit();
                         char *p_ChangeDis1 = dateDis1.data();
@@ -534,6 +558,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                         }
 
                     }
+                    //here we begin a to respond to the signals on the interface,is the triangle is trigger then we eject this drive.
                     connect(open_widget, &QClickWidget::clickedConvert,[=]()
                     {
                         qDebug()<<"相应信号";
@@ -578,6 +603,10 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     ui->centralWidget->show();
 }
 
+
+/*
+ * newarea use all the information of the U disk to paint the main interface and add line
+*/
 void MainWindow::newarea(int No,
                          QString Drivename,
                          QString nameDis1,
@@ -597,11 +626,13 @@ void MainWindow::newarea(int No,
     open_widget = new QClickWidget(NULL,No,Drivename,nameDis1,nameDis2,nameDis3,nameDis4,
                                    capacityDis1,capacityDis2,capacityDis3,capacityDis4,
                                    pathDis1,pathDis2,pathDis3,pathDis4);
-    //open_widget->;
+
 
     QWidget *line = new QWidget;
     line->setFixedHeight(1);
     line->setObjectName("lineWidget");
+
+    //when the drive is only or the drive is the first one,we make linestatus become  1
     line->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     if (linestatus == 2)
     {
@@ -1257,6 +1288,10 @@ void MainWindow::moveBottomNoBase()
     }
 }
 
+/*
+ * determine how to open the maininterface,if trigger is 0,the main interface show when we inset USB
+ * device directly,if trigger is 1,we show main interface by clicking the systray icon.
+*/
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if(triggerType == 0)

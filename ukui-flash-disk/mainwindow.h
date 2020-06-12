@@ -84,7 +84,7 @@ private:
     static void volume_added_callback (GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this);
     static void volume_removed_callback (GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this);
     static void mount_added_callback (GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this);
-    static void mount_removed_callback (GVolumeMonitor *, GMount *mount, MainWindow *p_this);
+    static void mount_removed_callback (GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this);
 
 private:
     QIcon iconSystray;
