@@ -78,7 +78,7 @@ public:
     QVector<QStringList> getFunctionalClassification();//获取功能分类
     QVector<QString> getCommonUseApp();//获取常用App
     QVector<QString> getDesktopAll();
-    QStringList getRecentApp();//获取最近添加App
+//    QStringList getRecentApp();//获取最近添加App
     bool matchingAppCategories(QString desktopfp,QStringList categorylist);//匹配应用Categories
 
     QString getAppNamePinyin(QString appname);//获取应用名拼音
