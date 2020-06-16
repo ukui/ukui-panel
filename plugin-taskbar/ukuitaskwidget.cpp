@@ -30,6 +30,7 @@
 #include <QAction>
 #include <QContextMenuEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QDrag>
 #include <QMouseEvent>
 #include <QMimeData>
