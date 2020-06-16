@@ -32,8 +32,9 @@
 
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define SHOW_TASKVIEW       "showtaskview"
+
 TaskViewButton::TaskViewButton(){
-        setFocusPolicy(Qt::NoFocus);
+    setFocusPolicy(Qt::NoFocus);
 }
 TaskViewButton::~TaskViewButton(){
 }
@@ -43,16 +44,18 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
 {
     mButton =new TaskViewButton();
     mButton->setStyle(new CustomStyle());
-    mButton->setIcon(QIcon("/usr/share/ukui-panel/panel/img/taskview.svg"));
-   // mButton->paintTooltipStyle();
+    mButton->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
     mButton->setToolTip(tr("Show Taskview"));
 
+    /* hide/show taskview
+     * Monitor gsettings to set TaskViewButton size
+    */
     const QByteArray id(UKUI_PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id))
         gsettings = new QGSettings(id);
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
-    if(key==SHOW_TASKVIEW)
-        realign();
+        if(key==SHOW_TASKVIEW)
+            realign();
     });
 
     realign();
@@ -63,7 +66,7 @@ TaskView::~TaskView()
 {
 }
 
-
+/* 隐藏任务视图按钮的逻辑是将buttton的大小设置为０*/
 void TaskView::realign()
 {
     if(gsettings->get(SHOW_TASKVIEW).toBool())
@@ -73,22 +76,27 @@ void TaskView::realign()
     mButton->setIconSize(QSize(panel()->iconSize(),panel()->iconSize()));
 }
 
+/* 两种方式可调用任务视图
+ * 1.调用Dbus接口
+ * 2.调用二进制
+*/
 void TaskViewButton::mousePressEvent(QMouseEvent *event)
 {
     const Qt::MouseButton b = event->button();
     QDBusInterface interface("org.ukui.WindowSwitch", "/org/ukui/WindowSwitch",
-                                "org.ukui.WindowSwitch",
-                                QDBusConnection::sessionBus());
+                             "org.ukui.WindowSwitch",
+                             QDBusConnection::sessionBus());
     if (!interface.isValid()) {
         qCritical() << QDBusConnection::sessionBus().lastError().message();
     }
 
     if (Qt::LeftButton == b  && interface.isValid())
     {
-        //Two ways to call the taskview
-        //system("ukui-window-switch --show-workspace");
+        /* Call binary display task view
+         * system("ukui-window-switch --show-workspace");
+         */
 
-        //调用远程的value方法
+        /*调用远程的value方法*/
         QDBusReply<bool> reply = interface.call("handleWorkspace");
         if (reply.isValid()) {
             if (!reply.value())
@@ -99,14 +107,4 @@ void TaskViewButton::mousePressEvent(QMouseEvent *event)
     }
 
     QWidget::mousePressEvent(event);
-}
-
-
-void TaskViewButton::mouseMoveEvent(QMouseEvent *e)
-{
-    qDebug()<<"mouse move enent";
-    QWidget::mouseMoveEvent(e);
-}
-
-void TaskViewButton::contextMenuEvent(QContextMenuEvent *event){
 }

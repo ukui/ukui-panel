@@ -58,6 +58,11 @@
 #include <KWindowSystem/NETWM>
 #include <QtX11Extras/QX11Info>
 
+#define PANEL_SETTINGS      "org.ukui.panel.settings"
+#define PANEL_SIZE_KEY      "panelsize"
+#define ICON_SIZE_KEY       "iconsize"
+#define PANEL_POSITION_KEY  "panelposition"
+
 bool UKUITaskButton::sDraggging = false;
 
 /************************************************
@@ -105,6 +110,15 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
     connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
     connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskButton::updateIcon);
+
+    const QByteArray id(PANEL_SETTINGS);
+    gsettings = new QGSettings(id);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if (key == PANEL_SIZE_KEY)
+        {
+            updateIcon();
+        }
+    });
 }
 
 /************************************************
@@ -127,10 +141,12 @@ void UKUITaskButton::updateText()
 
 /* int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF()是由ico =KWindowSystem:ico(mwindow)更改的
  * 目的是为了能够显示正确的application-x-desktop的图标的大小
+ *
 */
 void UKUITaskButton::updateIcon()
 {
     QIcon ico;
+    int mIconSize=mPlugin->panel()->iconSize();
     if (mParentTaskBar->isIconByClass())
     {
         ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
@@ -141,31 +157,15 @@ void UKUITaskButton::updateIcon()
     }
     if (ico.isNull())
     {
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-        int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF();
+#if QT_VERSION >= 0x050600
+        int devicePixels = mIconSize * devicePixelRatioF();
 #else
-        int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatio();
+        int devicePixels = mIconSize * devicePixelRatio();
 #endif
         ico = KWindowSystem::icon(mWindow, devicePixels, devicePixels);
     }
-    if(ico.isNull())
-    {
-        ico = XdgIcon::fromTheme("application-x-desktop");
-    }
-
-    if(mIcon.isNull())
-    {
-        mIcon = ico;
-    }
-//    setIcon(ico.isNull() ? XdgIcon::fromTheme("application-x-desktop") : ico);
-    setIcon(mIcon);
-
-    /*传入参数　bool　是开启　打开多个窗口　的样式*/
-//    if(mButtonHash.size()>1)
-
-    //        this->setStyle(new CustomStyle("taskbutton",true));
-//    else
-//        this->setStyle(new CustomStyle("taskbutton",false));
+    setIcon(ico.isNull() ? QIcon::fromTheme("application-x-desktop") : ico);
+    setIconSize(QSize(mIconSize,mIconSize));
 }
 
 /************************************************
