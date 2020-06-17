@@ -21,7 +21,6 @@
 #ifndef STARTMENU_H
 #define STARTMENU_H
 
-#include "../panel/iukuipanelplugin.h"
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QFrame>
@@ -29,7 +28,6 @@
 #include <QLineEdit>
 #include <QToolButton>
 #include <XdgIcon>
-
 
 #include <QMainWindow>
 #include <QHBoxLayout>
@@ -39,10 +37,11 @@
 #include <QPainter>
 #include <QGSettings>
 
+#include "../panel/iukuipanelplugin.h"
 #include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
 #include "../panel/ukuicontrolstyle.h"
-#define DEFAULT_SHORTCUT "Alt+F1"
+
 
 class TaskViewButton:public UkuiToolButton
 {
@@ -51,11 +50,7 @@ public:
     TaskViewButton();
     ~TaskViewButton();
 protected:
-    void contextMenuEvent(QContextMenuEvent *event);
     void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent*);
-private:
-    void paintTaskViewStyle();
 
 };
 
@@ -69,13 +64,10 @@ public:
     virtual QWidget *widget() { return mButton; }
     virtual QString themeId() const { return QStringLiteral("taskview"); }
     void realign();
-    virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 
 private:
     TaskViewButton *mButton;
     QGSettings *gsettings;
-
-
 };
 
 class TaskViewLibrary: public QObject, public IUKUIPanelPluginLibrary

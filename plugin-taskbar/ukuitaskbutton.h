@@ -30,6 +30,7 @@
 #ifndef UKUITASKBUTTON_H
 #define UKUITASKBUTTON_H
 
+#include <QGSettings/QGSettings>
 #include <QToolButton>
 #include <QProxyStyle>
 #include <QLabel>
@@ -139,7 +140,7 @@ private:
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
     QTimer * mDNDTimer;
-
+    QGSettings *gsettings;
 private slots:
     void activateWithDraggable();
 

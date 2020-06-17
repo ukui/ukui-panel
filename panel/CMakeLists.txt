@@ -218,7 +218,7 @@ install(DIRECTORY
 )
 
 install(FILES
-    resources/ukui-panel_zh_CN.qm resources/ukui-panel_zh_CN.ts
+    resources/ukui-panel_zh_CN.qm resources/ukui-panel_zh_CN.ts resources/ukui-panel_tr.ts
     DESTINATION "${PACKAGE_DATA_DIR}/panel/resources"
     COMPONENT Runtime
 )

@@ -217,8 +217,7 @@ void UKUITaskGroup::closeGroup()
   if (button->isOnDesktop(KWindowSystem::currentDesktop()))
             button->closeApplication();
     }
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+#else
     for (UKUITaskWidget *button : qAsConst(mButtonHash) )
         if (button->isOnDesktop(KWindowSystem::currentDesktop()))
             button->closeApplication();
@@ -435,8 +434,7 @@ int UKUITaskGroup::visibleButtonsCount() const
         if (btn->isVisibleTo(mPopup))
             i++;
     }
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+#else
     for (UKUITaskWidget *btn : qAsConst(mButtonHash))
         if (btn->isVisibleTo(mPopup))
             i++;
@@ -594,8 +592,7 @@ void UKUITaskGroup::refreshVisibility()
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(auto i=mButtonHash.begin();i!=mButtonHash.end();i++){
 	UKUITaskWidget * btn=i.value();
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+#else
     for(UKUITaskWidget * btn : qAsConst(mButtonHash)){
 #endif
         bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
