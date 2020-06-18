@@ -93,6 +93,7 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
 {
     rightPressMenu=new QMenu();
     rightPressMenu->setAttribute(Qt::WA_DeleteOnClose);
+    rightPressMenu->setWindowOpacity(0.7);
 
     rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-lock-screen-symbolic").pixmap(24,24).toImage()))),
                               tr("Lock Screen"),
@@ -113,7 +114,7 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                               this, SLOT(SessionReboot())
                               );
 
-    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("exit_symbolic").pixmap(24,24).toImage()))),
+    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("exit-symbolic").pixmap(24,24).toImage()))),
                               tr("Power Off"),
                               this, SLOT(SessionShutdown())
                               );

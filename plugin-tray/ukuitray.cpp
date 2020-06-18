@@ -227,12 +227,11 @@ void UKUITray::storageBar()
     }
 }
 
-/*when clicked mBtn , show or hide storageFrame
+/* when clicked mBtn , show or hide storageFrame
  * 在取消了panel的WindowDoesNotAcceptFocus属性之后，托盘栏会有点击之后的隐藏并再次弹出的操作
  */
 void UKUITray::showAndHideStorage(bool storageStatus)
 {
-    qDebug()<<"showAndHideStorage"<<storageStatus;
     if(storageStatus)
     {
         storageFrame->hide();
@@ -362,7 +361,6 @@ void UKUITray::realign()
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                    settings->set(TRAY_SIZE,mTrayIcons.size()*mPlugin->panel()->panelSize());
                 }
                 else
                 {
@@ -381,7 +379,6 @@ void UKUITray::realign()
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->panelSize()/2);
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                    settings->set(TRAY_SIZE,mTrayIcons.size()*mPlugin->panel()->panelSize()/4);
                 }
                 else
                 {
@@ -405,7 +402,6 @@ void UKUITray::realign()
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),(mPlugin->panel()->iconSize()));
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                    settings->set(TRAY_SIZE,mTrayIcons.size()*mPlugin->panel()->panelSize());
                 }
                 else
                 {
@@ -424,7 +420,6 @@ void UKUITray::realign()
                 {
                     mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize()/2);
                     mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                    settings->set(TRAY_SIZE,mTrayIcons.size()*mPlugin->panel()->panelSize()/4);
                 }
                 else
                 {
@@ -433,8 +428,6 @@ void UKUITray::realign()
             }
             mBtn->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize());
         }
-
-
     }
 
     if(storageFrame)
@@ -464,12 +457,14 @@ void UKUITray::realign()
 /*creat iconMap of four  direction*/
 void UKUITray::createIconMap()
 {
-    mMapIcon[IUKUIPanel::PositionBottom] = QIcon("/usr/share/ukui-panel/panel/img/tray-up.svg");
-    mMapIcon[IUKUIPanel::PositionLeft] = QIcon("/usr/share/ukui-panel/panel/img/tray-right.svg");
-    mMapIcon[IUKUIPanel::PositionTop] = QIcon("/usr/share/ukui-panel/panel/img/tray-down.svg");
-    mMapIcon[IUKUIPanel::PositionRight] = QIcon("/usr/share/ukui-panel/panel/img/tray-left.svg");
+    mMapIcon[IUKUIPanel::PositionBottom] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-up-symbolic").pixmap(24,24).toImage())));
+    mMapIcon[IUKUIPanel::PositionLeft] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-end-symbolic").pixmap(24,24).toImage())));
+    mMapIcon[IUKUIPanel::PositionTop] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-down-symbolic").pixmap(24,24).toImage())));
+    mMapIcon[IUKUIPanel::PositionRight] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-start-symbolic").pixmap(24,24).toImage())));
+
 }
 
+/*这里的changeIcon是改变收纳箭头的图标*/
 void UKUITray::changeIcon()
 {
     QIcon icon;
@@ -501,11 +496,6 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
         id = data32[2];
         if(id){
             regulateIcon(&id);
-            //            Window winId=44040845;
-            //            QSize iconSize(32,32);
-            //            TrayIcon *icon = new TrayIcon(winId,iconSize,this);
-            //            //            icon->setFixedSize(40,40);
-            //            icon->setIconSize(QSize(32,32));
         }
 
 
@@ -1450,18 +1440,6 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
 UKUIStorageFrame::~UKUIStorageFrame(){
 }
 
-//bool UKUIStorageFrame::event(QEvent *event)
-//{
-//    if (event->type() == QEvent::WindowDeactivate) {
-//        qDebug()<<"UKUIStorageFrame  enter";
-//        if (QApplication::activeWindow() != this && flag==true) {
-//            this->hide();
-//            qDebug()<<"UKUIStorageFrame  hide";
-//        }
-//    }
-//    return QWidget::event(event);
-//}
-
 /*
  * 事件过滤，检测鼠标点击外部活动区域则收回收纳栏
 */
@@ -1472,13 +1450,51 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
 
     if (obj == this)
     {
-        if (event->type() == QEvent::WindowDeactivate &&status==ST_SHOW )
+        /*　　　//绑定快捷键
+        if (event->type() == QEvent::KeyPress)
+           {
+               //将QEvent对象转换为真正的QKeyEvent对象
+               QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+               if (keyEvent->key() == Qt::Key_Tab)
+               {
+                   this->hide();
+                   status=ST_HIDE;
+                   return true;
+               }
+           }
+           */
+
+        /* 这里处理的鼠标左键和右键事件只是TrayIcon 区域，图标之外的部分
+         * 与在trayIcon类中处理mousePressEvent是一样的
+　　　　　*/
+        if (event->type() == QEvent::MouseButtonPress)
+           {
+               //将QEvent对象转换为真正的QKeyEvent对象
+               QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+               if (mouseEvent->button() == Qt::LeftButton)
+               {
+                   this->hide();
+                   status=ST_HIDE;
+                   return true;
+               }
+               else if(mouseEvent->button() == Qt::RightButton)
+               {
+                   return true;
+               }
+           }
+        else if(event->type() == QEvent::ContextMenu)
         {
+            return false;
+        }
+        else if (event->type() == QEvent::WindowDeactivate &&status==ST_SHOW)
+        {
+            //qDebug()<<"激活外部窗口";
             this->hide();
             status=ST_HIDE;
             return true;
         } else if (event->type() == QEvent::StyleChange) {
         }
+
     }
 
     if (!isActiveWindow())

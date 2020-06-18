@@ -67,7 +67,6 @@ public:
     UKUIStorageFrame(QWidget* parent =0);
     ~UKUIStorageFrame();
 protected:
-//    bool event(QEvent *);
     bool eventFilter(QObject *, QEvent *);
     void paintEvent(QPaintEvent *event)override;
 private:

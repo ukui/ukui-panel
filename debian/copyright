@@ -79,6 +79,7 @@ Files: AUTHORS
        panel/resources/*
        panel/CMakeLists.txt
        panel/customstyle.*
+       panel/highlight-effect.*
        panel/ukuicontrolstyle.*
        plugin-calendar/CMakeLists.txt
        plugin-calendar/ukuiwebviewdialog.*
@@ -94,6 +95,7 @@ Files: AUTHORS
        plugin-taskbar/resources/taskbar.desktop.in
        plugin-taskbar/ukuitaskclosebutton.*
        plugin-taskbar/ukuitaskwidget.*
+       plugin-taskbar/ukuitaskbaricon.*
        ukui-flash-disk/*
 Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
 License: LGPL-2.1+
@@ -118,6 +120,11 @@ License: LGPL-2.1+
 Files: panel/common/ukuibacklight/*
 Copyright: 2016  P.L. Lucas
            2019 Tianjin KYLIN Information Technology Co., Ltd. *
+License:GPL-2+
+
+Files: panel/xdg/*
+Copyright: 2012-2019, LXQt team
+           2010-2012, Razor team
 License:GPL-2+
 
 Files: cmake/*
