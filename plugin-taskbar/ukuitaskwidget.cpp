@@ -591,7 +591,9 @@ bool UKUITaskWidget::isMinimized() const
 {
     //    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-    return NET::Focused == (KWindowInfo(mWindow,NET::WMState).state()&NET::Focused);    
+    return NET::Focused == (KWindowInfo(mWindow,NET::WMState).state()&NET::Focused);
+#else
+    return isApplicationActive();
 #endif
 }
 
@@ -600,6 +602,8 @@ bool UKUITaskWidget::isFocusState() const
     qDebug()<<"KWindowInfo(mWindow,NET::WMState).state():"<<KWindowInfo(mWindow,NET::WMState).state();
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     return NET::Focused == (KWindowInfo(mWindow,NET::WMState).state()&NET::Focused);
+#else
+    return isApplicationActive();
 #endif
 }
 
