@@ -45,6 +45,14 @@ class IUKUIPanelPlugin;
 class TrayIcon: public QFrame
 {
     Q_OBJECT
+
+    /*
+     * 负责与ukui桌面环境托盘应用通信的dbus
+     * 在点击托盘图标外部托盘按钮内部的区域时发给其他托盘应用 点击信号
+     * 托盘应用收到此信号应实现　show/hide 主界面的操作
+　　　*/
+    Q_CLASSINFO("D-Bus Interface", "com.ukui.panel.plugins.tray")
+
     enum EffectMode {
         HighlightOnly,
         BothDefaultAndHighlit
@@ -82,6 +90,7 @@ protected:
 private:
     void init();
     QRect iconGeometry();
+    void  trayButtonPress(QMouseEvent *);
     Window mIconId;
     Window mWindowId;
     QSize mIconSize;

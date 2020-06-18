@@ -46,13 +46,9 @@
 #include "qmath.h"
 #include <QToolButton>
 #define XEMBED_EMBEDDED_NOTIFY 0
-#define TORLERANCE 36
 
 static bool xError;
-static QColor symbolic_color = Qt::gray;
-/************************************************
 
-************************************************/
 int windowErrorHandler(Display *d, XErrorEvent *e)
 {
     xError = true;
@@ -94,6 +90,11 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
 
     QTimer::singleShot(200, [this] { init(); update(); });
     repaint();
+
+    /**/
+    QDBusConnection::sessionBus().unregisterService("com.ukui.panel");
+    QDBusConnection::sessionBus().registerService("com.ukui.panel");
+    QDBusConnection::sessionBus().registerObject("/traybutton/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
 }
 
 
@@ -230,8 +231,8 @@ TrayIcon::~TrayIcon()
 QSize TrayIcon::sizeHint() const
 {
     QMargins margins = contentsMargins();
-    return QSize(margins.left() + mIconSize.width()/2 + margins.right()/2,
-                 margins.top() + mIconSize.height()/2 + margins.bottom()/2
+    return QSize(margins.left() + mIconSize.width() + margins.right(),
+                 margins.top() + mIconSize.height() + margins.bottom()
                 );
 }
 
@@ -245,21 +246,13 @@ void TrayIcon::setIconSize(QSize iconSize)
 
     const QSize req_size{mIconSize * metric(PdmDevicePixelRatio)};
     if (mWindowId)
-    {
         xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
-    }
 
     if (mIconId)
-    {
         xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
-    }
-    //QSize mysize(8,8);
-    //mIconSize=mysize;
 }
 
-/************************************************
-
- ************************************************/
+/*处理　TrayIcon　绘图，点击等事件*/
 bool TrayIcon::event(QEvent *event)
 {
     if (mWindowId)
@@ -280,8 +273,11 @@ bool TrayIcon::event(QEvent *event)
             break;
 
         case QEvent::MouseButtonPress:
+//            trayButtonPress(static_cast<QMouseEvent*>(event));
+//            break;
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonDblClick:
+            qDebug()<<"QEvent::MouseButtonDblClick";
             event->accept();
             break;
 
@@ -306,9 +302,7 @@ QRect TrayIcon::iconGeometry()
 }
 
 
-/************************************************
-
- ************************************************/
+/*draw 函数执行的是绘图事件*/
 void TrayIcon::draw(QPaintEvent* /*event*/)
 {
     Display* dsp = mDisplay;
@@ -373,10 +367,19 @@ void TrayIcon::draw(QPaintEvent* /*event*/)
         XDestroyImage(ximage);
 }
 
+/*关于点击托盘应用的非图标区域实现打开托盘应用*/
+void TrayIcon::trayButtonPress(QMouseEvent* /*event*/)
+{
+    //qDebug() << "    * window name:" << xfitMan().getApplicationName(mIconId);
+    /* 需要此点击信号的应用需要做如下绑定
+     * QDBusConnection::sessionBus().connect(QString(), QString("/traybutton/click"),  "com.ukui.panel.plugins.tray", "ClickTrayApp", this, SLOT(clientGet(void)));
+     * 在槽函数clientGet(void)　中处理接受到的点击信号
+     */
+    QDBusMessage message =QDBusMessage::createSignal("/traybutton/click", "com.ukui.panel.plugins.tray", "ClickTrayApp");
+    message<<xfitMan().getApplicationName(mIconId);
+    QDBusConnection::sessionBus().send(message);
+}
 
-/************************************************
-
- ************************************************/
 void TrayIcon::windowDestroyed(Window w)
 {
     //damage is destroyed if it's parent window was destroyed
@@ -394,6 +397,7 @@ bool TrayIcon::isXCompositeAvailable()
     return XCompositeQueryExtension(QX11Info::display(), &eventBase, &errorBase );
 }
 
+/*enterEvent 和leaveEvent是用来处理traystatus的*/
 void TrayIcon::enterEvent(QEvent *)
 {
     traystatus=HOVER;
