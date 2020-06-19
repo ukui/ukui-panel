@@ -26,7 +26,7 @@
 #include "../panel/customstyle.h"
 
 #define NIGHT_MODE_KEY        "nightmodestatus"
-#define NIGHT_MODE_LIGHT      "light"
+#define NIGHT_MODE_LIGHT 　　　"light"
 #define NIGHE_MODE_NIGHT      "night"
 #define NIGHT_MODE_CONTROL    "org.ukui.control-center.panel.plugins"
 
@@ -37,6 +37,9 @@
 #define GTK_STYLE_NAME         "gtk-theme"
 #define DEFAULT_GTK_STYLE_NAME "gtkTheme"
 
+#define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
+#define SHOW_NIGHTMODE       "shownightmode"
+
 
 NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
@@ -44,6 +47,14 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
 {
     mButton=new NightModeButton(this);
     mButton->setStyle(new CustomStyle());
+
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+        gsettings = new QGSettings(id);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==SHOW_NIGHTMODE)
+            realign();
+    });
     realign();
 }
 
@@ -56,11 +67,17 @@ void NightMode::realign()
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     mButton->setFixedSize(0,0);
     mButton->setIconSize(QSize(0,0));
-#endif
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-    mButton->setFixedSize(32,32);
-    mButton->setIconSize(QSize(24,24));
+#else
+    if(gsettings->get(SHOW_NIGHTMODE).toBool())
+    {
+        mButton->setFixedSize(panel()->panelSize()*0.75,panel()->panelSize()*0.75);
+        mButton->setIconSize(QSize(panel()->iconSize()*0.75,panel()->iconSize()*0.75));
+    }
+    else
+    {
+        mButton->setFixedSize(0,0);
+        mButton->setIconSize(QSize(0,0));
+    }
 #endif
 }
 
@@ -71,16 +88,6 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     /*redshift的配置文件*/
     QString filename = QDir::homePath() +"/.config/redshift.conf";
     mqsettings = new QSettings(filename, QSettings::IniFormat);
-
-    mqsettings->beginGroup("redshift");
-
-    mqsettings->setValue("dawn-time", "17:54");
-    mqsettings->setValue("dusk-time", "17:55");
-//    mqsettings->setValue("temp-day", "3500");
-//    mqsettings->setValue("temp-night", "3500");
-
-    mqsettings->endGroup();
-    mqsettings->sync();
 
     /*
      * 夜间模式的初始化
@@ -133,6 +140,9 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
         this->setIcon(icon);
     }
+
+    // init kwin settings
+    setupSettings();
 }
 NightModeButton::~NightModeButton(){
     delete gsettings;
@@ -149,26 +159,24 @@ void NightModeButton::mousePressEvent(QMouseEvent *event)
         {
             if(mode)
             {
-                qDebug()<<"NightModeButton::mousePressEvent   mode = true ";
                 if(gsettings->keys().contains(NIGHT_MODE_KEY))
                 {
-                    qDebug()<<"NightModeButton::mousePressEvent   mode = true contains(NIGHT_MODE_KEY)";
                     gsettings->set(NIGHT_MODE_KEY, true);
                     setNightMode(true);
                     setUkuiStyle("ukui-black");
+                    writeKwinSettings(true,"ukui-black");
                     mode=false;
                 }
 
             }
             else
             {
-                qDebug()<<"NightModeButton::mousePressEvent   mode = false ";
                 if(gsettings->keys().contains(NIGHT_MODE_KEY))
                 {
-                    qDebug()<<"NightModeButton::mousePressEvent   mode = false   contains(NIGHT_MODE_KEY) ";
                     gsettings->set(NIGHT_MODE_KEY, false);
                     setNightMode(false);
                     setUkuiStyle("ukui-white");
+                    writeKwinSettings(true,"ukui-white");
                     mode=true;
                 }
 
@@ -179,10 +187,12 @@ void NightModeButton::mousePressEvent(QMouseEvent *event)
     }
 }
 
+/*夜间模式右键菜单*/
 void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
 {
     nightModeMenu=new QMenu();
     nightModeMenu->setAttribute(Qt::WA_DeleteOnClose);
+    nightModeMenu->setWindowOpacity(0.7);
 
     QAction * opennightmode = nightModeMenu->addAction(tr("Turn On NightMode"));
 
@@ -190,7 +200,7 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
     opennightmode->setChecked(gsettings->get(NIGHT_MODE_KEY).toBool());
     connect(opennightmode, &QAction::triggered, [this] { turnNightMode(); });
 
-    nightModeMenu->addAction(QIcon::fromTheme("document-page-setup"),
+    nightModeMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
                              tr("Set Up NightMode"),
                              this, SLOT(setUpNightMode())
                              );
@@ -204,26 +214,24 @@ void NightModeButton::turnNightMode()
     {
         if(mode)
         {
-            qDebug()<<"NightModeButton::mousePressEvent   mode = true ";
             if(gsettings->keys().contains(NIGHT_MODE_KEY))
             {
-                qDebug()<<"NightModeButton::mousePressEvent   mode = true contains(NIGHT_MODE_KEY)";
                 gsettings->set(NIGHT_MODE_KEY, true);
                 setNightMode(true);
                 setUkuiStyle("ukui-black");
+                writeKwinSettings(true,"ukui-black");
                 mode=false;
             }
 
         }
         else
         {
-            qDebug()<<"NightModeButton::mousePressEvent   mode = false ";
             if(gsettings->keys().contains(NIGHT_MODE_KEY))
             {
-                qDebug()<<"NightModeButton::mousePressEvent   mode = false   contains(NIGHT_MODE_KEY) ";
                 gsettings->set(NIGHT_MODE_KEY, false);
                 setNightMode(false);
                 setUkuiStyle("ukui-white");
+                writeKwinSettings(true,"ukui-white");
                 mode=true;
             }
 
@@ -233,6 +241,7 @@ void NightModeButton::turnNightMode()
         QMessageBox::information(this,"Error",tr("please install new ukui-control-center first"));
 }
 
+/*右键菜单选项　设置任务栏*/
 void NightModeButton::setUpNightMode()
 {
     QProcess *process =new QProcess(this);
@@ -251,8 +260,27 @@ void NightModeButton::setNightMode(const bool nightMode){
 
     if(nightMode)
     {
-        mqsettings->setValue("temp-day", mqsettings->value("temp-day", "").toString());
-        mqsettings->setValue("temp-night", mqsettings->value("temp-night", "").toString());
+        /* 控制面板不是常驻应用，装机成功后未启动控制面板设置夜间模式的情况下
+         * /.config/redshift.conf　未设置
+         * 需要任务栏设置初始化夜间模式的时间及色温
+         * 其他情况下任务栏应读取控制面板设置的参数
+　　　　　*/
+        mqsettings->beginGroup("redshift");
+        if(mqsettings->value("temp-day", "").toString().isEmpty())
+        {
+            mqsettings->setValue("dawn-time", "17:54");
+            mqsettings->setValue("dusk-time", "17:55");
+            mqsettings->setValue("temp-day", "3500");
+            mqsettings->setValue("temp-night", "3500");
+        }
+        else
+        {
+            mqsettings->setValue("temp-day", mqsettings->value("temp-day", "").toString());
+            mqsettings->setValue("temp-night", mqsettings->value("temp-night", "").toString());
+        }
+        mqsettings->endGroup();
+        mqsettings->sync();
+
         cmd = "restart";
         serverCmd = "enable";
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
@@ -319,4 +347,47 @@ void NightModeButton::setUkuiStyle(QString style)
             QMessageBox::information(this,"Error",tr("please install ukui-theme first"));
         }
     }
+}
+
+/*Kwin初始化　*/
+void NightModeButton::setupSettings() {
+    QString filename = QDir::homePath() + "/.config/ukui-kwinrc";
+    kwinSettings = new QSettings(filename, QSettings::IniFormat);
+
+    kwinSettings->beginGroup("Plugins");
+
+    bool kwin = kwinSettings->value("blurEnabled", kwin).toBool();
+
+    kwinSettings->endGroup();
+}
+
+/*设置与Kwin　窗口管理器　标题栏颜色*/
+void NightModeButton::writeKwinSettings(bool change, QString theme)
+{
+    QString th;
+    if ("ukui-white" == theme) {
+        th = "__aurorae__svg__Ukui-classic";
+    } else {
+        th = "__aurorae__svg__Ukui-classic-dark";
+    }
+    kwinSettings->beginGroup("Plugins");
+    kwinSettings->setValue("blurEnabled",change);
+    kwinSettings->endGroup();
+
+    kwinSettings->beginGroup("org.kde.kdecoration2");
+    kwinSettings->setValue("theme", th);
+    kwinSettings->endGroup();
+
+    kwinSettings->beginGroup("org.kde.kdecoration2");
+    kwinSettings->setValue("library", "org.ukui.kwin.aurorae");
+    kwinSettings->endGroup();
+
+    kwinSettings->sync();
+
+#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
+
+#else
+        QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
+        QDBusConnection::sessionBus().send(message);
+#endif
 }
