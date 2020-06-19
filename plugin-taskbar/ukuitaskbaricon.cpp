@@ -27,8 +27,8 @@
 
 UKUITaskBarIcon::UKUITaskBarIcon()
 {
-    QString path=QDir::homePath()+"/.config/ukui/ukui-menu.ini";
-    setting=new QSettings(path,QSettings::IniFormat);
+//    QString path=QDir::homePath()+"/.config/ukui/ukui-menu.ini";
+//    setting=new QSettings(path,QSettings::IniFormat);
     mMapFindDesktopByAppName.clear();
     mMapFindIconByAppName.clear();
     mMapFindExeByAppName.clear();
@@ -714,7 +714,7 @@ bool UKUITaskBarIcon::matchingAppCategories(QString desktopfp, QStringList categ
 
     return false;
 }
-
+#if 0
 QStringList UKUITaskBarIcon::getRecentApp()
 {
     QStringList recentAppList;
@@ -750,7 +750,7 @@ QStringList UKUITaskBarIcon::getRecentApp()
     std::sort(recentAppList.begin(),recentAppList.end(),collator);
     return recentAppList;
 }
-
+#endif
 QVector<QString> UKUITaskBarIcon::getDesktopAll()
 {
     QVector<QString> desktopAllVector;
@@ -760,7 +760,7 @@ QVector<QString> UKUITaskBarIcon::getDesktopAll()
     commonVector.clear();
     appNameList.clear();
 //    desktopAllVector=desktopfpVector;
-    commonVector=getCommonUseApp();
+//    commonVector=getCommonUseApp();
     Q_FOREACH(QString desktopfp, desktopfpVector)
     {
         if(!commonVector.contains(desktopfp))
@@ -783,6 +783,7 @@ QVector<QString> UKUITaskBarIcon::getDesktopAll()
     return desktopAllVector;
 }
 
+#if 0
 QVector<QString> UKUITaskBarIcon::getCommonUseApp()
 {
     QDateTime dt=QDateTime::currentDateTime();
@@ -866,7 +867,7 @@ QVector<QString> UKUITaskBarIcon::getCommonUseApp()
 
     return data;
 }
-
+#endif
 //获取应用拼音
 QString UKUITaskBarIcon::getAppNamePinyin(QString appname)
 {
