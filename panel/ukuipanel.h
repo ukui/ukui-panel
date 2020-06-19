@@ -38,6 +38,7 @@
 #include <QtDBus/QtDBus>
 #include "common/ukuisettings.h"
 #include "iukuipanel.h"
+#include "popupmenu.h"
 #include "ukuipanelglobals.h"
 #include "highlight-effect.h"
 
@@ -432,6 +433,8 @@ private slots:
     void systeMonitor();
     void showDesktop();
     void showTaskView();
+    void showNightModeButton();
+    void adjustPanel();
     void realign();
     /**
      * @brief Moves a plugin in PanelPluginsModel, i.e. calls
@@ -701,6 +704,9 @@ private:
 
     // settings should be kept private for security
     UKUi::Settings *settings() const { return mSettings; }
+
+    PopupMenu * menu;
+
 
 private slots:
     void setPanelPosition(Position position);

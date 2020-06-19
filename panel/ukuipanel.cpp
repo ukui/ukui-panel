@@ -96,6 +96,7 @@
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
 #define SHOW_TASKVIEW       "showtaskview"
+#define SHOW_NIGHTMODE       "shownightmode"
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -808,9 +809,7 @@ void UKUIPanel::showAddPluginDialog()
 }
 
 
-/************************************************
-
- ************************************************/
+/*右键　设置任务栏选项*/
 void UKUIPanel::setUpPanel()
 {
     if(QFileInfo::exists(QString("/usr/bin/ukui-control-center")))
@@ -823,6 +822,7 @@ void UKUIPanel::setUpPanel()
         qDebug()<<"not find /usr/bin/ukui-control-center";
 }
 
+/*右键　系统监视器选项*/
 void UKUIPanel::systeMonitor()
 {
     if(QFileInfo::exists(QString("/usr/bin/mate-system-monitor")) || QFileInfo::exists(QString("/usr/bin/ukui-system-monitor")))
@@ -837,10 +837,97 @@ void UKUIPanel::systeMonitor()
         qDebug()<<"not find /usr/bin/mate-system-monitor or /usr/bin/ukui-system-monitor";
 }
 
+/*任务栏大小和方向的调整*/
+void UKUIPanel::adjustPanel()
+{
+    QAction *pmenuaction_s;
+    QAction *pmenuaction_m;
+    QAction *pmenuaction_l;
+
+    pmenuaction_s=new QAction(this);
+    pmenuaction_s->setText(tr("Small"));
+    pmenuaction_m=new QAction(this);
+    pmenuaction_m->setText(tr("Media"));
+    pmenuaction_l=new QAction(this);
+    pmenuaction_l->setText(tr("Large"));
+
+
+    QMenu *pmenu_panelsize;
+    pmenu_panelsize=new QMenu(this);
+    pmenu_panelsize->setTitle(tr("Adjustment Size"));
+    pmenu_panelsize->addAction(pmenuaction_s);
+    pmenu_panelsize->addAction(pmenuaction_m);
+    pmenu_panelsize->addAction(pmenuaction_l);
+    pmenu_panelsize->setWindowOpacity(0.9);
+    menu->addMenu(pmenu_panelsize);
+
+    pmenuaction_s->setCheckable(true);
+    pmenuaction_m->setCheckable(true);
+    pmenuaction_l->setCheckable(true);
+    pmenuaction_s->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_SMALL);
+    pmenuaction_m->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_MEDIUM);
+    pmenuaction_l->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_LARGE);
+
+    connect(pmenuaction_s,&QAction::triggered,[this] {
+        setPanelsize(PANEL_SIZE_SMALL);
+        setIconsize(ICON_SIZE_SMALL);
+    });
+    connect(pmenuaction_m,&QAction::triggered,[this] {
+        setPanelsize(PANEL_SIZE_MEDIUM);
+        setIconsize(ICON_SIZE_MEDIUM);
+    });
+    connect(pmenuaction_l,&QAction::triggered,[this] {
+        setPanelsize(PANEL_SIZE_LARGE);
+        setIconsize(ICON_SIZE_LARGE);
+    });
+    menu->addSeparator();
+
+    QAction *pmenuaction_top;
+    QAction *pmenuaction_bottom;
+    QAction *pmenuaction_left;
+    QAction *pmenuaction_right;
+    pmenuaction_top=new QAction(this);
+    pmenuaction_top->setText(tr("Up"));
+    pmenuaction_bottom=new QAction(this);
+    pmenuaction_bottom->setText(tr("Bottom"));
+    pmenuaction_left=new QAction(this);
+    pmenuaction_left->setText(tr("Left"));
+    pmenuaction_right=new QAction(this);
+    pmenuaction_right->setText(tr("Right"));
+    QMenu *pmenu_positon;
+    pmenu_positon=new QMenu(this);
+    pmenu_positon->setTitle(tr("Adjustment Position"));
+    pmenu_positon->addAction(pmenuaction_top);
+    pmenu_positon->addAction(pmenuaction_bottom);
+    pmenu_positon->addAction(pmenuaction_left);
+    pmenu_positon->addAction(pmenuaction_right);
+    menu->addMenu(pmenu_positon);
+
+    pmenuaction_top->setCheckable(true);
+    pmenuaction_bottom->setCheckable(true);
+    pmenuaction_left->setCheckable(true);
+    pmenuaction_right->setCheckable(true);
+    pmenuaction_top->setChecked(gsettings->get(PANEL_POSITION_KEY).toInt()==1);
+    pmenuaction_bottom->setChecked(gsettings->get(PANEL_POSITION_KEY).toInt()==0);
+    pmenuaction_left->setChecked(gsettings->get(PANEL_POSITION_KEY).toInt()==2);
+    pmenuaction_right->setChecked(gsettings->get(PANEL_POSITION_KEY).toInt()==3);
+
+
+    connect(pmenuaction_top,&QAction::triggered, [this] { setPanelPosition(PositionTop);});
+    connect(pmenuaction_bottom,&QAction::triggered, [this] { setPanelPosition(PositionBottom);});
+    connect(pmenuaction_left,&QAction::triggered, [this] { setPanelPosition(PositionLeft);});
+    connect(pmenuaction_right,&QAction::triggered, [this] { setPanelPosition(PositionRight);});
+    pmenu_positon->setWindowOpacity(0.9);
+    pmenu_positon->setDisabled(mLockPanel);
+
+}
+/*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
 {
     KWindowSystem::setShowingDesktop(!KWindowSystem::showingDesktop());
 }
+
+/*右键　显示任务视图　选项*/
 void UKUIPanel::showTaskView()
 {
 //    system("ukui-window-switch --show-workspace");
@@ -851,6 +938,20 @@ void UKUIPanel::showTaskView()
         }
         else
             gsettings->set(SHOW_TASKVIEW,true);
+    }
+}
+
+/*右键　显示夜间模式按钮　选项*/
+void UKUIPanel::showNightModeButton()
+{
+//    system("ukui-window-switch --show-workspace");
+    if(gsettings->keys().contains(SHOW_NIGHTMODE))
+    {
+        if(gsettings->get(SHOW_NIGHTMODE).toBool()){
+            gsettings->set(SHOW_NIGHTMODE,false);
+        }
+        else
+            gsettings->set(SHOW_NIGHTMODE,true);
     }
 }
 void UKUIPanel::updateStyleSheet()
@@ -1174,7 +1275,7 @@ void UKUIPanel::showEvent(QShowEvent *event)
 */
 void UKUIPanel::showPopupMenu(Plugin *plugin)
 {
-    PopupMenu * menu = new PopupMenu(tr("Panel"), this);
+    menu = new PopupMenu(tr("Panel"), this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     /* @new features
@@ -1226,6 +1327,11 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
+    QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
+    shownightmode->setCheckable(true);
+    shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
+    connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
+
 
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                     tr("Show Desktop"),
@@ -1241,59 +1347,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
 
     menu->addSeparator();
 
-    QAction *pmenuaction_s;
-    QAction *pmenuaction_m;
-    QAction *pmenuaction_l;
-
-    pmenuaction_s=new QAction(this);
-    pmenuaction_s->setText(tr("Small"));
-    pmenuaction_m=new QAction(this);
-    pmenuaction_m->setText(tr("Media"));
-    pmenuaction_l=new QAction(this);
-    pmenuaction_l->setText(tr("Large"));
-
-
-    QMenu *pmenu_panelsize;
-    pmenu_panelsize=new QMenu(this);
-    pmenu_panelsize->setTitle(tr("Adjustment Size"));
-    pmenu_panelsize->addAction(pmenuaction_s);
-    pmenu_panelsize->addAction(pmenuaction_m);
-    pmenu_panelsize->addAction(pmenuaction_l);
-    pmenu_panelsize->setWindowOpacity(0.9);
-    menu->addMenu(pmenu_panelsize);
-
-    connect(pmenuaction_s,&QAction::triggered,[this] {setPanelsize(PANEL_SIZE_SMALL);setIconsize(ICON_SIZE_SMALL);});
-    connect(pmenuaction_m,&QAction::triggered,[this] {setPanelsize(PANEL_SIZE_MEDIUM);setIconsize(ICON_SIZE_MEDIUM);});
-    connect(pmenuaction_l,&QAction::triggered,[this] {setPanelsize(PANEL_SIZE_LARGE);setIconsize(ICON_SIZE_LARGE);});
-    menu->addSeparator();
-
-    QAction *pmenuaction_top;
-    QAction *pmenuaction_bottom;
-    QAction *pmenuaction_left;
-    QAction *pmenuaction_right;
-    pmenuaction_top=new QAction(this);
-    pmenuaction_top->setText(tr("Up"));
-    pmenuaction_bottom=new QAction(this);
-    pmenuaction_bottom->setText(tr("Bottom"));
-    pmenuaction_left=new QAction(this);
-    pmenuaction_left->setText(tr("Left"));
-    pmenuaction_right=new QAction(this);
-    pmenuaction_right->setText(tr("Right"));
-    QMenu *pmenu_positon;
-    pmenu_positon=new QMenu(this);
-    pmenu_positon->setTitle(tr("Adjustment Position"));
-    pmenu_positon->addAction(pmenuaction_top);
-    pmenu_positon->addAction(pmenuaction_bottom);
-    pmenu_positon->addAction(pmenuaction_left);
-    pmenu_positon->addAction(pmenuaction_right);
-    menu->addMenu(pmenu_positon);
-
-    connect(pmenuaction_top,&QAction::triggered, [this] { setPanelPosition(PositionTop);});
-    connect(pmenuaction_bottom,&QAction::triggered, [this] { setPanelPosition(PositionBottom);});
-    connect(pmenuaction_left,&QAction::triggered, [this] { setPanelPosition(PositionLeft);});
-    connect(pmenuaction_right,&QAction::triggered, [this] { setPanelPosition(PositionRight);});
-    pmenu_positon->setWindowOpacity(0.9);
-    pmenu_positon->setDisabled(mLockPanel);
+    adjustPanel();
 
     /*
     UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
