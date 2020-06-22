@@ -61,6 +61,7 @@
 #include <QPushButton>
 #include <QToolButton>
 #include <QLabel>
+#include <QMouseEvent>
 
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
 #define _NET_SYSTEM_TRAY_ORIENTATION_VERT 1
