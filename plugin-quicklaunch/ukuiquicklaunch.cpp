@@ -54,7 +54,6 @@ using namespace  std;
 
 #define PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANEL_LINES    "panellines"
-#define QUICKLAUCH_SIZZE "quicklaunchsize"
 
 UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     QFrame(parent),
@@ -68,10 +67,8 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     setLayout(mLayout);
 
     const QByteArray id(PANEL_SETTINGS);
-    if(QGSettings::isSchemaInstalled(id))
-    {
+    if(QGSettings::isSchemaInstalled(id)){
         settings=new QGSettings(id);
-        qDebug()<<"panel settinngs *********************8"<<settings->get(PANEL_LINES).toInt();
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==PANEL_LINES)
@@ -84,6 +81,7 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     QString exec;
     QString icon;
 
+    //gsetting的方式读取写入 apps
     const auto apps = mPlugin->settings()->readArray("apps");
     for (const QMap<QString, QVariant> &app : apps)
     {
@@ -123,8 +121,8 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
         }
     } // for
 
-    if (mLayout->isEmpty())
-        showPlaceHolder();
+//    if (mLayout->isEmpty())
+//        showPlaceHolder();
 
     realign();
 }
@@ -146,13 +144,14 @@ int UKUIQuickLaunch::indexOfButton(QuickLaunchButton* button) const
     return mLayout->indexOf(button);
 }
 
-
+/*快速启动栏上应用的数量*/
 int UKUIQuickLaunch::countOfButtons() const
 {
     return mLayout->count();
 }
 
-
+/* 快速启动栏的实时调整函数，
+*/
 void UKUIQuickLaunch::realign()
 {
     mLayout->setEnabled(false);
@@ -176,7 +175,6 @@ void UKUIQuickLaunch::realign()
             {
                 (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
                 (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
-                settings->set(QUICKLAUCH_SIZZE,mVBtn.size()*mPlugin->panel()->panelSize());
             }
             }
             else
@@ -187,14 +185,11 @@ void UKUIQuickLaunch::realign()
                 {
                     (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                    settings->set(QUICKLAUCH_SIZZE,mVBtn.size()*mPlugin->panel()->panelSize()/4);
                 }
             }
         }
         else
         {
-//            mLayout->setColumnCount(panel->lineCount());
-//            mLayout->setRowCount(0);
             if(settings->get(PANEL_LINES).toInt()==1)
             {
             mLayout->setColumnCount(panel->lineCount());
@@ -203,7 +198,6 @@ void UKUIQuickLaunch::realign()
             {
                 (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
                 (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
-                settings->set(QUICKLAUCH_SIZZE,mVBtn.size()*mPlugin->panel()->panelSize());
             }
             }
             else
@@ -214,12 +208,8 @@ void UKUIQuickLaunch::realign()
                 {
                     (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                    settings->set(QUICKLAUCH_SIZZE,mVBtn.size()*mPlugin->panel()->panelSize()/4);
                 }
             }
-
-
-
         }
     }
     mLayout->setEnabled(true);
@@ -237,6 +227,7 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
     //        btn->setMenu(Qt::InstantPopup);
     mVBtn.push_back(btn);
     mLayout->addWidget(btn);
+
     connect(btn, SIGNAL(switchButtons(QuickLaunchButton*,QuickLaunchButton*)), this, SLOT(switchButtons(QuickLaunchButton*,QuickLaunchButton*)));
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
@@ -257,53 +248,34 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
     int i = 0;
     QLayoutItem *child;
 
-    if(mLayout->layout()->count()>0)
-    {
+    /* 仅仅在快速启动栏上的应用数量大于０的时候才进行判断
+     * 若在快速启动栏　应用数量为０的时候b->file_name为空
+     * 会造成任务栏的崩溃
+      */
+    qDebug()<<"检测到目前已经固定到任务栏的应用数量 "<<countOfButtons();
+    if(countOfButtons()>0){
         while ((child = mLayout->layout()->itemAt(i))) {
             QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-            if (b->file_name == btn->file_name)
-            {
-                qDebug()<<" already  insert  ";
+            qDebug()<<"mLayout->itemAt(i) ";
+            if (b->file_name == btn->file_name){
                 checkresult=true;
                 break;
             }
             else {
-                ++i;
-                qDebug()<<"don't insert ";
                 checkresult=false;
-            }
-
-        }
-        return checkresult;
-    }
-    else
-    {
-        return true;
-    }
-
-}
-
-//check by filename
-void UKUIQuickLaunch::checkButton(QString *filename)
-{
-    int i = 0;
-    QLayoutItem *child;
-
-    while ((child = mLayout->layout()->itemAt(i))) {
-        qDebug()<<i;
-        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-        if(b)
-        {
-            if (b->file_name == filename) {
-                qDebug()<<" already  insert  "<<child;                //mLayout->removeItem(child);
-            } else {
                 ++i;
-                qDebug()<<"not insert  ";
             }
         }
+                return checkresult;
     }
+    else{
+        qDebug()<<"countOfButtons =0  "<<countOfButtons();
+        return false;
+    }
+    delete btn;
 }
 
+/* 以xdg的方式删除　button*/
 void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
 {
     QuickLaunchButton* btn = new QuickLaunchButton(action, mPlugin, this);
@@ -311,42 +283,28 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
     QLayoutItem *child;
 
     while ((child = mLayout->layout()->itemAt(i))) {
-        qDebug()<<" mLayout->layout()->itemAt(i)";
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
         if (b->file_name == btn->file_name) {
-            //mLayout->removeItem(child);
-            if(mLayout->layout()->count()>1)
+            for(auto it = mVBtn.begin();it != mVBtn.end();it++)
             {
-                mLayout->removeWidget(b);
-                qDebug()<<"removeButton   ****";
+                if(*it == b)
+                {
+                    mVBtn.erase(it);
+                    break;
+                }
             }
-            //b->deleteLater();
-        } else {
-            ++i;
-        }
-    }
-    saveSettings();
-}
 
-//remove by filename
-void UKUIQuickLaunch::removeButton(QString *filename)
-{
-    int i = 0;
-    QLayoutItem *child;
-
-    while ((child = mLayout->layout()->itemAt(i))) {
-        qDebug()<<i;
-        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-        qDebug()<<"b->file_name   ---"<<b->file_name;
-        if (b->file_name == filename) {
-            qDebug()<<"child   >>>"<<child;
-            //mLayout->removeItem(child);
+            mLayout->removeItem(child);
             mLayout->removeWidget(b);
             b->deleteLater();
+            btn->deleteLater();
         } else {
             ++i;
         }
     }
+
+    //    btn->deleteLater();
+    realign();
     saveSettings();
 }
 
@@ -399,19 +357,8 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
     saveSettings();
 }
 
-void UKUIQuickLaunch::paintEvent(QPaintEvent *)
-{
-    //设置quicklaunch 区域底色
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
 bool UKUIQuickLaunch::AddToTaskbar(QString arg)
 {
-    qDebug()<<"AddToTaskbar                  *************8";
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
@@ -447,13 +394,10 @@ bool UKUIQuickLaunch::AddToTaskbar(QString arg)
 /*
  * @need resolved bug
  * 为开始菜单提供检测应用是否在任务栏上面的接口
- * 由于在删除最后一个应用的时候会出现任务栏崩溃的问题，
- * 所以暂定　mLayout->count()>0的情况下才进行checkButton操作
- * 在mLayout->count()>0的情况下才进行removeButton操作
  */
 bool UKUIQuickLaunch::CheckIfExist(QString arg)
 {
-    if (mLayout->count()>0)
+    if(countOfButtons()>0)
     {
         const auto url=QUrl(arg);
         QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
@@ -463,34 +407,32 @@ bool UKUIQuickLaunch::CheckIfExist(QString arg)
         state=checkButton(new QuickLaunchAction(&xdg, this));
         return state;
     }
-    else
-        return false;
 }
 
+/*为开始菜单提供从任务栏上移除的接口*/
 bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
 {
-    if(mLayout->count()>1)
-    {
-        qDebug()<<"RemoveFromTaskbar  ****";
-        const auto url=QUrl(arg);
-        QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-        XdgDesktopFile xdg;
-        xdg.load(fileName);
-        removeButton(new QuickLaunchAction(&xdg, this));
-        return true;
-    }
+    const auto url=QUrl(arg);
+    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+    XdgDesktopFile xdg;
+    xdg.load(fileName);
+    removeButton(new QuickLaunchAction(&xdg, this));
+    return true;
 }
 
+/*获取任务栏位置的接口*/
 int UKUIQuickLaunch::GetPanelPosition(QString arg)
 {
     return mPlugin->panel()->position();
 }
 
+/*获取任务栏高度的接口*/
 int UKUIQuickLaunch::GetPanelSize(QString arg)
 {
     return mPlugin->panel()->panelSize();
 }
 
+/**/
 void UKUIQuickLaunch::switchButtons(QuickLaunchButton *button1, QuickLaunchButton *button2)
 {
     if (button1 == button2)
@@ -507,40 +449,37 @@ void UKUIQuickLaunch::switchButtons(QuickLaunchButton *button1, QuickLaunchButto
     saveSettings();
 }
 
-
+/*快速启动栏的按钮删除 右键删除*/
 void UKUIQuickLaunch::buttonDeleted()
 {
-    if(mLayout->count()>1)
+    QuickLaunchButton *btn = qobject_cast<QuickLaunchButton*>(sender());
+    if (!btn)
+        return;
+    for(auto it = mVBtn.begin();it != mVBtn.end();it++)
     {
-        QuickLaunchButton *btn = qobject_cast<QuickLaunchButton*>(sender());
-        if (!btn)
-            return;
-        for(auto it = mVBtn.begin();it != mVBtn.end();it++)
+
+        if(*it == btn)
         {
-            if(mLayout->layout()->count()>0)
-            {
-                if(*it == btn)
-                {
-                    mVBtn.erase(it);
-                    break;
-                }
-            }
-            else
-                qDebug()<<"can 't buttonDeleted   ";
+            mVBtn.erase(it);
+            break;
         }
-
-        btn->deleteLater();
-        mLayout->removeWidget(btn);
-        saveSettings();
-
-        if (mLayout->isEmpty())
-            showPlaceHolder();
-        realign();
     }
 
+    btn->deleteLater();
+    mLayout->removeWidget(btn);
+    saveSettings();
+
+    /*//注释showPlaceHolder的原因是在开始菜单检测快速启动栏上面固定的应用数量的时候
+      //countOfButtons无法获取快速启动栏上的应用为０的情况
+    if (mLayout->isEmpty()){
+        qDebug()<<"mLayout->isEmpty()"<<countOfButtons();
+        showPlaceHolder();
+    }
+    */
+    realign();
 }
 
-
+/*快速启动栏应用右键左移函数*/
 void UKUIQuickLaunch::buttonMoveLeft()
 {
     QuickLaunchButton *btn = qobject_cast<QuickLaunchButton*>(sender());
@@ -555,7 +494,7 @@ void UKUIQuickLaunch::buttonMoveLeft()
     }
 }
 
-
+/*快速启动栏右键　右移函数*/
 void UKUIQuickLaunch::buttonMoveRight()
 {
     QuickLaunchButton *btn1 = qobject_cast<QuickLaunchButton*>(sender());
@@ -570,7 +509,7 @@ void UKUIQuickLaunch::buttonMoveRight()
     }
 }
 
-
+/*保持设置*/
 void UKUIQuickLaunch::saveSettings()
 {
     PluginSettings *settings = mPlugin->settings();
@@ -598,7 +537,8 @@ void UKUIQuickLaunch::saveSettings()
     settings->setArray("apps", hashList);
 }
 
-
+/*在快速启动栏区域没有应用的时候显示一块空白的区域用以实现拖拽等操作
+*/
 void UKUIQuickLaunch::showPlaceHolder()
 {
     if (!mPlaceHolder)
@@ -613,11 +553,9 @@ void UKUIQuickLaunch::showPlaceHolder()
 }
 
 
-
-
-
 /*
  * Implementation of adaptor class FilectrlAdaptor
+ * 为开始菜单提供D_Bus接口
  */
 
 FilectrlAdaptor::FilectrlAdaptor(QObject *parent)
@@ -632,6 +570,7 @@ FilectrlAdaptor::~FilectrlAdaptor()
     // destructor
 }
 
+/*添加到快速启动栏*/
 bool FilectrlAdaptor::AddToTaskbar(const QString &arg)
 {
     bool out0;
@@ -639,6 +578,7 @@ bool FilectrlAdaptor::AddToTaskbar(const QString &arg)
     return out0;
 }
 
+/*检测是否已经存在于快速启动栏*/
 bool FilectrlAdaptor::CheckIfExist(const QString &arg)
 {
     bool out0;
@@ -646,6 +586,7 @@ bool FilectrlAdaptor::CheckIfExist(const QString &arg)
     return out0;
 }
 
+/*从快速启动栏删除应用*/
 bool FilectrlAdaptor::RemoveFromTaskbar(const QString &arg)
 {
     bool out0;
@@ -653,6 +594,7 @@ bool FilectrlAdaptor::RemoveFromTaskbar(const QString &arg)
     return out0;
 }
 
+/*获取任务栏位置*/
 int FilectrlAdaptor::GetPanelPosition(const QString &arg)
 {
     int out0;
@@ -660,6 +602,7 @@ int FilectrlAdaptor::GetPanelPosition(const QString &arg)
     return out0;
 }
 
+/*获取任务栏高度*/
 int FilectrlAdaptor::GetPanelSize(const QString &arg)
 {
     int out0;

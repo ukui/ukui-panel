@@ -880,7 +880,7 @@ void UKUIPanel::adjustPanel()
         setPanelsize(PANEL_SIZE_LARGE);
         setIconsize(ICON_SIZE_LARGE);
     });
-    menu->addSeparator();
+    pmenu_panelsize->setDisabled(mLockPanel);
 
     QAction *pmenuaction_top;
     QAction *pmenuaction_bottom;
@@ -1323,15 +1323,19 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     menu->addSeparator();
 
     QAction * showtaskview = menu->addAction(tr("Show Taskview"));
+    showtaskview->setDisabled(mLockPanel);
     showtaskview->setCheckable(true);
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
+#if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
     QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
+    shownightmode->setDisabled(mLockPanel);
     shownightmode->setCheckable(true);
     shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
     connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
-
+#else
+#endif
 
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                     tr("Show Desktop"),
@@ -1382,8 +1386,9 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     {
         QAction *about;
         about=new QAction(this);
-        about->setText("关于麒麟");
+        about->setText(tr("About Kylin"));
         menu->addAction(about);
+        about->setDisabled(mLockPanel);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
             process->startDetached("/usr/bin/ukui-about");
