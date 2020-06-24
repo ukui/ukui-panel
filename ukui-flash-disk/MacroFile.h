@@ -20,7 +20,8 @@
 typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 
 #define SERVICE_NAME_SIZE 64
-#define DistanceToPanel 3
+#define DistanceToPanel 2
+#define SmallPanelSize 46
 #define UKUI_FLASH_DISK_PATH "/"
 #define UKUI_FLASH_DISK_SERVICE "com.ukuiflashdisk.hotel"
 #define UKUI_FLASH_DISK_INTERFACE "com.flshdisk.hotel"
