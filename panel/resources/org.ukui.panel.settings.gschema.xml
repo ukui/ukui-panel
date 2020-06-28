@@ -20,6 +20,12 @@
             <summary>show TsskView</summary>
             <description>control taskview show or hide</description>
         </key>
+	<key name="shownightmode" type="b">
+            <default>true</default>
+            <summary>show TsskView</summary>
+            <description>control taskview show or hide</description>
+        </key>
+
         <key name="quicklaunchlines" type="i">
             <default>1</default>
             <summary>show Quicklaunch Lines</summary>

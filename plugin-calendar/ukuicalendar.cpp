@@ -173,11 +173,12 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
                 //正常状态样式
                 "QLabel{"
                 /*"background-color:rgba(100,225,100,80%);"//背景色（也可以设置图片）*/
-                "border-width:0px;"                     //边框宽度像素
-                "border-radius:6px;"                   //边框圆角半径像素
-                "color:rgba(255,255,255,100%);"                //字体颜色
-                "padding:0px;"                          //填衬
-                "textalignment:aligncenter"               //文本居中
+                "border-width:0px;"                        //边框宽度像素
+                "border-radius:6px;"                       //边框圆角半径像素
+                "font: SourceHanSansCN-Medium  12px;"      //字体，字体大小
+                "color:rgba(255,255,255,100%);"            //字体颜色
+                "padding:0px;"                             //填衬
+                "textalignment:aligncenter"                //文本居中
                 "}"
                 //鼠标悬停样式
                 "QLabel:hover{"

@@ -99,7 +99,7 @@ QHash<QString,QString> QuickLaunchButton::settingsMap()
     return mAct->settingsMap();
 }
 
-
+/*与鼠标右键的选项有关*/
 void QuickLaunchButton::this_customContextMenuRequested(const QPoint & pos)
 {
    UKUIQuickLaunch *panel = qobject_cast<UKUIQuickLaunch*>(parent());
@@ -116,6 +116,7 @@ void QuickLaunchButton::selfRemove()
     emit buttonDeleted();
 }
 
+/*quicklanuchstatus的状态*/
 void QuickLaunchButton::enterEvent(QEvent *)
 {
     quicklanuchstatus =HOVER;

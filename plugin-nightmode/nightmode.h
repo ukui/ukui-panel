@@ -17,24 +17,15 @@
  */
 
 
-#ifndef STARTMENU_H
-#define STARTMENU_H
+#ifndef NIGHTMODE_H
+#define NIGHTMODE_H
 
 #include "../panel/iukuipanelplugin.h"
 #include <QApplication>
-#include <QDesktopWidget>
-#include <QFrame>
-#include <QFontMetrics>
-#include <QLineEdit>
 #include <QToolButton>
-#include <XdgIcon>
-#include <QMainWindow>
-#include <QHBoxLayout>
-#include <QDebug>
 #include <QProcess>
 #include <QGSettings>
 
-#include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
 #include "../panel/ukuicontrolstyle.h"
 
@@ -45,6 +36,8 @@ public:
     NightModeButton(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     ~NightModeButton();
 
+    void setupSettings();
+
 protected:
     void mousePressEvent(QMouseEvent* event);
     void contextMenuEvent(QContextMenuEvent *event);
@@ -52,12 +45,15 @@ protected:
 private:
     void setNightMode(const bool nightMode);
     void setUkuiStyle(QString );
+    void writeKwinSettings(bool change, QString theme);
+
     IUKUIPanelPlugin * mPlugin;
     QMenu *nightModeMenu;
     QGSettings *gsettings;
     QGSettings *mqtstyleGsettings;
     QGSettings *mgtkstyleGsettings;
     QSettings *mqsettings;
+    QSettings  * kwinSettings;
     bool mode;
 
 private slots:
@@ -73,12 +69,12 @@ public:
     ~NightMode();
 
     virtual QWidget *widget() { return mButton; }
-    virtual QString themeId() const { return QStringLiteral("startmenu"); }
+    virtual QString themeId() const { return QStringLiteral("nightmode"); }
     void realign();
-    virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 
 private:
     NightModeButton *mButton;
+    QGSettings *gsettings;
 };
 
 class NightModeLibrary: public QObject, public IUKUIPanelPluginLibrary
@@ -92,5 +88,4 @@ public:
         return new NightMode(startupInfo);
     }
 };
-
 #endif

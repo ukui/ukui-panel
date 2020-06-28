@@ -92,7 +92,6 @@ private:
 
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
-    void paintEvent(QPaintEvent *);
     QVector<QuickLaunchButton*> mVBtn;
     QGSettings *settings;
 
@@ -104,8 +103,6 @@ private:
 private slots:
     void addButton(QuickLaunchAction* action);
     bool checkButton(QuickLaunchAction* action);
-    void checkButton(QString *filename);
-    void removeButton(QString *filename);
     void removeButton(QuickLaunchAction* action);
     void switchButtons(QuickLaunchButton *button1, QuickLaunchButton *button2);
     void buttonDeleted();

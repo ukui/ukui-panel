@@ -53,6 +53,7 @@ set(PUB_HEADERS
     common/ukuiglobals.h
     ukuicontrolstyle.h
     highlight-effect.cpp
+    customstyle.h
 )
 
 set(SOURCES
@@ -90,6 +91,7 @@ set(SOURCES
     common/ukuigridlayout.cpp
     common/ukuirotatedwidget.cpp
     ukuicontrolstyle.cpp
+    customstyle.cpp
 )
 
 set(UI
