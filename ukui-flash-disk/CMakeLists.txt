@@ -22,8 +22,11 @@ find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
+pkg_check_modules(QGS REQUIRED gsettings-qt)
+
 
 include_directories(${GLIB2_INCLUDE_DIRS})
+include_directories(${QGS_INCLUDE_DIRS})
 add_executable(ukui-flash-disk
     ukui-flash-disk.qrc
     disk-resources/ukui-flash-disk_zh_CN.ts
@@ -42,12 +45,11 @@ add_executable(ukui-flash-disk
     MacroFile.h
         mainwindow.ui
         mainwindow.h
-
 )
 
 add_definitions(-DQT_NO_KEYWORDS)
 
-target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} )
+target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} ${QGS_LIBRARIES})
 
 install(TARGETS ukui-flash-disk DESTINATION bin)
 

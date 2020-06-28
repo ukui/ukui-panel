@@ -18,6 +18,7 @@
 #ifndef EJECTINTERFACE_H
 #define EJECTINTERFACE_H
 #include <QWidget>
+#include <QtWidgets>
 #include <QLabel>
 #include <QBoxLayout>
 #include <QIcon>
@@ -32,6 +33,12 @@
 #include <QScreen>
 #include <QDebug>
 #include <QPushButton>
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusMessage>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusObjectPath>
+#include <QDBusReply>
+
 
 #include "MacroFile.h"
 
@@ -44,6 +51,8 @@ class ejectInterface : public QWidget
 public:
     ejectInterface(QWidget *parent,QString name);
     ~ejectInterface();
+    int getPanelPosition(QString str);
+    int getPanelHeight(QString str);
 
 private:
     QPushButton *eject_image_button;

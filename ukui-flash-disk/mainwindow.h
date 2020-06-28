@@ -27,10 +27,13 @@
 #include <glib.h>
 #include <QApplication>
 #include <QEvent>
+#include <qgsettings.h>
 
 #include "qclickwidget.h"
 #include "UnionVariable.h"
 #include "ejectInterface.h"
+#include "mainwindow.h"
+#include "MacroFile.h"
 
 namespace Ui {
 class MainWindow;
@@ -106,11 +109,11 @@ private:
 public:
     QSystemTrayIcon *m_systray;
     ejectInterface *m_eject;
-
-public Q_SLOTS:
-    void iconActivated(QSystemTrayIcon::ActivationReason reason);
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
+
+public Q_SLOTS:
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);    
     void onConvertShowWindow();
     void on_Maininterface_hide();
 Q_SIGNALS:

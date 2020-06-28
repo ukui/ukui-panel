@@ -16,6 +16,7 @@
  *
  */
 #include "ejectInterface.h"
+#include <qgsettings.h>
 
 ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(parent),eject_image_button(nullptr),show_text_label(nullptr),
     mount_name_label(nullptr)
@@ -157,33 +158,90 @@ void ejectInterface::on_interface_hide()
 //set the location of the eject interface
 void ejectInterface::moveEjectInterfaceRight()
 {
-    if(EjectScreen->availableGeometry().x() == EjectScreen->availableGeometry().y() && EjectScreen->availableSize().height() < EjectScreen->size().height())
+//    if(EjectScreen->availableGeometry().x() == EjectScreen->availableGeometry().y() && EjectScreen->availableSize().height() < EjectScreen->size().height())
+//    {
+//        qDebug()<<"the position of panel is down";
+//        this->move(EjectScreen->availableGeometry().x() + EjectScreen->size().width() -
+//                   this->width() - DistanceToPanel,EjectScreen->availableGeometry().y() +
+//                   EjectScreen->availableSize().height() - this->height() - DistanceToPanel);
+//    }
+
+//    if(EjectScreen->availableGeometry().x() < EjectScreen->availableGeometry().y() && EjectScreen->availableSize().height() < EjectScreen->size().height())
+//    {
+//        qDebug()<<"this position of panel is up";
+//        this->move(EjectScreen->availableGeometry().x() + EjectScreen->size().width() -
+//                   this->width() - DistanceToPanel,EjectScreen->availableGeometry().y());
+//    }
+
+//    if(EjectScreen->availableGeometry().x() > EjectScreen->availableGeometry().y() && EjectScreen->availableSize().width() < EjectScreen->size().width())
+//    {
+//        qDebug()<<"this position of panel is left";
+//        this->move(EjectScreen->availableGeometry().x() + DistanceToPanel,EjectScreen->availableGeometry().y()
+//                   + EjectScreen->availableSize().height() - this->height());
+//    }
+
+//    if(EjectScreen->availableGeometry().x() == EjectScreen->availableGeometry().y() && EjectScreen->availableSize().width() < EjectScreen->size().width())
+//    {
+//        qDebug()<<"this position of panel is right";
+//        this->move(EjectScreen->availableGeometry().x() + EjectScreen->availableSize().width() -
+//                   DistanceToPanel - this->width(),EjectScreen->availableGeometry().y() +
+//                   EjectScreen->availableSize().height() - (this->height())*(DistanceToPanel - 1));
+//    }
+
+//show the ejectinterface by primaryscreen()
+    int position=0;
+    int panelSize=0;
+    if(QGSettings::isSchemaInstalled(QString("org.ukui.panel.settings").toLocal8Bit()))
     {
-        qDebug()<<"the position of panel is down";
-        this->move(EjectScreen->availableGeometry().x() + EjectScreen->size().width() -
-                   this->width() - DistanceToPanel,EjectScreen->availableGeometry().y() +
-                   EjectScreen->availableSize().height() - this->height() - DistanceToPanel);
+        QGSettings* gsetting=new QGSettings(QString("org.ukui.panel.settings").toLocal8Bit());
+        if(gsetting->keys().contains(QString("panelposition")))
+            position=gsetting->get("panelposition").toInt();
+        else
+            position=0;
+        if(gsetting->keys().contains(QString("panelsize")))
+            panelSize=gsetting->get("panelsize").toInt();
+        else
+            panelSize=SmallPanelSize;
+    }
+    else
+    {
+        position=0;
+        panelSize=SmallPanelSize;
     }
 
-    if(EjectScreen->availableGeometry().x() < EjectScreen->availableGeometry().y() && EjectScreen->availableSize().height() < EjectScreen->size().height())
-    {
-        qDebug()<<"this position of panel is up";
-        this->move(EjectScreen->availableGeometry().x() + EjectScreen->size().width() -
-                   this->width() - DistanceToPanel,EjectScreen->availableGeometry().y());
-    }
+    int x=QApplication::primaryScreen()->geometry().x();
+    int y=QApplication::primaryScreen()->geometry().y();
 
-    if(EjectScreen->availableGeometry().x() > EjectScreen->availableGeometry().y() && EjectScreen->availableSize().width() < EjectScreen->size().width())
-    {
-        qDebug()<<"this position of panel is left";
-        this->move(EjectScreen->availableGeometry().x() + DistanceToPanel,EjectScreen->availableGeometry().y()
-                   + EjectScreen->availableSize().height() - this->height());
-    }
+    if(position==0)
+        this->setGeometry(QRect(x + QApplication::primaryScreen()->geometry().width()-this->width(),y+QApplication::primaryScreen()->geometry().height()-panelSize-this->height(),this->width(),this->height()));
+    else if(position==1)
+        this->setGeometry(QRect(x + QApplication::primaryScreen()->geometry().width()-this->width(),y+panelSize,this->width(),this->height()));  // Style::minw,Style::minh the width and the height of the interface  which you want to show
+    else if(position==2)
+        this->setGeometry(QRect(x+panelSize,y + QApplication::primaryScreen()->geometry().height() - this->height(),this->width(),this->height()));
+    else
+        this->setGeometry(QRect(x+QApplication::primaryScreen()->geometry().width()-panelSize-this->width(),y + QApplication::primaryScreen()->geometry().height() - this->height(),this->width(),this->height()));
+}
 
-    if(EjectScreen->availableGeometry().x() == EjectScreen->availableGeometry().y() && EjectScreen->availableSize().width() < EjectScreen->size().width())
-    {
-        qDebug()<<"this position of panel is right";
-        this->move(EjectScreen->availableGeometry().x() + EjectScreen->availableSize().width() -
-                   DistanceToPanel - this->width(),EjectScreen->availableGeometry().y() +
-                   EjectScreen->availableSize().height() - (this->height())*(DistanceToPanel - 1));
-    }
+int ejectInterface::getPanelPosition(QString str)
+{
+    QDBusInterface interface( "com.ukui.panel.desktop",
+                              "/",
+                              "com.ukui.panel.desktop",
+                              QDBusConnection::sessionBus() );
+    QDBusReply<int> reply = interface.call("GetPanelPosition", str);
+
+    return reply;
+}
+
+/*
+    use the dbus to get the height of the panel
+*/
+int ejectInterface::getPanelHeight(QString str)
+{
+    QDBusInterface interface( "com.ukui.panel.desktop",
+                              "/",
+                              "com.ukui.panel.desktop",
+                              QDBusConnection::sessionBus() );
+    QDBusReply<int> reply = interface.call("GetPanelSize", str);
+    return reply;
 }

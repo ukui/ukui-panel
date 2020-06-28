@@ -28,8 +28,6 @@
 #include "mainwindow.h"
 #include "MainController.h"
 
-
-
 int main(int argc, char *argv[])
 {
     //file lock to complete the single process
