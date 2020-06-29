@@ -26,7 +26,7 @@ ukui-panel contains the following plugins:
 apt install ukui-panel
 
 # build from source and test
-mkdir bulid & cd build
+mkdir build & cd build
 cmake ..
 make 
 sudo make install
