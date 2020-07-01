@@ -114,7 +114,7 @@ IUKUIPanel::Position UKUIPanel::strToPosition(const QString& str, IUKUIPanel::Po
 
 /************************************************
  Return  string representation of the position
- ************************************************/
+ *******************************************connect(QApplication::desktop(), &QDesktopWidget::resized, this, &UKUIPanel::ensureVisible);*****/
 QString UKUIPanel::positionToStr(IUKUIPanel::Position position)
 {
     switch (position)
@@ -220,6 +220,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mShowDelayTimer.setInterval(PANEL_SHOW_DELAY);
     connect(&mShowDelayTimer, &QTimer::timeout, [this] { showPanel(mAnimationTime > 0); });
 
+    /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
+     * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
+     * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
+　　　*/
     connect(QApplication::desktop(), &QDesktopWidget::resized, this, &UKUIPanel::ensureVisible);
     connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &UKUIPanel::ensureVisible);
 
@@ -359,9 +363,7 @@ void UKUIPanel::saveSettings(bool later)
 }
 
 
-/************************************************
-
- ************************************************/
+/*确保任务栏在调整分辨率和增加·屏幕之后能保持显示正常*/
 void UKUIPanel::ensureVisible()
 {
     if (!canPlacedOn(mScreenNum, mPosition))
@@ -769,18 +771,18 @@ int UKUIPanel::findAvailableScreen(UKUIPanel::Position position)
  ************************************************/
 void UKUIPanel::showConfigDialog()
 {
-    //    if (mConfigDialog.isNull())
-    //        mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
+        if (mConfigDialog.isNull())
+            mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
 
-    //    mConfigDialog->showConfigPanelPage();
-    //    mStandaloneWindows->observeWindow(mConfigDialog.data());
-    //    mConfigDialog->show();
-    //    mConfigDialog->raise();
-    //    mConfigDialog->activateWindow();
-    //    WId wid = mConfigDialog->windowHandle()->winId();
+        mConfigDialog->showConfigPanelPage();
+        mStandaloneWindows->observeWindow(mConfigDialog.data());
+        mConfigDialog->show();
+        mConfigDialog->raise();
+        mConfigDialog->activateWindow();
+        WId wid = mConfigDialog->windowHandle()->winId();
 
-    //    KWindowSystem::activateWindow(wid);
-    //    KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
+        KWindowSystem::activateWindow(wid);
+        KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
 
     mConfigDialog = new ConfigPanelDialog(this, nullptr);
     mConfigDialog->show();
@@ -847,7 +849,7 @@ void UKUIPanel::adjustPanel()
     pmenuaction_s=new QAction(this);
     pmenuaction_s->setText(tr("Small"));
     pmenuaction_m=new QAction(this);
-    pmenuaction_m->setText(tr("Media"));
+    pmenuaction_m->setText(tr("Medium"));
     pmenuaction_l=new QAction(this);
     pmenuaction_l->setText(tr("Large"));
 
@@ -1283,7 +1285,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
      * 关于后续的插件右键菜单的详细调整
      * 如果需要在任务栏菜单项上面添加 插件的菜单选项就放开此功能
      * 放开此功能可以丰富插件右键菜单，windows是这样做的
-     *
+     */
     if (plugin)
     {
         QMenu *m = plugin->popupMenu();
@@ -1301,7 +1303,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
             delete m;
         }
     }
-    */
 
     /*
     menu->addTitle(QIcon(), tr("Panel"));
@@ -1314,6 +1315,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                    this, SLOT(showAddPluginDialog())
                   )->setDisabled(mLockPanel);
     */
+
     menu->setWindowOpacity(0.9);
     menu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
                     tr("Set up Panel"),
