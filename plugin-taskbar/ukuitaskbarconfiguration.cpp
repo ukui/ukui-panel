@@ -99,8 +99,8 @@ void UKUITaskbarConfiguration::loadSettings()
 
 void UKUITaskbarConfiguration::saveSettings()
 {
-    settings().setValue("showOnlyOneDesktopTasks", ui->limitByDesktopCB->isChecked());
-    settings().setValue("showDesktopNum", ui->showDesktopNumCB->itemData(ui->showDesktopNumCB->currentIndex()));
+    settings().setValue("showOnlyOneDesktopTasks", true);
+    settings().setValue("showDesktopNum", ui->showDesktopNumCB->itemData(0));
     settings().setValue("showOnlyCurrentScreenTasks", ui->limitByScreenCB->isChecked());
     settings().setValue("showOnlyMinimizedTasks", ui->limitByMinimizedCB->isChecked());
     settings().setValue("buttonStyle", ui->buttonStyleCB->itemData(ui->buttonStyleCB->currentIndex()));

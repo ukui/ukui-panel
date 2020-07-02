@@ -26,7 +26,7 @@
 #include "../panel/customstyle.h"
 
 #define NIGHT_MODE_KEY        "nightmodestatus"
-#define NIGHT_MODE_LIGHT 　　　"light"
+#define NIGHT_MODE_LIGHT      "light"
 #define NIGHE_MODE_NIGHT      "night"
 #define NIGHT_MODE_CONTROL    "org.ukui.control-center.panel.plugins"
 
