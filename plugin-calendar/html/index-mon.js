@@ -35,6 +35,7 @@ var scrollDown_count = 0;
 var selected_date_div = null;
 var NeedChangeCurrentTime = 1;
 var NeedUpdateYijiArea = true;
+var PrevClick = null;
 
 var div_range = {
     year: {
@@ -539,7 +540,7 @@ window.onload = function () {
 	    //var zodiac_icon = document.getElementById('zodiac_icon');
             //zodiac_icon.setAttribute("style", "display:none");
 
-           localStorage.setItem('hl_table', "display");
+            localStorage.setItem('hl_table', "display");
            
         } else{
             var hl_table = document.getElementById('hl_table');
@@ -547,7 +548,7 @@ window.onload = function () {
 	  // var zodiac_icon = document.getElementById('zodiac_icon');
           // zodiac_icon.setAttribute("style", "display:block");
 	   //zodiac_icon.setAttribute("style", "padding-top: 33px");
-           localStorage.setItem('hl_table', "hidden");
+       localStorage.setItem('hl_table', "hidden");
        }
     }
     
@@ -673,6 +674,11 @@ window.onload = function () {
 
             var year = parseInt(year_selector.value);
             var month = parseInt(month_selector.value);
+            if(PrevClick != null)
+            {
+                PrevClick.style.border = "none";
+                PrevClick = null;
+            }
             //page  the year ui
             if(document.getElementById('year_div').className ==='visible_div')
             {
@@ -771,6 +777,11 @@ window.onload = function () {
         convertToNormal();
         year = today.getFullYear();
         month =  today.getMonth();
+        if(PrevClick != null)
+        {
+            PrevClick.style.border = "none";
+            PrevClick = null;
+        }
         create_page(today.getFullYear(), today.getMonth() + 1);
         update_year_month_ui();
 	var header_id=document.getElementById("header");
@@ -824,6 +835,12 @@ function create_page(year, month) {
                     //highlight_day = parseInt(this.children[0].innerText);
                     var cur_month = parseInt(month_selector.value);
                     var cur_year = parseInt(year_selector.value);
+                    if(PrevClick != null)
+                    {
+                        PrevClick.style.border = "none";
+                    }
+                    this.style.border = "1px solid #7eb4ea";
+                    PrevClick = this;
                     if (this.className === 'day_other_month' && highlight_day > 20) {
                         // var cur_month = parseInt(month_selector.value);
                         // var cur_year = parseInt(year_selector.value);
@@ -1076,7 +1093,6 @@ function popup_div(event) {
     var height = 20;
     if (this.id === 'year_button') {
         div = document.getElementById('year_div');
-
         div_range.year.x_min = x;
         div_range.year.x_max = x + width;
         div_range.year.y_min = y;
@@ -1092,7 +1108,6 @@ function popup_div(event) {
         }
     } else if (this.id === 'month_button') {
         div = document.getElementById('month_div');
-
         div_range.month.x_min = x;
         div_range.month.x_max = x + width;
         div_range.month.y_min = y;

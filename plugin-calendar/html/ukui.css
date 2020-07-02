@@ -152,6 +152,7 @@ margin-top: 4px;
 margin-bottom: 4px; */
   border: 1px solid transparent;
   font-size: 0px;
+  border-radius: 4px;
  /*width:60px;*/
 }
 
@@ -161,6 +162,12 @@ margin-bottom: 4px; */
 }
 
 #calendar_table td:active {
+  background:none;
+  border: 1px solid #7eb4ea;
+  border-radius: 4px;
+}
+
+.click {
   background:none;
   border: 1px solid #7eb4ea;
 }
@@ -203,8 +210,8 @@ margin-bottom: 4px; */
 
 .day_highlight {
   /* background: #e4f0fc; */
-  background:none;
-  border: 1px solid #7eb4ea;
+  /* background:none; */
+  /* border: 1px solid #7eb4ea; */
 }
 .day_highlight .solar_part { color: #F5F4F7; font-size: 18px; font-weight: middle;line-height: 18px;}
 .day_highlight .lunar_part { color: #aaa; font-size: 14px; }

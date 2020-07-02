@@ -34,7 +34,7 @@ var scrollUp_count = 0;
 var scrollDown_count = 0;
 var selected_date_div = null;
 var NeedChangeCurrentTime = 1;
-
+var PrevClick = null;
 var div_range = {
     year: {
         x_min: 0,
@@ -466,6 +466,11 @@ window.onload = function () {
 
             var year = parseInt(year_selector.value);
             var month = parseInt(month_selector.value);
+            if(PrevClick != null)
+            {
+                PrevClick.style.border = "none";
+                PrevClick = null;
+            }
             //page  the year ui
             if(document.getElementById('year_div').className ==='visible_div')
             {
@@ -562,6 +567,11 @@ window.onload = function () {
         convertToNormal();
         year = today.getFullYear();
         month =  today.getMonth();
+        if(PrevClick != null)
+        {
+            PrevClick.style.border = "none";
+            PrevClick = null;
+        }
         create_page(today.getFullYear(), today.getMonth() + 1);
         update_year_month_ui();
 	var header_id=document.getElementById("header");
@@ -605,7 +615,12 @@ function create_page(year, month) {
                 current_cell = current_row.insertCell(column);
                 current_cell.addEventListener('click', function() {
                     highlight_day = parseInt(this.children[0].innerHTML);
-
+                    if(PrevClick != null)
+                    {
+                        PrevClick.style.border = "none";
+                    }
+                    this.style.border = "1px solid #7eb4ea";
+                    PrevClick = this;
                     if (this.className === 'day_other_month') {
                         return;
                     }
