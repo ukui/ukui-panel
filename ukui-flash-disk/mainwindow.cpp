@@ -110,7 +110,7 @@ MainWindow::MainWindow(QWidget *parent) :
     vboxlayout = new QVBoxLayout();
     //hboxlayout = new QHBoxLayout();
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
 #else
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
 #endif
@@ -129,11 +129,27 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
     connect(this,&MainWindow::convertShowWindow,this,&MainWindow::onConvertShowWindow);
     ui->centralWidget->setLayout(vboxlayout);
+
+//    QDBusConnection::sessionBus().connect(QString(),QString("/taskbar/click"), \
+//                                          "com.ukui.panel.plugins.taskbar","sendToUkuiDEApp",this, \
+//                                          SLOT(on_clickPanelToHideInterface));
+
+//    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"),
+//                                          "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this,
+//                                          SLOT(on_clickPanelToHideInterface));
+    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
+                                              "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_clickPanelToHideInterface()
+{
+    if(isShow)
+    this->hide();
 }
 
 void MainWindow::getDeviceInfo()
@@ -594,6 +610,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
         break;
     }
     ui->centralWidget->show();
+    isShow = true;
 }
 
 
@@ -1190,6 +1207,7 @@ void MainWindow::MainWindowShow()
 //            this->hide();
 //        }
     ui->centralWidget->show();
+    isShow = true;
     interfaceHideTime->setTimerType(Qt::PreciseTimer);
     if(ui->centralWidget != NULL)
     {
@@ -1203,6 +1221,7 @@ void MainWindow::on_Maininterface_hide()
 {
     this->hide();
     interfaceHideTime->stop();
+    isShow = false;
 }
 
 void MainWindow::moveBottomNoBase()
@@ -1293,6 +1312,33 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
 
     if(triggerType == 1){}
+
+    if (obj == this)
+       {
+           if (event->type() == QEvent::WindowDeactivate && isShow == true )
+           {
+                      this->hide();
+                      isShow = false;
+               return true;
+           }
+           else if (event->type() == QEvent::ActionChanged)
+           {
+               if (this->isHidden())
+               {
+                   isShow = false;
+               }
+               else
+               {
+                   isShow = true;
+               }
+           }
+       }
+
+    if (!isActiveWindow())
+    {
+        activateWindow();
+    }
+
     return false;
 }
 

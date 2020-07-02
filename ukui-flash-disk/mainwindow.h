@@ -111,11 +111,13 @@ public:
     ejectInterface *m_eject;
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
+    bool isShow;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
     void onConvertShowWindow();
     void on_Maininterface_hide();
+    void on_clickPanelToHideInterface();
 Q_SIGNALS:
     void clicked();
     void convertShowWindow();
