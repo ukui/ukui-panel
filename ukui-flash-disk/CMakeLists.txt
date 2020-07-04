@@ -30,6 +30,7 @@ include_directories(${QGS_INCLUDE_DIRS})
 add_executable(ukui-flash-disk
     ukui-flash-disk.qrc
     disk-resources/ukui-flash-disk_zh_CN.ts
+    disk-resources/ukui-flash-disk_tr.ts
     main.cpp
     mainwindow.cpp
     qclickwidget.cpp
@@ -60,7 +61,7 @@ install(FILES
 )
 
 install(FILES
-    ukui-flash-disk.qrc disk-resources/ukui-flash-disk_zh_CN.qm
+    ukui-flash-disk.qrc disk-resources/ukui-flash-disk_zh_CN.qm disk-resources/ukui-flash-disk_tr.qm
     DESTINATION "/usr/share/ukui/ukui-panel/"
     COMPONENT Runtime
 )
