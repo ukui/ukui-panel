@@ -109,8 +109,11 @@ MainWindow::MainWindow(QWidget *parent) :
     iconSystray = QIcon::fromTheme("media-removable-symbolic");
     vboxlayout = new QVBoxLayout();
     //hboxlayout = new QHBoxLayout();
-
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    this->setWindowFlags(Qt::FramelessWindowHint);
+#else
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+#endif
     this->setWindowOpacity(0.95);
     //this->resize( QSize( 280, 192 ));
     m_systray = new QSystemTrayIcon;
@@ -543,9 +546,11 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                         }
 
                     }
+                    ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(cacheDrive));
                     //here we begin a to respond to the signals on the interface,is the triangle is trigger then we eject this drive.
-                    connect(open_widget, &QClickWidget::clickedConvert,[=]()
+                    connect(open_widget, &QClickWidget::clickedConvert,this,[=]()
                     {
+                        qDebug()<<g_drive_get_name(cacheDrive)<<"1----------------2";
                         g_drive_eject_with_operation(cacheDrive,
                                      G_MOUNT_UNMOUNT_NONE,
                                      NULL,
@@ -553,7 +558,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                                      GAsyncReadyCallback(frobnitz_result_func),
                                      this);
                         this->hide();
-                        ejectInterface *ForEject = new ejectInterface(nullptr,g_drive_get_name(cacheDrive));
+
                         ForEject->show();
                         QLayoutItem* item;
                         while ((item = this->vboxlayout->takeAt(0)) != NULL)
@@ -1146,7 +1151,7 @@ void MainWindow::MainWindowShow()
                         }
 
                     }
-                    connect(open_widget, &QClickWidget::clickedConvert,[=]()
+                    connect(open_widget, &QClickWidget::clickedConvert,this,[=]()
                     {
 
                         g_drive_eject_with_operation(cacheDrive,
