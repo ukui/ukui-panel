@@ -384,9 +384,6 @@ void ConfigPanelWidget::editChanged()
         mPanel->setOpacity(100, true);
     }
 
-    QString image = ui->checkBox_customBgImage->isChecked() ? ui->lineEdit_customBgImage->text() : QString();
-    mPanel->setBackgroundImage(image, true);
-
     if (!ui->groupBox_icon->isChecked())
         mPanel->setIconTheme(QString());
     else if (!ui->comboBox_icon->currentText().isEmpty())
