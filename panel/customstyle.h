@@ -41,7 +41,8 @@ class CustomStyle : public QProxyStyle
 {
     Q_OBJECT
 public:
-    explicit CustomStyle(const QString &proxyStyleName = "windows",bool multileWins=false, QObject *parent = nullptr);
+    //proxyStyleName 是关于样式类型的，&proxyStyleName = "windows" 会造成toolTips的样式为windows类型样式
+    explicit CustomStyle(const QString &proxyStyleName = "ukui",bool multileWins=false, QObject *parent = nullptr);
     ~CustomStyle();
     /*!
      * \brief drawComplexControl
