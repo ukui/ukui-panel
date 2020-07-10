@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,6 +27,8 @@
 #include <QApplication>
 #include <QSize>
 #include <QScreen>
+#include <QBitmap>
+#include <QPainter>
 
 #define CALENDAR_MAX_HEIGHT 704
 #define CALENDAR_MIN_HEIGHT 600
@@ -121,7 +123,15 @@ void UkuiWebviewDialog::creatwebview(int _mode, int _panelSize)
             iViewHeight = 600;
         }
         /*set window no margins*/
-        mWebView->setWindowFlags(Qt::FramelessWindowHint);
+        mWebView->setWindowFlags(Qt::FramelessWindowHint);setWindowFlags(Qt::FramelessWindowHint);
+        /*set rounded corner ,including radius*/
+        QBitmap bmp(iViewWidth,iViewHeight);
+        bmp.fill();
+        QPainter p(&bmp);
+        p.setPen(Qt::NoPen);
+        p.setBrush(Qt::black);
+        p.drawRoundedRect(bmp.rect(),6,6);
+        setMask(bmp);
         /*set window size*/
         mWebView->resize(iViewWidth,iViewHeight);
         mWebView->settings()->setAttribute(QWebSettings::JavascriptEnabled,true);
