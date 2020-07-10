@@ -47,7 +47,7 @@
 #include <QSize>
 #include <QScreen>
 
-#define CALENDAR_HEIGHT (40)
+#define CALENDAR_HEIGHT(a) (a-5)
 #define CALENDAR_WIDTH (104)
 
 #define WEBVIEW_WIDTH (454)
@@ -829,13 +829,14 @@ void IndicatorCalendar::realign()
 
 void IndicatorCalendar::setTimeShowStyle()
 {
+    int size = panel()->panelSize();
     if(panel()->isHorizontal())
     {
-        mContent->setFixedSize(CALENDAR_WIDTH,panel()->panelSize() - 5); //CALENDAR_HEIGHT);//panel()->panelSize() - 5);
+        mContent->setFixedSize(CALENDAR_WIDTH, CALENDAR_HEIGHT(size));
     }
     else
     {
-        mContent->setFixedSize(panel()->panelSize() - 5,CALENDAR_WIDTH);
+        mContent->setFixedSize(CALENDAR_HEIGHT(size), CALENDAR_WIDTH);
     }
     mbIsNeedUpdate = true;
     timeout();
