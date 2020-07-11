@@ -48,6 +48,7 @@
 #include <QDropEvent>
 #include <XdgIcon>
 #include <XdgDirs>
+#include <QPainter>
 
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
@@ -71,7 +72,6 @@
 #define CFG_KEY_ALIGNMENT          "alignment"
 #define CFG_KEY_FONTCOLOR          "font-color"
 #define CFG_KEY_BACKGROUNDCOLOR    "background-color"
-#define CFG_KEY_BACKGROUNDIMAGE    "background-image"
 #define CFG_KEY_OPACITY            "opacity"
 #define CFG_KEY_RESERVESPACE       "reserve-space"
 #define CFG_KEY_PLUGINS            "plugins"
@@ -96,7 +96,11 @@
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
 #define SHOW_TASKVIEW       "showtaskview"
-#define SHOW_NIGHTMODE       "shownightmode"
+#define SHOW_NIGHTMODE      "shownightmode"
+
+#define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
+#define TRANSPARENCY_KEY            "transparency"
+
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -195,6 +199,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     setWindowTitle("UKUI Panel");
     setObjectName(QString("UKUIPanel %1").arg(configGroup));
 
+
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);
     UKUIPanelWidget->setObjectName("BackgroundWidget");
@@ -257,6 +262,18 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
 
+    updateStyleSheet();
+    const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
+    if(QGSettings::isSchemaInstalled(transparency_id)){
+        transparency_gsettings = new QGSettings(transparency_id);
+        setPanelBackground(true);
+        }
+    connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==TRANSPARENCY_KEY)
+            setPanelBackground(true);
+    });
+
+
     setPanelsize(PANEL_SIZE_MEDIUM);
     setIconsize(ICON_SIZE_MEDIUM);
     setPanelsize(PANEL_SIZE_SMALL);
@@ -307,10 +324,6 @@ void UKUIPanel::readSettings()
     if (color.isValid())
         setBackgroundColor(color, true);
 
-    QString image = mSettings->value(CFG_KEY_BACKGROUNDIMAGE, "").toString();
-    if (!image.isEmpty())
-        setBackgroundImage(image, false);
-
     mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL, false).toBool();
 
     mSettings->endGroup();
@@ -348,7 +361,6 @@ void UKUIPanel::saveSettings(bool later)
 
     mSettings->setValue(CFG_KEY_FONTCOLOR, mFontColor.isValid() ? mFontColor : QColor());
     mSettings->setValue(CFG_KEY_BACKGROUNDCOLOR, mBackgroundColor.isValid() ? mBackgroundColor : QColor());
-    mSettings->setValue(CFG_KEY_BACKGROUNDIMAGE, QFileInfo(mBackgroundImage).exists() ? mBackgroundImage : QString());
     mSettings->setValue(CFG_KEY_OPACITY, mOpacity);
     mSettings->setValue(CFG_KEY_RESERVESPACE, mReserveSpace);
 
@@ -615,9 +627,6 @@ void UKUIPanel::setMargins()
 */
 void UKUIPanel::realign()
 {
-    QStringList sheet;
-    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
-    setStyleSheet(sheet.join("\n"));
     if (!isVisible())
         return;
 #if 0
@@ -958,37 +967,9 @@ void UKUIPanel::showNightModeButton()
 }
 void UKUIPanel::updateStyleSheet()
 {
-
-    //    sheet << QString("Plugin > QAbstractButton, UKUiTray { qproperty-iconSize: %1px %1px; }").arg(mIconSize);
-    //    sheet << QString("Plugin > * > QAbstractButton, TrayIcon { qproperty-iconSize: %1px %1px; }").arg(mIconSize);
-
-    //    if (mFontColor.isValid())
-    //        sheet << QString("Plugin * { color: " + mFontColor.name() + "; }");
-
-    //    QString object = UKUIPanelWidget->objectName();
-
-    //    if (mBackgroundColor.isValid())
-    //    {
-    //        QString color = QString("%1, %2, %3, %4")
-    //            .arg(mBackgroundColor.red())
-    //            .arg(mBackgroundColor.green())
-    //            .arg(mBackgroundColor.blue())
-    //            .arg((float) mOpacity / 100);
-    ////        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(" + color + "); }");
-
-    //    }
-    //   sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(8,10,12,90%); }");
-    //        GSettings *settings = NULL;
-    //        QString str;
-    //        char *path;
-    //        char color_hex[10];
-    //        path = g_strdup_printf ("%s/","/org/mate/desktop/interface");
-    //        settings = g_settings_new_with_path ("org.mate.interface",path);
-    //        if(!strcmp(g_settings_get_string(settings, "gtk-theme"),"ukui-white"))
-    //        {
-    //            qDebug()<<"ukui-white";
-    //        }
-
+    QStringList sheet;
+    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,0.9); }");
+    setStyleSheet(sheet.join("\n"));
 }
 
 
@@ -1153,16 +1134,17 @@ void UKUIPanel::setBackgroundColor(QColor color, bool save)
         saveSettings(true);
 }
 
-/************************************************
-
- ************************************************/
-void UKUIPanel::setBackgroundImage(QString path, bool save)
+/*设置任务栏的背景色，可通过gsetting修改*/
+void UKUIPanel::setPanelBackground(bool effective)
 {
-    mBackgroundImage = path;
-    updateStyleSheet();
-
-    if (save)
-        saveSettings(true);
+    if(effective)
+    {
+        QStringList sheet;
+        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,%1); }").arg(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
+        setStyleSheet(sheet.join("\n"));
+    }
+    else
+        updateStyleSheet();
 }
 
 
@@ -1272,6 +1254,30 @@ void UKUIPanel::showEvent(QShowEvent *event)
     realign();
 }
 
+/* 使用paintEvent 对panel进行绘制的时候有如下问题：
+ * 1.绘制速度需要鼠标事件触发，明显的切换不流畅
+ * 2.部分区域绘制不能生效，调整任务栏高度之后才能生效
+ */
+/*
+void UKUIPanel::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    p.setPen(Qt::NoPen);
+    QColor c;
+    c.setRed(19);
+    c.setGreen(22);
+    c.setBlue(28);
+    c.setAlphaF(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
+    p.setBrush(QBrush(c));
+
+    p.setRenderHint(QPainter::Antialiasing);
+    p.drawRoundedRect(opt.rect,20,20);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+*/
+
 /*Right-Clicked Menu of ukui-panel
  * it's a Popup Menu
 */
@@ -1316,7 +1322,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                   )->setDisabled(mLockPanel);
     */
 
-    menu->setWindowOpacity(0.9);
     menu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
                     tr("Set up Panel"),
                     this, SLOT(setUpPanel())
@@ -1336,7 +1341,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     shownightmode->setCheckable(true);
     shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
     connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
-#else
 #endif
 
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),

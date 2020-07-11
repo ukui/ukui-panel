@@ -308,7 +308,6 @@ public slots:
     void setAlignment(UKUIPanel::Alignment value, bool save); //!< \sa setPanelSize()
     void setFontColor(QColor color, bool save); //!< \sa setPanelSize()
     void setBackgroundColor(QColor color, bool save); //!< \sa setPanelSize()
-    void setBackgroundImage(QString path, bool save); //!< \sa setPanelSize()
     void setOpacity(int opacity, bool save); //!< \sa setPanelSize()
     void setReserveSpace(bool reserveSpace, bool save); //!< \sa setPanelSize()
     void setHidable(bool hidable, bool save); //!< \sa setPanelSize()
@@ -316,6 +315,7 @@ public slots:
     void setAnimationTime(int animationTime, bool save); //!< \sa setPanelSize()
     void setShowDelay(int showDelay, bool save); //!< \sa setPanelSize()
     void setIconTheme(const QString& iconTheme);
+    void setPanelBackground(bool effective);
 
     /**
      * @brief Saves the current configuration, i.e. writes the current
@@ -390,6 +390,7 @@ protected:
      * @param event The QShowEvent sent by Qt.
      */
     void showEvent(QShowEvent *event) override;
+//    void paintEvent(QPaintEvent *);
 
 public slots:
     /**
@@ -720,6 +721,7 @@ private slots:
 
 public:
     QGSettings *gsettings;
+    QGSettings *transparency_gsettings;
 
 };
 
