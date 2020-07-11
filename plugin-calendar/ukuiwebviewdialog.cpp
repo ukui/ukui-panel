@@ -123,7 +123,8 @@ void UkuiWebviewDialog::creatwebview(int _mode, int _panelSize)
             iViewHeight = 600;
         }
         /*set window no margins*/
-        mWebView->setWindowFlags(Qt::FramelessWindowHint);setWindowFlags(Qt::FramelessWindowHint);
+        mWebView->setWindowFlags(Qt::FramelessWindowHint);
+
         /*set rounded corner ,including radius*/
         QBitmap bmp(iViewWidth,iViewHeight);
         bmp.fill();
@@ -132,6 +133,7 @@ void UkuiWebviewDialog::creatwebview(int _mode, int _panelSize)
         p.setBrush(Qt::black);
         p.drawRoundedRect(bmp.rect(),6,6);
         setMask(bmp);
+
         /*set window size*/
         mWebView->resize(iViewWidth,iViewHeight);
         mWebView->settings()->setAttribute(QWebSettings::JavascriptEnabled,true);
