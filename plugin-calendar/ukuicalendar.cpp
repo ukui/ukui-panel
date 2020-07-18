@@ -654,6 +654,7 @@ void IndicatorCalendar::activated(ActivationReason reason)
         if(!mbActived)
         {
             mWebViewDiag->setHidden(false);
+            mWebViewDiag->webview()->reload();
             mbActived = true;
         }
         else
