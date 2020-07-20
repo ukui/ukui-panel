@@ -49,7 +49,7 @@ class ejectInterface : public QWidget
 {
     Q_OBJECT
 public:
-    ejectInterface(QWidget *parent,QString name);
+    ejectInterface(QWidget *parent,QString name,int typeDevice);
     ~ejectInterface();
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);

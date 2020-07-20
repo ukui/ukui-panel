@@ -46,6 +46,8 @@ int main(int argc, char *argv[])
 //        exit(0);
 //    }
 
+
+
     QIcon::setThemeName("ukui-icon-theme-default");
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -75,6 +77,15 @@ int main(int argc, char *argv[])
     if (!ok)
     qDebug() << "加载失败";
     qApp->setStyleSheet(qss.readAll());
+
+    if (QApplication::desktop()->width() >= 2560)
+    {
+        #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+                QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+                QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+        #endif
+    }
+
     qss.close();
     MainController *ctrl = MainController::self();
 

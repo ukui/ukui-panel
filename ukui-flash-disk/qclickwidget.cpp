@@ -56,10 +56,16 @@ QClickWidget::QClickWidget(QWidget *parent,
         QHBoxLayout *drivename_H_BoxLayout = new QHBoxLayout();
         drivename_H_BoxLayout = new QHBoxLayout();
         image_show_label = new QPushButton();
+//        image_show_label->setFlat(true);
+        image_show_label->setFocusPolicy(Qt::NoFocus);
+
+        image_show_label->installEventFilter(this);
         image_show_label->adjustSize();
         //QPixmap pixmap(":picture/drive-removable-media-usb.png");
         imgIcon = QIcon::fromTheme("drive-removable-media-usb");
         image_show_label->setIconSize(QSize(25,25));
+
+        image_show_label->setStyleSheet("background:rgba(19,19,20,0);");
         //QPixmap pixmap()
         //QPixmap pixmap = static_cast(QPixmap)QIcon::fromTheme("media-removable-symbolic");
         image_show_label->setIcon(imgIcon);
@@ -72,7 +78,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_driveName_label->setObjectName("driveNameLabel");
 
         m_eject_button = new QPushButton(this);
-        m_eject_button->setFlat(true);
+        m_eject_button->setFlat(true);   //this property set that when the mouse is hovering in the icon the icon will move up a litte
         m_eject_button->move(m_eject_button->x()+234,m_eject_button->y()+2);
         //->setObjectName("Button");
         m_eject_button->installEventFilter(this);
@@ -616,9 +622,9 @@ void QClickWidget::mouseClicked()
     //Processing code
 //        std::string str = m_path.toStdString();
 //        const char* ch = str.c_str();
-//    QProcess::startDetached("peony "+m_pathDis1);
-    QString aaa = "caja "+m_pathDis1;
-    system(aaa.toUtf8().data());
+//    QString aaa = "caja "+m_pathDis1;
+//    system(aaa.toUtf8().data());
+    QProcess::startDetached("peony "+m_pathDis1);
     this->topLevelWidget()->hide();
 }
 
@@ -688,7 +694,7 @@ void QClickWidget::switchWidgetClicked()
 QString QClickWidget::size_human(qlonglong capacity)
 {
     //    float capacity = this->size();
-    if(capacity != NULL)
+    if(capacity != NULL && capacity != 1)
     {
         QStringList list;
         list << "KB" << "MB" << "GB" << "TB";
@@ -710,6 +716,12 @@ QString QClickWidget::size_human(qlonglong capacity)
     {
        QString str_capaticity = tr("the capacity is empty");
        return str_capaticity;
+    }
+
+    if(capacity == 1)
+    {
+        QString str_capacity = tr("blank CD");
+        return str_capacity;
     }
 }
 
@@ -748,6 +760,18 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
                     "background:rgba(255,255,255,0);"
                     "border-radius:4px;");
 
+        }
+    }
+
+    if(obj == image_show_label)
+    {
+        if(event->type() == QEvent::Enter)
+        {
+            image_show_label->setIconSize(QSize(25,25));
+            image_show_label->setFixedSize(40,40);
+            image_show_label->setStyleSheet(
+                    "background:transparent;"
+                    "border-radius:4px;");
         }
     }
 
