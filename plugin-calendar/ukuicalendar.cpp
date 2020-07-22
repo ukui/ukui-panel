@@ -637,15 +637,24 @@ void IndicatorCalendar::activated(ActivationReason reason)
 {
     if(mWebViewDiag != NULL )
     {
-//        QString  htmlFilePath = QLatin1String(PACKAGE_DATA_DIR);
-//        htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui.html");
-
+        mViewHeight = WEBVIEW_MAX_HEIGHT;
+        if(gsettings->get("calendar").toString() == "solarlunar")
+            mViewHeight = WEBVIEW_MIN_HEIGHT;
+        if (QLocale::system().name() != "zh_CN")
+            mViewHeight = WEBVIEW_MIN_HEIGHT;
+        int iScreenHeight = QApplication::screens().at(0)->size().height() - panel()->panelSize();
+        if (iScreenHeight < WEBVIEW_MAX_HEIGHT) {
+            mViewHeight = iScreenHeight;
+            if (iScreenHeight >= WEBVIEW_MIN_HEIGHT)
+                mViewHeight = WEBVIEW_MIN_HEIGHT;;
+        }
         mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht,mViewHeight)));
         mWebViewDiag->show();
         setbackground();
         if(!mbActived)
         {
             mWebViewDiag->setHidden(false);
+            mWebViewDiag->webview()->reload();
             mbActived = true;
         }
         else
