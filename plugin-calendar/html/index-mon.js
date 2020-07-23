@@ -819,7 +819,6 @@ function create_page(year, month) {
         } else {
             current_row = calendar.rows[row];
         }
-
         for (var column = 0; column < 7; column++) {
             if (current_row.cells.length === column) {
                 current_cell = current_row.insertCell(column);
@@ -1160,7 +1159,7 @@ function update_right_pane(year, month, day) {
     var ganzhi_month = month_stuff['monthData'][highlight_index]['GanZhiMonth'];
     var ganzhi_day = month_stuff['monthData'][highlight_index]['GanZhiDay'];
     var zodiac = month_stuff['monthData'][highlight_index]['zodiac'];
-    var weekday = weekdays[highlight_index % 7];
+    var weekday = weekdays[(highlight_index + 1) % 7];
 
     var month_str = month.toString();
     if (month <= 9) {
