@@ -18,7 +18,7 @@
 #include "ejectInterface.h"
 #include <qgsettings.h>
 
-ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(parent),eject_image_button(nullptr),show_text_label(nullptr),
+ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType) : QWidget(parent),eject_image_button(nullptr),show_text_label(nullptr),
     mount_name_label(nullptr)
 {
 //interface layout
@@ -41,10 +41,28 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name) : QWidget(par
     //add the text of the eject interface
     if(show_text_label)
     {
-        show_text_label->setText(tr("usb has been unplugged safely"));
-        QPalette pe;
-        pe.setColor(QPalette::WindowText,Qt::white);
-        show_text_label->setPalette(pe);
+        if(deviceType == NORMALDEVICE)
+        {
+            show_text_label->setText(tr("usb has been unplugged safely"));
+            QPalette pe;
+            pe.setColor(QPalette::WindowText,Qt::white);
+            show_text_label->setPalette(pe);
+        }
+        else if(deviceType == OCCUPYDEVICE)
+        {
+            show_text_label->setText(tr("usb is occupying unejectable"));
+            QPalette pe;
+            pe.setColor(QPalette::WindowText,Qt::white);
+            show_text_label->setPalette(pe);
+        }
+        else if(deviceType == DATADEVICE)
+        {
+            show_text_label->setText(tr("data device has been unloaded"));
+            QPalette pe;
+            pe.setColor(QPalette::WindowText,Qt::white);
+            show_text_label->setPalette(pe);
+        }
+        else{}
     }
 
     ejectinterface_h_BoxLayout = new QHBoxLayout();

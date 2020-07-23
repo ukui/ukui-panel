@@ -81,6 +81,7 @@ private:
     QString size_human(qlonglong capacity);
     void getDeviceInfo();
     static void frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,MainWindow *p_this);
+    static void frobnitz_result_func_mount(GMount *source_object,GAsyncResult *res,MainWindow *p_this);
     //static void frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,gpointer);
     static void drive_connected_callback (GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this);
     static void drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this);
@@ -106,11 +107,31 @@ private:
     int num = 0;
     QScreen *screen;
     int triggerType = 0; //detective the type of MainWinow(insert USB disk or click systemtray icon)
+
+    char *mount_uri;
+    GFile *root;
+    GList *listVolumes;
+    GList *vList;
+    GVolume *volume;
+
+    double m_transparency;
+    QGSettings *m_transparency_gsettings = nullptr;
+
+    //authority
+    //QDBusInterface *systemIface;
 public:
     QSystemTrayIcon *m_systray;
     ejectInterface *m_eject;
+
+    void initTransparentState();
+    double getTransparentData();
+
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
+
+    bool isShow;
+    bool ifSucess;
+    int flagType;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    

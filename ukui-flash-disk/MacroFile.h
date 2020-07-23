@@ -25,4 +25,8 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 #define UKUI_FLASH_DISK_PATH "/"
 #define UKUI_FLASH_DISK_SERVICE "com.ukuiflashdisk.hotel"
 #define UKUI_FLASH_DISK_INTERFACE "com.flshdisk.hotel"
+
+#define NORMALDEVICE 0
+#define DATADEVICE 1
+#define OCCUPYDEVICE 2
 #endif //_MACROFILE_H_
