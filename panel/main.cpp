@@ -97,7 +97,12 @@ int main(int argc, char *argv[])
         else
             qDebug() << "Load translations file" << locale << "failed!";
     }
-
+    if (locale == "tr_TR"){
+        if (translator.load("ukui-panel_tr.qm", "/usr/share/ukui-panel/panel/resources/"))
+            app.installTranslator(&translator);
+        else
+            qDebug() << "Load translations file" << locale << "failed!";
+    }
     //注册MessageHandler
     //qInstallMessageHandler(outputMessage);
 
