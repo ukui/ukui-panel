@@ -1212,7 +1212,7 @@ bool UKUIPanel::event(QEvent *event)
         // Sometimes Qt needs to re-create the underlying window of the widget and
         // the winId() may be changed at runtime. So we need to reset all X11 properties
         // when this happens.
-        qDebug() << "WinIdChange" << hex << effectiveWinId() << "handle" << windowHandle() << windowHandle()->screen();
+        //qDebug() << "WinIdChange" << hex << effectiveWinId() << "handle" << windowHandle() << windowHandle()->screen();
 
         // Qt::WA_X11NetWmWindowTypeDock becomes ineffective in Qt 5
         // See QTBUG-39887: https://bugreports.qt-project.org/browse/QTBUG-39887
@@ -1346,14 +1346,14 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                     tr("Show Desktop"),
                     this, SLOT(showDesktop())
-                    )->setDisabled(mLockPanel);
+                    );
 
     menu->addSeparator();
 
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                     tr("Show System Monitor"),
                     this, SLOT(systeMonitor())
-                    )->setDisabled(mLockPanel);
+                    );
 
     menu->addSeparator();
 

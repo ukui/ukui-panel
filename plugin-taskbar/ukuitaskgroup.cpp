@@ -260,7 +260,6 @@ QWidget * UKUITaskGroup::checkedButton() const
  */
 void UKUITaskGroup::changeTaskButtonStyle()
 {
-    qDebug()<<"**********************";
     if(mButtonHash.size()>1)
         this->setStyle(new CustomStyle("taskbutton",true));
     else

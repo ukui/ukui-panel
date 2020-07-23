@@ -1,7 +1,4 @@
 # ukui-panel
-
-![build](https://github.com/ukui/ukui-panel/workflows/Check%20build/badge.svg?branch=master)
-
 ukui-panel represents the taskbar of UKUI
 
 ## Table of Contents

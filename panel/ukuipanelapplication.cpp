@@ -104,11 +104,9 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
 
 //    QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     const QString configFile = parser.value(configFileOption);
-    qDebug()<<"configFile is : "<<configFile;
 
     if (configFile.isEmpty())
     {
-        qDebug()<<"configFile.is Empty"<<endl;
         QString defaultConf = QString(PLUGIN_DESKTOPS_DIR)+"/../";
         QString loaclCong = QString(qgetenv("HOME"))+"/.config/ukui/";
         QFile file(loaclCong+"panel.conf");

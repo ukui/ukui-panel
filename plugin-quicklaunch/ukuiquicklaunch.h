@@ -38,6 +38,8 @@
 #include "qlayoutitem.h"
 #include "qlayoutitem.h"
 #include "qgridlayout.h"
+#include <QMap>
+#include <QFileSystemWatcher>
 #include <QPainter>
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -104,6 +106,7 @@ private slots:
     void addButton(QuickLaunchAction* action);
     bool checkButton(QuickLaunchAction* action);
     void removeButton(QuickLaunchAction* action);
+    void removeButton(QString exec);
     void switchButtons(QuickLaunchButton *button1, QuickLaunchButton *button2);
     void buttonDeleted();
     void buttonMoveLeft();
@@ -112,6 +115,7 @@ private slots:
 public slots:
     bool AddToTaskbar(QString arg);
     bool RemoveFromTaskbar(QString arg);
+    bool FileDeleteFromTaskbar(QString arg);
     bool CheckIfExist(QString arg);
     int GetPanelPosition(QString arg);
     int GetPanelSize(QString arg);
@@ -131,6 +135,10 @@ class FilectrlAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
 "    </method>\n"
 "    <method name=\"RemoveFromTaskbar\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"FileDeleteFromTaskbar\">\n"
 "      <arg direction=\"out\" type=\"b\"/>\n"
 "      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
 "    </method>\n"
@@ -157,6 +165,7 @@ public Q_SLOTS: // METHODS
     bool AddToTaskbar(const QString &arg);
     bool CheckIfExist(const QString &arg);
     bool RemoveFromTaskbar(const QString &arg);
+    bool FileDeleteFromTaskbar(const QString &arg);
     int GetPanelPosition(const QString &arg);
     int GetPanelSize(const QString &arg);
 
@@ -165,5 +174,32 @@ Q_SIGNALS: // SIGNALS
 signals:
     void addtak(int);
 };
+
+class FileSystemWatcher : public QObject
+{
+    Q_OBJECT
+
+public:
+    //FileSystemWatcher(QObject *parent);
+    ~FileSystemWatcher();
+
+public:
+    static void addWatchPath(QString path);
+
+public slots:
+    void directoryUpdated(const QString &path);  // 目录更新时调用，path是监控的路径
+
+private:
+    explicit FileSystemWatcher(QObject *parent = 0);
+
+private:
+    static FileSystemWatcher *m_pInstance; // 单例
+    QFileSystemWatcher *m_pSystemWatcher;  // QFileSystemWatcher变量
+    QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
+
+signals:
+    void fileDelete(QString file);
+};
+
 
 #endif

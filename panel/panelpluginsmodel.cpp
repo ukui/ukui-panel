@@ -216,7 +216,6 @@ void PanelPluginsModel::movePlugin(Plugin * plugin, QString const & nameAfter)
 void PanelPluginsModel::loadPlugins(QStringList const & desktopDirs)
 {
     QStringList plugin_names = mPanel->settings()->value(mNamesKey).toStringList();
-qDebug()<<"desktopDirs  =  "<<desktopDirs<<endl;
 #ifdef DEBUG_PLUGIN_LOADTIME
     QElapsedTimer timer;
     timer.start();
