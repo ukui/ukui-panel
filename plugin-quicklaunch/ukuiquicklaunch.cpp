@@ -465,7 +465,7 @@ bool UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
                 break;
             }
         }
-        qDebug()<<"remove deleteed file";
+        qDebug()<<"remove deleted file";
         mLayout->removeItem(child);
         mLayout->removeWidget(b);
         b->deleteLater();
