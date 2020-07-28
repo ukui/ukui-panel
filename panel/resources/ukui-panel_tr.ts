@@ -55,17 +55,17 @@
     <message>
         <location filename="../config/configpaneldialog.cpp" line="36"/>
         <source>Configure Panel</source>
-        <translation></translation>
+        <translation>Paneli Ayarla</translation>
     </message>
     <message>
         <location filename="../config/configpaneldialog.cpp" line="43"/>
         <source>Panel</source>
-        <translation></translation>
+        <translation>Panel</translation>
     </message>
     <message>
         <location filename="../config/configpaneldialog.cpp" line="47"/>
         <source>Widgets</source>
-        <translation></translation>
+        <translation>Widgetler</translation>
     </message>
 </context>
 <context>
@@ -98,18 +98,18 @@
     <message>
         <location filename="../config/configpanelwidget.ui" line="96"/>
         <source>%</source>
-        <translation></translation>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="101"/>
         <source>px</source>
-        <translation></translation>
+        <translation>px</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="109"/>
         <location filename="../config/configpanelwidget.ui" line="153"/>
         <source> px</source>
-        <translation></translation>
+        <translation> px</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="166"/>
@@ -158,7 +158,7 @@
     <message>
         <location filename="../config/configpanelwidget.ui" line="250"/>
         <source>A&amp;uto-hide</source>
-        <translation>Otomatik Gizle</translation>
+        <translation>O&amp;tomatik Gizle</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="262"/>
@@ -175,7 +175,7 @@
         <location filename="../config/configpanelwidget.ui" line="288"/>
         <location filename="../config/configpanelwidget.ui" line="314"/>
         <source> ms</source>
-        <translation></translation>
+        <translation> ms</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="301"/>
@@ -216,12 +216,12 @@
     <message>
         <location filename="../config/configpanelwidget.ui" line="417"/>
         <source>Background color:</source>
-        <translation>Arka plan rengi:</translation>
+        <translation>Arkaplan rengi:</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="456"/>
         <source>Background opacity:</source>
-        <translation>Arka plan saydamlığı:</translation>
+        <translation>Arkaplan saydamlığı:</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="488"/>
@@ -231,7 +231,7 @@
     <message>
         <location filename="../config/configpanelwidget.ui" line="516"/>
         <source>Background image:</source>
-        <translation>Arka plan görüntüsü:</translation>
+        <translation>Arkaplan görüntüsü:</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="568"/>
@@ -353,7 +353,7 @@ Widget stiline (palet) göre simgeleri renklendirme</translation>
         <location filename="../config/configpluginswidget.ui" line="164"/>
         <location filename="../config/configpluginswidget.ui" line="185"/>
         <source>...</source>
-        <translation></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../config/configpluginswidget.ui" line="126"/>
@@ -410,13 +410,13 @@ Widget stiline (palet) göre simgeleri renklendirme</translation>
     <message>
         <location filename="../../plugin-nightmode/nightmode.cpp" line="111"/>
         <source>please install Newest ukui-control-center first</source>
-        <translation>Lütfen önce en yeni ukui-denetim merkezini kurun</translation>
+        <translation>Lütfen önce en yeni ukui-control-center kurun</translation>
     </message>
     <message>
         <location filename="../../plugin-nightmode/nightmode.cpp" line="186"/>
         <location filename="../../plugin-nightmode/nightmode.cpp" line="241"/>
         <source>please install new ukui-control-center first</source>
-        <translation>Lütfen önce yeni ukui-denetim merkezini kurun</translation>
+        <translation>Lütfen önce yeni ukui-control-center kurun</translation>
     </message>
     <message>
         <location filename="../../plugin-nightmode/nightmode.cpp" line="197"/>
@@ -757,7 +757,8 @@ Bu paneli kaldırmak istiyor musunuz?</translation>
         <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="549"/>
         <source>Drop application
 icons here</source>
-        <translation></translation>
+        <translation>Bırakma uygulaması
+simgeler burada</translation>
     </message>
 </context>
 <context>
@@ -990,7 +991,7 @@ icons here</source>
         <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="144"/>
         <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="170"/>
         <source> px</source>
-        <translation></translation>
+        <translation> px</translation>
     </message>
     <message>
         <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="157"/>
@@ -1074,7 +1075,7 @@ icons here</source>
     <message>
         <location filename="../common/ukuipowermanager.cpp" line="146"/>
         <source>Logout</source>
-        <translation>Çıkıt</translation>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <location filename="../common/ukuipowermanager.cpp" line="158"/>
