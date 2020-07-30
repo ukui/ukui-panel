@@ -1191,6 +1191,20 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     mpWidget->setAttribute(Qt::WA_TranslucentBackground);
     setLayOutForPostion();
     /*begin catch preview picture*/
+
+    int pop_sum = mButtonHash.size();
+    int max_Height = 0;
+    int imgWidth_sum = 0;
+    float minimum = THUMBNAIL_WIDTH;
+    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    {
+        display = XOpenDisplay(nullptr);
+        XGetWindowAttributes(display, it.key(), &attr);
+        imgWidth_sum += attr.width;
+        max_Height = attr.height > max_Height ? attr.height : max_Height;
+        if(display)
+            XCloseDisplay(display);
+    }
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
@@ -1200,7 +1214,18 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         img = XGetImage(display, it.key(), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
         if(img)
         {
-            thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+            float imgWidth = (float)attr.width / (float)imgWidth_sum * pop_sum * THUMBNAIL_WIDTH;
+            float imgHeight = THUMBNAIL_HEIGHT;
+            if (attr.height != max_Height)
+            {
+                float tmp = (float)attr.height / (float)max_Height;
+                imgHeight =  imgHeight * tmp;
+            }
+            if ((int)imgWidth > (int)minimum)
+            {
+                imgWidth = minimum;
+            }
+            thumbnail = qimageFromXImage(img).scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
             //thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));  test picture if correct
         }
         else

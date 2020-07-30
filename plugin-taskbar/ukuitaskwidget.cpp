@@ -141,7 +141,8 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
 //    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
     //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
     mVWindowsLayout->addLayout(mTopBarLayout);
-    mVWindowsLayout->addWidget(mThumbnailLabel/*, 0, Qt::AlignBottom*/);
+    mVWindowsLayout->addWidget(mThumbnailLabel, Qt::AlignVCenter, Qt::AlignVCenter);
+    mVWindowsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     this->setLayout(mVWindowsLayout);
     updateText();
     updateIcon();
