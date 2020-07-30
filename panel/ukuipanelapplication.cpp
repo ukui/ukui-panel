@@ -35,6 +35,7 @@
 #include <QUuid>
 #include <QScreen>
 #include <QWindow>
+#include <KWindowEffects>
 #include <QCommandLineParser>
 #include <QFile>
 #include "comm_func.h"
@@ -202,6 +203,7 @@ UKUIPanel* UKUIPanelApplication::addPanel(const QString& name)
     Q_D(UKUIPanelApplication);
 
     UKUIPanel *panel = new UKUIPanel(name, d->mSettings);
+    KWindowEffects::enableBlurBehind(panel->winId(),true);
     mPanels << panel;
 
     // reemit signals
