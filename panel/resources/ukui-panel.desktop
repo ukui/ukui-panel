@@ -9,4 +9,4 @@ Icon=panel
 X-UKUI-AutoRestart=true
 OnlyShowIn=UKUI
 NoDisplay=true
-X-UKUI-Autostart-Phase=Initialization
+X-UKUI-Autostart-Phase=Panel
