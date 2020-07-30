@@ -12,7 +12,6 @@ set(UIS
 )
 
 set(LIBRARIES
-    Qt5Xdg
 )
 
 install(FILES
