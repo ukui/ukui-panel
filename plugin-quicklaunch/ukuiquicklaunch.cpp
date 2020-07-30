@@ -762,11 +762,13 @@ void FileSystemWatcher::directoryUpdated(const QString &path)
 
                 qDebug()<<"file:"<<file;
 
+		/*
                 QDBusInterface iface("com.ukui.panel.desktop",
                                      "/",
                                      "com.ukui.panel.desktop",
                                      QDBusConnection::sessionBus());
                 iface.call("FileDeleteFromTaskbar",path+file);
+		*/
                 emit fileDelete(file);
             }
         }
