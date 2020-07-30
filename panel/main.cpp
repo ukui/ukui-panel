@@ -35,6 +35,7 @@
 #include <QMutex>
 #include <QFile>
 #include <QDir>
+#include <X11/Xlib.h>
 /*! The ukui-panel is the panel of UKUI.
   Usage: ukui-panel [CONFIG_ID]
     CONFIG_ID      Section name in config file ~/.config/ukui/panel.conf
