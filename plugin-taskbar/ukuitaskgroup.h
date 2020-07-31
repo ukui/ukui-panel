@@ -57,6 +57,7 @@ public:
 
     int buttonsCount() const;
     int visibleButtonsCount() const;
+    void initVisibleHash();
 
     QWidget * addWindow(WId id);
     QWidget * checkedButton() const;
@@ -81,6 +82,7 @@ public:
     void showAllWindowByList();//when number of window is more than 30,need show all window of app by a list
     void showAllWindowByThumbnail();//when number of window is no more than 30,need show all window of app by a thumbnail
     void singleWindowClick();
+    void VisibleWndRemoved(WId window);
 public slots:
     void onWindowRemoved(WId window);
     void timeout();
@@ -124,6 +126,7 @@ private:
     UKUIGroupPopup * mPopup;
     QVBoxLayout *VLayout;
     UKUITaskButtonHash mButtonHash;
+    UKUITaskButtonHash mVisibleHash;
     bool mPreventPopup;
     bool mSingleButton; //!< flag if this group should act as a "standard" button (no groupping or only one "shown" window in group)
     enum TaskGroupStatus{NORMAL, HOVER, PRESS};

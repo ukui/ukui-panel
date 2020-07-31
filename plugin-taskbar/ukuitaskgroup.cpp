@@ -123,7 +123,6 @@ QPixmap qimageFromXImage(XImage* ximage)
             p += ximage->bytes_per_line / 4;
         }
     }
-
     return QPixmap::fromImage(image);
 }
 
@@ -234,7 +233,6 @@ QWidget * UKUITaskGroup::addWindow(WId id)
         return mButtonHash.value(id);
     UKUITaskWidget *btn = new UKUITaskWidget(id, parentTaskBar(), mPopup);
     mButtonHash.insert(id, btn);
-
     connect(btn, SIGNAL(clicked()), this, SLOT(onChildButtonClicked()));
     connect(btn, SIGNAL(windowMaximize()), this, SLOT(onChildButtonClicked()));
     refreshVisibility();
@@ -350,7 +348,6 @@ void UKUITaskGroup::onWindowRemoved(WId window)
         mButtonHash.remove(window);
         mPopup->removeWidget(button);
         button->deleteLater();
-
         if (mButtonHash.count())
         {
             if(mPopup->isVisible())
@@ -418,6 +415,16 @@ void UKUITaskGroup::setToolButtonsStyle(Qt::ToolButtonStyle style)
 int UKUITaskGroup::buttonsCount() const
 {
     return mButtonHash.count();
+}
+
+void UKUITaskGroup::initVisibleHash()
+{
+    if (!mVisibleHash.empty()) mVisibleHash.clear();
+    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    {
+        if (it.value()->isVisibleTo(mPopup))
+            mVisibleHash.insert(it.key(), it.value());
+    }
 }
 
 /************************************************
@@ -1010,13 +1017,14 @@ void UKUITaskGroup::showPreview()
 
 void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
 {
+    int size = mVisibleHash.size();
     if(plugin()->panel()->isHorizontal())
     {
-        mPopup->setFixedSize(winWidth*mButtonHash.size() + (mButtonHash.size() + 1)*3, winHeight + 6);
+        mPopup->setFixedSize(winWidth*size + (size + 1)*3, winHeight + 6);
     }
     else
     {
-        mPopup->setFixedSize(winWidth + 6,winHeight*mButtonHash.size() + (mButtonHash.size() + 1)*3);
+        mPopup->setFixedSize(winWidth + 6,winHeight*size + (size + 1)*3);
     }
     mPopup->adjustSize();
 }
@@ -1057,9 +1065,10 @@ int UKUITaskGroup::calcAverageHeight()
     }
     else
     {
+        int size = mVisibleHash.size();
         int iScreenHeight = QApplication::screens().at(0)->size().height();
-        int iMarginHeight = (mButtonHash.size()+1)*3;
-        int iAverageHeight = (iScreenHeight - iMarginHeight)/mButtonHash.size();//calculate average width of window
+        int iMarginHeight = (size+1)*3;
+        int iAverageHeight = (iScreenHeight - iMarginHeight)/size;//calculate average width of window
         return iAverageHeight;
     }
 }
@@ -1068,9 +1077,10 @@ int UKUITaskGroup::calcAverageWidth()
 {
     if(plugin()->panel()->isHorizontal())
     {
+        int size = mVisibleHash.size();
         int iScreenWidth = QApplication::screens().at(0)->size().width();
-        int iMarginWidth = (mButtonHash.size()+1)*3;
-        int iAverageWidth = (iScreenWidth - iMarginWidth)/mButtonHash.size();//calculate average width of window
+        int iMarginWidth = (size+1)*3;
+        int iAverageWidth = (iScreenWidth - iMarginWidth)/size;//calculate average width of window
         return iAverageWidth;
     }
     else
@@ -1150,6 +1160,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int previewPosition = 0;
     int winWidth = 0;
     int winHeight = 0;
+    initVisibleHash();
     int iAverageWidth = calcAverageWidth();
     int iAverageHeight = calcAverageHeight();
     /*begin get the winsize*/
