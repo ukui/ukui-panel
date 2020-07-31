@@ -35,6 +35,7 @@
 #include "mainwindow.h"
 #include "MacroFile.h"
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -92,10 +93,14 @@ private:
 
 private:
     QIcon iconSystray;
-    QString UDiskPathDis1;
-    QString UDiskPathDis2;
-    QString UDiskPathDis3;
-    QString UDiskPathDis4;
+//    QString UDiskPathDis1;
+//    QString UDiskPathDis2;
+//    QString UDiskPathDis3;
+//    QString UDiskPathDis4;
+    char *UDiskPathDis1;
+    char *UDiskPathDis2;
+    char *UDiskPathDis3;
+    char *UDiskPathDis4;
     quint64 totalDis1;
     quint64 totalDis2;
     quint64 totalDis3;
@@ -124,19 +129,21 @@ public:
     ejectInterface *m_eject;
 
     void initTransparentState();
-    double getTransparentData();
-
+//    double getTransparentData();
+    void getTransparentData();
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
 
-    bool isShow;
     bool ifSucess;
     int flagType;
+    static bool isShow;
+    int driveMountNum;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
     void onConvertShowWindow();
     void on_Maininterface_hide();
+    void on_clickPanelToHideInterface();
 Q_SIGNALS:
     void clicked();
     void convertShowWindow();
