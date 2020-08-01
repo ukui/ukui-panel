@@ -27,7 +27,6 @@
 #include <QFontMetrics>
 #include <QLineEdit>
 #include <QToolButton>
-#include <XdgIcon>
 
 #include <QMainWindow>
 #include <QHBoxLayout>
@@ -38,7 +37,6 @@
 #include <QGSettings>
 
 #include "../panel/iukuipanelplugin.h"
-#include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
 #include "../panel/ukuicontrolstyle.h"
 

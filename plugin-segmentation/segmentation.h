@@ -27,18 +27,13 @@
 #include <QFontMetrics>
 #include <QLineEdit>
 #include <QToolButton>
-#include <XdgIcon>
-
 
 #include <QMainWindow>
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QProcess>
 
-#include "../panel/plugin.h"
 #include "../panel/ukuipanel.h"
-//#include "../panel/config/configpaneldialog.h"
-#include "../panel/config/configpanelwidget.h"
 #include <QMenu>
 #define DEFAULT_SHORTCUT "Alt+F1"
 

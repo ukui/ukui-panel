@@ -30,7 +30,6 @@
 #include <QPainter>
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
-#include "xdgicon.h"
 #include "showdesktop.h"
 #include "../panel/common/ukuinotification.h"
 #include "../panel/pluginsettings.h"
