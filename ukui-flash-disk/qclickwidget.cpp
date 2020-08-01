@@ -92,7 +92,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         drivename_H_BoxLayout->addWidget(m_driveName_label);
         drivename_H_BoxLayout->addStretch();
 
-        QVBoxLayout *main_V_BoxLayout = new QVBoxLayout();
+        QVBoxLayout *main_V_BoxLayout = new QVBoxLayout(this);
         main_V_BoxLayout->setContentsMargins(0,0,0,0);
 
         connect(m_eject_button,SIGNAL(clicked()),SLOT(switchWidgetClicked()));  // this signal-slot function is to emit a signal which
@@ -586,7 +586,8 @@ QClickWidget::QClickWidget(QWidget *parent,
 
 QClickWidget::~QClickWidget()
 {
-
+//    if(image_show_label)
+//    delete image_show_label;
 }
 
 //to show the text,when the contents is too much,we use the "..."to replace it
