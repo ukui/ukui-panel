@@ -29,4 +29,7 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 #define NORMALDEVICE 0
 #define DATADEVICE 1
 #define OCCUPYDEVICE 2
+
+//opacity setting
+#define THEME_QT_TRANS "org.ukui.control-center.personalise"
 #endif //_MACROFILE_H_
