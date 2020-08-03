@@ -69,10 +69,12 @@ public:
      * */
     bool hasDragAndDropHover() const;
     void setThumbNail(QPixmap _pixmap);
+    void setTitleFixedWidth(int size);
     void updateTitle();
     void removeThumbNail();
     void addThumbNail();
     void setPixmap(QPixmap mPixmap);
+    int getWidth();
     QPixmap getPixmap();
 
 public slots:
