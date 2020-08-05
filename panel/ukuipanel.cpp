@@ -629,6 +629,7 @@ void UKUIPanel::setMargins()
 void UKUIPanel::realign()
 {
     updateStyleSheet();
+    emit realigned();
     if (!isVisible())
         return;
 #if 0
