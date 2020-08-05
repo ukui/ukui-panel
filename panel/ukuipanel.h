@@ -390,7 +390,7 @@ protected:
      * @param event The QShowEvent sent by Qt.
      */
     void showEvent(QShowEvent *event) override;
-//    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *);
 
 public slots:
     /**
