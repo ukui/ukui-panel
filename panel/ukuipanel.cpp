@@ -1271,7 +1271,7 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     p.setBrush(QBrush(QColor(19,22,28,tran)));
 
     p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,20,20);
+    p.drawRoundedRect(opt.rect,0,0);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
