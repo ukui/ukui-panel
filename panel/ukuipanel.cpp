@@ -266,14 +266,15 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
-        setPanelBackground(true);
+        //setPanelBackground(true);
         }
     connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==TRANSPARENCY_KEY)
-            setPanelBackground(true);
+        {
+            //setPanelBackground(true);
+            this->update();
+        }
     });
-
-
     setPanelsize(PANEL_SIZE_MEDIUM);
     setIconsize(ICON_SIZE_MEDIUM);
     setPanelsize(PANEL_SIZE_SMALL);
@@ -968,9 +969,9 @@ void UKUIPanel::showNightModeButton()
 }
 void UKUIPanel::updateStyleSheet()
 {
-    QStringList sheet;
-    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,0.9); }");
-    setStyleSheet(sheet.join("\n"));
+//    QStringList sheet;
+//    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,0.9); }");
+//    setStyleSheet(sheet.join("\n"));
 }
 
 
@@ -1141,7 +1142,7 @@ void UKUIPanel::setPanelBackground(bool effective)
     if(effective)
     {
         QStringList sheet;
-        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,%1); }").arg(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
+        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,22,%1); }").arg(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
         setStyleSheet(sheet.join("\n"));
     }
     else
@@ -1259,25 +1260,21 @@ void UKUIPanel::showEvent(QShowEvent *event)
  * 1.绘制速度需要鼠标事件触发，明显的切换不流畅
  * 2.部分区域绘制不能生效，调整任务栏高度之后才能生效
  */
-/*
+
 void UKUIPanel::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    QColor c;
-    c.setRed(19);
-    c.setGreen(22);
-    c.setBlue(28);
-    c.setAlphaF(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
-    p.setBrush(QBrush(c));
+    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    p.setBrush(QBrush(QColor(19,22,28,tran)));
 
     p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,20,20);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
-*/
+
 
 /*Right-Clicked Menu of ukui-panel
  * it's a Popup Menu
