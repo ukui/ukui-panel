@@ -8,12 +8,7 @@ set(SOURCES
     taskview.cpp
 )
 
-set(UIS
-)
-set(LIBRARIES
-    Qt5Xdg
-)
-
+include_directories(${_Qt5DBus_OWN_INCLUDE_DIRS})
 install(FILES
     img/taskview.svg
     DESTINATION "/usr/share/ukui-panel/plugin-taskview/img"
