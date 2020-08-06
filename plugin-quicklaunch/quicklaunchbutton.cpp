@@ -132,11 +132,27 @@ void QuickLaunchButton::leaveEvent(QEvent *)
     repaint();
 }
 
+
+/***************************************************/
+
+void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
+    {
+        mDragStart = e->pos();
+        return;
+    }
+
+    QToolButton::mousePressEvent(e);
+}
+
 /***************************************************/
 
 QMimeData * QuickLaunchButton::mimeData()
 {
     ButtonMimeData *mimeData = new ButtonMimeData();
+    QByteArray ba;
+    mimeData->setData(mimeDataFormat(), ba);
     mimeData->setButton(this);
     return mimeData;
 }
@@ -145,11 +161,17 @@ QMimeData * QuickLaunchButton::mimeData()
 
 void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
 {
-
+    if (e->button() == Qt::RightButton)
+        return;
     if (!(e->buttons() & Qt::LeftButton))
         return;
     if ((e->pos() - mDragStart).manhattanLength() < QApplication::startDragDistance())
         return;
+
+    if (e->modifiers() == Qt::ControlModifier)
+    {
+        return;
+    }
     QDrag *drag = new QDrag(this);
     QIcon ico = icon();
     int size = mPlugin->panel()->iconSize();
@@ -174,6 +196,16 @@ void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
     drag->deleteLater();
 
     //QAbstractButton::mouseMoveEvent(e);
+}
+
+/***************************************************/
+
+void QuickLaunchButton::dragMoveEvent(QDragMoveEvent * e)
+{
+    if (e->mimeData()->hasFormat(MIMETYPE))
+        e->acceptProposedAction();
+    else
+        e->ignore();
 }
 
 /***************************************************/

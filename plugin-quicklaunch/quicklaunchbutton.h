@@ -36,6 +36,8 @@
 #include <QStyleOption>
 #include <QPainter>
 #include "popupmenu.h"
+#include "../plugin-taskbar/ukuitaskbar.h"
+#include "../panel/ukuipanel.h"
 
 class IUKUIPanelPlugin;
 //class CustomStyle;
@@ -59,7 +61,8 @@ public:
 
     QHash<QString,QString> settingsMap();
     QString file_name;
-    static QString mimeDataFormat() { return QLatin1String("ukui/QuickLaunch"); }
+    UKUITaskBar * parentTaskBar() const {return mParentTaskBar;}
+    static QString mimeDataFormat() { return QLatin1String("ukui/UkuiTaskBar"); }
 
 signals:
     void buttonDeleted();
@@ -69,9 +72,11 @@ signals:
 
 protected:
     //! Disable that annoying small arrow when there is a menu
+    void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent* e);
     void dragEnterEvent(QDragEnterEvent *e);
+    void dragMoveEvent(QDragMoveEvent * e);
     void contextMenuEvent(QContextMenuEvent*);
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
@@ -80,11 +85,13 @@ protected:
 private:
     QuickLaunchAction *mAct;
     IUKUIPanelPlugin * mPlugin;
+    UKUIPanel * panel;
     QAction *mDeleteAct;
     QAction *mMoveLeftAct;
     QAction *mMoveRightAct;
     QuicklaunchMenu *mMenu;
     QPoint mDragStart;
+    UKUITaskBar * mParentTaskBar;
     enum QuickLaunchStatus{NORMAL, HOVER, PRESS};
     QuickLaunchStatus quicklanuchstatus;
     CustomStyle toolbuttonstyle;
