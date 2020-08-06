@@ -36,8 +36,6 @@
 #include <QStyleOption>
 #include <QPainter>
 #include "popupmenu.h"
-#include "../plugin-taskbar/ukuitaskbar.h"
-#include "../panel/ukuipanel.h"
 
 class IUKUIPanelPlugin;
 //class CustomStyle;
@@ -85,13 +83,11 @@ protected:
 private:
     QuickLaunchAction *mAct;
     IUKUIPanelPlugin * mPlugin;
-    UKUIPanel * panel;
     QAction *mDeleteAct;
     QAction *mMoveLeftAct;
     QAction *mMoveRightAct;
     QuicklaunchMenu *mMenu;
     QPoint mDragStart;
-    UKUITaskBar * mParentTaskBar;
     enum QuickLaunchStatus{NORMAL, HOVER, PRESS};
     QuickLaunchStatus quicklanuchstatus;
     CustomStyle toolbuttonstyle;
