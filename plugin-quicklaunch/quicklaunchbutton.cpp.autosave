@@ -137,6 +137,8 @@ void QuickLaunchButton::leaveEvent(QEvent *)
 QMimeData * QuickLaunchButton::mimeData()
 {
     ButtonMimeData *mimeData = new ButtonMimeData();
+    QByteArray ba;
+    mimeData->setData(mimeDataFormat(), ba);
     mimeData->setButton(this);
     return mimeData;
 }
