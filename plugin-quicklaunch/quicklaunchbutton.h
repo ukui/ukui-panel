@@ -59,7 +59,6 @@ public:
 
     QHash<QString,QString> settingsMap();
     QString file_name;
-    UKUITaskBar * parentTaskBar() const {return mParentTaskBar;}
     static QString mimeDataFormat() { return QLatin1String("ukui/UkuiTaskBar"); }
 
 signals:
