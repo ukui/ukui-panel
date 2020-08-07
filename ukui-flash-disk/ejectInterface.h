@@ -41,6 +41,7 @@
 
 
 #include "MacroFile.h"
+#include "UnionVariable.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ejectInterface; }
