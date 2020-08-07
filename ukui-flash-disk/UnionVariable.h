@@ -18,6 +18,9 @@
 #ifndef UNIONVARIABLE_H
 #define UNIONVARIABLE_H
 #include <QList>
+#include <QString>
+#include <QFont>
+#include <QFontMetrics>
 #include <gio/gio.h>
 QList<GMount *> *findGMountList();
 QList<GVolume *> *findGVolumeList();
