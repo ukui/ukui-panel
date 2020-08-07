@@ -54,6 +54,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void MainWindowShow();
+
+protected:
+    void hideEvent(QHideEvent event);
+
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *vboxlayout;
@@ -61,6 +65,7 @@ private:
     QLabel *no_device_label;
     QPushButton *eject_image_button;
     void newarea(int No,
+                 GDrive *Drive,
                  QString Drivename,
                  QString nameDis1,
                  QString nameDis2,
@@ -105,6 +110,7 @@ private:
     quint64 totalDis2;
     quint64 totalDis3;
     quint64 totalDis4;
+//    QClickWidget *open_widget;
     QClickWidget *open_widget;
     int hign;
     int VolumeNum;
@@ -136,7 +142,7 @@ public:
 
     bool ifSucess;
     int flagType;
-    static bool isShow;
+//    static bool isShow;
     int driveMountNum;
 
 public Q_SLOTS:
@@ -147,6 +153,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void clicked();
     void convertShowWindow();
+    void unloadMount();
 
 protected:
     void resizeEvent(QResizeEvent *event);
