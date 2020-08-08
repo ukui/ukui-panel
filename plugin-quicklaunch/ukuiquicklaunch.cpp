@@ -52,6 +52,9 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
+#include <QApplication>
+#include <QScreen>
+
 using namespace  std;
 
 #define PANEL_SETTINGS "org.ukui.panel.settings"
@@ -164,6 +167,11 @@ void UKUIQuickLaunch::realign()
     mLayout->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
 
+    //固定快速启动栏大小，使图标按钮自适应
+    int ScreenWidth = QApplication::screens().at(0)->size().width();
+    int ScreenHeight = QApplication::screens().at(0)->size().height();
+    int QuickLaunchWidth = (int)((mPlugin->panel()->isHorizontal() ? ScreenWidth : ScreenHeight) / 4);
+
     if (mPlaceHolder)
     {
         mLayout->setColumnCount(1);
@@ -176,13 +184,13 @@ void UKUIQuickLaunch::realign()
         {
             if(settings->get(PANEL_LINES).toInt()==1)
             {
-            mLayout->setRowCount(panel->lineCount());
-            mLayout->setColumnCount(0);
-            for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
-            {
-                (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
-                (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
-            }
+                mLayout->setRowCount(panel->lineCount());
+                mLayout->setColumnCount(0);
+                for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
+                {
+                 //   (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()); 已在quicklaunchbutton内设置了样式
+                   (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+                }
             }
             else
             {
@@ -190,10 +198,13 @@ void UKUIQuickLaunch::realign()
                 mLayout->setColumnCount(0);
                 for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
                 {
-                    (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
+                 //   (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
             }
+
+            setMaximumWidth(QuickLaunchWidth);
+            setMaximumHeight(panel->panelSize());
         }
         else
         {
@@ -203,7 +214,7 @@ void UKUIQuickLaunch::realign()
             mLayout->setRowCount(0);
             for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
             {
-                (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+              //  (*it)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
                 (*it)->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
             }
             }
@@ -213,10 +224,12 @@ void UKUIQuickLaunch::realign()
                 mLayout->setRowCount(0);
                 for(auto it = mVBtn.begin(); it != mVBtn.end(); it++)
                 {
-                    (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
+                 //   (*it)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->panelSize()/2);
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
             }
+            setMaximumHeight(QuickLaunchWidth);
+            setMaximumWidth(panel->panelSize());
         }
     }
     mLayout->setEnabled(true);
