@@ -16,9 +16,7 @@
  *
  */
 #include "UnionVariable.h"
-#include <QString>
-#include <QFont>
-#include <QFontMetrics>
+
 
 static QList<GMount *> gmountList;
 QList<GMount *> *findGMountList()
