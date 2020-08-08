@@ -59,7 +59,7 @@ public:
 
     QHash<QString,QString> settingsMap();
     QString file_name;
-    static QString mimeDataFormat() { return QLatin1String("ukui/UkuiTaskBar"); }
+    static QString mimeDataFormat() { return QLatin1String("x-ukui/quicklaunch-button"); }
 
 signals:
     void buttonDeleted();
@@ -75,8 +75,8 @@ protected:
     void dragEnterEvent(QDragEnterEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
     void contextMenuEvent(QContextMenuEvent*);
-    void enterEvent(QEvent *);
-    void leaveEvent(QEvent *);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
     virtual QMimeData * mimeData();
 
 private:

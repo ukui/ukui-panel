@@ -152,6 +152,8 @@ QMimeData * QuickLaunchButton::mimeData()
 {
     ButtonMimeData *mimeData = new ButtonMimeData();
     QByteArray ba;
+    QDataStream stream(&ba,QIODevice::WriteOnly);
+    stream<<this;
     mimeData->setData(mimeDataFormat(), ba);
     mimeData->setButton(this);
     return mimeData;
@@ -202,7 +204,7 @@ void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
 
 void QuickLaunchButton::dragMoveEvent(QDragMoveEvent * e)
 {
-    if (e->mimeData()->hasFormat(MIMETYPE))
+    if (e->mimeData()->hasFormat(mimeDataFormat()))
         e->acceptProposedAction();
     else
         e->ignore();
