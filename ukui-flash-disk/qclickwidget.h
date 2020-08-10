@@ -31,7 +31,9 @@
 #include <QBoxLayout>
 #include <QPushButton>
 
+#include "ejectInterface.h"
 #include "clickLabel.h"
+#include "UnionVariable.h"
 class MainWindow;
 class QClickWidget : public QWidget
 {
@@ -39,6 +41,7 @@ class QClickWidget : public QWidget
 public:
     explicit QClickWidget(QWidget *parent = nullptr,
                           int num = 0,
+                          GDrive *Drive=NULL,
                           QString driveName=NULL,
                           QString nameDis1=NULL,
                           QString nameDis2 =NULL,
@@ -78,6 +81,7 @@ private:
     MainWindow *m_mainwindow;
     QPoint mousePos;
     int m_Num;
+    GDrive *m_Drive;
     QPushButton *image_show_label;
     QLabel *m_driveName_label;
     ClickLabel *m_nameDis1_label;
@@ -93,8 +97,13 @@ private:
     QWidget *disWidgetNumThree;
     QWidget *disWidgetNumFour;
 
+
+
 public:
     QPushButton *m_eject_button;
+    ejectInterface *m_eject;
+    bool ifSucess;
+    int flagType;
 Q_SIGNALS:
     void clicked();
     void clickedConvert();
@@ -111,7 +120,7 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event);
     void resizeEvent(QResizeEvent *event);
 public:
-    QString getElidedText(QFont font, QString str, int MaxWidth);
+
 
 };
 

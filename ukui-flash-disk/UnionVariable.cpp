@@ -16,6 +16,8 @@
  *
  */
 #include "UnionVariable.h"
+
+
 static QList<GMount *> gmountList;
 QList<GMount *> *findGMountList()
 {
@@ -32,6 +34,32 @@ static QList<GDrive *> gdriveList;
 QList<GDrive *> *findGDriveList()
 {
     return &gdriveList;
+}
+
+QString getElidedText(QFont font, QString str, int MaxWidth)
+{
+    if (str.isEmpty())
+    {
+        return "";
+    }
+
+    QFontMetrics fontWidth(font);
+
+    //计算字符串宽度
+    //calculat the width of the string
+    int width = fontWidth.width(str);
+
+    //当字符串宽度大于最大宽度时进行转换
+    //Convert when string width is greater than maximum width
+    if (width >= MaxWidth)
+    {
+        //右部显示省略号
+        //show by ellipsis in right
+        str = fontWidth.elidedText(str, Qt::ElideRight, MaxWidth);
+    }
+    //返回处理后的字符串
+    //return the string that is been handled
+    return str;
 }
 
 
