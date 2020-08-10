@@ -64,7 +64,6 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
 
     mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("delete from quicklaunch"), this);
     connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
-    addAction(mDeleteAct);
     mMenu = new QuicklaunchMenu();
     mMenu->addAction(mAct);
     mMenu->addActions(mAct->addtitionalActions());
@@ -102,7 +101,7 @@ QHash<QString,QString> QuickLaunchButton::settingsMap()
 /*与鼠标右键的选项有关*/
 void QuickLaunchButton::this_customContextMenuRequested(const QPoint & pos)
 {
-   UKUIQuickLaunch *panel = qobject_cast<UKUIQuickLaunch*>(parent());
+    UKUIQuickLaunch *panel = qobject_cast<UKUIQuickLaunch*>(parent());
 
     mMoveLeftAct->setEnabled( panel && panel->indexOfButton(this) > 0);
     mMoveRightAct->setEnabled(panel && panel->indexOfButton(this) < panel->countOfButtons() - 1);
@@ -116,6 +115,8 @@ void QuickLaunchButton::selfRemove()
     emit buttonDeleted();
 }
 
+/***************************************************/
+
 /*quicklanuchstatus的状态*/
 void QuickLaunchButton::enterEvent(QEvent *)
 {
@@ -123,11 +124,16 @@ void QuickLaunchButton::enterEvent(QEvent *)
     repaint();
 }
 
+/***************************************************/
+
 void QuickLaunchButton::leaveEvent(QEvent *)
 {
     quicklanuchstatus=NORMAL;
     repaint();
 }
+
+
+/***************************************************/
 
 void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
 {
@@ -140,65 +146,95 @@ void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
     QToolButton::mousePressEvent(e);
 }
 
+/***************************************************/
+
+QMimeData * QuickLaunchButton::mimeData()
+{
+    ButtonMimeData *mimeData = new ButtonMimeData();
+    QByteArray ba;
+    QDataStream stream(&ba,QIODevice::WriteOnly);
+    stream<<this;
+    mimeData->setData(mimeDataFormat(), ba);
+    mimeData->setButton(this);
+    return mimeData;
+}
+
+/***************************************************/
 
 void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
 {
+    if (e->button() == Qt::RightButton)
+        return;
     if (!(e->buttons() & Qt::LeftButton))
-    {
         return;
-    }
-
     if ((e->pos() - mDragStart).manhattanLength() < QApplication::startDragDistance())
+        return;
+
+    if (e->modifiers() == Qt::ControlModifier)
     {
         return;
     }
-
-    if (e->modifiers() != Qt::ControlModifier)
-    {
-        return;
-    }
-
     QDrag *drag = new QDrag(this);
-    ButtonMimeData *mimeData = new ButtonMimeData();
-    mimeData->setButton(this);
-    drag->setMimeData(mimeData);
+    QIcon ico = icon();
+    int size = mPlugin->panel()->iconSize();
+    QPixmap img = ico.pixmap(ico.actualSize({size, size}));
 
-    drag->exec(Qt::MoveAction);
+    drag->setMimeData(mimeData());
+    drag->setPixmap(img);
 
-    // Icon was droped outside the panel, remove button
-    if (!drag->target())
+    switch (mPlugin->panel()->position())
     {
-        selfRemove();
+        case IUKUIPanel::PositionLeft:
+        case IUKUIPanel::PositionTop:
+            drag->setHotSpot({0, 0});
+            break;
+        case IUKUIPanel::PositionRight:
+        case IUKUIPanel::PositionBottom:
+            drag->setHotSpot(img.rect().bottomRight());
+            break;
     }
+
+    drag->exec();
+    drag->deleteLater();
+
+    //QAbstractButton::mouseMoveEvent(e);
 }
 
+/***************************************************/
 
 void QuickLaunchButton::dragMoveEvent(QDragMoveEvent * e)
 {
-    if (e->mimeData()->hasFormat(MIMETYPE))
+    if (e->mimeData()->hasFormat(mimeDataFormat()))
         e->acceptProposedAction();
     else
         e->ignore();
 }
 
+/***************************************************/
 
 void QuickLaunchButton::dragEnterEvent(QDragEnterEvent *e)
 {
+    e->acceptProposedAction();
     const ButtonMimeData *mimeData = qobject_cast<const ButtonMimeData*>(e->mimeData());
     if (mimeData && mimeData->button())
-    {
-        emit switchButtons(mimeData->button(), this);
-    }
+          emit switchButtons(mimeData->button(), this);
+    QToolButton::dragEnterEvent(e);
 }
 
-void QuickLaunchButton::contextMenuEvent(QContextMenuEvent *){
-}
-QuicklaunchMenu::QuicklaunchMenu(){
-}
+/***************************************************/
 
-QuicklaunchMenu::~QuicklaunchMenu(){
-}
-
-void QuicklaunchMenu::contextMenuEvent(QContextMenuEvent *)
+void QuickLaunchButton::mouseReleaseEvent(QMouseEvent* e)
 {
+    repaint();
+    QToolButton::mouseReleaseEvent(e);
 }
+
+/***************************************************/
+
+void QuickLaunchButton::contextMenuEvent(QContextMenuEvent *) { }
+
+QuicklaunchMenu::QuicklaunchMenu() { }
+
+QuicklaunchMenu::~QuicklaunchMenu() { }
+
+void QuicklaunchMenu::contextMenuEvent(QContextMenuEvent *) { }

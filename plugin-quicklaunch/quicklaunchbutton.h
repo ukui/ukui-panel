@@ -59,6 +59,7 @@ public:
 
     QHash<QString,QString> settingsMap();
     QString file_name;
+    static QString mimeDataFormat() { return QLatin1String("x-ukui/quicklaunch-button"); }
 
 signals:
     void buttonDeleted();
@@ -70,11 +71,13 @@ protected:
     //! Disable that annoying small arrow when there is a menu
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent* e);
     void dragEnterEvent(QDragEnterEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
     void contextMenuEvent(QContextMenuEvent*);
-    void enterEvent(QEvent *);
-    void leaveEvent(QEvent *);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+    virtual QMimeData * mimeData();
 
 private:
     QuickLaunchAction *mAct;

@@ -47,7 +47,7 @@
 #include <QSize>
 #include <QScreen>
 
-#define CALENDAR_HEIGHT(a) (a-5)
+#define CALENDAR_HEIGHT (46)
 #define CALENDAR_WIDTH (104)
 
 #define WEBVIEW_WIDTH (454)
@@ -89,14 +89,13 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mRotatedWidget = new UKUi::RotatedWidget(*mContent, mMainWidget);
 
     mRotatedWidget->setTransferWheelEvent(true);
-
     QVBoxLayout *borderLayout = new QVBoxLayout(mMainWidget);
     borderLayout->setContentsMargins(0, 0, 0, 0);
     borderLayout->setSpacing(0);
+    borderLayout->setAlignment(Qt::AlignCenter);
     borderLayout->addWidget(mRotatedWidget, 0, Qt::AlignCenter);
 
     mContent->setObjectName(QLatin1String("WorldClockContent"));
-
     mContent->setAlignment(Qt::AlignCenter);
 
     settingsChanged();
@@ -305,7 +304,7 @@ void IndicatorCalendar::updateTimeText()
             str=tzNow.toString(hourSystem_24_vartical);
     }
     mContent->setText(str);
-    if (old_size != mContent->sizeHint())
+   // if (old_size != mContent->sizeHint())
         mRotatedWidget->adjustContentSize();
     mContent->setStyleSheet(
                 //正常状态样式
@@ -838,14 +837,14 @@ void IndicatorCalendar::realign()
 
 void IndicatorCalendar::setTimeShowStyle()
 {
-    int size = panel()->panelSize();
+    int size = panel()->panelSize() - 3;
     if(panel()->isHorizontal())
     {
-        mContent->setFixedSize(CALENDAR_WIDTH, CALENDAR_HEIGHT(size));
+       mContent->setFixedSize(CALENDAR_WIDTH, size);
     }
     else
     {
-        mContent->setFixedSize(CALENDAR_HEIGHT(size), CALENDAR_WIDTH);
+        mContent->setFixedSize(size, CALENDAR_WIDTH);
     }
     mbIsNeedUpdate = true;
     timeout();
