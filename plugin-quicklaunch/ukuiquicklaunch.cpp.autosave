@@ -391,7 +391,6 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
             qDebug()<<"mLayout->itemAt("<<i<<") ";
             if (b->file_name == btn->file_name){
                 checkresult=true;
-                qDebug()<<"i quit!";
                 break;
             }
             else {
@@ -467,11 +466,9 @@ void UKUIQuickLaunch::removeButton(QString file)
                 if(*it == b)
                 {
                     mVBtn.erase(it);
-                    qDebug()<<"1 ";
                     break;
                 }
             }
-            qDebug()<<"2 ";
             mLayout->removeItem(child);
             mLayout->removeWidget(b);
             b->deleteLater();
