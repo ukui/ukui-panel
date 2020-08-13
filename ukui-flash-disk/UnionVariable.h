@@ -19,7 +19,11 @@
 #define UNIONVARIABLE_H
 #include <QList>
 #include <gio/gio.h>
+#include <QString>
+#include <QFont>
+#include <QFontMetrics>
 QList<GMount *> *findGMountList();
 QList<GVolume *> *findGVolumeList();
 QList<GDrive *> *findGDriveList();
+QString getElidedText(QFont font, QString str, int MaxWidth);
 #endif
