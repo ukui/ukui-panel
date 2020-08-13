@@ -43,6 +43,8 @@
 #include <QPainter>
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
+#include <QPushButton>
+#include <QToolButton>
 
 QT_BEGIN_NAMESPACE
 class QByteArray;
@@ -91,14 +93,23 @@ private:
     UKUi::GridLayout *mLayout;
     IUKUIPanelPlugin *mPlugin;
     QLabel *mPlaceHolder;
-
+    QWidget *tmpwidget;
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
     QVector<QuickLaunchButton*> mVBtn;
     QGSettings *settings;
+    QToolButton *pageup;
+    QToolButton *pagedown;
+    QVector <QuickLaunchButton*>qcklchShow;
+    int show_num = 0;
+    int page_num = 1;
+    int max_page;
+    int old_page;
 
+    void GetMaxPage();
 
-
+signals:
+    void setsizeoftaskbarbutton(int _size);
 
 
 
@@ -111,6 +122,8 @@ private slots:
     void buttonDeleted();
     void buttonMoveLeft();
     void buttonMoveRight();
+    void PageUp();
+    void PageDown();
 
 public slots:
     bool AddToTaskbar(QString arg);
