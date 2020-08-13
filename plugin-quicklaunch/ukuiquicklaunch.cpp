@@ -364,7 +364,7 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
     mPlaceHolder->deleteLater();
     mPlaceHolder = NULL;
     mLayout->setEnabled(true);
-    GetMaxPage();
+   // GetMaxPage();
     realign();
     mLayout->removeWidget(tmpwidget);
     mLayout->addWidget(tmpwidget);
@@ -391,7 +391,6 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
             qDebug()<<"mLayout->itemAt("<<i<<") ";
             if (b->file_name == btn->file_name){
                 checkresult=true;
-                qDebug()<<"i quit!";
                 break;
             }
             else {
@@ -437,7 +436,7 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
             ++i;
         }
      }
-     GetMaxPage();
+    // GetMaxPage();
     //    btn->deleteLater();
     realign();
     if (old_page != page_num) {
@@ -467,18 +466,16 @@ void UKUIQuickLaunch::removeButton(QString file)
                 if(*it == b)
                 {
                     mVBtn.erase(it);
-                    qDebug()<<"1 ";
                     break;
                 }
             }
-            qDebug()<<"2 ";
             mLayout->removeItem(child);
             mLayout->removeWidget(b);
             b->deleteLater();
         }
         i++;
     }
-    GetMaxPage();
+   // GetMaxPage();
     realign();
     if (old_page != page_num) {
         old_page = page_num;
@@ -622,7 +619,6 @@ bool UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
                     break;
                 }
             }
-            qDebug()<<"remove deleted file";
             mLayout->removeItem(child);
             mLayout->removeWidget(b);
             b->deleteLater();
@@ -680,7 +676,8 @@ void UKUIQuickLaunch::buttonDeleted()
     }
     btn->deleteLater();
     mLayout->removeWidget(btn);
-    GetMaxPage();
+    if (countOfButtons() == 5) PageUp();
+    //GetMaxPage();
     realign();
     if (old_page != page_num) {
         old_page = page_num;
