@@ -58,6 +58,14 @@
 #include <QPushButton>
 using namespace  std;
 
+
+#define PAGEBUTTON_SMALL_SIZE  20
+#define PAGEBUTTON_MEDIUM_SIZE 35
+#define PAGEBUTTON_LARGE_SIZE  50
+#define PANEL_SMALL_SIZE  46
+#define PANEL_MEDIUM_SIZE 70
+#define PANEL_LARGE_SIZE  92
+#
 #define PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANEL_LINES    "panellines"
 
@@ -192,12 +200,14 @@ UKUIQuickLaunch::~UKUIQuickLaunch()
 void UKUIQuickLaunch::PageUp() {
     --page_num;
     if (page_num < 1) page_num = max_page;
+    old_page = page_num;
     realign();
 }
 
 void UKUIQuickLaunch::PageDown() {
     ++page_num;
     if (page_num > max_page) page_num = 1;
+    old_page = page_num;
     realign();
 }
 
@@ -206,17 +216,17 @@ void UKUIQuickLaunch::GetMaxPage() {
         int btn_cnt = countOfButtons();
         max_page = (int)(btn_cnt / 5);
         if (btn_cnt % 5 != 0) max_page += 1;
+    } else if (mPlugin->panel()->panelSize() == PANEL_LARGE_SIZE){
+        int btn_cnt = countOfButtons();
+        max_page = (int)(btn_cnt / 2);
+        if (btn_cnt % 2 != 0) max_page += 1;
     } else {
-        if (mPlugin->panel()->panelSize() == 92) {
-            int btn_cnt = countOfButtons();
-            max_page = (int)(btn_cnt / 2);
-            if (btn_cnt % 2 != 0) max_page += 1;
-        } else {
-            int btn_cnt = countOfButtons();
-            max_page = (int)(btn_cnt / 3);
-            if (btn_cnt % 3 != 0) max_page += 1;
-        }
+        int btn_cnt = countOfButtons();
+        max_page = (int)(btn_cnt / 3);
+        if (btn_cnt % 3 != 0) max_page += 1;
     }
+    if (page_num > max_page && max_page) page_num = max_page;
+    printf("\n%d=%d\n",page_num,max_page);
 }
 
 int UKUIQuickLaunch::indexOfButton(QuickLaunchButton* button) const
@@ -274,6 +284,11 @@ void UKUIQuickLaunch::realign()
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
             }
+            if (countOfButtons() <= 5) {
+                tmpwidget->setHidden(1);
+            } else {
+                tmpwidget->setHidden(0);
+            }
 
         }
         else
@@ -309,21 +324,30 @@ void UKUIQuickLaunch::realign()
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
             }
+
+            if (countOfButtons() <= 3) {
+                tmpwidget->setHidden(1);
+            } else {
+                printf("\nVisible!\n");
+                tmpwidget->setHidden(0);
+            }
+            if (countOfButtons() > 2 && panel->panelSize() == PANEL_LARGE_SIZE)
+                tmpwidget->setHidden(0);
         }
     }
     mLayout->setEnabled(true);
     switch(mPlugin->panel()->panelSize()) {
-        case 46 :
-            pageup->setFixedSize(20,20);
-            pagedown->setFixedSize(20,20);
+        case PANEL_SMALL_SIZE :
+            pageup->setFixedSize(PAGEBUTTON_SMALL_SIZE, PAGEBUTTON_SMALL_SIZE);
+            pagedown->setFixedSize(PAGEBUTTON_SMALL_SIZE, PAGEBUTTON_SMALL_SIZE);
             break;
-        case 70 :
-            pageup->setFixedSize(35,35);
-            pagedown->setFixedSize(35,35);
+        case PANEL_MEDIUM_SIZE :
+            pageup->setFixedSize(PAGEBUTTON_MEDIUM_SIZE, PAGEBUTTON_MEDIUM_SIZE);
+            pagedown->setFixedSize(PAGEBUTTON_MEDIUM_SIZE, PAGEBUTTON_MEDIUM_SIZE);
             break;
-        case 92 :
-            pageup->setFixedSize(50,50);
-            pagedown->setFixedSize(50,50);
+        case PANEL_LARGE_SIZE :
+            pageup->setFixedSize(PAGEBUTTON_LARGE_SIZE, PAGEBUTTON_LARGE_SIZE);
+            pagedown->setFixedSize(PAGEBUTTON_LARGE_SIZE, PAGEBUTTON_LARGE_SIZE);
             break;
     }
     for(auto it = mVBtn.begin();it != mVBtn.end();it++) {
@@ -334,11 +358,6 @@ void UKUIQuickLaunch::realign()
             (*it)->setHidden(1);
             --i;
         }
-    }
-    if (countOfButtons() <= 5) {
-        tmpwidget->setHidden(1);
-    } else {
-        tmpwidget->setHidden(0);
     }
 }
 
@@ -369,7 +388,6 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
     mLayout->removeWidget(tmpwidget);
     mLayout->addWidget(tmpwidget);
 }
-
 
 bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
 {
@@ -439,6 +457,7 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
     // GetMaxPage();
     //    btn->deleteLater();
     realign();
+
     if (old_page != page_num) {
         old_page = page_num;
         PageUp();
