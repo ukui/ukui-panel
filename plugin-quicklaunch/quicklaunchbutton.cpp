@@ -37,7 +37,9 @@
 #include <XdgIcon>
 #include <string>
 
-#define MIMETYPE "x-ukui/quicklaunch-button"
+#define MIMETYPE            "x-ukui/quicklaunch-button"
+#define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
+#define PANELPOSITION       "panelposition"
 
 
 QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, QWidget * parent)
@@ -47,7 +49,7 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAcceptDrops(true);
-    /*设置快速启动栏的按键不接受焦点　　*/
+    /*设置快速启动栏的按键不接受焦点*/
     setFocusPolicy(Qt::NoFocus);
     setAutoRaise(true);
     quicklanuchstatus = NORMAL;
@@ -55,30 +57,19 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
     setDefaultAction(mAct);
     mAct->setParent(this);
 
-    mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("move to left"), this);
-    connect(mMoveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
-
-    mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("move to right"), this);
-    connect(mMoveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
-
-
-    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("delete from quicklaunch"), this);
-    connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
-    mMenu = new QuicklaunchMenu();
-    mMenu->addAction(mAct);
-    mMenu->addActions(mAct->addtitionalActions());
-    mMenu->addSeparator();
-    mMenu->addAction(mMoveLeftAct);
-    mMenu->addAction(mMoveRightAct);
-    mMenu->addSeparator();
-    mMenu->addAction(mDeleteAct);
-
+    /*设置快速启动栏的菜单项*/
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    mgsettings = new QGSettings(id);
+    modifyQuicklaunchMenuAction(true);
+    connect(mgsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==PANELPOSITION){
+            modifyQuicklaunchMenuAction(true);
+        }
+    });
 
     setContextMenuPolicy(Qt::CustomContextMenu);
-//    mMenu.exec(QCursor::pos());
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(this_customContextMenuRequested(const QPoint&)));
-    //file_name=act->m_settingsMap["name"];
     file_name=act->m_settingsMap["desktop"];
     this->setStyle(new CustomStyle());
     repaint();
@@ -109,6 +100,32 @@ void QuickLaunchButton::this_customContextMenuRequested(const QPoint & pos)
     mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), mMenu->sizeHint()).topLeft());
 }
 
+/*调整快速启动栏的菜单项*/
+void QuickLaunchButton::modifyQuicklaunchMenuAction(bool direction)
+{
+    if(mPlugin->panel()->isHorizontal()){
+            mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("move to left"), this);
+            mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("move to right"), this);
+    }
+    else{
+            mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("move to up"), this);
+            mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("move to down"), this);
+    }
+
+    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("delete from quicklaunch"), this);
+    connect(mMoveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
+    connect(mMoveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
+    connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
+    addAction(mDeleteAct);
+    mMenu = new QuicklaunchMenu();
+    mMenu->addAction(mAct);
+    mMenu->addActions(mAct->addtitionalActions());
+    mMenu->addSeparator();
+    mMenu->addAction(mMoveLeftAct);
+    mMenu->addAction(mMoveRightAct);
+    mMenu->addSeparator();
+    mMenu->addAction(mDeleteAct);
+}
 
 void QuickLaunchButton::selfRemove()
 {

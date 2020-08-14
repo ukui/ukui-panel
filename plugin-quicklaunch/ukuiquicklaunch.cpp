@@ -179,11 +179,16 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     }
     realign();
     mLayout->addWidget(tmpwidget);
-
     /*监听系统应用的目录以及安卓兼容应用的目录*/
-    FileSystemWatcher::addWatchPath("/usr/share/applications/");
-    FileSystemWatcher::addWatchPath( "/.local/share/applications/");
-//    connect(filewathcer,&FileSystemWatcher::fileDelete,this,removeButton(QString));
+
+    fsWatcher=new QFileSystemWatcher(this);
+    fsWatcher->addPath(desktopFilePath);
+    fsWatcher->addPath(androidDesktopFilePath);
+    connect(fsWatcher,&QFileSystemWatcher::directoryChanged,[this](){
+               directoryUpdated(desktopFilePath);
+               directoryUpdated(androidDesktopFilePath);
+            });
+
 }
 
 
@@ -550,6 +555,57 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
     saveSettings();
 }
 
+// 只要任何监控的目录更新（添加、删除、重命名），就会调用。
+void UKUIQuickLaunch::directoryUpdated(const QString &path)
+{
+    // 比较最新的内容和保存的内容找出区别(变化)
+    QStringList currEntryList = m_currentContentsMap[path];
+    const QDir dir(path);
+    QStringList newEntryList = dir.entryList(QDir::NoDotAndDotDot  | QDir::AllDirs | QDir::Files, QDir::DirsFirst);
+    QSet<QString> newDirSet = QSet<QString>::fromList(newEntryList);
+    QSet<QString> currentDirSet = QSet<QString>::fromList(currEntryList);
+
+    // 添加了文件
+    QSet<QString> newFiles = newDirSet - currentDirSet;
+    QStringList newFile = newFiles.toList();
+
+    // 文件已被移除
+    QSet<QString> deletedFiles = currentDirSet - newDirSet;
+    QStringList deleteFile = deletedFiles.toList();
+
+    // 更新当前设置
+    m_currentContentsMap[path] = newEntryList;
+
+    if (!newFile.isEmpty() && !deleteFile.isEmpty())
+    {
+        // 文件/目录重命名
+        if ((newFile.count() == 1) && (deleteFile.count() == 1))
+        {
+//            qDebug() << QString("File Renamed from %1 to %2").arg(deleteFile.first()).arg(newFile.first());
+        }
+    }
+    else
+    {
+        // 添加新文件/目录至Dir
+        if (!newFile.isEmpty())
+        {
+            foreach (QString file, newFile)
+            {
+                // 处理操作每个新文件....
+            }
+        }
+        // 从Dir中删除文件/目录
+        if (!deleteFile.isEmpty())
+        {
+            foreach(QString file, deleteFile)
+            {
+                // 处理操作每个被删除的文件....
+                FileDeleteFromTaskbar(path+file);
+            }
+        }
+    }
+}
+
 bool UKUIQuickLaunch::AddToTaskbar(QString arg)
 {
     const auto url=QUrl(arg);
@@ -850,105 +906,4 @@ int FilectrlAdaptor::GetPanelSize(const QString &arg)
     int out0;
     QMetaObject::invokeMethod(parent(), "GetPanelSize", Q_RETURN_ARG(int, out0), Q_ARG(QString, arg));
     return out0;
-}
-
-
-
-FileSystemWatcher* FileSystemWatcher::m_pInstance = NULL;
-
-FileSystemWatcher::FileSystemWatcher(QObject *parent)
-    : QObject(parent)
-{
-
-}
-
-FileSystemWatcher::~FileSystemWatcher()
-{
-
-}
-
-// 监控文件或目录
-void FileSystemWatcher::addWatchPath(QString path)
-{
-    if (m_pInstance == NULL)
-    {
-        m_pInstance = new FileSystemWatcher();
-        m_pInstance->m_pSystemWatcher = new QFileSystemWatcher();
-
-        // 连接QFileSystemWatcher的directoryChanged和fileChanged信号到相应的槽
-        connect(m_pInstance->m_pSystemWatcher, SIGNAL(directoryChanged(QString)), m_pInstance, SLOT(directoryUpdated(QString)));
-    }
-
-    // 添加监控路径
-    m_pInstance->m_pSystemWatcher->addPath(path);
-
-    // 如果添加路径是一个目录，保存当前内容列表
-    QFileInfo file(path);
-    if (file.isDir())
-    {
-        const QDir dirw(path);
-        m_pInstance->m_currentContentsMap[path] = dirw.entryList(QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files, QDir::DirsFirst);
-    }
-}
-
-// 只要任何监控的目录更新（添加、删除、重命名），就会调用。
-void FileSystemWatcher::directoryUpdated(const QString &path)
-{
-//    qDebug() << QString("Directory updated: %1").arg(path);
-    // 比较最新的内容和保存的内容找出区别(变化)
-    QStringList currEntryList = m_currentContentsMap[path];
-    const QDir dir(path);
-    QStringList newEntryList = dir.entryList(QDir::NoDotAndDotDot  | QDir::AllDirs | QDir::Files, QDir::DirsFirst);
-    QSet<QString> newDirSet = QSet<QString>::fromList(newEntryList);
-    QSet<QString> currentDirSet = QSet<QString>::fromList(currEntryList);
-
-    // 添加了文件
-    QSet<QString> newFiles = newDirSet - currentDirSet;
-    QStringList newFile = newFiles.toList();
-
-    // 文件已被移除
-    QSet<QString> deletedFiles = currentDirSet - newDirSet;
-    QStringList deleteFile = deletedFiles.toList();
-
-    // 更新当前设置
-    m_currentContentsMap[path] = newEntryList;
-
-    if (!newFile.isEmpty() && !deleteFile.isEmpty())
-    {
-        // 文件/目录重命名
-        if ((newFile.count() == 1) && (deleteFile.count() == 1))
-        {
-//            qDebug() << QString("File Renamed from %1 to %2").arg(deleteFile.first()).arg(newFile.first());
-        }
-    }
-    else
-    {
-        // 添加新文件/目录至Dir
-        if (!newFile.isEmpty())
-        {
-            foreach (QString file, newFile)
-            {
-                // 处理操作每个新文件....
-            }
-        }
-        // 从Dir中删除文件/目录
-        if (!deleteFile.isEmpty())
-        {
-            foreach(QString file, deleteFile)
-            {
-                // 处理操作每个被删除的文件....
-
-                qDebug()<<"file:"<<file;
-
-		/*
-                QDBusInterface iface("com.ukui.panel.desktop",
-                                     "/",
-                                     "com.ukui.panel.desktop",
-                                     QDBusConnection::sessionBus());
-                iface.call("FileDeleteFromTaskbar",path+file);
-		*/
-                emit fileDelete(file);
-            }
-        }
-    }
 }
