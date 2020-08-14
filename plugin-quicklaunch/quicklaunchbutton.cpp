@@ -116,7 +116,7 @@ void QuickLaunchButton::modifyQuicklaunchMenuAction(bool direction)
     connect(mMoveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
     connect(mMoveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
     connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
-    addAction(mDeleteAct);
+    //addAction(mDeleteAct);
     mMenu = new QuicklaunchMenu();
     mMenu->addAction(mAct);
     mMenu->addActions(mAct->addtitionalActions());
