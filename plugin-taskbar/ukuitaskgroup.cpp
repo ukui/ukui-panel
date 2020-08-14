@@ -1285,7 +1285,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             thumbnail = btn->getPixmap().scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
             qDebug()<<"can not catch picture";
         }
-		btn->setThumbNail(thumbnail);
+        btn->setThumbNail(thumbnail);
         btn->updateTitle();
         btn->setFixedSize((int)imgWidth, (int)imgHeight);
         mpWidget->layout()->setContentsMargins(0,0,0,0);
