@@ -226,7 +226,6 @@ void UKUIQuickLaunch::GetMaxPage() {
         if (btn_cnt % 3 != 0) max_page += 1;
     }
     if (page_num > max_page && max_page) page_num = max_page;
-    printf("\n%d=%d\n",page_num,max_page);
 }
 
 int UKUIQuickLaunch::indexOfButton(QuickLaunchButton* button) const
@@ -328,7 +327,6 @@ void UKUIQuickLaunch::realign()
             if (countOfButtons() <= 3) {
                 tmpwidget->setHidden(1);
             } else {
-                printf("\nVisible!\n");
                 tmpwidget->setHidden(0);
             }
             if (countOfButtons() > 2 && panel->panelSize() == PANEL_LARGE_SIZE)
