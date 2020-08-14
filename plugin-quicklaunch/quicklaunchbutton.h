@@ -34,6 +34,7 @@
 #include <QToolButton>
 #include "../panel/customstyle.h"
 #include <QStyleOption>
+#include <QGSettings>
 #include <QPainter>
 #include "popupmenu.h"
 
@@ -90,6 +91,9 @@ private:
     enum QuickLaunchStatus{NORMAL, HOVER, PRESS};
     QuickLaunchStatus quicklanuchstatus;
     CustomStyle toolbuttonstyle;
+    QGSettings *mgsettings;
+
+    void modifyQuicklaunchMenuAction(bool direction);
 
 private slots:
     void this_customContextMenuRequested(const QPoint & pos);
