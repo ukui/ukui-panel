@@ -59,7 +59,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mButtonHeight(100),
     mCloseOnMiddleClick(true),
     mRaiseOnCurrentDesktop(true),
-    mShowOnlyOneDesktopTasks(false),
+    mShowOnlyOneDesktopTasks(true),
     mShowDesktopNum(0),
     mShowOnlyCurrentScreenTasks(false),
     mShowOnlyMinimizedTasks(false),
