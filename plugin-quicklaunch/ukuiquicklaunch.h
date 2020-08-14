@@ -98,6 +98,11 @@ private:
     void dropEvent(QDropEvent *e);
     QVector<QuickLaunchButton*> mVBtn;
     QGSettings *settings;
+    QFileSystemWatcher *fsWatcher;
+    QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
+    QString desktopFilePath ="/usr/share/applications/";
+    QString androidDesktopFilePath =QDir::homePath()+"/.local/share/applications/";
+
     QToolButton *pageup;
     QToolButton *pagedown;
     QVector <QuickLaunchButton*>qcklchShow;
@@ -106,6 +111,7 @@ private:
     int max_page;
     int old_page;
 
+    void directoryUpdated(const QString &path);
     void GetMaxPage();
 
 signals:
@@ -187,32 +193,5 @@ Q_SIGNALS: // SIGNALS
 signals:
     void addtak(int);
 };
-
-class FileSystemWatcher : public QObject
-{
-    Q_OBJECT
-
-public:
-    //FileSystemWatcher(QObject *parent);
-    ~FileSystemWatcher();
-
-public:
-    static void addWatchPath(QString path);
-
-public slots:
-    void directoryUpdated(const QString &path);  // 目录更新时调用，path是监控的路径
-
-private:
-    explicit FileSystemWatcher(QObject *parent = 0);
-
-private:
-    static FileSystemWatcher *m_pInstance; // 单例
-    QFileSystemWatcher *m_pSystemWatcher;  // QFileSystemWatcher变量
-    QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
-
-signals:
-    void fileDelete(QString file);
-};
-
 
 #endif
