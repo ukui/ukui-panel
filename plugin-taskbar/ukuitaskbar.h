@@ -33,7 +33,6 @@
 
 #include "../panel/iukuipanel.h"
 #include "../panel/iukuipanelplugin.h"
-#include "ukuitaskbarconfiguration.h"
 #include "ukuitaskgroup.h"
 #include "ukuitaskbutton.h"
 
@@ -91,9 +90,6 @@ public:
     inline IUKUIPanel * panel() const { return mPlugin->panel(); }
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
-
-public slots:
-    void settingsChanged();
 
 signals:
     void buttonRotationRefreshed(bool autoRotate, IUKUIPanel::Position position);

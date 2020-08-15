@@ -43,11 +43,6 @@ UKUITaskBarPlugin::~UKUITaskBarPlugin()
     delete mTaskBar;
 }
 
-QDialog *UKUITaskBarPlugin::configureDialog()
-{
-    return new UKUITaskbarConfiguration(settings());
-}
-
 void UKUITaskBarPlugin::realign()
 {
     mTaskBar->realign();
