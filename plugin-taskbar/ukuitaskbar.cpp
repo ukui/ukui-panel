@@ -301,8 +301,11 @@ void UKUITaskBar::addWindow(WId window)
             (*i_group)->onWindowRemoved(window);
     }
 
-    //check if window belongs to some existing group
-    if (!group && mGroupingEnabled)
+    /*check if window belongs to some existing group
+     * 安卓兼容应用的组名为kydroid-display-window
+     * 需要将安卓兼容目录的分组特性关闭
+    */
+    if (!group && mGroupingEnabled && group_id.compare("kydroid-display-window"))
     {
         for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
         {
