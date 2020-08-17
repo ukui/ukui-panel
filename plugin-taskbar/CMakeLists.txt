@@ -25,12 +25,13 @@ set(SOURCES
 find_package(X11 REQUIRED)
 
 set(LIBRARIES
-    Qt5Xdg
     ${X11_LIBRARIES}
     Qt5X11Extras
 )
 
 pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
 include_directories(${GLIB2_INCLUDE_DIRS})
+#for <QDBusInterface>
+include_directories(${_Qt5DBus_OWN_INCLUDE_DIRS})
 
 BUILD_UKUI_PLUGIN(${PLUGIN})

@@ -41,7 +41,6 @@
 #include <QTimer>
 
 #include "../panel/common/ukuigridlayout.h"
-#include <XdgIcon>
 
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
