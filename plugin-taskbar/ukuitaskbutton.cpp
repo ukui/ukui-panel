@@ -34,7 +34,6 @@
 #include "../panel/common/ukuisettings.h"
 
 #include <QDebug>
-#include <XdgIcon>
 #include <QTimer>
 #include <QMenu>
 #include <QAction>
@@ -149,11 +148,11 @@ void UKUITaskButton::updateIcon()
     int mIconSize=mPlugin->panel()->iconSize();
     if (mParentTaskBar->isIconByClass())
     {
-        ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
+        ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
     }
     if(ico.isNull())
     {
-        ico = XdgIcon::fromTheme(mParentTaskBar->fetchIcon()->getIconName(mAppName.replace(" ","").toLower()));
+        ico = QIcon::fromTheme(mParentTaskBar->fetchIcon()->getIconName(mAppName.replace(" ","").toLower()));
     }
     if (ico.isNull())
     {
@@ -674,7 +673,7 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
 
     /********** Kill menu **********/
     menu->addSeparator();
-    a = menu->addAction(XdgIcon::fromTheme("process-stop"), tr("&Close"));
+    a = menu->addAction(QIcon::fromTheme("process-stop"), tr("&Close"));
     connect(a, SIGNAL(triggered(bool)), this, SLOT(closeApplication()));
     menu->setGeometry(mParentTaskBar->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
     mPlugin->willShowWindow(menu);

@@ -39,6 +39,11 @@
 #include <KF5/KWindowSystem/kwindowsystem.h>
 #include <QTimer>
 #include <QScrollArea>
+#include "../panel/ukuipanelpluginconfigdialog.h"
+#include "../panel/pluginsettings.h"
+#include <QAbstractButton>
+//#include <Xlib.h>
+
 
 class QVBoxLayout;
 class IUKUIPanelPlugin;

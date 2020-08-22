@@ -24,7 +24,6 @@
 #include "../panel/common/ukuisettings.h"
 
 #include <QDebug>
-#include <XdgIcon>
 #include <QTimer>
 #include <QMenu>
 #include <QAction>
@@ -185,7 +184,7 @@ void UKUITaskWidget::updateIcon()
     QIcon ico;
     if (mParentTaskBar->isIconByClass())
     {
-        ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
+        ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
     }
     if (ico.isNull())
     {

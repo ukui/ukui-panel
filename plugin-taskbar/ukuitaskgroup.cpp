@@ -36,7 +36,6 @@
 #include <QDragLeaveEvent>
 #include <QStringBuilder>
 #include <QMenu>
-#include <XdgIcon>
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <functional>
 
@@ -193,7 +192,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    QAction *a = menu->addAction(XdgIcon::fromTheme("process-stop"), tr("close"));
+    QAction *a = menu->addAction(QIcon::fromTheme("process-stop"), tr("close"));
     connect(a, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {
         mPreventPopup = false;
