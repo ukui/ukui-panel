@@ -22,6 +22,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     mount_name_label(nullptr)
 {
 //interface layout
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     EjectScreen = qApp->primaryScreen();
     eject_image_button = new QPushButton();
     eject_image_button->setFixedSize(30,30);
