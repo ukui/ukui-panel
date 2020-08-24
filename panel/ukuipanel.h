@@ -41,6 +41,7 @@
 #include "popupmenu.h"
 #include "ukuipanelglobals.h"
 #include "highlight-effect.h"
+#include "pluginsettings.h"
 
 class QMenu;
 class Plugin;
@@ -105,6 +106,9 @@ public:
         AlignmentRight  =  1 //!< Align the panel to the right or bottom
     };
 
+
+
+
     /**
      * @brief Creates and initializes the UKUIPanel. Performs the following
      * steps:
@@ -135,7 +139,7 @@ public:
      * in local variables. Additionally, calls necessary methods like realign()
      * or updateStyleSheet() which need to get called after changing settings.
      */
-    void readSettings();
+    void readSettings(bool cut);
 
     /**
      * @brief Creates and shows the popup menu (right click menu). If a plugin
@@ -227,7 +231,7 @@ public:
     QString backgroundImage() const { return mBackgroundImage; }
     int opacity() const { return mOpacity; }
     int reserveSpace() const { return mReserveSpace; }
-    bool hidable() const { return mHidable; }
+    bool hidable() const { return mHidablepad; }
     bool visibleMargin() const { return mVisibleMargin; }
     int animationTime() const { return mAnimationTime; }
     int showDelay() const { return mShowDelayTimer.interval(); }
@@ -310,12 +314,13 @@ public slots:
     void setBackgroundColor(QColor color, bool save); //!< \sa setPanelSize()
     void setOpacity(int opacity, bool save); //!< \sa setPanelSize()
     void setReserveSpace(bool reserveSpace, bool save); //!< \sa setPanelSize()
-    void setHidable(bool hidable, bool save); //!< \sa setPanelSize()
+    void setHidable(bool hidablepc,bool hidablepad, bool save); //!< \sa setPanelSize()
     void setVisibleMargin(bool visibleMargin, bool save); //!< \sa setPanelSize()
     void setAnimationTime(int animationTime, bool save); //!< \sa setPanelSize()
     void setShowDelay(int showDelay, bool save); //!< \sa setPanelSize()
     void setIconTheme(const QString& iconTheme);
     void setPanelBackground(bool effective);
+    void setPanelmodel(bool value, bool save);
 
     /**
      * @brief Saves the current configuration, i.e. writes the current
@@ -481,7 +486,7 @@ private:
      * @brief Pointer to the PanelPluginsModel which will store all the Plugins
      * that are loaded.
      */
-    QScopedPointer<PanelPluginsModel> mPlugins;
+
     /**
      * @brief object for storing info if some standalone window is shown
      * (for preventing hide)
@@ -517,7 +522,9 @@ private:
      * Connects the signals and slots and adds all the plugins to the
      * layout.
      */
-    void loadPlugins();
+    void loadPlugins(PanelPluginsModel *zeromodel);
+    void resetloadPluginspc(PanelPluginsModel *pcmodel,PanelPluginsModel *padmodel);
+    void resetloadPluginspad(PanelPluginsModel *padmodel,PanelPluginsModel *pcmodel);
 
     /**
      * @brief Calculates and sets the geometry (i.e. the position and the size
@@ -627,6 +634,10 @@ private:
      * \sa mVisibleMargin, mHidden, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
     bool mHidable;
+    bool mHidablepc;
+    bool mHidablepad;
+    bool mModel;
+    bool st;
     /**
      * @brief Stores if the hidable panel should have a visible margin.
      *
@@ -639,6 +650,7 @@ private:
      * \sa mHidable, mVisibleMargin, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
     bool mHidden;
+    bool mHiddenpad;
     /**
      * @brief QTimer for hiding the panel. When the cursor leaves the panel
      * area, this timer will be started. After this timer has timed out, the
@@ -718,10 +730,21 @@ private slots:
     void changeSizeToLarge();
     void panelReset();
     void panelBackgroundChange();
+    void panelmodelpadChange();
+    void panelmodelpcChange();
 
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
+    QGSettings *panelmodel_gsettings;
+    PluginSettings *pluginsettings;
+    PanelPluginsModel *padmodel;
+    PanelPluginsModel *pcmodel;
+    PanelPluginsModel *zeromodel;
+    QScopedPointer<PanelPluginsModel> mPlugins;
+    QScopedPointer<PanelPluginsModel> mPlugins1;
+    QScopedPointer<PanelPluginsModel> mPlugins2;
+
 
 };
 

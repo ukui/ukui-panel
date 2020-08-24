@@ -109,6 +109,10 @@ extern void * loadPluginTranslation_segmentation_helper;
 #include "../plugin-nightmode/nightmode.h" // startmenu
 extern void * loadPluginTranslation_nightmode_helper;
 #endif
+#if defined(WITH_ASSISTANT_PLUGIN)
+#include "../plugin-assistant/ukuiassistant.h" // startmenu
+extern void * loadPluginTranslation_assistant_helper;
+#endif
 
 QColor Plugin::mMoveMarkerColor= QColor(255, 0, 0, 255);
 
@@ -285,6 +289,9 @@ namespace
 #endif
 #if defined(WITH_NIGHTMODE_PLUGIN)
         std::make_tuple(QLatin1String("nightmode"), plugin_ptr_t{new NightModeLibrary}, loadPluginTranslation_nightmode_helper),// nightmode
+#endif
+#if defined(WITH_ASSISTANT_PLUGIN)
+        std::make_tuple(QLatin1String("assistant"), plugin_ptr_t{new ASSIATANTLibrary}, loadPluginTranslation_assistant_helper),// nightmode
 #endif
     };
     static constexpr plugin_tuple_t const * const plugins_begin = static_plugins;

@@ -85,6 +85,7 @@ public slots:
     void finishMovePlugin();
     void moveUpPlugin(Plugin * plugin);
     void addPlugin(Plugin * plugin);
+    void removePlugin(Plugin * plugin);
 
 private:
     mutable QSize mMinPluginSize;

@@ -748,7 +748,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
     mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
     if(0 == mStorageIcons.size())
     {
-        mBtn->setVisible(false);
+        //mBtn->setVisible(false);
     }
 }
 

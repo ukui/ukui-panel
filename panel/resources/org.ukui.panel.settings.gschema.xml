@@ -61,6 +61,11 @@
             <summary>show Panel Tray size</summary>
             <description>show Panel Tray size</description>
     	</key>
+	<key name="panelmodel" type="b">
+            <default>false</default>
+            <summary>Set the mode for the Panel</summary>
+            <description>show Panel Tray size</description>
+    	</key>
     </schema>
 </schemalist>
 

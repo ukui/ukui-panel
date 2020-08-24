@@ -175,6 +175,12 @@ if(SEGMENTATION_PLUGIN)
     add_subdirectory(plugin-segmentation)
 endif(SEGMENTATION_PLUGIN)
 
+setByDefault(ASSISTANT_PLUGIN Yes)
+if(ASSISTANT_PLUGIN)
+    list(APPEND ENABLED_PLUGINS "assistant")
+    add_subdirectory(plugin-assistant)
+endif(ASSISTANT_PLUGIN)
+
 #########################################################################
 
 message(STATUS  "**************** The following plugins will be built ****************")

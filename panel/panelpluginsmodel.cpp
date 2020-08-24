@@ -43,6 +43,7 @@ PanelPluginsModel::PanelPluginsModel(UKUIPanel * panel,
     mPanel(panel)
 {
     loadPlugins(desktopDirs);
+
 }
 
 PanelPluginsModel::~PanelPluginsModel()
@@ -154,7 +155,7 @@ void PanelPluginsModel::removePlugin(pluginslist_t::iterator plugin)
         mPlugins.erase(plugin);
         endRemoveRows();
         emit pluginRemoved(p); // p can be nullptr
-        mPanel->settings()->setValue(mNamesKey, pluginNames());
+        //mPanel->settings()->setValue(mNamesKey, pluginNames());
         if (nullptr != p)
             p->deleteLater();
     }
@@ -361,14 +362,20 @@ void PanelPluginsModel::onConfigurePlugin(QModelIndex const & index)
         plugin->showConfigureDialog();
 }
 
-void PanelPluginsModel::onRemovePlugin(QModelIndex const & index)
+void PanelPluginsModel::onRemovePlugin()
 {
-    if (!isIndexValid(index))
-        return;
-
-    auto plugin = mPlugins.begin() + index.row();
-    if (plugin->second.isNull())
-        removePlugin(std::move(plugin));
-    else
-        plugin->second->requestRemove();
+    qDeleteAll(plugins());
 }
+
+//void PanelPluginsModel::onRemovePlugin(QModelIndex const & index)
+//{
+//    if (!isIndexValid(index))
+//        return;
+
+//    auto plugin = mPlugins.begin() + index.row();
+//    if (plugin->second.isNull())
+//        removePlugin(std::move(plugin));
+//    else
+//        plugin->second->requestRemove();
+//}
+

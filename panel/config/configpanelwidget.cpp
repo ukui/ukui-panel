@@ -75,7 +75,7 @@ ConfigPanelWidget::ConfigPanelWidget(UKUIPanel *panel, QWidget *parent) :
     mOldPosition = mPanel->position();
     mPosition = mOldPosition;
 
-    mOldHidable = mPanel->hidable();
+   // mOldHidable = mPanel->hidable();
 
     mOldVisibleMargin = mPanel->visibleMargin();
 
@@ -367,7 +367,7 @@ void ConfigPanelWidget::editChanged()
 
     mPanel->setAlignment(align, true);
     mPanel->setPosition(mScreenNum, mPosition, true);
-    mPanel->setHidable(ui->checkBox_hidable->isChecked(), true);
+    //mPanel->setHidable(ui->checkBox_hidable->isChecked(), true);
     mPanel->setVisibleMargin(ui->checkBox_visibleMargin->isChecked(), true);
     mPanel->setAnimationTime(ui->spinBox_animation->value(), true);
     mPanel->setShowDelay(ui->spinBox_delay->value(), true);

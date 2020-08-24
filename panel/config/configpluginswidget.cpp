@@ -62,7 +62,7 @@ ConfigPluginsWidget::ConfigPluginsWidget(UKUIPanel *panel, QWidget* parent) :
     connect(ui->pushButton_moveDown,    &QToolButton::clicked, [this, plugins] { plugins->onMovePluginDown(ui->listView_plugins->currentIndex()); });
 
     connect(ui->pushButton_addPlugin, &QPushButton::clicked, this, &ConfigPluginsWidget::showAddPluginDialog);
-    connect(ui->pushButton_removePlugin, &QToolButton::clicked, [this, plugins] { plugins->onRemovePlugin(ui->listView_plugins->currentIndex()); });
+   // connect(ui->pushButton_removePlugin, &QToolButton::clicked, [this, plugins] { plugins->onRemovePlugin(ui->listView_plugins->currentIndex()); });
 
     connect(ui->pushButton_pluginConfig, &QToolButton::clicked, [this, plugins] { plugins->onConfigurePlugin(ui->listView_plugins->currentIndex()); });
 

@@ -33,6 +33,7 @@
 #include "config/configpaneldialog.h"
 #include "popupmenu.h"
 #include "plugin.h"
+
 #include "panelpluginsmodel.h"
 #include "windownotifier.h"
 #include "common/ukuiplugininfo.h"
@@ -74,8 +75,12 @@
 #define CFG_KEY_BACKGROUNDCOLOR    "background-color"
 #define CFG_KEY_OPACITY            "opacity"
 #define CFG_KEY_RESERVESPACE       "reserve-space"
-#define CFG_KEY_PLUGINS            "plugins"
+#define CFG_KEY_PLUGINS1            "plugins-pc"
+#define CFG_KEY_PLUGINS2           "plugins-pad"
+#define CFG_KEY_PLUGINS3           "plugins-0"
 #define CFG_KEY_HIDABLE            "hidable"
+#define CFG_KEY_HIDABLE1            "hidable-pc"
+#define CFG_KEY_HIDABLE2            "hidable-pad"
 #define CFG_KEY_VISIBLE_MARGIN     "visible-margin"
 #define CFG_KEY_ANIMATION          "animation-duration"
 #define CFG_KEY_SHOW_DELAY         "show-delay"
@@ -92,6 +97,7 @@
 #define ICON_SIZE_SMALL   32
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
+#define PANEL_MODEL      "panelmodel"
 #define PANEL_SIZE_KEY      "panelsize"
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
@@ -106,6 +112,8 @@
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
  If the string is not correct, returns defaultValue.
  ************************************************/
+QStringList pluginDesktopDirs();
+
 IUKUIPanel::Position UKUIPanel::strToPosition(const QString& str, IUKUIPanel::Position defaultValue)
 {
     if (str.toUpper() == "TOP")    return UKUIPanel::PositionTop;
@@ -154,10 +162,14 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mPosition(IUKUIPanel::PositionBottom),
     mScreenNum(0), //whatever (avoid conditional on uninitialized value)
     mActualScreenNum(0),
-    mHidable(false),
+    //mHidable(true),
+    mHidablepc(false),
+    mHidablepad(true),
+    mModel(false),
+    st(false),
     mVisibleMargin(true),
     mHidden(false),
-    mAnimationTime(0),
+    mAnimationTime(100),
     mReserveSpace(true),
     mAnimation(nullptr),
     mLockPanel(false)
@@ -199,6 +211,24 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     setWindowTitle("UKUI Panel");
     setObjectName(QString("UKUIPanel %1").arg(configGroup));
 
+    QString names_key(mConfigGroup);
+    names_key += '/';
+    names_key += QLatin1String(CFG_KEY_PLUGINS1);
+
+    QString names_key1(mConfigGroup);
+    names_key1 += '/';
+    names_key1 += QLatin1String(CFG_KEY_PLUGINS2);
+
+    QString names_key2(mConfigGroup);
+    names_key2 += '/';
+    names_key2 += QLatin1String(CFG_KEY_PLUGINS3);
+
+    pcmodel= new PanelPluginsModel(this,names_key , pluginDesktopDirs());
+    padmodel = new PanelPluginsModel(this,names_key1 , pluginDesktopDirs());
+    zeromodel = new PanelPluginsModel(this,names_key2 , pluginDesktopDirs());
+    padmodel->onRemovePlugin();
+    pcmodel->onRemovePlugin();
+    zeromodel->onRemovePlugin();
 
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);
@@ -243,19 +273,49 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(mStandaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
 
-    readSettings();
 
+    const QByteArray panelmodel_id(PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(panelmodel_id)){
+        panelmodel_gsettings = new QGSettings(panelmodel_id);
+        }
+    connect(panelmodel_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==PANEL_MODEL)
+            mModel=gsettings->get(PANEL_MODEL).toBool();
+        qDebug()<<"model"<<mModel;
+        readSettings(mModel);
+        ensureVisible();
+        if(!st==mModel){
+            if(mModel){
+                resetloadPluginspad(padmodel,pcmodel);
+            }
+            else{
+                resetloadPluginspc(pcmodel,padmodel);
+            }
+            st=mModel;
+        }
+    });
+
+    readSettings(mModel);
     ensureVisible();
-
-    loadPlugins();
-
+    //loadPlugins(zeromodel);
     show();
     // show it the first time, despite setting
-    if (mHidable)
-    {
+//    if (mHidable)
+//    {
+//        showPanel(false);
+//        QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
+//    }
+
+    if (mHidablepc){
         showPanel(false);
         QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
     }
+
+    if (mHidablepad){
+        showPanel(false);
+        QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
+    }
+
     UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
     connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
 
@@ -284,18 +344,18 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 /************************************************
 
  ************************************************/
-void UKUIPanel::readSettings()
+void UKUIPanel::readSettings(bool cut)
 {
+
+    if(cut){
     // Read settings ......................................
     mSettings->beginGroup(mConfigGroup);
 
-    // Let Hidability be the first thing we read
+    // Let Hidability be the first thing we readcalendarcalendarcalendar
     // so that every call to realign() is without side-effect
-    mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
-    mHidden = mHidable;
-
+    mHidablepad = mSettings->value(CFG_KEY_HIDABLE2, mHidablepad).toBool();
+    mHidden = mHidablepad;
     mVisibleMargin = mSettings->value(CFG_KEY_VISIBLE_MARGIN, mVisibleMargin).toBool();
-
     mAnimationTime = mSettings->value(CFG_KEY_ANIMATION, mAnimationTime).toInt();
     mShowDelayTimer.setInterval(mSettings->value(CFG_KEY_SHOW_DELAY, mShowDelayTimer.interval()).toInt());
 
@@ -328,6 +388,47 @@ void UKUIPanel::readSettings()
     mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL, false).toBool();
 
     mSettings->endGroup();
+    }
+    else{
+        mSettings->beginGroup(mConfigGroup);
+         mHidablepc = mSettings->value(CFG_KEY_HIDABLE1, mHidablepc).toBool();
+         mHidden = mHidablepc;
+
+        mVisibleMargin = mSettings->value(CFG_KEY_VISIBLE_MARGIN, mVisibleMargin).toBool();
+
+        mAnimationTime = mSettings->value(CFG_KEY_ANIMATION, mAnimationTime).toInt();
+        mShowDelayTimer.setInterval(mSettings->value(CFG_KEY_SHOW_DELAY, mShowDelayTimer.interval()).toInt());
+
+        // By default we are using size & count from theme.
+        setPanelSize(mSettings->value(CFG_KEY_PANELSIZE, PANEL_DEFAULT_SIZE).toInt(), false);
+        setIconSize(mSettings->value(CFG_KEY_ICONSIZE, PANEL_DEFAULT_ICON_SIZE).toInt(), false);
+        setLineCount(mSettings->value(CFG_KEY_LINECNT, PANEL_DEFAULT_LINE_COUNT).toInt(), false);
+
+        setLength(mSettings->value(CFG_KEY_LENGTH, 100).toInt(),
+                  mSettings->value(CFG_KEY_PERCENT, true).toBool(),
+                  false);
+
+        mScreenNum = mSettings->value(CFG_KEY_SCREENNUM, QApplication::desktop()->primaryScreen()).toInt();
+        setPosition(mScreenNum,
+                    strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), PositionBottom),
+                    false);
+
+        setAlignment(Alignment(mSettings->value(CFG_KEY_ALIGNMENT, mAlignment).toInt()), false);
+
+        QColor color = mSettings->value(CFG_KEY_FONTCOLOR, "").value<QColor>();
+        if (color.isValid())
+            setFontColor(color, true);
+
+        setOpacity(mSettings->value(CFG_KEY_OPACITY, 100).toInt(), true);
+        mReserveSpace = mSettings->value(CFG_KEY_RESERVESPACE, true).toBool();
+        color = mSettings->value(CFG_KEY_BACKGROUNDCOLOR, "").value<QColor>();
+        if (color.isValid())
+            setBackgroundColor(color, true);
+
+        mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL, false).toBool();
+
+        mSettings->endGroup();
+    }
 }
 
 
@@ -365,7 +466,10 @@ void UKUIPanel::saveSettings(bool later)
     mSettings->setValue(CFG_KEY_OPACITY, mOpacity);
     mSettings->setValue(CFG_KEY_RESERVESPACE, mReserveSpace);
 
-    mSettings->setValue(CFG_KEY_HIDABLE, mHidable);
+    mSettings->setValue(PANEL_MODEL, mModel);
+    mSettings->setValue(CFG_KEY_HIDABLE1, mHidablepc);
+    mSettings->setValue(CFG_KEY_HIDABLE2, mHidablepad);
+
     mSettings->setValue(CFG_KEY_VISIBLE_MARGIN, mVisibleMargin);
     mSettings->setValue(CFG_KEY_ANIMATION, mAnimationTime);
     mSettings->setValue(CFG_KEY_SHOW_DELAY, mShowDelayTimer.interval());
@@ -427,18 +531,13 @@ QStringList pluginDesktopDirs()
 /************************************************
 
  ************************************************/
-void UKUIPanel::loadPlugins()
+void UKUIPanel::loadPlugins(PanelPluginsModel *zeromodel)
 {
-    QString names_key(mConfigGroup);
-    names_key += '/';
-    names_key += QLatin1String(CFG_KEY_PLUGINS);
-    mPlugins.reset(new PanelPluginsModel(this, names_key, pluginDesktopDirs()));
-
-    connect(mPlugins.data(), &PanelPluginsModel::pluginAdded, mLayout, &UKUIPanelLayout::addPlugin);
-    connect(mPlugins.data(), &PanelPluginsModel::pluginMovedUp, mLayout, &UKUIPanelLayout::moveUpPlugin);
-    //reemit signals
-    connect(mPlugins.data(), &PanelPluginsModel::pluginAdded, this, &UKUIPanel::pluginAdded);
-    connect(mPlugins.data(), &PanelPluginsModel::pluginRemoved, this, &UKUIPanel::pluginRemoved);
+    QString names_key1(mConfigGroup);
+    names_key1 += '/';
+    names_key1 += QLatin1String(CFG_KEY_PLUGINS3);
+    zeromodel = new PanelPluginsModel(this,names_key1 , pluginDesktopDirs());
+    mPlugins.reset(zeromodel);
 
     const auto plugins = mPlugins->plugins();
     for (auto const & plugin : plugins)
@@ -448,12 +547,44 @@ void UKUIPanel::loadPlugins()
     }
 }
 
+void UKUIPanel::resetloadPluginspc(PanelPluginsModel *pcmodel,PanelPluginsModel *padmodel){
+    padmodel->onRemovePlugin();
+    QString names_key1(mConfigGroup);
+    names_key1 += '/';
+    names_key1 += QLatin1String(CFG_KEY_PLUGINS1);
+    pcmodel = new PanelPluginsModel(this,names_key1 , pluginDesktopDirs());
+    mPlugins1.reset(pcmodel);
+    const auto plugins = mPlugins1->plugins();
+    for (auto const & plugin : plugins)
+    {
+        mLayout->addPlugin(plugin);
+        connect(plugin, &Plugin::dragLeft, [this] { mShowDelayTimer.stop(); hidePanel(); });
+    }
+
+}
+
+void UKUIPanel::resetloadPluginspad(PanelPluginsModel *padmodel,PanelPluginsModel *pcmodel){
+    pcmodel->onRemovePlugin();
+    QString names_key1(mConfigGroup);
+    names_key1 += '/';
+    names_key1 += QLatin1String(CFG_KEY_PLUGINS2);
+    padmodel = new PanelPluginsModel(this,names_key1 , pluginDesktopDirs());
+
+    mPlugins1.reset(padmodel);
+    const auto plugins = mPlugins1->plugins();
+    for (auto const & plugin : plugins)
+    {
+        mLayout->addPlugin(plugin);
+        connect(plugin, &Plugin::dragLeft, [this] { mShowDelayTimer.stop(); hidePanel(); });
+    }
+
+}
 /************************************************
 
  ************************************************/
 int UKUIPanel::getReserveDimension()
 {
-    return mHidable ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
+    return mHidablepad&&mModel ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
 }
 
 /*
@@ -471,20 +602,39 @@ void UKUIPanel::setPanelGeometry(bool animate)
     {
         // Horiz panel ***************************
         rect.setHeight(qMax(PANEL_MINIMUM_SIZE, mPanelSize));
-        if (mLengthInPercents)
-            rect.setWidth(currentScreen.width() * mLength / 100.0);
-        else
-        {
-            if (mLength <= 0)
-                rect.setWidth(currentScreen.width() + mLength);
+        if(mModel){
+            if (mLengthInPercents){
+                rect.setWidth(currentScreen.width() * mLength / 150.0);
+            }
             else
-                rect.setWidth(mLength);
+            {
+                if (mLength <= 0)
+                    rect.setWidth(currentScreen.width() + mLength);
+                else
+                    rect.setWidth(mLength);
+            }
+
         }
 
+        else{
+
+            if (mLengthInPercents){
+                rect.setWidth(currentScreen.width() * mLength / 100.0);
+            }
+            else
+            {
+                if (mLength <= 0)
+                    rect.setWidth(currentScreen.width() + mLength);
+                else
+                    rect.setWidth(mLength);
+            }
+
+        }
         rect.setWidth(qMax(rect.size().width(), mLayout->minimumSize().width()));
 
         // Horiz ......................
-        switch (mAlignment)
+       // switch (mAlignment)
+        switch(0)
         {
         case UKUIPanel::AlignmentLeft:
             rect.moveLeft(currentScreen.left());
@@ -992,7 +1142,17 @@ void UKUIPanel::setPanelSize(int value, bool save)
     }
 }
 
+void UKUIPanel::setPanelmodel(bool value, bool save)
+{
+    if (mModel != value)
+    {
+        mModel = value;
+        realign();
 
+        if (save)
+            saveSettings(true);
+    }
+}
 
 /************************************************
 
@@ -1264,16 +1424,30 @@ void UKUIPanel::showEvent(QShowEvent *event)
 
 void UKUIPanel::paintEvent(QPaintEvent *)
 {
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    p.setPen(Qt::NoPen);
-    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-    p.setBrush(QBrush(QColor(19,22,28,tran)));
+    if(mModel){
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        p.setPen(Qt::NoPen);
+        double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+        p.setBrush(QBrush(QColor(255,250,250,tran)));
 
-    p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,0,0);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+        p.setRenderHint(QPainter::Antialiasing);
+        p.drawRoundedRect(opt.rect,20,90);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+    }
+    else{
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        p.setPen(Qt::NoPen);
+        double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+        p.setBrush(QBrush(QColor(255,250,250,tran)));
+
+        p.setRenderHint(QPainter::Antialiasing);
+        p.drawRoundedRect(opt.rect,20,90);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+    }
 }
 
 
@@ -1309,7 +1483,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         }
     }
 
-    /*
+
     menu->addTitle(QIcon(), tr("Panel"));
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                    tr("Configure Panel"),
@@ -1319,7 +1493,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                    tr("Manage Widgets"),
                    this, SLOT(showAddPluginDialog())
                   )->setDisabled(mLockPanel);
-    */
+
 
     menu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
                     tr("Set up Panel"),
@@ -1571,7 +1745,7 @@ void UKUIPanel::userRequestForDeletion()
 
 void UKUIPanel::showPanel(bool animate)
 {
-    if (mHidable)
+    if (mHidablepad&&mModel)
     {
         mHideTimer.stop();
         if (mHidden)
@@ -1584,7 +1758,7 @@ void UKUIPanel::showPanel(bool animate)
 
 void UKUIPanel::hidePanel()
 {
-    if (mHidable && !mHidden
+    if (mModel&&mHidablepad && !mHidden
             && !mStandaloneWindows->isAnyWindowShown()
             )
         mHideTimer.start();
@@ -1605,12 +1779,15 @@ void UKUIPanel::hidePanelWork()
     }
 }
 
-void UKUIPanel::setHidable(bool hidable, bool save)
+void UKUIPanel::setHidable(bool hidablepc,bool hidablepad, bool save)
 {
-    if (mHidable == hidable)
+//    if (mHidablepc == hidablepc)
+//        return;
+    if (mHidablepad == hidablepad)
         return;
 
-    mHidable = hidable;
+//    mHidablepc = hidablepc;
+    mHidablepad = hidablepad;
 
     if (save)
         saveSettings(true);
@@ -1771,5 +1948,17 @@ void UKUIPanel::panelBackgroundChange()
         mConfigDialog = new ConfigPanelDialog(this, nullptr);
     }
     mConfigDialog->backgroundChange();
+}
+
+void UKUIPanel::panelmodelpadChange(){
+    setPanelmodel(true,true);
+    gsettings->set(PANEL_MODEL,true);
+
+}
+
+void UKUIPanel::panelmodelpcChange(){
+    setPanelmodel(false,true);
+    gsettings->set(PANEL_MODEL,false);
+
 }
 

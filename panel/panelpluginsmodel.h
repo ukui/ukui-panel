@@ -254,7 +254,7 @@ public slots:
      * \note The 'Remove' button in the configuration widget is connected to
      * this slot.
      */
-    void onRemovePlugin(QModelIndex const & index);
+    void onRemovePlugin();
 
 private:
     /*!

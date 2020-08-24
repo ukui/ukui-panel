@@ -1071,3 +1071,18 @@ void UKUIPanelLayout::addPlugin(Plugin * plugin)
     if (prev_count > pos)
         moveItem(pos, prev_count, false);
 }
+
+void UKUIPanelLayout::removePlugin(Plugin * plugin)
+{
+//    connect(plugin, &Plugin::startMove, this, &UKUIPanelLayout::startMovePlugin);
+
+//    const int prev_count = count();
+    removeWidget(plugin);
+
+    //check actual position
+//    const int pos = indexOf(plugin);
+//    if (prev_count > pos)
+//        moveItem(pos, prev_count, false);
+}
+
+
