@@ -46,9 +46,7 @@ public:
     virtual Flags flags() const { return HaveConfigDialog | NeedsHandle; }
 
     QWidget *widget() { return mTaskBar; }
-    QDialog *configureDialog();
 
-    void settingsChanged() { mTaskBar->settingsChanged(); }
     void realign();
 
     bool isSeparate() const { return true; }

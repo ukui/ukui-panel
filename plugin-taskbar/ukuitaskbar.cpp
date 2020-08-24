@@ -41,7 +41,6 @@
 #include <QTimer>
 
 #include "../panel/common/ukuigridlayout.h"
-#include <XdgIcon>
 
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
@@ -301,8 +300,11 @@ void UKUITaskBar::addWindow(WId window)
             (*i_group)->onWindowRemoved(window);
     }
 
-    //check if window belongs to some existing group
-    if (!group && mGroupingEnabled)
+    /*check if window belongs to some existing group
+     * 安卓兼容应用的组名为kydroid-display-window
+     * 需要将安卓兼容目录的分组特性关闭
+    */
+    if (!group && mGroupingEnabled && group_id.compare("kydroid-display-window"))
     {
         for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
         {
@@ -464,71 +466,6 @@ void UKUITaskBar::setShowGroupOnHover(bool bFlag)
     mShowGroupOnHover = bFlag;
 }
 
-/************************************************
-
- ************************************************/
-void UKUITaskBar::settingsChanged()
-{
-    bool groupingEnabledOld = mGroupingEnabled;
-    bool showOnlyOneDesktopTasksOld = mShowOnlyOneDesktopTasks;
-    const int showDesktopNumOld = mShowDesktopNum;
-    bool showOnlyCurrentScreenTasksOld = mShowOnlyCurrentScreenTasks;
-    bool showOnlyMinimizedTasksOld = mShowOnlyMinimizedTasks;
-    const bool iconByClassOld = mIconByClass;
-
-    mButtonWidth = mPlugin->settings()->value("buttonWidth", 400).toInt();
-    mButtonHeight = mPlugin->settings()->value("buttonHeight", 100).toInt();
-    QString s = mPlugin->settings()->value("buttonStyle").toString().toUpper();
-
-    if (s == "ICON")
-        setButtonStyle(Qt::ToolButtonIconOnly);
-    else if (s == "TEXT")
-        setButtonStyle(Qt::ToolButtonTextOnly);
-    else
-        setButtonStyle(Qt::ToolButtonIconOnly);
-
-    mShowOnlyOneDesktopTasks = mPlugin->settings()->value("showOnlyOneDesktopTasks", mShowOnlyOneDesktopTasks).toBool();
-    mShowDesktopNum = mPlugin->settings()->value("showDesktopNum", mShowDesktopNum).toInt();
-    mShowOnlyCurrentScreenTasks = mPlugin->settings()->value("showOnlyCurrentScreenTasks", mShowOnlyCurrentScreenTasks).toBool();
-    mShowOnlyMinimizedTasks = mPlugin->settings()->value("showOnlyMinimizedTasks", mShowOnlyMinimizedTasks).toBool();
-    mAutoRotate = mPlugin->settings()->value("autoRotate", true).toBool();
-    mCloseOnMiddleClick = mPlugin->settings()->value("closeOnMiddleClick", true).toBool();
-    mRaiseOnCurrentDesktop = mPlugin->settings()->value("raiseOnCurrentDesktop", false).toBool();
-    mGroupingEnabled = mPlugin->settings()->value("groupingEnabled",true).toBool();
-    mShowGroupOnHover = mPlugin->settings()->value("showGroupOnHover",true).toBool();
-    mIconByClass = mPlugin->settings()->value("iconByClass", false).toBool();
-    mCycleOnWheelScroll = mPlugin->settings()->value("cycleOnWheelScroll", true).toBool();
-
-    // Delete all groups if grouping feature toggled and start over
-    if (groupingEnabledOld != mGroupingEnabled)
-    {
-        for (int i = mLayout->count() - 1; 0 <= i; --i)
-        {
-            UKUITaskGroup * group = qobject_cast<UKUITaskGroup*>(mLayout->itemAt(i)->widget());
-            if (nullptr != group)
-            {
-                mLayout->takeAt(i);
-                group->deleteLater();
-            }
-        }
-        mKnownWindows.clear();
-    }
-
-    if (showOnlyOneDesktopTasksOld != mShowOnlyOneDesktopTasks
-            || (mShowOnlyOneDesktopTasks && showDesktopNumOld != mShowDesktopNum)
-            || showOnlyCurrentScreenTasksOld != mShowOnlyCurrentScreenTasks
-            || showOnlyMinimizedTasksOld != mShowOnlyMinimizedTasks
-            )
-        emit showOnlySettingChanged();
-    if (iconByClassOld != mIconByClass)
-        emit iconByClassChanged();
-
-    refreshTaskList();
-}
-
-/************************************************
-
- ************************************************/
 void UKUITaskBar::realign()
 {
     mLayout->setEnabled(false);
