@@ -180,6 +180,7 @@ function update_month_ui(mode)
                 else
                 {
                     li.children[0].children[index].style.color  = "#FFFFFF33";
+                    li.children[0].children[index].addEventListener('click', new_month_selected);
                 }
                continue;
             }    
@@ -193,11 +194,13 @@ function update_month_ui(mode)
             else
             {
                 li.children[0].children[index].style.color  = "#FFFFFF33";
+                li.children[0].children[index].addEventListener('click', new_month_selected);
             }  
        }
        else
        {
             li.children[0].children[index].style.color  = "#FFFFFF33";
+            li.children[0].children[index].addEventListener('click', new_month_selected);
        }
    }
 }
@@ -240,7 +243,7 @@ function update_year_month_ui()
             //li.children[0].children[index].innerHTML ='<br />' + newIndex+ '月';
             li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ newIndex+ '月' + '</span>' ;
         }
-        if(index < 12)
+        if(index < 16)
         {
             li.children[0].children[index].addEventListener('click', new_month_selected);
         }
