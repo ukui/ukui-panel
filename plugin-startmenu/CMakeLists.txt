@@ -15,7 +15,7 @@ set(LIBRARIES
 )
 
 install(FILES
-    img/startmenu.svg
+    img/startmenu-pad.png
     DESTINATION "${PACKAGE_DATA_DIR}/plugin-startmenu/img"
     COMPONENT Runtime
 )

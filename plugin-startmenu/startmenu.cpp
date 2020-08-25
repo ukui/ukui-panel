@@ -51,7 +51,7 @@ UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* par
     QToolButton(parent),
     mPlugin(plugin)
 {
-    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
+    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu-pad.png"));
     this->setStyle(new CustomStyle());
 //    this->setWindowFlags(Qt::NoFocus);
     setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
