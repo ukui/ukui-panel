@@ -155,6 +155,7 @@ private:
 
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
+    void settingsChanged();
 
     void wheelEvent(QWheelEvent* event);
     void changeEvent(QEvent* event);
