@@ -1174,7 +1174,6 @@ void UKUITaskGroup::showAllWindowByList()
 
 void UKUITaskGroup::showAllWindowByThumbnail()
 {
-    printf("\nsadjfiosdjoisv\n");
     XImage *img = NULL;
     Display *display = NULL;
     QPixmap thumbnail;
@@ -1256,17 +1255,14 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         if (plugin()->panel()->isHorizontal()) {
             imgWidth = (float)attr.width / (float)attr.height * THUMBNAIL_HEIGHT;
             imgHeight = THUMBNAIL_HEIGHT;
-            printf("\n1 if horizon sdfsdf\n");
         } else {
             imgWidth = THUMBNAIL_WIDTH;
             imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH;
-            printf("\n1 else not horizon sdfsdf\n");
         }
         if(img)
         {
             if (plugin()->panel()->isHorizontal())
             {
-                printf("\n2 if horizon sdfsdf\n");
                 if (attr.height != max_Height)
                 {
                     float tmp = (float)attr.height / (float)max_Height;
@@ -1306,7 +1302,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
                     btn->setThumbScale(true);
                 }
             }
-            printf("%d %d", (int)imgWidth, (int)imgHeight);
             thumbnail = qimageFromXImage(img).scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
             //thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));  test picture if correct
         }
