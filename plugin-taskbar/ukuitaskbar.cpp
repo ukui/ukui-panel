@@ -53,7 +53,7 @@ using namespace UKUi;
 UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QFrame(parent),
     mSignalMapper(new QSignalMapper(this)),
-    mButtonStyle(Qt::ToolButtonTextBesideIcon),
+    mButtonStyle(Qt::ToolButtonIconOnly),
     mButtonWidth(400),
     mButtonHeight(100),
     mCloseOnMiddleClick(true),
@@ -75,7 +75,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
-    setStyle(mStyle);
+    //setStyle(mStyle);
     mpTaskBarIcon = new UKUITaskBarIcon;
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
@@ -89,7 +89,9 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mPlaceHolder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
     mLayout->addWidget(mPlaceHolder);
 
-    QTimer::singleShot(0, this, SLOT(settingsChanged()));
+//    QTimer::singleShot(0, this, SLOT(settingsChanged()));
+    settingsChanged();
+//    setButtonStyle(Qt::ToolButtonIconOnly);
     setAcceptDrops(true);
 
     connect(mSignalMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped), this, &UKUITaskBar::activateTask);
@@ -455,10 +457,66 @@ void UKUITaskBar::refreshPlaceholderVisibility()
  ************************************************/
 void UKUITaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
 {
-    const Qt::ToolButtonStyle old_style = mButtonStyle;
-    mButtonStyle = buttonStyle;
-    if (old_style != mButtonStyle)
-        emit buttonStyleRefreshed(mButtonStyle);
+    emit buttonStyleRefreshed(mButtonStyle);
+}
+
+void UKUITaskBar::settingsChanged()
+{
+    bool groupingEnabledOld = mGroupingEnabled;
+    bool showOnlyOneDesktopTasksOld = mShowOnlyOneDesktopTasks;
+    const int showDesktopNumOld = mShowDesktopNum;
+    bool showOnlyCurrentScreenTasksOld = mShowOnlyCurrentScreenTasks;
+    bool showOnlyMinimizedTasksOld = mShowOnlyMinimizedTasks;
+    const bool iconByClassOld = mIconByClass;
+
+    mButtonWidth = mPlugin->settings()->value("buttonWidth", 400).toInt();
+    mButtonHeight = mPlugin->settings()->value("buttonHeight", 100).toInt();
+    QString s = mPlugin->settings()->value("buttonStyle").toString().toUpper();
+
+    if (s == "ICON")
+        setButtonStyle(Qt::ToolButtonIconOnly);
+    else if (s == "TEXT")
+        setButtonStyle(Qt::ToolButtonTextOnly);
+    else
+        setButtonStyle(Qt::ToolButtonIconOnly);
+
+    mShowOnlyOneDesktopTasks = mPlugin->settings()->value("showOnlyOneDesktopTasks", mShowOnlyOneDesktopTasks).toBool();
+    mShowDesktopNum = mPlugin->settings()->value("showDesktopNum", mShowDesktopNum).toInt();
+    mShowOnlyCurrentScreenTasks = mPlugin->settings()->value("showOnlyCurrentScreenTasks", mShowOnlyCurrentScreenTasks).toBool();
+    mShowOnlyMinimizedTasks = mPlugin->settings()->value("showOnlyMinimizedTasks", mShowOnlyMinimizedTasks).toBool();
+    mAutoRotate = mPlugin->settings()->value("autoRotate", true).toBool();
+    mCloseOnMiddleClick = mPlugin->settings()->value("closeOnMiddleClick", true).toBool();
+    mRaiseOnCurrentDesktop = mPlugin->settings()->value("raiseOnCurrentDesktop", false).toBool();
+    mGroupingEnabled = mPlugin->settings()->value("groupingEnabled",true).toBool();
+    mShowGroupOnHover = mPlugin->settings()->value("showGroupOnHover",true).toBool();
+    mIconByClass = mPlugin->settings()->value("iconByClass", false).toBool();
+    mCycleOnWheelScroll = mPlugin->settings()->value("cycleOnWheelScroll", true).toBool();
+
+    // Delete all groups if grouping feature toggled and start over
+    if (groupingEnabledOld != mGroupingEnabled)
+    {
+        for (int i = mLayout->count() - 1; 0 <= i; --i)
+        {
+            UKUITaskGroup * group = qobject_cast<UKUITaskGroup*>(mLayout->itemAt(i)->widget());
+            if (nullptr != group)
+            {
+                mLayout->takeAt(i);
+                group->deleteLater();
+            }
+        }
+        mKnownWindows.clear();
+    }
+
+    if (showOnlyOneDesktopTasksOld != mShowOnlyOneDesktopTasks
+            || (mShowOnlyOneDesktopTasks && showDesktopNumOld != mShowDesktopNum)
+            || showOnlyCurrentScreenTasksOld != mShowOnlyCurrentScreenTasks
+            || showOnlyMinimizedTasksOld != mShowOnlyMinimizedTasks
+            )
+        emit showOnlySettingChanged();
+    if (iconByClassOld != mIconByClass)
+        emit iconByClassChanged();
+
+    refreshTaskList();
 }
 
 void UKUITaskBar::setShowGroupOnHover(bool bFlag)

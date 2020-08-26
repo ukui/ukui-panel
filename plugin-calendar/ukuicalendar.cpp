@@ -305,7 +305,8 @@ void IndicatorCalendar::updateTimeText()
     }
     mContent->setText(str);
    // if (old_size != mContent->sizeHint())
-        mRotatedWidget->adjustContentSize();
+     /*此处会引起任务栏隐藏后日历插件占用cpu异常的问题*/
+    //mRotatedWidget->adjustContentSize();
     mContent->setStyleSheet(
                 //正常状态样式
                 "QLabel{"
