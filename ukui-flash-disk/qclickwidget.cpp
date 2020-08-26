@@ -788,11 +788,11 @@ QString QClickWidget::size_human(qlonglong capacity)
      //   return QString().setNum(capacity,'f',2)+" "+unit;
     }
 
-    if(capacity == NULL)
-    {
-       QString str_capaticity = tr("the capacity is empty");
-       return str_capaticity;
-    }
+//    if(capacity == NULL)
+//    {
+//       QString str_capaticity = tr("the capacity is empty");
+//       return str_capaticity;
+//    }
 
     if(capacity == 1)
     {

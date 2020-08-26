@@ -60,8 +60,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
     GError *err = nullptr;
     success = g_drive_eject_with_operation_finish (source_object, res, &err);
 
-//    qDebug()<<"oh no"<<err->message<<err->code;
-
     if (!err)
     {
       findGDriveList()->removeOne(source_object);
@@ -76,22 +74,11 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
 
         for(int eachVolume = 0 ; eachVolume < volumeNum ;eachVolume++)
         {
-//            g_mount_unmount_with_operation(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),
-//                                           G_MOUNT_UNMOUNT_NONE,
-//                                           NULL,
-//                                           NULL,
-//                                           GAsyncReadyCallback(frobnitz_result_func_mount),
-//                                           p_this
-//                        );
             p_this->flagType = 0;
 
             if(g_mount_can_unmount(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))))
             {
-//                UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
                 char *dataPath = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))));
-//                QProcess::execute("pkexec umount " + QString(dataPath));
-//                p_this->flagType++;
-//                qDebug()<<QString(dataPath)<<"  aaaaaaaaaaaaa-------------------------------1.5";
                 QProcess p;
                 p.setProgram("pkexec");
                 p.setArguments(QStringList()<<"umount"<<QString(dataPath));
@@ -113,18 +100,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
         p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),OCCUPYDEVICE);
         p_this->m_eject->show();
     }
-
-
-
-//    else
-//    {
-//      qDebug()<<"oh no"<<err->message<<err->code;
-//    }
-
-//    if(findGDriveList()->size() == 0 || findGVolumeList()->size() == 0)
-//    {
-//        p_this->m_systray->hide();
-//    }
 
 }
 
