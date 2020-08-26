@@ -361,14 +361,19 @@ void PanelPluginsModel::onConfigurePlugin(QModelIndex const & index)
         plugin->showConfigureDialog();
 }
 
-void PanelPluginsModel::onRemovePlugin(QModelIndex const & index)
-{
-    if (!isIndexValid(index))
-        return;
+//void PanelPluginsModel::onRemovePlugin(QModelIndex const & index)
+//{
+//    if (!isIndexValid(index))
+//        return;
 
-    auto plugin = mPlugins.begin() + index.row();
-    if (plugin->second.isNull())
-        removePlugin(std::move(plugin));
-    else
-        plugin->second->requestRemove();
+//    auto plugin = mPlugins.begin() + index.row();
+//    if (plugin->second.isNull())
+//        removePlugin(std::move(plugin));
+//    else
+//        plugin->second->requestRemove();
+//}
+
+void PanelPluginsModel::onRemovePlugin()
+{
+    qDeleteAll(plugins());
 }

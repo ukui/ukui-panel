@@ -355,16 +355,16 @@ QPixmap HighLightEffect::drawSymbolicColoredPixmap(const QPixmap &source)
             auto color = img.pixelColor(x, y);
             if (color.alpha() > 0) {
                 if (qAbs(color.red()-gray.red())<20 && qAbs(color.green()-gray.green())<20 && qAbs(color.blue()-gray.blue())<20) {
-                    color.setRed(255);
-                    color.setGreen(255);
-                    color.setBlue(255);
+                    color.setRed(0);
+                    color.setGreen(0);
+                    color.setBlue(0);
                     img.setPixelColor(x, y, color);
                 }
                 else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20)
                 {
-                    color.setRed(255);
-                    color.setGreen(255);
-                    color.setBlue(255);
+                    color.setRed(0);
+                    color.setGreen(0);
+                    color.setBlue(0);
                     img.setPixelColor(x, y, color);
                 }
                 else

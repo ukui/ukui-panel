@@ -135,7 +135,7 @@ public:
      * in local variables. Additionally, calls necessary methods like realign()
      * or updateStyleSheet() which need to get called after changing settings.
      */
-    void readSettings();
+    void readSettings(bool cut);
 
     /**
      * @brief Creates and shows the popup menu (right click menu). If a plugin
@@ -316,6 +316,7 @@ public slots:
     void setShowDelay(int showDelay, bool save); //!< \sa setPanelSize()
     void setIconTheme(const QString& iconTheme);
     void setPanelBackground(bool effective);
+    void setPanelmodel(bool value, bool save);
 
     /**
      * @brief Saves the current configuration, i.e. writes the current
@@ -518,6 +519,8 @@ private:
      * layout.
      */
     void loadPlugins();
+    void resetloadPluginspc(PanelPluginsModel *pcmodel,PanelPluginsModel *padmodel);
+    void resetloadPluginspad(PanelPluginsModel *padmodel,PanelPluginsModel *pcmodel);
 
     /**
      * @brief Calculates and sets the geometry (i.e. the position and the size
@@ -577,6 +580,8 @@ private:
      * \sa mLength
      */
     bool mLengthInPercents;
+    bool mModel;
+    bool st;
 
     /**
      * @brief Stores how this panel is aligned. The meaning of this value
@@ -627,6 +632,8 @@ private:
      * \sa mVisibleMargin, mHidden, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
     bool mHidable;
+    bool mHidablepc;
+    bool mHidablepad;
     /**
      * @brief Stores if the hidable panel should have a visible margin.
      *
@@ -718,10 +725,17 @@ private slots:
     void changeSizeToLarge();
     void panelReset();
     void panelBackgroundChange();
+    void panelmodelpadChange();
+    void panelmodelpcChange();
 
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
+    QGSettings *panelmodel_gsettings;
+    PanelPluginsModel *padmodel;
+    PanelPluginsModel *pcmodel;
+    QScopedPointer<PanelPluginsModel> mPlugins1;
+    QScopedPointer<PanelPluginsModel> mPlugins2;
 
 };
 
