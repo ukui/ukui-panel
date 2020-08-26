@@ -1029,30 +1029,21 @@ void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
     mPopup->adjustSize();
 }
 
-void UKUITaskGroup::v_adjustPopWindowSize(int winWidth, int winHeight, int * v_width)
+void UKUITaskGroup::v_adjustPopWindowSize(int winWidth, int winHeight, int v_all)
 {
-    int fixed_width = 0;
-    int size = v_width[0];
+    int fixed_size = v_all;
     int iScreenWidth = QApplication::screens().at(0)->size().width();
 
-    if (v_width[0] > 10)
-        return;
-
-    for (int i = 1; i <= size; i++)
-    {
-        fixed_width += v_width[i];
-    }
-
-    if (fixed_width > iScreenWidth)
-        fixed_width = iScreenWidth;
+    if (fixed_size > iScreenWidth)
+        fixed_size = iScreenWidth;
 
     if(plugin()->panel()->isHorizontal())
     {
-        mPopup->setFixedSize(fixed_width,  winHeight + 6);
+        mPopup->setFixedSize(fixed_size,  winHeight + 6);
     }
     else
     {
-        mPopup->setFixedSize(winWidth + 6,winHeight*size + (size + 1)*3);
+        mPopup->setFixedSize(winWidth + 6, fixed_size);
     }
     mPopup->adjustSize();
 }
@@ -1183,6 +1174,7 @@ void UKUITaskGroup::showAllWindowByList()
 
 void UKUITaskGroup::showAllWindowByThumbnail()
 {
+    printf("\nsadjfiosdjoisv\n");
     XImage *img = NULL;
     Display *display = NULL;
     QPixmap thumbnail;
@@ -1234,20 +1226,21 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     setLayOutForPostion();
     /*begin catch preview picture*/
 
-    int pop_sum = mVisibleHash.size();
     int max_Height = 0;
+    int max_Width = 0;
     int imgWidth_sum = 0;
-    int changed_width = 0;
+    int changed = 0;
     int title_width = 0;
-    int cnt = 0;
-    int v_width[15] = {0};
+    int v_all = 0;
     int iScreenWidth = QApplication::screens().at(0)->size().width();
-    float minimum = THUMBNAIL_WIDTH;
+    float minimumWidth = THUMBNAIL_WIDTH;
+    float minimumHeight = THUMBNAIL_HEIGHT;
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
         max_Height = attr.height > max_Height ? attr.height : max_Height;
+        max_Width = attr.width > max_Width ? attr.width : max_Width;
         if(display)
             XCloseDisplay(display);
     }
@@ -1258,24 +1251,62 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
         img = XGetImage(display, it.key(), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
-        float imgWidth = (float)attr.width / (float)attr.height * winHeight;
-        float imgHeight = THUMBNAIL_HEIGHT;
+        float imgWidth = 0;
+        float imgHeight = 0;
+        if (plugin()->panel()->isHorizontal()) {
+            imgWidth = (float)attr.width / (float)attr.height * THUMBNAIL_HEIGHT;
+            imgHeight = THUMBNAIL_HEIGHT;
+            printf("\n1 if horizon sdfsdf\n");
+        } else {
+            imgWidth = THUMBNAIL_WIDTH;
+            imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH;
+            printf("\n1 else not horizon sdfsdf\n");
+        }
         if(img)
         {
-            if (attr.height != max_Height)
+            if (plugin()->panel()->isHorizontal())
             {
-                float tmp = (float)attr.height / (float)max_Height;
-                imgHeight =  imgHeight * tmp;
+                printf("\n2 if horizon sdfsdf\n");
+                if (attr.height != max_Height)
+                {
+                    float tmp = (float)attr.height / (float)max_Height;
+                    imgHeight =  imgHeight * tmp;
+                }
+                if ((int)imgWidth > (int)minimumWidth)
+                {
+                    imgWidth = minimumWidth;
+                }
+                if (btn->isVisibleTo(mPopup)) {
+                    v_all += (int)imgWidth;
+                    imgWidth_sum += (int)imgWidth;
+                }
+                if (mVisibleHash.size() == 1 ) changed = (int)imgWidth;
+                btn->setThumbMaximumSize(INT_MAX);
+                btn->setThumbScale(true);
+            } else {
+                if (attr.width != max_Width)
+                {
+                    float tmp = (float)attr.width / (float)max_Width;
+                    imgWidth =  imgWidth * tmp;
+                }
+                if ((int)imgHeight > (int)minimumHeight)
+                {
+                    imgHeight = minimumHeight;
+                }
+                if (btn->isVisibleTo(mPopup)) {
+                    v_all += (int)imgHeight;
+                }
+                if (mVisibleHash.size() == 1 ) changed = (int)imgHeight;
+                if ((int)imgWidth < 150)
+                {
+                    btn->setThumbFixedSize((int)imgWidth);
+                    btn->setThumbScale(false);
+                } else {
+                    btn->setThumbMaximumSize(INT_MAX);
+                    btn->setThumbScale(true);
+                }
             }
-            if ((int)imgWidth > (int)minimum)
-            {
-                imgWidth = minimum;
-            }
-            if (btn->isVisibleTo(mPopup)) {
-                v_width[++cnt] = (int)imgWidth;
-                imgWidth_sum += (int)imgWidth;
-            }
-            if (mVisibleHash.size() == 1 ) changed_width = (int)imgWidth;
+            printf("%d %d", (int)imgWidth, (int)imgHeight);
             thumbnail = qimageFromXImage(img).scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
             //thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));  test picture if correct
         }
@@ -1299,22 +1330,30 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         }
     }
     /*end*/
-    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
-    {
-        UKUITaskWidget *btn = it.value();
-        if (imgWidth_sum > iScreenWidth)
-            title_width = (int)(btn->width()  * iScreenWidth / imgWidth_sum - 80);
-        else
-            title_width = btn->width() - 75;
-        btn->setTitleFixedWidth(title_width);
-    }
-    v_width[0] = cnt;
+    int i = 0;
+        for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+        {
+            UKUITaskWidget *btn = it.value();
+            if (plugin()->panel()->isHorizontal())  {
+                if (imgWidth_sum > iScreenWidth)
+                    title_width = (int)(btn->width()  * iScreenWidth / imgWidth_sum - 80);
+                else
+                    title_width = btn->width() - 75;
+            } else {
+                 title_width = winWidth- 70;
+            }
+            btn->setTitleFixedWidth(title_width);
+        }
     plugin()->willShowWindow(mPopup);
     mPopup->layout()->addWidget(mpWidget);
-    if (mVisibleHash.size() == 1 && changed_width != 0)
-        adjustPopWindowSize(changed_width, winHeight);
+    if (mVisibleHash.size() == 1 && changed != 0)
+        if (plugin()->panel()->isHorizontal()) {
+            adjustPopWindowSize(changed, winHeight);
+        } else {
+            adjustPopWindowSize(winWidth, changed);
+        }
     else if (mVisibleHash.size() != 1)
-        v_adjustPopWindowSize(winWidth, winHeight, v_width);
+        v_adjustPopWindowSize(winWidth, winHeight, v_all);
     else
         adjustPopWindowSize(winWidth, winHeight);
 

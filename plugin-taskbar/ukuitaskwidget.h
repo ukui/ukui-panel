@@ -56,6 +56,9 @@ public:
     bool isOnCurrentScreen() const;
     bool isMinimized() const;
     bool isFocusState() const;
+    void setThumbFixedSize(int w);
+    void setThumbScale(bool val);
+    void setThumbMaximumSize(int w);
     void updateText();
 
     Qt::Corner origin() const;

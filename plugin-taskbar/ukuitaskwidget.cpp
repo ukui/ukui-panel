@@ -141,7 +141,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
 //    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
     //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
     mVWindowsLayout->addLayout(mTopBarLayout, 5);
-    mVWindowsLayout->addWidget(mThumbnailLabel, Qt::AlignVCenter, Qt::AlignVCenter);
+    mVWindowsLayout->addWidget(mThumbnailLabel, Qt::AlignCenter, Qt::AlignCenter);
     mVWindowsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     this->setLayout(mVWindowsLayout);
     updateText();
@@ -803,4 +803,16 @@ void UKUITaskWidget::setTitleFixedWidth(int size)
 int UKUITaskWidget::getWidth()
 {
     return mTitleLabel->width();
+}
+
+void UKUITaskWidget::setThumbFixedSize(int w) {
+    this->mThumbnailLabel->setFixedWidth(w);
+}
+
+void UKUITaskWidget::setThumbMaximumSize(int w) {
+    this->mThumbnailLabel->setMaximumWidth(w);
+}
+
+void UKUITaskWidget::setThumbScale(bool val) {
+    this->mThumbnailLabel->setScaledContents(val);
 }

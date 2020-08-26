@@ -146,7 +146,7 @@ private:
     QPoint recalculateFramePosition();
     void recalculateFrameIfVisible();
     void adjustPopWindowSize(int width, int height);
-    void v_adjustPopWindowSize(int width, int height, int * v_width);
+    void v_adjustPopWindowSize(int width, int height, int v_all);
     void regroup();
 
 };
