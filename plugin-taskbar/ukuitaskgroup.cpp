@@ -62,6 +62,7 @@
 #define THUMBNAIL_HEIGHT	(PREVIEW_HEIGHT - SPACE_HEIGHT)
 #define ICON_WIDTH			48
 #define ICON_HEIGHT			48
+#define MAX_SIZE_OF_Thumb   16777215
 
 #define SCREEN_MAX_WIDTH_SIZE     1400
 #define SCREEN_MAX_HEIGHT_SIZE    1050
@@ -1277,7 +1278,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
                     imgWidth_sum += (int)imgWidth;
                 }
                 if (mVisibleHash.size() == 1 ) changed = (int)imgWidth;
-                btn->setThumbMaximumSize(INT_MAX);
+                btn->setThumbMaximumSize(MAX_SIZE_OF_Thumb);
                 btn->setThumbScale(true);
             } else {
                 if (attr.width != max_Width)
@@ -1298,7 +1299,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
                     btn->setThumbFixedSize((int)imgWidth);
                     btn->setThumbScale(false);
                 } else {
-                    btn->setThumbMaximumSize(INT_MAX);
+                    btn->setThumbMaximumSize(MAX_SIZE_OF_Thumb);
                     btn->setThumbScale(true);
                 }
             }
