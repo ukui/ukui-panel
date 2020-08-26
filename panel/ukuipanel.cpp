@@ -1269,10 +1269,10 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     QPainter p(this);
     p.setPen(Qt::NoPen);
     double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-    p.setBrush(QBrush(QColor(19,22,28,tran)));
+    p.setBrush(QBrush(QColor(250,250,250,tran)));
 
     p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,0,0);
+    p.drawRoundedRect(opt.rect,20,90);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 

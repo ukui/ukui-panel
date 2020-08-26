@@ -51,7 +51,7 @@ UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* par
     QToolButton(parent),
     mPlugin(plugin)
 {
-    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
+    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu-pad.png"));
     this->setStyle(new CustomStyle());
 //    this->setWindowFlags(Qt::NoFocus);
     setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
@@ -93,28 +93,39 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
 {
     rightPressMenu=new QMenu();
     rightPressMenu->setAttribute(Qt::WA_DeleteOnClose);
-    rightPressMenu->setWindowOpacity(0.7);
 
-    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-lock-screen-symbolic").pixmap(24,24).toImage()))),
+    QMenu *pUserAction=new QMenu(tr("User Action"));         //用户操作
+    QMenu *pSleepHibernate=new QMenu(tr("Sleep or Hibernate"));  //重启或休眠
+    QMenu *pPowerSupply=new QMenu(tr("Power Supply"));        //电源
+    rightPressMenu->addMenu(pUserAction);
+    rightPressMenu->addMenu(pSleepHibernate);
+    rightPressMenu->addMenu(pPowerSupply);
+
+    pUserAction->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-lock-screen-symbolic").pixmap(24,24).toImage()))),
                               tr("Lock Screen"),
                               this, SLOT(ScreenServer())
                               );
-    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("stock-people-symbolic").pixmap(24,24).toImage()))),
+    pUserAction->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("stock-people-symbolic").pixmap(24,24).toImage()))),
                               tr("Switch User"),
                               this, SLOT(SessionSwitch())
                               );
-
-    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-logout-symbolic").pixmap(24,24).toImage()))),
-                              tr("LogOut"),
+    pUserAction->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-logout-symbolic").pixmap(24,24).toImage()))),
+                              tr("Logout"),
                               this, SLOT(SessionLogout())
                               );
-
-    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-restart-symbolic").pixmap(24,24).toImage()))),
+    pSleepHibernate->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("kylin-sleep-symbolic").pixmap(24,24).toImage()))),
+                              tr("Sleep Mode"),
+                              this, SLOT(SessionSleep())
+                              );
+    pSleepHibernate->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-sleep").pixmap(24,24).toImage()))),
+                              tr("Hibernate Mode"),
+                              this, SLOT(SessionHibernate())
+                              );
+    pPowerSupply->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-restart-symbolic").pixmap(24,24).toImage()))),
                               tr("Restart"),
                               this, SLOT(SessionReboot())
                               );
-
-    rightPressMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("exit-symbolic").pixmap(24,24).toImage()))),
+    pPowerSupply->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-shutdown-symbolic").pixmap(24,24).toImage()))),
                               tr("Power Off"),
                               this, SLOT(SessionShutdown())
                               );
@@ -136,6 +147,16 @@ void UKUIStartMenuButton::SessionSwitch()
 void UKUIStartMenuButton::SessionLogout()
 {
     system("ukui-session-tools --logout");
+}
+
+void UKUIStartMenuButton::SessionSleep()
+{
+    system("ukui-session-tools --suspend");
+}
+
+void UKUIStartMenuButton::SessionHibernate()
+{
+    system("ukui-session-tools --hibernate");
 }
 
 void UKUIStartMenuButton::SessionReboot()

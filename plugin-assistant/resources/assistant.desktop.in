@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=Assistant
+Comment=assistant
+Icon=start-menu

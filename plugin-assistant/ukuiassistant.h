@@ -26,6 +26,7 @@
 #include <QFontMetrics>
 #include <QLineEdit>
 #include <QToolButton>
+#include <QPushButton>
 #include <QMainWindow>
 #include <QHBoxLayout>
 #include <QDebug>
@@ -37,29 +38,34 @@
 #include <QMenu>
 #include <QPointF>
 #include "../panel/highlight-effect.h"
-
-class UKUIStartMenuButton;
-class UKUIStartMenuPlugin: public QObject, public IUKUIPanelPlugin
+#include "searchwindow.h"
+#include <QMainWindow>
+class UKUIAssistantButton;
+class UKUIAssistantPlugin: public QObject, public IUKUIPanelPlugin
 {
     Q_OBJECT
 public:
-    explicit UKUIStartMenuPlugin(const IUKUIPanelPluginStartupInfo &startupInfo);
-    ~UKUIStartMenuPlugin();
+    explicit UKUIAssistantPlugin(const IUKUIPanelPluginStartupInfo &startupInfo);
+    ~UKUIAssistantPlugin();
+
+    SearchWindow *win;
 
     virtual QWidget *widget();
-    virtual QString themeId() const { return "StartMenu"; }
+    virtual QString themeId() const { return "Assistant"; }
     virtual Flags flags() const { return NeedsHandle; }
 
     void realign();
 
     bool isSeparate() const { return true; }
 
+
 private:
-    UKUIStartMenuButton *mWidget;
+    UKUIAssistantButton *mWidget;
+
 };
 
 
-class StartMenuLibrary: public QObject, public IUKUIPanelPluginLibrary
+class ASSISTANTLibrary: public QObject, public IUKUIPanelPluginLibrary
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "ukui.org/Panel/PluginInterface/3.0")
@@ -68,16 +74,17 @@ public:
     IUKUIPanelPlugin *mPlugin;
     IUKUIPanelPlugin *instance(const IUKUIPanelPluginStartupInfo &startupInfo) const
     {
-        return new UKUIStartMenuPlugin(startupInfo);
+        return new UKUIAssistantPlugin(startupInfo);
     }
 };
 
-class UKUIStartMenuButton:public QToolButton
+class UKUIAssistantButton:public QToolButton
 {
     Q_OBJECT
 public:
-    UKUIStartMenuButton(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
-    ~UKUIStartMenuButton();
+    UKUIAssistantButton(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
+    ~UKUIAssistantButton();
+    SearchWindow *win;
     void realign();
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
@@ -86,14 +93,10 @@ protected:
 private:
     QMenu *rightPressMenu;
     IUKUIPanelPlugin * mPlugin;
+    QPushButton *pb1;
+    QPushButton *pb2;
+    QPushButton *pb3;
+    QLineEdit *le;
 
-private slots:
-    void ScreenServer();
-    void SessionSwitch();
-    void SessionLogout();
-    void SessionReboot();
-    void SessionShutdown();
-    void SessionSleep();
-    void SessionHibernate();
 };
 #endif
