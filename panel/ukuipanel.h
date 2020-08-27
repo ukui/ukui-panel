@@ -632,8 +632,6 @@ private:
      * \sa mVisibleMargin, mHidden, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
     bool mHidable;
-    bool mHidablepc;
-    bool mHidablepad;
     /**
      * @brief Stores if the hidable panel should have a visible margin.
      *
@@ -734,8 +732,6 @@ public:
     QGSettings *panelmodel_gsettings;
     PanelPluginsModel *padmodel;
     PanelPluginsModel *pcmodel;
-    QScopedPointer<PanelPluginsModel> mPlugins1;
-    QScopedPointer<PanelPluginsModel> mPlugins2;
 
 };
 

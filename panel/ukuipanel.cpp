@@ -78,8 +78,6 @@
 #define CFG_KEY_PLUGINS1            "plugins-pc"
 #define CFG_KEY_PLUGINS2           "plugins-pad"
 #define CFG_KEY_HIDABLE            "hidable"
-#define CFG_KEY_HIDABLE1            "hidable-pc"
-#define CFG_KEY_HIDABLE2            "hidable-pad"
 #define CFG_KEY_VISIBLE_MARGIN     "visible-margin"
 #define CFG_KEY_ANIMATION          "animation-duration"
 #define CFG_KEY_SHOW_DELAY         "show-delay"
@@ -255,11 +253,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     // as we've already connceted to QDesktopWidget::resized, but it actually
     connect(QApplication::desktop(), &QDesktopWidget::workAreaResized,
             this, &UKUIPanel::ensureVisible);
-    
-    QDBusInterface iface("com.sun.dbus.frist.test",
-                         "/sun/test",
-                         "com.sun.dbus.frist.test",
-                         QDBusConnection::sessionBus());
+
 
     connect(UKUi::Settings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
     connect(ukuiApp, SIGNAL(themeChanged()), this, SLOT(realign()));
@@ -282,6 +276,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                 resetloadPluginspad(padmodel,pcmodel);
             }
             else{
+
                 resetloadPluginspc(pcmodel,padmodel);
             }
             st=mModel;
@@ -296,18 +291,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     show();
     // show it the first time, despite setting
-//    if (mHidable)
-//    {
-//        showPanel(false);
-//        QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
-//    }
 
-    if (mHidablepc){
-        showPanel(false);
-        QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
-    }
-
-    if (mHidablepad){
+    if (mHidable){
         showPanel(false);
         QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
     }
@@ -344,11 +329,11 @@ void UKUIPanel::readSettings(bool cut)
     if(cut){
     // Read settings ......................................
     mSettings->beginGroup(mConfigGroup);
-
+    mHidable=true;
     // Let Hidability be the first thing we readcalendarcalendarcalendar
     // so that every call to realign() is without side-effect
-    mHidablepad = mSettings->value(CFG_KEY_HIDABLE2, mHidablepad).toBool();
-    mHidden = mHidablepad;
+   // mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+    mHidden = mHidable;
     mVisibleMargin = mSettings->value(CFG_KEY_VISIBLE_MARGIN, mVisibleMargin).toBool();
     mAnimationTime = mSettings->value(CFG_KEY_ANIMATION, mAnimationTime).toInt();
     mShowDelayTimer.setInterval(mSettings->value(CFG_KEY_SHOW_DELAY, mShowDelayTimer.interval()).toInt());
@@ -385,8 +370,9 @@ void UKUIPanel::readSettings(bool cut)
     }
     else{
         mSettings->beginGroup(mConfigGroup);
-         mHidablepc = mSettings->value(CFG_KEY_HIDABLE1, mHidablepc).toBool();
-         mHidden = mHidablepc;
+          mHidable=false;
+         //mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+         mHidden = mHidable;
 
         mVisibleMargin = mSettings->value(CFG_KEY_VISIBLE_MARGIN, mVisibleMargin).toBool();
 
@@ -461,10 +447,8 @@ void UKUIPanel::saveSettings(bool later)
     mSettings->setValue(CFG_KEY_OPACITY, mOpacity);
     mSettings->setValue(CFG_KEY_RESERVESPACE, mReserveSpace);
 
-    //mSettings->setValue(CFG_KEY_HIDABLE, mHidable);
+    mSettings->setValue(CFG_KEY_HIDABLE, mHidable);
     mSettings->setValue(PANEL_MODEL, mModel);
-    mSettings->setValue(CFG_KEY_HIDABLE1, mHidablepc);
-    mSettings->setValue(CFG_KEY_HIDABLE2, mHidablepad);
     mSettings->setValue(CFG_KEY_VISIBLE_MARGIN, mVisibleMargin);
     mSettings->setValue(CFG_KEY_ANIMATION, mAnimationTime);
     mSettings->setValue(CFG_KEY_SHOW_DELAY, mShowDelayTimer.interval());
@@ -553,8 +537,8 @@ void UKUIPanel::resetloadPluginspc(PanelPluginsModel *pcmodel,PanelPluginsModel 
     names_key1 += '/';
     names_key1 += QLatin1String(CFG_KEY_PLUGINS1);
     pcmodel = new PanelPluginsModel(this,names_key1 , pluginDesktopDirs());
-    mPlugins1.reset(pcmodel);
-    const auto plugins = mPlugins1->plugins();
+    mPlugins.reset(pcmodel);
+    const auto plugins = mPlugins->plugins();
     for (auto const & plugin : plugins)
     {
         mLayout->addPlugin(plugin);
@@ -570,8 +554,8 @@ void UKUIPanel::resetloadPluginspad(PanelPluginsModel *padmodel,PanelPluginsMode
     names_key1 += QLatin1String(CFG_KEY_PLUGINS2);
     padmodel = new PanelPluginsModel(this,names_key1 , pluginDesktopDirs());
 
-    mPlugins1.reset(padmodel);
-    const auto plugins = mPlugins1->plugins();
+    mPlugins.reset(padmodel);
+    const auto plugins = mPlugins->plugins();
     for (auto const & plugin : plugins)
     {
         mLayout->addPlugin(plugin);
@@ -586,7 +570,7 @@ void UKUIPanel::resetloadPluginspad(PanelPluginsModel *padmodel,PanelPluginsMode
 int UKUIPanel::getReserveDimension()
 {
     // return mHidable ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
-    return mHidablepad&&mModel ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
+    return mHidable&&mModel ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
 }
 
 /*
@@ -1733,7 +1717,7 @@ void UKUIPanel::userRequestForDeletion()
 
 void UKUIPanel::showPanel(bool animate)
 {
-    if (mHidablepad&&mModel)
+    if (mHidable&&mModel)
     {
         mHideTimer.stop();
         if (mHidden)
@@ -1746,7 +1730,7 @@ void UKUIPanel::showPanel(bool animate)
 
 void UKUIPanel::hidePanel()
 {
-    if (mModel&&mHidablepad && !mHidden
+    if (mModel&&mHidable && !mHidden
             && !mStandaloneWindows->isAnyWindowShown()
             )
         mHideTimer.start();
