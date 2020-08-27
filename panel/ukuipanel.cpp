@@ -269,17 +269,20 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         if(key==PANEL_MODEL)
             mModel=gsettings->get(PANEL_MODEL).toBool();
         qDebug()<<"model"<<mModel;
-        readSettings(mModel);
-        ensureVisible();
+//        readSettings(mModel);
+//        ensureVisible();
+        realign();
         if(!st==mModel){
             if(mModel){
+                mHidable=true;
                 resetloadPluginspad(padmodel,pcmodel);
             }
             else{
-
+                mHidable=false;
                 resetloadPluginspc(pcmodel,padmodel);
             }
             st=mModel;
+            mHidden = mHidable;
         }
     });
 
@@ -1443,7 +1446,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
 
         if (m)
         {
-            //menu->addTitle(plugin->windowTitle());
+            menu->addTitle(plugin->windowTitle());
             const auto actions = m->actions();
             for (auto const & action : actions)
             {
