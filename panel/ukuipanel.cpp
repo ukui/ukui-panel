@@ -95,6 +95,7 @@
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
 #define PANEL_MODEL         "panelmodel"
+#define PANEL_HIDE          "panelhide"
 #define PANEL_SIZE_KEY      "panelsize"
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
@@ -154,7 +155,9 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mLineCount(0),
     mLength(0),
     mModel(false),
-    st(true),
+    stModel(true),
+    mHide(false),
+    stHide(true),
     mAlignment(AlignmentLeft),
     mPosition(IUKUIPanel::PositionBottom),
     mScreenNum(0), //whatever (avoid conditional on uninitialized value)
@@ -261,6 +264,27 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(mStandaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
 
+    const QByteArray panelhide_id(PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(panelhide_id)){
+        panelhide_gsettings = new QGSettings(panelhide_id);
+    }
+    connect(panelhide_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==PANEL_HIDE)
+            mHide=gsettings->get(PANEL_HIDE).toBool();
+        qDebug()<<"mHide"<<mHide;
+        if(!stHide==mHide){
+            if(mHide){
+                mHidable=mHide;
+            }
+            else{
+                mHidable=mHide;
+            }
+            stHide=mHide;
+            mHidden = mHidable;
+        }
+    });
+
+
     const QByteArray panelmodel_id(PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(panelmodel_id)){
         panelmodel_gsettings = new QGSettings(panelmodel_id);
@@ -272,7 +296,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 //        readSettings(mModel);
 //        ensureVisible();
         realign();
-        if(!st==mModel){
+        if(!stModel==mModel){
             if(mModel){
                 mHidable=true;
                 resetloadPluginspad(padmodel,pcmodel);
@@ -281,7 +305,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                 mHidable=false;
                 resetloadPluginspc(pcmodel,padmodel);
             }
-            st=mModel;
+            stModel=mModel;
             mHidden = mHidable;
         }
     });
@@ -573,7 +597,7 @@ void UKUIPanel::resetloadPluginspad(PanelPluginsModel *padmodel,PanelPluginsMode
 int UKUIPanel::getReserveDimension()
 {
     // return mHidable ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
-    return mHidable&&mModel ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
+    return mHidable ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
 }
 
 /*
@@ -1093,6 +1117,15 @@ void UKUIPanel::showTaskView()
     }
 }
 
+void UKUIPanel::panelhide()
+{
+   // qDebug()<<"hide is :"<<hide;
+if(gsettings->get(PANEL_HIDE).toBool())
+            gsettings->set(PANEL_HIDE,false);
+else
+            gsettings->set(PANEL_HIDE,true);
+}
+
 /*右键　显示夜间模式按钮　选项*/
 void UKUIPanel::showNightModeButton()
 {
@@ -1483,6 +1516,12 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
+//    QAction * sWitchToHide = menu->addAction(tr("hide panel"));
+//    sWitchToHide->setDisabled(mLockPanel);
+//    sWitchToHide->setCheckable(true);
+//    sWitchToHide->setChecked(gsettings->get(PANEL_HIDE).toBool());
+//    connect(sWitchToHide, &QAction::triggered, [this] { panelhide(); });
+
 #if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
     QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
     shownightmode->setDisabled(mLockPanel);
@@ -1720,7 +1759,7 @@ void UKUIPanel::userRequestForDeletion()
 
 void UKUIPanel::showPanel(bool animate)
 {
-    if (mHidable&&mModel)
+    if (mHidable)
     {
         mHideTimer.stop();
         if (mHidden)
@@ -1733,7 +1772,7 @@ void UKUIPanel::showPanel(bool animate)
 
 void UKUIPanel::hidePanel()
 {
-    if (mModel&&mHidable && !mHidden
+    if (mHidable && !mHidden
             && !mStandaloneWindows->isAnyWindowShown()
             )
         mHideTimer.start();

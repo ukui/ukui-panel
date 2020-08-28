@@ -435,6 +435,7 @@ private slots:
     void systeMonitor();
     void showDesktop();
     void showTaskView();
+    void panelhide();
     void showNightModeButton();
     void adjustPanel();
     void realign();
@@ -581,7 +582,10 @@ private:
      */
     bool mLengthInPercents;
     bool mModel;
-    bool st;
+    bool stModel;
+    bool mHide;
+    bool stHide;
+    bool mModelhide;
 
     /**
      * @brief Stores how this panel is aligned. The meaning of this value
@@ -730,6 +734,7 @@ public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
     QGSettings *panelmodel_gsettings;
+    QGSettings *panelhide_gsettings;
     PanelPluginsModel *padmodel;
     PanelPluginsModel *pcmodel;
 
