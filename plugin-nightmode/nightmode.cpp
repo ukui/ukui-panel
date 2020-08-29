@@ -300,7 +300,7 @@ void NightModeButton::setUkuiStyle(QString style)
 /*Kwin初始化　*/
 void NightModeButton::setupSettings()
 {
-    QString filename = QDir::homePath() + "/.config/ukui-kwinrc";
+    QString filename = QDir::homePath() + "/.config/kdeglobals";
     kwinSettings = new QSettings(filename, QSettings::IniFormat);
 }
 
@@ -309,23 +309,12 @@ void NightModeButton::writeKwinSettings(bool change, QString theme)
 {
     QString th;
     if ("ukui-white" == theme) {
-        th = "__aurorae__svg__Ukui-classic";
+        th = "0";
     } else {
-        th = "__aurorae__svg__Ukui-classic-dark";
+        th = "1";
     }
-
-    kwinSettings->beginGroup("org.kde.kdecoration2");
-    kwinSettings->setValue("theme", th);
-    kwinSettings->endGroup();
-
-    kwinSettings->beginGroup("org.kde.kdecoration2");
-    kwinSettings->setValue("library", "org.ukui.kwin.aurorae");
+    kwinSettings->beginGroup("Theme");
+    kwinSettings->setValue("Style", th);
     kwinSettings->endGroup();
     kwinSettings->sync();
-#if QT_VERSION <= QT_VERSION_CHECK(5,12,0)
-
-#else
-        QDBusMessage message = QDBusMessage::createSignal("/KWin", "org.ukui.KWin", "reloadConfig");
-        QDBusConnection::sessionBus().send(message);
-#endif
 }
