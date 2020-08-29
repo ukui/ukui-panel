@@ -225,6 +225,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mShowDelayTimer.setInterval(PANEL_SHOW_DELAY);
     connect(&mShowDelayTimer, &QTimer::timeout, [this] { showPanel(mAnimationTime > 0); });
 
+
+
     /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
      * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
      * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
