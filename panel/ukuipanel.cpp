@@ -1120,8 +1120,10 @@ void UKUIPanel::showTaskView()
 void UKUIPanel::panelhide()
 {
    // qDebug()<<"hide is :"<<hide;
-if(gsettings->get(PANEL_HIDE).toBool())
+if(gsettings->get(PANEL_HIDE).toBool()){
             gsettings->set(PANEL_HIDE,false);
+            mHideTimer.stop();
+}
 else
             gsettings->set(PANEL_HIDE,true);
 }
@@ -1451,7 +1453,10 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     QPainter p(this);
     p.setPen(Qt::NoPen);
     double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-    p.setBrush(QBrush(QColor(250,250,250,tran)));
+    QColor color = palette().color(QPalette::Base);
+    color.setAlpha(tran);
+    QBrush brush = QBrush(color);
+    p.setBrush(brush);
 
     p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,20,90);
@@ -1516,11 +1521,11 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
-//    QAction * sWitchToHide = menu->addAction(tr("hide panel"));
-//    sWitchToHide->setDisabled(mLockPanel);
-//    sWitchToHide->setCheckable(true);
-//    sWitchToHide->setChecked(gsettings->get(PANEL_HIDE).toBool());
-//    connect(sWitchToHide, &QAction::triggered, [this] { panelhide(); });
+    QAction * sWitchToHide = menu->addAction(tr("hide panel"));
+    sWitchToHide->setDisabled(mLockPanel);
+    sWitchToHide->setCheckable(true);
+    sWitchToHide->setChecked(gsettings->get(PANEL_HIDE).toBool());
+    connect(sWitchToHide, &QAction::triggered, [this] { panelhide(); });
 
 #if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
     QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
