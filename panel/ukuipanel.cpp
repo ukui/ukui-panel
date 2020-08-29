@@ -94,7 +94,8 @@
 #define ICON_SIZE_SMALL   32
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
-#define PANEL_MODEL         "panelmodel"
+#define PANELMODEL_SETTINGS      "org.ukui.SettingsDaemon.plugins.tablet-mode"
+#define PANEL_MODEL         "tablet-mode"
 #define PANEL_HIDE          "panelhide"
 #define PANEL_SIZE_KEY      "panelsize"
 #define ICON_SIZE_KEY       "iconsize"
@@ -285,13 +286,14 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     });
 
 
-    const QByteArray panelmodel_id(PANEL_SETTINGS);
+    const QByteArray panelmodel_id(PANELMODEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(panelmodel_id)){
         panelmodel_gsettings = new QGSettings(panelmodel_id);
         }
+    panelmodel_gsettings->set(PANEL_MODEL,false);
     connect(panelmodel_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==PANEL_MODEL)
-            mModel=gsettings->get(PANEL_MODEL).toBool();
+      //  if(key==PANEL_MODEL)
+            mModel=panelmodel_gsettings->get(PANEL_MODEL).toBool();
         qDebug()<<"model"<<mModel;
 //        readSettings(mModel);
 //        ensureVisible();

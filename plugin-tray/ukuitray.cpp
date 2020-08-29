@@ -744,7 +744,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
 {
     //in the time QOjbect::destroyed is emitted, the child destructor
     //is already finished, so the qobject_cast to child will return nullptr in all cases
-    mIcons.removeAll(static_cast<TrayIcon *>(icon));
+  //  mIcons.removeAll(static_cast<TrayIcon *>(icon));
     mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
     if(0 == mStorageIcons.size())
     {
