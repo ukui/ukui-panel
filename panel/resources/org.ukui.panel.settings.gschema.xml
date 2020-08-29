@@ -15,6 +15,11 @@
             <summary>PanelPosition</summary>
             <description>The Position of ukui-panel</description>
         </key>
+        <key name="panelhide" type="b">
+            <default>false</default>
+            <summary>panelhide</summary>
+            <description>The ukui-panel of hide </description>
+        </key>
         <key name="showtaskview" type="b">
             <default>true</default>
             <summary>show TsskView</summary>

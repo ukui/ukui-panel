@@ -435,6 +435,7 @@ private slots:
     void systeMonitor();
     void showDesktop();
     void showTaskView();
+    void panelhide();
     void showNightModeButton();
     void adjustPanel();
     void realign();
@@ -581,7 +582,10 @@ private:
      */
     bool mLengthInPercents;
     bool mModel;
-    bool st;
+    bool stModel;
+    bool mHide;
+    bool stHide;
+    bool mModelhide;
 
     /**
      * @brief Stores how this panel is aligned. The meaning of this value
@@ -632,8 +636,6 @@ private:
      * \sa mVisibleMargin, mHidden, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
     bool mHidable;
-    bool mHidablepc;
-    bool mHidablepad;
     /**
      * @brief Stores if the hidable panel should have a visible margin.
      *
@@ -732,10 +734,9 @@ public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
     QGSettings *panelmodel_gsettings;
+    QGSettings *panelhide_gsettings;
     PanelPluginsModel *padmodel;
     PanelPluginsModel *pcmodel;
-    QScopedPointer<PanelPluginsModel> mPlugins1;
-    QScopedPointer<PanelPluginsModel> mPlugins2;
 
 };
 
