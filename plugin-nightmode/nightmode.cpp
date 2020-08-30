@@ -94,20 +94,14 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     if(QGSettings::isSchemaInstalled(id)) {
         gsettings = new QGSettings(id);
         if(gsettings->keys().contains(NIGHT_MODE_KEY)){
-            if(gsettings->get(NIGHT_MODE_KEY).toBool())
-                setNightMode(true);
-            else
-                setNightMode(false);
+            setNightMode(gsettings->get(NIGHT_MODE_KEY).toBool());
         }
         else
-            QMessageBox::information(this,"Error",tr("please install Newest ukui-control-center first"));
+            qDebug()<<"nightmodestatus is not exit";
 
         connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
             if(key==NIGHT_MODE_KEY){
-                if(gsettings->get(NIGHT_MODE_KEY).toBool())
-                    setNightMode(true);
-                else
-                    setNightMode(false);
+                setNightMode(gsettings->get(NIGHT_MODE_KEY).toBool());
             }
         });
 
