@@ -6,24 +6,28 @@
     <message>
         <location filename="../config/addplugindialog.ui" line="14"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="115"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="115"/>
         <source>Add Plugins</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/addplugindialog.ui" line="22"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="116"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="116"/>
         <source>Search:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/addplugindialog.ui" line="98"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="117"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="117"/>
         <source>Add Widget</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/addplugindialog.ui" line="105"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="118"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="118"/>
         <source>Close</source>
         <translation></translation>
     </message>
@@ -36,12 +40,12 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1016"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1017"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1020"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1021"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>
@@ -51,6 +55,7 @@
     <message>
         <location filename="../common/configdialog/ukuiconfigdialog.ui" line="14"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_ukuiconfigdialog.h" line="82"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_ukuiconfigdialog.h" line="82"/>
         <source>Dialog</source>
         <translation></translation>
     </message>
@@ -78,42 +83,49 @@
     <message>
         <location filename="../config/configpanelwidget.ui" line="20"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="439"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="439"/>
         <source>Configure panel</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="44"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="440"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="440"/>
         <source>Size</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="68"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="442"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="442"/>
         <source>&lt;p&gt;Negative pixel value sets the panel length to that many pixels less than available screen space.&lt;/p&gt;&lt;p/&gt;&lt;p&gt;&lt;i&gt;E.g. &quot;Length&quot; set to -100px, screen size is 1000px, then real panel length will be 900 px.&lt;/i&gt;&lt;/p&gt;</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="81"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="444"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="444"/>
         <source>Size:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="88"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="445"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="445"/>
         <source>Length:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="96"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="446"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="446"/>
         <source>%</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="101"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="447"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="447"/>
         <source>px</source>
         <translation></translation>
     </message>
@@ -122,36 +134,43 @@
         <location filename="../config/configpanelwidget.ui" line="153"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="449"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="450"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="449"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="450"/>
         <source> px</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="166"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="451"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="451"/>
         <source>Icon size:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="173"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="452"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="452"/>
         <source>Rows:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="202"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="453"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="453"/>
         <source>Alignment &amp;&amp; position</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="208"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="454"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="454"/>
         <source>Alignment:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="219"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="455"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="455"/>
         <location filename="../config/configpanelwidget.cpp" line="235"/>
         <source>Left</source>
         <translation>左</translation>
@@ -159,6 +178,7 @@
     <message>
         <location filename="../config/configpanelwidget.ui" line="224"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="456"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="456"/>
         <location filename="../config/configpanelwidget.cpp" line="236"/>
         <location filename="../config/configpanelwidget.cpp" line="242"/>
         <source>Center</source>
@@ -167,6 +187,7 @@
     <message>
         <location filename="../config/configpanelwidget.ui" line="229"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="457"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="457"/>
         <location filename="../config/configpanelwidget.cpp" line="237"/>
         <source>Right</source>
         <translation>右</translation>
@@ -174,12 +195,14 @@
     <message>
         <location filename="../config/configpanelwidget.ui" line="237"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="459"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="459"/>
         <source>Position:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="250"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="460"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="460"/>
         <source>A&amp;uto-hide</source>
         <translation></translation>
     </message>
@@ -188,12 +211,15 @@
         <location filename="../config/configpanelwidget.ui" line="285"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="462"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="466"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="462"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="466"/>
         <source>Zero means no animation</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="265"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="464"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="464"/>
         <source>Animation duration:</source>
         <translation></translation>
     </message>
@@ -202,6 +228,8 @@
         <location filename="../config/configpanelwidget.ui" line="314"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="468"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="476"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="468"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="476"/>
         <source> ms</source>
         <translation></translation>
     </message>
@@ -210,72 +238,85 @@
         <location filename="../config/configpanelwidget.ui" line="311"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="470"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="474"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="470"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="474"/>
         <source>Zero means no delay</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="304"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="472"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="472"/>
         <source>Show with delay:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="327"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="477"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="477"/>
         <source>Visible thin margin for hidden panel</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="337"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="479"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="479"/>
         <source>Don&apos;t allow maximized windows go under the panel window</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="340"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="481"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="481"/>
         <source>Reserve space on display</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="356"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="482"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="482"/>
         <source>Custom styling</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="377"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="483"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="483"/>
         <source>Font color:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="417"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="485"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="485"/>
         <source>Background color:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="456"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="487"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="487"/>
         <source>Background opacity:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="488"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="488"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="488"/>
         <source>&lt;small&gt;Compositing is required for panel transparency.&lt;/small&gt;</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="516"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="489"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="489"/>
         <source>Background image:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="568"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="492"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="492"/>
         <source>A partial workaround for widget styles that
 cannot give a separate theme to the panel.
 
@@ -289,12 +330,14 @@ Colorize icons based on widget style (palette)</source>
     <message>
         <location filename="../config/configpanelwidget.ui" line="578"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="501"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="501"/>
         <source>Override icon &amp;theme</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="593"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="502"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="502"/>
         <source>Icon theme for panels:</source>
         <translation></translation>
     </message>
@@ -370,18 +413,21 @@ Colorize icons based on widget style (palette)</source>
     <message>
         <location filename="../config/configpluginswidget.ui" line="14"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="182"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="182"/>
         <source>Configure Plugins</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpluginswidget.ui" line="84"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="183"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="183"/>
         <source>Note: changes made in this page cannot be reset.</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpluginswidget.ui" line="112"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="185"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="185"/>
         <source>Move up</source>
         <translation></translation>
     </message>
@@ -396,30 +442,39 @@ Colorize icons based on widget style (palette)</source>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="195"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="199"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="203"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="187"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="191"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="195"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="199"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="203"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpluginswidget.ui" line="126"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="189"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="189"/>
         <source>Move down</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpluginswidget.ui" line="147"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="193"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="193"/>
         <source>Add</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpluginswidget.ui" line="161"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="197"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="197"/>
         <source>Remove</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../config/configpluginswidget.ui" line="182"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="201"/>
+        <location filename="../../obj-x86_64-linux-gnu/panel/ukui-panel_autogen/include/ui_configpluginswidget.h" line="201"/>
         <source>Configure</source>
         <translation></translation>
     </message>
@@ -427,7 +482,7 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>IndicatorCalendar</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="429"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="430"/>
         <source>&apos;&lt;b&gt;&apos;HH:mm:ss&apos;&lt;/b&gt;&lt;br/&gt;&lt;font size=&quot;-2&quot;&gt;&apos;ddd, d MMM yyyy&apos;&lt;br/&gt;&apos;TT&apos;&lt;/font&gt;&apos;</source>
         <translation></translation>
     </message>
@@ -437,6 +492,7 @@ Colorize icons based on widget style (palette)</source>
     <message>
         <location filename="../../ukui-flash-disk/mainwindow.ui" line="14"/>
         <location filename="../../build/ukui-flash-disk/ukui-flash-disk_autogen/include/ui_mainwindow.h" line="40"/>
+        <location filename="../../obj-x86_64-linux-gnu/ukui-flash-disk/ukui-flash-disk_autogen/include/ui_mainwindow.h" line="40"/>
         <location filename="../../ukui-flash-disk/ui_mainwindow.h" line="40"/>
         <source>MainWindow</source>
         <translation></translation>
@@ -457,55 +513,42 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>NightModeButton</name>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="111"/>
-        <source>please install Newest ukui-control-center first</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="186"/>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="241"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="158"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="207"/>
         <source>please install new ukui-control-center first</source>
         <translation>请先安装最新的控制面板</translation>
     </message>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="197"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="169"/>
         <source>Turn On NightMode</source>
         <translation>夜间模式</translation>
     </message>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="204"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="176"/>
         <source>Set Up NightMode</source>
         <translation>设置夜间模式</translation>
     </message>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="288"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="252"/>
         <source>nightmode open</source>
         <translation>夜间模式开启</translation>
     </message>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="295"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="258"/>
         <source>nightmode close</source>
         <translation>夜间模式关闭</translation>
     </message>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="314"/>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="324"/>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="336"/>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="346"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="273"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="278"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="285"/>
+        <location filename="../../plugin-nightmode/nightmode.cpp" line="289"/>
         <source>don&apos;t contains the keys style-name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="315"/>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="337"/>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="347"/>
-        <source>please install ukui-theme first</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-nightmode/nightmode.cpp" line="325"/>
         <source>please install gtk-theme first</source>
-        <translation>请先安装gtk主题</translation>
+        <translation type="vanished">请先安装gtk主题</translation>
     </message>
 </context>
 <context>
@@ -625,30 +668,35 @@ Colorize icons based on widget style (palette)</source>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="14"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="94"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="94"/>
         <source>Spacer Settings</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="20"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="95"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="95"/>
         <source>Space width:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="40"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="96"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="96"/>
         <source>Space type:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="57"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="97"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="97"/>
         <source>fixed</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="71"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="98"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="98"/>
         <source>expandable</source>
         <translation></translation>
     </message>
@@ -701,6 +749,14 @@ Colorize icons based on widget style (palette)</source>
         <location filename="../../plugin-taskview/taskview.cpp" line="48"/>
         <source>Show Taskview</source>
         <translation>显示预览窗口</translation>
+    </message>
+</context>
+<context>
+    <name>TrayPlugin</name>
+    <message>
+        <location filename="../../plugin-ddetray/trayplugin.cpp" line="93"/>
+        <source>System Tray</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -810,19 +866,19 @@ Do you want to remove this panel?</source>
 <context>
     <name>UKUIQuickLaunch</name>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="528"/>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="562"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="550"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="635"/>
         <source>Drop Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="529"/>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="563"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="551"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="636"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="767"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="840"/>
         <source>Drop application
 icons here</source>
         <translation></translation>
@@ -839,8 +895,9 @@ icons here</source>
         <translation type="vanished">切换用户</translation>
     </message>
     <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="113"/>
         <source>Logout</source>
-        <translation type="vanished">注销</translation>
+        <translation>注销</translation>
     </message>
     <message>
         <source>Reboot</source>
@@ -851,27 +908,51 @@ icons here</source>
         <translation type="vanished">关闭计算机</translation>
     </message>
     <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="97"/>
+        <source>User Action</source>
+        <translation>用户操作</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="98"/>
+        <source>Sleep or Hibernate</source>
+        <translation>睡眠或休眠</translation>
+    </message>
+    <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="99"/>
+        <source>Power Supply</source>
+        <translation>电源</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="105"/>
         <source>Lock Screen</source>
         <translation>锁屏</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="103"/>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="109"/>
         <source>Switch User</source>
         <translation>切换用户</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="108"/>
-        <source>LogOut</source>
-        <translation>注销</translation>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="117"/>
+        <source>Sleep Mode</source>
+        <translation>睡眠</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="113"/>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="121"/>
+        <source>Hibernate Mode</source>
+        <translation>休眠</translation>
+    </message>
+    <message>
+        <source>LogOut</source>
+        <translation type="vanished">注销</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="125"/>
         <source>Restart</source>
         <translation>重启</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="118"/>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="129"/>
         <source>Power Off</source>
         <translation>关机</translation>
     </message>
@@ -879,97 +960,97 @@ icons here</source>
 <context>
     <name>UKUITaskButton</name>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="544"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="543"/>
         <source>Application</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="578"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="577"/>
         <source>To &amp;Desktop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="580"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="579"/>
         <source>&amp;All Desktops</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="588"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="587"/>
         <source>Desktop &amp;%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="595"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="594"/>
         <source>&amp;To Current Desktop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="603"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="602"/>
         <source>&amp;Move</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="606"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="605"/>
         <source>Resi&amp;ze</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="613"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="612"/>
         <source>Ma&amp;ximize</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="620"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="619"/>
         <source>Maximize vertically</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="625"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="624"/>
         <source>Maximize horizontally</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="631"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="630"/>
         <source>&amp;Restore</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="635"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="634"/>
         <source>Mi&amp;nimize</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="641"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="640"/>
         <source>Roll down</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="647"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="646"/>
         <source>Roll up</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="655"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="654"/>
         <source>&amp;Layer</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="657"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="656"/>
         <source>Always on &amp;top</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="663"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="662"/>
         <source>&amp;Normal</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="669"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="668"/>
         <source>Always on &amp;bottom</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="677"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="676"/>
         <source>&amp;Close</source>
         <translation>&amp;关闭</translation>
     </message>
@@ -977,12 +1058,12 @@ icons here</source>
 <context>
     <name>UKUITaskGroup</name>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="194"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="193"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="196"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="195"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
@@ -990,127 +1071,89 @@ icons here</source>
 <context>
     <name>UKUITaskbarConfiguration</name>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="14"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="214"/>
         <source>Task Manager Settings</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="20"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="215"/>
         <source>General</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="43"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="216"/>
         <source>Show only windows from desktop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="55"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="217"/>
         <source>Show only windows from &amp;panel&apos;s screen</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="62"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="218"/>
         <source>Show only minimized windows</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="69"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="219"/>
         <source>Raise minimized windows on current desktop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="76"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="220"/>
         <source>Close on middle-click</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="83"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="221"/>
         <source>Cycle windows on wheel scrolling</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="93"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="222"/>
         <source>Window &amp;grouping</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="102"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="223"/>
         <source>Show popup on mouse hover</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="112"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="224"/>
         <source>Appearance</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="121"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="225"/>
         <source>Button style</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="131"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="226"/>
         <source>Maximum button width</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="144"/>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="170"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="227"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="229"/>
         <source> px</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="157"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="228"/>
         <source>Maximum button height</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="183"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="230"/>
         <source>Auto&amp;rotate buttons when the panel is vertical</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="190"/>
         <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="231"/>
         <source>Use icons by WindowClass, if available</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.cpp" line="43"/>
-        <source>Icon and text</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.cpp" line="44"/>
-        <source>Only icon</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.cpp" line="45"/>
-        <source>Only text</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.cpp" line="47"/>
-        <source>Current</source>
         <translation></translation>
     </message>
 </context>
@@ -1274,6 +1317,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-calendar/ukuiwebviewdialog.ui" line="13"/>
         <location filename="../../build/plugin-calendar/calendar_autogen/include/ui_ukuiwebviewdialog.h" line="35"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-calendar/calendar_autogen/include/ui_ukuiwebviewdialog.h" line="35"/>
         <source>Dialog</source>
         <translation></translation>
     </message>
