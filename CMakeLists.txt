@@ -136,6 +136,13 @@ if(TRAY_PLUGIN)
     add_subdirectory(plugin-tray)
 endif()
 
+setByDefault(STATUSNOTIFIER_PLUGIN Yes)
+if(STATUSNOTIFIER_PLUGIN)
+    list(APPEND STATIC_PLUGINS "statusnotifier")
+    add_definitions(-DWITH_STATUSNOTIFIER_PLUGIN)
+    list(APPEND ENABLED_PLUGINS "Status Notifier")
+    add_subdirectory(plugin-statusnotifier)
+endif()
 
 setByDefault(SPACER_PLUGIN Yes)
 if(SPACER_PLUGIN)

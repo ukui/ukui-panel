@@ -88,6 +88,10 @@ extern void * loadPluginTranslation_taskbar_helper;
 #include "../plugin-tray/ukuitrayplugin.h" // tray
 extern void * loadPluginTranslation_tray_helper;
 #endif
+#if defined(WITH_QUICKLAUNCH_PLUGIN)
+#include "../plugin-statusnotifier/statusnotifier.h" // statusnotifier
+extern void * loadPluginTranslation_quicklaunch_helper;
+#endif
 #if defined(WITH_WORLDCLOCK_PLUGIN)
 #include "../plugin-worldclock/ukuiworldclock.h" // worldclock
 extern void * loadPluginTranslation_worldclock_helper;
@@ -271,6 +275,9 @@ namespace
 #if defined(WITH_TRAY_PLUGIN)
         std::make_tuple(QLatin1String("tray"), plugin_ptr_t{new UKUITrayPluginLibrary}, loadPluginTranslation_tray_helper),// tray
 #endif
+    #if defined(WITH_QUICKLAUNCH_PLUGIN)
+            std::make_tuple(QLatin1String("statusnotifier"), plugin_ptr_t{new StatusNotifierLibrary}, loadPluginTranslation_statusnotifier_helper),// quicklaunch
+    #endif
 #if defined(WITH_WORLDCLOCK_PLUGIN)
         std::make_tuple(QLatin1String("worldclock"), plugin_ptr_t{new UKUiWorldClockLibrary}, loadPluginTranslation_worldclock_helper),// worldclock
 #endif
