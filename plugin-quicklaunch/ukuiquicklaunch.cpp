@@ -115,72 +115,8 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
         }
     });
 
-    QString desktop;
-    QString file;
-    QString execname;
-    QString exec;
-    QString icon;
-
-    //gsetting的方式读取写入 apps
-    const auto apps = mPlugin->settings()->readArray("apps");
-    for (const QMap<QString, QVariant> &app : apps)
-    {
-        desktop = app.value("desktop", "").toString();
-        file = app.value("file", "").toString();
-        if (!desktop.isEmpty())
-        {
-            XdgDesktopFile xdg;
-            if (!xdg.load(desktop))
-            {
-                qDebug() << "XdgDesktopFile" << desktop << "is not valid";
-                continue;
-            }
-            if (!xdg.isSuitable())
-            {
-                qDebug() << "XdgDesktopFile" << desktop << "is not applicable";
-                continue;
-            }
-
-            addButton(new QuickLaunchAction(&xdg, this));
-        }
-        else if (! file.isEmpty())
-        {
-            addButton(new QuickLaunchAction(file, this));
-        }
-        else
-        {
-            execname = app.value("name", "").toString();
-            exec = app.value("exec", "").toString();
-            icon = app.value("icon", "").toString();
-            if (icon.isNull())
-            {
-                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
-                continue;
-            }
-            addButton(new QuickLaunchAction(execname, exec, icon, this));
-        }
-    } // for
-
-//    if (mLayout->isEmpty())
-//        showPlaceHolder();int counts = countOfButtons();
-    int i = 0;
-    int counts = countOfButtons();
-    int shows = (counts < 5 ? counts : 5);
-    while (i != counts && shows) {
-        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-        if (shows) {
-            b->setHidden(0);
-            qcklchShow.insert(show_num++, b);
-            --shows;
-        } else {
-            b->setHidden(1);
-        }
-        ++i;
-    }
-    realign();
-    mLayout->addWidget(tmpwidget);
+    refreshQuickLaunch();
     /*监听系统应用的目录以及安卓兼容应用的目录*/
-
     fsWatcher=new QFileSystemWatcher(this);
     fsWatcher->addPath(desktopFilePath);
     fsWatcher->addPath(androidDesktopFilePath);
@@ -200,6 +136,61 @@ UKUIQuickLaunch::~UKUIQuickLaunch()
         mVBtn.erase(it);
     }
     mVBtn.clear();
+}
+
+/*任务栏刷新  在快读启动栏初始化和云账户同步的时候调用*/
+void UKUIQuickLaunch::refreshQuickLaunch(){
+    for(auto it = mVBtn.begin(); it != mVBtn.end();)
+    {
+        (*it)->deleteLater();
+        mVBtn.erase(it);
+    }
+
+    QString desktop;
+    QString file;
+    QString execname;
+    QString exec;
+    QString icon;
+    //qsetting的方式读取写入 apps
+    const auto apps = mPlugin->settings()->readArray("apps");
+    for (const QMap<QString, QVariant> &app : apps)
+    {
+        desktop = app.value("desktop", "").toString();
+        file = app.value("file", "").toString();
+        if (!desktop.isEmpty())
+        {
+            XdgDesktopFile xdg;
+            !xdg.load(desktop);
+            addButton(new QuickLaunchAction(&xdg, this));
+        }
+        else if (! file.isEmpty())
+        {
+            addButton(new QuickLaunchAction(file, this));
+        }
+        else
+        {
+            execname = app.value("name", "").toString();
+            exec = app.value("exec", "").toString();
+            icon = app.value("icon", "").toString();
+            addButton(new QuickLaunchAction(execname, exec, icon, this));
+        }
+    }
+    int i = 0;
+    int counts = countOfButtons();
+    int shows = (counts < 5 ? counts : 5);
+    while (i != counts && shows) {
+        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
+        if (shows) {
+            b->setHidden(0);
+            qcklchShow.insert(show_num++, b);
+            --shows;
+        } else {
+            b->setHidden(1);
+        }
+        ++i;
+    }
+    realign();
+    mLayout->addWidget(tmpwidget);
 }
 
 void UKUIQuickLaunch::PageUp() {
