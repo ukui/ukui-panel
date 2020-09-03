@@ -264,10 +264,11 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(mStandaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
-
+qDebug()<<"666";
     const QByteArray panelhide_id(PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(panelhide_id)){
         panelhide_gsettings = new QGSettings(panelhide_id);
+        qDebug()<<"7777";
     }
     connect(panelhide_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==PANEL_HIDE)
@@ -285,7 +286,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
-
+  qDebug()<<"888";
     const QByteArray panelmodel_id(PANELMODEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(panelmodel_id)){
         panelmodel_gsettings = new QGSettings(panelmodel_id);
@@ -1451,19 +1452,36 @@ void UKUIPanel::showEvent(QShowEvent *event)
 void UKUIPanel::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    p.setPen(Qt::NoPen);
-    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-    QColor color = palette().color(QPalette::Base);
-    color.setAlpha(tran);
-    QBrush brush = QBrush(color);
-    p.setBrush(brush);
+       opt.init(this);
+       QPainter p(this);
+       p.setPen(Qt::NoPen);
+       double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+       p.setBrush(QBrush(QColor(250,250,250,tran)));
+       p.setRenderHint(QPainter::Antialiasing);
+       p.drawRoundedRect(opt.rect,20,90);
+       if(mModel)//change li
+       {
+          // p.setClipRegion(QRegion(width()/2 - 100,height()/2 - 100,200,200)); //设置一个裁剪区域
 
-    p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,20,90);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
+
+           //change li
+           QPainterPath path;
+           QPainter painter(this);
+           path.setFillRule( Qt::WindingFill );   //设置填充方式
+           path.addRoundedRect (opt.rect, 10.0, 10.0);
+           QRect temp_rect(opt.rect.left(), opt.rect.top()+opt.rect.height()/2, opt.rect.width(), opt.rect.height()/2);
+           path.addRect(temp_rect);
+           painter.fillPath(path,  QBrush(QColor(250, 250, 250)));
+           painter.setRenderHint(QPainter::Antialiasing);
+
+           QPainter pain(this);
+           QPixmap pix;
+           pix.load("/usr/share/ukui-panel/panel/img/panel_mid.jpg");
+           pain.drawPixmap(600,0,33,33,pix);
+
+       }
+       style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+   }
 
 
 /*Right-Clicked Menu of ukui-panel
