@@ -285,12 +285,11 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
-
     const QByteArray panelmodel_id(PANELMODEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(panelmodel_id)){
         panelmodel_gsettings = new QGSettings(panelmodel_id);
+         panelmodel_gsettings->set(PANEL_MODEL,false);
         }
-    panelmodel_gsettings->set(PANEL_MODEL,false);
     connect(panelmodel_gsettings, &QGSettings::changed, this, [=] (const QString &key){
       //  if(key==PANEL_MODEL)
             mModel=panelmodel_gsettings->get(PANEL_MODEL).toBool();
@@ -619,7 +618,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
         rect.setHeight(qMax(PANEL_MINIMUM_SIZE, mPanelSize));
         if(mModel){
             if (mLengthInPercents){
-                rect.setWidth(currentScreen.width() * mLength / 150.0);
+                rect.setWidth(currentScreen.width() * mLength / 105.0);
             }
             else
             {
@@ -1118,10 +1117,9 @@ void UKUIPanel::showTaskView()
             gsettings->set(SHOW_TASKVIEW,true);
     }
 }
-
+/*右键　隐藏任务栏　选项*/
 void UKUIPanel::panelhide()
 {
-   // qDebug()<<"hide is :"<<hide;
 if(gsettings->get(PANEL_HIDE).toBool()){
             gsettings->set(PANEL_HIDE,false);
             mHideTimer.stop();

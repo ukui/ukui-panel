@@ -36,12 +36,12 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1016"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1017"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1020"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1021"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>
@@ -427,7 +427,7 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>IndicatorCalendar</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="429"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="430"/>
         <source>&apos;&lt;b&gt;&apos;HH:mm:ss&apos;&lt;/b&gt;&lt;br/&gt;&lt;font size=&quot;-2&quot;&gt;&apos;ddd, d MMM yyyy&apos;&lt;br/&gt;&apos;TT&apos;&lt;/font&gt;&apos;</source>
         <translation></translation>
     </message>
@@ -613,6 +613,33 @@ Colorize icons based on widget style (palette)</source>
     </message>
 </context>
 <context>
+    <name>SearchWindow</name>
+    <message>
+        <location filename="../../plugin-assistant/searchwindow.ui" line="14"/>
+        <location filename="../../build/plugin-assistant/assistant_autogen/include/ui_searchwindow.h" line="103"/>
+        <source>搜索</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugin-assistant/searchwindow.ui" line="45"/>
+        <location filename="../../build/plugin-assistant/assistant_autogen/include/ui_searchwindow.h" line="104"/>
+        <source>文件搜索</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugin-assistant/searchwindow.ui" line="52"/>
+        <location filename="../../build/plugin-assistant/assistant_autogen/include/ui_searchwindow.h" line="105"/>
+        <source>应用搜索</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugin-assistant/searchwindow.ui" line="59"/>
+        <location filename="../../build/plugin-assistant/assistant_autogen/include/ui_searchwindow.h" line="106"/>
+        <source>全网搜索</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ShowDesktop</name>
     <message>
         <location filename="../../plugin-showdesktop/showdesktop.cpp" line="47"/>
@@ -706,32 +733,32 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>UKUIPanel</name>
     <message>
-        <location filename="../ukuipanel.cpp" line="1285"/>
+        <location filename="../ukuipanel.cpp" line="1492"/>
         <source>Panel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1325"/>
+        <location filename="../ukuipanel.cpp" line="1532"/>
         <source>Set up Panel</source>
         <translation>设置任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1331"/>
+        <location filename="../ukuipanel.cpp" line="1538"/>
         <source>Show Taskview</source>
         <translation>显示任务视图按钮</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1346"/>
+        <location filename="../ukuipanel.cpp" line="1562"/>
         <source>Show Desktop</source>
         <translation>显示桌面</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1353"/>
+        <location filename="../ukuipanel.cpp" line="1569"/>
         <source>Show System Monitor</source>
         <translation>系统监视器</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="862"/>
+        <location filename="../ukuipanel.cpp" line="1027"/>
         <source>Small</source>
         <translation>小尺寸</translation>
     </message>
@@ -740,68 +767,73 @@ Colorize icons based on widget style (palette)</source>
         <translation type="vanished">中尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="864"/>
+        <location filename="../ukuipanel.cpp" line="1029"/>
         <source>Medium</source>
         <translation>中尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="866"/>
+        <location filename="../ukuipanel.cpp" line="1031"/>
         <source>Large</source>
         <translation>大尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="871"/>
+        <location filename="../ukuipanel.cpp" line="1036"/>
         <source>Adjustment Size</source>
         <translation>调整大小</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="904"/>
+        <location filename="../ukuipanel.cpp" line="1069"/>
         <source>Up</source>
         <translation>上</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="906"/>
+        <location filename="../ukuipanel.cpp" line="1071"/>
         <source>Bottom</source>
         <translation>下</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="908"/>
+        <location filename="../ukuipanel.cpp" line="1073"/>
         <source>Left</source>
         <translation>左</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="910"/>
+        <location filename="../ukuipanel.cpp" line="1075"/>
         <source>Right</source>
         <translation>右</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="913"/>
+        <location filename="../ukuipanel.cpp" line="1078"/>
         <source>Adjustment Position</source>
         <translation>调整位置</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1338"/>
+        <location filename="../ukuipanel.cpp" line="1544"/>
+        <source>hide panel</source>
+        <translation>隐藏任务栏</translation>
+    </message>
+    <message>
+        <location filename="../ukuipanel.cpp" line="1554"/>
         <source>Show Nightmode</source>
         <translation>显示夜间模式按钮</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1377"/>
+        <location filename="../ukuipanel.cpp" line="1593"/>
         <source>Lock This Panel</source>
         <translation>锁定任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1394"/>
+        <location filename="../ukuipanel.cpp" line="1610"/>
         <source>About Kylin</source>
         <translation>关于麒麟</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1551"/>
+        <location filename="../ukuipanel.cpp" line="1767"/>
         <source>Remove Panel</source>
         <comment>Dialog Title</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1552"/>
+        <location filename="../ukuipanel.cpp" line="1768"/>
         <source>Removing a panel can not be undone.
 Do you want to remove this panel?</source>
         <translation></translation>
@@ -810,19 +842,19 @@ Do you want to remove this panel?</source>
 <context>
     <name>UKUIQuickLaunch</name>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="528"/>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="562"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="550"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="635"/>
         <source>Drop Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="529"/>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="563"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="551"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="636"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="767"/>
+        <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="840"/>
         <source>Drop application
 icons here</source>
         <translation></translation>
@@ -839,8 +871,9 @@ icons here</source>
         <translation type="vanished">切换用户</translation>
     </message>
     <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="113"/>
         <source>Logout</source>
-        <translation type="vanished">注销</translation>
+        <translation>注销</translation>
     </message>
     <message>
         <source>Reboot</source>
@@ -851,27 +884,51 @@ icons here</source>
         <translation type="vanished">关闭计算机</translation>
     </message>
     <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="97"/>
+        <source>User Action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="98"/>
+        <source>Sleep or Hibernate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="99"/>
+        <source>Power Supply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="105"/>
         <source>Lock Screen</source>
         <translation>锁屏</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="103"/>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="109"/>
         <source>Switch User</source>
         <translation>切换用户</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="108"/>
-        <source>LogOut</source>
-        <translation>注销</translation>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="117"/>
+        <source>Sleep Mode</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="113"/>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="121"/>
+        <source>Hibernate Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LogOut</source>
+        <translation type="vanished">注销</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="125"/>
         <source>Restart</source>
         <translation>重启</translation>
     </message>
     <message>
-        <location filename="../../plugin-startmenu/startmenu.cpp" line="118"/>
+        <location filename="../../plugin-startmenu/startmenu.cpp" line="129"/>
         <source>Power Off</source>
         <translation>关机</translation>
     </message>
@@ -879,97 +936,97 @@ icons here</source>
 <context>
     <name>UKUITaskButton</name>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="544"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="543"/>
         <source>Application</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="578"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="577"/>
         <source>To &amp;Desktop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="580"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="579"/>
         <source>&amp;All Desktops</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="588"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="587"/>
         <source>Desktop &amp;%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="595"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="594"/>
         <source>&amp;To Current Desktop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="603"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="602"/>
         <source>&amp;Move</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="606"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="605"/>
         <source>Resi&amp;ze</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="613"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="612"/>
         <source>Ma&amp;ximize</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="620"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="619"/>
         <source>Maximize vertically</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="625"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="624"/>
         <source>Maximize horizontally</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="631"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="630"/>
         <source>&amp;Restore</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="635"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="634"/>
         <source>Mi&amp;nimize</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="641"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="640"/>
         <source>Roll down</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="647"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="646"/>
         <source>Roll up</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="655"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="654"/>
         <source>&amp;Layer</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="657"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="656"/>
         <source>Always on &amp;top</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="663"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="662"/>
         <source>&amp;Normal</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="669"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="668"/>
         <source>Always on &amp;bottom</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="677"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="676"/>
         <source>&amp;Close</source>
         <translation>&amp;关闭</translation>
     </message>
@@ -977,141 +1034,14 @@ icons here</source>
 <context>
     <name>UKUITaskGroup</name>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="194"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="193"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="196"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="195"/>
         <source>close</source>
         <translation>关闭</translation>
-    </message>
-</context>
-<context>
-    <name>UKUITaskbarConfiguration</name>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="14"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="214"/>
-        <source>Task Manager Settings</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="20"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="215"/>
-        <source>General</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="43"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="216"/>
-        <source>Show only windows from desktop</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="55"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="217"/>
-        <source>Show only windows from &amp;panel&apos;s screen</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="62"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="218"/>
-        <source>Show only minimized windows</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="69"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="219"/>
-        <source>Raise minimized windows on current desktop</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="76"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="220"/>
-        <source>Close on middle-click</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="83"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="221"/>
-        <source>Cycle windows on wheel scrolling</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="93"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="222"/>
-        <source>Window &amp;grouping</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="102"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="223"/>
-        <source>Show popup on mouse hover</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="112"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="224"/>
-        <source>Appearance</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="121"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="225"/>
-        <source>Button style</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="131"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="226"/>
-        <source>Maximum button width</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="144"/>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="170"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="227"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="229"/>
-        <source> px</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="157"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="228"/>
-        <source>Maximum button height</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="183"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="230"/>
-        <source>Auto&amp;rotate buttons when the panel is vertical</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.ui" line="190"/>
-        <location filename="../../build/plugin-taskbar/taskbar_autogen/include/ui_ukuitaskbarconfiguration.h" line="231"/>
-        <source>Use icons by WindowClass, if available</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.cpp" line="43"/>
-        <source>Icon and text</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.cpp" line="44"/>
-        <source>Only icon</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.cpp" line="45"/>
-        <source>Only text</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../plugin-taskbar/ukuitaskbarconfiguration.cpp" line="47"/>
-        <source>Current</source>
-        <translation></translation>
     </message>
 </context>
 <context>

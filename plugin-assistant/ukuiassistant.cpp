@@ -57,7 +57,7 @@ UKUIAssistantButton::UKUIAssistantButton( IUKUIPanelPlugin *plugin, QWidget* par
 {
 
  //   this->setIcon(QIcon::fromTheme("docviewer-app-symbolic"));
-    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/search.png"));
+    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/search.svg"));
     this->setStyle(new CustomStyle());
 //    this->setWindowFlags(Qt::NoFocus);
     setAttribute(Qt::WA_X11DoNotAcceptFocus, true);

@@ -22,21 +22,22 @@
         </filter>
     </defs>
     <g id="Icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icon-Sets" transform="translate(-85.000000, -131.000000)">
-            <rect fill="#FFFFFF" x="0" y="0" width="706" height="357"></rect>
-            <g id="icon-任务视图-任务栏" transform="translate(85.000000, 131.000000)">
-                <rect id="矩形备份-2" fill="#000000" opacity="0" x="0" y="0" width="32" height="32"></rect>
-                <g id="矩形备份-17" opacity="0.649999976">
-                    <use fill="#7385A6" fill-rule="evenodd" xlink:href="#path-1"></use>
-                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-                </g>
-                <g id="矩形备份-18" opacity="0.649999976">
-                    <use fill="#7385A6" fill-rule="evenodd" xlink:href="#path-3"></use>
-                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
-                </g>
-                <g id="矩形">
-                    <use fill="#7385A6" fill-rule="evenodd" xlink:href="#path-5"></use>
-                    <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+        <g id="Icon-Sets" transform="translate(-77.000000, -153.000000)">
+            <g id="任务栏" transform="translate(27.000000, 110.000000)">
+                <g id="icon-任务视图-任务栏" transform="translate(50.000000, 43.000000)">
+                    <rect id="矩形备份-2" fill="#000000" opacity="0" x="0" y="0" width="32" height="32"></rect>
+                    <g id="矩形备份-17" opacity="0.649999976">
+                        <use fill="#7385A6" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="矩形备份-18" opacity="0.649999976">
+                        <use fill="#7385A6" fill-rule="evenodd" xlink:href="#path-3"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    </g>
+                    <g id="矩形">
+                        <use fill="#7385A6" fill-rule="evenodd" xlink:href="#path-5"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                    </g>
                 </g>
             </g>
         </g>
