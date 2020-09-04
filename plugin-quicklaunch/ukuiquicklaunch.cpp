@@ -160,7 +160,16 @@ void UKUIQuickLaunch::refreshQuickLaunch(){
         if (!desktop.isEmpty())
         {
             XdgDesktopFile xdg;
-            !xdg.load(desktop);
+            if (!xdg.load(desktop))
+            {
+                qDebug() << "XdgDesktopFile" << desktop << "is not valid";
+                continue;
+            }
+            if (!xdg.isSuitable())
+            {
+                qDebug() << "XdgDesktopFile" << desktop << "is not applicable";
+                continue;
+            }
             addButton(new QuickLaunchAction(&xdg, this));
         }
         else if (! file.isEmpty())
