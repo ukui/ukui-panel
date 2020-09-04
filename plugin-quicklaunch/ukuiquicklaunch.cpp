@@ -181,6 +181,11 @@ void UKUIQuickLaunch::refreshQuickLaunch(){
             execname = app.value("name", "").toString();
             exec = app.value("exec", "").toString();
             icon = app.value("icon", "").toString();
+	    if (icon.isNull())
+            {
+                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
+                continue;
+            }
             addButton(new QuickLaunchAction(execname, exec, icon, this));
         }
     }
