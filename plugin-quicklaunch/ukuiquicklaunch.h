@@ -79,6 +79,7 @@ public:
    UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     ~UKUIQuickLaunch();
 
+    void refreshQuickLaunch();
     int indexOfButton(QuickLaunchButton* button) const;
     int countOfButtons() const;
 
