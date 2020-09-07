@@ -165,6 +165,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     createIconMap();
     realign();
     changeIcon();
+    QTimer::singleShot(3000,this,SLOT(realign()));
 }
 
 
