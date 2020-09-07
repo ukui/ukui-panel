@@ -85,7 +85,6 @@ public:
     void setIconSize();
     void setStorageBar(TrayStorage *pTys);
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
-    void realign();
     UKUITrayPlugin *mPlugin;
 
     //control app show in tray/traystorege  by ukui-control-center
@@ -99,6 +98,7 @@ public:
 public slots:
     void storageBar();
     void changeIcon();
+    void realign();
 
 signals:
     void iconSizeChanged(int iconSize);
