@@ -227,7 +227,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     QPalette pal(btnup->palette());
     pal.setColor(QPalette::Button, Qt::white);
     btnup->setPalette(pal);
-    btnup->setIcon(QIcon("/usr/share/ukui-panel/panel/img/panel_mid.jpg"));
+    btnup->setIcon(QIcon("/usr/share/ukui-panel/panel/img/panel_mid.png"));
 
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);
