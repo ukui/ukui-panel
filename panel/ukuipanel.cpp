@@ -221,6 +221,14 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     padmodel->onRemovePlugin();
     pcmodel->onRemovePlugin();
 
+    //pad-up button
+    btnup=new QPushButton(this);
+    btnup->move((this->width()-btnup->width()/2),btnup->height()/3);
+    QPalette pal(btnup->palette());
+    pal.setColor(QPalette::Button, Qt::white);
+    btnup->setPalette(pal);
+    btnup->setIcon(QIcon("/usr/share/ukui-panel/panel/img/panel_mid.jpg"));
+
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);
     UKUIPanelWidget->setObjectName("BackgroundWidget");
@@ -300,10 +308,12 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         if(!stModel==mModel){
             if(mModel){
                 mHidable=true;
+                btnup->show();
                 resetloadPluginspad(padmodel,pcmodel);
             }
             else{
                 mHidable=false;
+                btnup->hide();
                 resetloadPluginspc(pcmodel,padmodel);
             }
             stModel=mModel;
@@ -1460,6 +1470,16 @@ void UKUIPanel::paintEvent(QPaintEvent *)
 
     p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,20,90);
+    if(mModel)
+    {
+        QPainterPath path;
+        QPainter painter(this);
+        path.setFillRule( Qt::WindingFill );   //设置填充方式
+        path.addRoundedRect (opt.rect, 10.0, 10.0);
+        QRect temp_rect(opt.rect.left(), opt.rect.top()+opt.rect.height()/2, opt.rect.width(), opt.rect.height()/2);
+        path.addRect(temp_rect);
+        painter.fillPath(path,  QBrush(QColor(color)));
+    }
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 

@@ -41,6 +41,7 @@
 #include "popupmenu.h"
 #include "ukuipanelglobals.h"
 #include "highlight-effect.h"
+#include <QPushButton>
 
 class QMenu;
 class Plugin;
@@ -105,6 +106,7 @@ public:
         AlignmentRight  =  1 //!< Align the panel to the right or bottom
     };
 
+    QPushButton *btnup;
     /**
      * @brief Creates and initializes the UKUIPanel. Performs the following
      * steps:
