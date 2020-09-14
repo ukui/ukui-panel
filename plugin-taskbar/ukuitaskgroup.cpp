@@ -150,7 +150,6 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
     connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(onActiveWindowChanged(WId)));
-    connect(parent, &UKUITaskBar::buttonRotationRefreshed, this, &UKUITaskGroup::setAutoRotation);
     connect(parent, &UKUITaskBar::refreshIconGeometry, this, &UKUITaskGroup::refreshIconsGeometry);
     connect(parent, &UKUITaskBar::buttonStyleRefreshed, this, &UKUITaskGroup::setToolButtonsStyle);
     connect(parent, &UKUITaskBar::showOnlySettingChanged, this, &UKUITaskGroup::refreshVisibility);
@@ -211,7 +210,7 @@ void UKUITaskGroup::closeGroup()
     //To Do
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(auto it=mButtonHash.begin();it!=mButtonHash.end();it++)
-    {  
+    {
     UKUITaskWidget *button =it.value();
   if (button->isOnDesktop(KWindowSystem::currentDesktop()))
             button->closeApplication();
@@ -1260,56 +1259,62 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             imgWidth = THUMBNAIL_WIDTH;
             imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH;
         }
-        if(img)
+        if (plugin()->panel()->isHorizontal())
         {
-            if (plugin()->panel()->isHorizontal())
+            if (attr.height != max_Height)
             {
-                if (attr.height != max_Height)
-                {
-                    float tmp = (float)attr.height / (float)max_Height;
-                    imgHeight =  imgHeight * tmp;
-                }
-                if ((int)imgWidth > (int)minimumWidth)
-                {
-                    imgWidth = minimumWidth;
-                }
-                if (btn->isVisibleTo(mPopup)) {
-                    v_all += (int)imgWidth;
-                    imgWidth_sum += (int)imgWidth;
-                }
-                if (mVisibleHash.size() == 1 ) changed = (int)imgWidth;
+                float tmp = (float)attr.height / (float)max_Height;
+                imgHeight =  imgHeight * tmp;
+            }
+            if ((int)imgWidth > (int)minimumWidth)
+            {
+                imgWidth = minimumWidth;
+            }
+            if (btn->isVisibleTo(mPopup)) {
+                v_all += (int)imgWidth;
+                imgWidth_sum += (int)imgWidth;
+            }
+            if (mVisibleHash.size() == 1 ) changed = (int)imgWidth;
+            btn->setThumbMaximumSize(MAX_SIZE_OF_Thumb);
+            btn->setThumbScale(true);
+        } else {
+            if (attr.width != max_Width)
+            {
+                float tmp = (float)attr.width / (float)max_Width;
+                imgWidth =  imgWidth * tmp;
+            }
+            if ((int)imgHeight > (int)minimumHeight)
+            {
+                imgHeight = minimumHeight;
+            }
+            if (btn->isVisibleTo(mPopup)) {
+                v_all += (int)imgHeight;
+            }
+            if (mVisibleHash.size() == 1 ) changed = (int)imgHeight;
+            if ((int)imgWidth < 150)
+            {
+                btn->setThumbFixedSize((int)imgWidth);
+                btn->setThumbScale(false);
+            } else {
                 btn->setThumbMaximumSize(MAX_SIZE_OF_Thumb);
                 btn->setThumbScale(true);
-            } else {
-                if (attr.width != max_Width)
-                {
-                    float tmp = (float)attr.width / (float)max_Width;
-                    imgWidth =  imgWidth * tmp;
-                }
-                if ((int)imgHeight > (int)minimumHeight)
-                {
-                    imgHeight = minimumHeight;
-                }
-                if (btn->isVisibleTo(mPopup)) {
-                    v_all += (int)imgHeight;
-                }
-                if (mVisibleHash.size() == 1 ) changed = (int)imgHeight;
-                if ((int)imgWidth < 150)
-                {
-                    btn->setThumbFixedSize((int)imgWidth);
-                    btn->setThumbScale(false);
-                } else {
-                    btn->setThumbMaximumSize(MAX_SIZE_OF_Thumb);
-                    btn->setThumbScale(true);
-                }
             }
+        }
+        if(img)
+        {
             thumbnail = qimageFromXImage(img).scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
-            //thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));  test picture if correct
+            if (!parentTaskBar()->getCpuInfoFlg()) thumbnail.save(QString("/tmp/%1.png").arg(it.key()));
         }
         else
         {
-            thumbnail = btn->getPixmap().scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
             qDebug()<<"can not catch picture";
+            QPixmap pxmp;
+            if (pxmp.load(QString("/tmp/%1.png").arg(it.key())))
+                thumbnail = pxmp.scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
+            else {
+                thumbnail = QPixmap((int)imgWidth, (int)imgHeight);
+                thumbnail.fill(QColor(0, 0, 0, 127));
+            }
         }
         btn->setThumbNail(thumbnail);
         btn->updateTitle();

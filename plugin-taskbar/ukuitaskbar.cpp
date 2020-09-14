@@ -102,6 +102,16 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &UKUITaskBar::onWindowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
 
+    //龙芯机器的最小化任务窗口的预览窗口的特殊处理
+    system("cat /proc/cpuinfo >> /tmp/_tmp_cpu_info_cat_");
+    QFile file("/tmp/_tmp_cpu_info_cat_");
+    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read CpuInfo Failed.";
+    while (CpuInfoFlg && !file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if (str.contains("Loongson")) CpuInfoFlg = false;
+    }
+
     /**/
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel.plugins.service");
     QDBusConnection::sessionBus().registerService("com.ukui.panel.plugins.service");
