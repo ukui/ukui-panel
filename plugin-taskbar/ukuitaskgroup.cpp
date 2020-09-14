@@ -350,6 +350,8 @@ void UKUITaskGroup::onWindowRemoved(WId window)
             mVisibleHash.remove(window);
         mPopup->removeWidget(button);
         button->deleteLater();
+        if (!parentTaskBar()->getCpuInfoFlg())
+            system(QString("rm -f /tmp/%1.png").arg(window).toLatin1());
         if (mButtonHash.count())
         {
             if(mPopup->isVisible())

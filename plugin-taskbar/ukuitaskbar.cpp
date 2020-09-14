@@ -111,6 +111,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
         QString str(line);
         if (str.contains("Loongson")) CpuInfoFlg = false;
     }
+    file.close();
 
     /**/
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel.plugins.service");
