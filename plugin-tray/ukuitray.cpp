@@ -269,6 +269,7 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
     case ClientMessage:
         clientMessageEvent(event);
         repaint();
+	trayIconSizeRefresh();
         break;
 
         //        case ConfigureNotify:
