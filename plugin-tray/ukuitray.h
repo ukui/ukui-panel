@@ -111,6 +111,8 @@ private slots:
     void stopStorageTray();
     void onIconDestroyed(QObject * icon);
     void freezeTrayApp(Window winId);
+    void trayIconSizeRefresh();
+
 private:
     VisualID getVisual();
     void clientMessageEvent(xcb_generic_event_t *e);

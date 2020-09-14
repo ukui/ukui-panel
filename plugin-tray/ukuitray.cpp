@@ -98,7 +98,7 @@ extern "C" {
 #define PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANEL_LINES    "panellines"
 #define TRAY_LINE      "traylines"
-#define TRAY_SIZE      "traysize"
+#define PANEL_SIZE     "panelsize"
 /************************************************
 
  ************************************************/
@@ -139,8 +139,8 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
         settings=new QGSettings(id);
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==PANEL_LINES)
-            realign();
+        if(key==PANEL_SIZE)
+            trayIconSizeRefresh();
     });
 
     setLayout(new UKUi::GridLayout(this));
@@ -165,7 +165,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     createIconMap();
     realign();
     changeIcon();
-    QTimer::singleShot(3000,this,SLOT(realign()));
+    QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
 }
 
 
@@ -269,6 +269,7 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
     case ClientMessage:
         clientMessageEvent(event);
         repaint();
+	trayIconSizeRefresh();
         break;
 
         //        case ConfigureNotify:
@@ -353,83 +354,19 @@ void UKUITray::realign()
     */
     if (panel->isHorizontal())
     {
-        if(settings->get(PANEL_LINES).toInt()==1)
-        {
-            dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
-            dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
-            for(int i=0;i<mTrayIcons.size();i++)
-            {
-                if(mTrayIcons.at(i))
-                {
-                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-                    mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                }
-                else
-                {
-                    qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-                }
-            }
-            mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-        }
-        else
-        {
-            dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(2);
-            dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
-            for(int i=0;i<mTrayIcons.size();i++)
-            {
-                if(mTrayIcons.at(i))
-                {
-                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->panelSize()/2);
-                    mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                }
-                else
-                {
-                    qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-                }
-            }
-            mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize()/2);
-        }
 
+        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
+        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
+        mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
     }
     else
     {
-        if(settings->get(PANEL_LINES).toInt()==1)
-        {
-            dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
-            dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
 
-            for(int i=0;i<mTrayIcons.size();i++)
-            {
-                if(mTrayIcons.at(i))
-                {
-                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),(mPlugin->panel()->iconSize()));
-                    mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                }
-                else
-                {
-                    qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-                }
-            }
-            mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
-        }
-        else
-        {
-            dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(2);
-            dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
-            for(int i=0;i<mTrayIcons.size();i++)
-            {
-                if(mTrayIcons.at(i))
-                {
-                    mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize()/2);
-                    mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-                }
-                else
-                {
-                    qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
-                }
-            }
-            mBtn->setFixedSize(mPlugin->panel()->panelSize()/2,mPlugin->panel()->iconSize());
-        }
+        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
+        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
+        mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+
+
     }
 
     if(storageFrame)
@@ -456,6 +393,21 @@ void UKUITray::realign()
 
 }
 
+void UKUITray::trayIconSizeRefresh()
+{
+    for(int i=0;i<mTrayIcons.size();i++)
+    {
+        if(mTrayIcons.at(i))
+        {
+            mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }
+        else
+        {
+            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+        }
+    }
+}
 /*creat iconMap of four  direction*/
 void UKUITray::createIconMap()
 {
@@ -584,8 +536,7 @@ TrayIcon* UKUITray::findHideIcon(Window id)
 /*目前托盘应用不使用此方式设置控件的大小而是使用setIconSize和setFixedSize来设置*/
 void UKUITray::setIconSize()
 {
-    int iconSize=16;
-    mIconSize=QSize(iconSize,iconSize);
+    mIconSize=QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2);
     unsigned long size = qMin(mIconSize.width(), mIconSize.height());
     XChangeProperty(mDisplay,
                     mTrayId,

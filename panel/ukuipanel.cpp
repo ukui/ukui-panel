@@ -277,6 +277,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
             this->update();
         }
     });
+    setPanelsize(gsettings->get(PANEL_SIZE_KEY).toInt());
+    setIconsize(gsettings->get(ICON_SIZE_KEY).toInt());
 }
 
 /************************************************
