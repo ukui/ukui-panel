@@ -32,6 +32,10 @@
 #include "../panel/iukuipanelplugin.h"
 #include "../panel/customstyle.h"
 
+
+#define UKUI_PANEL_SETTINGS              "org.ukui.panel.settings"
+#define SHOW_STATUSNOTIFIER_BUTTON       "statusnotifierbutton"
+
 StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QWidget(parent),
     mPlugin(plugin)
@@ -48,8 +52,19 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     connect(mWatcher, &StatusNotifierWatcher::StatusNotifierItemUnregistered,
             this, &StatusNotifierWidget::itemRemoved);
 
+    mBtn = new QToolButton();
+    mBtn->setText("<");
+
     setLayout(new UKUi::GridLayout(this));
     realign();
+
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+        gsettings = new QGSettings(id);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==SHOW_STATUSNOTIFIER_BUTTON)
+            realign();
+    });
 
     qDebug() << mWatcher->RegisteredStatusNotifierItems();
 
@@ -72,6 +87,7 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     button->setStyle(new CustomStyle);
     layout()->addWidget(button);
     button->show();
+
 }
 
 void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
@@ -90,6 +106,8 @@ void StatusNotifierWidget::realign()
     UKUi::GridLayout *layout = qobject_cast<UKUi::GridLayout*>(this->layout());
     layout->setEnabled(false);
 
+    layout->addWidget(mBtn);
+
     IUKUIPanel *panel = mPlugin->panel();
     if (panel->isHorizontal())
     {
@@ -102,16 +120,15 @@ void StatusNotifierWidget::realign()
         layout->setRowCount(0);
     }
 
-    for(int i=0;i<mStatusNotifierButtons.size();i++)
-    {
+    for(int i=0;i<mStatusNotifierButtons.size();i++){
         if(mStatusNotifierButtons.at(i))
         {
             mStatusNotifierButtons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
             mStatusNotifierButtons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            mStatusNotifierButtons.at(i)->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
         }
-        else
-        {
-            qDebug()<<"mTrayIcons add error   :  "<<mStatusNotifierButtons.at(i);
+        else{
+            qDebug()<<"mStatusNotifierButtons add error   :  "<<mStatusNotifierButtons.at(i);
         }
     }
     layout->setEnabled(true);

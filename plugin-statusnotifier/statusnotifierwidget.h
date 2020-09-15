@@ -30,6 +30,7 @@
 #define STATUSNOTIFIERWIDGET_H
 
 #include <QDir>
+#include <QGSettings/QGSettings>
 
 #include "../panel/common/ukuigridlayout.h"
 #include "../panel/iukuipanelplugin.h"
@@ -60,6 +61,8 @@ private:
     QHash<QString, StatusNotifierButton*> mServices;
 
     QList<StatusNotifierButton*> mStatusNotifierButtons;
+    QToolButton *mBtn;
+    QGSettings *gsettings;
 };
 
 #endif // STATUSNOTIFIERWIDGET_H
