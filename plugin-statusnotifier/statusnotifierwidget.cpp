@@ -28,6 +28,7 @@
 
 #include "statusnotifierwidget.h"
 #include <QApplication>
+#include <QDBusReply>
 #include <QDebug>
 #include "../panel/iukuipanelplugin.h"
 #include "../panel/customstyle.h"
@@ -52,7 +53,7 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     connect(mWatcher, &StatusNotifierWatcher::StatusNotifierItemUnregistered,
             this, &StatusNotifierWidget::itemRemoved);
 
-    mBtn = new QToolButton();
+    mBtn = new StatusNotifierPopUpButton();
     mBtn->setText("<");
 
     setLayout(new UKUi::GridLayout(this));
@@ -87,7 +88,6 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     button->setStyle(new CustomStyle);
     layout()->addWidget(button);
     button->show();
-
 }
 
 void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
@@ -132,4 +132,28 @@ void StatusNotifierWidget::realign()
         }
     }
     layout->setEnabled(true);
+}
+
+StatusNotifierPopUpButton::StatusNotifierPopUpButton()
+{
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+        gsettings = new QGSettings(id);
+}
+
+StatusNotifierPopUpButton::~StatusNotifierPopUpButton()
+{
+
+}
+
+void StatusNotifierPopUpButton::mousePressEvent(QMouseEvent *)
+{
+    if(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
+        this->setText(">");
+        gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
+    }
+    else{
+        this->setText("<");
+        gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
+    }
 }
