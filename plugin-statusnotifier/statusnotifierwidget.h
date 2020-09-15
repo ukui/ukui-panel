@@ -37,7 +37,7 @@
 
 #include "statusnotifierbutton.h"
 #include "statusnotifierwatcher.h"
-
+class StatusNotifierPopUpButton;
 class StatusNotifierWidget : public QWidget
 {
     Q_OBJECT
@@ -62,6 +62,17 @@ private:
 
     QList<StatusNotifierButton*> mStatusNotifierButtons;
     QToolButton *mBtn;
+    QGSettings *gsettings;
+};
+
+class StatusNotifierPopUpButton : public QToolButton
+{
+public:
+    StatusNotifierPopUpButton();
+    ~StatusNotifierPopUpButton();
+protected:
+    void mousePressEvent(QMouseEvent *);
+private:
     QGSettings *gsettings;
 };
 
