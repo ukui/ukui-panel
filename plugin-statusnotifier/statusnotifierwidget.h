@@ -58,6 +58,8 @@ private:
     StatusNotifierWatcher *mWatcher;
 
     QHash<QString, StatusNotifierButton*> mServices;
+
+    QList<StatusNotifierButton*> mStatusNotifierButtons;
 };
 
 #endif // STATUSNOTIFIERWIDGET_H

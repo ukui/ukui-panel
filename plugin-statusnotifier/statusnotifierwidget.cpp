@@ -30,6 +30,7 @@
 #include <QApplication>
 #include <QDebug>
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/customstyle.h"
 
 StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QWidget(parent),
@@ -67,6 +68,8 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     StatusNotifierButton *button = new StatusNotifierButton(serv, path, mPlugin, this);
 
     mServices.insert(serviceAndPath, button);
+    mStatusNotifierButtons.append(button);
+    button->setStyle(new CustomStyle);
     layout()->addWidget(button);
     button->show();
 }
@@ -76,6 +79,7 @@ void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
     StatusNotifierButton *button = mServices.value(serviceAndPath, NULL);
     if (button)
     {
+        mStatusNotifierButtons.removeOne(button);
         button->deleteLater();
         layout()->removeWidget(button);
     }
@@ -98,5 +102,17 @@ void StatusNotifierWidget::realign()
         layout->setRowCount(0);
     }
 
+    for(int i=0;i<mStatusNotifierButtons.size();i++)
+    {
+        if(mStatusNotifierButtons.at(i))
+        {
+            mStatusNotifierButtons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            mStatusNotifierButtons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }
+        else
+        {
+            qDebug()<<"mTrayIcons add error   :  "<<mStatusNotifierButtons.at(i);
+        }
+    }
     layout->setEnabled(true);
 }
