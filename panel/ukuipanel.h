@@ -392,6 +392,12 @@ protected:
     void showEvent(QShowEvent *event) override;
     void paintEvent(QPaintEvent *);
 
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+
 public slots:
     /**
      * @brief Shows the ConfigPanelDialog and shows the "Config Panel"
@@ -590,6 +596,9 @@ private:
      * @brief Stores the position where the panel is shown
      */
     IUKUIPanel::Position mPosition;
+
+    IUKUIPanel::Position oldpos;
+
     /**
      * @brief Returns the index of the screen on which this panel should be
      * shown. This is the user configured value which can differ from the
@@ -707,6 +716,10 @@ private:
     UKUi::Settings *settings() const { return mSettings; }
 
     PopupMenu * menu;
+
+    IUKUIPanel::Position areaDivid(QPoint globalpos);
+
+    int movelock = -1;
 
 
 private slots:

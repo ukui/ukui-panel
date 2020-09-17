@@ -37,12 +37,31 @@
 #include "../panel/iukuipanel.h"
 //#include <QWinThumbnailToolBar>
 #include <QtX11Extras/qtx11extrasversion.h>
+#include "../panel/ukuicontrolstyle.h"
+
+#include "quicklaunchaction.h"
+#include <QMimeData>
+#include "../panel/customstyle.h"
+#include <QStyleOption>
+#include <QGSettings>
+#include <QPainter>
+#include "popupmenu.h"
+
 class QPainter;
 class QPalette;
 class QMimeData;
 class UKUITaskGroup;
 class UKUITaskBar;
+class IUKUIPanelPlugin;
+class QuicklaunchMenu:public QMenu
+{
+public:
+    QuicklaunchMenu();
+    ~QuicklaunchMenu();
+protected:
+    void contextMenuEvent(QContextMenuEvent*);
 
+};
 class LeftAlignedTextStyle : public QProxyStyle
 {
     using QProxyStyle::QProxyStyle;
@@ -62,6 +81,7 @@ class UKUITaskButton : public QToolButton
 
 public:
     explicit UKUITaskButton(QString appName,const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
+    UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, QWidget* parent = 0);
     virtual ~UKUITaskButton();
 
     bool isApplicationHidden() const;
@@ -87,6 +107,12 @@ public:
      * */
     bool hasDragAndDropHover() const;
 
+    /////////////////////////////////
+    QHash<QString,QString> settingsMap();
+    QString file_name;
+
+    void toDomodifyQuicklaunchMenuAction(bool direction) { modifyQuicklaunchMenuAction(direction);}
+
 public slots:
     void raiseApplication();
     void minimizeApplication();
@@ -99,10 +125,15 @@ public slots:
     void moveApplication();
     void resizeApplication();
     void setApplicationLayer();
-
     void setOrigin(Qt::Corner);
 
     void updateIcon();
+
+    //////
+
+    void selfRemove();
+    void this_customContextMenuRequested(const QPoint & pos);
+
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent *event);
@@ -110,7 +141,7 @@ protected:
     virtual void dragLeaveEvent(QDragLeaveEvent *event);
     virtual void dropEvent(QDropEvent *event);
     void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     virtual void contextMenuEvent(QContextMenuEvent *event);
     void enterEvent(QEvent *);
@@ -123,7 +154,12 @@ protected:
 
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
 
+    /////////////////////////////////////
+    //virtual QMimeData * mimeData();
+
 private:
+    bool statFlag = true;
+
     WId mWindow;
     QString mAppName;
     bool mUrgencyHint;
@@ -141,14 +177,48 @@ private:
     // must be activated so that the use can continue dragging to the window
     QTimer * mDNDTimer;
     QGSettings *gsettings;
+
+
+    ///////////////////////////////////
+    QuickLaunchAction *mAct;
+    QAction *mDeleteAct;
+    QuicklaunchMenu *mMenu;
+    QPoint mDragStart;
+    TaskButtonStatus quicklanuchstatus;
+    CustomStyle toolbuttonstyle;
+    QGSettings *mgsettings;
+
+    void modifyQuicklaunchMenuAction(bool direction);
 private slots:
     void activateWithDraggable();
+
 
 signals:
     void dropped(QObject * dragSource, QPoint const & pos);
     void dragging(QObject * dragSource, QPoint const & pos);
+    //////////////////////////////////
+    void buttonDeleted();
+    void switchButtons(UKUITaskButton *from, UKUITaskButton *to);
+    void t_saveSettings();
 };
 
+
+class ButtonMimeData: public QMimeData
+{
+    Q_OBJECT
+public:
+    ButtonMimeData():
+        QMimeData(),
+        mButton(0)
+    {
+    }
+
+    UKUITaskButton *button() const { return mButton; }
+    void setButton(UKUITaskButton *button) { mButton = button; }
+
+private:
+    UKUITaskButton *mButton;
+};
 //typedef QHash<WId,UKUITaskButton*> UKUITaskButtonHash;
 //typedef QHash<WId,QWidget*> UKUITaskButtonHash;
 

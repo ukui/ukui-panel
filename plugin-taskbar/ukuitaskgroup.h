@@ -56,7 +56,12 @@ class UKUITaskGroup: public UKUITaskButton
     Q_OBJECT
 
 public:
+    bool statFlag = true;
+    bool existSameQckBtn = false;
+    int QckBtnIndex = -1;
+    bool hasbeenSaved = false;
     UKUITaskGroup(const QString & groupName, WId window, UKUITaskBar * parent);
+    UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, UKUITaskBar *parent);
     virtual ~UKUITaskGroup();
     QString groupName() const { return mGroupName; }
 
@@ -72,7 +77,6 @@ public:
     QWidget * getNextPrevChildButton(bool next, bool circular);
 
     bool onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2);
-    void setAutoRotation(bool value, IUKUIPanel::Position position);
     Qt::ToolButtonStyle popupButtonStyle() const;
     void setToolButtonsStyle(Qt::ToolButtonStyle style);
 
@@ -88,9 +92,12 @@ public:
     void showAllWindowByThumbnail();//when number of window is no more than 30,need show all window of app by a thumbnail
     void singleWindowClick();
     void VisibleWndRemoved(WId window);
+    void setAutoRotation(bool value, IUKUIPanel::Position position);
+
 public slots:
     void onWindowRemoved(WId window);
     void timeout();
+    void toDothis_customContextMenuRequested(const QPoint &pos);
 
 protected:
     QMimeData * mimeData();
@@ -101,6 +108,8 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent * event);
     void contextMenuEvent(QContextMenuEvent * event);
     void mouseMoveEvent(QMouseEvent * event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void dropEvent(QDropEvent *event);
 //    void paintEvent(QPaintEvent *);
     int recalculateFrameHeight() const;
     int recalculateFrameWidth() const;
@@ -122,10 +131,14 @@ private slots:
 
 signals:
     void groupBecomeEmpty(QString name);
+    void groupHidden(QString name);
+    void groupVisible(QString name, bool will);
     void visibilityChanged(bool visible);
     void popupShown(UKUITaskGroup* sender);
+    void t_saveSettings();
 
 private:
+    UKUITaskBar * mParent;
     void changeTaskButtonStyle();
     QString mGroupName;
     UKUIGroupPopup * mPopup;
@@ -148,6 +161,17 @@ private:
     void adjustPopWindowSize(int width, int height);
     void v_adjustPopWindowSize(int width, int height, int v_all);
     void regroup();
+
+    ///////////////////////////////
+    // quicklaunch button
+    QuickLaunchAction *mAct;
+    IUKUIPanelPlugin * mPlugin;
+    QAction *mDeleteAct;
+    QuicklaunchMenu *mMenu;
+    QPoint mDragStart;
+    TaskGroupStatus quicklanuchstatus;
+    CustomStyle toolbuttonstyle;
+    QGSettings *mgsettings;
 
 };
 
