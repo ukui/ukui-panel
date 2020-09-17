@@ -55,12 +55,17 @@
             <default>0</default>
             <summary>show Panel Taskbar size</summary>
             <description>show Panel Taskbar size</description>
-    	</key>
-	<key name="traysize" type="i">
+    	 </key>
+	 <key name="traysize" type="i">
             <default>0</default>
             <summary>show Panel Tray size</summary>
             <description>show Panel Tray size</description>
-    	</key>
+         </key>
+	 <key name="statusnotifierbutton" type="b">
+            <default>true</default>
+            <summary>show Statusnotifier button</summary>
+            <description>show Statusnotifier button</description>
+         </key>
     </schema>
 </schemalist>
 
