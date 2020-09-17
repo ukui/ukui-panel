@@ -96,6 +96,8 @@
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
 #define SHOW_TASKVIEW       "showtaskview"
+#define PANEL_HIDE          "panelhide"
+
 #define SHOW_NIGHTMODE      "shownightmode"
 
 #define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
@@ -155,6 +157,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mScreenNum(0), //whatever (avoid conditional on uninitialized value)
     mActualScreenNum(0),
     mHidable(false),
+    mHide(false),
     mVisibleMargin(true),
     mHidden(false),
     mAnimationTime(0),
@@ -236,6 +239,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     // connecting to QDesktopWidget::workAreaResized shouldn't be necessary,
     // as we've already connceted to QDesktopWidget::resized, but it actually
+
+
     connect(QApplication::desktop(), &QDesktopWidget::workAreaResized,
             this, &UKUIPanel::ensureVisible);
 
@@ -264,6 +269,19 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
 
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==PANEL_HIDE)
+            mHide=gsettings->get(PANEL_HIDE).toBool();
+        qDebug()<<"mHide"<<mHide;
+            if(mHide){
+                mHidable=mHide;
+            }
+            else{
+                mHidable=mHide;
+            }
+            mHidden = mHidable;
+    });
+
     updateStyleSheet();
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
@@ -291,8 +309,8 @@ void UKUIPanel::readSettings()
 
     // Let Hidability be the first thing we read
     // so that every call to realign() is without side-effect
-    mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
-    mHidden = mHidable;
+  //  mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+  //  mHidden = mHidable;
 
     mVisibleMargin = mSettings->value(CFG_KEY_VISIBLE_MARGIN, mVisibleMargin).toBool();
 
@@ -955,6 +973,17 @@ void UKUIPanel::showTaskView()
     }
 }
 
+void UKUIPanel::panelhide()
+{
+   // qDebug()<<"hide is :"<<hide;
+if(gsettings->get(PANEL_HIDE).toBool()){
+            gsettings->set(PANEL_HIDE,false);
+            mHideTimer.stop();
+}
+else
+            gsettings->set(PANEL_HIDE,true);
+}
+
 /*右键　显示夜间模式按钮　选项*/
 void UKUIPanel::showNightModeButton()
 {
@@ -1333,6 +1362,12 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setCheckable(true);
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
+
+    QAction * sWitchToHide = menu->addAction(tr("hide panel"));
+    sWitchToHide->setDisabled(mLockPanel);
+    sWitchToHide->setCheckable(true);
+    sWitchToHide->setChecked(gsettings->get(PANEL_HIDE).toBool());
+    connect(sWitchToHide, &QAction::triggered, [this] { panelhide(); });
 
 #if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
     QAction * shownightmode = menu->addAction(tr("Show Nightmode"));

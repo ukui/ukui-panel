@@ -434,6 +434,7 @@ private slots:
     void systeMonitor();
     void showDesktop();
     void showTaskView();
+    void panelhide();
     void showNightModeButton();
     void adjustPanel();
     void realign();
@@ -722,6 +723,7 @@ private slots:
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
+    bool mHide;
 
 };
 
