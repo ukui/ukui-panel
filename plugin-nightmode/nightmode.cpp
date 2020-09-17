@@ -239,7 +239,9 @@ void NightModeButton::setNightMode(const bool nightMode){
             mqsettings->setValue("temp-night", "3500");
         }
         else{
-            mqsettings->setValue("temp-day", mqsettings->value("temp-day", "").toString());
+            mqsettings->setValue("dawn-time" , mqsettings->value("dawn-time", "").toString());
+            mqsettings->setValue("dusk-time" , mqsettings->value("dusk-time", "").toString());
+            mqsettings->setValue("temp-day"  , mqsettings->value("temp-day", "").toString());
             mqsettings->setValue("temp-night", mqsettings->value("temp-night", "").toString());
         }
         mqsettings->endGroup();
