@@ -91,7 +91,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
                 qDebug()<<"-----"<<findGDriveList()->size()<<";;;;;;;;;;;;;;;;"<<findGMountList()->size();
                 qDebug()<<"oh no"<<err->message<<err->code;
             }
-
         }
     }
     else
@@ -179,8 +178,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //this->resize( QSize( 280, 192 ));
     m_systray = new QSystemTrayIcon ;
     //show();
-    //m_systray->setIcon(QIcon("/usr/share/icons/ukui-icon-theme-default/22x22/devices/drive-removable-media.png"));
+//    m_systray->setIcon(QIcon("/usr/share/icons/ukui-icon-theme-default/22x22/devices/drive-removable-media.png"));
     m_systray->setIcon(iconSystray);
+    m_systray->setVisible(true);
     m_systray->setToolTip(tr("usb management tool"));
     //init the srceen
     screen = qApp->primaryScreen();
@@ -197,7 +197,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"),
     //                                          "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this,
     //                                          SLOT(on_clickPanelToHideInterface));
-        QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
+    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
                                                   "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
 }
 
@@ -314,7 +314,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
     qDebug()<<"drive__name"<<drive_name;
     findGDriveList()->removeOne(drive);
     p_this->hide();
-    if(findGDriveList()->size() == 0 && findGDriveList()->size() == 0)
+    if(findGDriveList()->size())
     {
         p_this->m_systray->hide();
     }
@@ -684,6 +684,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                        GFile *fileRoot = g_mount_get_root(g_volume_get_mount(element));
                        UDiskPathDis1 = g_file_get_path(fileRoot);
                        GFile *file = g_file_new_for_path(UDiskPathDis1);
+                       qDebug()<<"UDiskPathDis1"<<UDiskPathDis1;
                        GFileInfo *info = g_file_query_filesystem_info(file,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
                        totalDis1 = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
                        //when the drive's volume number is 1
@@ -691,7 +692,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                         *if the answer is yes,we set the last parameter is 1.*/
                        if(num == 1)
                        {
-
                            newarea(DisNum,cacheDrive,driveName,
                                    volumeName,
                                    NULL,NULL,NULL, totalDis1,NULL,NULL,NULL, QString(UDiskPathDis1),NULL,NULL,NULL,1);
