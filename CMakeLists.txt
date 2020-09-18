@@ -6,7 +6,7 @@ option(WITH_SCREENSAVER_FALLBACK "Include support for converting the deprecated 
 #判断编译器类型,如果是gcc编译器,则在编译选项中加入c++11支持
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-    message(STATUS "optional:-std=c++11")   
+    message(STATUS "optional:-std=c++11")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 # additional cmake files
@@ -100,7 +100,7 @@ include(./cmake/ukui-build-tools/modules/UKUiTranslationLoader.cmake)
 set(ENABLED_PLUGINS) # list of enabled plugins
 set(STATIC_PLUGINS) # list of statically linked plugins
 
-setByDefault(QUICKLAUNCH_PLUGIN Yes)
+setByDefault(QUICKLAUNCH_PLUGIN No)
 if(QUICKLAUNCH_PLUGIN)
     list(APPEND STATIC_PLUGINS "quicklaunch")
     add_definitions(-DWITH_QUICKLAUNCH_PLUGIN)

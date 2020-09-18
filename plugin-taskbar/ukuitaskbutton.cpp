@@ -57,6 +57,20 @@
 #include <KWindowSystem/NETWM>
 #include <QtX11Extras/QX11Info>
 
+#include "../panel/iukuipanelplugin.h"
+#include <QAction>
+#include <QDrag>
+#include <QMenu>
+#include <QMouseEvent>
+#include <QStylePainter>
+#include <QStyleOptionToolButton>
+#include <QApplication>
+#include <XdgIcon>
+#include <string>
+
+#define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
+#define PANELPOSITION       "panelposition"
+
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
 #define PANEL_SIZE_KEY      "panelsize"
 #define ICON_SIZE_KEY       "iconsize"
@@ -92,7 +106,6 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
 {
     Q_ASSERT(taskbar);
     taskbuttonstatus=NORMAL;
-
     setCheckable(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -206,7 +219,6 @@ void UKUITaskButton::dragEnterEvent(QDragEnterEvent *event)
     {
         mDNDTimer->start();
     }
-
     QToolButton::dragEnterEvent(event);
 }
 
@@ -230,8 +242,10 @@ void UKUITaskButton::dropEvent(QDropEvent *event)
     mDNDTimer->stop();
     if (event->mimeData()->hasFormat(mimeDataFormat()))
     {
-        emit dropped(event->source(), event->pos());
+        //emit dropped(event->source(), event->pos());
+        qDebug() << "in button dropped";
         setAttribute(Qt::WA_UnderMouse, false);
+        emit t_saveSettings();
     }
     QToolButton::dropEvent(event);
 }
@@ -243,10 +257,12 @@ void UKUITaskButton::mousePressEvent(QMouseEvent* event)
 {
     const Qt::MouseButton b = event->button();
 
-    if (Qt::LeftButton == b)
+    if (Qt::LeftButton == b) {
         mDragStartPosition = event->pos();
-    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
+    }
+    else if (statFlag && Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick()) {
         closeApplication();
+    }
 
     QToolButton::mousePressEvent(event);
 }
@@ -292,13 +308,12 @@ void UKUITaskButton::mouseMoveEvent(QMouseEvent* event)
 
     if ((event->pos() - mDragStartPosition).manhattanLength() < QApplication::startDragDistance())
         return;
-
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData());
     QIcon ico = icon();
     QPixmap img = ico.pixmap(ico.actualSize({32, 32}));
     drag->setPixmap(img);
-    switch (parentTaskBar()->panel()->position())
+    switch (mPlugin->panel()->position())
     {
         case IUKUIPanel::PositionLeft:
         case IUKUIPanel::PositionTop:
@@ -309,7 +324,6 @@ void UKUITaskButton::mouseMoveEvent(QMouseEvent* event)
             drag->setHotSpot(img.rect().bottomRight());
             break;
     }
-
     sDraggging = true;
     drag->exec();
 
@@ -531,6 +545,9 @@ void UKUITaskButton::resizeApplication()
  ************************************************/
 void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
 {
+    if (!statFlag) {
+        return;
+    }
     if (event->modifiers().testFlag(Qt::ControlModifier))
     {
         event->ignore();
@@ -844,3 +861,85 @@ bool UKUITaskButton::hasDragAndDropHover() const
 {
     return mDNDTimer->isActive();
 }
+
+
+
+//////////////////////////////////////////////////////////////
+UKUITaskButton::UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, QWidget * parent)
+    : QToolButton(parent),
+      mAct(act),
+      mPlugin(plugin)
+{
+    mDNDTimer = new QTimer(this);
+    statFlag = false;
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    /*设置快速启动栏的按键不接受焦点*/
+    setFocusPolicy(Qt::NoFocus);
+    setAutoRaise(true);
+    quicklanuchstatus = NORMAL;
+
+    setDefaultAction(mAct);
+    mAct->setParent(this);
+
+    /*设置快速启动栏的菜单项*/
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    mgsettings = new QGSettings(id);
+    modifyQuicklaunchMenuAction(true);
+    connect(mgsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==PANELPOSITION){
+            modifyQuicklaunchMenuAction(true);
+        }
+    });
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
+            this, SLOT(this_customContextMenuRequested(const QPoint&)));
+    mDNDTimer->setSingleShot(true);
+    mDNDTimer->setInterval(700);
+    connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
+    file_name=act->m_settingsMap["desktop"];
+    this->setStyle(new CustomStyle());
+    repaint();
+
+}
+
+
+QHash<QString,QString> UKUITaskButton::settingsMap()
+{
+    Q_ASSERT(mAct);
+    return mAct->settingsMap();
+}
+
+/*与鼠标右键的选项有关*/
+void UKUITaskButton::this_customContextMenuRequested(const QPoint & pos)
+{
+    mPlugin->willShowWindow(mMenu);
+    mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), mMenu->sizeHint()).topLeft());
+}
+
+/*调整快速启动栏的菜单项*/
+void UKUITaskButton::modifyQuicklaunchMenuAction(bool direction)
+{
+
+    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("delete from quicklaunch"), this);
+    connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
+    //addAction(mDeleteAct);
+    mMenu = new QuicklaunchMenu();
+    mMenu->addAction(mAct);
+    mMenu->addActions(mAct->addtitionalActions());
+    mMenu->addSeparator();
+    mMenu->addSeparator();
+    mMenu->addAction(mDeleteAct);
+}
+
+void UKUITaskButton::selfRemove()
+{
+    emit buttonDeleted();
+}
+
+
+QuicklaunchMenu::QuicklaunchMenu() { }
+
+QuicklaunchMenu::~QuicklaunchMenu() { }
+
+void QuicklaunchMenu::contextMenuEvent(QContextMenuEvent *) { }
