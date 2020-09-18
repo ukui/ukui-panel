@@ -726,11 +726,7 @@ private slots:
     void setPanelPosition(Position position);
     void setPanelsize(int panelsize);
     void setIconsize(int iconsize);
-    void changeSizeToSmall();
-    void changeSizeToMedium();
-    void changeSizeToLarge();
     void panelReset();
-    void panelBackgroundChange();
 
 public:
     QGSettings *gsettings;

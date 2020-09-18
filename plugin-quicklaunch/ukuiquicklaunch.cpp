@@ -165,11 +165,13 @@ void UKUIQuickLaunch::refreshQuickLaunch(){
                 qDebug() << "XdgDesktopFile" << desktop << "is not valid";
                 continue;
             }
+            /* 检测desktop文件的属性，目前UKUI桌面环境不需要此进行isSuitable检测
             if (!xdg.isSuitable())
             {
                 qDebug() << "XdgDesktopFile" << desktop << "is not applicable";
                 continue;
             }
+            */
             addButton(new QuickLaunchAction(&xdg, this));
         }
         else if (! file.isEmpty())
@@ -403,7 +405,6 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
     QuickLaunchButton* btn = new QuickLaunchButton(action, mPlugin, this);
     int i = 0;
     int counts = countOfButtons();
-    QLayoutItem *child;
 
     /* 仅仅在快速启动栏上的应用数量大于０的时候才进行判断
      * 若在快速启动栏　应用数量为０的时候b->file_name为空
@@ -412,7 +413,6 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
     qDebug()<<"检测到目前已经固定到任务栏的应用数量 "<<countOfButtons();
     if(countOfButtons()>0){
         while (i != counts) {
-            child = mLayout->layout()->itemAt(i);
             QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
             qDebug()<<"mLayout->itemAt("<<i<<") ";
             if (b->file_name == btn->file_name){
@@ -439,11 +439,9 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
     QuickLaunchButton* btn = new QuickLaunchButton(action, mPlugin, this);
     int i = 0;
     int flag = 1;
-    QLayoutItem *child;
     int counts = countOfButtons();
      while (i != counts && flag)
      {
-        child = mLayout->layout()->itemAt(i);
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
         if (b->file_name == btn->file_name) {
             for(auto it = mVBtn.begin();it != mVBtn.end();it++)
@@ -455,7 +453,6 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
                     break;
                 }
             }
-            mLayout->removeItem(child);
             mLayout->removeWidget(b);
             b->deleteLater();
         } else {
@@ -479,11 +476,9 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
 void UKUIQuickLaunch::removeButton(QString file)
 {
     int i=0;
-    QLayoutItem *child;
     int counts = countOfButtons();
     while (i != counts)
     {
-        child = mLayout->layout()->itemAt(i);
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
         qDebug()<<"exec:"<<file<<"b->file_name: "<<b->file_name;
         if(QString::compare(file,b->file_name)==0)
@@ -496,7 +491,6 @@ void UKUIQuickLaunch::removeButton(QString file)
                     break;
                 }
             }
-            mLayout->removeItem(child);
             mLayout->removeWidget(b);
             b->deleteLater();
         }
@@ -605,7 +599,7 @@ void UKUIQuickLaunch::directoryUpdated(const QString &path)
             foreach(QString file, deleteFile)
             {
                 // 处理操作每个被删除的文件....
-                FileDeleteFromTaskbar(path+file);
+//                FileDeleteFromTaskbar(path+file);
             }
         }
     }
@@ -678,31 +672,24 @@ bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
 bool UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
 {
     int i=0;
-    int flag = 1;
-    QLayoutItem *child;
-    int counts = countOfButtons();
-     while (i != counts && flag)
+    bool flag = true;
+     while (i < countOfButtons() && flag)
      {
-        child = mLayout->layout()->itemAt(i);
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
         qDebug()<<"exec:"<<file<<"b->file_name: "<<b->file_name;
         if(QString::compare(file,b->file_name)==0)
         {
-            for(auto it = mVBtn.begin();it != mVBtn.end();it++)
-            {
-                if(*it == b)
-                {
+            for(auto it = mVBtn.begin();it != mVBtn.end();it++){
+                if(*it == b){
                     mVBtn.erase(it);
-                    flag = 0;
+                    flag = false;
                     break;
                 }
             }
-            mLayout->removeItem(child);
             mLayout->removeWidget(b);
             b->deleteLater();
         }
-        else
-        {
+        else{
             i++;
         }
     }

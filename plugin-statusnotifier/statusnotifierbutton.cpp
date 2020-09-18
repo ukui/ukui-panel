@@ -34,6 +34,7 @@
 #include "../panel/iukuipanelplugin.h"
 #include "sniasync.h"
 #include "../panel/customstyle.h"
+#include "../panel/highlight-effect.h"
 //#include <XdgIcon>
 
 namespace
@@ -163,6 +164,7 @@ void StatusNotifierButton::refetchIcon(Status status)
                     }
                 }
             }
+            nextIcon=HighLightEffect::drawSymbolicColoredIcon(nextIcon);
 
             switch (status)
             {
@@ -225,6 +227,7 @@ void StatusNotifierButton::refetchIcon(Status status)
 void StatusNotifierButton::newToolTip()
 {
     interface->propertyGetAsync(QLatin1String("ToolTip"), [this] (ToolTip tooltip) {
+
         QString toolTipTitle = tooltip.title;
         if (!toolTipTitle.isEmpty())
             setToolTip(toolTipTitle);
@@ -298,4 +301,12 @@ void StatusNotifierButton::resetIcon()
         setIcon(mAttentionIcon);
     else
         setIcon(mFallbackIcon);
+}
+
+QString StatusNotifierButton::hideAbleStatusNotifierButton()
+{
+    interface->propertyGetAsync(QLatin1String("Title"), [this] (QString title) {
+        mTitle = title;
+    });
+    return mTitle;
 }

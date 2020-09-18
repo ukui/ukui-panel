@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
             qDebug() << "Load translations file" << locale << "failed!";
     }
     //注册MessageHandler
-    //qInstallMessageHandler(outputMessage);
+    qInstallMessageHandler(outputMessage);
 
     return app.exec();
 }
