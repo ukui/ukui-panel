@@ -82,7 +82,6 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     QString serv = serviceAndPath.left(slash);
     QString path = serviceAndPath.mid(slash);
     StatusNotifierButton *button = new StatusNotifierButton(serv, path, mPlugin, this);
-
     mServices.insert(serviceAndPath, button);
     mStatusNotifierButtons.append(button);
     button->setStyle(new CustomStyle);
@@ -125,7 +124,12 @@ void StatusNotifierWidget::realign()
         {
             mStatusNotifierButtons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
             mStatusNotifierButtons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-            mStatusNotifierButtons.at(i)->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
+            QStringList mStatusNotifierButtonList;
+            mStatusNotifierButtonList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel";
+            if(!mStatusNotifierButtonList.contains(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()))
+                mStatusNotifierButtons.at(i)->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
+            else
+                mStatusNotifierButtons.at(i)->setVisible(true);
         }
         else{
             qDebug()<<"mStatusNotifierButtons add error   :  "<<mStatusNotifierButtons.at(i);
@@ -136,6 +140,7 @@ void StatusNotifierWidget::realign()
 
 StatusNotifierPopUpButton::StatusNotifierPopUpButton()
 {
+    this->setStyle(new CustomStyle);
     const QByteArray id(UKUI_PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id))
         gsettings = new QGSettings(id);

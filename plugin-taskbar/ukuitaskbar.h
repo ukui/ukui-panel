@@ -80,6 +80,7 @@ public:
     bool raiseOnCurrentDesktop() const { return mRaiseOnCurrentDesktop; }
     bool isShowOnlyOneDesktopTasks() const { return mShowOnlyOneDesktopTasks; }
     int showDesktopNum() const { return mShowDesktopNum; }
+    bool getCpuInfoFlg() const { return CpuInfoFlg; }
     bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
     bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
     bool isAutoRotate() const { return mAutoRotate; }
@@ -141,6 +142,7 @@ private:
     Qt::ToolButtonStyle mButtonStyle;
     int mButtonWidth;
     int mButtonHeight;
+    bool CpuInfoFlg = true;
     bool mCloseOnMiddleClick;
     bool mRaiseOnCurrentDesktop;
     bool mShowOnlyOneDesktopTasks;
