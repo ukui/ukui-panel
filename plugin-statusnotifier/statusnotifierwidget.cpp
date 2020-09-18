@@ -58,6 +58,7 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
 
     setLayout(new UKUi::GridLayout(this));
     realign();
+    layout()->addWidget(mBtn);
 
     const QByteArray id(UKUI_PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id))
@@ -105,7 +106,7 @@ void StatusNotifierWidget::realign()
     UKUi::GridLayout *layout = qobject_cast<UKUi::GridLayout*>(this->layout());
     layout->setEnabled(false);
 
-    layout->addWidget(mBtn);
+//    layout->addWidget(mBtn);
 
     IUKUIPanel *panel = mPlugin->panel();
     if (panel->isHorizontal())
@@ -154,11 +155,11 @@ StatusNotifierPopUpButton::~StatusNotifierPopUpButton()
 void StatusNotifierPopUpButton::mousePressEvent(QMouseEvent *)
 {
     if(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
-        this->setText(">");
+        this->setText("<");
         gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
     }
     else{
-        this->setText("<");
+        this->setText(">");
         gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
     }
 }
