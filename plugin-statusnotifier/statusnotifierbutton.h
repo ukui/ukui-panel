@@ -37,6 +37,7 @@
 #include <QToolButton>
 #include <QWheelEvent>
 #include <QMenu>
+#include <QString>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
 template <typename T> inline T qFromUnaligned(const uchar *src)
@@ -48,7 +49,7 @@ template <typename T> inline T qFromUnaligned(const uchar *src)
 }
 #endif
 
-class ILXQtPanelPlugin;
+class IUKUIPanelPlugin;
 class SniAsync;
 
 class StatusNotifierButton : public QToolButton
@@ -63,6 +64,7 @@ public:
     {
         Passive, Active, NeedsAttention
     };
+    QString hideAbleStatusNotifierButton();
 
 public slots:
     void newIcon();
@@ -77,6 +79,7 @@ private:
     Status mStatus;
 
     QString mThemePath;
+    QString mTitle;
     QIcon mIcon, mOverlayIcon, mAttentionIcon, mFallbackIcon;
 
     IUKUIPanelPlugin* mPlugin;
