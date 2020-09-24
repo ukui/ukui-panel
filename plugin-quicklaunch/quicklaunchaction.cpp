@@ -130,18 +130,21 @@ void QuickLaunchAction::execAction(QString additionalAction)
         XdgDesktopFile xdg;
         if(xdg.load(exec))
         {
-            //lxqt 封装的函数实现点击应用
-//            if (additionalAction.isEmpty())
-//                xdg.startDetached();
-//            else
-//                xdg.actionActivate(additionalAction, QStringList{});
-
-            //无法打开麒麟应用商店，因此改为gio的方式加载
-            QByteArray ba = exec.toLatin1();
-            char * filepath=ba.data();
-            GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(filepath);
-            g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr);
-            g_object_unref(appinfo);
+            if(exec.contains("ubuntu-kylin-software-center",Qt::CaseSensitive)){
+                //无法打开麒麟应用商店，因此改为gio的方式加载
+                QByteArray ba = exec.toLatin1();
+                char * filepath=ba.data();
+                GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(filepath);
+                g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr);
+                g_object_unref(appinfo);
+            }
+            else{
+                //xdg 的方式实现点击打开应用，可正确读取转义的字符
+                if (additionalAction.isEmpty())
+                    xdg.startDetached();
+                else
+                    xdg.actionActivate(additionalAction, QStringList{});
+            }
         }
         break;
     }

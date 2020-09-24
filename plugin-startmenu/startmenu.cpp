@@ -67,9 +67,9 @@ UKUIStartMenuButton::~UKUIStartMenuButton()
 void UKUIStartMenuButton::realign()
 {
     if (mPlugin->panel()->isHorizontal())
-        this->setFixedSize(mPlugin->panel()->panelSize()+14,mPlugin->panel()->panelSize());
+        this->setFixedSize(mPlugin->panel()->panelSize()*1.3,mPlugin->panel()->panelSize());
     else
-       this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()+14);
+       this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*1.3);
     this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
 }
 
