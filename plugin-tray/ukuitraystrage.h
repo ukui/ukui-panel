@@ -20,7 +20,10 @@
 #define UKUITRAYSTOTAGE_H
 
 #include <QPainter>
+#include <QPainterPath>
+#include <QStyleOption>
 #include "trayicon.h"
+#include <xcb/xcb_event.h>
 #include "../panel/ukuipanellayout.h"
 #include "../panel/common/ukuigridlayout.h"
 #include "xfitman.h"
