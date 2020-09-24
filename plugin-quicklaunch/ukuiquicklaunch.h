@@ -124,7 +124,6 @@ private slots:
     void addButton(QuickLaunchAction* action);
     bool checkButton(QuickLaunchAction* action);
     void removeButton(QuickLaunchAction* action);
-    void removeButton(QString exec);
     void switchButtons(QuickLaunchButton *button1, QuickLaunchButton *button2);
     void buttonDeleted();
     void buttonMoveLeft();
