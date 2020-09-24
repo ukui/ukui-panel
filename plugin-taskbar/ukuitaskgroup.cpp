@@ -1150,7 +1150,7 @@ void UKUITaskGroup::showAllWindowByList()
         btn->updateTitle();
         btn->setTitleFixedWidth(winWidth - 80);
         btn->setFixedSize(mpScrollArea->width(),winheight);
-        btn->adjustSize();
+        //btn->adjustSize();
         mpWidget->layout()->setContentsMargins(0,0,0,0);
         mpWidget->layout()->addWidget(btn);
     }

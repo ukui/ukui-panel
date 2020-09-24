@@ -877,6 +877,7 @@ void UKUITray::moveIconToTray(Window winId)
         //      connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
         connect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
+    trayIconSizeRefresh();
 }
 
 void UKUITray::moveIconToStorage(Window winId)

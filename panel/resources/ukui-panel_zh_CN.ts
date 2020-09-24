@@ -915,7 +915,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="98"/>
         <source>Sleep or Hibernate</source>
-        <translation>睡眠或休眠</translation>
+        <translation>睡眠或挂起</translation>
     </message>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="99"/>
@@ -940,7 +940,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="121"/>
         <source>Hibernate Mode</source>
-        <translation>休眠</translation>
+        <translation>挂起</translation>
     </message>
     <message>
         <source>LogOut</source>
