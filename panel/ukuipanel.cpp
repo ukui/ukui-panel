@@ -49,6 +49,7 @@
 #include <XdgIcon>
 #include <XdgDirs>
 #include <QPainter>
+#include <QMetaEnum>
 
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
@@ -240,6 +241,34 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(mStandaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
 
+    const QByteArray id(PANEL_SETTINGS);
+    gsettings = new QGSettings(id);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==ICON_SIZE_KEY){
+            setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
+        }
+        if(key==PANEL_SIZE_KEY){
+            setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
+        }
+        if(key == PANEL_POSITION_KEY){
+            switch(gsettings->get(PANEL_POSITION_KEY).toInt())
+            {
+            case 0:
+                setPosition(0,Position::PositionBottom,true);
+                break;
+            case 1:
+                setPosition(0,Position::PositionTop,true);
+                break;
+            case 2:
+                setPosition(0,Position::PositionLeft,true);
+                break;
+            case 3:
+                setPosition(0,Position::PositionRight,true);
+                break;
+            }
+        }
+    });
+
     readSettings();
 
     ensureVisible();
@@ -256,11 +285,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
     connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
 
-    const QByteArray id(PANEL_SETTINGS);
-    gsettings = new QGSettings(id);
 
-
-    updateStyleSheet();
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
@@ -308,6 +333,9 @@ void UKUIPanel::readSettings()
     mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL, false).toBool();
 
     mSettings->endGroup();
+
+    gsettings->set(PANEL_SIZE_KEY,gsettings->get(PANEL_SIZE_KEY).toInt());
+    gsettings->set(ICON_SIZE_KEY,gsettings->get(ICON_SIZE_KEY).toInt());
 }
 
 
@@ -407,7 +435,7 @@ void UKUIPanel::loadPlugins()
     for (auto const & plugin : plugins)
     {
         mLayout->addPlugin(plugin);
-        connect(plugin, &Plugin::dragLeft, [this] { mShowDelayTimer.stop(); hidePanel(); });
+        connect(plugin, &Plugin::dragLeft, [this] { mShowDelayTimer.stop(); hidePanel();});
     }
 }
 
@@ -590,7 +618,6 @@ void UKUIPanel::setMargins()
 */
 void UKUIPanel::realign()
 {
-    updateStyleSheet();
     emit realigned();
     if (!isVisible())
         return;
@@ -845,14 +872,20 @@ void UKUIPanel::adjustPanel()
     pmenuaction_l->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_LARGE);
 
     connect(pmenuaction_s,&QAction::triggered,[this] {
+        gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_SMALL);
+        gsettings->set(ICON_SIZE_KEY,ICON_SIZE_SMALL);
         setPanelSize(PANEL_SIZE_SMALL,true);
         setIconSize(ICON_SIZE_SMALL,true);
     });
     connect(pmenuaction_m,&QAction::triggered,[this] {
+        gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_MEDIUM);
+        gsettings->set(ICON_SIZE_KEY,ICON_SIZE_MEDIUM);
         setPanelSize(PANEL_SIZE_MEDIUM,true);
         setIconSize(ICON_SIZE_MEDIUM,true);
     });
     connect(pmenuaction_l,&QAction::triggered,[this] {
+        gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_LARGE);
+        gsettings->set(ICON_SIZE_KEY,ICON_SIZE_LARGE);
         setPanelSize(PANEL_SIZE_LARGE,true);
         setIconSize(ICON_SIZE_LARGE,true);
     });
@@ -889,13 +922,28 @@ void UKUIPanel::adjustPanel()
     pmenuaction_right->setChecked(gsettings->get(PANEL_POSITION_KEY).toInt()==3);
 
 
-    connect(pmenuaction_top,&QAction::triggered, [this] { setPanelPosition(PositionTop);});
-    connect(pmenuaction_bottom,&QAction::triggered, [this] { setPanelPosition(PositionBottom);});
-    connect(pmenuaction_left,&QAction::triggered, [this] { setPanelPosition(PositionLeft);});
-    connect(pmenuaction_right,&QAction::triggered, [this] { setPanelPosition(PositionRight);});
+    connect(pmenuaction_top,&QAction::triggered, [this] { setPosition(0,PositionTop,true);});
+    connect(pmenuaction_bottom,&QAction::triggered, [this] { setPosition(0,PositionBottom,true);});
+    connect(pmenuaction_left,&QAction::triggered, [this] { setPosition(0,PositionLeft,true);});
+    connect(pmenuaction_right,&QAction::triggered, [this] { setPosition(0,PositionRight,true);});
     pmenu_positon->setWindowOpacity(0.9);
     pmenu_positon->setDisabled(mLockPanel);
 
+
+//    mSettings->beginGroup(mConfigGroup);
+//    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
+//    hidepanel->setDisabled(mLockPanel);
+//    hidepanel->setCheckable(true);
+//    hidepanel->setChecked(mHidable);
+//    connect(hidepanel, &QAction::triggered, [this] {
+//        mSettings->beginGroup(mConfigGroup);
+//        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+//        mSettings->endGroup();
+//        if(mHidable)
+//            mHideTimer.stop();
+//        setHidable(!mHidable,true);
+//    });
+//    mSettings->endGroup();
 }
 /*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
@@ -930,18 +978,8 @@ void UKUIPanel::showNightModeButton()
             gsettings->set(SHOW_NIGHTMODE,true);
     }
 }
-void UKUIPanel::updateStyleSheet()
-{
-//    QStringList sheet;
-//    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,0.9); }");
-//    setStyleSheet(sheet.join("\n"));
-}
 
-
-
-/************************************************
-
- ************************************************/
+/*设置任务栏高度*/
 void UKUIPanel::setPanelSize(int value, bool save)
 {
     gsettings->set(PANEL_SIZE_KEY,value);
@@ -955,19 +993,13 @@ void UKUIPanel::setPanelSize(int value, bool save)
     }
 }
 
-
-
-/************************************************
-
- ************************************************/
-
+/*设置任务栏图标大小*/
 void UKUIPanel::setIconSize(int value, bool save)
 {
     gsettings->set(ICON_SIZE_KEY,value);
     if (mIconSize != value)
     {
         mIconSize = value;
-        updateStyleSheet();
         mLayout->setLineSize(mIconSize);
 
         if (save)
@@ -1055,6 +1087,12 @@ void UKUIPanel::setPosition(int screen, IUKUIPanel::Position position, bool save
     }
 
     realign();
+
+    //dbus 发任务栏位置的信号，开始菜单等监听
+    QDBusMessage message=QDBusMessage::createSignal("/panel/settings", "com.ukui.panel.settings", "SendPanelSetings");
+    gsettings->set(PANEL_POSITION_KEY,position);
+    message<<position;
+    QDBusConnection::sessionBus().send(message);
 }
 
 /************************************************
@@ -1079,7 +1117,6 @@ void UKUIPanel::setAlignment(Alignment value, bool save)
 void UKUIPanel::setFontColor(QColor color, bool save)
 {
     mFontColor = color;
-    updateStyleSheet();
 
     if (save)
         saveSettings(true);
@@ -1091,42 +1128,11 @@ void UKUIPanel::setFontColor(QColor color, bool save)
 void UKUIPanel::setBackgroundColor(QColor color, bool save)
 {
     mBackgroundColor = color;
-    updateStyleSheet();
 
     if (save)
         saveSettings(true);
 }
 
-/*设置任务栏的背景色，可通过gsetting修改*/
-void UKUIPanel::setPanelBackground(bool effective)
-{
-    if(effective)
-    {
-        QStringList sheet;
-        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,22,%1); }").arg(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
-        setStyleSheet(sheet.join("\n"));
-    }
-    else
-        updateStyleSheet();
-}
-
-
-/************************************************
- *
- ************************************************/
-void UKUIPanel::setOpacity(int opacity, bool save)
-{
-    mOpacity = opacity;
-    updateStyleSheet();
-
-    if (save)
-        saveSettings(true);
-}
-
-
-/************************************************
- *
- ************************************************/
 void UKUIPanel::setReserveSpace(bool reserveSpace, bool save)
 {
     if (mReserveSpace == reserveSpace)
@@ -1242,7 +1248,7 @@ void UKUIPanel::paintEvent(QPaintEvent *)
 */
 void UKUIPanel::showPopupMenu(Plugin *plugin)
 {
-    menu = new PopupMenu(tr("Panel"), this);
+    menu = new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     /* @new features
@@ -1269,8 +1275,8 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         }
     }
 
-    /*
-    menu->addTitle(QIcon(), tr("Panel"));
+/*
+//    menu->addTitle(QIcon(), tr("Panel"));
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                    tr("Configure Panel"),
                    this, SLOT(showConfigDialog())
@@ -1279,24 +1285,22 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                    tr("Manage Widgets"),
                    this, SLOT(showAddPluginDialog())
                   )->setDisabled(mLockPanel);
-    */
+*/
 
     menu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
                     tr("Set up Panel"),
                     this, SLOT(setUpPanel())
-                    )->setDisabled(mLockPanel);
+                    );
 
     menu->addSeparator();
 
     QAction * showtaskview = menu->addAction(tr("Show Taskview"));
-    showtaskview->setDisabled(mLockPanel);
     showtaskview->setCheckable(true);
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
 #if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
     QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
-    shownightmode->setDisabled(mLockPanel);
     shownightmode->setCheckable(true);
     shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
     connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
@@ -1353,7 +1357,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         about=new QAction(this);
         about->setText(tr("About Kylin"));
         menu->addAction(about);
-        about->setDisabled(mLockPanel);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
             process->startDetached("/usr/bin/ukui-about");
@@ -1642,55 +1645,6 @@ bool UKUIPanel::isPluginSingletonAndRunnig(QString const & pluginId) const
         return false;
     else
         return plugin->iPlugin()->flags().testFlag(IUKUIPanelPlugin::SingleInstance);
-}
-
-void UKUIPanel::setPanelPosition(Position position)
-{
-    QDBusMessage message=QDBusMessage::createSignal("/panel/settings", "com.ukui.panel.settings", "SendPanelSetings");
-    if(position==PositionTop)
-    {
-        setPosition(0,PositionTop,true);
-        gsettings->set(PANEL_POSITION_KEY,1);
-        message<<1;
-        QDBusConnection::sessionBus().send(message);
-    }
-    else if(position==PositionLeft)
-    {
-        setPosition(0,PositionLeft,true);
-        gsettings->set(PANEL_POSITION_KEY,2);
-        message<<2;
-        QDBusConnection::sessionBus().send(message);
-    }
-    else if(position==PositionRight)
-    {
-        this->setPosition(0,PositionRight,true);
-        gsettings->set(PANEL_POSITION_KEY,3);
-        message<<3;
-        QDBusConnection::sessionBus().send(message);
-    }
-    else
-    {
-        setPosition(0,PositionBottom,true);
-        gsettings->set(PANEL_POSITION_KEY,0);
-        message<<0;
-        QDBusConnection::sessionBus().send(message);
-    }
-}
-
-/*ukui-panel use gsettings to set panelsize & iconsize
- * it need to emit signals to other application
- * and for users to adjust through the command lines
-*/
-void UKUIPanel::setPanelsize(int panelsize)
-{
-    setPanelSize(panelsize,true);
-    gsettings->set(PANEL_SIZE_KEY,panelsize);
-}
-
-void UKUIPanel::setIconsize(int iconsize)
-{
-    setIconSize(iconsize,true);
-    gsettings->set(ICON_SIZE_KEY,iconsize);
 }
 
 void UKUIPanel::panelReset()

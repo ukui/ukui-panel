@@ -308,14 +308,12 @@ public slots:
     void setAlignment(UKUIPanel::Alignment value, bool save); //!< \sa setPanelSize()
     void setFontColor(QColor color, bool save); //!< \sa setPanelSize()
     void setBackgroundColor(QColor color, bool save); //!< \sa setPanelSize()
-    void setOpacity(int opacity, bool save); //!< \sa setPanelSize()
     void setReserveSpace(bool reserveSpace, bool save); //!< \sa setPanelSize()
     void setHidable(bool hidable, bool save); //!< \sa setPanelSize()
     void setVisibleMargin(bool visibleMargin, bool save); //!< \sa setPanelSize()
     void setAnimationTime(int animationTime, bool save); //!< \sa setPanelSize()
     void setShowDelay(int showDelay, bool save); //!< \sa setPanelSize()
     void setIconTheme(const QString& iconTheme);
-    void setPanelBackground(bool effective);
 
     /**
      * @brief Saves the current configuration, i.e. writes the current
@@ -696,23 +694,13 @@ private:
      */
     bool mLockPanel;
 
-    /**
-     * @brief Updates the style sheet for the panel. First, the stylesheet is
-     * created from the preferences. Then, it is set via
-     * QWidget::setStyleSheet().
-     */
-    void updateStyleSheet();
-
     // settings should be kept private for security
     UKUi::Settings *settings() const { return mSettings; }
 
-    PopupMenu * menu;
+    QMenu * menu;
 
 
 private slots:
-    void setPanelPosition(Position position);
-    void setPanelsize(int panelsize);
-    void setIconsize(int iconsize);
     void panelReset();
 
 public:
