@@ -87,7 +87,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mPlaceHolder->setMinimumSize(1, 1);
     mPlaceHolder->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
     mPlaceHolder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-    mLayout->addWidget(mPlaceHolder);
+//    mLayout->addWidget(mPlaceHolder);
 
 //    QTimer::singleShot(0, this, SLOT(settingsChanged()));
     settingsChanged();
