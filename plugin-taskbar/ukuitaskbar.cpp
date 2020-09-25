@@ -41,7 +41,6 @@
 #include <QTimer>
 
 #include "../panel/common/ukuigridlayout.h"
-#include <XdgIcon>
 
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
@@ -54,12 +53,12 @@ using namespace UKUi;
 UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QFrame(parent),
     mSignalMapper(new QSignalMapper(this)),
-    mButtonStyle(Qt::ToolButtonTextBesideIcon),
+    mButtonStyle(Qt::ToolButtonIconOnly),
     mButtonWidth(400),
     mButtonHeight(100),
     mCloseOnMiddleClick(true),
     mRaiseOnCurrentDesktop(true),
-    mShowOnlyOneDesktopTasks(false),
+    mShowOnlyOneDesktopTasks(true),
     mShowDesktopNum(0),
     mShowOnlyCurrentScreenTasks(false),
     mShowOnlyMinimizedTasks(false),
@@ -76,7 +75,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
-    setStyle(mStyle);
+    //setStyle(mStyle);
     mpTaskBarIcon = new UKUITaskBarIcon;
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
@@ -88,9 +87,11 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mPlaceHolder->setMinimumSize(1, 1);
     mPlaceHolder->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
     mPlaceHolder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-    mLayout->addWidget(mPlaceHolder);
+//    mLayout->addWidget(mPlaceHolder);
 
-    QTimer::singleShot(0, this, SLOT(settingsChanged()));
+//    QTimer::singleShot(0, this, SLOT(settingsChanged()));
+    settingsChanged();
+//    setButtonStyle(Qt::ToolButtonIconOnly);
     setAcceptDrops(true);
 
     connect(mSignalMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped), this, &UKUITaskBar::activateTask);
@@ -100,6 +101,17 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
             , this, &UKUITaskBar::onWindowChanged);
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &UKUITaskBar::onWindowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
+
+    //龙芯机器的最小化任务窗口的预览窗口的特殊处理
+    system("cat /proc/cpuinfo >> /tmp/_tmp_cpu_info_cat_");
+    QFile file("/tmp/_tmp_cpu_info_cat_");
+    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read CpuInfo Failed.";
+    while (CpuInfoFlg && !file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if (str.contains("Loongson")) CpuInfoFlg = false;
+    }
+    file.close();
 
     /**/
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel.plugins.service");
@@ -301,8 +313,11 @@ void UKUITaskBar::addWindow(WId window)
             (*i_group)->onWindowRemoved(window);
     }
 
-    //check if window belongs to some existing group
-    if (!group && mGroupingEnabled)
+    /*check if window belongs to some existing group
+     * 安卓兼容应用的组名为kydroid-display-window
+     * 需要将安卓兼容目录的分组特性关闭
+    */
+    if (!group && mGroupingEnabled && group_id.compare("kydroid-display-window"))
     {
         for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
         {
@@ -453,20 +468,9 @@ void UKUITaskBar::refreshPlaceholderVisibility()
  ************************************************/
 void UKUITaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
 {
-    const Qt::ToolButtonStyle old_style = mButtonStyle;
-    mButtonStyle = buttonStyle;
-    if (old_style != mButtonStyle)
-        emit buttonStyleRefreshed(mButtonStyle);
+    emit buttonStyleRefreshed(mButtonStyle);
 }
 
-void UKUITaskBar::setShowGroupOnHover(bool bFlag)
-{
-    mShowGroupOnHover = bFlag;
-}
-
-/************************************************
-
- ************************************************/
 void UKUITaskBar::settingsChanged()
 {
     bool groupingEnabledOld = mGroupingEnabled;
@@ -526,9 +530,11 @@ void UKUITaskBar::settingsChanged()
     refreshTaskList();
 }
 
-/************************************************
+void UKUITaskBar::setShowGroupOnHover(bool bFlag)
+{
+    mShowGroupOnHover = bFlag;
+}
 
- ************************************************/
 void UKUITaskBar::realign()
 {
     mLayout->setEnabled(false);
