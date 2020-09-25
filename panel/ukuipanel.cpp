@@ -262,7 +262,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
 
-    updateStyleSheet();
+    
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
@@ -272,6 +272,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         if(key==TRANSPARENCY_KEY)
             setPanelBackground(true);
     });
+//updateStyleSheet();
 
 
     setPanelsize(PANEL_SIZE_MEDIUM);
@@ -627,7 +628,7 @@ void UKUIPanel::setMargins()
 */
 void UKUIPanel::realign()
 {
-    updateStyleSheet();
+    //updateStyleSheet();
     if (!isVisible())
         return;
 #if 0
@@ -969,7 +970,7 @@ void UKUIPanel::showNightModeButton()
 void UKUIPanel::updateStyleSheet()
 {
     QStringList sheet;
-    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,0.9); }");
+    //sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,%1); }").arg(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
     setStyleSheet(sheet.join("\n"));
 }
 
@@ -1001,7 +1002,7 @@ void UKUIPanel::setIconSize(int value, bool save)
     if (mIconSize != value)
     {
         mIconSize = value;
-        updateStyleSheet();
+        //updateStyleSheet();
         mLayout->setLineSize(mIconSize);
 
         if (save)
@@ -1117,7 +1118,7 @@ void UKUIPanel::setAlignment(Alignment value, bool save)
 void UKUIPanel::setFontColor(QColor color, bool save)
 {
     mFontColor = color;
-    updateStyleSheet();
+    //updateStyleSheet();
 
     if (save)
         saveSettings(true);
@@ -1129,7 +1130,7 @@ void UKUIPanel::setFontColor(QColor color, bool save)
 void UKUIPanel::setBackgroundColor(QColor color, bool save)
 {
     mBackgroundColor = color;
-    updateStyleSheet();
+    //updateStyleSheet();
 
     if (save)
         saveSettings(true);
@@ -1144,8 +1145,8 @@ void UKUIPanel::setPanelBackground(bool effective)
         sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,%1); }").arg(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
         setStyleSheet(sheet.join("\n"));
     }
-    else
-        updateStyleSheet();
+    //else
+        //updateStyleSheet();
 }
 
 
@@ -1155,7 +1156,7 @@ void UKUIPanel::setPanelBackground(bool effective)
 void UKUIPanel::setOpacity(int opacity, bool save)
 {
     mOpacity = opacity;
-    updateStyleSheet();
+    //updateStyleSheet();
 
     if (save)
         saveSettings(true);
