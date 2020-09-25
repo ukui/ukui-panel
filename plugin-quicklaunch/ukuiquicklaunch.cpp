@@ -97,12 +97,13 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
                 qDebug() << "XdgDesktopFile" << desktop << "is not valid";
                 continue;
             }
+            /* 检测desktop文件的属性，目前UKUI桌面环境不需要此进行isSuitable检测
             if (!xdg.isSuitable())
             {
                 qDebug() << "XdgDesktopFile" << desktop << "is not applicable";
                 continue;
             }
-
+            */
             addButton(new QuickLaunchAction(&xdg, this));
         }
         else if (! file.isEmpty())
