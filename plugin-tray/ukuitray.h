@@ -44,34 +44,18 @@
 #include "../panel/iukuipanel.h"
 #include "../panel/customstyle.h"
 #include "../panel/ukuicontrolstyle.h"
-#include "traystorage.h"
+#include "ukuitraystrage.h"
 
 class TrayIcon;
 class QSize;
 namespace UKUi {
 class GridLayout;
 }
-class UKUiStorageWidget;
+
 /**
  * @brief This makes our trayplugin
  */
 class UKUITrayPlugin;
-enum storageBarStatus{ST_HIDE,ST_SHOW};
-/**
- * @brief This makes our storage
- */
-class UKUIStorageFrame:public QWidget
-{
-    Q_OBJECT
-public:
-    UKUIStorageFrame(QWidget* parent =0);
-    ~UKUIStorageFrame();
-protected:
-    bool eventFilter(QObject *, QEvent *);
-    void paintEvent(QPaintEvent *event)override;
-private:
-    Atom _NET_SYSTEM_TRAY_OPCODE;
-};
 
 class UKUITray: public QFrame, QAbstractNativeEventFilter
 {
@@ -83,9 +67,7 @@ public:
 
     QSize iconSize() const { return mIconSize; }
     void setIconSize();
-    void setStorageBar(TrayStorage *pTys);
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
-    void realign();
     UKUITrayPlugin *mPlugin;
 
     //control app show in tray/traystorege  by ukui-control-center
@@ -99,6 +81,7 @@ public:
 public slots:
     void storageBar();
     void changeIcon();
+    void realign();
 
 signals:
     void iconSizeChanged(int iconSize);
@@ -111,6 +94,8 @@ private slots:
     void stopStorageTray();
     void onIconDestroyed(QObject * icon);
     void freezeTrayApp(Window winId);
+    void trayIconSizeRefresh();
+
 private:
     VisualID getVisual();
     void clientMessageEvent(xcb_generic_event_t *e);
@@ -158,12 +143,4 @@ private:
     QGSettings *settings;
 };
 
-class UKUiStorageWidget:public QWidget
-{
-public:
-    UKUiStorageWidget();
-    ~UKUiStorageWidget();
-protected:
-    void paintEvent(QPaintEvent*);
-};
 #endif
