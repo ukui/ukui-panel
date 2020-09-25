@@ -17,8 +17,70 @@
  */
 #include "qclickwidget.h"
 
+void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *p_this)
+{
+    gboolean success =  FALSE;
+    GError *err = nullptr;
+    success = g_drive_eject_with_operation_finish (source_object, res, &err);
+
+//    qDebug()<<"oh no"<<err->message<<err->code;
+
+    if (!err)
+    {
+      findGDriveList()->removeOne(source_object);
+      p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),NORMALDEVICE);
+      p_this->m_eject->show();
+    }
+
+    else if(g_drive_can_stop(source_object) == true)
+    {
+        qDebug()<<"aaaaaaaaaaaaa-&& g_drive_can_stop(source_object) == true----------1";
+        int volumeNum = g_list_length(g_drive_get_volumes(source_object));
+
+        for(int eachVolume = 0 ; eachVolume < volumeNum ;eachVolume++)
+        {
+//            g_mount_unmount_with_operation(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),
+//                                           G_MOUNT_UNMOUNT_NONE,
+//                                           NULL,
+//                                           NULL,
+//                                           GAsyncReadyCallback(frobnitz_result_func_mount),
+//                                           p_this
+//                        );
+            p_this->flagType = 0;
+
+            if(g_mount_can_unmount(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))))
+            {
+//                UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
+                char *dataPath = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))));
+//                QProcess::execute("pkexec umount " + QString(dataPath));
+//                p_this->flagType++;
+//                qDebug()<<QString(dataPath)<<"  aaaaaaaaaaaaa-------------------------------1.5";
+                QProcess p;
+                p.setProgram("pkexec");
+                p.setArguments(QStringList()<<"umount"<<QString(dataPath));
+                p.start();
+                p_this->ifSucess = p.waitForFinished();
+                p_this->m_eject = new ejectInterface(p_this,g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),DATADEVICE);
+                p_this->m_eject->show();
+                findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)));
+                findGDriveList()->removeOne(source_object);
+                qDebug()<<"-----"<<findGDriveList()->size()<<";;;;;;;;;;;;;;;;"<<findGMountList()->size();
+                qDebug()<<"oh no"<<err->message<<err->code;
+            }
+
+        }
+    }
+    else
+    {   qDebug()<<"oh no"<<err->message<<err->code;
+        qDebug()<<"howwohohwohow";
+        p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),OCCUPYDEVICE);
+        p_this->m_eject->show();
+    }
+}
+
 QClickWidget::QClickWidget(QWidget *parent,
                            int num,
+                           GDrive *Drive,
                            QString driveName,
                            QString nameDis1,
                            QString nameDis2,
@@ -34,6 +96,7 @@ QClickWidget::QClickWidget(QWidget *parent,
                            QString pathDis4)
     : QWidget(parent),
       m_Num(num),
+      m_Drive(Drive),
       m_driveName(driveName),
       m_nameDis1(nameDis1),
       m_nameDis2(nameDis2),
@@ -96,7 +159,19 @@ QClickWidget::QClickWidget(QWidget *parent,
         main_V_BoxLayout->setContentsMargins(0,0,0,0);
 
         connect(m_eject_button,SIGNAL(clicked()),SLOT(switchWidgetClicked()));  // this signal-slot function is to emit a signal which
-                                                                                //is to trigger a slot in mainwindow interface
+                                                                                //is to trigger a slot in mainwindow
+        connect(m_eject_button, &QPushButton::clicked,this,[=]()
+        {
+            qDebug()<<g_drive_get_name(Drive)<<"1----------------2";
+            g_drive_eject_with_operation(Drive,
+                         G_MOUNT_UNMOUNT_NONE,
+                         NULL,
+                         NULL,
+                         GAsyncReadyCallback(frobnitz_result_func),
+                         this);
+
+        });
+
 //when the drive only has one vlolume
 //we set the information and set all details of the U disk in main interface
         if(m_Num == 1)
@@ -591,31 +666,31 @@ QClickWidget::~QClickWidget()
 }
 
 //to show the text,when the contents is too much,we use the "..."to replace it
-QString QClickWidget::getElidedText(QFont font, QString str, int MaxWidth)
-{
-    if (str.isEmpty())
-    {
-        return "";
-    }
+//QString QClickWidget::getElidedText(QFont font, QString str, int MaxWidth)
+//{
+//    if (str.isEmpty())
+//    {
+//        return "";
+//    }
 
-    QFontMetrics fontWidth(font);
+//    QFontMetrics fontWidth(font);
 
-    //计算字符串宽度
-    //calculat the width of the string
-    int width = fontWidth.width(str);
+//    //计算字符串宽度
+//    //calculat the width of the string
+//    int width = fontWidth.width(str);
 
-    //当字符串宽度大于最大宽度时进行转换
-    //Convert when string width is greater than maximum width
-    if (width >= MaxWidth)
-    {
-        //右部显示省略号
-        //show by ellipsis in right
-        str = fontWidth.elidedText(str, Qt::ElideRight, MaxWidth);
-    }
-    //返回处理后的字符串
-    //return the string that is been handled
-    return str;
-}
+//    //当字符串宽度大于最大宽度时进行转换
+//    //Convert when string width is greater than maximum width
+//    if (width >= MaxWidth)
+//    {
+//        //右部显示省略号
+//        //show by ellipsis in right
+//        str = fontWidth.elidedText(str, Qt::ElideRight, MaxWidth);
+//    }
+//    //返回处理后的字符串
+//    //return the string that is been handled
+//    return str;
+//}
 
 void QClickWidget::mouseClicked()
 {
@@ -712,13 +787,13 @@ QString QClickWidget::size_human(qlonglong capacity)
         return str_capacity;
      //   return QString().setNum(capacity,'f',2)+" "+unit;
     }
-
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     if(capacity == NULL)
     {
        QString str_capaticity = tr("the capacity is empty");
        return str_capaticity;
     }
-
+#endif
     if(capacity == 1)
     {
         QString str_capacity = tr("blank CD");

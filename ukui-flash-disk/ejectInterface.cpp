@@ -22,6 +22,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     mount_name_label(nullptr)
 {
 //interface layout
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     EjectScreen = qApp->primaryScreen();
     eject_image_button = new QPushButton();
     eject_image_button->setFixedSize(30,30);
@@ -29,6 +30,12 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
 
     //add it to show the eject button
+
+//    m_driveName_label = new QLabel();         ////
+//    m_driveName_label->setFont(QFont("Noto Sans CJK SC",14));
+//    QString DriveName = getElidedText(m_driveName_label->font(), m_driveName, 180);
+//    m_driveName_label->setText(DriveName);
+//    m_driveName_label->setFixedSize(180,40);  ////
     if(eject_image_button)
     {
         eject_image_button->setIcon(eject_image_icon);
@@ -38,26 +45,35 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     eject_image_button->setIconSize(QSize(25,25));
 
     show_text_label = new QLabel;
+    show_text_label->setFont(QFont("Noto Sans CJK SC",14));
+    QString strNoraml = tr("usb has been unplugged safely");
+    QString strOccupy = tr("usb is occupying unejectable");
+    QString strDataDevice = tr("data device has been unloaded");
+    QString normalShow = getElidedText(show_text_label->font(),strNoraml,150);
+    QString occupyShow = getElidedText(show_text_label->font(),strOccupy,150);
+    QString datadeviceShow = getElidedText(show_text_label->font(),strDataDevice,150);
     //add the text of the eject interface
     if(show_text_label)
     {
         if(deviceType == NORMALDEVICE)
         {
-            show_text_label->setText(tr("usb has been unplugged safely"));
+            show_text_label->setText(normalShow);
             QPalette pe;
             pe.setColor(QPalette::WindowText,Qt::white);
             show_text_label->setPalette(pe);
         }
         else if(deviceType == OCCUPYDEVICE)
         {
-            show_text_label->setText(tr("usb is occupying unejectable"));
+//            show_text_label->setText(tr("usb is occupying unejectable"));
+            show_text_label->setText(occupyShow);
             QPalette pe;
             pe.setColor(QPalette::WindowText,Qt::white);
             show_text_label->setPalette(pe);
         }
         else if(deviceType == DATADEVICE)
         {
-            show_text_label->setText(tr("data device has been unloaded"));
+//            show_text_label->setText(tr("data device has been unloaded"));
+            show_text_label->setText(datadeviceShow);
             QPalette pe;
             pe.setColor(QPalette::WindowText,Qt::white);
             show_text_label->setPalette(pe);
@@ -86,7 +102,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     main_V_BoxLayput->addLayout(ejectinterface_h_BoxLayout);
     main_V_BoxLayput->addLayout(mountname_h_BoxLayout);
 
-    this->resize(210,86);
+    this->setFixedSize(210,86);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
 
