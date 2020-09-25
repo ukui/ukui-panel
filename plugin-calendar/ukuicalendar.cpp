@@ -47,7 +47,7 @@
 #include <QSize>
 #include <QScreen>
 
-#define CALENDAR_HEIGHT(a) (a-5)
+#define CALENDAR_HEIGHT (46)
 #define CALENDAR_WIDTH (104)
 
 #define WEBVIEW_WIDTH (454)
@@ -86,17 +86,13 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mContent = new CalendarActiveLabel(this);
     mWebViewDiag = new UkuiWebviewDialog;
 
-    mRotatedWidget = new UKUi::RotatedWidget(*mContent, mMainWidget);
-
-    mRotatedWidget->setTransferWheelEvent(true);
-
     QVBoxLayout *borderLayout = new QVBoxLayout(mMainWidget);
     borderLayout->setContentsMargins(0, 0, 0, 0);
     borderLayout->setSpacing(0);
-    borderLayout->addWidget(mRotatedWidget, 0, Qt::AlignCenter);
+    borderLayout->setAlignment(Qt::AlignCenter);
+    borderLayout->addWidget(mContent);
 
     mContent->setObjectName(QLatin1String("WorldClockContent"));
-
     mContent->setAlignment(Qt::AlignCenter);
 
     settingsChanged();
@@ -182,10 +178,6 @@ IndicatorCalendar::~IndicatorCalendar()
     if(mWebViewDiag != NULL)
     {
         mWebViewDiag->deleteLater();
-    }
-    if(mRotatedWidget != NULL)
-    {
-        mRotatedWidget->deleteLater();
     }
     if(mContent != NULL)
     {
@@ -305,8 +297,6 @@ void IndicatorCalendar::updateTimeText()
             str=tzNow.toString(hourSystem_24_vartical);
     }
     mContent->setText(str);
-    if (old_size != mContent->sizeHint())
-        mRotatedWidget->adjustContentSize();
     mContent->setStyleSheet(
                 //正常状态样式
                 "QLabel{"
@@ -327,7 +317,6 @@ void IndicatorCalendar::updateTimeText()
                 "background-color:rgba(190,216,239,12%);"
                 "}"
                 );
-    mRotatedWidget->update();
     updatePopupContent();
     mbIsNeedUpdate = false;
 }
@@ -814,38 +803,18 @@ QString IndicatorCalendar::preformat(const QDateTime &dateTime,const QString &fo
 void IndicatorCalendar::realign()
 {
     setTimeShowStyle();
-    if (mAutoRotate)
-        switch (panel()->position())
-        {
-        case IUKUIPanel::PositionTop:
-        case IUKUIPanel::PositionBottom:
-            mRotatedWidget->setOrigin(Qt::TopLeftCorner);
-            break;
-
-        case IUKUIPanel::PositionLeft:
-            //mRotatedWidget->setOrigin(Qt::BottomLeftCorner);
-            break;
-
-        case IUKUIPanel::PositionRight:
-            //mRotatedWidget->setOrigin(Qt::TopRightCorner);
-            break;
-        }
-    else
-    {
-        mRotatedWidget->setOrigin(Qt::TopLeftCorner);
-    }
 }
 
 void IndicatorCalendar::setTimeShowStyle()
 {
-    int size = panel()->panelSize();
+    int size = panel()->panelSize() - 3;
     if(panel()->isHorizontal())
     {
-        mContent->setFixedSize(CALENDAR_WIDTH, CALENDAR_HEIGHT(size));
+       mContent->setFixedSize(CALENDAR_WIDTH, size);
     }
     else
     {
-        mContent->setFixedSize(CALENDAR_HEIGHT(size), CALENDAR_WIDTH);
+        mContent->setFixedSize(size, CALENDAR_WIDTH);
     }
     mbIsNeedUpdate = true;
     timeout();
