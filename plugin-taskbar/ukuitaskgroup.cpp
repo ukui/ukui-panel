@@ -36,7 +36,6 @@
 #include <QDragLeaveEvent>
 #include <QStringBuilder>
 #include <QMenu>
-#include <XdgIcon>
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <functional>
 
@@ -63,6 +62,7 @@
 #define THUMBNAIL_HEIGHT	(PREVIEW_HEIGHT - SPACE_HEIGHT)
 #define ICON_WIDTH			48
 #define ICON_HEIGHT			48
+#define MAX_SIZE_OF_Thumb   16777215
 
 #define SCREEN_MAX_WIDTH_SIZE     1400
 #define SCREEN_MAX_HEIGHT_SIZE    1050
@@ -123,7 +123,6 @@ QPixmap qimageFromXImage(XImage* ximage)
             p += ximage->bytes_per_line / 4;
         }
     }
-
     return QPixmap::fromImage(image);
 }
 
@@ -151,7 +150,6 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
     connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(onActiveWindowChanged(WId)));
-    connect(parent, &UKUITaskBar::buttonRotationRefreshed, this, &UKUITaskGroup::setAutoRotation);
     connect(parent, &UKUITaskBar::refreshIconGeometry, this, &UKUITaskGroup::refreshIconsGeometry);
     connect(parent, &UKUITaskBar::buttonStyleRefreshed, this, &UKUITaskGroup::setToolButtonsStyle);
     connect(parent, &UKUITaskBar::showOnlySettingChanged, this, &UKUITaskGroup::refreshVisibility);
@@ -194,7 +192,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    QAction *a = menu->addAction(XdgIcon::fromTheme("process-stop"), tr("close"));
+    QAction *a = menu->addAction(QIcon::fromTheme("process-stop"), tr("close"));
     connect(a, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {
         mPreventPopup = false;
@@ -212,7 +210,7 @@ void UKUITaskGroup::closeGroup()
     //To Do
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(auto it=mButtonHash.begin();it!=mButtonHash.end();it++)
-    {  
+    {
     UKUITaskWidget *button =it.value();
   if (button->isOnDesktop(KWindowSystem::currentDesktop()))
             button->closeApplication();
@@ -234,7 +232,6 @@ QWidget * UKUITaskGroup::addWindow(WId id)
         return mButtonHash.value(id);
     UKUITaskWidget *btn = new UKUITaskWidget(id, parentTaskBar(), mPopup);
     mButtonHash.insert(id, btn);
-
     connect(btn, SIGNAL(clicked()), this, SLOT(onChildButtonClicked()));
     connect(btn, SIGNAL(windowMaximize()), this, SLOT(onChildButtonClicked()));
     refreshVisibility();
@@ -348,9 +345,12 @@ void UKUITaskGroup::onWindowRemoved(WId window)
     {
         UKUITaskWidget *button = mButtonHash.value(window);
         mButtonHash.remove(window);
+        if (mVisibleHash.contains(window))
+            mVisibleHash.remove(window);
         mPopup->removeWidget(button);
         button->deleteLater();
-
+        if (!parentTaskBar()->getCpuInfoFlg())
+            system(QString("rm -f /tmp/%1.png").arg(window).toLatin1());
         if (mButtonHash.count())
         {
             if(mPopup->isVisible())
@@ -420,6 +420,16 @@ int UKUITaskGroup::buttonsCount() const
     return mButtonHash.count();
 }
 
+void UKUITaskGroup::initVisibleHash()
+{
+   /* for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    {
+        if (mVisibleHash.contains(it.key())) continue;
+        if (it.value()->isVisibleTo(mPopup))
+            mVisibleHash.insert(it.key(), it.value());
+    }*/
+}
+
 /************************************************
 
  ************************************************/
@@ -455,7 +465,7 @@ void UKUITaskGroup::draggingTimerTimeout()
  ************************************************/
 void UKUITaskGroup::onClicked(bool)
 {
-    if (1 == mButtonHash.size())
+    if (1 == mVisibleHash.size())
     {
         return singleWindowClick();
     }
@@ -588,16 +598,15 @@ void UKUITaskGroup::refreshVisibility()
     UKUITaskBar const * taskbar = parentTaskBar();
     const int showDesktop = taskbar->showDesktopNum();
 
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-    for(auto i=mButtonHash.begin();i!=mButtonHash.end();i++){
-	UKUITaskWidget * btn=i.value();
-#else
-    for(UKUITaskWidget * btn : qAsConst(mButtonHash)){
-#endif
+    for(UKUITaskButtonHash::const_iterator i=mButtonHash.begin();i!=mButtonHash.end();i++)
+    {
+        UKUITaskWidget * btn=i.value();
         bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
         visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
         visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;
         btn->setVisible(visible);
+        if (btn->isVisibleTo(mPopup) && !mVisibleHash.contains(i.key()))
+            mVisibleHash.insert(i.key(), i.value());
         will |= visible;
     }
 
@@ -916,7 +925,7 @@ void UKUITaskGroup::removeWidget()
             vLayout->deleteLater();
             vLayout = NULL;
         }
-        mpWidget->setParent(NULL);
+        //mpWidget->setParent(NULL);
         mpWidget->deleteLater();
         mpWidget = NULL;
     }
@@ -945,7 +954,7 @@ void UKUITaskGroup::removeSrollWidget()
             vLayout->deleteLater();
             vLayout = NULL;
         }
-        mpWidget->setParent(NULL);
+        //mpWidget->setParent(NULL);
         mpWidget->deleteLater();
         mpWidget = NULL;
     }
@@ -959,7 +968,7 @@ void UKUITaskGroup::removeSrollWidget()
 
 void UKUITaskGroup::setLayOutForPostion()
 {
-    if(mButtonHash.size() > 13)//more than 13 need
+    if(mVisibleHash.size() > 10)//more than 10 need
     {
         mpWidget->setLayout(new QVBoxLayout);
         mpWidget->layout()->setAlignment(Qt::AlignTop);
@@ -998,7 +1007,7 @@ bool UKUITaskGroup::isSetMaxWindow()
 
 void UKUITaskGroup::showPreview()
 {
-    if(mButtonHash.size()<=13)
+    if(mVisibleHash.size()<=10)
     {
         showAllWindowByThumbnail();
     }
@@ -1010,13 +1019,33 @@ void UKUITaskGroup::showPreview()
 
 void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
 {
+    int size = mVisibleHash.size();
     if(plugin()->panel()->isHorizontal())
     {
-        mPopup->setFixedSize(winWidth*mButtonHash.size() + (mButtonHash.size() + 1)*3, winHeight + 6);
+        mPopup->setFixedSize(winWidth*size + (size + 1)*3, winHeight + 6);
     }
     else
     {
-        mPopup->setFixedSize(winWidth + 6,winHeight*mButtonHash.size() + (mButtonHash.size() + 1)*3);
+        mPopup->setFixedSize(winWidth + 6,winHeight*size + (size + 1)*3);
+    }
+    mPopup->adjustSize();
+}
+
+void UKUITaskGroup::v_adjustPopWindowSize(int winWidth, int winHeight, int v_all)
+{
+    int fixed_size = v_all;
+    int iScreenWidth = QApplication::screens().at(0)->size().width();
+
+    if (fixed_size > iScreenWidth)
+        fixed_size = iScreenWidth;
+
+    if(plugin()->panel()->isHorizontal())
+    {
+        mPopup->setFixedSize(fixed_size,  winHeight + 6);
+    }
+    else
+    {
+        mPopup->setFixedSize(winWidth + 6, fixed_size);
     }
     mPopup->adjustSize();
 }
@@ -1057,9 +1086,10 @@ int UKUITaskGroup::calcAverageHeight()
     }
     else
     {
+        int size = mVisibleHash.size();
         int iScreenHeight = QApplication::screens().at(0)->size().height();
-        int iMarginHeight = (mButtonHash.size()+1)*3;
-        int iAverageHeight = (iScreenHeight - iMarginHeight)/mButtonHash.size();//calculate average width of window
+        int iMarginHeight = (size+1)*3;
+        int iAverageHeight = (iScreenHeight - iMarginHeight)/size;//calculate average width of window
         return iAverageHeight;
     }
 }
@@ -1068,9 +1098,10 @@ int UKUITaskGroup::calcAverageWidth()
 {
     if(plugin()->panel()->isHorizontal())
     {
+        int size = mVisibleHash.size();
         int iScreenWidth = QApplication::screens().at(0)->size().width();
-        int iMarginWidth = (mButtonHash.size()+1)*3;
-        int iAverageWidth = (iScreenWidth - iMarginWidth)/mButtonHash.size();//calculate average width of window
+        int iMarginWidth = (size+1)*3;
+        int iAverageWidth = (iScreenWidth - iMarginWidth)/size;//calculate average width of window
         return iAverageWidth;
     }
     else
@@ -1085,7 +1116,7 @@ void UKUITaskGroup::showAllWindowByList()
     int winWidth = 246;
     int winheight = 46;
     int iPreviewPosition = 0;
-    int popWindowheight = winheight*mButtonHash.size() + (mButtonHash.size()+1)*3;
+    int popWindowheight =( winheight - 2) * mVisibleHash.size() + 3;
     int screenAvailabelHeight = QApplication::screens().at(0)->size().height() - plugin()->panel()->panelSize();
     if(!plugin()->panel()->isHorizontal())
     {
@@ -1117,7 +1148,9 @@ void UKUITaskGroup::showAllWindowByList()
         UKUITaskWidget *btn = it.value();
         btn->removeThumbNail();
         btn->updateTitle();
-        btn->setFixedSize(mpScrollArea->width(),winheight);
+        btn->setTitleFixedWidth(winWidth - 80);
+//        btn->setFixedSize(mpScrollArea->width(),winheight);
+        btn->adjustSize();
         mpWidget->layout()->setContentsMargins(0,0,0,0);
         mpWidget->layout()->addWidget(btn);
     }
@@ -1150,6 +1183,8 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int previewPosition = 0;
     int winWidth = 0;
     int winHeight = 0;
+   // initVisibleHash();
+    refreshVisibility();
     int iAverageWidth = calcAverageWidth();
     int iAverageHeight = calcAverageHeight();
     /*begin get the winsize*/
@@ -1191,6 +1226,25 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     mpWidget->setAttribute(Qt::WA_TranslucentBackground);
     setLayOutForPostion();
     /*begin catch preview picture*/
+
+    int max_Height = 0;
+    int max_Width = 0;
+    int imgWidth_sum = 0;
+    int changed = 0;
+    int title_width = 0;
+    int v_all = 0;
+    int iScreenWidth = QApplication::screens().at(0)->size().width();
+    float minimumWidth = THUMBNAIL_WIDTH;
+    float minimumHeight = THUMBNAIL_HEIGHT;
+    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    {
+        display = XOpenDisplay(nullptr);
+        XGetWindowAttributes(display, it.key(), &attr);
+        max_Height = attr.height > max_Height ? attr.height : max_Height;
+        max_Width = attr.width > max_Width ? attr.width : max_Width;
+        if(display)
+            XCloseDisplay(display);
+    }
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
@@ -1198,22 +1252,77 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
         img = XGetImage(display, it.key(), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
+        float imgWidth = 0;
+        float imgHeight = 0;
+        if (plugin()->panel()->isHorizontal()) {
+            imgWidth = (float)attr.width / (float)attr.height * THUMBNAIL_HEIGHT;
+            imgHeight = THUMBNAIL_HEIGHT;
+        } else {
+            imgWidth = THUMBNAIL_WIDTH;
+            imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH;
+        }
+        if (plugin()->panel()->isHorizontal())
+        {
+            if (attr.height != max_Height)
+            {
+                float tmp = (float)attr.height / (float)max_Height;
+                imgHeight =  imgHeight * tmp;
+            }
+            if ((int)imgWidth > (int)minimumWidth)
+            {
+                imgWidth = minimumWidth;
+            }
+            if (btn->isVisibleTo(mPopup)) {
+                v_all += (int)imgWidth;
+                imgWidth_sum += (int)imgWidth;
+            }
+            if (mVisibleHash.size() == 1 ) changed = (int)imgWidth;
+            btn->setThumbMaximumSize(MAX_SIZE_OF_Thumb);
+            btn->setThumbScale(true);
+        } else {
+            if (attr.width != max_Width)
+            {
+                float tmp = (float)attr.width / (float)max_Width;
+                imgWidth =  imgWidth * tmp;
+            }
+            if ((int)imgHeight > (int)minimumHeight)
+            {
+                imgHeight = minimumHeight;
+            }
+            if (btn->isVisibleTo(mPopup)) {
+                v_all += (int)imgHeight;
+            }
+            if (mVisibleHash.size() == 1 ) changed = (int)imgHeight;
+            if ((int)imgWidth < 150)
+            {
+                btn->setThumbFixedSize((int)imgWidth);
+                btn->setThumbScale(false);
+            } else {
+                btn->setThumbMaximumSize(MAX_SIZE_OF_Thumb);
+                btn->setThumbScale(true);
+            }
+        }
         if(img)
         {
-            thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
-            //thumbnail.save(QString("/tmp/picture/%1.png").arg(it.key()));  test picture if correct
+            thumbnail = qimageFromXImage(img).scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
+            if (!parentTaskBar()->getCpuInfoFlg()) thumbnail.save(QString("/tmp/%1.png").arg(it.key()));
         }
         else
         {
-            thumbnail = btn->getPixmap().scaled(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT,Qt::KeepAspectRatio,Qt::SmoothTransformation);
             qDebug()<<"can not catch picture";
+            QPixmap pxmp;
+            if (pxmp.load(QString("/tmp/%1.png").arg(it.key())))
+                thumbnail = pxmp.scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
+            else {
+                thumbnail = QPixmap((int)imgWidth, (int)imgHeight);
+                thumbnail.fill(QColor(0, 0, 0, 127));
+            }
         }
-		btn->setThumbNail(thumbnail);
+        btn->setThumbNail(thumbnail);
         btn->updateTitle();
-        btn->setFixedSize(winWidth, winHeight);
+        btn->setFixedSize((int)imgWidth, (int)imgHeight);
         mpWidget->layout()->setContentsMargins(0,0,0,0);
         mpWidget->layout()->addWidget(btn);
-
         if(img)
         {
            XDestroyImage(img);
@@ -1224,9 +1333,32 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         }
     }
     /*end*/
+    int i = 0;
+        for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+        {
+            UKUITaskWidget *btn = it.value();
+            if (plugin()->panel()->isHorizontal())  {
+                if (imgWidth_sum > iScreenWidth)
+                    title_width = (int)(btn->width()  * iScreenWidth / imgWidth_sum - 80);
+                else
+                    title_width = btn->width() - 75;
+            } else {
+                 title_width = winWidth- 70;
+            }
+            btn->setTitleFixedWidth(title_width);
+        }
     plugin()->willShowWindow(mPopup);
     mPopup->layout()->addWidget(mpWidget);
-    adjustPopWindowSize(winWidth, winHeight);
+    if (mVisibleHash.size() == 1 && changed != 0)
+        if (plugin()->panel()->isHorizontal()) {
+            adjustPopWindowSize(changed, winHeight);
+        } else {
+            adjustPopWindowSize(winWidth, changed);
+        }
+    else if (mVisibleHash.size() != 1)
+        v_adjustPopWindowSize(winWidth, winHeight, v_all);
+    else
+        adjustPopWindowSize(winWidth, winHeight);
 
     if(plugin()->panel()->isHorizontal())//set preview window position
     {

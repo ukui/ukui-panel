@@ -56,6 +56,9 @@ public:
     bool isOnCurrentScreen() const;
     bool isMinimized() const;
     bool isFocusState() const;
+    void setThumbFixedSize(int w);
+    void setThumbScale(bool val);
+    void setThumbMaximumSize(int w);
     void updateText();
 
     Qt::Corner origin() const;
@@ -69,10 +72,12 @@ public:
      * */
     bool hasDragAndDropHover() const;
     void setThumbNail(QPixmap _pixmap);
+    void setTitleFixedWidth(int size);
     void updateTitle();
     void removeThumbNail();
     void addThumbNail();
     void setPixmap(QPixmap mPixmap);
+    int getWidth();
     QPixmap getPixmap();
 
 public slots:

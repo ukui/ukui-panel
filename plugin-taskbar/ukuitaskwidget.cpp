@@ -24,7 +24,6 @@
 #include "../panel/common/ukuisettings.h"
 
 #include <QDebug>
-#include <XdgIcon>
 #include <QTimer>
 #include <QMenu>
 #include <QAction>
@@ -39,6 +38,7 @@
 #include <QStylePainter>
 #include <QStyleOptionToolButton>
 #include <QDesktopWidget>
+#include <QScreen>
 
 #include "ukuitaskgroup.h"
 #include "ukuitaskbar.h"
@@ -99,7 +99,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     //    mTitleLabel->setContentsMargins(0,0,0,10);
     //    mTitleLabel->adjustSize();
     //    mTitleLabel->setStyleSheet("QLabel{background-color: red;}");
-    //    mTitleLabel->setFixedWidth(120);
+
     mThumbnailLabel = new QLabel;
     mAppIcon = new QLabel;
     mVWindowsLayout = new QVBoxLayout;
@@ -136,12 +136,13 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mTitleLabel->setContentsMargins(0, 0, 5, 0);
     //    mTopBarLayout->setSpacing(5);
     mTopBarLayout->addWidget(mAppIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    mTopBarLayout->addWidget(mTitleLabel, 1, Qt::AlignVCenter);
+    mTopBarLayout->addWidget(mTitleLabel, 10, Qt::AlignLeft);
     //    mTopBarLayout->addStretch();
 //    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
     //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
-    mVWindowsLayout->addLayout(mTopBarLayout);
-    mVWindowsLayout->addWidget(mThumbnailLabel/*, 0, Qt::AlignBottom*/);
+    mVWindowsLayout->addLayout(mTopBarLayout, 5);
+    mVWindowsLayout->addWidget(mThumbnailLabel, Qt::AlignCenter, Qt::AlignCenter);
+    mVWindowsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     this->setLayout(mVWindowsLayout);
     updateText();
     updateIcon();
@@ -183,7 +184,7 @@ void UKUITaskWidget::updateIcon()
     QIcon ico;
     if (mParentTaskBar->isIconByClass())
     {
-        ico = XdgIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
+        ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
     }
     if (ico.isNull())
     {
@@ -790,4 +791,28 @@ void UKUITaskWidget::addThumbNail()
     {
         return;
     }
+}
+
+
+void UKUITaskWidget::setTitleFixedWidth(int size)
+{
+    mTitleLabel->setFixedWidth(size);
+    mTitleLabel->adjustSize();
+}
+
+int UKUITaskWidget::getWidth()
+{
+    return mTitleLabel->width();
+}
+
+void UKUITaskWidget::setThumbFixedSize(int w) {
+    this->mThumbnailLabel->setFixedWidth(w);
+}
+
+void UKUITaskWidget::setThumbMaximumSize(int w) {
+    this->mThumbnailLabel->setMaximumWidth(w);
+}
+
+void UKUITaskWidget::setThumbScale(bool val) {
+    this->mThumbnailLabel->setScaledContents(val);
 }

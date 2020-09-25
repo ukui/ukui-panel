@@ -33,7 +33,6 @@
 
 #include "../panel/iukuipanel.h"
 #include "../panel/iukuipanelplugin.h"
-#include "ukuitaskbarconfiguration.h"
 #include "ukuitaskgroup.h"
 #include "ukuitaskbutton.h"
 
@@ -81,6 +80,7 @@ public:
     bool raiseOnCurrentDesktop() const { return mRaiseOnCurrentDesktop; }
     bool isShowOnlyOneDesktopTasks() const { return mShowOnlyOneDesktopTasks; }
     int showDesktopNum() const { return mShowDesktopNum; }
+    bool getCpuInfoFlg() const { return CpuInfoFlg; }
     bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
     bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
     bool isAutoRotate() const { return mAutoRotate; }
@@ -91,9 +91,6 @@ public:
     inline IUKUIPanel * panel() const { return mPlugin->panel(); }
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
-
-public slots:
-    void settingsChanged();
 
 signals:
     void buttonRotationRefreshed(bool autoRotate, IUKUIPanel::Position position);
@@ -145,6 +142,7 @@ private:
     Qt::ToolButtonStyle mButtonStyle;
     int mButtonWidth;
     int mButtonHeight;
+    bool CpuInfoFlg = true;
     bool mCloseOnMiddleClick;
     bool mRaiseOnCurrentDesktop;
     bool mShowOnlyOneDesktopTasks;
@@ -159,6 +157,7 @@ private:
 
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
+    void settingsChanged();
 
     void wheelEvent(QWheelEvent* event);
     void changeEvent(QEvent* event);
