@@ -1,10 +1,6 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  * (c)LGPL2+
  *
- * Copyright: 2019 Kylin team
- * Authors:
- *   hepuyao <hepuyao@kylinos.cn>
- *
  * Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
  *
  * This program or library is free software; you can redistribute it

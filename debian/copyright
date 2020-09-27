@@ -410,10 +410,9 @@ Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2010-2011, Razor team
 License: LGPL-2.1+
 
-Files: plugin-tray/traystorage.h
+Files: plugin-tray/ukuitraystrage.h
        plugin-tray/ukuitray.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2019, Kylin team
 License: LGPL-2.1+
 
 Files: plugin-tray/ukuitrayplugin.cpp
