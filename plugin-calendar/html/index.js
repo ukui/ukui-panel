@@ -98,8 +98,6 @@ function update_month_ui(mode)
     for(index = 0; index < 16; index++)
     {
         li.children[0].children[index].removeEventListener('click', new_month_selected);
-        li.children[0].children[index].removeEventListener('click', new_month_selected_add);
-        li.children[0].children[index].removeEventListener('click', new_month_selected_minus);
     }
     var list = null;
     var bind_click_position = null;
@@ -116,7 +114,7 @@ function update_month_ui(mode)
             list = [1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4]; //show diff month by scroll  mouse
             bind_click_position = 0;
         }
-   }
+   } 
    else if(scrollUp_count %3 ===2)//mode 3 && the third ui for month
    {
        if(mode ===0)//roll up
@@ -130,7 +128,7 @@ function update_month_ui(mode)
        else//roll down
        {
             list = [9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12];//show diff month by scroll  mouse
-            bind_click_position = 4;
+            bind_click_position = 4;  
        }
 
    }
@@ -184,64 +182,33 @@ function update_month_ui(mode)
                 else
                 {
                     li.children[0].children[index].style.color  = "#FFFFFF33";
-					li.children[0].children[index].addEventListener('click', new_month_selected_add);
                 }
                continue;
-            }
+            }    
 
             if(bind_click_count < 12) // max bind _count of month click is no more than 12
             {
                 li.children[0].children[index].style.color  = "#FFFFFFFF";
                 li.children[0].children[index].addEventListener('click', new_month_selected);
                 bind_click_count = bind_click_count + 1;
-            }
+            } 
             else
             {
                 li.children[0].children[index].style.color  = "#FFFFFF33";
-				li.children[0].children[index].addEventListener('click', new_month_selected_add);
-            }
+            }  
        }
        else
        {
             li.children[0].children[index].style.color  = "#FFFFFF33";
-			li.children[0].children[index].addEventListener('click', new_month_selected_minus);
        }
    }
-}
-
-function new_month_selected_add() {
-	if (this.parentNode.className=== 'show_months') {
-        var str = this.innerHTML.replace("<span class=\"year_month_grid\">","");
-        month_selector.value = str.replace("</span>","");
-        document.getElementById('month_div').className = 'hidden_div';
-        calendar.style.display = "";
-		year++;
-		year_selector.value = year + '年';
-    	selected_date_div.innerHTML = year_selector.value + month_selector.value;
-    	create_page(parseInt(year_selector.value), parseInt(month_selector.value));
-		year--;
-    }
-}
-
-function new_month_selected_minus() {
-	if (this.parentNode.className=== 'show_months') {
-        var str = this.innerHTML.replace("<span class=\"year_month_grid\">","");
-        month_selector.value = str.replace("</span>","");
-        document.getElementById('month_div').className = 'hidden_div';
-        calendar.style.display = "";
-		year--;
-		year_selector.value = year + '年';
-    	selected_date_div.innerHTML = year_selector.value + month_selector.value;
-    	create_page(parseInt(year_selector.value), parseInt(month_selector.value));
-		year++;
-    }
 }
 
 function update_year_month_ui()
 {
     var li = document.getElementById('year_div');
     for (var index =  0;  index < 16;  index++) {
-        // li.children[0].children[index].innerHTML = '<br />';
+        // li.children[0].children[index].innerHTML = '<br />'; 
         var  curretYear = year + index;
         li.children[0].children[index].innerHTML=  '<span class="year_month_grid">'+curretYear+ '年' +'</span>' ;
         //li.children[0].children[index].innerHTML= '<br />'+curretYear+ '年';
@@ -260,7 +227,7 @@ function update_year_month_ui()
     for (var index = 0; index < 16; index++) {
         li.children[0].children[index].removeEventListener('click', new_month_selected);
         li.children[0].children[index].style.color  = "#FFFFFFFF";
-
+        
         if(index >=12)
         {
             var newIndex =  index -12 + 1;
@@ -279,10 +246,6 @@ function update_year_month_ui()
         {
             li.children[0].children[index].addEventListener('click', new_month_selected);
         }
-		else
-		{
-            li.children[0].children[index].addEventListener('click', new_month_selected_add);
-		}
         // month_list.appendChild(li);
         if (index === month + 1) {
             month_selector.value = index + '月';
@@ -339,7 +302,7 @@ function scroll_div(event)
         }
     }
     else
-    {
+    {       
         if(this.id === 'year_div')
         {
            year = year + 4;
@@ -425,13 +388,13 @@ function update_yiji_area_by_date(cur_year,cur_month)
                 {
                     if(hl_yi_data[column-1])
                     {
-                        current_cell.innerHTML = hl_yi_data[column-1];
+                        current_cell.innerHTML = hl_yi_data[column-1]; 
                     }
                     else
                     {
-                        current_cell.innerHTML =  '';
+                        current_cell.innerHTML =  ''; 
                     }
-
+                    
                 }
                 else
                 {
@@ -441,11 +404,11 @@ function update_yiji_area_by_date(cur_year,cur_month)
                     }
                     else
                     {
-                        current_cell.innerHTML ='';
-                    }
+                        current_cell.innerHTML =''; 
+                    }       
                 }
         }
-    }
+    }  
 }
 
 function update_yiji_area() {
@@ -518,13 +481,13 @@ function update_yiji_area() {
                 {
                     if(hl_yi_data[column-1])
                     {
-                        current_cell.innerHTML = hl_yi_data[column-1];
+                        current_cell.innerHTML = hl_yi_data[column-1]; 
                     }
                     else
                     {
-                        current_cell.innerHTML =  '';
+                        current_cell.innerHTML =  ''; 
                     }
-
+                    
                 }
                 else
                 {
@@ -534,8 +497,8 @@ function update_yiji_area() {
                     }
                     else
                     {
-                        current_cell.innerHTML ='';
-                    }
+                        current_cell.innerHTML =''; 
+                    }       
                 }
         }
     }
@@ -563,7 +526,7 @@ window.onload = function () {
 
     var checkbox = document.getElementById('advice_checkbox');
     if (localStorage.getItem('hl_table') == "display"){
-            checkbox.setAttribute("checked", true);
+            checkbox.setAttribute("checked", true);    
 	    hl_table.setAttribute("style", "visibility:display");
 	    //var zodiac_icon = document.getElementById('zodiac_icon');
             //zodiac_icon.setAttribute("style", "display:none");
@@ -578,7 +541,7 @@ window.onload = function () {
             //zodiac_icon.setAttribute("style", "display:none");
 
            localStorage.setItem('hl_table', "display");
-
+           
         } else{
             var hl_table = document.getElementById('hl_table');
 	   hl_table.setAttribute("style", "visibility:hidden");
@@ -588,9 +551,9 @@ window.onload = function () {
            localStorage.setItem('hl_table', "hidden");
        }
     }
-
+    
     "use strict";
-
+    
     load_hl_script(today.getFullYear());
     // var year_list = document.getElementById('year_list');
     // var month_list = document.getElementById('month_list');
@@ -610,7 +573,7 @@ window.onload = function () {
 
     // month_selector = document.getElementById('month_selector');
     // month_selector.addEventListener('click', popup_div);
-    //end
+    //end 
     // alert("begin");
     year_button = document.getElementById('year_button');
     year_button.addEventListener('click', popup_div);
@@ -664,7 +627,7 @@ window.onload = function () {
   //           for (var i=0; i<day_today_len; i++){
   //               document.getElementsByClassName('day_highlight')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';
   //               document.getElementsByClassName('day_highlight')[i].getElementsByClassName('lunar_part ')[0].style.color='#ffffff';
-  //           }
+  //           }                               
 	// }
 	// else{
 	//     for (i = 0; i < x.length; i++) {
@@ -727,7 +690,7 @@ window.onload = function () {
                     year_selector.value = year + '年';
                     // selected_date_div.innerHTML = year_selector.value + month_selector.value;
                     for (var index =  0;  index < 16;  index++) {
-
+                        
                         // li.children[0].children[index].innerHTML = '<br />';
                         var currentYear = year + index;
                         //li.children[0].children[index].innerHTML= '<br />' + curretYear + '年';
@@ -741,7 +704,7 @@ window.onload = function () {
                     year_selector.value = year + '年';
                     // selected_date_div.innerHTML = year_selector.value + month_selector.value;
                     for (var index =  0;  index < 16;  index++) {
-
+                        
                         // li.children[0].children[index].innerHTML = '<br />';
                         var currentYear = year + index;
                         //li.children[0].children[index].innerHTML=  '<br />'+ curretYear + '年';
@@ -764,7 +727,7 @@ window.onload = function () {
                     year++;
                     year_selector.value = year + '年';
                     selected_date_div.innerHTML = year_selector.value + month_selector.value;
-                }
+                }     
                 return;
             }
             // var year = parseInt(year_selector.value);
@@ -837,7 +800,7 @@ window.onload = function () {
 	    }
 	}
     });
-
+    
     calendar = document.getElementById('calendar_table');
     create_page(parseInt(year_selector.value), parseInt(month_selector.value));
 }
@@ -908,7 +871,7 @@ function create_page(year, month) {
                         }
                         else
                         {
-                            cur_month = cur_month + 1;
+                            cur_month = cur_month + 1; 
                         }
                         // create_page(cur_year, cur_month);
                         update_right_pane(cur_year, cur_month, highlight_day);
@@ -944,7 +907,7 @@ function create_page(year, month) {
                 // for (i = 0; i < x.length; i++) {
                 //     // x[i].style.backgroundColor = "#3593b5";
                 //     x[i].style.backgroundColor = "#3d6be5";
-                // }
+                // }  
 
             // }
 	        // x=document.getElementsByClassName("day_today");
@@ -988,7 +951,7 @@ function create_page(year, month) {
                 lunar_day = month_stuff['monthData'][index]['lunarDayName'];
             }
 
-//             if (month_stuff['monthData'][index]['lunarFestival'])
+//             if (month_stuff['monthData'][index]['lunarFestival']) 
 //             {
 //                 lunar_day = month_stuff['monthData'][index]['lunarFestival'];
 // //            } else if (month_stuff['monthData'][index]['solarFestival']) {
@@ -1054,7 +1017,7 @@ function create_page(year, month) {
             //                          lunar_day +
             //                          '</span>';
             // }
-
+            
 
         }
     }
@@ -1068,18 +1031,18 @@ function create_page(year, month) {
         for (var i=0; i<day_this_month_len; i++){
 	    document.getElementsByClassName('day_this_month')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';
             document.getElementsByClassName('day_this_month')[i].getElementsByClassName('lunar_part ')[0].style.color='#aaaaaa';
-        }
+        }	
         var day_other_month_len=document.getElementsByClassName('day_other_month').length;
         for (var i=0; i<day_other_month_len; i++){
             document.getElementsByClassName('day_other_month')[i].getElementsByClassName('solar_part')[0].style.color='#777777';
             document.getElementsByClassName('day_other_month')[i].getElementsByClassName('lunar_part ')[0].style.color='#777777';
-        }
+        }  
         var day_today_len=document.getElementsByClassName('day_today').length;
         for (var i=0; i<day_today_len; i++){
             document.getElementsByClassName('day_today')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';
             document.getElementsByClassName('day_today')[i].getElementsByClassName('lunar_part ')[0].style.color='#ffffff';
         }
-
+	   
     }
 }
 
