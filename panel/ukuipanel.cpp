@@ -50,6 +50,7 @@
 #include <XdgDirs>
 #include <QPainter>
 #include <QMetaEnum>
+#include <QtDBus>
 
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
@@ -221,8 +222,14 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mShowDelayTimer.setInterval(PANEL_SHOW_DELAY);
     connect(&mShowDelayTimer, &QTimer::timeout, [this] { showPanel(mAnimationTime > 0); });
 
-
-
+/*
+    QDBusConnection::sessionBus().connect(QString(),
+                                          QString("/backend"),
+                                          "org.kde.kscreen.Backend",
+                                          "configChanged",
+                                          this,
+                                          SLOT(getSize()));
+*/
     /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
      * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
      * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
@@ -269,6 +276,13 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
+    MAX_SIZE_PANEL_IN_CALC = 0.0851852 * QApplication::screens().at(0)->size().height();
+    MID_SIZE_PANEL_IN_CALC = 0.0648148 * QApplication::screens().at(0)->size().height();
+    SML_SIZE_PANEL_IN_CALC = 0.0425926 * QApplication::screens().at(0)->size().height();
+    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;
+    MID_ICON_SIZE_IN_CLAC = 0.695652174 * MID_SIZE_PANEL_IN_CALC;
+    SML_ICON_SIZE_IN_CLAC = 0.695652174 * SML_SIZE_PANEL_IN_CALC;
+
     readSettings();
 
     ensureVisible();
@@ -298,8 +312,40 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
             this->update();
         }
     });
-    setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
-    setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
+
+
+    gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
+    gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
+}
+
+void UKUIPanel::getSize() {
+    int flg = 0;
+    int size = gsettings->get(PANEL_SIZE_KEY).toInt();
+    if (size == MAX_SIZE_PANEL_IN_CALC) {
+        flg = 2;
+    } else if (size == MID_SIZE_PANEL_IN_CALC) {
+        flg = 1;
+    }
+    MAX_SIZE_PANEL_IN_CALC = 0.0851852 * QApplication::screens().at(0)->size().height();
+    MID_SIZE_PANEL_IN_CALC = 0.0648148 * QApplication::screens().at(0)->size().height();
+    SML_SIZE_PANEL_IN_CALC = 0.0425926 * QApplication::screens().at(0)->size().height();
+    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;
+    MID_ICON_SIZE_IN_CLAC = 0.695652174 * MID_SIZE_PANEL_IN_CALC;
+    SML_ICON_SIZE_IN_CLAC = 0.695652174 * SML_SIZE_PANEL_IN_CALC;
+    switch (flg) {
+    case 0:
+        gsettings->set(PANEL_SIZE_KEY, SML_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY, SML_ICON_SIZE_IN_CLAC);
+        break;
+    case 1:
+        gsettings->set(PANEL_SIZE_KEY, MID_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY, MID_ICON_SIZE_IN_CLAC);
+        break;
+    case 2:
+        gsettings->set(PANEL_SIZE_KEY, MAX_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY, MAX_ICON_SIZE_IN_CLAC);
+        break;
+    }
 }
 
 /************************************************
@@ -389,6 +435,7 @@ void UKUIPanel::ensureVisible()
 
     // the screen size might be changed
     realign();
+    getSize();
 }
 
 
@@ -867,27 +914,21 @@ void UKUIPanel::adjustPanel()
     pmenuaction_s->setCheckable(true);
     pmenuaction_m->setCheckable(true);
     pmenuaction_l->setCheckable(true);
-    pmenuaction_s->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_SMALL);
-    pmenuaction_m->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_MEDIUM);
-    pmenuaction_l->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_LARGE);
+    pmenuaction_s->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==SML_SIZE_PANEL_IN_CALC);
+    pmenuaction_m->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==MID_SIZE_PANEL_IN_CALC);
+    pmenuaction_l->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==MAX_SIZE_PANEL_IN_CALC);
 
     connect(pmenuaction_s,&QAction::triggered,[this] {
-        gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_SMALL);
-        gsettings->set(ICON_SIZE_KEY,ICON_SIZE_SMALL);
-        setPanelSize(PANEL_SIZE_SMALL,true);
-        setIconSize(ICON_SIZE_SMALL,true);
+        gsettings->set(PANEL_SIZE_KEY,SML_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY,SML_ICON_SIZE_IN_CLAC);
     });
     connect(pmenuaction_m,&QAction::triggered,[this] {
-        gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_MEDIUM);
-        gsettings->set(ICON_SIZE_KEY,ICON_SIZE_MEDIUM);
-        setPanelSize(PANEL_SIZE_MEDIUM,true);
-        setIconSize(ICON_SIZE_MEDIUM,true);
+        gsettings->set(PANEL_SIZE_KEY,MID_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY,MID_ICON_SIZE_IN_CLAC);
     });
     connect(pmenuaction_l,&QAction::triggered,[this] {
-        gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_LARGE);
-        gsettings->set(ICON_SIZE_KEY,ICON_SIZE_LARGE);
-        setPanelSize(PANEL_SIZE_LARGE,true);
-        setIconSize(ICON_SIZE_LARGE,true);
+        gsettings->set(PANEL_SIZE_KEY,MAX_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY,MAX_ICON_SIZE_IN_CLAC);
     });
     pmenu_panelsize->setDisabled(mLockPanel);
 
@@ -982,7 +1023,6 @@ void UKUIPanel::showNightModeButton()
 /*设置任务栏高度*/
 void UKUIPanel::setPanelSize(int value, bool save)
 {
-    gsettings->set(PANEL_SIZE_KEY,value);
     if (mPanelSize != value)
     {
         mPanelSize = value;
@@ -1652,4 +1692,3 @@ void UKUIPanel::panelReset()
     QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     QFile::copy("/usr/share/ukui/panel.conf",QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
 }
-

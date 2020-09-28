@@ -699,6 +699,13 @@ private:
 
     QMenu * menu;
 
+    int MAX_SIZE_PANEL_IN_CALC;
+    int MID_SIZE_PANEL_IN_CALC;
+    int SML_SIZE_PANEL_IN_CALC;
+    int MAX_ICON_SIZE_IN_CLAC;
+    int MID_ICON_SIZE_IN_CLAC;
+    int SML_ICON_SIZE_IN_CLAC;
+    void getSize();
 
 private slots:
     void panelReset();

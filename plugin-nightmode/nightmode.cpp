@@ -314,3 +314,13 @@ void NightModeButton::writeKwinSettings(bool change, QString theme)
     kwinSettings->endGroup();
     kwinSettings->sync();
 }
+
+void NightModeButton::enterEvent(QEvent *) {
+    repaint();
+    return;
+}
+
+void NightModeButton::leaveEvent(QEvent *) {
+    repaint();
+    return;
+}
