@@ -245,10 +245,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     gsettings = new QGSettings(id);
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==ICON_SIZE_KEY){
-         //   setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
+            setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
         }
         if(key==PANEL_SIZE_KEY){
-          //  setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
+            setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
         }
         if(key == PANEL_POSITION_KEY){
             switch(gsettings->get(PANEL_POSITION_KEY).toInt())
