@@ -99,6 +99,7 @@ extern "C" {
 #define PANEL_LINES    "panellines"
 #define TRAY_LINE      "traylines"
 #define PANEL_SIZE     "panelsize"
+#define PANEL_POSITION     "panelposition"
 /************************************************
 
  ************************************************/
@@ -138,7 +139,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
         settings=new QGSettings(id);
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==PANEL_SIZE)
+        if(key == PANEL_SIZE ||key == PANEL_POSITION)
             trayIconSizeRefresh();
     });
 
@@ -385,10 +386,14 @@ void UKUITray::trayIconSizeRefresh()
 {
     for(int i=0;i<mTrayIcons.size();i++)
     {
-        if(mTrayIcons.at(i))
-        {
+        if(mTrayIcons.at(i)){
+            if (mPlugin->panel()->isHorizontal()){
             mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
             mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            }else{
+                mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+                mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            }
 
         }
         else
