@@ -245,10 +245,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     gsettings = new QGSettings(id);
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==ICON_SIZE_KEY){
-            setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
+         //   setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
         }
         if(key==PANEL_SIZE_KEY){
-            setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
+          //  setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
         }
         if(key == PANEL_POSITION_KEY){
             switch(gsettings->get(PANEL_POSITION_KEY).toInt())
@@ -930,20 +930,21 @@ void UKUIPanel::adjustPanel()
     pmenu_positon->setDisabled(mLockPanel);
 
 
-//    mSettings->beginGroup(mConfigGroup);
-//    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
-//    hidepanel->setDisabled(mLockPanel);
-//    hidepanel->setCheckable(true);
-//    hidepanel->setChecked(mHidable);
-//    connect(hidepanel, &QAction::triggered, [this] {
-//        mSettings->beginGroup(mConfigGroup);
-//        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
-//        mSettings->endGroup();
-//        if(mHidable)
-//            mHideTimer.stop();
-//        setHidable(!mHidable,true);
-//    });
-//    mSettings->endGroup();
+    mSettings->beginGroup(mConfigGroup);
+    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
+    hidepanel->setDisabled(mLockPanel);
+    hidepanel->setCheckable(true);
+    hidepanel->setChecked(mHidable);
+    connect(hidepanel, &QAction::triggered, [this] {
+        mSettings->beginGroup(mConfigGroup);
+        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+        mSettings->endGroup();
+        if(mHidable)
+            mHideTimer.stop();
+        setHidable(!mHidable,true);
+        mHidden=mHidable;
+    });
+    mSettings->endGroup();
 }
 /*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
