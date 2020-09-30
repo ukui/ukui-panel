@@ -896,6 +896,21 @@ void UKUIPanel::adjustPanel()
     pmenu_positon->setWindowOpacity(0.9);
     pmenu_positon->setDisabled(mLockPanel);
 
+    mSettings->beginGroup(mConfigGroup);
+    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
+    hidepanel->setDisabled(mLockPanel);
+    hidepanel->setCheckable(true);
+    hidepanel->setChecked(mHidable);
+    connect(hidepanel, &QAction::triggered, [this] {
+        mSettings->beginGroup(mConfigGroup);
+        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+        mSettings->endGroup();
+        if(mHidable)
+            mHideTimer.stop();
+        setHidable(!mHidable,true);
+        mHidden=mHidable;
+    });
+    mSettings->endGroup();
 }
 /*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
@@ -1229,13 +1244,15 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     QPainter p(this);
     p.setPen(Qt::NoPen);
     double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-    p.setBrush(QBrush(QColor(19,22,28,tran)));
+    QColor color = palette().color(QPalette::Base);
+    color.setAlpha(tran);\
+    QBrush brush =QBrush(color);
+    p.setBrush(brush);
 
     p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,0,0);
+    p.drawRoundedRect(opt.rect,12,12);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
-
 
 /*Right-Clicked Menu of ukui-panel
  * it's a Popup Menu
