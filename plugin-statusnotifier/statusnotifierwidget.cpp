@@ -56,9 +56,10 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     mBtn = new StatusNotifierPopUpButton();
     mBtn->setText("<");
 
-    setLayout(new UKUi::GridLayout(this));
+    mLayout = new UKUi::GridLayout(this);
+    setLayout(mLayout);
     realign();
-    layout()->addWidget(mBtn);
+    mLayout->addWidget(mBtn);
 
     const QByteArray id(UKUI_PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id))
@@ -86,7 +87,8 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     mServices.insert(serviceAndPath, button);
     mStatusNotifierButtons.append(button);
     button->setStyle(new CustomStyle);
-    layout()->addWidget(button);
+    mLayout->addWidget(button);
+    connect(button, SIGNAL(switchButtons(StatusNotifierButton*,StatusNotifierButton*)), this, SLOT(switchButtons(StatusNotifierButton*,StatusNotifierButton*)));
     button->show();
 }
 
@@ -97,13 +99,13 @@ void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
     {
         mStatusNotifierButtons.removeOne(button);
         button->deleteLater();
-        layout()->removeWidget(button);
+        mLayout->removeWidget(button);
     }
 }
 
 void StatusNotifierWidget::realign()
 {
-    UKUi::GridLayout *layout = qobject_cast<UKUi::GridLayout*>(this->layout());
+    UKUi::GridLayout *layout = qobject_cast<UKUi::GridLayout*>(mLayout);
     layout->setEnabled(false);
 
 //    layout->addWidget(mBtn);
@@ -139,6 +141,23 @@ void StatusNotifierWidget::realign()
     layout->setEnabled(true);
 }
 
+void StatusNotifierWidget::switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2)
+{
+    if (button1 == button2)
+        return;
+
+    int n1 = mLayout->indexOf(button1);
+    int n2 = mLayout->indexOf(button2);
+
+    int l = qMin(n1, n2);
+    int m = qMax(n1, n2);
+
+    mLayout->moveItem(l, m);
+    mLayout->moveItem(m-1, l);
+//    saveSettings();
+}
+
+
 StatusNotifierPopUpButton::StatusNotifierPopUpButton()
 {
     this->setStyle(new CustomStyle);
@@ -163,3 +182,4 @@ void StatusNotifierPopUpButton::mousePressEvent(QMouseEvent *)
         gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
     }
 }
+
