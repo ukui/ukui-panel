@@ -40,6 +40,8 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent* event);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
     void contextMenuEvent(QContextMenuEvent *event);
 
 private:
