@@ -225,7 +225,7 @@ public:
     QColor fontColor() const { return mFontColor; }
     QColor backgroundColor() const { return mBackgroundColor; }
     QString backgroundImage() const { return mBackgroundImage; }
-    int opacity() const { return mOpacity; }
+    int opacity() const override { return mOpacity; }
     int reserveSpace() const { return mReserveSpace; }
     bool hidable() const { return mHidable; }
     bool visibleMargin() const { return mVisibleMargin; }

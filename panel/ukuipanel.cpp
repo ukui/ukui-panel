@@ -348,6 +348,8 @@ void UKUIPanel::saveSettings(bool later)
     mSettings->setValue(CFG_KEY_LOCKPANEL, mLockPanel);
 
     mSettings->endGroup();
+
+    mOpacity = transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
 }
 
 

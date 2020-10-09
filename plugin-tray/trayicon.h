@@ -32,6 +32,7 @@
 #include <QFrame>
 #include <QList>
 #include <QStyleOption>
+#include <QGSettings>
 
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
@@ -98,10 +99,14 @@ private:
     Display* mDisplay;
 
     static bool isXCompositeAvailable();
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QSize mRectSize;
+    QGSettings *gsettings;
+    int tray_icon_color;
 
     enum TrayAppStatus{NORMAL, HOVER, PRESS};
     TrayAppStatus traystatus;
+
 };
 
 #endif // TRAYICON_H

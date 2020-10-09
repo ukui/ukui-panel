@@ -26,8 +26,7 @@ set(HEADERS
     ukuitray.h
     trayicon.h
     xfitman.h
-    traystorage.h
-#    highlight-effect.h
+    ukuitraystrage.h
 )
 
 set(SOURCES
@@ -35,8 +34,7 @@ set(SOURCES
     ukuitray.cpp
     trayicon.cpp
     xfitman.cpp
-    traystorage.cpp
-#    highlight-effect.cpp
+    ukuitraystrage.cpp
 )
 
 set(LIBRARIES
