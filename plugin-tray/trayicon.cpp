@@ -118,10 +118,8 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
             tray_icon_color=TRAY_ICON_COLOR_DRAK;
         }
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        qDebug()<<"gsettings->get(STYLE_NAME).toString()   :"<<gsettings->get(STYLE_NAME).toString();
         if(key==STYLE_NAME){
             if(stylelist.contains(gsettings->get(STYLE_NAME).toString())){
-                qDebug()<<"gsettings->get(STYLE_NAME).toString()   :"<<gsettings->get(STYLE_NAME).toString();
                 tray_icon_color=TRAY_ICON_COLOR_LOGHT;
             }
             else
