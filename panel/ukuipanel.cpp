@@ -1731,6 +1731,7 @@ IUKUIPanel::Position UKUIPanel::areaDivid(QPoint globalpos) {
     float W = QApplication::screens().at(0)->size().width();
     float H = QApplication::screens().at(0)->size().height();
     float slope = H / W;
+    if ((x < 100 || x > W - 100) && (y > H - 100 || y < 100)) return mPosition;
     if (y > (int)(x * slope) && y > (int)(H - x * slope)) return PositionBottom;
     if (y > (int)(x * slope) && y < (int)(H - x * slope)) return PositionLeft;
     if (y < (int)(x * slope) && y < (int)(H - x * slope)) return PositionTop;
@@ -1758,11 +1759,11 @@ void UKUIPanel::mouseMoveEvent(QMouseEvent* event)
         else movelock = 1;
     }
     if (!movelock) {
-        int panel_h = 1080-event->globalPos().ry();
+        int panel_h = QApplication::screens().at(0)->size().height() -event->globalPos().ry();
         setCursor(Qt::SizeVerCursor);
         if (panel_h < PANEL_SIZE_LARGE && panel_h > PANEL_SIZE_SMALL) {
             setPanelSize(panel_h,true);
-            setIconSize(panel_h - 18 ,true);
+            setIconSize(panel_h*0.695652174 ,true);
             gsettings->set(PANEL_SIZE_KEY,panel_h);
             gsettings->set(ICON_SIZE_KEY,panel_h - 18);
         }

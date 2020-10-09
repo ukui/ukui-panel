@@ -41,6 +41,10 @@
 #include <QLabel>
 #include <QMouseEvent>
 storageBarStatus status;
+
+#define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
+#define TRANSPARENCY_KEY            "transparency"
+
 /*收纳栏*/
 UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
     QWidget(parent, Qt::Popup)
@@ -67,6 +71,16 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
      */
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
+
+    const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
+    if(QGSettings::isSchemaInstalled(transparency_id)){
+        transparency_gsettings = new QGSettings(transparency_id);
+        }
+    connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==TRANSPARENCY_KEY){
+            this->update();
+        }
+    });
 
 }
 
@@ -143,7 +157,7 @@ void UKUIStorageFrame::paintEvent(QPaintEvent *event)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    double tran=0x4d;
+    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
     QColor color = palette().color(QPalette::Base);
     color.setAlpha(tran);
     QBrush brush =QBrush(color);
@@ -163,12 +177,17 @@ UKUiStorageWidget::~UKUiStorageWidget(){
 
 void UKUiStorageWidget::paintEvent(QPaintEvent *)
 {
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x4d)));
-    p.setPen(Qt::NoPen);
-    p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,6,6);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+//    QStyleOption opt;
+//    opt.init(this);
+//    QPainter p(this);
+//    p.setPen(Qt::NoPen);
+//    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+//    QColor color = palette().color(QPalette::Base);
+//    color.setAlpha(tran);
+//    QBrush brush =QBrush(color);
+//    p.setBrush(brush);
+
+//    p.setRenderHint(QPainter::Antialiasing);
+//    p.drawRoundedRect(opt.rect,6,6);
+//    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
