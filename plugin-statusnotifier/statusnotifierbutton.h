@@ -33,6 +33,7 @@
 #include <QDBusArgument>
 #include <QDBusMessage>
 #include <QDBusInterface>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QToolButton>
 #include <QWheelEvent>
@@ -65,6 +66,7 @@ public:
         Passive, Active, NeedsAttention
     };
     QString hideAbleStatusNotifierButton();
+    static QString mimeDataFormat() { return QLatin1String("x-ukui/statusnotifier-button"); }
 
 public slots:
     void newIcon();
@@ -82,15 +84,42 @@ private:
     QString mTitle;
     QIcon mIcon, mOverlayIcon, mAttentionIcon, mFallbackIcon;
 
+    QPoint mDragStart;
+
     IUKUIPanelPlugin* mPlugin;
+
+signals:
+    void switchButtons(StatusNotifierButton *from, StatusNotifierButton *to);
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void dragEnterEvent(QDragEnterEvent *e);
+    void dragMoveEvent(QDragMoveEvent * e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    virtual QMimeData * mimeData();
 
     void refetchIcon(Status status);
     void resetIcon();
+};
+
+class StatusNotifierButtonMimeData: public QMimeData
+{
+    Q_OBJECT
+public:
+    StatusNotifierButtonMimeData():
+        QMimeData(),
+        mButton(0)
+    {
+    }
+
+    StatusNotifierButton *button() const { return mButton; }
+    void setButton(StatusNotifierButton *button) { mButton = button; }
+
+private:
+    StatusNotifierButton *mButton;
 };
 
 #endif // STATUSNOTIFIERBUTTON_H

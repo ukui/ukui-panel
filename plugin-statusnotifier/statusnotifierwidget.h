@@ -55,6 +55,7 @@ public slots:
     void realign();
 
 private:
+    UKUi::GridLayout *mLayout;
     IUKUIPanelPlugin *mPlugin;
     StatusNotifierWatcher *mWatcher;
 
@@ -63,6 +64,9 @@ private:
     QList<StatusNotifierButton*> mStatusNotifierButtons;
     QToolButton *mBtn;
     QGSettings *gsettings;
+
+private slots:
+    void switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2);
 };
 
 class StatusNotifierPopUpButton : public QToolButton
