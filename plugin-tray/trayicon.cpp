@@ -47,6 +47,17 @@
 #include <QToolButton>
 #define XEMBED_EMBEDDED_NOTIFY 0
 
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
+
+#define TRAY_ICON_COLOR_LOGHT      255
+#define TRAY_ICON_COLOR_DRAK       0
+
 static bool xError;
 
 int windowErrorHandler(Display *d, XErrorEvent *e)
@@ -95,6 +106,28 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel");
     QDBusConnection::sessionBus().registerService("com.ukui.panel");
     QDBusConnection::sessionBus().registerObject("/traybutton/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
+
+    const QByteArray id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(id)){
+        gsettings = new QGSettings(id);
+        if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
+            tray_icon_color=TRAY_ICON_COLOR_LOGHT;
+        else
+            tray_icon_color=TRAY_ICON_COLOR_DRAK;
+        }
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        qDebug()<<"gsettings->get(STYLE_NAME).toString()   :"<<gsettings->get(STYLE_NAME).toString();
+        if(key==STYLE_NAME){
+            if(stylelist.contains(gsettings->get(STYLE_NAME).toString())){
+                qDebug()<<"gsettings->get(STYLE_NAME).toString()   :"<<gsettings->get(STYLE_NAME).toString();
+                tray_icon_color=TRAY_ICON_COLOR_LOGHT;
+            }
+            else
+                tray_icon_color=TRAY_ICON_COLOR_DRAK;
+        }
+    });
 }
 
 
@@ -360,7 +393,7 @@ void TrayIcon::draw(QPaintEvent* /*event*/)
         iconRect = r;
     }
 
-    image=HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
+    image=drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
     painter.drawImage(iconRect, image);
 
     if(ximage)
@@ -440,6 +473,38 @@ void TrayIcon::paintEvent(QPaintEvent *)
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
     p.drawRoundedRect(opt.rect,6,6);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+QPixmap TrayIcon::drawSymbolicColoredPixmap(const QPixmap &source)
+{
+    QColor gray(128,128,128);
+    QColor standard (31,32,34);
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if (qAbs(color.red()-gray.red())<20 && qAbs(color.green()-gray.green())<20 && qAbs(color.blue()-gray.blue())<20) {
+                    color.setRed(tray_icon_color);
+                    color.setGreen(tray_icon_color);
+                    color.setBlue(tray_icon_color);
+                    img.setPixelColor(x, y, color);
+                }
+                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20)
+                {
+                    color.setRed(tray_icon_color);
+                    color.setGreen(tray_icon_color);
+                    color.setBlue(tray_icon_color);
+                    img.setPixelColor(x, y, color);
+                }
+                else
+                {
+                    img.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
 }
 
 void TrayIcon::notifyAppFreeze()
