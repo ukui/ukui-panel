@@ -60,10 +60,14 @@ private:
     StatusNotifierWatcher *mWatcher;
 
     QHash<QString, StatusNotifierButton*> mServices;
+    QHash<int, StatusNotifierButton*> reset;
 
     QList<StatusNotifierButton*> mStatusNotifierButtons;
     QToolButton *mBtn;
     QGSettings *gsettings;
+    bool mHide;
+    bool mShow;
+    bool mLock;
 
 private slots:
     void switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2);

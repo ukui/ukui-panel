@@ -58,8 +58,13 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
 
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
+    setLayoutDirection(Qt::RightToLeft);
     realign();
     mLayout->addWidget(mBtn);
+
+    mHide=false;
+    mShow=false;
+    mLock=true;
 
     const QByteArray id(UKUI_PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id))
@@ -129,16 +134,61 @@ void StatusNotifierWidget::realign()
             mStatusNotifierButtons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
             QStringList mStatusNotifierButtonList;
             mStatusNotifierButtonList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel";
-            if(!mStatusNotifierButtonList.contains(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()))
+            if(!mStatusNotifierButtonList.contains(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton())){
                 mStatusNotifierButtons.at(i)->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
-            else
-                mStatusNotifierButtons.at(i)->setVisible(true);
+                if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="更新通知"){
+                    mStatusNotifierButtons.at(i)->hide();
+                }
+                if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="蓝牙已启用"){
+                    mStatusNotifierButtons.at(i)->hide();
+                }
+
+                layout->addWidget(mStatusNotifierButtons.at(i));
+                mHide=true;
+            }
+            else{
+                if(mLock){
+                    mStatusNotifierButtons.at(i)->setVisible(true);
+                    int n1 = layout->indexOf(mStatusNotifierButtons.at(i));
+
+                    if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="ukui-sidebar"){
+                        n1=0;
+                        mStatusNotifierButtons.at(i)->hide();
+                        layout->removeWidget(mStatusNotifierButtons.at(i));
+                    }
+                    if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="kylin-nm"){
+                        n1=1;
+                        mStatusNotifierButtons.at(i)->hide();
+                        layout->removeWidget(mStatusNotifierButtons.at(i));
+                    }
+                    if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="ukui-volume-control-applet-qt"){
+                        n1=2;
+                        mStatusNotifierButtons.at(i)->hide();
+                        layout->removeWidget(mStatusNotifierButtons.at(i));
+                    }
+                    reset.insert(n1, mStatusNotifierButtons.at(i));
+                    mShow=true;
+                }
+            }
         }
         else{
             qDebug()<<"mStatusNotifierButtons add error   :  "<<mStatusNotifierButtons.at(i);
         }
     }
     layout->setEnabled(true);
+    if(mShow&&mHide&&mLock){
+        StatusNotifierButton *sidebar=reset[0];
+        layout->addWidget(sidebar);
+        sidebar->show();
+        StatusNotifierButton *kyliynm=reset[1];
+        layout->addWidget(kyliynm);
+        kyliynm->show();
+        StatusNotifierButton *volume=reset[2];
+        layout->addWidget(volume);
+        volume->show();
+        mLock=false;
+    }
+    layout->addWidget(mBtn);
 }
 
 void StatusNotifierWidget::switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2)
