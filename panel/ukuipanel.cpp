@@ -276,9 +276,16 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
-    MAX_SIZE_PANEL_IN_CALC = 0.0851852 * QApplication::screens().at(0)->size().height();
-    MID_SIZE_PANEL_IN_CALC = 0.0648148 * QApplication::screens().at(0)->size().height();
-    SML_SIZE_PANEL_IN_CALC = 0.0425926 * QApplication::screens().at(0)->size().height();
+    int height = QApplication::screens().at(0)->size().height();
+    int width = QApplication::screens().at(0)->size().width();
+    MAX_SIZE_PANEL_IN_CALC = 0.0851852 * height;
+    MID_SIZE_PANEL_IN_CALC = 0.0648148 * height;
+    SML_SIZE_PANEL_IN_CALC = 0.0425926 * height;
+    if (!isHorizontal()) {
+        MAX_SIZE_PANEL_IN_CALC *= ((float)height / (float)width);
+        MID_SIZE_PANEL_IN_CALC *= ((float)height / (float)width);
+        SML_SIZE_PANEL_IN_CALC *= ((float)height / (float)width);
+    }
     MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;
     MID_ICON_SIZE_IN_CLAC = 0.695652174 * MID_SIZE_PANEL_IN_CALC;
     SML_ICON_SIZE_IN_CLAC = 0.695652174 * SML_SIZE_PANEL_IN_CALC;
@@ -326,9 +333,16 @@ void UKUIPanel::getSize() {
     } else if (size == MID_SIZE_PANEL_IN_CALC) {
         flg = 1;
     }
-    MAX_SIZE_PANEL_IN_CALC = 0.0851852 * QApplication::screens().at(0)->size().height();
-    MID_SIZE_PANEL_IN_CALC = 0.0648148 * QApplication::screens().at(0)->size().height();
-    SML_SIZE_PANEL_IN_CALC = 0.0425926 * QApplication::screens().at(0)->size().height();
+    int height = QApplication::screens().at(0)->size().height();
+    int width = QApplication::screens().at(0)->size().width();
+    MAX_SIZE_PANEL_IN_CALC = 0.0851852 * height;
+    MID_SIZE_PANEL_IN_CALC = 0.0648148 * height;
+    SML_SIZE_PANEL_IN_CALC = 0.0425926 * height;
+    if (!isHorizontal()) {
+        MAX_SIZE_PANEL_IN_CALC *= ((float)height / (float)width) * 1.25;
+        MID_SIZE_PANEL_IN_CALC *= ((float)height / (float)width) * 1.5;
+        SML_SIZE_PANEL_IN_CALC *= ((float)height / (float)width) * 1.75;
+    }
     MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;
     MID_ICON_SIZE_IN_CLAC = 0.695652174 * MID_SIZE_PANEL_IN_CALC;
     SML_ICON_SIZE_IN_CLAC = 0.695652174 * SML_SIZE_PANEL_IN_CALC;
