@@ -36,7 +36,7 @@
 
 #define DEFAULT_SHORTCUT "Control+Alt+D"
 
-#define DESKTOP_WIDTH   (12)
+#define DESKTOP_WIDTH   (50)
 #define DESKTOP_WIDGET_HIGHT 100
 
 ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
@@ -51,15 +51,15 @@ ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
 
 void ShowDesktop::realign()
 {
-    if(panel()->isHorizontal())
+ if(panel()->isHorizontal())
     {
-        this->setFixedSize(DESKTOP_WIDTH,panel()->panelSize());
+        this->setFixedSize(panel()->panelSize(),panel()->panelSize());
         xEndPoint=0;
         yEndPoint=100;
     }
     else
     {
-       this->setFixedSize(panel()->panelSize(),DESKTOP_WIDTH);
+       this->setFixedSize(panel()->panelSize(),panel()->panelSize());
         xEndPoint=100;
         yEndPoint=0;
     }
@@ -73,26 +73,36 @@ void ShowDesktop::mousePressEvent(QMouseEvent *)
 void ShowDesktop::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    /*设置画笔的颜色，此处画笔作用与Line，所以必须在drawLine　之前调用*/
-    p.setPen(QColor(0x62,0x6C,0x6E,0xcc));
-    switch (state) {
-    case NORMAL:
+     opt.init(this);
+ //change li
+     QPainter p(this);
+     QPainter painter(this);
+     QPixmap pix;
 
-        p.drawLine(0,0,xEndPoint,yEndPoint);
-        break;
-    case HOVER:
-        p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
-        p.drawLine(0,0,xEndPoint,yEndPoint);
-        break;
-    default:
-        break;
+     /*设置画笔的颜色，此处画笔作用与Line，所以必须在drawLine　之前调用*/
+     //p.setPen(QColor(0x62,0x6C,0x6E,0xcc));
+     //p.setOpacity(1.0);
+     switch (state) {
+     case NORMAL:
+
+       //  p.drawLine(0,0,xEndPoint,yEndPoint);
+         pix.load("/usr/share/ukui-panel/panel/img/deskup.png");
+         painter.drawPixmap(panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,pix);
+         break;
+     case HOVER:
+         //p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
+        // p.drawLine(0,0,xEndPoint,yEndPoint);
+         pix.load("/usr/share/ukui-panel/panel/img/deskdown.svg");
+         painter.drawPixmap(panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,pix);
+
+         break;
+     default:
+         break;
+     }
+     p.setRenderHint(QPainter::Antialiasing);
+    // p.drawRect(opt.rect);
+     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
     }
-    p.setRenderHint(QPainter::Antialiasing);
-    p.drawRect(opt.rect);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
 
 void ShowDesktop::enterEvent(QEvent *event)
 {
