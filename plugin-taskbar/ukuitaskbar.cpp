@@ -1349,35 +1349,7 @@ void UKUITaskBar::WindowAddtoTaskBar(QString arg) {
     {
         UKUITaskGroup *group = it.value();
             if (arg.compare(group->groupName()) == 0) {
-                const auto url=QUrl(group->file_name);
-                QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-                QFileInfo fi(fileName);
-                XdgDesktopFile xdg;
-                if (xdg.load(fileName))
-                {
-                    /*This fuction returns true if the desktop file is applicable to the
-                      current environment.
-                      but I don't need this attributes now
-                    */
-                    //        if (xdg.isSuitable())
-                    addButton(new QuickLaunchAction(&xdg, this));
-                }
-                else if (fi.exists() && fi.isExecutable() && !fi.isDir())
-                {
-                    addButton(new QuickLaunchAction(fileName, fileName, "", this));
-                }
-                else if (fi.exists())
-                {
-                    addButton(new QuickLaunchAction(fileName, this));
-                }
-                else
-                {
-                    qWarning() << "XdgDesktopFile" << fileName << "is not valid";
-                    QMessageBox::information(this, tr("Drop Error"),
-                                             tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
-                                             );
-                }
-                saveSettings();
+                _AddToTaskbar(group->file_name);
                 break;
         }
     }
@@ -1409,8 +1381,7 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
     }
 }
 
-bool UKUITaskBar::AddToTaskbar(QString arg)
-{
+void UKUITaskBar::_AddToTaskbar(QString arg) {
     qDebug() << arg;
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
@@ -1441,6 +1412,11 @@ bool UKUITaskBar::AddToTaskbar(QString arg)
                                  );
     }
     saveSettings();
+}
+
+bool UKUITaskBar::AddToTaskbar(QString arg)
+{
+    _AddToTaskbar(arg);
     return true;
 }
 

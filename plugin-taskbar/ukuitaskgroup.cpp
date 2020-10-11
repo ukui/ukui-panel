@@ -268,16 +268,18 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    menu->addAction(mAct);
-    menu->addActions(mAct->addtitionalActions());
-    menu->addSeparator();
-    menu->addSeparator();
-    QAction *mDeleteAct = menu->addAction(XdgIcon::fromTheme("dialog-close"), tr("delete from taskbar"));
-    connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(RemovefromTaskBar()));
-    QAction *mAddAct = menu->addAction(XdgIcon::fromTheme("dialog-close"), tr("add to taskbar"));
-    connect(mAddAct, SIGNAL(triggered()), this, SLOT(AddtoTaskBar()));
-    if (existSameQckBtn) menu->removeAction(mAddAct);
-    else menu->removeAction(mDeleteAct);
+    if (!file_name.isEmpty()) {
+        menu->addAction(mAct);
+        menu->addActions(mAct->addtitionalActions());
+        menu->addSeparator();
+        menu->addSeparator();
+        QAction *mDeleteAct = menu->addAction(XdgIcon::fromTheme("dialog-close"), tr("delete from taskbar"));
+        connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(RemovefromTaskBar()));
+        QAction *mAddAct = menu->addAction(XdgIcon::fromTheme("dialog-close"), tr("add to taskbar"));
+        connect(mAddAct, SIGNAL(triggered()), this, SLOT(AddtoTaskBar()));
+        if (existSameQckBtn) menu->removeAction(mAddAct);
+        else menu->removeAction(mDeleteAct);
+    }
     QAction *mCloseAct = menu->addAction(QIcon::fromTheme("process-stop"), tr("close"));
     connect(mCloseAct, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {

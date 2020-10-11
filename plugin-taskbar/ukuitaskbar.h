@@ -188,6 +188,7 @@ private:
     void addWindow(WId window);
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
+    void _AddToTaskbar(QString arg);
 
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
