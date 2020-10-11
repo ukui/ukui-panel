@@ -31,6 +31,7 @@
 #include "../panel/iukuipanelplugin.h"
 #include <QToolButton>
 #include <QWidget>
+#include <QGSettings>
 
 
 class ShowDesktop :  public QWidget, public IUKUIPanelPlugin
@@ -52,6 +53,9 @@ protected:
 private:
     enum showDeskTopState{NORMAL,HOVER};
     showDeskTopState state;
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
+    QGSettings *gsettings;
+    int tray_icon_color;
 
     int xEndPoint;
     int yEndPoint;

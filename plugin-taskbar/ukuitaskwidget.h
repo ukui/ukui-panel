@@ -27,6 +27,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QStyle>
+#include <QGSettings>
 
 class QPainter;
 class QPalette;
@@ -137,6 +138,9 @@ private:
     enum TaskWidgetStatus{NORMAL, HOVER, PRESS};
     TaskWidgetStatus status;
     bool taskWidgetPress; //按钮左键是否按下
+
+    QGSettings *style_settings;
+    bool style_dark;
 
 private slots:
     void activateWithDraggable();

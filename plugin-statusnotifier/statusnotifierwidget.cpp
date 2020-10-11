@@ -28,8 +28,14 @@
 
 #include "statusnotifierwidget.h"
 #include <QApplication>
+#include <QDBusReply>
 #include <QDebug>
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/customstyle.h"
+
+
+#define UKUI_PANEL_SETTINGS              "org.ukui.panel.settings"
+#define SHOW_STATUSNOTIFIER_BUTTON       "statusnotifierbutton"
 
 StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QWidget(parent),
@@ -47,8 +53,21 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     connect(mWatcher, &StatusNotifierWatcher::StatusNotifierItemUnregistered,
             this, &StatusNotifierWidget::itemRemoved);
 
-    setLayout(new UKUi::GridLayout(this));
+    mBtn = new StatusNotifierPopUpButton();
+    mBtn->setText("<");
+
+    mLayout = new UKUi::GridLayout(this);
+    setLayout(mLayout);
     realign();
+    mLayout->addWidget(mBtn);
+
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+        gsettings = new QGSettings(id);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==SHOW_STATUSNOTIFIER_BUTTON)
+            realign();
+    });
 
     qDebug() << mWatcher->RegisteredStatusNotifierItems();
 
@@ -65,9 +84,11 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     QString serv = serviceAndPath.left(slash);
     QString path = serviceAndPath.mid(slash);
     StatusNotifierButton *button = new StatusNotifierButton(serv, path, mPlugin, this);
-
     mServices.insert(serviceAndPath, button);
-    layout()->addWidget(button);
+    mStatusNotifierButtons.append(button);
+    button->setStyle(new CustomStyle);
+    mLayout->addWidget(button);
+    connect(button, SIGNAL(switchButtons(StatusNotifierButton*,StatusNotifierButton*)), this, SLOT(switchButtons(StatusNotifierButton*,StatusNotifierButton*)));
     button->show();
 }
 
@@ -76,15 +97,18 @@ void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
     StatusNotifierButton *button = mServices.value(serviceAndPath, NULL);
     if (button)
     {
+        mStatusNotifierButtons.removeOne(button);
         button->deleteLater();
-        layout()->removeWidget(button);
+        mLayout->removeWidget(button);
     }
 }
 
 void StatusNotifierWidget::realign()
 {
-    UKUi::GridLayout *layout = qobject_cast<UKUi::GridLayout*>(this->layout());
+    UKUi::GridLayout *layout = qobject_cast<UKUi::GridLayout*>(mLayout);
     layout->setEnabled(false);
+
+//    layout->addWidget(mBtn);
 
     IUKUIPanel *panel = mPlugin->panel();
     if (panel->isHorizontal())
@@ -98,5 +122,64 @@ void StatusNotifierWidget::realign()
         layout->setRowCount(0);
     }
 
+    for(int i=0;i<mStatusNotifierButtons.size();i++){
+        if(mStatusNotifierButtons.at(i))
+        {
+            mStatusNotifierButtons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            mStatusNotifierButtons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+            QStringList mStatusNotifierButtonList;
+            mStatusNotifierButtonList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel";
+            if(!mStatusNotifierButtonList.contains(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()))
+                mStatusNotifierButtons.at(i)->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
+            else
+                mStatusNotifierButtons.at(i)->setVisible(true);
+        }
+        else{
+            qDebug()<<"mStatusNotifierButtons add error   :  "<<mStatusNotifierButtons.at(i);
+        }
+    }
     layout->setEnabled(true);
 }
+
+void StatusNotifierWidget::switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2)
+{
+    if (button1 == button2)
+        return;
+
+    int n1 = mLayout->indexOf(button1);
+    int n2 = mLayout->indexOf(button2);
+
+    int l = qMin(n1, n2);
+    int m = qMax(n1, n2);
+
+    mLayout->moveItem(l, m);
+    mLayout->moveItem(m-1, l);
+//    saveSettings();
+}
+
+
+StatusNotifierPopUpButton::StatusNotifierPopUpButton()
+{
+    this->setStyle(new CustomStyle);
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+        gsettings = new QGSettings(id);
+}
+
+StatusNotifierPopUpButton::~StatusNotifierPopUpButton()
+{
+
+}
+
+void StatusNotifierPopUpButton::mousePressEvent(QMouseEvent *)
+{
+    if(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
+        this->setText("<");
+        gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
+    }
+    else{
+        this->setText(">");
+        gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
+    }
+}
+

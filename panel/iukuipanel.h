@@ -60,6 +60,7 @@ public:
      */
     virtual int iconSize() const = 0;
     virtual int panelSize() const = 0;
+    virtual int opacity() const = 0;
     /**
      * @brief Returns the number of lines/rows of this panel.
      */

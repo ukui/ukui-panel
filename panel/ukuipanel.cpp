@@ -64,15 +64,10 @@
 // Config keys and groups
 #define CFG_KEY_SCREENNUM          "desktop"
 #define CFG_KEY_POSITION           "position"
-#define CFG_KEY_PANELSIZE          "panelSize"
-#define CFG_KEY_ICONSIZE           "iconSize"
 #define CFG_KEY_LINECNT            "lineCount"
 #define CFG_KEY_LENGTH             "width"
 #define CFG_KEY_PERCENT            "width-percent"
 #define CFG_KEY_ALIGNMENT          "alignment"
-#define CFG_KEY_FONTCOLOR          "font-color"
-#define CFG_KEY_BACKGROUNDCOLOR    "background-color"
-#define CFG_KEY_OPACITY            "opacity"
 #define CFG_KEY_RESERVESPACE       "reserve-space"
 #define CFG_KEY_PLUGINS            "plugins"
 #define CFG_KEY_HIDABLE            "hidable"
@@ -98,8 +93,16 @@
 #define SHOW_TASKVIEW       "showtaskview"
 #define SHOW_NIGHTMODE      "shownightmode"
 
-#define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
-#define TRANSPARENCY_KEY            "transparency"
+#define TRANSPARENCY_SETTINGS     "org.ukui.control-center.personalise"
+#define TRANSPARENCY_KEY          "transparency"
+
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK      "ukui-black"
+#define STYLE_NAME_KEY_LIGHT      "ukui-light"
+#define STYLE_NAME_KEY_WHITE      "ukui-white"
 
 /************************************************
  Returns the Position by the string.
@@ -264,6 +267,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
 
+
     updateStyleSheet();
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
@@ -277,8 +281,23 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
             this->update();
         }
     });
-    setPanelsize(gsettings->get(PANEL_SIZE_KEY).toInt());
-    setIconsize(gsettings->get(ICON_SIZE_KEY).toInt());
+
+    const QByteArray style_id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(style_id)){
+        style_gsettings = new QGSettings(style_id);
+        if(stylelist.contains(style_gsettings->get(STYLE_NAME).toString()))
+            HighLightEffect::getBackGroundColor(this->palette().background().color().red(),this->palette().background().color().green(),this->palette().background().color().blue());
+        }
+    connect(style_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            HighLightEffect::getBackGroundColor(this->palette().background().color().red(),this->palette().background().color().green(),this->palette().background().color().blue());
+        }
+    });
+
+    setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
+    setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
 }
 
 /************************************************
@@ -293,38 +312,22 @@ void UKUIPanel::readSettings()
     // so that every call to realign() is without side-effect
     mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
     mHidden = mHidable;
-
     mVisibleMargin = mSettings->value(CFG_KEY_VISIBLE_MARGIN, mVisibleMargin).toBool();
-
     mAnimationTime = mSettings->value(CFG_KEY_ANIMATION, mAnimationTime).toInt();
     mShowDelayTimer.setInterval(mSettings->value(CFG_KEY_SHOW_DELAY, mShowDelayTimer.interval()).toInt());
 
     // By default we are using size & count from theme.
-    setPanelSize(mSettings->value(CFG_KEY_PANELSIZE, PANEL_DEFAULT_SIZE).toInt(), false);
-    setIconSize(mSettings->value(CFG_KEY_ICONSIZE, PANEL_DEFAULT_ICON_SIZE).toInt(), false);
     setLineCount(mSettings->value(CFG_KEY_LINECNT, PANEL_DEFAULT_LINE_COUNT).toInt(), false);
 
     setLength(mSettings->value(CFG_KEY_LENGTH, 100).toInt(),
               mSettings->value(CFG_KEY_PERCENT, true).toBool(),
               false);
-
     mScreenNum = mSettings->value(CFG_KEY_SCREENNUM, QApplication::desktop()->primaryScreen()).toInt();
     setPosition(mScreenNum,
                 strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), PositionBottom),
                 false);
-
     setAlignment(Alignment(mSettings->value(CFG_KEY_ALIGNMENT, mAlignment).toInt()), false);
-
-    QColor color = mSettings->value(CFG_KEY_FONTCOLOR, "").value<QColor>();
-    if (color.isValid())
-        setFontColor(color, true);
-
-    setOpacity(mSettings->value(CFG_KEY_OPACITY, 100).toInt(), true);
     mReserveSpace = mSettings->value(CFG_KEY_RESERVESPACE, true).toBool();
-    color = mSettings->value(CFG_KEY_BACKGROUNDCOLOR, "").value<QColor>();
-    if (color.isValid())
-        setBackgroundColor(color, true);
-
     mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL, false).toBool();
 
     mSettings->endGroup();
@@ -348,8 +351,6 @@ void UKUIPanel::saveSettings(bool later)
     //Note: save/load of plugin names is completely handled by mPlugins object
     //mSettings->setValue(CFG_KEY_PLUGINS, mPlugins->pluginNames());
 
-    mSettings->setValue(CFG_KEY_PANELSIZE, mPanelSize);
-    mSettings->setValue(CFG_KEY_ICONSIZE, mIconSize);
     mSettings->setValue(CFG_KEY_LINECNT, mLineCount);
 
     mSettings->setValue(CFG_KEY_LENGTH, mLength);
@@ -360,9 +361,6 @@ void UKUIPanel::saveSettings(bool later)
 
     mSettings->setValue(CFG_KEY_ALIGNMENT, mAlignment);
 
-    mSettings->setValue(CFG_KEY_FONTCOLOR, mFontColor.isValid() ? mFontColor : QColor());
-    mSettings->setValue(CFG_KEY_BACKGROUNDCOLOR, mBackgroundColor.isValid() ? mBackgroundColor : QColor());
-    mSettings->setValue(CFG_KEY_OPACITY, mOpacity);
     mSettings->setValue(CFG_KEY_RESERVESPACE, mReserveSpace);
 
     mSettings->setValue(CFG_KEY_HIDABLE, mHidable);
@@ -373,6 +371,8 @@ void UKUIPanel::saveSettings(bool later)
     mSettings->setValue(CFG_KEY_LOCKPANEL, mLockPanel);
 
     mSettings->endGroup();
+
+    mOpacity = transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
 }
 
 
@@ -389,9 +389,6 @@ void UKUIPanel::ensureVisible()
 }
 
 
-/************************************************
-
- ************************************************/
 UKUIPanel::~UKUIPanel()
 {
     mLayout->setEnabled(false);
@@ -401,9 +398,6 @@ UKUIPanel::~UKUIPanel()
 }
 
 
-/************************************************
-
- ************************************************/
 void UKUIPanel::show()
 {
     QWidget::show();
@@ -411,9 +405,6 @@ void UKUIPanel::show()
 }
 
 
-/************************************************
-
- ************************************************/
 QStringList pluginDesktopDirs()
 {
     QStringList dirs;
@@ -423,10 +414,7 @@ QStringList pluginDesktopDirs()
     return dirs;
 }
 
-
-/************************************************
-
- ************************************************/
+/*加载pluginDesktopDirs 获取到的列表中的插件*/
 void UKUIPanel::loadPlugins()
 {
     QString names_key(mConfigGroup);
@@ -448,9 +436,7 @@ void UKUIPanel::loadPlugins()
     }
 }
 
-/************************************************
 
- ************************************************/
 int UKUIPanel::getReserveDimension()
 {
     return mHidable ? PANEL_HIDE_SIZE : qMax(PANEL_MINIMUM_SIZE, mPanelSize);
@@ -591,6 +577,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
     }
 }
 
+/*设置边距*/
 void UKUIPanel::setMargins()
 {
     if (mHidden)
@@ -883,16 +870,16 @@ void UKUIPanel::adjustPanel()
     pmenuaction_l->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_LARGE);
 
     connect(pmenuaction_s,&QAction::triggered,[this] {
-        setPanelsize(PANEL_SIZE_SMALL);
-        setIconsize(ICON_SIZE_SMALL);
+        setPanelSize(PANEL_SIZE_SMALL,true);
+        setIconSize(ICON_SIZE_SMALL,true);
     });
     connect(pmenuaction_m,&QAction::triggered,[this] {
-        setPanelsize(PANEL_SIZE_MEDIUM);
-        setIconsize(ICON_SIZE_MEDIUM);
+        setPanelSize(PANEL_SIZE_MEDIUM,true);
+        setIconSize(ICON_SIZE_MEDIUM,true);
     });
     connect(pmenuaction_l,&QAction::triggered,[this] {
-        setPanelsize(PANEL_SIZE_LARGE);
-        setIconsize(ICON_SIZE_LARGE);
+        setPanelSize(PANEL_SIZE_LARGE,true);
+        setIconSize(ICON_SIZE_LARGE,true);
     });
     pmenu_panelsize->setDisabled(mLockPanel);
 
@@ -934,6 +921,21 @@ void UKUIPanel::adjustPanel()
     pmenu_positon->setWindowOpacity(0.9);
     pmenu_positon->setDisabled(mLockPanel);
 
+    mSettings->beginGroup(mConfigGroup);
+    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
+    hidepanel->setDisabled(mLockPanel);
+    hidepanel->setCheckable(true);
+    hidepanel->setChecked(mHidable);
+    connect(hidepanel, &QAction::triggered, [this] {
+        mSettings->beginGroup(mConfigGroup);
+        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+        mSettings->endGroup();
+        if(mHidable)
+            mHideTimer.stop();
+        setHidable(!mHidable,true);
+        mHidden=mHidable;
+    });
+    mSettings->endGroup();
 }
 /*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
@@ -982,6 +984,7 @@ void UKUIPanel::updateStyleSheet()
  ************************************************/
 void UKUIPanel::setPanelSize(int value, bool save)
 {
+    gsettings->set(PANEL_SIZE_KEY,value);
     if (mPanelSize != value)
     {
         mPanelSize = value;
@@ -1000,6 +1003,7 @@ void UKUIPanel::setPanelSize(int value, bool save)
 
 void UKUIPanel::setIconSize(int value, bool save)
 {
+    gsettings->set(ICON_SIZE_KEY,value);
     if (mIconSize != value)
     {
         mIconSize = value;
@@ -1013,10 +1017,6 @@ void UKUIPanel::setIconSize(int value, bool save)
     }
 }
 
-
-/************************************************
-
- ************************************************/
 void UKUIPanel::setLineCount(int value, bool save)
 {
     if (mLineCount != value)
@@ -1269,13 +1269,15 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     QPainter p(this);
     p.setPen(Qt::NoPen);
     double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-    p.setBrush(QBrush(QColor(19,22,28,tran)));
+    QColor color = palette().color(QPalette::Base);
+    color.setAlpha(tran);\
+    QBrush brush =QBrush(color);
+    p.setBrush(brush);
 
     p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,0,0);
+    p.drawRoundedRect(opt.rect,12,12);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
-
 
 /*Right-Clicked Menu of ukui-panel
  * it's a Popup Menu
@@ -1733,44 +1735,10 @@ void UKUIPanel::setIconsize(int iconsize)
     gsettings->set(ICON_SIZE_KEY,iconsize);
 }
 
-/*Extra code will be deleted*/
-void UKUIPanel::changeSizeToSmall()
-{
-    setPanelSize(PANEL_SIZE_SMALL,true);
-    setIconSize(ICON_SIZE_SMALL,true);
-    gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_SMALL);
-    gsettings->set(ICON_SIZE_KEY,ICON_SIZE_SMALL);
-}
-
-void UKUIPanel::changeSizeToMedium()
-{
-    setPanelSize(PANEL_SIZE_MEDIUM,true);
-    setIconSize(ICON_SIZE_MEDIUM,true);
-    gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_MEDIUM);
-    gsettings->set(ICON_SIZE_KEY,ICON_SIZE_MEDIUM);
-}
-
-void UKUIPanel::changeSizeToLarge()
-{
-    setPanelSize(PANEL_SIZE_LARGE,true);
-    setIconSize(ICON_SIZE_MEDIUM,true);
-    gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_LARGE);
-    gsettings->set(ICON_SIZE_KEY,ICON_SIZE_LARGE);
-}
-
 void UKUIPanel::panelReset()
 {
     QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     QFile::copy("/usr/share/ukui/panel.conf",QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
-}
-void UKUIPanel::panelBackgroundChange()
-{
-    qDebug()<<"panel background change ***";
-    if(mConfigDialog.isNull())
-    {
-        mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    }
-    mConfigDialog->backgroundChange();
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -1786,6 +1754,7 @@ IUKUIPanel::Position UKUIPanel::areaDivid(QPoint globalpos) {
     float W = QApplication::screens().at(0)->size().width();
     float H = QApplication::screens().at(0)->size().height();
     float slope = H / W;
+    if ((x < 100 || x > W - 100) && (y > H - 100 || y < 100)) return mPosition;
     if (y > (int)(x * slope) && y > (int)(H - x * slope)) return PositionBottom;
     if (y > (int)(x * slope) && y < (int)(H - x * slope)) return PositionLeft;
     if (y < (int)(x * slope) && y < (int)(H - x * slope)) return PositionTop;
@@ -1813,11 +1782,11 @@ void UKUIPanel::mouseMoveEvent(QMouseEvent* event)
         else movelock = 1;
     }
     if (!movelock) {
-        int panel_h = 1080-event->globalPos().ry();
+        int panel_h = QApplication::screens().at(0)->size().height() -event->globalPos().ry();
         setCursor(Qt::SizeVerCursor);
         if (panel_h < PANEL_SIZE_LARGE && panel_h > PANEL_SIZE_SMALL) {
             setPanelSize(panel_h,true);
-            setIconSize(panel_h - 18 ,true);
+            setIconSize(panel_h*0.695652174 ,true);
             gsettings->set(PANEL_SIZE_KEY,panel_h);
             gsettings->set(ICON_SIZE_KEY,panel_h - 18);
         }

@@ -33,10 +33,12 @@
 #include <QDBusArgument>
 #include <QDBusMessage>
 #include <QDBusInterface>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QToolButton>
 #include <QWheelEvent>
 #include <QMenu>
+#include <QString>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
 template <typename T> inline T qFromUnaligned(const uchar *src)
@@ -48,7 +50,7 @@ template <typename T> inline T qFromUnaligned(const uchar *src)
 }
 #endif
 
-class ILXQtPanelPlugin;
+class IUKUIPanelPlugin;
 class SniAsync;
 
 class StatusNotifierButton : public QToolButton
@@ -63,6 +65,8 @@ public:
     {
         Passive, Active, NeedsAttention
     };
+    QString hideAbleStatusNotifierButton();
+    static QString mimeDataFormat() { return QLatin1String("x-ukui/statusnotifier-button"); }
 
 public slots:
     void newIcon();
@@ -77,17 +81,45 @@ private:
     Status mStatus;
 
     QString mThemePath;
+    QString mTitle;
     QIcon mIcon, mOverlayIcon, mAttentionIcon, mFallbackIcon;
 
+    QPoint mDragStart;
+
     IUKUIPanelPlugin* mPlugin;
+
+signals:
+    void switchButtons(StatusNotifierButton *from, StatusNotifierButton *to);
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void dragEnterEvent(QDragEnterEvent *e);
+    void dragMoveEvent(QDragMoveEvent * e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    virtual QMimeData * mimeData();
 
     void refetchIcon(Status status);
     void resetIcon();
+};
+
+class StatusNotifierButtonMimeData: public QMimeData
+{
+    Q_OBJECT
+public:
+    StatusNotifierButtonMimeData():
+        QMimeData(),
+        mButton(0)
+    {
+    }
+
+    StatusNotifierButton *button() const { return mButton; }
+    void setButton(StatusNotifierButton *button) { mButton = button; }
+
+private:
+    StatusNotifierButton *mButton;
 };
 
 #endif // STATUSNOTIFIERBUTTON_H

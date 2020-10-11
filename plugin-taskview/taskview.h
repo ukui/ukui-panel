@@ -66,6 +66,9 @@ public:
 private:
     TaskViewButton *mButton;
     QGSettings *gsettings;
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
+    QGSettings *style_settings;
+    int icon_color;
 };
 
 class TaskViewLibrary: public QObject, public IUKUIPanelPluginLibrary

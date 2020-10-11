@@ -30,13 +30,14 @@
 #define STATUSNOTIFIERWIDGET_H
 
 #include <QDir>
+#include <QGSettings/QGSettings>
 
 #include "../panel/common/ukuigridlayout.h"
 #include "../panel/iukuipanelplugin.h"
 
 #include "statusnotifierbutton.h"
 #include "statusnotifierwatcher.h"
-
+class StatusNotifierPopUpButton;
 class StatusNotifierWidget : public QWidget
 {
     Q_OBJECT
@@ -54,10 +55,29 @@ public slots:
     void realign();
 
 private:
+    UKUi::GridLayout *mLayout;
     IUKUIPanelPlugin *mPlugin;
     StatusNotifierWatcher *mWatcher;
 
     QHash<QString, StatusNotifierButton*> mServices;
+
+    QList<StatusNotifierButton*> mStatusNotifierButtons;
+    QToolButton *mBtn;
+    QGSettings *gsettings;
+
+private slots:
+    void switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2);
+};
+
+class StatusNotifierPopUpButton : public QToolButton
+{
+public:
+    StatusNotifierPopUpButton();
+    ~StatusNotifierPopUpButton();
+protected:
+    void mousePressEvent(QMouseEvent *);
+private:
+    QGSettings *gsettings;
 };
 
 #endif // STATUSNOTIFIERWIDGET_H

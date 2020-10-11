@@ -49,6 +49,14 @@
 #include <KWindowSystem/NETWM>
 #include <QtX11Extras/QX11Info>
 
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
+
 bool UKUITaskWidget::sDraggging = false;
 
 /************************************************
@@ -152,6 +160,27 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
     connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskWidget::updateIcon);
     connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
+
+    const QByteArray style_id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(style_id)){
+        style_settings = new QGSettings(style_id);
+        if(stylelist.contains(style_settings->get(STYLE_NAME).toString())){
+            style_dark=true;
+        }else{
+            style_dark=false;
+        }
+        }
+    connect(style_settings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            if(stylelist.contains(style_settings->get(STYLE_NAME).toString())){
+                style_dark=true;
+            }else{
+                style_dark=false;
+            }
+        }
+    });
 }
 
 /************************************************
@@ -169,11 +198,6 @@ void UKUITaskWidget::updateText()
     KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
     QString title = info.visibleName().isEmpty() ? info.name() : info.visibleName();
     mTitleLabel->setText(title);
-    QPalette pa;
-    pa.setColor(QPalette::WindowText,Qt::white);
-    mTitleLabel->setPalette(pa);
-    //    setText(title.replace("&", "&&"));
-    //    setToolTip(title);
 }
 
 /************************************************
@@ -727,25 +751,39 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
 
     // 绘制底色
     p.save();
-    switch(status)
-    {
-    case NORMAL:
-    {
-        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
-        mTopBarLayout->removeWidget(mCloseBtn);
-        break;
-    }
-    case HOVER:
-    {
-        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
-        break;
-    }
-    case PRESS:
-    {
-        p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
 
-        break;
-    }
+    if(style_dark){
+        switch(status)
+        {
+        case NORMAL:
+            p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
+            mTopBarLayout->removeWidget(mCloseBtn);
+            break;
+        case HOVER:
+            p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
+            break;
+        case PRESS:
+            p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+            break;
+        default:
+            break;
+            }
+    }else{
+        switch(status)
+        {
+        case NORMAL:
+            p.fillPath(rectPath, QColor(0xff,0xff,0xff,0xb2));
+            mTopBarLayout->removeWidget(mCloseBtn);
+            break;
+        case HOVER:
+            p.fillPath(rectPath, QColor(0xff,0xff,0xff,0x66));
+            break;
+        case PRESS:
+            p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+            break;
+        default:
+            break;
+            }
     }
     p.restore();
 #endif

@@ -40,6 +40,7 @@
 #define TORLERANCE 36
 
 static QColor symbolic_color = Qt::gray;
+QColor defalut_background_color=Qt::gray;
 
 void HighLightEffect::setSkipEffect(QWidget *w, bool skip)
 {
@@ -355,22 +356,18 @@ QPixmap HighLightEffect::drawSymbolicColoredPixmap(const QPixmap &source)
             auto color = img.pixelColor(x, y);
             if (color.alpha() > 0) {
                 if (qAbs(color.red()-gray.red())<20 && qAbs(color.green()-gray.green())<20 && qAbs(color.blue()-gray.blue())<20) {
-                    color.setRed(255);
-                    color.setGreen(255);
-                    color.setBlue(255);
+                    color=defalut_background_color;
                     img.setPixelColor(x, y, color);
                 }
-                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20)
-                {
-                    color.setRed(255);
-                    color.setGreen(255);
-                    color.setBlue(255);
+                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20){
+                    color=defalut_background_color;
                     img.setPixelColor(x, y, color);
                 }
                 else
                 {
                     img.setPixelColor(x, y, color);
                 }
+//                qDebug()<<"color   *&***** :"<<color.red();
             }
         }
     }
@@ -388,25 +385,30 @@ QIcon HighLightEffect::drawSymbolicColoredIcon(const QIcon &source)
         for (int y = 0; y < img.height(); y++) {
             auto color = img.pixelColor(x, y);
             if (color.alpha() > 0) {
-                if (qAbs(color.red()-gray.red())<20 && qAbs(color.green()-gray.green())<20 && qAbs(color.blue()-gray.blue())<20) {
-                    color.setRed(255);
-                    color.setGreen(255);
-                    color.setBlue(255);
-                    img.setPixelColor(x, y, color);
+                if (qAbs(color.red()-gray.red())<200 && qAbs(color.green()-gray.green())<200 && qAbs(color.blue()-gray.blue())<200) {
+                    color=defalut_background_color;
+                    img.setPixelColor(x, y, Qt::red);
                 }
-                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20)
-                {
-                    color.setRed(255);
-                    color.setGreen(255);
-                    color.setBlue(255);
-                    img.setPixelColor(x, y, color);
+                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20){
+                    color=defalut_background_color;
+                    img.setPixelColor(x, y, Qt::white);
                 }
                 else
                 {
                     img.setPixelColor(x, y, color);
                 }
+                qDebug()<<"color   *&***** :"<<color.red();
             }
         }
     }
     return QPixmap::fromImage(img);
+}
+
+void HighLightEffect::getBackGroundColor(int bg_red,int bg_green,int bg_blue)
+{
+    if(bg_red>128 && bg_green>128 && bg_blue>128){
+        defalut_background_color=QColor(0,0,0);
+    }else{
+        defalut_background_color=QColor(255,255,255);
+    }
 }

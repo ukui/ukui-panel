@@ -30,10 +30,16 @@
 
 #include <QDir>
 #include <QFile>
+#include <QApplication>
+#include <QDrag>
 #include <dbusmenu-qt5/dbusmenuimporter.h>
 #include "../panel/iukuipanelplugin.h"
 #include "sniasync.h"
+#include "../panel/customstyle.h"
+#include "../panel/highlight-effect.h"
 //#include <XdgIcon>
+
+#define MIMETYPE "ukui/UkuiTaskBar"
 
 namespace
 {
@@ -60,7 +66,7 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     mFallbackIcon(QIcon::fromTheme("application-x-executable")),
     mPlugin(plugin)
 {
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAutoRaise(true);
     interface = new SniAsync(service, objectPath, QDBusConnection::sessionBus(), this);
 
@@ -162,6 +168,7 @@ void StatusNotifierButton::refetchIcon(Status status)
                     }
                 }
             }
+            nextIcon=HighLightEffect::drawSymbolicColoredIcon(nextIcon);
 
             switch (status)
             {
@@ -224,6 +231,7 @@ void StatusNotifierButton::refetchIcon(Status status)
 void StatusNotifierButton::newToolTip()
 {
     interface->propertyGetAsync(QLatin1String("ToolTip"), [this] (ToolTip tooltip) {
+
         QString toolTipTitle = tooltip.title;
         if (!toolTipTitle.isEmpty())
             setToolTip(toolTipTitle);
@@ -257,6 +265,45 @@ void StatusNotifierButton::contextMenuEvent(QContextMenuEvent* event)
 {
     //XXX: avoid showing of parent's context menu, we are (optionaly) providing context menu on mouseReleaseEvent
     //QWidget::contextMenuEvent(event);
+}
+
+void StatusNotifierButton::mouseMoveEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::RightButton)
+        return;
+    if (!(e->buttons() & Qt::LeftButton))
+        return;
+    if ((e->pos() - mDragStart).manhattanLength() < QApplication::startDragDistance())
+        return;
+
+    if (e->modifiers() == Qt::ControlModifier)
+    {
+        return;
+    }
+    QDrag *drag = new QDrag(this);
+    QIcon ico = icon();
+    int size = mPlugin->panel()->iconSize();
+    QPixmap img = ico.pixmap(ico.actualSize({size, size}));
+
+    drag->setMimeData(mimeData());
+    drag->setPixmap(img);
+
+    switch (mPlugin->panel()->position())
+    {
+        case IUKUIPanel::PositionLeft:
+        case IUKUIPanel::PositionTop:
+            drag->setHotSpot({0, 0});
+            break;
+        case IUKUIPanel::PositionRight:
+        case IUKUIPanel::PositionBottom:
+            drag->setHotSpot(img.rect().bottomRight());
+            break;
+    }
+
+    drag->exec();
+    drag->deleteLater();
+
+    //QAbstractButton::mouseMoveEvent(e);
 }
 
 void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
@@ -297,4 +344,49 @@ void StatusNotifierButton::resetIcon()
         setIcon(mAttentionIcon);
     else
         setIcon(mFallbackIcon);
+}
+
+void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
+{
+    if (e->mimeData()->hasFormat(MIMETYPE))
+        e->acceptProposedAction();
+    else
+        e->ignore();
+}
+
+void StatusNotifierButton::dragEnterEvent(QDragEnterEvent *e)
+{
+    e->acceptProposedAction();
+    const StatusNotifierButtonMimeData *mimeData = qobject_cast<const StatusNotifierButtonMimeData*>(e->mimeData());
+    if (mimeData && mimeData->button())
+          emit switchButtons(mimeData->button(), this);
+    QToolButton::dragEnterEvent(e);
+}
+
+QMimeData * StatusNotifierButton::mimeData()
+{
+    StatusNotifierButtonMimeData *mimeData = new StatusNotifierButtonMimeData();
+//    QByteArray ba;
+//    mimeData->setData(mimeDataFormat(), ba);
+    mimeData->setButton(this);
+    return mimeData;
+}
+
+void StatusNotifierButton::mousePressEvent(QMouseEvent *e)
+{
+//    if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
+//    {
+//        mDragStart = e->pos();
+//        return;
+//    }
+
+//    QToolButton::mousePressEvent(e);
+}
+
+QString StatusNotifierButton::hideAbleStatusNotifierButton()
+{
+    interface->propertyGetAsync(QLatin1String("Title"), [this] (QString title) {
+        mTitle = title;
+    });
+    return mTitle;
 }

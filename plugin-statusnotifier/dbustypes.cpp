@@ -27,6 +27,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "dbustypes.h"
+#include <QDebug>
 
 // Marshall the IconPixmap data into a D-Bus argument
 QDBusArgument &operator<<(QDBusArgument &argument, const IconPixmap &icon)
