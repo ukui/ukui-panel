@@ -23,6 +23,14 @@
 #include <QPainter>
 #include <QApplication>
 
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
+
 //#if QT_CONFIG(toolbutton)
 /*以下代码是为了处理toolbutton 的箭头*/
 static void drawArrow(const QStyle *style, const QStyleOptionToolButton *toolbutton,
@@ -55,6 +63,26 @@ CustomStyle::CustomStyle(const QString &proxyStyleName, bool multileWins, QObjec
 {
     pluginName=proxyStyleName;
     multileWindow=multileWins;
+
+    const QByteArray id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(id)){
+        gsettings = new QGSettings(id);
+        if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
+            dark_style=true;
+        else
+            dark_style=false;
+    }
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            if(stylelist.contains(gsettings->get(STYLE_NAME).toString())){
+                dark_style=true;
+            }
+            else
+                dark_style=false;
+        }
+    });
 }
 CustomStyle::~CustomStyle()
 {
@@ -64,17 +92,17 @@ CustomStyle::~CustomStyle()
 void CustomStyle::drawComplexControl(QStyle::ComplexControl cc, const QStyleOptionComplex *opt, QPainter *p, const QWidget *widget) const
 {
 
-//    if(control == CC_ToolButton)
-//    {
-//        /// 我们需要获取ToolButton的详细信息，通过qstyleoption_cast可以得到
-//        /// 对应的option，通过拷贝构造函数得到一份备份用于绘制子控件
-//        /// 我们一般不用在意option是怎么得到的，大部分的Qt控件都能够提供了option的init方法
+    //    if(control == CC_ToolButton)
+    //    {
+    //        /// 我们需要获取ToolButton的详细信息，通过qstyleoption_cast可以得到
+    //        /// 对应的option，通过拷贝构造函数得到一份备份用于绘制子控件
+    //        /// 我们一般不用在意option是怎么得到的，大部分的Qt控件都能够提供了option的init方法
 
-//    }
+    //    }
     switch (cc) {
     case CC_ToolButton:
         if (const QStyleOptionToolButton *toolbutton
-            = qstyleoption_cast<const QStyleOptionToolButton *>(opt)) {
+                = qstyleoption_cast<const QStyleOptionToolButton *>(opt)) {
             QRect button, menuarea;
             button = proxy()->subControlRect(cc, toolbutton, SC_ToolButton, widget);
             menuarea = proxy()->subControlRect(cc, toolbutton, SC_ToolButtonMenu, widget);
@@ -108,7 +136,7 @@ void CustomStyle::drawComplexControl(QStyle::ComplexControl cc, const QStyleOpti
                 fr.rect.adjust(3, 3, -3, -3);
                 if (toolbutton->features & QStyleOptionToolButton::MenuButtonPopup)
                     fr.rect.adjust(0, 0, -proxy()->pixelMetric(QStyle::PM_MenuButtonIndicator,
-                                                      toolbutton, widget), 0);
+                                                               toolbutton, widget), 0);
                 proxy()->drawPrimitive(PE_FrameFocusRect, &fr, p, widget);
             }
             QStyleOptionToolButton label = *toolbutton;
@@ -152,22 +180,22 @@ void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption
             QRect rect = toolbutton->rect;
             int shiftX = 0;
             int shiftY = 0;
-//            if (toolbutton->state & (State_Sunken | State_On)) {
-//                shiftX = proxy()->pixelMetric(PM_ButtonShiftHorizontal, toolbutton, widget);
-//                shiftY = proxy()->pixelMetric(PM_ButtonShiftVertical, toolbutton, widget);
-//            }
+            //            if (toolbutton->state & (State_Sunken | State_On)) {
+            //                shiftX = proxy()->pixelMetric(PM_ButtonShiftHorizontal, toolbutton, widget);
+            //                shiftY = proxy()->pixelMetric(PM_ButtonShiftVertical, toolbutton, widget);
+            //            }
             // Arrow type always overrules and is always shown
             bool hasArrow = toolbutton->features & QStyleOptionToolButton::Arrow;
             if (((!hasArrow && toolbutton->icon.isNull()) && !toolbutton->text.isEmpty())
-                || toolbutton->toolButtonStyle == Qt::ToolButtonTextOnly) {
+                    || toolbutton->toolButtonStyle == Qt::ToolButtonTextOnly) {
                 int alignment = Qt::AlignCenter | Qt::TextShowMnemonic;
                 if (!proxy()->styleHint(SH_UnderlineShortcut, opt, widget))
                     alignment |= Qt::TextHideMnemonic;
                 rect.translate(shiftX, shiftY);
                 p->setFont(toolbutton->font);
                 proxy()->drawItemText(p, rect, alignment, toolbutton->palette,
-                             opt->state & State_Enabled, toolbutton->text,
-                             QPalette::ButtonText);
+                                      opt->state & State_Enabled, toolbutton->text,
+                                      QPalette::ButtonText);
             } else {
                 QPixmap pm;
                 QSize pmSize = toolbutton->iconSize;
@@ -188,7 +216,7 @@ void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption
                 if (toolbutton->toolButtonStyle != Qt::ToolButtonIconOnly) {
                     p->setFont(toolbutton->font);
                     QRect pr = rect,
-                    tr = rect;
+                            tr = rect;
                     int alignment = Qt::TextShowMnemonic;
                     if (!proxy()->styleHint(SH_UnderlineShortcut, opt, widget))
                         alignment |= Qt::TextHideMnemonic;
@@ -217,8 +245,8 @@ void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption
                     tr.translate(shiftX, shiftY);
                     //const QString text = d->toolButtonElideText(toolbutton, tr, alignment);
                     proxy()->drawItemText(p, QStyle::visualRect(opt->direction, rect, tr), alignment, toolbutton->palette,
-                                 toolbutton->state & State_Enabled, toolbutton->text,
-                                 QPalette::ButtonText);
+                                          toolbutton->state & State_Enabled, toolbutton->text,
+                                          QPalette::ButtonText);
                 } else {
                     rect.translate(shiftX, shiftY);
                     if (hasArrow) {
@@ -256,81 +284,160 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
      * 在同一个PE中有两个toolbutton 的样式
     */
     case PE_PanelButtonTool:{
-        if(QString::compare(pluginName,"taskbutton")==0)
-        {
-            painter->save();
-            painter->setRenderHint(QPainter::Antialiasing,true);
-            painter->setPen(Qt::NoPen);
-	    painter->setBrush(QColor(0xff,0xff,0xff,0x14));
-            if (option->state & State_Sunken) {
-                painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
-            } else if (option->state & State_MouseOver) {
-                painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
-            } else if (option->state & State_On) {
-                painter->setBrush(QColor(0xff,0xff,0xff,0x33));
-            }
-            painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
-            painter->restore();
-
-            if(multileWindow)
+        if(dark_style){
+            if(QString::compare(pluginName,"taskbutton")==0)
             {
                 painter->save();
-                painter->setRenderHint(QPainter::Antialiasing, true);
+                painter->setRenderHint(QPainter::Antialiasing,true);
                 painter->setPen(Qt::NoPen);
-                painter->setBrush(option->palette.color(QPalette::Highlight));
-                painter->drawEllipse(option->rect.topLeft() + QPointF(8.5, 4.5), 2.5, 2.5);
-                painter->setBrush(option->palette.color(QPalette::Highlight).light(125));
-                painter->drawEllipse(option->rect.topLeft() + QPointF(4.5, 4.5), 2.5, 2.5);
-                painter->restore();
-            }
-            return;
-        }
-
-        else if(QString::compare(pluginName,"closebutton")==0)
-        {
-            painter->save();
-            painter->setRenderHint(QPainter::Antialiasing,true);
-            painter->setPen(Qt::NoPen);
-            //        painter->setBrush(QColor(0xff,0xff,0xff,0xff));
-            painter->drawRoundedRect(option->rect,6,6);
-            if (option->state & State_MouseOver) {
+                painter->setBrush(QColor(0xff,0xff,0xff,0x14));
                 if (option->state & State_Sunken) {
-                    painter->setRenderHint(QPainter::Antialiasing,true);
-                    painter->setPen(Qt::NoPen);
-                    painter->setBrush(QColor(0xd7,0x34,0x35));
-                    painter->drawRoundedRect(option->rect,6,6);
-                } else {
-                    painter->setRenderHint(QPainter::Antialiasing,true);
-                    painter->setPen(Qt::NoPen);
-                    painter->setBrush(QColor(0xf0,0x41,0x34));
-                    painter->drawRoundedRect(option->rect,4,4);
-                }
-            }
-            painter->restore();
-            return;
-        }
-
-        else
-        {
-            painter->save();
-            painter->setRenderHint(QPainter::Antialiasing,true);
-            painter->setPen(Qt::NoPen);
-            painter->drawRoundedRect(option->rect,6,6);
-            if (option->state & State_MouseOver) {
-                if (option->state & State_Sunken) {
-                    painter->setRenderHint(QPainter::Antialiasing,true);
-                    painter->setPen(Qt::NoPen);
                     painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
-                    painter->drawRoundedRect(option->rect,6,6);
-                } else {
-                    painter->setRenderHint(QPainter::Antialiasing,true);
-                    painter->setPen(Qt::NoPen);
+                } else if (option->state & State_MouseOver) {
                     painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
-                    painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
+                } else if (option->state & State_On) {
+                    painter->setBrush(QColor(0xff,0xff,0xff,0x33));
                 }
+                painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
+                painter->restore();
+
+                if(multileWindow)
+                {
+                    painter->save();
+                    painter->setRenderHint(QPainter::Antialiasing, true);
+                    painter->setPen(Qt::NoPen);
+                    painter->setBrush(option->palette.color(QPalette::Highlight));
+                    painter->drawEllipse(option->rect.bottomLeft() + QPointF(option->rect.center().x()-2, -4.5), 2.5, 2.5);
+                    painter->setBrush(option->palette.color(QPalette::Highlight).light(125));
+                    painter->drawEllipse(option->rect.bottomLeft() + QPointF(option->rect.center().x()+2, -4.5), 2.5, 2.5);
+                    painter->restore();
+                }
+                return;
             }
-            painter->restore();
-            return;
+
+            else if(QString::compare(pluginName,"closebutton")==0)
+            {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing,true);
+                painter->setPen(Qt::NoPen);
+                //        painter->setBrush(QColor(0xff,0xff,0xff,0xff));
+                painter->drawRoundedRect(option->rect,6,6);
+                if (option->state & State_MouseOver) {
+                    if (option->state & State_Sunken) {
+                        painter->setRenderHint(QPainter::Antialiasing,true);
+                        painter->setPen(Qt::NoPen);
+                        painter->setBrush(QColor(0xd7,0x34,0x35));
+                        painter->drawRoundedRect(option->rect,6,6);
+                    } else {
+                        painter->setRenderHint(QPainter::Antialiasing,true);
+                        painter->setPen(Qt::NoPen);
+                        painter->setBrush(QColor(0xf0,0x41,0x34));
+                        painter->drawRoundedRect(option->rect,4,4);
+                    }
+                }
+                painter->restore();
+                return;
+            }
+
+            else
+            {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing,true);
+                painter->setPen(Qt::NoPen);
+                painter->drawRoundedRect(option->rect,6,6);
+                if (option->state & State_MouseOver) {
+                    if (option->state & State_Sunken) {
+                        painter->setRenderHint(QPainter::Antialiasing,true);
+                        painter->setPen(Qt::NoPen);
+                        painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
+                        painter->drawRoundedRect(option->rect,6,6);
+                    } else {
+                        painter->setRenderHint(QPainter::Antialiasing,true);
+                        painter->setPen(Qt::NoPen);
+                        painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
+                        painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
+                    }
+                }
+                painter->restore();
+                return;
+            }
+        }else{
+            if(QString::compare(pluginName,"taskbutton")==0)
+            {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing,true);
+                painter->setPen(Qt::NoPen);
+                painter->setBrush(QColor(0x00,0x00,0x00,0x14));
+                if (option->state & State_Sunken) {
+                    painter->setBrush(QColor(0x00,0x00,0x00,0x0f));
+                } else if (option->state & State_MouseOver) {
+                    painter->setBrush(QColor(0x00,0x00,0x00,0x1f));
+                } else if (option->state & State_On) {
+                    painter->setBrush(QColor(0x00,0x00,0x00,0x33));
+                }
+                painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
+                painter->restore();
+
+                if(multileWindow)
+                {
+                    painter->save();
+                    painter->setRenderHint(QPainter::Antialiasing, true);
+                    painter->setPen(Qt::NoPen);
+                    painter->setBrush(option->palette.color(QPalette::Highlight));
+                    painter->drawEllipse(option->rect.bottomLeft() + QPointF(option->rect.center().x()-2, -4.5), 2.5, 2.5);
+                    painter->setBrush(option->palette.color(QPalette::Highlight).light(125));
+                    painter->drawEllipse(option->rect.bottomLeft() + QPointF(option->rect.center().x()+2, -4.5), 2.5, 2.5);
+                    painter->restore();
+                }
+                return;
+            }
+
+            else if(QString::compare(pluginName,"closebutton")==0)
+            {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing,true);
+                painter->setPen(Qt::NoPen);
+                //        painter->setBrush(QColor(0xff,0xff,0xff,0xff));
+                painter->drawRoundedRect(option->rect,6,6);
+                if (option->state & State_MouseOver) {
+                    if (option->state & State_Sunken) {
+                        painter->setRenderHint(QPainter::Antialiasing,true);
+                        painter->setPen(Qt::NoPen);
+                        painter->setBrush(QColor(0xd7,0x34,0x35));
+                        painter->drawRoundedRect(option->rect,6,6);
+                    } else {
+                        painter->setRenderHint(QPainter::Antialiasing,true);
+                        painter->setPen(Qt::NoPen);
+                        painter->setBrush(QColor(0xf0,0x41,0x34));
+                        painter->drawRoundedRect(option->rect,4,4);
+                    }
+                }
+                painter->restore();
+                return;
+            }
+
+            else
+            {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing,true);
+                painter->setPen(Qt::NoPen);
+                painter->drawRoundedRect(option->rect,6,6);
+                if (option->state & State_MouseOver) {
+                    if (option->state & State_Sunken) {
+                        painter->setRenderHint(QPainter::Antialiasing,true);
+                        painter->setPen(Qt::NoPen);
+                        painter->setBrush(QColor(0x00,0x00,0x00,0x0f));
+                        painter->drawRoundedRect(option->rect,6,6);
+                    } else {
+                        painter->setRenderHint(QPainter::Antialiasing,true);
+                        painter->setPen(Qt::NoPen);
+                        painter->setBrush(QColor(0x00,0x00,0x00,0x1f));
+                        painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
+                    }
+                }
+                painter->restore();
+                return;
+            }
         }
     }
 
@@ -409,9 +516,9 @@ void CustomStyle::polish(QApplication *application)
 //
 void CustomStyle::polish(QPalette &palette)
 {
-//    return QProxyStyle::polish(palette);
-//    QProxyStyle::polish(palette);
-//    palette.setBrush(QPalette::Foreground, Qt::black);
+    //    return QProxyStyle::polish(palette);
+    //    QProxyStyle::polish(palette);
+    //    palette.setBrush(QPalette::Foreground, Qt::black);
     QColor lightBlue(200, 0, 0);
     palette.setBrush(QPalette::Highlight, lightBlue);
 }
