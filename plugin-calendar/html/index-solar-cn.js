@@ -751,6 +751,9 @@ function create_page(year, month) {
             current_cell.innerHTML =   '<span class="solar_part">' +
             month_stuff['monthData'][index]['day'] +
             '</span>'
+			if (worktime) {
+                current_cell.appendChild(worktime);
+            }
         }
     }
 

@@ -100,9 +100,9 @@ void LunarCalendarItem::drawBg(QPainter *painter)
         bgColor = otherBgColor;
     }
 
-    painter->setPen(borderColor);
-    painter->setBrush(bgColor);
-    painter->drawRect(rect());
+    //painter->setPen(borderColor);
+    //painter->setBrush(bgColor);
+    //painter->drawRect(rect());
 
     painter->restore();
 }

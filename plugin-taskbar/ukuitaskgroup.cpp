@@ -53,6 +53,7 @@
 #include <QSize>
 #include <QScreen>
 #include <XdgIcon>
+#include <XdgDesktopFile>
 #include "../panel/customstyle.h"
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANELPOSITION       "panelposition"
@@ -192,8 +193,36 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     mpScrollArea = NULL;
     taskgroupStatus = NORMAL;
 
-    setObjectName(groupName);
-    setText(groupName);
+    QDir dir("/usr/share/applications/");
+    QFileInfoList list = dir.entryInfoList();
+    for (int i = 0; i < list.size(); i++) {
+        QFileInfo fileInfo = list.at(i);
+        if (parentTaskBar()->ignoreSymbolCMP(fileInfo.filePath(), groupName)) {
+            file_name = fileInfo.filePath();
+            break;
+        }
+    }
+    const auto url=QUrl(file_name);
+    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+    QFileInfo fi(fileName);
+    XdgDesktopFile xdg;
+    if (xdg.load(fileName))
+    {
+        /*This fuction returns true if the desktop file is applicable to the
+          current environment.
+          but I don't need this attributes now
+        */
+        //        if (xdg.isSuitable())
+        mAct = new QuickLaunchAction(&xdg, this);
+    }
+    else if (fi.exists() && fi.isExecutable() && !fi.isDir())
+    {
+        mAct = new QuickLaunchAction(fileName, fileName, "", this);
+    }
+    else if (fi.exists())
+    {
+        mAct = new QuickLaunchAction(fileName, this);
+    }
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
     connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(onActiveWindowChanged(WId)));
@@ -239,8 +268,20 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    QAction *a = menu->addAction(QIcon::fromTheme("process-stop"), tr("close"));
-    connect(a, SIGNAL(triggered()), this, SLOT(closeGroup()));
+    if (!file_name.isEmpty()) {
+        menu->addAction(mAct);
+        menu->addActions(mAct->addtitionalActions());
+        menu->addSeparator();
+        menu->addSeparator();
+        QAction *mDeleteAct = menu->addAction(XdgIcon::fromTheme("dialog-close"), tr("delete from taskbar"));
+        connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(RemovefromTaskBar()));
+        QAction *mAddAct = menu->addAction(XdgIcon::fromTheme("dialog-close"), tr("add to taskbar"));
+        connect(mAddAct, SIGNAL(triggered()), this, SLOT(AddtoTaskBar()));
+        if (existSameQckBtn) menu->removeAction(mAddAct);
+        else menu->removeAction(mDeleteAct);
+    }
+    QAction *mCloseAct = menu->addAction(QIcon::fromTheme("process-stop"), tr("close"));
+    connect(mCloseAct, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {
         mPreventPopup = false;
     });
@@ -248,7 +289,14 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
     plugin()->willShowWindow(menu);
     menu->show();
 }
-
+void UKUITaskGroup::RemovefromTaskBar()
+{
+    emit WindowRemovefromTaskBar(groupName());
+}
+void UKUITaskGroup::AddtoTaskBar()
+{
+    emit WindowAddtoTaskBar(groupName());
+}
 /************************************************
 
  ************************************************/
