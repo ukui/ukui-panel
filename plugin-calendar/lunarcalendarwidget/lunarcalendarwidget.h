@@ -139,7 +139,7 @@ private:
     QGSettings *style_settings;
     bool dark_style;
 
-private slots:
+private Q_SLOTS:
     void initWidget();
     void initStyle();
     void initDate();
