@@ -82,7 +82,7 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         lunarColor = QColor(55, 156, 238);
 
         currentTextColor = QColor(255, 255, 255);
-        otherTextColor = QColor(200, 200, 200);
+        otherTextColor = QColor(125, 125, 125);
         selectTextColor = QColor(255, 255, 255);
         hoverTextColor = QColor(250, 250, 250);
 
@@ -93,11 +93,11 @@ void LunarCalendarWidget::setColor(bool mdark_style)
 
         currentBgColor = QColor(0, 0, 0);
         otherBgColor = QColor(240, 240, 240);
-        selectBgColor = QColor(208, 47, 18);
-        hoverBgColor = QColor(204, 183, 180);
+        selectBgColor = QColor(80, 100, 220);
+        hoverBgColor = QColor(80, 190, 220);
     }else{
         weekTextColor = QColor(255, 255, 255);
-        weekBgColor = QColor(180, 180, 180);
+        weekBgColor = QColor(0, 0, 0);
 
         showLunar = true;
         bgImage = ":/image/bg_calendar.png";
@@ -109,7 +109,7 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         lunarColor = QColor(55, 156, 238);
 
         currentTextColor = QColor(0, 0, 0);
-        otherTextColor = QColor(200, 200, 200);
+        otherTextColor = QColor(125, 125, 125);
         selectTextColor = QColor(255, 255, 255);
         hoverTextColor = QColor(250, 250, 250);
 
@@ -120,8 +120,8 @@ void LunarCalendarWidget::setColor(bool mdark_style)
 
         currentBgColor = QColor(255, 255, 255);
         otherBgColor = QColor(240, 240, 240);
-        selectBgColor = QColor(208, 47, 18);
-        hoverBgColor = QColor(204, 183, 180);
+        selectBgColor = QColor(80, 100, 220);
+        hoverBgColor = QColor(80, 190, 220);
     }
         initWidget();
         initStyle();
@@ -270,17 +270,18 @@ void LunarCalendarWidget::initStyle()
     QStringList qss;
 
     //星期名称样式
-    qss.append(QString("QLabel{background:%1;color:%2;}").arg(weekBgColor.name()).arg(weekTextColor.name()));
+    //qss.append(QString("QLabel{background:%1;color:%2;}").arg(weekBgColor.name()).arg(weekTextColor.name()));
+    qss.append(QString("color:%2;}").arg(weekBgColor.name()).arg(weekTextColor.name()));
 
     //边框
-    qss.append(QString("QWidget#widgetBody{border:1px solid %1;}").arg(borderColor.name()));
+  //  qss.append(QString("QWidget#widgetBody{border:1px solid %1;}").arg(borderColor.name()));
 
     //顶部下拉框
-    qss.append(QString("QToolButton{padding:0px;background:none;border:none;border-radius:5px;}"));
-    qss.append(QString("QToolButton:hover{background:#16A085;color:#FFFFFF;}"));
+   // qss.append(QString("QToolButton{padding:0px;background:none;border:none;border-radius:5px;}"));
+   // qss.append(QString("QToolButton:hover{background:#16A085;color:#FFFFFF;}"));
 
     //转到今天
-    qss.append(QString("QPushButton{background:#16A085;color:#FFFFFF;border-radius:5px;}"));
+   //qss.append(QString("QPushButton{background:#16A085;color:#FFFFFF;border-radius:5px;}"));
 
     //自定义日控件颜色
     QString strSelectType;
@@ -312,7 +313,7 @@ void LunarCalendarWidget::initStyle()
     qss.append(QString("LunarCalendarItem{qproperty-currentBgColor:%1;}").arg(currentBgColor.name()));
     qss.append(QString("LunarCalendarItem{qproperty-otherBgColor:%1;}").arg(otherBgColor.name()));
     qss.append(QString("LunarCalendarItem{qproperty-selectBgColor:%1;}").arg(selectBgColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-hoverBgColor:%1;}").arg(hoverBgColor.name()));
+    //qss.append(QString("LunarCalendarItem{qproperty-hoverBgColor:%1;}").arg(hoverBgColor.name()));
 
     this->setStyleSheet(qss.join(""));
 }
