@@ -687,7 +687,7 @@ Colorize icons based on widget style (palette)</source>
     <message>
         <location filename="../../plugin-taskview/taskview.cpp" line="48"/>
         <source>Show Taskview</source>
-        <translation>显示预览窗口</translation>
+        <translation>显示任务视图</translation>
     </message>
 </context>
 <context>

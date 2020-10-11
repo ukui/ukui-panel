@@ -731,6 +731,7 @@ private slots:
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
+    QGSettings *style_gsettings;
 
 };
 

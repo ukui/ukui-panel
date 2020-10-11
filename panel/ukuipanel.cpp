@@ -93,8 +93,16 @@
 #define SHOW_TASKVIEW       "showtaskview"
 #define SHOW_NIGHTMODE      "shownightmode"
 
-#define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
-#define TRANSPARENCY_KEY            "transparency"
+#define TRANSPARENCY_SETTINGS     "org.ukui.control-center.personalise"
+#define TRANSPARENCY_KEY          "transparency"
+
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK      "ukui-black"
+#define STYLE_NAME_KEY_LIGHT      "ukui-light"
+#define STYLE_NAME_KEY_WHITE      "ukui-white"
 
 /************************************************
  Returns the Position by the string.
@@ -273,6 +281,21 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
             this->update();
         }
     });
+
+    const QByteArray style_id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(style_id)){
+        style_gsettings = new QGSettings(style_id);
+        if(stylelist.contains(style_gsettings->get(STYLE_NAME).toString()))
+            HighLightEffect::getBackGroundColor(this->palette().background().color().red(),this->palette().background().color().green(),this->palette().background().color().blue());
+        }
+    connect(style_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            HighLightEffect::getBackGroundColor(this->palette().background().color().red(),this->palette().background().color().green(),this->palette().background().color().blue());
+        }
+    });
+
     setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
     setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
 }
