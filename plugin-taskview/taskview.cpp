@@ -29,9 +29,20 @@
 #include "../panel/customstyle.h"
 #include <QPalette>
 #include <QToolTip>
+#include <QPalette>
 
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define SHOW_TASKVIEW       "showtaskview"
+
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
+#define ICON_COLOR_LOGHT      255
+#define ICON_COLOR_DRAK       0
 
 TaskViewButton::TaskViewButton(){
     setFocusPolicy(Qt::NoFocus);
@@ -44,7 +55,34 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
 {
     mButton =new TaskViewButton();
     mButton->setStyle(new CustomStyle());
-    mButton->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
+
+    const QByteArray style_id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(style_id)){
+        style_settings = new QGSettings(style_id);
+        if(stylelist.contains(style_settings->get(STYLE_NAME).toString())){
+            icon_color=ICON_COLOR_LOGHT;
+        }else{
+            icon_color=ICON_COLOR_DRAK;
+        }
+        mButton->setIcon(QIcon(drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("taskiew",QIcon("/usr/share/ukui-panel/plugin-taskview/img/taskview.svg")).pixmap(24,24).toImage()))));
+        }
+    connect(style_settings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            if(stylelist.contains(style_settings->get(STYLE_NAME).toString())){
+                icon_color=ICON_COLOR_LOGHT;
+            }
+            else
+                icon_color=ICON_COLOR_DRAK;
+            mButton->setIcon(QIcon(drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("taskiew",QIcon("/usr/share/ukui-panel/plugin-taskview/img/taskview.svg")).pixmap(24,24).toImage()))));
+        }
+    });
+
+//    QPalette pal=mPanel->palette();
+//    qDebug()<<"pal   :"<<pal;
+
+//    mButton->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
     mButton->setToolTip(tr("Show Taskview"));
 
     /* hide/show taskview
@@ -107,4 +145,37 @@ void TaskViewButton::mousePressEvent(QMouseEvent *event)
     }
 
     QWidget::mousePressEvent(event);
+}
+
+QPixmap TaskView::drawSymbolicColoredPixmap(const QPixmap &source)
+{
+    QColor gray(128,128,128);
+    QColor standard (31,32,34);
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if (qAbs(color.red()-gray.red())<255 && qAbs(color.green()-gray.green())<255 && qAbs(color.blue()-gray.blue())<255) {
+//                    qDebug()<<"tray_icon_colopr"<<icon_color;
+                    color.setRed(icon_color);
+                    color.setGreen(icon_color);
+                    color.setBlue(icon_color);
+                    img.setPixelColor(x, y, color);
+                }
+                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20)
+                {
+                    color.setRed(icon_color);
+                    color.setGreen(icon_color);
+                    color.setBlue(icon_color);
+                    img.setPixelColor(x, y, color);
+                }
+                else
+                {
+                    img.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
 }
