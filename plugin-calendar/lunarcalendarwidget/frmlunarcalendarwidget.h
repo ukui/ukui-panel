@@ -18,7 +18,7 @@ public:
 private:
     Ui::frmLunarCalendarWidget *ui;
 
-private slots:
+private Q_SLOTS:
     void initForm();
     void on_cboxCalendarStyle_currentIndexChanged(int index);
     void on_cboxSelectType_currentIndexChanged(int index);

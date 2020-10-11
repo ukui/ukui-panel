@@ -107,7 +107,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
-    connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
+//    connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id)) {
     gsettings = new QGSettings(id);
@@ -949,8 +949,14 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
     QLabel(parent),
     mPlugin(plugin)
 {
+    w=new frmLunarCalendarWidget();
+    w->hide();
+    state=ST_HIDE;
 }
-
+CalendarActiveLabel::~CalendarActiveLabel()
+{
+    delete w;
+}
 void CalendarActiveLabel::wheelEvent(QWheelEvent *event)
 {
     Q_EMIT wheelScrolled(event->delta());
@@ -974,6 +980,19 @@ void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
     }
 
     QLabel::mouseReleaseEvent(event);
+}
+
+void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
+{
+    qDebug()<<" CalendarActiveLabel::mousePressEven"<<state;
+    if(state==ST_HIDE){
+        w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->sizeHint()));
+        w->show();
+        state=ST_SHOW;
+    }else{
+        w->hide();
+        state=ST_HIDE;
+    }
 }
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)

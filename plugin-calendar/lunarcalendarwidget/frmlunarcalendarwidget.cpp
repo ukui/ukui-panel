@@ -6,6 +6,7 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
     ui->setupUi(this);
     this->initForm();
     this->setWindowFlags(Qt::FramelessWindowHint);//去掉标题栏
+    this->setWindowFlags(Qt::Popup);
     this->setFixedSize(500,550);
 
     ui->labCalendarStyle->setHidden(true);
