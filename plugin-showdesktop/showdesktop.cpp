@@ -33,11 +33,23 @@
 #include "showdesktop.h"
 #include "../panel/common/ukuinotification.h"
 #include "../panel/pluginsettings.h"
+#include "../panel/highlight-effect.h"
 
 #define DEFAULT_SHORTCUT "Control+Alt+D"
 
 #define DESKTOP_WIDTH   (50)
 #define DESKTOP_WIDGET_HIGHT 100
+
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
+
+#define TRAY_ICON_COLOR_LOGHT      255
+#define TRAY_ICON_COLOR_DRAK       0
 
 ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QWidget(),
@@ -45,6 +57,27 @@ ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
 {
     state=NORMAL;
     this->setToolTip(tr("Show Desktop"));
+
+    const QByteArray id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(id)){
+        gsettings = new QGSettings(id);
+        if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
+            tray_icon_color=TRAY_ICON_COLOR_LOGHT;
+        else
+            tray_icon_color=TRAY_ICON_COLOR_DRAK;
+        }
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            if(stylelist.contains(gsettings->get(STYLE_NAME).toString())){
+                tray_icon_color=TRAY_ICON_COLOR_LOGHT;
+            }
+            else
+                tray_icon_color=TRAY_ICON_COLOR_DRAK;
+        }
+    });
+
     realign();
 
 }
@@ -87,13 +120,14 @@ void ShowDesktop::paintEvent(QPaintEvent *)
 
        //  p.drawLine(0,0,xEndPoint,yEndPoint);
          pix.load("/usr/share/ukui-panel/panel/img/deskup.png");
-         painter.drawPixmap(panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,pix);
+         painter.drawPixmap(panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,drawSymbolicColoredPixmap(pix));
          break;
      case HOVER:
          //p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
         // p.drawLine(0,0,xEndPoint,yEndPoint);
          pix.load("/usr/share/ukui-panel/panel/img/deskdown.svg");
-         painter.drawPixmap(panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,pix);
+         drawSymbolicColoredPixmap(pix);
+         painter.drawPixmap(panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,panel()->panelSize()/3,drawSymbolicColoredPixmap(pix));
 
          break;
      default:
@@ -114,5 +148,38 @@ void ShowDesktop::leaveEvent(QEvent *event)
 {
     state=NORMAL;
     update();
+}
+
+QPixmap ShowDesktop::drawSymbolicColoredPixmap(const QPixmap &source)
+{
+    QColor gray(128,128,128);
+    QColor standard (31,32,34);
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if (qAbs(color.red()-gray.red())<255 && qAbs(color.green()-gray.green())<255 && qAbs(color.blue()-gray.blue())<255) {
+//                    qDebug()<<"tray_icon_colopr"<<tray_icon_color;
+                    color.setRed(tray_icon_color);
+                    color.setGreen(tray_icon_color);
+                    color.setBlue(tray_icon_color);
+                    img.setPixelColor(x, y, color);
+                }
+                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20)
+                {
+                    color.setRed(tray_icon_color);
+                    color.setGreen(tray_icon_color);
+                    color.setBlue(tray_icon_color);
+                    img.setPixelColor(x, y, color);
+                }
+                else
+                {
+                    img.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
 }
 #undef DEFAULT_SHORTCUT
