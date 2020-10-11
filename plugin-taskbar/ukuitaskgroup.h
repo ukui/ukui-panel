@@ -128,6 +128,8 @@ private slots:
     void refreshVisibility();
     void groupPopupShown(UKUITaskGroup* sender);
     void handleSavedEvent();
+    void AddtoTaskBar();
+    void RemovefromTaskBar();
 
 signals:
     void groupBecomeEmpty(QString name);
@@ -136,6 +138,8 @@ signals:
     void visibilityChanged(bool visible);
     void popupShown(UKUITaskGroup* sender);
     void t_saveSettings();
+    void WindowAddtoTaskBar(QString arg);
+    void WindowRemovefromTaskBar(QString arg);
 
 private:
     UKUITaskBar * mParent;

@@ -106,6 +106,7 @@ public:
     int showDesktopNum() const { return mShowDesktopNum; }
     bool getCpuInfoFlg() const { return CpuInfoFlg; }
     bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
+    bool ignoreSymbolCMP(QString filename,QString groupname);
     bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
     bool isAutoRotate() const { return mAutoRotate; }
     bool isGroupingEnabled() const { return mGroupingEnabled; }
@@ -187,7 +188,7 @@ private:
     void addWindow(WId window);
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
-    bool ignoreSymbolCMP(QString filename,QString groupname);
+
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
     TaskStatus taskstatus;
@@ -248,7 +249,6 @@ private:
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
     void settingsChanged();
 
-
     void wheelEvent(QWheelEvent* event);
     void changeEvent(QEvent* event);
     void resizeEvent(QResizeEvent *event);
@@ -265,6 +265,8 @@ public slots:
     bool CheckIfExist(QString arg);
     int GetPanelPosition(QString arg);
     int GetPanelSize(QString arg);
+    void WindowAddtoTaskBar(QString arg);
+    void WindowRemovefromTaskBar(QString arg);
 
 };
 

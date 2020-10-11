@@ -568,6 +568,8 @@ void UKUITaskBar::addWindow(WId window)
         group = new UKUITaskGroup(group_id, window, this);
         connect(group, SIGNAL(groupBecomeEmpty(QString)), this, SLOT(groupBecomeEmptySlot()));
         connect(group, SIGNAL(t_saveSettings()), this, SLOT(saveSettingsSlot()));
+        connect(group, SIGNAL(WindowAddtoTaskBar(QString)), this, SLOT(WindowAddtoTaskBar(QString)));
+        connect(group, SIGNAL(WindowRemovefromTaskBar(QString)), this, SLOT(WindowRemovefromTaskBar(QString)));
         connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
         connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
         connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
@@ -618,7 +620,6 @@ bool UKUITaskBar::ignoreSymbolCMP(QString filename,QString groupname) {
     filename.replace("-", ".");
     filename.replace("org.", "");
     filename.replace(".desktop", "");
-    qDebug() << "quick button: " << filename.toLower() << "bar button: " << groupname.toLower();
     if (groupname.toLower().contains(filename.toLower(), Qt::CaseInsensitive))
         return true;
     if (filename.toLower().contains(groupname.toLower(), Qt::CaseInsensitive))
@@ -1150,7 +1151,6 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
     }
     if (isNeedAddNewWidget) {
         mLayout->addWidget(btn);
-        mVBtn.push_back(btn);
         mLayout->moveItem(mLayout->indexOf(btn), countOfButtons() - 1);
         /*
         if (countOfButtons() > 32) {
@@ -1159,6 +1159,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
         }
         */
     }
+    mVBtn.push_back(btn);
     connect(btn, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
         switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
     });
@@ -1343,8 +1344,74 @@ void UKUITaskBar::directoryUpdated(const QString &path)
     }
 }
 
+void UKUITaskBar::WindowAddtoTaskBar(QString arg) {
+    for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+    {
+        UKUITaskGroup *group = it.value();
+            if (arg.compare(group->groupName()) == 0) {
+                const auto url=QUrl(group->file_name);
+                QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+                QFileInfo fi(fileName);
+                XdgDesktopFile xdg;
+                if (xdg.load(fileName))
+                {
+                    /*This fuction returns true if the desktop file is applicable to the
+                      current environment.
+                      but I don't need this attributes now
+                    */
+                    //        if (xdg.isSuitable())
+                    addButton(new QuickLaunchAction(&xdg, this));
+                }
+                else if (fi.exists() && fi.isExecutable() && !fi.isDir())
+                {
+                    addButton(new QuickLaunchAction(fileName, fileName, "", this));
+                }
+                else if (fi.exists())
+                {
+                    addButton(new QuickLaunchAction(fileName, this));
+                }
+                else
+                {
+                    qWarning() << "XdgDesktopFile" << fileName << "is not valid";
+                    QMessageBox::information(this, tr("Drop Error"),
+                                             tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                                             );
+                }
+                saveSettings();
+                break;
+        }
+    }
+}
+
+void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
+    for (auto it = mVBtn.begin(); it!=mVBtn.end(); ++it)
+    {
+        UKUITaskGroup *pQuickBtn = *it;
+        if(ignoreSymbolCMP(pQuickBtn->file_name, arg)
+           &&(layout()->indexOf(pQuickBtn) >= 0 ))
+        {
+            for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+            {
+                UKUITaskGroup *group = it.value();
+                if (group->existSameQckBtn) {
+                    if (ignoreSymbolCMP(pQuickBtn->file_name, group->groupName())) {
+                            group->existSameQckBtn = false;
+                            group->QckBtnIndex = -1;
+                    }
+                }
+            }
+            mVBtn.removeOne(pQuickBtn);
+            pQuickBtn->deleteLater();
+            mLayout->removeWidget(pQuickBtn);
+            saveSettings();
+            break;
+        }
+    }
+}
+
 bool UKUITaskBar::AddToTaskbar(QString arg)
 {
+    qDebug() << arg;
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
