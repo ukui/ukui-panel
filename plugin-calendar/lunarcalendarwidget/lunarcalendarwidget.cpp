@@ -22,6 +22,7 @@
 
 LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 {
+    setWindowOpacity(0.7);
     //判断图形字体是否存在,不存在则加入
     QFontDatabase fontDb;
     if (!fontDb.families().contains("FontAwesome")) {

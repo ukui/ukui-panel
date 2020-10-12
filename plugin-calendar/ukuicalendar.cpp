@@ -636,7 +636,7 @@ void IndicatorCalendar::activated(ActivationReason reason)
             if (iScreenHeight >= WEBVIEW_MIN_HEIGHT)
                 mViewHeight = WEBVIEW_MIN_HEIGHT;;
         }
-        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht,mViewHeight)));
+        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(0,0)));
         mWebViewDiag->show();
         setbackground();
         if(!mbActived)
@@ -984,15 +984,14 @@ void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
 
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
-    qDebug()<<" CalendarActiveLabel::mousePressEven"<<state;
-    if(state==ST_HIDE){
-        w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->sizeHint()));
+    const Qt::MouseButton b = event->button();
+
+    if (Qt::LeftButton == b)
+    {
+        w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->size()));
         w->show();
-        state=ST_SHOW;
-    }else{
-        w->hide();
-        state=ST_HIDE;
     }
+    //QWidget::mousePressEvent(event);
 }
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
