@@ -2,6 +2,7 @@
 #define FRMLUNARCALENDARWIDGET_H
 
 #include <QWidget>
+#include <QGSettings>
 
 namespace Ui {
 class frmLunarCalendarWidget;
@@ -15,8 +16,12 @@ public:
     explicit frmLunarCalendarWidget(QWidget *parent = 0);
     ~frmLunarCalendarWidget();
 
+protected:
+    void paintEvent(QPaintEvent *);
+
 private:
     Ui::frmLunarCalendarWidget *ui;
+    QGSettings *transparency_gsettings;
 
 private Q_SLOTS:
     void initForm();
