@@ -46,6 +46,13 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     weekNameFormat = WeekNameFormat_Short;
     date = QDate::currentDate();
 
+    timer = new QTimer(this);
+    datelabel =new QLabel();
+    timelabel = new QLabel();
+    _timeUpdate();
+    connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
+    timer->start(1000);
+
     //切换主题
     const QByteArray style_id(ORG_UKUI_STYLE);
     QStringList stylelist;
@@ -57,6 +64,8 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
         }
     connect(style_settings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==STYLE_NAME){
+            printf("1 %s\n",datelabel->text().toStdString().data());
+            printf("1 %s\n",timelabel->text().toStdString().data());
             dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
             setColor(dark_style);
         }
@@ -119,7 +128,7 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectLunarColor = QColor(255, 255, 255);
         hoverLunarColor = QColor(250, 250, 250);
 
-        currentBgColor = QColor(255, 255, 255);
+        currentBgColor = QColor(250, 250, 250);
         otherBgColor = QColor(240, 240, 240);
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
@@ -127,6 +136,30 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         initWidget();
         initStyle();
         initDate();
+}
+
+void LunarCalendarWidget::_timeUpdate() {
+    QDateTime time = QDateTime::currentDateTime();
+    QString _time = time.toString("hh:mm:ss");
+    QString _date = time.toString("yyyy-MM-dd dddd");
+    QFont font;
+
+    //datelabel->setFixedSize(452,40);
+    datelabel->setText(_time);
+    font.setPointSize(26);
+    datelabel->setFont(font);
+    datelabel->setAlignment(Qt::AlignHCenter);
+
+    //timelabel->setFixedSize(452,15);
+    timelabel->setText(_date);
+    font.setPointSize(14);
+    timelabel->setFont(font);
+    timelabel->setAlignment(Qt::AlignHCenter);
+}
+
+void LunarCalendarWidget::timerUpdate()
+{
+    _timeUpdate();
 }
 
 void LunarCalendarWidget::initWidget()
@@ -143,32 +176,32 @@ void LunarCalendarWidget::initWidget()
     btnPrevYear->setObjectName("btnPrevYear");
     btnPrevYear->setFixedWidth(35);
     btnPrevYear->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    btnPrevYear->setFont(iconFont);
-    btnPrevYear->setText(QChar(0xf060));
+    btnPrevYear->setIcon(QIcon::fromTheme("go-previous-symbolic"));
+    btnPrevYear->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //下一年按钮
     QToolButton *btnNextYear = new QToolButton;
     btnNextYear->setObjectName("btnNextYear");
     btnNextYear->setFixedWidth(35);
     btnNextYear->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    btnNextYear->setFont(iconFont);
-    btnNextYear->setText(QChar(0xf061));
+    btnNextYear->setIcon(QIcon::fromTheme("go-next-symbolic"));
+    btnNextYear->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //上个月按钮
     QToolButton *btnPrevMonth = new QToolButton;
     btnPrevMonth->setObjectName("btnPrevMonth");
     btnPrevMonth->setFixedWidth(35);
     btnPrevMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnPrevMonth->setFont(iconFont);
-    btnPrevMonth->setText(QChar(0xf060));
+    btnPrevMonth->setIcon(QIcon::fromTheme("go-previous-symbolic"));
+    btnPrevMonth->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //下个月按钮
     QToolButton *btnNextMonth = new QToolButton;
     btnNextMonth->setObjectName("btnNextMonth");
     btnNextMonth->setFixedWidth(35);
     btnNextMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnNextMonth->setFont(iconFont);
-    btnNextMonth->setText(QChar(0xf061));
+    btnNextMonth->setIcon(QIcon::fromTheme("go-next-symbolic"));
+    btnNextMonth->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //转到今天
     QPushButton *btnToday = new QPushButton;
@@ -209,6 +242,18 @@ void LunarCalendarWidget::initWidget()
     layoutTop->addWidget(btnNextMonth);
     layoutTop->addWidget(widgetBlank2);
     layoutTop->addWidget(btnToday);
+
+    //时间
+    QWidget *widgetTime = new QWidget;
+    widgetTime->setObjectName("widgetTime");
+    //widgetTime->setMinimumSize(400,100);
+    QVBoxLayout *timeShow = new QVBoxLayout(widgetTime);
+    timeShow->setContentsMargins(0, 0, 0, 9);
+
+    printf("%d×%d %s\n",datelabel->size().width(),datelabel->size().height(), datelabel->text().toStdString().data());
+    printf("%d×%d %s\n",timelabel->size().width(),timelabel->size().height(), timelabel->text().toStdString().data());
+    timeShow->addWidget(datelabel);//, Qt::AlignHCenter);
+    timeShow->addWidget(timelabel);//,Qt::AlignHCenter);
 
     //星期widget
     QWidget *widgetWeek = new QWidget;
@@ -251,6 +296,7 @@ void LunarCalendarWidget::initWidget()
     QVBoxLayout *verLayoutCalendar = new QVBoxLayout(this);
     verLayoutCalendar->setMargin(0);
     verLayoutCalendar->setSpacing(0);
+    //verLayoutCalendar->addWidget(widgetTime);
     verLayoutCalendar->addWidget(widgetTop);
     verLayoutCalendar->addWidget(widgetWeek);
     verLayoutCalendar->addWidget(widgetBody, 1);
