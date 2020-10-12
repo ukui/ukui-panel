@@ -17,6 +17,19 @@
  */
 #include "qclickwidget.h"
 
+void frobnitz_force_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *p_this)
+{
+    gboolean success =  FALSE;
+    GError *err = nullptr;
+    success = g_drive_eject_with_operation_finish (source_object, res, &err);
+    if (!err)
+    {
+      findGDriveList()->removeOne(source_object);
+      p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),NORMALDEVICE);
+      p_this->m_eject->show();
+    }
+}
+
 void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *p_this)
 {
     gboolean success =  FALSE;
@@ -32,51 +45,64 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *
       p_this->m_eject->show();
     }
 
-    else if(g_drive_can_stop(source_object) == true)
+    else /*if(g_drive_can_stop(source_object) == true)*/
     {
-        qDebug()<<"aaaaaaaaaaaaa-&& g_drive_can_stop(source_object) == true----------1";
-        int volumeNum = g_list_length(g_drive_get_volumes(source_object));
+//        qDebug()<<"aaaaaaaaaaaaa-&& g_drive_can_stop(source_object) == true----------1";
+//        int volumeNum = g_list_length(g_drive_get_volumes(source_object));
 
-        for(int eachVolume = 0 ; eachVolume < volumeNum ;eachVolume++)
-        {
-//            g_mount_unmount_with_operation(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),
-//                                           G_MOUNT_UNMOUNT_NONE,
-//                                           NULL,
-//                                           NULL,
-//                                           GAsyncReadyCallback(frobnitz_result_func_mount),
-//                                           p_this
-//                        );
-            p_this->flagType = 0;
+//        for(int eachVolume = 0 ; eachVolume < volumeNum ;eachVolume++)
+//        {
+////            g_mount_unmount_with_operation(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),
+////                                           G_MOUNT_UNMOUNT_NONE,
+////                                           NULL,
+////                                           NULL,
+////                                           GAsyncReadyCallback(frobnitz_result_func_mount),
+////                                           p_this
+////                        );
+//            p_this->flagType = 0;
 
-            if(g_mount_can_unmount(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))))
-            {
-//                UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
-                char *dataPath = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))));
-//                QProcess::execute("pkexec umount " + QString(dataPath));
-//                p_this->flagType++;
-//                qDebug()<<QString(dataPath)<<"  aaaaaaaaaaaaa-------------------------------1.5";
-                QProcess p;
-                p.setProgram("pkexec");
-                p.setArguments(QStringList()<<"umount"<<QString(dataPath));
-                p.start();
-                p_this->ifSucess = p.waitForFinished();
-                p_this->m_eject = new ejectInterface(p_this,g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),DATADEVICE);
-                p_this->m_eject->show();
-                findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)));
-                findGDriveList()->removeOne(source_object);
-                qDebug()<<"-----"<<findGDriveList()->size()<<";;;;;;;;;;;;;;;;"<<findGMountList()->size();
-                qDebug()<<"oh no"<<err->message<<err->code;
-            }
+//            if(g_mount_can_unmount(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))))
+//            {
+////                UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
+//                char *dataPath = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))));
+////                QProcess::execute("pkexec umount " + QString(dataPath));
+////                p_this->flagType++;
+////                qDebug()<<QString(dataPath)<<"  aaaaaaaaaaaaa-------------------------------1.5";
+//                QProcess p;
+//                p.setProgram("pkexec");
+//                p.setArguments(QStringList()<<"umount"<<QString(dataPath));
+//                p.start();
+//                p_this->ifSucess = p.waitForFinished();
+//                if(p_this->ifSucess == true)
+//                {
+//                    p_this->m_eject = new ejectInterface(p_this,g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),DATADEVICE);
+//                    p_this->m_eject->show();
+//                    findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)));
+//                    findGDriveList()->removeOne(source_object);
+//                }
+//                qDebug()<<"-----"<<findGDriveList()->size()<<";;;;;;;;;;;;;;;;"<<findGMountList()->size();
+//                qDebug()<<"oh no"<<err->message<<err->code;
+//            }
 
-        }
+//        }
+        g_drive_eject_with_operation(source_object,
+                                     G_MOUNT_UNMOUNT_FORCE,
+                                     NULL,
+                                     NULL,
+                                     GAsyncReadyCallback(frobnitz_force_result_func),
+                                     p_this
+                                     );
     }
-    else
-    {   qDebug()<<"oh no"<<err->message<<err->code;
-        qDebug()<<"howwohohwohow";
-        p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),OCCUPYDEVICE);
-        p_this->m_eject->show();
-    }
+//    else
+//    {
+//        qDebug()<<"oh no"<<err->message<<err->code;
+//        qDebug()<<"howwohohwohow";
+//        p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),OCCUPYDEVICE);
+//        p_this->m_eject->show();
+//    }
 }
+
+
 
 QClickWidget::QClickWidget(QWidget *parent,
                            int num,

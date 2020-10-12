@@ -49,9 +49,11 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     QString strNoraml = tr("usb has been unplugged safely");
     QString strOccupy = tr("usb is occupying unejectable");
     QString strDataDevice = tr("data device has been unloaded");
+    QString strGParted = tr("gparted has started");
     QString normalShow = getElidedText(show_text_label->font(),strNoraml,150);
     QString occupyShow = getElidedText(show_text_label->font(),strOccupy,150);
     QString datadeviceShow = getElidedText(show_text_label->font(),strDataDevice,150);
+    QString gpartedShow = getElidedText(show_text_label->font(),strGParted,150);
     //add the text of the eject interface
     if(show_text_label)
     {
@@ -74,6 +76,13 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
         {
 //            show_text_label->setText(tr("data device has been unloaded"));
             show_text_label->setText(datadeviceShow);
+            QPalette pe;
+            pe.setColor(QPalette::WindowText,Qt::white);
+            show_text_label->setPalette(pe);
+        }
+        else if(deviceType == GPARTEDINTERFACE)
+        {
+            show_text_label->setText(gpartedShow);
             QPalette pe;
             pe.setColor(QPalette::WindowText,Qt::white);
             show_text_label->setPalette(pe);
