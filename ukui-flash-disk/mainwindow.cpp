@@ -67,7 +67,7 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
       p_this->m_eject->show();
     }
 
-    else if(g_drive_can_stop(source_object) == true)
+    else /*if(g_drive_can_stop(source_object) == true)*/
     {
         qDebug()<<"aaaaaaaaaaaaa-&& g_drive_can_stop(source_object) == true----------1";
         int volumeNum = g_list_length(g_drive_get_volumes(source_object));
@@ -93,12 +93,12 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
             }
         }
     }
-    else
-    {   qDebug()<<"oh no"<<err->message<<err->code;
-        qDebug()<<"howwohohwohow";
-        p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),OCCUPYDEVICE);
-        p_this->m_eject->show();
-    }
+//    else
+//    {   qDebug()<<"oh no"<<err->message<<err->code;
+//        qDebug()<<"howwohohwohow";
+//        p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),OCCUPYDEVICE);
+//        p_this->m_eject->show();
+//    }
 
 }
 
@@ -123,6 +123,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    ifGpartedHasStarted = 0;
 //    const QByteArray idtrans(THEME_QT_TRANS);
 
 //    if(QGSettings::isSchemaInstalled(idtrans))
@@ -314,7 +315,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
     qDebug()<<"drive__name"<<drive_name;
     findGDriveList()->removeOne(drive);
     p_this->hide();
-    if(findGDriveList()->size())
+    if(findGDriveList()->size() == 0)
     {
         p_this->m_systray->hide();
     }
@@ -376,6 +377,12 @@ void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volum
 {
     qDebug()<<"volume removed";
     findGVolumeList()->removeOne(volume);
+    qDebug()<<"volume size"<<findGVolumeList()->size();
+    if(findGVolumeList()->size() < findGMountList()->size())
+    {
+        p_this->ifGpartedHasStarted = 1;
+    }
+
 //    if(findGVolumeList()->size() >= 0)
 //    {
 //        p_this->m_systray->show();
@@ -409,7 +416,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     char *devPath = g_volume_get_identifier(g_mount_get_volume(mount),G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
     if(g_mount_can_eject(mount) || g_volume_can_eject(g_mount_get_volume(mount))|| g_drive_can_eject(g_mount_get_drive(mount))
             || g_str_has_prefix(devPath,"/dev/sdb")||g_str_has_prefix(devPath,"/dev/sdc") || g_str_has_prefix(devPath,"/dev/sdd")
-            ||g_str_has_prefix(devPath,"/dev/sde"))
+            ||g_str_has_prefix(devPath,"/dev/sde") && !g_str_has_prefix(devPath,"/dev/sda"))
     {
         qDebug()<<"yao yao wu qi";
         *findGMountList()<<mount;
@@ -481,13 +488,16 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
 //                       GAsyncReadyCallback(frobnitz_result_func_volume),
 //                       nullptr);
         qDebug()<<"sorry mount failed";
+        p_this->ifGpartedHasStarted = 0;
     }
 }
+
 
 //here we begin painting the main interface
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-
+    if(ifGpartedHasStarted == 0)
+    {
 //    qDebug()<<m_transparency;
 //    QPalette palette = this->palette();
 //    QColor color = QColor(Qt::red);
@@ -498,6 +508,8 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 //    this->setWindowOpacity(m_transparency/100);
     this->getTransparentData();
     qDebug()<<"findGMountList.size"<<findGMountList()->size();
+    qDebug()<<"findGVolumeList.size"<<findGVolumeList()->size();
+
     qDebug()<<"findGDriveList.size"<<findGDriveList()->size();
     qDebug()<<"m_transparency"<<m_transparency;
     QString strTrans;
@@ -934,6 +946,12 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
         break;
     }
     ui->centralWidget->show();
+    }
+    else
+    {
+        m_eject = new ejectInterface(this,NULL,GPARTEDINTERFACE);
+        m_eject->show();
+    }
 
 }
 
