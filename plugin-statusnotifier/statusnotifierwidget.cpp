@@ -84,6 +84,10 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     realign();
     mLayout->addWidget(mBtn);
 
+    mHide=false;
+    mShow=false;
+    mLock=true;
+
     const QByteArray id(UKUI_PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id))
         gsettings = new QGSettings(id);
@@ -161,19 +165,29 @@ void StatusNotifierWidget::realign()
             mStatusNotifierButtonList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel";
             if(!mStatusNotifierButtonList.contains(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton())){
                 mStatusNotifierButtons.at(i)->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
+<<<<<<< HEAD
                 //将更新通知和蓝牙屏蔽
+=======
+>>>>>>> 9431ebb53a6f1524c43869e4b4a92b5058b306c7
                 if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="更新通知"){
                     mStatusNotifierButtons.at(i)->hide();
                 }
                 if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="蓝牙已启用"){
                     mStatusNotifierButtons.at(i)->hide();
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9431ebb53a6f1524c43869e4b4a92b5058b306c7
                 layout->addWidget(mStatusNotifierButtons.at(i));
                 mHide=true;
             }
             else{
+<<<<<<< HEAD
                 mStatusNotifierButtons.at(i)->setVisible(true);
                 //把需要固定位置的按键加入容器
+=======
+>>>>>>> 9431ebb53a6f1524c43869e4b4a92b5058b306c7
                 if(mLock){
                     mStatusNotifierButtons.at(i)->setVisible(true);
                     int n1 = layout->indexOf(mStatusNotifierButtons.at(i));
@@ -193,7 +207,11 @@ void StatusNotifierWidget::realign()
                         mStatusNotifierButtons.at(i)->hide();
                         layout->removeWidget(mStatusNotifierButtons.at(i));
                     }
+<<<<<<< HEAD
                     showbutton.insert(n1, mStatusNotifierButtons.at(i));
+=======
+                    reset.insert(n1, mStatusNotifierButtons.at(i));
+>>>>>>> 9431ebb53a6f1524c43869e4b4a92b5058b306c7
                     mShow=true;
                 }
             }
@@ -229,6 +247,19 @@ void StatusNotifierWidget::realign()
     mLayout->addWidget(mBtn);
     }
     layout->setEnabled(true);
+    if(mShow&&mHide&&mLock){
+        StatusNotifierButton *sidebar=reset[0];
+        layout->addWidget(sidebar);
+        sidebar->show();
+        StatusNotifierButton *kyliynm=reset[1];
+        layout->addWidget(kyliynm);
+        kyliynm->show();
+        StatusNotifierButton *volume=reset[2];
+        layout->addWidget(volume);
+        volume->show();
+        mLock=false;
+    }
+    layout->addWidget(mBtn);
 }
 
 void StatusNotifierWidget::switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2)

@@ -61,11 +61,16 @@ private:
     StatusNotifierWatcher *mWatcher;
 
     QHash<QString, StatusNotifierButton*> mServices;
+<<<<<<< HEAD
     QHash<int, StatusNotifierButton*> showbutton;
+=======
+    QHash<int, StatusNotifierButton*> reset;
+>>>>>>> 9431ebb53a6f1524c43869e4b4a92b5058b306c7
 
     QList<StatusNotifierButton*> mStatusNotifierButtons;
     QToolButton *mBtn;
     QGSettings *gsettings;
+<<<<<<< HEAD
     QTimer *time;
     int timecount;
     bool mHide;
@@ -75,6 +80,11 @@ private:
     bool mKyliynm;
     bool mVolume;
     bool mRealign;
+=======
+    bool mHide;
+    bool mShow;
+    bool mLock;
+>>>>>>> 9431ebb53a6f1524c43869e4b4a92b5058b306c7
 
 private slots:
     void switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2);
