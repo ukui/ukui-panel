@@ -19,11 +19,28 @@
 #ifndef UKUITRAYSTOTAGE_H
 #define UKUITRAYSTOTAGE_H
 
+#include <QFrame>
+#include <QWidget>
+#include <QAbstractNativeEventFilter>
+#include <X11/X.h>
+#include <X11/Xlib.h>
+#include <xcb/xcb_event.h>
+#include "fixx11h.h"
+#include <QScreen>
+#include <QGSettings>
+#include <string.h>
+#include <string>
+#include <QToolButton>
+#include <QMap>
+#include <QEvent>
+
+#include "../panel/iukuipanel.h"
+#include "../panel/customstyle.h"
+#include "../panel/ukuicontrolstyle.h"
 #include <QPainter>
 #include <QPainterPath>
 #include <QStyleOption>
 #include "trayicon.h"
-#include <xcb/xcb_event.h>
 #include "../panel/ukuipanellayout.h"
 #include "../panel/common/ukuigridlayout.h"
 #include "xfitman.h"
