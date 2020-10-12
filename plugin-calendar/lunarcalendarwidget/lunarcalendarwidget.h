@@ -16,6 +16,8 @@
 #include <QGSettings/QGSettings>
 #include <QWidget>
 #include <QDate>
+#include <QTimer>
+#include <QVBoxLayout>
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
@@ -97,6 +99,11 @@ public:
     ~LunarCalendarWidget();
 
 private:
+    QLabel *datelabel;
+    QLabel *timelabel;
+    QTimer *timer;
+    QVBoxLayout *timeShow;
+    QWidget *widgetTime;
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
     QComboBox *cboxYear;                //年份下拉框
@@ -136,6 +143,7 @@ private:
     QColor hoverBgColor;                //悬停日期背景颜色
 
     void setColor(bool mdark_style);
+    void _timeUpdate();
     QGSettings *style_settings;
     bool dark_style;
 
@@ -148,6 +156,7 @@ private Q_SLOTS:
     void clicked(const QDate &date, const LunarCalendarItem::DayType &dayType);
     void dayChanged(const QDate &date);
     void dateChanged(int year, int month, int day);
+    void timerUpdate();
 
 public:
     CalendarStyle getCalendarStyle()    const;
