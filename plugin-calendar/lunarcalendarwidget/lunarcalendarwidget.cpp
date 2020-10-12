@@ -46,13 +46,16 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     weekNameFormat = WeekNameFormat_Short;
     date = QDate::currentDate();
 
-    timer = new QTimer(this);
-    datelabel =new QLabel();
-    timelabel = new QLabel();
-    _timeUpdate();
+    widgetTime = new QWidget;
+    timeShow = new QVBoxLayout(widgetTime);
+    timer = new QTimer();
+    datelabel =new QLabel(this);
+    timelabel = new QLabel(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
     timer->start(1000);
 
+    widgetTime->setObjectName("widgetTime");
+    timeShow->setContentsMargins(0, 0, 0, 0);
     //切换主题
     const QByteArray style_id(ORG_UKUI_STYLE);
     QStringList stylelist;
@@ -64,12 +67,14 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
         }
     connect(style_settings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==STYLE_NAME){
-            printf("1 %s\n",datelabel->text().toStdString().data());
-            printf("1 %s\n",timelabel->text().toStdString().data());
             dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
+            _timeUpdate();
             setColor(dark_style);
         }
     });
+
+    initWidget();
+    initDate();
 }
 
 LunarCalendarWidget::~LunarCalendarWidget()
@@ -79,6 +84,8 @@ LunarCalendarWidget::~LunarCalendarWidget()
 void LunarCalendarWidget::setColor(bool mdark_style)
 {
     if(mdark_style){
+        datelabel->setStyleSheet("color:white");
+        timelabel->setStyleSheet("color:white");
         weekTextColor = QColor(0, 0, 0);
         weekBgColor = QColor(180, 180, 180);
 
@@ -106,6 +113,8 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }else{
+        datelabel->setStyleSheet("color:black");
+        timelabel->setStyleSheet("color:black");
         weekTextColor = QColor(255, 255, 255);
         weekBgColor = QColor(0, 0, 0);
 
@@ -133,9 +142,9 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }
-        initWidget();
-        initStyle();
-        initDate();
+//        initWidget();
+       initStyle();
+//        initDate();
 }
 
 void LunarCalendarWidget::_timeUpdate() {
@@ -155,6 +164,7 @@ void LunarCalendarWidget::_timeUpdate() {
     font.setPointSize(14);
     timelabel->setFont(font);
     timelabel->setAlignment(Qt::AlignHCenter);
+
 }
 
 void LunarCalendarWidget::timerUpdate()
@@ -244,14 +254,7 @@ void LunarCalendarWidget::initWidget()
     layoutTop->addWidget(btnToday);
 
     //时间
-    QWidget *widgetTime = new QWidget;
-    widgetTime->setObjectName("widgetTime");
-    //widgetTime->setMinimumSize(400,100);
-    QVBoxLayout *timeShow = new QVBoxLayout(widgetTime);
-    timeShow->setContentsMargins(0, 0, 0, 9);
-
-    printf("%d×%d %s\n",datelabel->size().width(),datelabel->size().height(), datelabel->text().toStdString().data());
-    printf("%d×%d %s\n",timelabel->size().width(),timelabel->size().height(), timelabel->text().toStdString().data());
+    widgetTime->setMinimumHeight(100);
     timeShow->addWidget(datelabel);//, Qt::AlignHCenter);
     timeShow->addWidget(timelabel);//,Qt::AlignHCenter);
 
@@ -293,10 +296,11 @@ void LunarCalendarWidget::initWidget()
     }
 
     //主布局
+    QWidget *asd = widgetTime;
     QVBoxLayout *verLayoutCalendar = new QVBoxLayout(this);
     verLayoutCalendar->setMargin(0);
     verLayoutCalendar->setSpacing(0);
-    //verLayoutCalendar->addWidget(widgetTime);
+    verLayoutCalendar->addWidget(widgetTime);
     verLayoutCalendar->addWidget(widgetTop);
     verLayoutCalendar->addWidget(widgetWeek);
     verLayoutCalendar->addWidget(widgetBody, 1);
@@ -501,7 +505,6 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
     int month = date.month();
     int day = date.day();
     int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month);
-    //qDebug() << QString("%1-%2-%3").arg(year).arg(month).arg(day);
 
     //选中当前日期,其他日期恢复,这里还有优化空间,比方说类似单选框机制
     for (int i = 0; i < 42; i++) {

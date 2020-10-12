@@ -17,6 +17,7 @@
 #include <QWidget>
 #include <QDate>
 #include <QTimer>
+#include <QVBoxLayout>
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
@@ -101,6 +102,8 @@ private:
     QLabel *datelabel;
     QLabel *timelabel;
     QTimer *timer;
+    QVBoxLayout *timeShow;
+    QWidget *widgetTime;
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
     QComboBox *cboxYear;                //年份下拉框
