@@ -31,6 +31,7 @@
 
 #include <QDir>
 #include <QGSettings/QGSettings>
+#include <QTimer>
 
 #include "../panel/common/ukuigridlayout.h"
 #include "../panel/iukuipanelplugin.h"
@@ -60,10 +61,20 @@ private:
     StatusNotifierWatcher *mWatcher;
 
     QHash<QString, StatusNotifierButton*> mServices;
+    QHash<int, StatusNotifierButton*> showbutton;
 
     QList<StatusNotifierButton*> mStatusNotifierButtons;
     QToolButton *mBtn;
     QGSettings *gsettings;
+    QTimer *time;
+    int timecount;
+    bool mHide;
+    bool mShow;
+    bool mLock;
+    bool mSidebar;
+    bool mKyliynm;
+    bool mVolume;
+    bool mRealign;
 
 private slots:
     void switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2);
