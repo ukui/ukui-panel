@@ -1050,7 +1050,6 @@ void UKUIPanel::setPanelSize(int value, bool save)
 /*设置任务栏图标大小*/
 void UKUIPanel::setIconSize(int value, bool save)
 {
-    gsettings->set(ICON_SIZE_KEY,value);
     if (mIconSize != value)
     {
         mIconSize = value;
