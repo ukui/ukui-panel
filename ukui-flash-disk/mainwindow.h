@@ -144,6 +144,7 @@ public:
     int flagType;
 //    static bool isShow;
     int driveMountNum;
+    int ifGpartedHasStarted;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
@@ -154,6 +155,7 @@ Q_SIGNALS:
     void clicked();
     void convertShowWindow();
     void unloadMount();
+    void GPartedSignal();
 
 protected:
     void resizeEvent(QResizeEvent *event);
