@@ -218,6 +218,8 @@ public:
     int iconSize() const override { return mIconSize; } //!< Implement IUKUIPanel::iconSize().
     int lineCount() const override { return mLineCount; } //!< Implement IUKUIPanel::lineCount().
     int panelSize() const override{ return mPanelSize; }
+    int sizeModel() const override{ return (mPanelSize == SML_SIZE_PANEL_IN_CALC ? 0 : (mPanelSize == MID_SIZE_PANEL_IN_CALC ? 1 : 2)); }
+    bool isMaxSize() const override{ return mPanelSize == MAX_SIZE_PANEL_IN_CALC; }
     int length() const { return mLength; }
     bool lengthInPercents() const { return mLengthInPercents; }
     UKUIPanel::Alignment alignment() const { return mAlignment; }
@@ -699,6 +701,13 @@ private:
 
     QMenu * menu;
 
+    int MAX_SIZE_PANEL_IN_CALC;
+    int MID_SIZE_PANEL_IN_CALC;
+    int SML_SIZE_PANEL_IN_CALC;
+    int MAX_ICON_SIZE_IN_CLAC;
+    int MID_ICON_SIZE_IN_CLAC;
+    int SML_ICON_SIZE_IN_CLAC;
+    void getSize();
 
 private slots:
     void panelReset();

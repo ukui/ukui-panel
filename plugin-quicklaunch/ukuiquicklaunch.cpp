@@ -60,11 +60,11 @@ using namespace  std;
 
 
 #define PAGEBUTTON_SMALL_SIZE  20
-#define PAGEBUTTON_MEDIUM_SIZE 35
-#define PAGEBUTTON_LARGE_SIZE  50
-#define PANEL_SMALL_SIZE  46
-#define PANEL_MEDIUM_SIZE 70
-#define PANEL_LARGE_SIZE  92
+#define PAGEBUTTON_MEDIUM_SIZE 30
+#define PAGEBUTTON_LARGE_SIZE  40
+#define PANEL_SMALL_SIZE  0
+#define PANEL_MEDIUM_SIZE 1
+#define PANEL_LARGE_SIZE  2
 #
 #define PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANEL_LINES    "panellines"
@@ -201,7 +201,6 @@ void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
         if (shows) {
             b->setHidden(0);
-            qcklchShow.insert(show_num++, b);
             --shows;
         } else {
             b->setHidden(1);
@@ -231,7 +230,7 @@ void UKUIQuickLaunch::GetMaxPage() {
         int btn_cnt = countOfButtons();
         max_page = (int)(btn_cnt / 5);
         if (btn_cnt % 5 != 0) max_page += 1;
-    } else if (mPlugin->panel()->panelSize() == PANEL_LARGE_SIZE){
+    } else if (mPlugin->panel()->isMaxSize()){
         int btn_cnt = countOfButtons();
         max_page = (int)(btn_cnt / 2);
         if (btn_cnt % 2 != 0) max_page += 1;
@@ -307,7 +306,7 @@ void UKUIQuickLaunch::realign()
         }
         else
         {
-            if (mPlugin->panel()->panelSize() == 92) {
+            if (mPlugin->panel()->isMaxSize()) {
                 i = (page_num - 1) * 2;
                 loop_times = 2;
                 if (counts < 2) loop_times = counts - i;
@@ -344,12 +343,12 @@ void UKUIQuickLaunch::realign()
             } else {
                 tmpwidget->setHidden(0);
             }
-            if (countOfButtons() > 2 && panel->panelSize() == PANEL_LARGE_SIZE)
+            if (countOfButtons() > 2 && panel->isMaxSize())
                 tmpwidget->setHidden(0);
         }
     }
     mLayout->setEnabled(true);
-    switch(mPlugin->panel()->panelSize()) {
+    switch(mPlugin->panel()->sizeModel()) {
         case PANEL_SMALL_SIZE :
             pageup->setFixedSize(PAGEBUTTON_SMALL_SIZE, PAGEBUTTON_SMALL_SIZE);
             pagedown->setFixedSize(PAGEBUTTON_SMALL_SIZE, PAGEBUTTON_SMALL_SIZE);

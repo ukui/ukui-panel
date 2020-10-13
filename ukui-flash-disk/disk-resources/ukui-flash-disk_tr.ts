@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="tr" sourcelanguage="tr">
+<TS version="2.1" language="tr_TR" sourcelanguage="tr">
 <context>
     <name>ejectInterface</name>
     <message>
-        <location filename="ejectInterface.cpp" line="17"/>
+        <location filename="ejectInterface.cpp" line="46"/>
         <source>usb has been unplugged safely</source>
         <translation>USB güvenli bir şekilde çıkarıldı</translation>
     </message>
-
+    <message>
+        <location filename="ejectInterface.cpp" line="53"/>
+        <source>usb is occupying unejectable</source>
+        <translation>USB reddedilemez işgal ediyor</translation>
+    </message>
+    <message>
+        <location filename="ejectInterface.cpp" line="60"/>
+        <source>data device has been unloaded</source>
+        <translation>Veri cihazı kaldırıldı</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -30,6 +39,11 @@
         <location filename="qclickWidget.cpp" line="711"/>
         <source>the capacity is empty</source>
         <translation>Kapasite boş</translation>
+    </message>
+        <message>
+        <location filename="qclickWidget.cpp" line="717"/>
+        <source>blank CD</source>
+        <translation>Boş CD</translation>
     </message>
 </context>
 </TS>

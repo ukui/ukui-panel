@@ -105,7 +105,6 @@ private:
 
     QToolButton *pageup;
     QToolButton *pagedown;
-    QVector <QuickLaunchButton*>qcklchShow;
     int show_num = 0;
     int page_num = 1;
     int max_page;
