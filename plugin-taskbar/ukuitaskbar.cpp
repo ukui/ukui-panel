@@ -610,6 +610,7 @@ void UKUITaskBar::addWindow(WId window)
 }
 
 bool UKUITaskBar::ignoreSymbolCMP(QString filename,QString groupname) {
+    qDebug() << filename << " --- " << groupname;
     groupname.replace(" ", "");
     groupname.replace("-", ".");
     groupname.replace(".demo", "");
@@ -623,8 +624,6 @@ bool UKUITaskBar::ignoreSymbolCMP(QString filename,QString groupname) {
     if (groupname.toLower().contains(filename.toLower(), Qt::CaseInsensitive))
         return true;
     if (filename.toLower().contains(groupname.toLower(), Qt::CaseInsensitive))
-        return true;
-    if (groupname.toLower().contains("ukui") && filename.toLower().contains("china.weather"))
         return true;
     if (groupname.toLower().contains("kylinweather") && filename.toLower().contains("china.weather"))
         return true;
