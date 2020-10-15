@@ -79,7 +79,6 @@ public:
    UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     ~UKUIQuickLaunch();
 
-    void refreshQuickLaunch();
     int indexOfButton(QuickLaunchButton* button) const;
     int countOfButtons() const;
 
@@ -120,6 +119,7 @@ signals:
 
 
 private slots:
+    void refreshQuickLaunch(QString);
     void addButton(QuickLaunchAction* action);
     bool checkButton(QuickLaunchAction* action);
     void removeButton(QuickLaunchAction* action);
