@@ -71,12 +71,12 @@ int main(int argc, char *argv[])
 
     }
 
-    //load qss
-    QFile qss(":ukui-flash-disk.qss");
-    bool ok = qss.open(QFile::ReadOnly);
-    if (!ok)
-    qDebug() << "加载失败";
-    qApp->setStyleSheet(qss.readAll());
+//    //load qss
+//    QFile qss(":ukui-flash-disk.qss");
+//    bool ok = qss.open(QFile::ReadOnly);
+//    if (!ok)
+//    qDebug() << "加载失败";
+//    qApp->setStyleSheet(qss.readAll());
 
     if (QApplication::desktop()->width() >= 2560)
     {
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         #endif
     }
 
-    qss.close();
+//    qss.close();
     MainController *ctrl = MainController::self();
 
     a.exec();
