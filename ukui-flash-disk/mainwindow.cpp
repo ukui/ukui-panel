@@ -130,11 +130,19 @@ MainWindow::MainWindow(QWidget *parent) :
 //    {
 //        m_transparency_gsettings = new QGSettings(idtrans);
 //    }
+    const QByteArray idd(THEME_QT_SCHEMA);
+
+    if(QGSettings::isSchemaInstalled(idd))
+    {
+        qtSettings = new QGSettings(idd);
+    }
+
+    initThemeMode();
+
     installEventFilter(this);
     ui->setupUi(this);
     //框架的样式设置
     //set the style of the framework
-    int hign = 0;
     interfaceHideTime = new QTimer(this);
     initTransparentState();
 
@@ -143,23 +151,23 @@ MainWindow::MainWindow(QWidget *parent) :
     rect.adjust(0,0,-0,-0);
     path.addRoundedRect(rect, 6, 6);
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
+//    this->setStyleSheet("QWidget{border:none;border-radius:6px;}");
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     ui->centralWidget->setObjectName("centralWidget");
 
-    ui->centralWidget->setStyleSheet(
-                "#centralWidget{"
-                "width:280px;"
-                "height:192px;"
-                "border:1px solid rgba(255, 255, 255, 0.05);"
-                "opacity:0.75;"
-                "border-radius:6px;"
-                "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
-//                "margin:0px;"
-//                "border-width:0px;"
-//                "padding:0px;"
-                "}"
-                );
+//    ui->centralWidget->setStyleSheet(
+//                "#centralWidget{"
+//                "width:280px;"
+//                "height:192px;"
+//                "border:1px solid rgba(255, 255, 255, 0.05);"
+//                "opacity:0.75;"
+//                "border-radius:6px;"
+//                "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
+////                "margin:0px;"
+////                "border-width:0px;"
+////                "padding:0px;"
+//                "}"
+//                );
 
 //    getTransparentData();
 
@@ -200,12 +208,26 @@ MainWindow::MainWindow(QWidget *parent) :
     //                                          SLOT(on_clickPanelToHideInterface));
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
                                                   "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 //    delete open_widget;
+}
+
+void MainWindow::initThemeMode()
+{
+    if(!qtSettings)
+    {
+        currentThemeMode = "ukui-white";
+    }
+    QStringList keys = qtSettings->keys();
+    if(keys.contains("styleName"))
+    {
+        currentThemeMode = qtSettings->get("style-name").toString();
+    }
 }
 
 void MainWindow::on_clickPanelToHideInterface()
@@ -517,9 +539,9 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     QString convertStyle = "#centralWidget{background:rgba(19,19,20,0.95);}";
 #else
-    QString convertStyle = "#centralWidget{background:rgba(19,19,20," + strTrans + ");}";
+//    QString convertStyle = "#centralWidget{background:rgba(19,19,20," + strTrans + ");}";
 #endif
-    this->setStyleSheet(convertStyle);
+//    this->setStyleSheet(convertStyle);
 //    if(this->interfaceHideTime != NULL)
 //    {
 //        delete this->interfaceHideTime;
@@ -591,6 +613,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
               g_list_free(listVolumes);
               hign = findGMountList()->size()*40 + findGDriveList()->size()*55;
               this->setFixedSize(280,hign);
+
 
               if(cdSignal)
               {
@@ -999,9 +1022,18 @@ void MainWindow::newarea(int No,
     QWidget *line = new QWidget;
     line->setFixedHeight(1);
     line->setObjectName("lineWidget");
+    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
+    {
+        line->setStyleSheet("background-color:rgba(255,255,255,0.2);");
+    }
+    else
+    {
+        line->setStyleSheet("background-color:rgba(0,0,0,0.2);");
+    }
 
     //when the drive is only or the drive is the first one,we make linestatus become  1
     line->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    line->setFixedSize(276,1);
     if (linestatus == 2)
     {
         this->vboxlayout->addWidget(line);
@@ -1015,15 +1047,15 @@ void MainWindow::newarea(int No,
         this->vboxlayout->addWidget(line);
     }
 
-    open_widget->setStyleSheet(
-                //正常状态样式
-                "QClickWidget{"
-                "height:79px;"
-                "}"
-                "QClickWidget:hover{"
-                "background-color:rgba(255,255,255,30);"
-                "}"
-                );
+//    open_widget->setStyleSheet(
+//                //正常状态样式
+//                "QClickWidget{"
+//                "height:79px;"
+//                "}"
+//                "QClickWidget:hover{"
+//                "background-color:rgba(255,255,255,30);"
+//                "}"
+//                );
 
 }
 
@@ -1315,27 +1347,27 @@ void MainWindow::MainWindowShow()
     qDebug()<<"findGDriveList.size"<<findGDriveList()->size();
     qDebug()<<"findGMountList.size"<<findGMountList()->size();
     ui->centralWidget->setObjectName("centralWidget");
-    ui->centralWidget->setStyleSheet(
-                "#centralWidget{"
-                "width:280px;"
-                "height:192px;"
-                "border:1px solid rgba(255, 255, 255, 0.05);"
-                "opacity:0.75;"
+//    ui->centralWidget->setStyleSheet(
+//                "#centralWidget{"
+//                "width:280px;"
+//                "height:192px;"
+//                "border:1px solid rgba(255, 255, 255, 0.05);"
+//                "opacity:0.75;"
 
-                "border-radius:6px;"
-                "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
-//                "margin:0px;"
-//                "border-width:0px;"
-//                "padding:0px;"
-                "}"
-                );
+//                "border-radius:6px;"
+//                "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
+////                "margin:0px;"
+////                "border-width:0px;"
+////                "padding:0px;"
+//                "}"
+//                );
 //    m_transparency = this->getTransparentData();
 
 //    QString strTrans;
 //    strTrans =  QString::number(m_transparency, 10, 2);
 //    qDebug()<<"strTrans---"<<strTrans;
     QString convertStyle = "#centralWidget{background:rgba(19,19,20,0.70);}";
-    this->setStyleSheet(convertStyle);
+//    this->setStyleSheet(convertStyle);
 
     num = 0;
     if  ( this->vboxlayout != NULL )
@@ -1866,4 +1898,19 @@ void MainWindow::getTransparentData()
         qDebug()<<"m_transpatrnccy has got over";
     }
 //    m_transparency = m_transparency_gsettings->get("transparency").toDouble();
+}
+
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    QRect rect = this->rect();
+    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    p.setBrush(opt.palette.color(QPalette::Base));
+    p.setOpacity(m_transparency);
+    p.setPen(Qt::NoPen);
+    p.drawRoundedRect(rect, 6, 6);
+    QWidget::paintEvent(event);
 }
