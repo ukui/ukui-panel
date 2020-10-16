@@ -11,16 +11,18 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
     this->initForm();
     this->setWindowFlags(Qt::FramelessWindowHint);//去掉标题栏
     this->setWindowFlags(Qt::Popup);
-    this->setFixedSize(500,550);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    setProperty("useSystemStyleBlur", true);
 
-    ui->labCalendarStyle->setHidden(true);
-    ui->cboxCalendarStyle->setHidden(true);
-    ui->labSelectType->setHidden(true);
-    ui->cboxSelectType->setHidden(true);
-    ui->labWeekNameFormat->setHidden(true);
-    ui->cboxWeekNameFormat->setHidden(true);
-    ui->ckShowLunar->setHidden(true);
+    this->setFixedSize(440, 600);
+
+//    ui->labCalendarStyle->setHidden(true);
+//    ui->cboxCalendarStyle->setHidden(true);
+//    ui->labSelectType->setHidden(true);
+//    ui->cboxSelectType->setHidden(true);
+//    ui->labWeekNameFormat->setHidden(true);
+//    ui->cboxWeekNameFormat->setHidden(true);
+//    ui->ckShowLunar->setHidden(true);
 
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
@@ -41,7 +43,7 @@ frmLunarCalendarWidget::~frmLunarCalendarWidget()
 
 void frmLunarCalendarWidget::initForm()
 {
-    ui->cboxWeekNameFormat->setCurrentIndex(0);
+    //ui->cboxWeekNameFormat->setCurrentIndex(0);
 }
 
 void frmLunarCalendarWidget::on_cboxCalendarStyle_currentIndexChanged(int index)
