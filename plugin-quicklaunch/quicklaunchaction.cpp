@@ -69,7 +69,7 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
 
     m_settingsMap["desktop"] = xdg->fileName();
 
-    QString title(xdg->localizedValue("GenericName").toString());
+    QString title(xdg->localizedValue("Name").toString());
     QString icon(xdg->localizedValue("Icon").toString());
     setText(title);
 

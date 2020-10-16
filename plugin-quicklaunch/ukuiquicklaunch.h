@@ -133,7 +133,7 @@ private slots:
 public slots:
     bool AddToTaskbar(QString arg);
     bool RemoveFromTaskbar(QString arg);
-    bool FileDeleteFromTaskbar(QString arg);
+    void FileDeleteFromTaskbar(QString arg);
     bool CheckIfExist(QString arg);
     int GetPanelPosition(QString arg);
     int GetPanelSize(QString arg);

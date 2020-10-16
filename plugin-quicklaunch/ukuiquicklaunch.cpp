@@ -639,7 +639,7 @@ bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
 }
 
 /*从任务栏上移除文件的接口*/
-bool UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
+void UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
 {
     int i=0;
     bool flag = true;

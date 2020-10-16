@@ -47,7 +47,6 @@ protected:
 private:
     void setNightMode(const bool nightMode);
     void setUkuiStyle(QString );
-    void writeKwinSettings(bool change, QString theme);
 
     IUKUIPanelPlugin * mPlugin;
     QMenu *nightModeMenu;
