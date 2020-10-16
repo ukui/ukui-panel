@@ -46,6 +46,16 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     weekNameFormat = WeekNameFormat_Short;
     date = QDate::currentDate();
 
+    widgetTime = new QWidget;
+    timeShow = new QVBoxLayout(widgetTime);
+    timer = new QTimer();
+    datelabel =new QLabel(this);
+    timelabel = new QLabel(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
+    timer->start(1000);
+
+    widgetTime->setObjectName("widgetTime");
+    timeShow->setContentsMargins(0, 0, 0, 0);
     //切换主题
     const QByteArray style_id(ORG_UKUI_STYLE);
     QStringList stylelist;
@@ -58,9 +68,13 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     connect(style_settings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==STYLE_NAME){
             dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
+            _timeUpdate();
             setColor(dark_style);
         }
     });
+
+    initWidget();
+    initDate();
 }
 
 LunarCalendarWidget::~LunarCalendarWidget()
@@ -70,6 +84,8 @@ LunarCalendarWidget::~LunarCalendarWidget()
 void LunarCalendarWidget::setColor(bool mdark_style)
 {
     if(mdark_style){
+        datelabel->setStyleSheet("color:white");
+        timelabel->setStyleSheet("color:white");
         weekTextColor = QColor(0, 0, 0);
         weekBgColor = QColor(180, 180, 180);
 
@@ -97,6 +113,8 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }else{
+        datelabel->setStyleSheet("color:black");
+        timelabel->setStyleSheet("color:black");
         weekTextColor = QColor(255, 255, 255);
         weekBgColor = QColor(0, 0, 0);
 
@@ -119,14 +137,39 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectLunarColor = QColor(255, 255, 255);
         hoverLunarColor = QColor(250, 250, 250);
 
-        currentBgColor = QColor(255, 255, 255);
+        currentBgColor = QColor(250, 250, 250);
         otherBgColor = QColor(240, 240, 240);
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }
-        initWidget();
-        initStyle();
-        initDate();
+//        initWidget();
+       initStyle();
+//        initDate();
+}
+
+void LunarCalendarWidget::_timeUpdate() {
+    QDateTime time = QDateTime::currentDateTime();
+    QString _time = time.toString("hh:mm:ss");
+    QString _date = time.toString("yyyy-MM-dd dddd");
+    QFont font;
+
+    //datelabel->setFixedSize(452,40);
+    datelabel->setText(_time);
+    font.setPointSize(26);
+    datelabel->setFont(font);
+    datelabel->setAlignment(Qt::AlignHCenter);
+
+    //timelabel->setFixedSize(452,15);
+    timelabel->setText(_date);
+    font.setPointSize(14);
+    timelabel->setFont(font);
+    timelabel->setAlignment(Qt::AlignHCenter);
+
+}
+
+void LunarCalendarWidget::timerUpdate()
+{
+    _timeUpdate();
 }
 
 void LunarCalendarWidget::initWidget()
@@ -143,32 +186,32 @@ void LunarCalendarWidget::initWidget()
     btnPrevYear->setObjectName("btnPrevYear");
     btnPrevYear->setFixedWidth(35);
     btnPrevYear->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    btnPrevYear->setFont(iconFont);
-    btnPrevYear->setText(QChar(0xf060));
+    btnPrevYear->setIcon(QIcon::fromTheme("go-previous-symbolic"));
+    btnPrevYear->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //下一年按钮
     QToolButton *btnNextYear = new QToolButton;
     btnNextYear->setObjectName("btnNextYear");
     btnNextYear->setFixedWidth(35);
     btnNextYear->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    btnNextYear->setFont(iconFont);
-    btnNextYear->setText(QChar(0xf061));
+    btnNextYear->setIcon(QIcon::fromTheme("go-next-symbolic"));
+    btnNextYear->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //上个月按钮
     QToolButton *btnPrevMonth = new QToolButton;
     btnPrevMonth->setObjectName("btnPrevMonth");
     btnPrevMonth->setFixedWidth(35);
     btnPrevMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnPrevMonth->setFont(iconFont);
-    btnPrevMonth->setText(QChar(0xf060));
+    btnPrevMonth->setIcon(QIcon::fromTheme("go-previous-symbolic"));
+    btnPrevMonth->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //下个月按钮
     QToolButton *btnNextMonth = new QToolButton;
     btnNextMonth->setObjectName("btnNextMonth");
     btnNextMonth->setFixedWidth(35);
     btnNextMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnNextMonth->setFont(iconFont);
-    btnNextMonth->setText(QChar(0xf061));
+    btnNextMonth->setIcon(QIcon::fromTheme("go-next-symbolic"));
+    btnNextMonth->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //转到今天
     QPushButton *btnToday = new QPushButton;
@@ -210,6 +253,11 @@ void LunarCalendarWidget::initWidget()
     layoutTop->addWidget(widgetBlank2);
     layoutTop->addWidget(btnToday);
 
+    //时间
+    widgetTime->setMinimumHeight(100);
+    timeShow->addWidget(datelabel);//, Qt::AlignHCenter);
+    timeShow->addWidget(timelabel);//,Qt::AlignHCenter);
+
     //星期widget
     QWidget *widgetWeek = new QWidget;
     widgetWeek->setObjectName("widgetWeek");
@@ -248,9 +296,11 @@ void LunarCalendarWidget::initWidget()
     }
 
     //主布局
+    QWidget *asd = widgetTime;
     QVBoxLayout *verLayoutCalendar = new QVBoxLayout(this);
     verLayoutCalendar->setMargin(0);
     verLayoutCalendar->setSpacing(0);
+    verLayoutCalendar->addWidget(widgetTime);
     verLayoutCalendar->addWidget(widgetTop);
     verLayoutCalendar->addWidget(widgetWeek);
     verLayoutCalendar->addWidget(widgetBody, 1);
@@ -455,7 +505,6 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
     int month = date.month();
     int day = date.day();
     int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month);
-    //qDebug() << QString("%1-%2-%3").arg(year).arg(month).arg(day);
 
     //选中当前日期,其他日期恢复,这里还有优化空间,比方说类似单选框机制
     for (int i = 0; i < 42; i++) {
