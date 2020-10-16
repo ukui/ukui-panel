@@ -114,10 +114,9 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
             mLayout->removeWidget(mPlaceHolder);
         }
     });
+    refreshQuickLaunch("init");
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), "org.freedesktop.kylinssoclient.interface", "keyChanged", this, SLOT(refreshQuickLaunch(QString)));
 
-    refreshQuickLaunch();
-
-//    QTimer::singleShot(5000,[this] { refreshQuickLaunch(); });
     /*监听系统应用的目录以及安卓兼容应用的目录*/
     fsWatcher=new QFileSystemWatcher(this);
     fsWatcher->addPath(desktopFilePath);
@@ -141,7 +140,9 @@ UKUIQuickLaunch::~UKUIQuickLaunch()
 }
 
 /*任务栏刷新  在快读启动栏初始化和云账户同步的时候调用*/
-void UKUIQuickLaunch::refreshQuickLaunch(){
+void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
+    if(!QString::compare(ssoclient,"ukui-panel2"))
+        return;
     for(auto it = mVBtn.begin(); it != mVBtn.end();)
     {
         (*it)->deleteLater();

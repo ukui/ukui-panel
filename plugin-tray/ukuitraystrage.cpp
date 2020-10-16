@@ -16,7 +16,30 @@
  *
  */
 #include "ukuitraystrage.h"
+#include <QApplication>
+#include <QDebug>
+#include <QTimer>
+#include <QtX11Extras/QX11Info>
+#include <QPainter>
+#include "ukuitray.h"
+#include "xfitman.h"
 
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xatom.h>
+#include <X11/extensions/Xrender.h>
+#include <X11/extensions/Xdamage.h>
+#include <xcb/xcb.h>
+#include <xcb/damage.h>
+#include "ukuitrayplugin.h"
+#undef Bool // defined as int in X11/Xlib.h
+
+#include "../panel/iukuipanelplugin.h"
+
+#include <QPushButton>
+#include <QToolButton>
+#include <QLabel>
+#include <QMouseEvent>
 storageBarStatus status;
 /*收纳栏*/
 UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
