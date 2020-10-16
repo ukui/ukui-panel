@@ -130,27 +130,20 @@ NightModeButton::~NightModeButton(){
 /*NOTE:目前夜间模式的点击按钮实现的是　设置夜间模式＋切换主题*/
 void NightModeButton::mousePressEvent(QMouseEvent *event)
 {
+    if(!QGSettings::isSchemaInstalled(NIGHT_MODE_CONTROL) || !gsettings->keys().contains(NIGHT_MODE_KEY))
+        return;
     if(event->button()==Qt::LeftButton){
-        if(QGSettings::isSchemaInstalled(NIGHT_MODE_CONTROL)){
-            if(mode){
-                if(gsettings->keys().contains(NIGHT_MODE_KEY)){
-                    gsettings->set(NIGHT_MODE_KEY, true);
-                    setNightMode(true);
-                    setUkuiStyle("ukui-black");
-                    mode=false;
-                }
-            }
-            else{
-                if(gsettings->keys().contains(NIGHT_MODE_KEY)){
-                    gsettings->set(NIGHT_MODE_KEY, false);
-                    setNightMode(false);
-                    setUkuiStyle("ukui-white");
-                    mode=true;
-                }
-            }
+        if(gsettings->get(NIGHT_MODE_KEY).toBool()){
+            gsettings->set(NIGHT_MODE_KEY, false);
+            setNightMode(false);
+            setUkuiStyle("ukui-white");
+            qDebug()<<"gsettings->get(NIGHT_MODE_KEY).toBool():"<<gsettings->get(NIGHT_MODE_KEY).toBool();
+        }else{
+            gsettings->set(NIGHT_MODE_KEY, true);
+            setNightMode(true);
+            setUkuiStyle("ukui-black");
+            qDebug()<<"gsettings->get(NIGHT_MODE_KEY).toBool()2:"<<gsettings->get(NIGHT_MODE_KEY).toBool();
         }
-        else
-            QMessageBox::information(this,"Error",tr("please install new ukui-control-center first"));
     }
 }
 
@@ -223,7 +216,7 @@ void NightModeButton::setNightMode(const bool nightMode){
          * /.config/redshift.conf　未设置
          * 需要任务栏设置初始化夜间模式的时间及色温
          * 其他情况下任务栏应读取控制面板设置的参数
-　　　　　*/
+         */
         mqsettings->beginGroup("redshift");
         if(mqsettings->value("temp-day", "").toString().isEmpty()){
             mqsettings->setValue("dawn-time", "17:54");
