@@ -71,6 +71,7 @@ public:
     static QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     static QIcon drawSymbolicColoredIcon(const QIcon &source);
     static void getBackGroundColor(int bg_red,int bg_green,int bg_blue);
+
 private:
     explicit HighLightEffect(QObject *parent = nullptr);
 

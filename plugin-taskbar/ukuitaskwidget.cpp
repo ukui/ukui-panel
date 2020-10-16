@@ -87,7 +87,6 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     Q_ASSERT(taskbar);
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
     setMinimumWidth(1);
     setMinimumHeight(1);
     setAcceptDrops(true);
@@ -95,13 +94,13 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     status=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
+    this->setProperty("useSystemStyleBlur", true);
 
     //for layout
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
 //    mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     mCloseBtn->setIconSize(QSize(19,19));
     mCloseBtn->setFixedSize(QSize(19,19));
-    mCloseBtn->hide();
     mTitleLabel = new QLabel;
     mTitleLabel->setMargin(0);
     //    mTitleLabel->setContentsMargins(0,0,0,10);
@@ -144,7 +143,8 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mTitleLabel->setContentsMargins(0, 0, 5, 0);
     //    mTopBarLayout->setSpacing(5);
     mTopBarLayout->addWidget(mAppIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    mTopBarLayout->addWidget(mTitleLabel, 10, Qt::AlignLeft);
+    mTopBarLayout->addWidget(mTitleLabel, 0, Qt::AlignLeft);
+    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
     //    mTopBarLayout->addStretch();
 //    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
     //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
@@ -198,6 +198,7 @@ void UKUITaskWidget::updateText()
     KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
     QString title = info.visibleName().isEmpty() ? info.name() : info.visibleName();
     mTitleLabel->setText(title);
+
 }
 
 /************************************************
@@ -332,7 +333,6 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
         raiseApplication();
     }
     status = NORMAL;
-    mTopBarLayout->removeWidget(mCloseBtn);
     update();
     QWidget::mouseReleaseEvent(event);
 
@@ -345,16 +345,14 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 void UKUITaskWidget::enterEvent(QEvent *)
 {
     status = HOVER;
-    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
-    mCloseBtn->show();
+    update();
     repaint();
 }
 
 void UKUITaskWidget::leaveEvent(QEvent *)
 {
     status = NORMAL;
-    mTopBarLayout->removeWidget(mCloseBtn);
-    mCloseBtn->hide();
+    update();
     repaint();
 }
 QMimeData * UKUITaskWidget::mimeData()
@@ -757,7 +755,7 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
         {
         case NORMAL:
             p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
-            mTopBarLayout->removeWidget(mCloseBtn);
+            //mTopBarLayout->removeWidget(mCloseBtn);
             break;
         case HOVER:
             p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
@@ -773,7 +771,7 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
         {
         case NORMAL:
             p.fillPath(rectPath, QColor(0xff,0xff,0xff,0xb2));
-            mTopBarLayout->removeWidget(mCloseBtn);
+            //mTopBarLayout->removeWidget(mCloseBtn);
             break;
         case HOVER:
             p.fillPath(rectPath, QColor(0xff,0xff,0xff,0x66));
@@ -835,7 +833,7 @@ void UKUITaskWidget::addThumbNail()
 void UKUITaskWidget::setTitleFixedWidth(int size)
 {
     mTitleLabel->setFixedWidth(size);
-    mTitleLabel->adjustSize();
+    //mTitleLabel->adjustSize();
 }
 
 int UKUITaskWidget::getWidth()

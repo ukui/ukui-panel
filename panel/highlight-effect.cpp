@@ -29,7 +29,7 @@
 
 #include <QPixmap>
 #include <QPainter>
-
+#include <QGSettings>
 #include <QImage>
 #include <QtMath>
 
@@ -38,6 +38,15 @@
 #include <QDebug>
 
 #define TORLERANCE 36
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
+#define COLOR_WHITE 255, 255, 255
+#define COLOR_BLACK 0, 0, 0
 
 static QColor symbolic_color = Qt::gray;
 QColor defalut_background_color=Qt::gray;
@@ -377,24 +386,27 @@ QPixmap HighLightEffect::drawSymbolicColoredPixmap(const QPixmap &source)
 
 QIcon HighLightEffect::drawSymbolicColoredIcon(const QIcon &source)
 {
-    QColor currentcolor=HighLightEffect::getCurrentSymbolicColor();
-    QColor gray(128,128,128);
-    QColor standard (31,32,34);
+    QGSettings *style_settings;
+    bool dark_style;
+    const QByteArray style_id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(style_id)){
+        style_settings = new QGSettings(style_id);
+        dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
+    }
+
     QImage img = source.pixmap(32,32).toImage();
     for (int x = 0; x < img.width(); x++) {
         for (int y = 0; y < img.height(); y++) {
             auto color = img.pixelColor(x, y);
             if (color.alpha() > 0) {
-                if (qAbs(color.red()-gray.red())<200 && qAbs(color.green()-gray.green())<200 && qAbs(color.blue()-gray.blue())<200) {
-                    color=defalut_background_color;
-                    img.setPixelColor(x, y, Qt::red);
+                if (dark_style) {
+                    color=QColor(COLOR_WHITE);
+                    img.setPixelColor(x, y, color);
                 }
-                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20){
-                    color=defalut_background_color;
-                    img.setPixelColor(x, y, Qt::white);
-                }
-                else
-                {
+                else {
+                    color=QColor(COLOR_BLACK);
                     img.setPixelColor(x, y, color);
                 }
                 qDebug()<<"color   *&***** :"<<color.red();
