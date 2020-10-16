@@ -29,13 +29,13 @@ public:
     LunarCalendarWidget *lunarCalendarWidget;
     QWidget *widgetBottom;
     QHBoxLayout *horizontalLayout;
-    QLabel *labCalendarStyle;
-    QComboBox *cboxCalendarStyle;
-    QLabel *labSelectType;
-    QComboBox *cboxSelectType;
-    QLabel *labWeekNameFormat;
-    QComboBox *cboxWeekNameFormat;
-    QCheckBox *ckShowLunar;
+ //   QLabel *labCalendarStyle;
+ //   QComboBox *cboxCalendarStyle;
+  //  QLabel *labSelectType;
+ //   QComboBox *cboxSelectType;
+ //   QLabel *labWeekNameFormat;
+ //   QComboBox *cboxWeekNameFormat;
+  //  QCheckBox *ckShowLunar;
     QSpacerItem *horizontalSpacer;
 
     void setupUi(QWidget *frmLunarCalendarWidget)
@@ -60,53 +60,53 @@ public:
         horizontalLayout = new QHBoxLayout(widgetBottom);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        labCalendarStyle = new QLabel(widgetBottom);
-        labCalendarStyle->setObjectName(QString::fromUtf8("labCalendarStyle"));
+       // labCalendarStyle = new QLabel(widgetBottom);
+       // labCalendarStyle->setObjectName(QString::fromUtf8("labCalendarStyle"));
 
-        horizontalLayout->addWidget(labCalendarStyle);
+       // horizontalLayout->addWidget(labCalendarStyle);
 
-        cboxCalendarStyle = new QComboBox(widgetBottom);
-        cboxCalendarStyle->addItem(QString());
-        cboxCalendarStyle->setObjectName(QString::fromUtf8("cboxCalendarStyle"));
-        cboxCalendarStyle->setMinimumSize(QSize(90, 0));
+      //  cboxCalendarStyle = new QComboBox(widgetBottom);
+     //   cboxCalendarStyle->addItem(QString());
+       // cboxCalendarStyle->setObjectName(QString::fromUtf8("cboxCalendarStyle"));
+      //  cboxCalendarStyle->setMinimumSize(QSize(90, 0));
 
-        horizontalLayout->addWidget(cboxCalendarStyle);
+     //   horizontalLayout->addWidget(cboxCalendarStyle);
 
-        labSelectType = new QLabel(widgetBottom);
-        labSelectType->setObjectName(QString::fromUtf8("labSelectType"));
+//        labSelectType = new QLabel(widgetBottom);
+//        labSelectType->setObjectName(QString::fromUtf8("labSelectType"));
 
-        horizontalLayout->addWidget(labSelectType);
+//        horizontalLayout->addWidget(labSelectType);
 
-        cboxSelectType = new QComboBox(widgetBottom);
-        cboxSelectType->addItem(QString());
-        cboxSelectType->addItem(QString());
-        cboxSelectType->addItem(QString());
-        cboxSelectType->addItem(QString());
-        cboxSelectType->setObjectName(QString::fromUtf8("cboxSelectType"));
-        cboxSelectType->setMinimumSize(QSize(90, 0));
+//        cboxSelectType = new QComboBox(widgetBottom);
+//        cboxSelectType->addItem(QString());
+//        cboxSelectType->addItem(QString());
+//        cboxSelectType->addItem(QString());
+//        cboxSelectType->addItem(QString());
+//        cboxSelectType->setObjectName(QString::fromUtf8("cboxSelectType"));
+//        cboxSelectType->setMinimumSize(QSize(90, 0));
 
-        horizontalLayout->addWidget(cboxSelectType);
+//        horizontalLayout->addWidget(cboxSelectType);
 
-        labWeekNameFormat = new QLabel(widgetBottom);
-        labWeekNameFormat->setObjectName(QString::fromUtf8("labWeekNameFormat"));
+//        labWeekNameFormat = new QLabel(widgetBottom);
+//        labWeekNameFormat->setObjectName(QString::fromUtf8("labWeekNameFormat"));
 
-        horizontalLayout->addWidget(labWeekNameFormat);
+//        horizontalLayout->addWidget(labWeekNameFormat);
 
-        cboxWeekNameFormat = new QComboBox(widgetBottom);
-        cboxWeekNameFormat->addItem(QString());
-        cboxWeekNameFormat->addItem(QString());
-        cboxWeekNameFormat->addItem(QString());
-        cboxWeekNameFormat->addItem(QString());
-        cboxWeekNameFormat->setObjectName(QString::fromUtf8("cboxWeekNameFormat"));
-        cboxWeekNameFormat->setMinimumSize(QSize(90, 0));
+//        cboxWeekNameFormat = new QComboBox(widgetBottom);
+//        cboxWeekNameFormat->addItem(QString());
+//        cboxWeekNameFormat->addItem(QString());
+//        cboxWeekNameFormat->addItem(QString());
+//        cboxWeekNameFormat->addItem(QString());
+//        cboxWeekNameFormat->setObjectName(QString::fromUtf8("cboxWeekNameFormat"));
+//        cboxWeekNameFormat->setMinimumSize(QSize(90, 0));
 
-        horizontalLayout->addWidget(cboxWeekNameFormat);
+//        horizontalLayout->addWidget(cboxWeekNameFormat);
 
-        ckShowLunar = new QCheckBox(widgetBottom);
-        ckShowLunar->setObjectName(QString::fromUtf8("ckShowLunar"));
-        ckShowLunar->setChecked(true);
+//        ckShowLunar = new QCheckBox(widgetBottom);
+//        ckShowLunar->setObjectName(QString::fromUtf8("ckShowLunar"));
+//        ckShowLunar->setChecked(true);
 
-        horizontalLayout->addWidget(ckShowLunar);
+//        horizontalLayout->addWidget(ckShowLunar);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -124,22 +124,22 @@ public:
     void retranslateUi(QWidget *frmLunarCalendarWidget)
     {
         frmLunarCalendarWidget->setWindowTitle(QApplication::translate("frmLunarCalendarWidget", "Form", nullptr));
-        labCalendarStyle->setText(QApplication::translate("frmLunarCalendarWidget", "\346\225\264\344\275\223\346\240\267\345\274\217", nullptr));
-        cboxCalendarStyle->setItemText(0, QApplication::translate("frmLunarCalendarWidget", "\347\272\242\350\211\262\351\243\216\346\240\274", nullptr));
+      //  labCalendarStyle->setText(QApplication::translate("frmLunarCalendarWidget", "\346\225\264\344\275\223\346\240\267\345\274\217", nullptr));
+      //  cboxCalendarStyle->setItemText(0, QApplication::translate("frmLunarCalendarWidget", "\347\272\242\350\211\262\351\243\216\346\240\274", nullptr));
 
-        labSelectType->setText(QApplication::translate("frmLunarCalendarWidget", "\351\200\211\344\270\255\346\240\267\345\274\217", nullptr));
-        cboxSelectType->setItemText(0, QApplication::translate("frmLunarCalendarWidget", "\347\237\251\345\275\242\350\203\214\346\231\257", nullptr));
-        cboxSelectType->setItemText(1, QApplication::translate("frmLunarCalendarWidget", "\345\234\206\345\275\242\350\203\214\346\231\257", nullptr));
-        cboxSelectType->setItemText(2, QApplication::translate("frmLunarCalendarWidget", "\350\247\222\346\240\207\350\203\214\346\231\257", nullptr));
-        cboxSelectType->setItemText(3, QApplication::translate("frmLunarCalendarWidget", "\345\233\276\347\211\207\350\203\214\346\231\257", nullptr));
+     //   labSelectType->setText(QApplication::translate("frmLunarCalendarWidget", "\351\200\211\344\270\255\346\240\267\345\274\217", nullptr));
+//        cboxSelectType->setItemText(0, QApplication::translate("frmLunarCalendarWidget", "\347\237\251\345\275\242\350\203\214\346\231\257", nullptr));
+//        cboxSelectType->setItemText(1, QApplication::translate("frmLunarCalendarWidget", "\345\234\206\345\275\242\350\203\214\346\231\257", nullptr));
+//        cboxSelectType->setItemText(2, QApplication::translate("frmLunarCalendarWidget", "\350\247\222\346\240\207\350\203\214\346\231\257", nullptr));
+//        cboxSelectType->setItemText(3, QApplication::translate("frmLunarCalendarWidget", "\345\233\276\347\211\207\350\203\214\346\231\257", nullptr));
 
-        labWeekNameFormat->setText(QApplication::translate("frmLunarCalendarWidget", "\346\230\237\346\234\237\346\240\274\345\274\217", nullptr));
-        cboxWeekNameFormat->setItemText(0, QApplication::translate("frmLunarCalendarWidget", "\347\237\255\345\220\215\347\247\260", nullptr));
-        cboxWeekNameFormat->setItemText(1, QApplication::translate("frmLunarCalendarWidget", "\346\231\256\351\200\232\345\220\215\347\247\260", nullptr));
-        cboxWeekNameFormat->setItemText(2, QApplication::translate("frmLunarCalendarWidget", "\351\225\277\345\220\215\347\247\260", nullptr));
-        cboxWeekNameFormat->setItemText(3, QApplication::translate("frmLunarCalendarWidget", "\350\213\261\346\226\207\345\220\215\347\247\260", nullptr));
+       // labWeekNameFormat->setText(QApplication::translate("frmLunarCalendarWidget", "\346\230\237\346\234\237\346\240\274\345\274\217", nullptr));
+//        cboxWeekNameFormat->setItemText(0, QApplication::translate("frmLunarCalendarWidget", "\347\237\255\345\220\215\347\247\260", nullptr));
+//        cboxWeekNameFormat->setItemText(1, QApplication::translate("frmLunarCalendarWidget", "\346\231\256\351\200\232\345\220\215\347\247\260", nullptr));
+//        cboxWeekNameFormat->setItemText(2, QApplication::translate("frmLunarCalendarWidget", "\351\225\277\345\220\215\347\247\260", nullptr));
+//        cboxWeekNameFormat->setItemText(3, QApplication::translate("frmLunarCalendarWidget", "\350\213\261\346\226\207\345\220\215\347\247\260", nullptr));
 
-        ckShowLunar->setText(QApplication::translate("frmLunarCalendarWidget", "\346\230\276\347\244\272\345\206\234\345\216\206", nullptr));
+      //  ckShowLunar->setText(QApplication::translate("frmLunarCalendarWidget", "\346\230\276\347\244\272\345\206\234\345\216\206", nullptr));
     } // retranslateUi
 
 };

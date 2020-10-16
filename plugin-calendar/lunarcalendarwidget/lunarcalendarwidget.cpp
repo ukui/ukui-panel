@@ -23,6 +23,8 @@
 LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 {
     setWindowOpacity(0.7);
+    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    setProperty("useSystemStyleBlur", true);
     //判断图形字体是否存在,不存在则加入
     QFontDatabase fontDb;
     if (!fontDb.families().contains("FontAwesome")) {
@@ -217,20 +219,20 @@ void LunarCalendarWidget::initWidget()
     QPushButton *btnToday = new QPushButton;
     btnToday->setObjectName("btnToday");
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnToday->setText("今天");
+    btnToday->setText(tr("Today"));
 
     //年份下拉框
     cboxYear = new QComboBox;
     cboxYear->setObjectName("cboxYear");
     for (int i = 1901; i <= 2099; i++) {
-        cboxYear->addItem(QString("%1年").arg(i));
+        cboxYear->addItem(QString("%1").arg(i));
     }
 
     //月份下拉框
     cboxMonth = new QComboBox;
     cboxMonth->setObjectName("cboxMonth");
     for (int i = 1; i <= 12; i++) {
-        cboxMonth->addItem(QString("%1月").arg(i));
+        cboxMonth->addItem(QString("%1").arg(i));
     }
 
     //中间用个空widget隔开
@@ -378,8 +380,8 @@ void LunarCalendarWidget::initDate()
 
     //设置为今天,设置变量防止重复触发
     btnClick = true;
-    cboxYear->setCurrentIndex(cboxYear->findText(QString("%1年").arg(year)));
-    cboxMonth->setCurrentIndex(cboxMonth->findText(QString("%1月").arg(month)));
+    cboxYear->setCurrentIndex(cboxYear->findText(QString("%1").arg(year)));
+    cboxMonth->setCurrentIndex(cboxMonth->findText(QString("%1").arg(month)));
     btnClick = false;
 
     //首先判断当前月的第一天是星期几
@@ -467,7 +469,7 @@ void LunarCalendarWidget::yearChanged(const QString &arg1)
         return;
     }
 
-    int year = arg1.mid(0, arg1.length() - 1).toInt();
+    int year = arg1.mid(0, arg1.length()).toInt();
     int month = date.month();
     int day = date.day();
     dateChanged(year, month, day);
@@ -481,7 +483,7 @@ void LunarCalendarWidget::monthChanged(const QString &arg1)
     }
 
     int year = date.year();
-    int month = arg1.mid(0, arg1.length() - 1).toInt();
+    int month = arg1.mid(0, arg1.length()).toInt();
     int day = date.day();
     dateChanged(year, month, day);
 }
@@ -747,20 +749,17 @@ void LunarCalendarWidget::setWeekNameFormat(const LunarCalendarWidget::WeekNameF
         this->weekNameFormat = weekNameFormat;
 
         QStringList listWeek;
-        if (weekNameFormat == WeekNameFormat_Short) {
-            listWeek << "日" << "一" << "二" << "三" << "四" << "五" << "六";
-        } else if (weekNameFormat == WeekNameFormat_Normal) {
-            listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
-        } else if (weekNameFormat == WeekNameFormat_Long) {
-            listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
-        } else if (weekNameFormat == WeekNameFormat_En) {
-            listWeek << "Sun" << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat";
-        }
-
-        //逐个添加日期文字
-        for (int i = 0; i < 7; i++) {
-            labWeeks.at(i)->setText(listWeek.at(i));
-        }
+//        listWeek << "日" << "一" << "二" << "三" << "四" << "五" << "六";
+//        listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
+//        listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
+//          listWeek << "Sun" << "Mon" << "Tue" << "Wed" << "Thur" << "Fri" << "Sat";
+          labWeeks.at(0)->setText((tr("Sun")));
+          labWeeks.at(1)->setText((tr("Mon")));
+          labWeeks.at(2)->setText((tr("Tue")));
+          labWeeks.at(3)->setText((tr("Wed")));
+          labWeeks.at(4)->setText((tr("Thu")));
+          labWeeks.at(5)->setText((tr("Fri")));
+          labWeeks.at(6)->setText((tr("Sat")));
     }
 }
 
