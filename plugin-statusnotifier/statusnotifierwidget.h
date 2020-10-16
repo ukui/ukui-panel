@@ -35,6 +35,8 @@
 
 #include "../panel/common/ukuigridlayout.h"
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/common/ukuisettings.h"
+#include "../panel/pluginsettings.h"
 
 #include "statusnotifierbutton.h"
 #include "statusnotifierwatcher.h"
@@ -44,8 +46,10 @@ class StatusNotifierWidget : public QWidget
     Q_OBJECT
 
 public:
-    StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *parent = 0);
+    StatusNotifierWidget(IUKUIPanelPlugin *plugin,QWidget *parent = 0);
     ~StatusNotifierWidget();
+    void saveSettings();
+    void readSettings();
 
 signals:
 
@@ -54,6 +58,7 @@ public slots:
     void itemRemoved(const QString &serviceAndPath);
 
     void realign();
+    void on_pushButton_clicked(const QString &service);
 
 private:
     UKUi::GridLayout *mLayout;
@@ -61,19 +66,20 @@ private:
     StatusNotifierWatcher *mWatcher;
 
     QHash<QString, StatusNotifierButton*> mServices;
-    QHash<int, StatusNotifierButton*> showbutton;
+    QHash<QString, StatusNotifierButton*> showbutton;
+    QHash<QString, StatusNotifierButton*> hidebutton;
+    QStringList readappkey;
+    QStringList writeappkey;
 
     QList<StatusNotifierButton*> mStatusNotifierButtons;
     QToolButton *mBtn;
     QGSettings *gsettings;
     QTimer *time;
+    QString lockServices;
     int timecount;
     bool mHide;
     bool mShow;
     bool mLock;
-    bool mSidebar;
-    bool mKyliynm;
-    bool mVolume;
     bool mRealign;
 
 private slots:

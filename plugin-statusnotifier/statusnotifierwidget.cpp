@@ -50,9 +50,6 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     mHide=false;
     mShow=false;
     mLock=true;
-    mSidebar=false;
-    mKyliynm=false;
-    mVolume=false;
     mRealign=true;
 
     mWatcher = new StatusNotifierWatcher;
@@ -66,14 +63,16 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     //在按键加入容器后进行多次刷新
     time = new QTimer(this);
     connect(time, &QTimer::timeout, this,[=] (){
-        if(timecount<1000){
+        if(timecount<50){
             mRealign=true;
+            mLock=true;
             realign();
+            qDebug()<<timecount;
             timecount++;
         }else
             time->stop();
     });
-    time->start(10);
+    time->start(50);
 
     mBtn = new StatusNotifierPopUpButton();
     mBtn->setText("<");
@@ -93,7 +92,7 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
             realign();
         }
     });
-
+    gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
     qDebug() << mWatcher->RegisteredStatusNotifierItems();
 
 }
@@ -112,10 +111,9 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     mServices.insert(serviceAndPath, button);
     mStatusNotifierButtons.append(button);
     button->setStyle(new CustomStyle);
-    mLayout->addWidget(button);
     connect(button, SIGNAL(switchButtons(StatusNotifierButton*,StatusNotifierButton*)), this, SLOT(switchButtons(StatusNotifierButton*,StatusNotifierButton*)));
-    button->show();
     mRealign=true;
+    mLock=true;
     realign();
 }
 
@@ -134,8 +132,6 @@ void StatusNotifierWidget::realign()
 {
     UKUi::GridLayout *layout = qobject_cast<UKUi::GridLayout*>(mLayout);
     layout->setEnabled(false);
-
-//    layout->addWidget(mBtn);
     IUKUIPanel *panel = mPlugin->panel();
     for(int i=0;i<mStatusNotifierButtons.size();i++){
     mStatusNotifierButtons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
@@ -153,6 +149,9 @@ void StatusNotifierWidget::realign()
     }
     if(mRealign){
     for(int i=0;i<mStatusNotifierButtons.size();i++){
+        qDebug()<<mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton();
+    }
+    for(int i=0;i<mStatusNotifierButtons.size();i++){
         if(mStatusNotifierButtons.at(i))
         {
             mStatusNotifierButtons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
@@ -161,14 +160,7 @@ void StatusNotifierWidget::realign()
             mStatusNotifierButtonList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel";
             if(!mStatusNotifierButtonList.contains(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton())){
                 mStatusNotifierButtons.at(i)->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
-                //将更新通知和蓝牙屏蔽
-                if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="更新通知"){
-                    mStatusNotifierButtons.at(i)->hide();
-                }
-                if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="蓝牙已启用"){
-                    mStatusNotifierButtons.at(i)->hide();
-                }
-                layout->addWidget(mStatusNotifierButtons.at(i));
+                hidebutton.insert(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton(),mStatusNotifierButtons.at(i));
                 mHide=true;
             }
             else{
@@ -176,53 +168,40 @@ void StatusNotifierWidget::realign()
                 //把需要固定位置的按键加入容器
                 if(mLock){
                     mStatusNotifierButtons.at(i)->setVisible(true);
-                    int n1 = layout->indexOf(mStatusNotifierButtons.at(i));
-
-                    if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="ukui-sidebar"){
-                        n1=0;
-                        mStatusNotifierButtons.at(i)->hide();
-                        layout->removeWidget(mStatusNotifierButtons.at(i));
-                    }
-                    if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="kylin-nm"){
-                        n1=1;
-                        mStatusNotifierButtons.at(i)->hide();
-                        layout->removeWidget(mStatusNotifierButtons.at(i));
-                    }
-                    if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()=="ukui-volume-control-applet-qt"){
-                        n1=2;
-                        mStatusNotifierButtons.at(i)->hide();
-                        layout->removeWidget(mStatusNotifierButtons.at(i));
-                    }
-                    showbutton.insert(n1, mStatusNotifierButtons.at(i));
+                    showbutton.insert(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton(), mStatusNotifierButtons.at(i));
                     mShow=true;
                 }
             }
+
         }
         else{
             qDebug()<<"mStatusNotifierButtons add error   :  "<<mStatusNotifierButtons.at(i);
         }
     }
-    //在按键加载完成后将需要位置固定的按键进行重新依次加入布局
+    //在长显示依次加入布局
+    readSettings();
     if(mShow&&mHide&&mLock){
-        if(showbutton.contains(0)){
-            StatusNotifierButton *sidebar=showbutton[0];
-            layout->addWidget(sidebar);
-            sidebar->show();
-            mSidebar=true;
+        QList<QString>::Iterator it = readappkey.begin(),itend = readappkey.end();
+        int n = 0;
+        for (;it != itend; it++,n++){
+            if(showbutton.contains(*it)){
+                StatusNotifierButton *button=showbutton[*it];
+                qDebug()<<button;
+                layout->addWidget(button);
+                button->show();
+            }
         }
-        if(showbutton.contains(1)){
-            StatusNotifierButton *kyliynm=showbutton[1];
-            layout->addWidget(kyliynm);
-            kyliynm->show();
-            mKyliynm=true;
+        writeappkey=readappkey;
+        readappkey.clear();
+        //在可隐藏按键加入布局
+        QHash<QString, StatusNotifierButton*>::const_iterator m;
+        for(m=hidebutton.constBegin();m!=hidebutton.constEnd();++m){
+           m.value()->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
+            layout->addWidget(*m);
         }
-        if(showbutton.contains(2)){
-            StatusNotifierButton *volume=showbutton[2];
-            layout->addWidget(volume);
-            volume->show();
-            mVolume=true;
-        }
-        if(mSidebar&&mKyliynm&&mVolume)
+        hidebutton.clear();
+        qDebug()<<showbutton;
+        if(!showbutton.isEmpty())
         mLock=false;
     }
     mRealign=false;
@@ -244,9 +223,45 @@ void StatusNotifierWidget::switchButtons(StatusNotifierButton *button1, StatusNo
 
     mLayout->moveItem(l, m);
     mLayout->moveItem(m-1, l);
-//    saveSettings();
+    //将改变的长显示的按键布局顺序写入配置文件
+    writeappkey.move(l,m);
+    writeappkey.move(m-1, l);
+    saveSettings();
 }
 
+void StatusNotifierWidget::on_pushButton_clicked(const QString &service) {
+    QDBusInterface *iface= new QDBusInterface(service
+                         , "/StatusNotifierItem"
+                         , "org.freedesktop.DBus.Properties"
+                         , QDBusConnection::sessionBus());
+    QDBusReply<QMap<QString, QVariant> > reply = iface->call("GetAll", "org.kde.StatusNotifierItem");
+    if (reply.isValid()){
+        QMap<QString, QVariant> propertyMap;
+        propertyMap = reply.value();
+        lockServices = propertyMap.find("Id").value().toString();
+        qDebug()<<"rely is: "<<lockServices;
+
+    } else {
+        qDebug() << "reply failed";
+    }
+}
+
+//写配置文件
+void StatusNotifierWidget::saveSettings()
+{
+    PluginSettings *settings = mPlugin->settings();
+    settings->beginGroup("statusnotifier");
+    settings->endGroup();
+    settings->setValue("app1",writeappkey);
+}
+
+//读配置文件
+void StatusNotifierWidget::readSettings(){
+    PluginSettings *settings = mPlugin->settings();
+    settings->beginGroup("statusnotifier");
+    settings->endGroup();
+    readappkey=settings->value("app1").toStringList();
+}
 
 StatusNotifierPopUpButton::StatusNotifierPopUpButton()
 {

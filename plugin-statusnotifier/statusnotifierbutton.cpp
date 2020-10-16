@@ -68,6 +68,7 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
 {
 //    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAutoRaise(true);
+    this->setAcceptDrops(true);
     interface = new SniAsync(service, objectPath, QDBusConnection::sessionBus(), this);
 
     connect(interface, &SniAsync::NewIcon, this, &StatusNotifierButton::newIcon);

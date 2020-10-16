@@ -52,6 +52,8 @@ public:
     bool isStatusNotifierHostRegistered() { return mHosts.count() > 0; }
     int protocolVersion() const { return 0; }
     QStringList RegisteredStatusNotifierItems() const { return mServices; }
+    void on_pushButton_clicked(const QString &service);
+    QString lockServices;
 
 signals:
     Q_SCRIPTABLE void StatusNotifierItemRegistered(const QString &service);

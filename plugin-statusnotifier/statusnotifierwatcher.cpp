@@ -29,6 +29,7 @@
 #include "statusnotifierwatcher.h"
 #include <QDebug>
 #include <QDBusConnectionInterface>
+#include <QDBusInterface>
 
 StatusNotifierWatcher::StatusNotifierWatcher(QObject *parent) : QObject(parent)
 {
@@ -68,15 +69,34 @@ void StatusNotifierWatcher::RegisterStatusNotifierItem(const QString &serviceOrP
         path = service;
         service = message().service();
     }
-
+    on_pushButton_clicked(service);
     QString notifierItemId = service + path;
 
     if (QDBusConnection::sessionBus().interface()->isServiceRegistered(service).value()
-        && !mServices.contains(notifierItemId))
+        && !mServices.contains(notifierItemId)&&!(lockServices=="reply failed"))
     {
         mServices << notifierItemId;
         mWatcher->addWatchedService(service);
         emit StatusNotifierItemRegistered(notifierItemId);
+    }
+}
+
+void StatusNotifierWatcher::on_pushButton_clicked(const QString &service) {
+    QDBusInterface *iface= new QDBusInterface(service
+                         , "/StatusNotifierItem"
+                         , "org.freedesktop.DBus.Properties"
+                         , QDBusConnection::sessionBus());
+    QDBusReply<QMap<QString, QVariant> > reply = iface->call("GetAll", "org.kde.StatusNotifierItem");
+    if (reply.isValid()){
+        QMap<QString, QVariant> propertyMap;
+        propertyMap = reply.value();
+        lockServices = propertyMap.find("Id").value().toString();
+        qDebug()<<"rely is: "<<lockServices;
+
+    } else {
+        lockServices="reply failed";
+        qDebug() << "reply failed";
+
     }
 }
 
