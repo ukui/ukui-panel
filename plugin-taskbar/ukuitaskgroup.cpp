@@ -50,6 +50,7 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/highlight-effect.h"
 #include <QSize>
 #include <QScreen>
 #include <XdgIcon>
@@ -256,6 +257,42 @@ UKUITaskGroup::~UKUITaskGroup()
 /************************************************
 
  ************************************************/
+
+//void UKUITaskGroup::initGroupName(QString Name) {
+//    QFile file(Name);
+//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//        qDebug() << "Can't Read The Desktop File in /usr/share/application -- taskgroup init failed";
+//    }
+//    while (!file.atEnd()) {
+//        QByteArray line = file.readLine();
+//        QString str(line);
+//        qDebug() << str;
+//    }
+//}
+
+//void UKUITaskGroup::initFileName(QString Name) {
+//    path = "/usr/share/applications/"
+//    QFile file(Name);
+//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//        qDebug() << "Can't Read The Desktop File in /usr/share/application -- taskgroup init failed";
+//    }
+//    while (!file.atEnd()) {
+//        QByteArray line = file.readLine();
+//        QString str(line);
+//        qDebug() << str;
+//    }
+//}
+
+
+//void UKUITaskGroup::initDoubleName(QString Name) {
+//    if (file_name) {
+//        initGroupName(Name);
+//    }
+//    if (mGroupName) {
+//        initFileName(Name);
+//    }
+//}
+
 void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 {
     setPopupVisible(false, true);
@@ -273,9 +310,9 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
         menu->addActions(mAct->addtitionalActions());
         menu->addSeparator();
         menu->addSeparator();
-        QAction *mDeleteAct = menu->addAction(XdgIcon::fromTheme("dialog-close"), tr("delete from taskbar"));
+        QAction *mDeleteAct = menu->addAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-unfixed")), tr("delete from taskbar"));
         connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(RemovefromTaskBar()));
-        QAction *mAddAct = menu->addAction(XdgIcon::fromTheme("dialog-close"), tr("add to taskbar"));
+        QAction *mAddAct = menu->addAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-fixed")), tr("add to taskbar"));
         connect(mAddAct, SIGNAL(triggered()), this, SLOT(AddtoTaskBar()));
         if (existSameQckBtn) menu->removeAction(mAddAct);
         else menu->removeAction(mDeleteAct);

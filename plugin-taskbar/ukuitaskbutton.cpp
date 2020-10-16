@@ -58,6 +58,7 @@
 #include <QtX11Extras/QX11Info>
 
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/highlight-effect.h"
 #include <QAction>
 #include <QDrag>
 #include <QMenu>
@@ -921,7 +922,7 @@ void UKUITaskButton::this_customContextMenuRequested(const QPoint & pos)
 void UKUITaskButton::modifyQuicklaunchMenuAction(bool direction)
 {
 
-    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("delete from quicklaunch"), this);
+    mDeleteAct = new QAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-unfixed")), tr("delete from quicklaunch"), this);
     connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
     //addAction(mDeleteAct);
     mMenu = new QuicklaunchMenu();

@@ -129,6 +129,7 @@ private:
     QLabel *mThumbnailLabel;
     QLabel *mAppIcon;
     UKUITaskCloseButton *mCloseBtn;
+    QGSettings *transparency_gsettings;
     QVBoxLayout *mVWindowsLayout;
     QHBoxLayout *mTopBarLayout;
 

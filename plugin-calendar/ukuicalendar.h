@@ -75,6 +75,7 @@ private Q_SLOTS:
 private:
     QWidget *mMainWidget;
     UkuiWebviewDialog   *mWebViewDiag;
+    frmLunarCalendarWidget *w;
     bool mbActived;
     bool mbHasCreatedWebView;
     CalendarActiveLabel *mContent;
