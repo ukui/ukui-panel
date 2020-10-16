@@ -55,6 +55,7 @@ public:
     ~MainWindow();
     void MainWindowShow();
 
+
 protected:
     void hideEvent(QHideEvent event);
 
@@ -126,7 +127,10 @@ private:
     GVolume *volume;
 
     double m_transparency;
+    QString currentThemeMode;
+
     QGSettings *m_transparency_gsettings = nullptr;
+    QGSettings *qtSettings = nullptr;
 
     //authority
     //QDBusInterface *systemIface;
@@ -135,10 +139,12 @@ public:
     ejectInterface *m_eject;
 
     void initTransparentState();
+    void initThemeMode();
 //    double getTransparentData();
     void getTransparentData();
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
+
 
     bool ifSucess;
     int flagType;
@@ -161,6 +167,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
     //void enterEvent(QEvent *event);
     bool eventFilter(QObject *obj, QEvent *event);
+    void paintEvent(QPaintEvent *event);
     //void leaveEvent(QEvent *event);
 };
 
