@@ -706,27 +706,37 @@ function create_page(year, month) {
             if (month_stuff['monthData'][index]['worktime'] === 2) {
                 worktime = document.createElement("SPAN");
                 worktime.className = 'worktime2';
-                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/xiuxi.png" align="left" width = "14px" height = "16px"></td> </tr>';
+                worktime.innerHTML = '休';
             } else if (month_stuff['monthData'][index]['worktime'] === 1) {
                 worktime = document.createElement("SPAN");
                 worktime.className = 'worktime1';
-                worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/shangban.png" align="left" width = "16px" height = "16px"></td> </tr>';
+                worktime.innerHTML = '班';
             } else {
 
             }
-                 /*myworktime.innerHTML =   '<span class="solar_part">' +
+
+            current_cell.innerHTML = '<span class="solar_part">' +
                                      month_stuff['monthData'][index]['day'] +
-                                     '</span>' +
-                                     '<br />' +
-                                     '<span class="lunar_part">' +
-                                     lunar_day +
-                                     '</span>';*/
+                                     '</span>' 
             // if (worktime && current_cell.className !== 'day_other_month') {
-            //     //current_cell.appendChild(worktime);
-            //     // <td><div id="aa"></div></td>
-            //     //  document.getElementById('aa').innerHTML = worktime.innerHTML;
+            //     current_cell.appendChild(worktime);
+            // }
+            if (worktime) {
+                current_cell.appendChild(worktime);
+            }
+            // if (month_stuff['monthData'][index]['worktime'] === 2) {
+            //     worktime = document.createElement("SPAN");
+            //     worktime.className = 'worktime2';
+            //     worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/xiuxi.png" align="left" width = "14px" height = "16px"></td> </tr>';
+            // } else if (month_stuff['monthData'][index]['worktime'] === 1) {
+            //     worktime = document.createElement("SPAN");
+            //     worktime.className = 'worktime1';
+            //     worktime.innerHTML =  '<tr style="background: red" align="left"><td> <img src="images/shangban.png" align="left" width = "16px" height = "16px"></td> </tr>';
+            // } else {
+
+            // }
+            // if (worktime && current_cell.className !== 'day_other_month') {
             //      current_cell.innerHTML = worktime.innerHTML+
-            //                         //   '<br />'+
             //                         '<span class="solar_part" > ' +
             //                          month_stuff['monthData'][index]['day'] +
             //                          '</span>' +
@@ -734,9 +744,6 @@ function create_page(year, month) {
             //                          '<span class="lunar_part">' +
             //                          lunar_day +
             //                          '</span>';
-            //     // current_cell.innerHTML =  '<tr style="background: green"><td>1</td><td>2</td><td>3</td></tr>'
-            //     // +'<br />' + '<tr style="background: green"><td>4</td><td>5</td><td>6</td></tr>'+
-            //     // '<br />' +'<tr style="background: green"><td>7</td><td>8</td><td>9</td></tr>';
             // }
             // else
 			// {
@@ -748,9 +755,6 @@ function create_page(year, month) {
             //                          lunar_day +
             //                          '</span>';
             // }
-            current_cell.innerHTML =   '<span class="solar_part">' +
-            month_stuff['monthData'][index]['day'] +
-            '</span>'
         }
     }
 
