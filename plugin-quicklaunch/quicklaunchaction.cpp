@@ -35,6 +35,10 @@
 #include <XdgDesktopFile>
 #include <XdgIcon>
 #include <XdgMimeType>
+#include "ukuiquicklaunch.h"
+#include <QMessageBox>
+#include <XdgDesktopFile>
+#include <QFileInfo>
 
 /*传入参数为三个字段*/
 QuickLaunchAction::QuickLaunchAction(const QString & name,
@@ -117,37 +121,69 @@ QuickLaunchAction::QuickLaunchAction(const QString & fileName, QWidget * parent)
 /*解析Exec字段*/
 void QuickLaunchAction::execAction(QString additionalAction)
 {
+    UKUIQuickLaunch *uqk = qobject_cast<UKUIQuickLaunch*>(parent());
     QString exec(data().toString());
     switch (m_type)
     {
-    case ActionLegacy:
-        QProcess::startDetached(exec);
-        break;
-    case ActionXdg:
-    {
-        XdgDesktopFile xdg;
-        if(xdg.load(exec))
-        {
-            if(exec.contains("ubuntu-kylin-software-center",Qt::CaseSensitive)){
-                //无法打开麒麟应用商店，因此改为gio的方式加载
-                QByteArray ba = exec.toLatin1();
-                char * filepath=ba.data();
-                GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(filepath);
-                g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr);
-                g_object_unref(appinfo);
+        case ActionLegacy:
+            if (!QProcess::startDetached(exec)) {
+                qWarning() << "XdgDesktopFile" << exec << "is not valid";
+                QMessageBox::information(uqk, tr("Error Path"),
+                                         tr("File/URL cannot be opened cause invalid path.")
+                                         );
             }
-            else{
-                //xdg 的方式实现点击打开应用，可正确读取转义的字符
-                if (additionalAction.isEmpty())
-                    xdg.startDetached();
-                else
-                    xdg.actionActivate(additionalAction, QStringList{});
+            break;
+        case ActionXdg: {
+            XdgDesktopFile xdg;
+            if(xdg.load(exec))
+            {
+                if(exec.contains("ubuntu-kylin-software-center",Qt::CaseSensitive)){
+                    //无法打开麒麟应用商店，因此改为gio的方式加载
+                    QByteArray ba = exec.toLatin1();
+                    char * filepath=ba.data();
+                    GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(filepath);
+                    if (!g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr)) {
+                        qWarning() << "XdgDesktopFile" << exec << "is not valid";
+                        QMessageBox::information(uqk, tr("Error Path"),
+                                                 tr("File/URL cannot be opened cause invalid path.")
+                                                 );
+                    }
+                    g_object_unref(appinfo);
+                 } else {
+                    //xdg 的方式实现点击打开应用，可正确读取转义的字符
+                    if (!additionalAction.isEmpty()){
+                        if (xdg.startDetached()) {
+                            qWarning() << "XdgDesktopFile" << exec << "is not valid";
+                            QMessageBox::information(uqk, tr("   Error Path"),
+                                                     tr("File/URL cannot be opened cause invalid path.")
+                                                     );
+                        }
+                    } else {
+                        if (!xdg.actionActivate(additionalAction, QStringList{})) {
+                            qWarning() << "XdgDesktopFile" << exec << "is not valid";
+                            QMessageBox::information(uqk, tr("Error Path"),
+                                                     tr("File/URL cannot be opened cause invalid path.")
+                                                     );
+                        }
+                    }
+                }
+            } else {
+                qWarning() << "XdgDesktopFile" << exec << "is not valid";
+                QMessageBox::information(uqk, tr("Error Path"),
+                                         tr("File/URL cannot be opened cause invalid path.")
+                                         );
+            }}
+            break;
+        case ActionFile:
+            QFileInfo fileinfo(exec);
+            if (fileinfo.exists()) {
+                qDebug() << QDesktopServices::openUrl(QUrl(exec));
+            } else {
+                QMessageBox::information(uqk, tr("Error Path"),
+                                         tr("File/URL cannot be opened cause invalid path.")
+                                         );
+
             }
-        }
-        break;
-    }
-    case ActionFile:
-        QDesktopServices::openUrl(QUrl(exec));
-        break;
+            break;
     }
 }
