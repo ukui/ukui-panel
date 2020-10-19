@@ -123,15 +123,12 @@ void QuickLaunchAction::execAction(QString additionalAction)
 {
     UKUIQuickLaunch *uqk = qobject_cast<UKUIQuickLaunch*>(parent());
     QString exec(data().toString());
+    bool showQMessage = false;
     switch (m_type)
     {
         case ActionLegacy:
-            if (!QProcess::startDetached(exec)) {
-                qWarning() << "XdgDesktopFile" << exec << "is not valid";
-                QMessageBox::information(uqk, tr("Error Path"),
-                                         tr("File/URL cannot be opened cause invalid path.")
-                                         );
-            }
+            if (!QProcess::startDetached(exec))
+                showQMessage =true;
             break;
         case ActionXdg: {
             XdgDesktopFile xdg;
@@ -142,48 +139,36 @@ void QuickLaunchAction::execAction(QString additionalAction)
                     QByteArray ba = exec.toLatin1();
                     char * filepath=ba.data();
                     GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(filepath);
-                    if (!g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr)) {
-                        qWarning() << "XdgDesktopFile" << exec << "is not valid";
-                        QMessageBox::information(uqk, tr("Error Path"),
-                                                 tr("File/URL cannot be opened cause invalid path.")
-                                                 );
-                    }
+                    if (!g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
+                        showQMessage =true;
                     g_object_unref(appinfo);
                  } else {
                     //xdg 的方式实现点击打开应用，可正确读取转义的字符
                     if (!additionalAction.isEmpty()){
-                        if (xdg.startDetached()) {
-                            qWarning() << "XdgDesktopFile" << exec << "is not valid";
-                            QMessageBox::information(uqk, tr("   Error Path"),
-                                                     tr("File/URL cannot be opened cause invalid path.")
-                                                     );
-                        }
+                        if (xdg.startDetached())
+                            showQMessage =true;
                     } else {
-                        if (!xdg.actionActivate(additionalAction, QStringList{})) {
-                            qWarning() << "XdgDesktopFile" << exec << "is not valid";
-                            QMessageBox::information(uqk, tr("Error Path"),
-                                                     tr("File/URL cannot be opened cause invalid path.")
-                                                     );
-                        }
+                        if (!xdg.actionActivate(additionalAction, QStringList{}))
+                            showQMessage =true;
                     }
                 }
-            } else {
-                qWarning() << "XdgDesktopFile" << exec << "is not valid";
-                QMessageBox::information(uqk, tr("Error Path"),
-                                         tr("File/URL cannot be opened cause invalid path.")
-                                         );
-            }}
+            } else
+                showQMessage =true;
+        }
             break;
         case ActionFile:
             QFileInfo fileinfo(exec);
             if (fileinfo.exists()) {
-                qDebug() << QDesktopServices::openUrl(QUrl(exec));
+                QDesktopServices::openUrl(QUrl(exec));
             } else {
-                QMessageBox::information(uqk, tr("Error Path"),
-                                         tr("File/URL cannot be opened cause invalid path.")
-                                         );
-
+                showQMessage =true;
             }
             break;
+    }
+    if (showQMessage) {
+        qWarning() << "XdgDesktopFile" << exec << "is not valid";
+        QMessageBox::information(uqk, tr("Error Path"),
+                                 tr("File/URL cannot be opened cause invalid path.")
+                                 );
     }
 }
