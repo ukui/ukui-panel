@@ -373,23 +373,19 @@ void UKUITaskBar::dropEvent(QDropEvent *e)
         XdgDesktopFile xdg;
         if (xdg.load(fileName))
         {
-            printf("1\n");
             if (xdg.isSuitable())
                 addButton(new QuickLaunchAction(&xdg, this));
         }
         else if (fi.exists() && fi.isExecutable() && !fi.isDir())
         {
-            printf("2\n");
             addButton(new QuickLaunchAction(fileName, fileName, "", this));
         }
         else if (fi.exists())
         {
-            printf("3\n");
             addButton(new QuickLaunchAction(fileName, this));
         }
         else if (xdg.load(urlName))
         {
-            printf("4\n");
             if (xdg.isSuitable())
                 addButton(new QuickLaunchAction(&xdg, this));
         }
@@ -518,6 +514,7 @@ void UKUITaskBar::groupBecomeEmptySlot()
             pQuickBtn->setHidden(false);
             mLayout->moveItem(mLayout->indexOf(pQuickBtn), mLayout->indexOf(group));
             mLayout->removeWidget(group);
+            pQuickBtn->existSameQckBtn = false;
             break;
         }
     }
@@ -586,6 +583,7 @@ void UKUITaskBar::addWindow(WId window)
                 pQuickBtn->setHidden(true);
                 isNeedAddNewWidget = false;
                 group->existSameQckBtn = true;
+                pQuickBtn->existSameQckBtn = true;
                 group->QckBtnIndex = mVBtn.indexOf(pQuickBtn);
                 break;
             }
@@ -610,7 +608,6 @@ void UKUITaskBar::addWindow(WId window)
 }
 
 bool UKUITaskBar::ignoreSymbolCMP(QString filename,QString groupname) {
-    qDebug() << filename << " --- " << groupname;
     groupname.replace(" ", "");
     groupname.replace("-", ".");
     groupname.replace(".demo", "");
@@ -1144,6 +1141,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
             btn->setHidden(true);
             isNeedAddNewWidget = false;
             group->existSameQckBtn = true;
+            btn->existSameQckBtn = true;
             group->QckBtnIndex = mVBtn.indexOf(btn);
             break;
         }
@@ -1163,6 +1161,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
         switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
     });
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
+    connect(btn, SIGNAL(t_saveSettings()), this, SLOT(saveSettingsSlot()));
     qDebug()<< btn->file_name;
     mLayout->setEnabled(true);
    // GetMaxPage();
@@ -1223,7 +1222,7 @@ bool UKUITaskBar::checkButton(QuickLaunchAction* action)
         return checkresult;
     }
     else{
-        qDebug()<<"countOfButtons =0  "<<countOfButtons();
+        qDebug()<<"countOfButtons =  "<<countOfButtons();
         delete btn;
         return false;
     }
@@ -1533,18 +1532,13 @@ void UKUITaskBar::saveSettings()
     int size = mLayout->count();
     for (int j = 0; j < size; ++j)
     {
-        int flag = 0;
         UKUITaskGroup *b = qobject_cast<UKUITaskGroup*>(mLayout->itemAt(j)->widget());
+        if (!b->statFlag && b->existSameQckBtn) continue;
         if (b->statFlag && b->existSameQckBtn){
             b = mVBtn.value(b->QckBtnIndex);
-            flag = 1;
         }
         if (!b || b->statFlag)
             continue;
-        if (b->hasbeenSaved) {
-            b->hasbeenSaved = false;
-            continue;
-        }
         // convert QHash<QString, QString> to QMap<QString, QVariant>
         QMap<QString, QVariant> map;
         QHashIterator<QString, QString> it(b->settingsMap());
@@ -1554,7 +1548,6 @@ void UKUITaskBar::saveSettings()
             map[it.key()] = it.value();
         }
         hashList << map;
-        if (flag) b->hasbeenSaved = true;
     }
     settings->setArray("apps", hashList);
 }

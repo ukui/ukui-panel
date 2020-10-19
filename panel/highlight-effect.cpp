@@ -376,7 +376,6 @@ QPixmap HighLightEffect::drawSymbolicColoredPixmap(const QPixmap &source)
                 {
                     img.setPixelColor(x, y, color);
                 }
-//                qDebug()<<"color   *&***** :"<<color.red();
             }
         }
     }
@@ -409,7 +408,6 @@ QIcon HighLightEffect::drawSymbolicColoredIcon(const QIcon &source)
                     color=QColor(COLOR_BLACK);
                     img.setPixelColor(x, y, color);
                 }
-                qDebug()<<"color   *&***** :"<<color.red();
             }
         }
     }
