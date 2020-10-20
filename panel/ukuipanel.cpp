@@ -1336,7 +1336,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
-#if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
+#if 0
     QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
     shownightmode->setDisabled(mLockPanel);
     shownightmode->setCheckable(true);
