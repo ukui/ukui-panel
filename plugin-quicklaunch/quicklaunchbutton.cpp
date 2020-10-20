@@ -36,6 +36,8 @@
 #include <QApplication>
 #include <XdgIcon>
 #include <string>
+#include <XdgDesktopFile>
+#include <QMessageBox>
 
 #define MIMETYPE            "x-ukui/quicklaunch-button"
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
@@ -231,8 +233,8 @@ void QuickLaunchButton::dragMoveEvent(QDragMoveEvent * e)
 {
     if (e->mimeData()->hasFormat(mimeDataFormat()))
         e->acceptProposedAction();
-    else
-        e->ignore();
+//    else
+//        e->ignore();
 }
 
 /***************************************************/
@@ -254,6 +256,39 @@ void QuickLaunchButton::mouseReleaseEvent(QMouseEvent* e)
     QToolButton::mouseReleaseEvent(e);
 }
 
+void QuickLaunchButton::dropEvent(QDropEvent *e)
+{
+    UKUIQuickLaunch *uqk = qobject_cast<UKUIQuickLaunch*>(parent());
+    qDebug()<<"UKUIQuickLaunch::dropEvent";
+    const auto urls = e->mimeData()->urls().toSet();
+    for (const QUrl &url : urls)
+    {
+        QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+        QFileInfo fi(fileName);
+        XdgDesktopFile xdg;
+        if (xdg.load(fileName))
+        {
+            if (xdg.isSuitable())
+                uqk->pubAddButton(new QuickLaunchAction(&xdg, this));
+        }
+        else if (fi.exists() && fi.isExecutable() && !fi.isDir())
+        {
+            uqk->pubAddButton(new QuickLaunchAction(fileName, fileName, "", this));
+        }
+        else if (fi.exists())
+        {
+            uqk->pubAddButton(new QuickLaunchAction(fileName, this));
+        }
+        else
+        {
+            qWarning() << "XdgDesktopFile" << fileName << "is not valid";
+            QMessageBox::information(this, tr("Drop Error"),
+                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                                     );
+        }
+    }
+    uqk->saveSettings();
+}
 /***************************************************/
 
 void QuickLaunchButton::contextMenuEvent(QContextMenuEvent *) { }

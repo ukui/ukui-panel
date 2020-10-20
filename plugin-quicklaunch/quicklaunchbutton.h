@@ -78,6 +78,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent*);
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
+    void dropEvent(QDropEvent *e);
     virtual QMimeData * mimeData();
 
 private:
