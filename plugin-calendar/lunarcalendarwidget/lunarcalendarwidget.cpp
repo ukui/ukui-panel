@@ -24,7 +24,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 {
     setWindowOpacity(0.7);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    setProperty("useSystemStyleBlur", true);
+    setProperty("useSystemStyleBlur", true);   //设置毛玻璃效果
     //判断图形字体是否存在,不存在则加入
     QFontDatabase fontDb;
     if (!fontDb.families().contains("FontAwesome")) {
@@ -83,6 +83,11 @@ LunarCalendarWidget::~LunarCalendarWidget()
 {
 }
 
+/*
+ * @brief 设置日历的背景及文字颜色
+ * 参数：weekColor 周六及周日文字颜色
+*/
+
 void LunarCalendarWidget::setColor(bool mdark_style)
 {
     if(mdark_style){
@@ -96,7 +101,7 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectType = SelectType_Rect;
 
         borderColor = QColor(180, 180, 180);
-        weekColor = QColor(255, 0, 0);
+        weekColor = QColor(255, 255, 255);
         superColor = QColor(255, 129, 6);
         lunarColor = QColor(55, 156, 238);
 
@@ -125,7 +130,7 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectType = SelectType_Rect;
 
         borderColor = QColor(180, 180, 180);
-        weekColor = QColor(255, 0, 0);
+        weekColor = QColor(0, 0, 0);
         superColor = QColor(255, 129, 6);
         lunarColor = QColor(55, 156, 238);
 
