@@ -1326,12 +1326,11 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     menu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
                     tr("Set up Panel"),
                     this, SLOT(setUpPanel())
-                    )->setDisabled(mLockPanel);
+                    );
 
     menu->addSeparator();
 
     QAction * showtaskview = menu->addAction(tr("Show Taskview"));
-    showtaskview->setDisabled(mLockPanel);
     showtaskview->setCheckable(true);
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
@@ -1395,7 +1394,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         about=new QAction(this);
         about->setText(tr("About Kylin"));
         menu->addAction(about);
-        about->setDisabled(mLockPanel);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
             process->startDetached("/usr/bin/ukui-about");
