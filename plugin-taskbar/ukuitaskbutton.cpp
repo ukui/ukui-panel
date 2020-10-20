@@ -244,9 +244,7 @@ void UKUITaskButton::dropEvent(QDropEvent *event)
     if (event->mimeData()->hasFormat(mimeDataFormat()))
     {
         //emit dropped(event->source(), event->pos());
-        qDebug() << "in button dropped";
         setAttribute(Qt::WA_UnderMouse, false);
-        emit t_saveSettings();
     }
     QToolButton::dropEvent(event);
 }
