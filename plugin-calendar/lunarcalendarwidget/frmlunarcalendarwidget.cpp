@@ -4,6 +4,8 @@
 
 #define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
 #define TRANSPARENCY_KEY            "transparency"
+#define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
+#define LUNAR_KEY "calendar"
 
 frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmLunarCalendarWidget)
 {
@@ -27,10 +29,14 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
-        }
-    connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==TRANSPARENCY_KEY){
-            this->update();
+    }
+    const QByteArray calendar_id(PANEL_CONTROL_IN_CALENDAR);
+    if(QGSettings::isSchemaInstalled(calendar_id)){
+        calendar_gsettings = new QGSettings(calendar_id);
+    }
+    connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==LUNAR_KEY){
+            on_ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
         }
     });
 
@@ -61,9 +67,9 @@ void frmLunarCalendarWidget::on_cboxWeekNameFormat_currentIndexChanged(int index
     ui->lunarCalendarWidget->setWeekNameFormat((LunarCalendarWidget::WeekNameFormat)index);
 }
 
-void frmLunarCalendarWidget::on_ckShowLunar_stateChanged(int arg1)
+void frmLunarCalendarWidget::on_ckShowLunar_stateChanged(bool arg1)
 {
-    ui->lunarCalendarWidget->setShowLunar(arg1 != 0);
+    ui->lunarCalendarWidget->setShowLunar(arg1);
 }
 
 void frmLunarCalendarWidget::paintEvent(QPaintEvent *)

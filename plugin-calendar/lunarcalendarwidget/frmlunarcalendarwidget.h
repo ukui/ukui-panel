@@ -22,13 +22,14 @@ protected:
 private:
     Ui::frmLunarCalendarWidget *ui;
     QGSettings *transparency_gsettings;
+    QGSettings *calendar_gsettings;
 
 private Q_SLOTS:
     void initForm();
     void on_cboxCalendarStyle_currentIndexChanged(int index);
     void on_cboxSelectType_currentIndexChanged(int index);
     void on_cboxWeekNameFormat_currentIndexChanged(int index);
-    void on_ckShowLunar_stateChanged(int arg1);
+    void on_ckShowLunar_stateChanged(bool arg1);
 };
 
 #endif // FRMLUNARCALENDARWIDGET_H
