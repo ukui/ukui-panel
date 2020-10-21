@@ -10,6 +10,9 @@
 #include "qcombobox.h"
 #include "qdebug.h"
 
+#define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
+#define LUNAR_KEY                 "calendar"
+
 #define ORG_UKUI_STYLE            "org.ukui.style"
 #define STYLE_NAME                "styleName"
 #define STYLE_NAME_KEY_DARK       "ukui-dark"
@@ -22,6 +25,10 @@
 
 LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 {
+    const QByteArray calendar_id(PANEL_CONTROL_IN_CALENDAR);
+    if(QGSettings::isSchemaInstalled(calendar_id)){
+        calendar_gsettings = new QGSettings(calendar_id);
+    }
     setWindowOpacity(0.7);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setProperty("useSystemStyleBlur", true);   //设置毛玻璃效果
@@ -96,7 +103,7 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         weekTextColor = QColor(0, 0, 0);
         weekBgColor = QColor(180, 180, 180);
 
-        showLunar = true;
+        showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
         bgImage = ":/image/bg_calendar.png";
         selectType = SelectType_Rect;
 
@@ -125,7 +132,7 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         weekTextColor = QColor(255, 255, 255);
         weekBgColor = QColor(0, 0, 0);
 
-        showLunar = true;
+        showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
         bgImage = ":/image/bg_calendar.png";
         selectType = SelectType_Rect;
 
@@ -156,8 +163,9 @@ void LunarCalendarWidget::setColor(bool mdark_style)
 
 void LunarCalendarWidget::_timeUpdate() {
     QDateTime time = QDateTime::currentDateTime();
-    QString _time = time.toString("hh:mm:ss");
-    QString _date = time.toString("yyyy-MM-dd dddd");
+    QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
+    QString _time = locale.toString(time,"hh:mm:ss");
+    QString _date = locale.toString(time,"yyyy-MM-dd dddd");
     QFont font;
 
     //datelabel->setFixedSize(452,40);
@@ -708,7 +716,7 @@ void LunarCalendarWidget::showPreviousMonth()
     month--;
     if (month < 1) {
         month = 12;
-        year--;
+        //year--;
     }
 
     dateChanged(year, month, day);
@@ -727,7 +735,7 @@ void LunarCalendarWidget::showNextMonth()
     month++;
     if (month > 12) {
         month = 1;
-        year++;
+        //year++;
     }
 
     dateChanged(year, month, day);
@@ -794,10 +802,8 @@ void LunarCalendarWidget::setWeekBgColor(const QColor &weekBgColor)
 
 void LunarCalendarWidget::setShowLunar(bool showLunar)
 {
-    if (this->showLunar != showLunar) {
         this->showLunar = showLunar;
         initStyle();
-    }
 }
 
 void LunarCalendarWidget::setBgImage(const QString &bgImage)

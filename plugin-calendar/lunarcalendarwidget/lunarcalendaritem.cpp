@@ -169,18 +169,16 @@ void LunarCalendarItem::drawDay(QPainter *painter)
 
     painter->setPen(color);
 
-    if (showLunar) {
-        QFont font;
-        font.setPixelSize(side / 2.7);
-        painter->setFont(font);
+    QFont font;
+    font.setPixelSize(side / 2.7);
+    painter->setFont(font);
 
+
+    if (showLunar) {
         QRect dayRect = QRect(0, 0, width, height / 1.7);
         painter->drawText(dayRect, Qt::AlignHCenter | Qt::AlignBottom, QString::number(date.day()));
-    } else {
-        QFont font;
-        font.setPixelSize(side / 2);
-        painter->setFont(font);
-
+    }
+    else {
         QRect dayRect = QRect(0, 0, width, height);
         painter->drawText(dayRect, Qt::AlignCenter, QString::number(date.day()));
     }
@@ -369,10 +367,8 @@ void LunarCalendarItem::setSelect(bool select)
 
 void LunarCalendarItem::setShowLunar(bool showLunar)
 {
-    if (this->showLunar != showLunar) {
         this->showLunar = showLunar;
         this->update();
-    }
 }
 
 void LunarCalendarItem::setBgImage(const QString &bgImage)
