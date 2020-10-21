@@ -358,8 +358,10 @@ void UKUITaskButton::activateWithDraggable()
 {
     // raise app in any time when there is a drag
     // in progress to allow drop it into an app
-    raiseApplication();
-    KWindowSystem::forceActiveWindow(mWindow);
+    if (statFlag) {
+        raiseApplication();
+        KWindowSystem::forceActiveWindow(mWindow);
+    }
 }
 
 /************************************************
@@ -897,6 +899,7 @@ UKUITaskButton::UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugi
     mDNDTimer->setInterval(700);
     connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
     file_name=act->m_settingsMap["desktop"];
+    //path=act->m_settingsMap["file"];
     this->setStyle(new CustomStyle());
     repaint();
 
