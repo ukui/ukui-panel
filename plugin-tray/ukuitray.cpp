@@ -57,6 +57,7 @@
 #undef Bool // defined as int in X11/Xlib.h
 
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/highlight-effect.h"
 
 #include <QPushButton>
 #include <QToolButton>
@@ -150,7 +151,9 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     QTimer::singleShot(0, this, SLOT(startTray()));
     mBtn =new QToolButton;
     mBtn->setStyle(new CustomStyle());
-    mBtn->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+    mBtn->setIcon(QIcon::fromTheme("pan-up-symbolic"));
+    mBtn->setProperty("useIconHighlightEffect", true);
+    mBtn->setProperty("iconHighlightEffectMode", true);
     mBtn->setVisible(false);
     layout()->addWidget(mBtn);
     if(mPlugin)
@@ -406,10 +409,9 @@ void UKUITray::trayIconSizeRefresh()
 void UKUITray::createIconMap()
 {
     mMapIcon[IUKUIPanel::PositionBottom] = QIcon::fromTheme("pan-up-symbolic");
-    mMapIcon[IUKUIPanel::PositionLeft] = QIcon::fromTheme("pan-end-symbolic");
-    mMapIcon[IUKUIPanel::PositionTop] = QIcon::fromTheme("pan-down-symbolic");
-    mMapIcon[IUKUIPanel::PositionRight] = QIcon::fromTheme("pan-start-symbolic");
-
+    mMapIcon[IUKUIPanel::PositionLeft]   = QIcon::fromTheme("pan-end-symbolic");
+    mMapIcon[IUKUIPanel::PositionTop]    = QIcon::fromTheme("pan-down-symbolic");
+    mMapIcon[IUKUIPanel::PositionRight]  = QIcon::fromTheme("pan-start-symbolic");
 }
 
 /*这里的changeIcon是改变收纳箭头的图标*/

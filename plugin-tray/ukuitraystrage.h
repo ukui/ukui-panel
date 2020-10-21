@@ -69,8 +69,6 @@ class UKUiStorageWidget:public QWidget
 public:
     UKUiStorageWidget();
     ~UKUiStorageWidget();
-protected:
-    void paintEvent(QPaintEvent*);
 };
 
 #endif

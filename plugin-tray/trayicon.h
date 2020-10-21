@@ -103,6 +103,7 @@ private:
     QSize mRectSize;
     QGSettings *gsettings;
     int tray_icon_color;
+    bool dark_style;
 
     enum TrayAppStatus{NORMAL, HOVER, PRESS};
     TrayAppStatus traystatus;

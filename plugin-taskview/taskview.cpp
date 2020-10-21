@@ -66,7 +66,7 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
         }else{
             icon_color=ICON_COLOR_DRAK;
         }
-        mButton->setIcon(QIcon(drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("taskiew",QIcon("/usr/share/ukui-panel/plugin-taskview/img/taskview.svg")).pixmap(24,24).toImage()))));
+        mButton->setIcon(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("/usr/share/ukui-panel/plugin-taskview/img/taskview.svg")));
         }
     connect(style_settings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==STYLE_NAME){
@@ -75,14 +75,10 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
             }
             else
                 icon_color=ICON_COLOR_DRAK;
-            mButton->setIcon(QIcon(drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("taskiew",QIcon("/usr/share/ukui-panel/plugin-taskview/img/taskview.svg")).pixmap(24,24).toImage()))));
+            mButton->setIcon(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("/usr/share/ukui-panel/plugin-taskview/img/taskview.svg")));
         }
     });
 
-//    QPalette pal=mPanel->palette();
-//    qDebug()<<"pal   :"<<pal;
-
-//    mButton->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
     mButton->setToolTip(tr("Show Taskview"));
 
     /* hide/show taskview
