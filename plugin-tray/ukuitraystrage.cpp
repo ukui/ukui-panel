@@ -56,15 +56,15 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
     setMinimumHeight(0);
     setMinimumWidth(0);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    setProperty("useSystemStyleBlur", true);   //设置毛玻璃效果
     /*
      * @brief setWindowFlags
      *
-     * 冲突的窗口属性 这里本应使用Popup窗口属性，但是popup的属性与托盘有冲突
-     * 会使得点击事件无法生效
+     * 冲突的窗口属性
+     * 这里本应使用Popup窗口属性，但是popup的属性与托盘有冲突,会使得点击事件无法生效
+     * 使用QToolTip 会导致了无法进入事件过滤来检测活动窗口的变化
      *
-     * 备选方案是使用QToolTip 这导致了无法进入事件过滤来检测活动窗口的变化
-     *
-     * Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint
+     * 最终使用的属性组合为 Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint
      * 这三个参数分别代表 设置窗体一直置顶，并且不会抢焦点 | 工具窗口 |设置窗体无边框，不可拖动拖拽拉伸
      *
      * 但是在某些情况下会出现在任务啦上依然会显示窗口，因此加入新的属性 X11BypassWindowManagerHint
