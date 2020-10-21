@@ -93,6 +93,8 @@ public:
     void singleWindowClick();
     void VisibleWndRemoved(WId window);
     void setAutoRotation(bool value, IUKUIPanel::Position position);
+    void setQckLchBtn(UKUITaskGroup *utgp) { if(statFlag) mpQckLchBtn = utgp; }
+    UKUITaskGroup* getQckLchBtn() { return mpQckLchBtn; }
 
 public slots:
     void onWindowRemoved(WId window);
@@ -143,6 +145,7 @@ signals:
 
 private:
     UKUITaskBar * mParent;
+    UKUITaskGroup *mpQckLchBtn;
     void changeTaskButtonStyle();
     QString mGroupName;
     UKUIGroupPopup * mPopup;

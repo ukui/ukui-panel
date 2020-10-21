@@ -110,6 +110,9 @@ public:
     /////////////////////////////////
     QHash<QString,QString> settingsMap();
     QString file_name;
+    QString file;
+    QString name;
+    QString exec;
 
     void toDomodifyQuicklaunchMenuAction(bool direction) { modifyQuicklaunchMenuAction(direction);}
 

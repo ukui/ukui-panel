@@ -116,6 +116,9 @@ public:
     inline IUKUIPanel * panel() const { return mPlugin->panel(); }
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
+    void pubAddButton(QuickLaunchAction* action) { addButton(action); }
+    void pubSaveSettings() { saveSettings(); }
+    bool pubCheckIfExist(QString name);
 
 
     ////////////////////////////////////////////////
@@ -172,7 +175,6 @@ private slots:
     ////////////////////////////
     /// quicklaunch slots
     ///
-    void addButton(QuickLaunchAction* action);
     bool checkButton(QuickLaunchAction* action);
     void removeButton(QuickLaunchAction* action);
     void removeButton(QString exec);
@@ -186,9 +188,12 @@ private:
 
 private:
     void addWindow(WId window);
+    void addButton(QuickLaunchAction* action);
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
     void _AddToTaskbar(QString arg);
+    void doInitGroupButton(QString sname);
+    void initRelationship();
 
 
     enum TaskStatus{NORMAL, HOVER, PRESS};

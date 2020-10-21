@@ -191,6 +191,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
         if (str.contains("Loongson")) CpuInfoFlg = false;
     }
     file.close();
+    saveSettings();
 
     /**/
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel.plugins.service");
@@ -367,9 +368,8 @@ void UKUITaskBar::dropEvent(QDropEvent *e)
         fileName.append(urlName.right(urlName.length() - urlName.lastIndexOf("/") - 1));
         QFileInfo fi(fileName);
         QFileInfo ur(urlName);
-        for (int i = 0; i < mVBtn.size(); i++) {
-            if (mVBtn.value(i)->file_name.compare(fileName) == 0) return;
-        }
+        if (pubCheckIfExist(fileName)) return;
+        if (pubCheckIfExist(urlName)) return;
         XdgDesktopFile xdg;
         if (xdg.load(fileName))
         {
@@ -389,18 +389,14 @@ void UKUITaskBar::dropEvent(QDropEvent *e)
             if (xdg.isSuitable())
                 addButton(new QuickLaunchAction(&xdg, this));
         }
-        /*else if (ur.exists() && ur.isExecutable() && !ur.isDir())
+        else if (ur.exists() && ur.isExecutable() && !ur.isDir())
         {
-            printf("5\n");
             addButton(new QuickLaunchAction(urlName, urlName, "", this));
         }
         else if (ur.exists())
         {
-            printf("6\n");
             addButton(new QuickLaunchAction(urlName, this));
-        }*/
-        else
-        {
+        } else {
             qWarning() << "XdgDesktopFile" << fileName << "is not valid";
             QMessageBox::information(this, tr("Drop Error"),
                                      tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
@@ -418,7 +414,6 @@ void UKUITaskBar::buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint co
     int src_index;
     if (!src || -1 == (src_index = mLayout->indexOf(src)))
     {
-        qDebug() << "Dropped invalid";
         return;
     }
 
@@ -584,7 +579,7 @@ void UKUITaskBar::addWindow(WId window)
                 isNeedAddNewWidget = false;
                 group->existSameQckBtn = true;
                 pQuickBtn->existSameQckBtn = true;
-                group->QckBtnIndex = mVBtn.indexOf(pQuickBtn);
+                group->setQckLchBtn(pQuickBtn);
                 break;
             }
         }
@@ -608,6 +603,7 @@ void UKUITaskBar::addWindow(WId window)
 }
 
 bool UKUITaskBar::ignoreSymbolCMP(QString filename,QString groupname) {
+    if (filename.isEmpty()) return false;
     groupname.replace(" ", "");
     groupname.replace("-", ".");
     groupname.replace(".demo", "");
@@ -704,6 +700,17 @@ void UKUITaskBar::onWindowAdded(WId window)
         addWindow(window);
 }
 
+bool UKUITaskBar::pubCheckIfExist(QString name) {
+    for (int i = 0; i < mVBtn.size(); i++) {
+        QString cmpName;
+        cmpName = (!mVBtn.value(i)->file_name.isEmpty() ? mVBtn.value(i)->file_name :
+                   (!mVBtn.value(i)->file.isEmpty() ? mVBtn.value(i)->file :
+                    (!mVBtn.value(i)->name.isEmpty() ? mVBtn.value(i)->name : mVBtn.value(i)->exec)));
+        if (cmpName.isEmpty()) return false;
+        if (cmpName.compare(name) == 0) return true;
+    }
+    return false;
+}
 /************************************************
 
  ************************************************/
@@ -1138,16 +1145,18 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
         {
             mLayout->addWidget(btn);
             mLayout->moveItem(mLayout->indexOf(btn), mLayout->indexOf(group));
-            btn->setHidden(true);
             isNeedAddNewWidget = false;
             group->existSameQckBtn = true;
             btn->existSameQckBtn = true;
-            group->QckBtnIndex = mVBtn.indexOf(btn);
+            mVBtn.push_back(btn);
+            group->setQckLchBtn(btn);
+            btn->setHidden(true);
             break;
         }
     }
     if (isNeedAddNewWidget) {
         mLayout->addWidget(btn);
+        mVBtn.push_back(btn);
         mLayout->moveItem(mLayout->indexOf(btn), countOfButtons() - 1);
         /*
         if (countOfButtons() > 32) {
@@ -1156,13 +1165,11 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
         }
         */
     }
-    mVBtn.push_back(btn);
     connect(btn, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
         switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
     });
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
     connect(btn, SIGNAL(t_saveSettings()), this, SLOT(saveSettingsSlot()));
-    qDebug()<< btn->file_name;
     mLayout->setEnabled(true);
    // GetMaxPage();
     //realign();
@@ -1238,16 +1245,7 @@ void UKUITaskBar::removeButton(QuickLaunchAction* action)
     while (i < mVBtn.size()) {
         UKUITaskGroup *tmp = mVBtn.value(i);
         if (QString::compare(btn->file_name, tmp->file_name) == 0) {
-            for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
-            {
-                UKUITaskGroup *group = it.value();
-                if (group->existSameQckBtn) {
-                    if (ignoreSymbolCMP(btn->file_name, group->groupName())) {
-                            group->existSameQckBtn = false;
-                            group->QckBtnIndex = -1;
-                    }
-                }
-            }
+            doInitGroupButton(tmp->file_name);
             tmp->deleteLater();
             mLayout->removeWidget(tmp);
             mVBtn.remove(i);
@@ -1270,16 +1268,7 @@ void UKUITaskBar::removeButton(QString file)
     while (i < mVBtn.size()) {
         UKUITaskGroup *tmp = mVBtn.value(i);
         if (QString::compare(file, tmp->file_name) == 0) {
-            for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
-            {
-                UKUITaskGroup *group = it.value();
-                if (group->existSameQckBtn) {
-                    if (ignoreSymbolCMP(tmp->file_name, group->groupName())) {
-                            group->existSameQckBtn = false;
-                            group->QckBtnIndex = -1;
-                    }
-                }
-            }
+            doInitGroupButton(tmp->file_name);
             tmp->deleteLater();
             mLayout->removeWidget(tmp);
             mVBtn.remove(i);
@@ -1358,18 +1347,9 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
     {
         UKUITaskGroup *pQuickBtn = *it;
         if(ignoreSymbolCMP(pQuickBtn->file_name, arg)
-           &&(layout()->indexOf(pQuickBtn) >= 0 ))
+           && (layout()->indexOf(pQuickBtn) >= 0 ))
         {
-            for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
-            {
-                UKUITaskGroup *group = it.value();
-                if (group->existSameQckBtn) {
-                    if (ignoreSymbolCMP(pQuickBtn->file_name, group->groupName())) {
-                            group->existSameQckBtn = false;
-                            group->QckBtnIndex = -1;
-                    }
-                }
-            }
+            doInitGroupButton(pQuickBtn->file_name);
             mVBtn.removeOne(pQuickBtn);
             pQuickBtn->deleteLater();
             mLayout->removeWidget(pQuickBtn);
@@ -1380,7 +1360,6 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
 }
 
 void UKUITaskBar::_AddToTaskbar(QString arg) {
-    qDebug() << arg;
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
@@ -1448,6 +1427,20 @@ bool UKUITaskBar::RemoveFromTaskbar(QString arg)
     return true;
 }
 
+void UKUITaskBar::doInitGroupButton(QString sname) {
+    for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+    {
+        UKUITaskGroup *group = it.value();
+        if (group->existSameQckBtn) {
+            if (ignoreSymbolCMP(sname, group->groupName())) {
+                    group->existSameQckBtn = false;
+                    group->setQckLchBtn(NULL);
+                    break;
+            }
+        }
+    }
+}
+
 /*为开始菜单提供从任务栏上移除文件的接口*/
 void UKUITaskBar::FileDeleteFromTaskbar(QString file)
 {
@@ -1455,6 +1448,7 @@ void UKUITaskBar::FileDeleteFromTaskbar(QString file)
     while (i < mVBtn.size()) {
         UKUITaskGroup *tmp = mVBtn.value(i);
         if (QString::compare(file, tmp->file_name) == 0) {
+            doInitGroupButton(tmp->file_name);
             tmp->deleteLater();
             mLayout->removeWidget(tmp);
             mVBtn.remove(i);
@@ -1495,7 +1489,7 @@ void UKUITaskBar::buttonDeleted()
                 if (group->existSameQckBtn) {
                     if (ignoreSymbolCMP(btn->file_name, group->groupName())) {
                             group->existSameQckBtn = false;
-                            group->QckBtnIndex = -1;
+                            group->setQckLchBtn(NULL);
                     }
                 }
             }
@@ -1534,8 +1528,9 @@ void UKUITaskBar::saveSettings()
     {
         UKUITaskGroup *b = qobject_cast<UKUITaskGroup*>(mLayout->itemAt(j)->widget());
         if (!b->statFlag && b->existSameQckBtn) continue;
+        if (!b) continue;
         if (b->statFlag && b->existSameQckBtn){
-            b = mVBtn.value(b->QckBtnIndex);
+            b = b->getQckLchBtn();
         }
         if (!b || b->statFlag)
             continue;
