@@ -1780,13 +1780,14 @@ void UKUIPanel::mouseMoveEvent(QMouseEvent* event)
         else movelock = 1;
     }
     if (!movelock) {
-        int panel_h = QApplication::screens().at(0)->size().height() -event->globalPos().ry();
+        int panel_h = QApplication::screens().at(0)->size().height() - event->globalPos().ry();
+        int icon_size = panel_h*0.695652174;
         setCursor(Qt::SizeVerCursor);
-        if (panel_h < PANEL_SIZE_LARGE && panel_h > PANEL_SIZE_SMALL) {
-            setPanelSize(panel_h,true);
-            setIconSize(panel_h*0.695652174 ,true);
-            gsettings->set(PANEL_SIZE_KEY,panel_h);
-            gsettings->set(ICON_SIZE_KEY,panel_h - 18);
+        if (panel_h <= PANEL_SIZE_LARGE && panel_h >= PANEL_SIZE_SMALL) {
+            setPanelSize(panel_h, true);
+            setIconSize(icon_size, true);
+            gsettings->set(PANEL_SIZE_KEY, panel_h);
+            gsettings->set(ICON_SIZE_KEY, icon_size);
         }
         return;
     }

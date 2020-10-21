@@ -55,6 +55,7 @@
 #include <QScreen>
 #include <XdgIcon>
 #include <XdgDesktopFile>
+#include <QMessageBox>
 #include "../panel/customstyle.h"
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANELPOSITION       "panelposition"
@@ -131,8 +132,6 @@ QPixmap qimageFromXImage(XImage* ximage)
     return QPixmap::fromImage(image);
 }
 
-
-
 /************************************************
 
  ************************************************/
@@ -167,6 +166,9 @@ UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin,
    // connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
    //         this, SLOT(toDothis_customContextMenuRequested(const QPoint&)));
     file_name=act->m_settingsMap["desktop"];
+    file = act->m_settingsMap["file"];
+    exec = act->m_settingsMap["exec"];
+    name = act->m_settingsMap["name"];
     this->setStyle(new CustomStyle());
     repaint();
 }
@@ -909,6 +911,51 @@ QPoint UKUITaskGroup::recalculateFramePosition()
 
 void UKUITaskGroup::dropEvent(QDropEvent *event)
 {
+    UKUITaskBar *taskbar = qobject_cast<UKUITaskBar*>(parent());
+    const auto urls = event->mimeData()->urls().toSet();
+    for (const QUrl &url : urls)
+    {
+        QString urlName(url.isLocalFile() ? url.toLocalFile() : url.url());
+        QString fileName("/usr/share/applications/");
+        fileName.append(urlName.right(urlName.length() - urlName.lastIndexOf("/") - 1));
+        QFileInfo fi(fileName);
+        QFileInfo ur(urlName);
+        if (taskbar->pubCheckIfExist(fileName)) return;
+        if (taskbar->pubCheckIfExist(urlName)) return;
+        XdgDesktopFile xdg;
+        if (xdg.load(fileName))
+        {
+            if (xdg.isSuitable())
+                taskbar->pubAddButton(new QuickLaunchAction(&xdg, this));
+        }
+        else if (fi.exists() && fi.isExecutable() && !fi.isDir())
+        {
+            taskbar->pubAddButton(new QuickLaunchAction(fileName, fileName, "", this));
+        }
+        else if (fi.exists())
+        {
+            taskbar->pubAddButton(new QuickLaunchAction(fileName, this));
+        }
+        else if (xdg.load(urlName))
+        {
+            if (xdg.isSuitable())
+                taskbar->pubAddButton(new QuickLaunchAction(&xdg, this));
+        }
+        else if (ur.exists() && ur.isExecutable() && !ur.isDir())
+        {
+            taskbar->pubAddButton(new QuickLaunchAction(urlName, urlName, "", this));
+        }
+        else if (ur.exists())
+        {
+            taskbar->pubAddButton(new QuickLaunchAction(urlName, this));
+        } else {
+            qWarning() << "XdgDesktopFile" << fileName << "is not valid";
+            QMessageBox::information(this, tr("Drop Error"),
+                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                                     );
+        }
+    }
+    taskbar->pubSaveSettings();
     emit t_saveSettings();
     UKUITaskButton::dropEvent(event);
 }
