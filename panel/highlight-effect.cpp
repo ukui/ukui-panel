@@ -385,6 +385,7 @@ QPixmap HighLightEffect::drawSymbolicColoredPixmap(const QPixmap &source)
 
 QIcon HighLightEffect::drawSymbolicColoredIcon(const QIcon &source)
 {
+    QColor standard (31,32,34);
     QGSettings *style_settings;
     bool dark_style;
     const QByteArray style_id(ORG_UKUI_STYLE);
@@ -395,23 +396,23 @@ QIcon HighLightEffect::drawSymbolicColoredIcon(const QIcon &source)
         dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
     }
 
-    QImage img = source.pixmap(32,32).toImage();
+    QImage img = source.pixmap(64,64).toImage();
     for (int x = 0; x < img.width(); x++) {
         for (int y = 0; y < img.height(); y++) {
             auto color = img.pixelColor(x, y);
             if (color.alpha() > 0) {
-                if (dark_style) {
+                if (dark_style && qAbs(color.red()-standard.red())<255 && qAbs(color.green()-standard.green())<255 && qAbs(color.blue()-standard.blue())<255) {
                     color=QColor(COLOR_WHITE);
-                    img.setPixelColor(x, y, color);
                 }
-                else {
-                    color=QColor(COLOR_BLACK);
-                    img.setPixelColor(x, y, color);
-                }
+                //                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20){
+                //                    color=QColor(COLOR_BLACK);
+                //                }
+                img.setPixelColor(x, y, color);
             }
         }
     }
     return QPixmap::fromImage(img);
+    style_settings->deleteLater();
 }
 
 void HighLightEffect::getBackGroundColor(int bg_red,int bg_green,int bg_blue)

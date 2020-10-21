@@ -113,17 +113,17 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     if(QGSettings::isSchemaInstalled(id)){
         gsettings = new QGSettings(id);
         if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
-            tray_icon_color=TRAY_ICON_COLOR_LOGHT;
+            dark_style=true;
         else
-            tray_icon_color=TRAY_ICON_COLOR_DRAK;
+            dark_style=false;
         }
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==STYLE_NAME){
-            if(stylelist.contains(gsettings->get(STYLE_NAME).toString())){
-                tray_icon_color=TRAY_ICON_COLOR_LOGHT;
-            }
+            if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
+                dark_style=true;
             else
-                tray_icon_color=TRAY_ICON_COLOR_DRAK;
+                dark_style=false;
+            repaint();
         }
     });
 }
@@ -475,28 +475,20 @@ void TrayIcon::paintEvent(QPaintEvent *)
 
 QPixmap TrayIcon::drawSymbolicColoredPixmap(const QPixmap &source)
 {
-    QColor gray(128,128,128);
     QColor standard (31,32,34);
     QImage img = source.toImage();
     for (int x = 0; x < img.width(); x++) {
         for (int y = 0; y < img.height(); y++) {
             auto color = img.pixelColor(x, y);
             if (color.alpha() > 0) {
-                if (qAbs(color.red()-gray.red())<20 && qAbs(color.green()-gray.green())<20 && qAbs(color.blue()-gray.blue())<20) {
-                    color.setRed(tray_icon_color);
-                    color.setGreen(tray_icon_color);
-                    color.setBlue(tray_icon_color);
+                if(dark_style && qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20){
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+//                    color.setRgb(255,255,255);
                     img.setPixelColor(x, y, color);
                 }
-                else if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20)
-                {
-                    color.setRed(tray_icon_color);
-                    color.setGreen(tray_icon_color);
-                    color.setBlue(tray_icon_color);
-                    img.setPixelColor(x, y, color);
-                }
-                else
-                {
+                else{
                     img.setPixelColor(x, y, color);
                 }
             }

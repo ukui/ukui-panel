@@ -175,19 +175,3 @@ UKUiStorageWidget::UKUiStorageWidget(){
 UKUiStorageWidget::~UKUiStorageWidget(){
 }
 
-void UKUiStorageWidget::paintEvent(QPaintEvent *)
-{
-//    QStyleOption opt;
-//    opt.init(this);
-//    QPainter p(this);
-//    p.setPen(Qt::NoPen);
-//    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-//    QColor color = palette().color(QPalette::Base);
-//    color.setAlpha(tran);
-//    QBrush brush =QBrush(color);
-//    p.setBrush(brush);
-
-//    p.setRenderHint(QPainter::Antialiasing);
-//    p.drawRoundedRect(opt.rect,6,6);
-//    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
