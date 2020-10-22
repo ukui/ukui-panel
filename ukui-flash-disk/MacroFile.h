@@ -38,4 +38,5 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 //opacity setting
 #define THEME_QT_TRANS "org.ukui.control-center.personalise"
 #define FONT_SIZE "system-font-size"
+#define MODE_QT_KEY "style-name"
 #endif //_MACROFILE_H_

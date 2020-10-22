@@ -949,7 +949,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
     {
         if(event->type() == QEvent::MouseButtonPress)
         {
-            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black")
+            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
             {
                 m_eject_button->setIconSize(QSize(14,14));
                 m_eject_button->setFixedSize(38,38);
@@ -972,7 +972,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
 
         if(event->type() == QEvent::Enter)
         {
-            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black")
+            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
@@ -1035,7 +1035,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
     {
        if(event->type() == QEvent::Enter)
        {
-           if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black")
+           if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
            {
                disWidgetNumOne->setStyleSheet(
                            "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
@@ -1105,7 +1105,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
     {
         if(event->type() == QEvent::Enter )
         {
-            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black")
+            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
             {
                 disWidgetNumTwo->setStyleSheet(
                             "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
@@ -1173,7 +1173,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
     {
         if(event->type() == QEvent::Enter )
         {
-            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black")
+            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
             {
                 disWidgetNumThree->setStyleSheet(
                             "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
@@ -1245,7 +1245,7 @@ bool QClickWidget::eventFilter(QObject *obj, QEvent *event)
     {
         if(event->type() == QEvent::Enter )
         {
-            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black")
+            if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
             {
                 disWidgetNumFour->setStyleSheet(
                             "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");

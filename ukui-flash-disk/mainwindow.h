@@ -132,6 +132,8 @@ private:
     QGSettings *m_transparency_gsettings = nullptr;
     QGSettings *qtSettings = nullptr;
 
+    QWidget *line = nullptr;
+
     //authority
     //QDBusInterface *systemIface;
 public:
@@ -151,6 +153,7 @@ public:
 //    static bool isShow;
     int driveMountNum;
     int ifGpartedHasStarted;
+    int driveNoGparted;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
@@ -162,6 +165,7 @@ Q_SIGNALS:
     void convertShowWindow();
     void unloadMount();
     void GPartedSignal();
+    void ejectDriveSignal();
 
 protected:
     void resizeEvent(QResizeEvent *event);
