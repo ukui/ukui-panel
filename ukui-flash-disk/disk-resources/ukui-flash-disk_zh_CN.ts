@@ -4,19 +4,24 @@
 <context>
     <name>ejectInterface</name>
     <message>
-        <location filename="ejectInterface.cpp" line="46"/>
+        <location filename="ejectInterface.cpp" line="49"/>
         <source>usb has been unplugged safely</source>
         <translation>U盘已安全拔出</translation>
     </message>
     <message>
-        <location filename="ejectInterface.cpp" line="53"/>
+        <location filename="ejectInterface.cpp" line="50"/>
         <source>usb is occupying unejectable</source>
         <translation>U盘占用无法弹出</translation>
     </message>
     <message>
-        <location filename="ejectInterface.cpp" line="60"/>
+        <location filename="ejectInterface.cpp" line="51"/>
         <source>data device has been unloaded</source>
         <translation>数据盘已被卸载</translation>
+    </message>
+    <message>
+        <location filename="ejectInterface.cpp" line="52"/>
+        <source>gparted has started</source>
+        <translation>分区编辑器启动</translation>
     </message>
 </context>
 <context>
