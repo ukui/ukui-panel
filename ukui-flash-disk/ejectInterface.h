@@ -38,6 +38,7 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusObjectPath>
 #include <QDBusReply>
+#include <qgsettings.h>
 
 
 #include "MacroFile.h"
@@ -54,9 +55,13 @@ public:
     ~ejectInterface();
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
+    void initTransparentState();
+    void getTransparentData();
+    void initFontSetting();
+    void getFontSize();
 
 private:
-    QPushButton *eject_image_button;
+    QLabel *eject_image_label;
     QIcon eject_image_icon;
     QLabel *show_text_label;
     QLabel *mount_name_label;
@@ -65,6 +70,12 @@ private:
     QVBoxLayout *main_V_BoxLayput;
     QTimer *interfaceHideTime;
     QScreen *EjectScreen;
+
+    double m_transparency;
+    int fontSize;
+    QGSettings *m_transparency_gsettings = nullptr;
+    QGSettings *fontSettings = nullptr;
+
 
 private Q_SLOTS:
     void on_interface_hide();
