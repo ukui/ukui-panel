@@ -941,10 +941,6 @@ void UKUITaskGroup::dropEvent(QDropEvent *event)
             if (xdg.isSuitable())
                 taskbar->pubAddButton(new QuickLaunchAction(&xdg, this));
         }
-        else if (ur.exists() && ur.isExecutable() && !ur.isDir())
-        {
-            taskbar->pubAddButton(new QuickLaunchAction(urlName, urlName, "", this));
-        }
         else if (ur.exists())
         {
             taskbar->pubAddButton(new QuickLaunchAction(urlName, this));

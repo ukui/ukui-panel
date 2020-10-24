@@ -161,7 +161,7 @@ void QuickLaunchAction::execAction(QString additionalAction)
         case ActionFile:
             QFileInfo fileinfo(exec);
             if (fileinfo.exists()) {
-                QDesktopServices::openUrl(QUrl(exec));
+                QDesktopServices::openUrl(QUrl::fromLocalFile(exec));
             } else {
                 showQMessage =true;
             }
