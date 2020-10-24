@@ -226,6 +226,18 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     {
         mAct = new QuickLaunchAction(fileName, this);
     }
+
+    QGSettings *as;
+    const QByteArray calendar_id("org.ukui.style");
+    if(QGSettings::isSchemaInstalled(calendar_id)){
+        as = new QGSettings(calendar_id);
+    }
+    connect(as, &QGSettings::changed, this, [=] (const QString &key){
+        if(key=="iconThemeName"){
+            this->updateIcon();
+        }
+    });
+
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
     connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(onActiveWindowChanged(WId)));
