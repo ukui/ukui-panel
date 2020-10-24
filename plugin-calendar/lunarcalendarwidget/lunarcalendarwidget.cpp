@@ -713,11 +713,13 @@ void LunarCalendarWidget::showPreviousMonth()
         return;
     }
 
-    month--;
-    if (month < 1) {
-        month = 12;
-        //year--;
-    }
+    //extra:
+    if (month > 1)
+        month--;
+//    if (month < 1) {
+//        month = 12;
+//        year--;
+//    }
 
     dateChanged(year, month, day);
 }
@@ -732,11 +734,13 @@ void LunarCalendarWidget::showNextMonth()
         return;
     }
 
-    month++;
-    if (month > 12) {
-        month = 1;
-        //year++;
-    }
+    //extra
+    if (month < 12)
+        month++;
+//    if (month > 12) {
+//        month = 1;
+//        //year++;
+//    }
 
     dateChanged(year, month, day);
 }

@@ -389,10 +389,6 @@ void UKUITaskBar::dropEvent(QDropEvent *e)
             if (xdg.isSuitable())
                 addButton(new QuickLaunchAction(&xdg, this));
         }
-        else if (ur.exists() && ur.isExecutable() && !ur.isDir())
-        {
-            addButton(new QuickLaunchAction(urlName, urlName, "", this));
-        }
         else if (ur.exists())
         {
             addButton(new QuickLaunchAction(urlName, this));
