@@ -161,7 +161,6 @@ UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin,
             toDomodifyQuicklaunchMenuAction(true);
         }
     });
-
     setContextMenuPolicy(Qt::CustomContextMenu);
    // connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
    //         this, SLOT(toDothis_customContextMenuRequested(const QPoint&)));
@@ -227,16 +226,7 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
         mAct = new QuickLaunchAction(fileName, this);
     }
 
-    QGSettings *as;
-    const QByteArray calendar_id("org.ukui.style");
-    if(QGSettings::isSchemaInstalled(calendar_id)){
-        as = new QGSettings(calendar_id);
-    }
-    connect(as, &QGSettings::changed, this, [=] (const QString &key){
-        if(key=="iconThemeName"){
-            this->updateIcon();
-        }
-    });
+
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
