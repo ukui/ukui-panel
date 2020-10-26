@@ -86,6 +86,7 @@ public:
     //virtual QLayoutItem *takeAt(int index) = 0;
     void saveSettings();
     void showPlaceHolder();
+    void pubAddButton (QuickLaunchAction *action) { addButton(action); }
 
     friend class FilectrlAdaptor;
 
