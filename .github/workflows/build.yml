@@ -20,8 +20,8 @@ jobs:
     steps:
       - name: Checkout ukui-panel source code
         uses: actions/checkout@v2
-      - name: Refresh pacman repository
-        run: pacman -Sy
+      - name: Refresh pacman repository and force upgrade
+        run: pacman -Syyu --noconfirm
       - name: Install build dependencies
         run: pacman -S --noconfirm base-devel glibc qt5-base cmake qt5-tools dconf libdbusmenu-qt5 gsettings-qt kwindowsystem libqtxdg qt5-webkit peony
       - name: CMake configure & Make
