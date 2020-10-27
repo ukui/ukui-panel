@@ -311,6 +311,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
 {
     qDebug()<<"drive disconnect";
     p_this->ifGpartedHasStarted = 0;
+    p_this->driveNoGparted = 1;
     char *drive_name = g_drive_get_name(drive);
     findGDriveList()->removeOne(drive);
     p_this->hide();
@@ -338,7 +339,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
     if(p_this->mount_uri)
     {
         qDebug()<<"mount uir is not null";
-        if(strcmp(p_this->mount_uri,"burn:///") == 0 || strcmp(p_this->mount_uri,"cdda://sr0/") == 0)
+        if(strcmp(p_this->mount_uri,"burn:///") == 0 || strcmp(p_this->mount_uri,"cdda://sr0/") == 0 || strcmp(p_this->mount_uri,"file:///"))
         {
             if(!findGDriveList()->contains(g_volume_get_drive(volume)))
             {
@@ -378,9 +379,13 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
 void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
     qDebug()<<"volume removed";
-    p_this->driveNoGparted = 0;
     p_this->ifGpartedHasStarted = 0;
     qDebug()<<"ifGpartedStarted"<<p_this->ifGpartedHasStarted;
+    qDebug()<<"g_drive_get_volumes"<<g_list_length(g_drive_get_volumes(g_volume_get_drive(volume)));
+    if(g_list_length(g_drive_get_volumes(g_volume_get_drive(volume))) == 0)
+    {
+        findGDriveList()->removeOne(g_volume_get_drive(volume));
+    }
     findGVolumeList()->removeOne(volume);
     connect(p_this,&MainWindow::ejectDriveSignal,p_this,[=](){
         p_this->driveNoGparted = 1;
@@ -499,6 +504,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
 //here we begin painting the main interface
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
+    driveNoGparted = 0;
     if(ifGpartedHasStarted == 0)
     {
 //    qDebug()<<m_transparency;
@@ -957,16 +963,15 @@ void MainWindow::newarea(int No,
                          QString pathDis4,
                          int linestatus)
 {
-    if(open_widget)
-    {
-    }
     open_widget = new QClickWidget(this,No,Drive,Drivename,nameDis1,nameDis2,nameDis3,nameDis4,
                                    capacityDis1,capacityDis2,capacityDis3,capacityDis4,
                                    pathDis1,pathDis2,pathDis3,pathDis4);
     connect(open_widget,&QClickWidget::clickedConvert,this,[=]()
     {
         this->hide();
-        Q_EMIT ejectDriveSignal();
+        Q_EMIT this->ejectDriveSignal();
+        ifGpartedHasStarted = 0;
+        driveNoGparted = 1;
         qDebug()<<"drive has been disconnected";
     });
 

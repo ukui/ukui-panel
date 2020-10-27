@@ -47,44 +47,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *
 
     else /*if(g_drive_can_stop(source_object) == true)*/
     {
-//        qDebug()<<"aaaaaaaaaaaaa-&& g_drive_can_stop(source_object) == true----------1";
-//        int volumeNum = g_list_length(g_drive_get_volumes(source_object));
-
-//        for(int eachVolume = 0 ; eachVolume < volumeNum ;eachVolume++)
-//        {
-////            g_mount_unmount_with_operation(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),
-////                                           G_MOUNT_UNMOUNT_NONE,
-////                                           NULL,
-////                                           NULL,
-////                                           GAsyncReadyCallback(frobnitz_result_func_mount),
-////                                           p_this
-////                        );
-//            p_this->flagType = 0;
-
-//            if(g_mount_can_unmount(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))))
-//            {
-////                UDiskPathDis1 = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),0))));
-//                char *dataPath = g_file_get_path(g_mount_get_root(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume))));
-////                QProcess::execute("pkexec umount " + QString(dataPath));
-////                p_this->flagType++;
-////                qDebug()<<QString(dataPath)<<"  aaaaaaaaaaaaa-------------------------------1.5";
-//                QProcess p;
-//                p.setProgram("pkexec");
-//                p.setArguments(QStringList()<<"umount"<<QString(dataPath));
-//                p.start();
-//                p_this->ifSucess = p.waitForFinished();
-//                if(p_this->ifSucess == true)
-//                {
-//                    p_this->m_eject = new ejectInterface(p_this,g_volume_get_name((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)),DATADEVICE);
-//                    p_this->m_eject->show();
-//                    findGMountList()->removeOne(g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(source_object),eachVolume)));
-//                    findGDriveList()->removeOne(source_object);
-//                }
-//                qDebug()<<"-----"<<findGDriveList()->size()<<";;;;;;;;;;;;;;;;"<<findGMountList()->size();
-//                qDebug()<<"oh no"<<err->message<<err->code;
-//            }
-
-//        }
         g_drive_eject_with_operation(source_object,
                                      G_MOUNT_UNMOUNT_FORCE,
                                      NULL,
@@ -93,13 +55,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *
                                      p_this
                                      );
     }
-//    else
-//    {
-//        qDebug()<<"oh no"<<err->message<<err->code;
-//        qDebug()<<"howwohohwohow";
-//        p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),OCCUPYDEVICE);
-//        p_this->m_eject->show();
-//    }
 }
 
 
@@ -213,60 +168,38 @@ QClickWidget::QClickWidget(QWidget *parent,
 //we set the information and set all details of the U disk in main interface
     if(m_Num == 1)
     {
+        disWidgetNumOne = new QWidget(this);
         QHBoxLayout *onevolume_h_BoxLayout = new QHBoxLayout();
-        m_nameDis1_label = new ClickLabel(this);
+        m_nameDis1_label = new ClickLabel(disWidgetNumOne);
         m_nameDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
-        //m_nameDis1_label->setFixedSize(120,18);
         QString VolumeName = getElidedText(m_nameDis1_label->font(), m_nameDis1, 120);
         m_nameDis1_label->adjustSize();
         qDebug()<<m_nameDis1_label->width()<<"-----------------------"<<m_nameDis1_label->height();
         m_nameDis1_label->setText("- "+VolumeName+":");
-
-//            m_nameDis1_label->setStyleSheet(
-//                                    //正常状态样式
-//                                    "QLabel"
-//                                    "{"
-//                                    "font-size:14px;"
-//                                    "font-family:Microsoft YaHei;"
-//                                    "font-weight:400;"
-//                                    "color:rgba(255,255,255,0.35);"
-//                                    "line-height:28px;"
-//                                    "opacity:0.35;"
-//                                    "}"
-//                                    );
-        //m_nameDis1_label->setAlignment(Qt::AlignCenter);
-        m_nameDis1_label->installEventFilter(this);
-
-        //m_driveName_label->setText(VolumeName);
-        //m_nameDis1_label->setFixedWidth(140);
-        m_capacityDis1_label = new QLabel();
-        //m_capacityDis1_label->setFixedSize(60,18);
+        m_capacityDis1_label = new QLabel(disWidgetNumOne);
         QString str_capacityDis1 = size_human(m_capacityDis1);
         m_capacityDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis1_label->setText("("+str_capacityDis1+")");
-        //m_capacityDis1_label->setAlignment(Qt::AlignLeft);
-        //m_capacityDis1_label->setFixedWidth(70);
         m_capacityDis1_label->setObjectName("capacityLabel");
-        //m_capacityDis1_label->adjustSize();
         qDebug()<<m_capacityDis1_label->width()<<"++++++++++++++++++++++++"<<m_capacityDis1_label->height();
-
-        onevolume_h_BoxLayout->addSpacing(40);
         onevolume_h_BoxLayout->setSpacing(0);
+        onevolume_h_BoxLayout->addSpacing(50);
+        onevolume_h_BoxLayout->setMargin(0);   //使得widgetg上的label得以居中显示
         onevolume_h_BoxLayout->addWidget(m_nameDis1_label);
         onevolume_h_BoxLayout->addWidget(m_capacityDis1_label);
+        onevolume_h_BoxLayout->addSpacing(10);
         onevolume_h_BoxLayout->addStretch();
-        disWidgetNumOne = new QWidget;
-        //setObjectName to add stylesheet for parent object only
+
         disWidgetNumOne->setObjectName("OriginObjectOnly");
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+//        disWidgetNumOne->setContentsMargins(0,0,0,0);
         disWidgetNumOne->setLayout(onevolume_h_BoxLayout);
         disWidgetNumOne->installEventFilter(this);
-
-        main_V_BoxLayout->setContentsMargins(0,0,0,0);
+        disWidgetNumOne->setFixedHeight(30);
+//        main_V_BoxLayout->setContentsMargins(0,0,0,0);
         main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
         main_V_BoxLayout->addWidget(disWidgetNumOne);
-
+//        main_V_BoxLayout->setAlignment(Qt::AlignVCenter);
+//        setContentsMargins(0,0,0,0);
         this->setLayout(main_V_BoxLayout);
         this->setFixedSize(276,68);
 //            connect(m_nameDis1_label,SIGNAL(clicked()),this,SLOT(on_volume1_clicked()));
@@ -275,7 +208,7 @@ QClickWidget::QClickWidget(QWidget *parent,
     if(m_Num == 2)
     {
         QHBoxLayout *onevolume_h_BoxLayout = new QHBoxLayout();
-        m_nameDis1_label = new ClickLabel(this);
+        m_nameDis1_label = new ClickLabel();
         m_nameDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         QString VolumeNameDis1 = getElidedText(m_nameDis1_label->font(), m_nameDis1, 120);
         m_nameDis1_label->adjustSize();
@@ -300,9 +233,10 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis1_label->setText("("+str_capacityDis1+")");
         m_capacityDis1_label->setObjectName("capacityLabel");
-        onevolume_h_BoxLayout->addSpacing(40);
+        onevolume_h_BoxLayout->addSpacing(50);
         onevolume_h_BoxLayout->setSpacing(0);
         onevolume_h_BoxLayout->addWidget(m_nameDis1_label);
+        onevolume_h_BoxLayout->setMargin(0);
 //            QVBoxLayout *capacityDis1_V_BoxLayout = new QVBoxLayout;
 //            capacityDis1_V_BoxLayout->addSpacing(2);
 //            capacityDis1_V_BoxLayout->addWidget(m_capacityDis1_label);
@@ -310,8 +244,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         onevolume_h_BoxLayout->addWidget(m_capacityDis1_label);
         onevolume_h_BoxLayout->addStretch();
         disWidgetNumOne = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumOne->setFixedHeight(30);
         disWidgetNumOne->setObjectName("OriginObjectOnly");
         disWidgetNumOne->setLayout(onevolume_h_BoxLayout);
         disWidgetNumOne->installEventFilter(this);
@@ -339,17 +272,17 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis2_label->setText("("+str_capacityDis2+")");
         m_capacityDis2_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis2_label->setObjectName("capacityLabel");
-        twovolume_h_BoxLayout->addSpacing(40);
+        twovolume_h_BoxLayout->addSpacing(50);
         twovolume_h_BoxLayout->setSpacing(0);
         twovolume_h_BoxLayout->addWidget(m_nameDis2_label);
+        twovolume_h_BoxLayout->setMargin(0);
 //            QVBoxLayout *capacityDis2_V_BoxLayout = new QVBoxLayout;
 //            capacityDis2_V_BoxLayout->addWidget(m_capacityDis2_label);
 //            twovolume_h_BoxLayout->addLayout(capacityDis2_V_BoxLayout);
         twovolume_h_BoxLayout->addWidget(m_capacityDis2_label);
         twovolume_h_BoxLayout->addStretch();
         disWidgetNumTwo = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumTwo->setFixedHeight(30);
         disWidgetNumTwo->setObjectName("OriginObjectOnly");
         disWidgetNumTwo->setLayout(twovolume_h_BoxLayout);
         disWidgetNumTwo->installEventFilter(this);
@@ -401,15 +334,15 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis1_label->setText("("+str_capacityDis1+")");
         m_capacityDis1_label->setObjectName("capacityLabel");
-        onevolume_h_BoxLayout->addSpacing(40);
+        onevolume_h_BoxLayout->addSpacing(50);
         onevolume_h_BoxLayout->setSpacing(0);
         onevolume_h_BoxLayout->addWidget(m_nameDis1_label);
         onevolume_h_BoxLayout->addWidget(m_capacityDis1_label);
         onevolume_h_BoxLayout->addStretch();
+        onevolume_h_BoxLayout->setMargin(0);
 
         disWidgetNumOne = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumOne->setFixedHeight(30);
         disWidgetNumOne->setLayout(onevolume_h_BoxLayout);
         disWidgetNumOne->setObjectName("OriginObjectOnly");
         disWidgetNumOne->installEventFilter(this);
@@ -441,15 +374,15 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis2_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis2_label->setObjectName("capacityLabel");
 //            m_capacityDis2_label->setAlignment(Qt::AlignLeft);
-        twovolume_h_BoxLayout->addSpacing(40);
+        twovolume_h_BoxLayout->addSpacing(50);
         twovolume_h_BoxLayout->setSpacing(0);
         twovolume_h_BoxLayout->addWidget(m_nameDis2_label);
         twovolume_h_BoxLayout->addWidget(m_capacityDis2_label);
         twovolume_h_BoxLayout->addStretch();
+        twovolume_h_BoxLayout->setMargin(0);
 
         disWidgetNumTwo = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumTwo->setFixedHeight(30);
         disWidgetNumTwo->setObjectName("OriginObjectOnly");
         disWidgetNumTwo->setLayout(twovolume_h_BoxLayout);
         disWidgetNumTwo->installEventFilter(this);
@@ -459,19 +392,6 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis3_label->setFont(QFont("Microsoft YaHei",fontSize));
         QString VolumeNameDis3 = getElidedText(m_nameDis3_label->font(), m_nameDis3, 120);
         m_nameDis3_label->setText("- "+VolumeNameDis3+":");
-//            m_nameDis3_label->setStyleSheet(
-//                                    //正常状态样式
-//                                    "QLabel{"
-//                                    "width:111px;"
-//                                    "height:14px;"
-//                                    "font-size:14px;"
-//                                    "font-family:Microsoft YaHei;"
-//                                    "font-weight:400;"
-//                                    "color:rgba(255,255,255,0.35);"
-//                                    "line-height:28px;"
-//                                    "opacity:0.35;"
-//                                    "}"
-//                                    );
         m_nameDis3_label->adjustSize();
         m_nameDis3_label->installEventFilter(this);
         //m_nameDis3_label->setText("- "+m_nameDis3+":");
@@ -480,15 +400,15 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis3_label->setText("("+str_capacityDis3+")");
         m_capacityDis3_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis3_label->setObjectName("capacityLabel");
-        threevolume_h_BoxLayout->addSpacing(40);
+        threevolume_h_BoxLayout->addSpacing(50);
         threevolume_h_BoxLayout->setSpacing(0);
         threevolume_h_BoxLayout->addWidget(m_nameDis3_label);
         threevolume_h_BoxLayout->addWidget(m_capacityDis3_label);
         threevolume_h_BoxLayout->addStretch();
+        threevolume_h_BoxLayout->setMargin(0);
 
         disWidgetNumThree = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumThree->setFixedHeight(30);
         disWidgetNumThree->setObjectName("OriginObjectOnly");
         disWidgetNumThree->setLayout(threevolume_h_BoxLayout);
         disWidgetNumThree->installEventFilter(this);
@@ -546,15 +466,15 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis1_label->setText("("+str_capacityDis1+")");
         m_capacityDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis1_label->setObjectName("capacityLabel");
-        onevolume_h_BoxLayout->addSpacing(40);
+        onevolume_h_BoxLayout->addSpacing(50);
         onevolume_h_BoxLayout->setSpacing(0);
         onevolume_h_BoxLayout->addWidget(m_nameDis1_label);
         onevolume_h_BoxLayout->addWidget(m_capacityDis1_label);
         onevolume_h_BoxLayout->addStretch();
+        onevolume_h_BoxLayout->setMargin(0);
 
         disWidgetNumOne = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumOne->setFixedHeight(30);
         disWidgetNumOne->setObjectName("OriginObjectOnly");
         disWidgetNumOne->setLayout(onevolume_h_BoxLayout);
         disWidgetNumOne->installEventFilter(this);
@@ -586,15 +506,15 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis2_label->setText("("+str_capacityDis2+")");
         m_capacityDis2_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis2_label->setObjectName("capacityLabel");
-        twovolume_h_BoxLayout->addSpacing(40);
+        twovolume_h_BoxLayout->addSpacing(50);
         twovolume_h_BoxLayout->setSpacing(0);
         twovolume_h_BoxLayout->addWidget(m_nameDis2_label);
         twovolume_h_BoxLayout->addWidget(m_capacityDis2_label);
         twovolume_h_BoxLayout->addStretch();
+        twovolume_h_BoxLayout->setMargin(0);
 
         disWidgetNumTwo = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumTwo->setFixedHeight(30);
         disWidgetNumTwo->setObjectName("OriginObjectOnly");
         disWidgetNumTwo->setLayout(twovolume_h_BoxLayout);
         disWidgetNumTwo->installEventFilter(this);
@@ -624,15 +544,16 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis3_label->setText("("+str_capacityDis3+")");
         m_capacityDis3_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis3_label->setObjectName("capacityLabel");
-        threevolume_h_BoxLayout->addSpacing(40);
+        threevolume_h_BoxLayout->addSpacing(50);
         threevolume_h_BoxLayout->setSpacing(0);
         threevolume_h_BoxLayout->addWidget(m_nameDis3_label);
         threevolume_h_BoxLayout->addWidget(m_capacityDis3_label);
         threevolume_h_BoxLayout->addStretch(0);
+        threevolume_h_BoxLayout->setMargin(0);
 
         disWidgetNumThree = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumThree->setFixedHeight(30);
+//        disWidgetNumOne->setMaximumHeight(64);
         disWidgetNumThree->setObjectName("OriginObjectOnly");
         disWidgetNumThree->setLayout(threevolume_h_BoxLayout);
         disWidgetNumThree->installEventFilter(this);
@@ -663,15 +584,16 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_capacityDis4_label->setText("("+str_capacityDis4+")");
         m_capacityDis4_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis4_label->setObjectName("capacityLabel");
-        fourvolume_h_BoxLayout->addSpacing(40);
+        fourvolume_h_BoxLayout->addSpacing(50);
         fourvolume_h_BoxLayout->setSpacing(0);
         fourvolume_h_BoxLayout->addWidget(m_nameDis4_label);
         fourvolume_h_BoxLayout->addWidget(m_capacityDis4_label);
         fourvolume_h_BoxLayout->addStretch();
+        fourvolume_h_BoxLayout->setMargin(0);
 
         disWidgetNumFour = new QWidget;
-        disWidgetNumOne->setMinimumHeight(35);
-        disWidgetNumOne->setMaximumHeight(64);
+        disWidgetNumFour->setFixedHeight(30);
+//        disWidgetNumOne->setMaximumHeight(64);
         disWidgetNumFour->setObjectName("OriginObjectOnly");
         disWidgetNumFour->setLayout(fourvolume_h_BoxLayout);
         disWidgetNumFour->installEventFilter(this);
