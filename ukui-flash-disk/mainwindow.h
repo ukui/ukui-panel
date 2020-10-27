@@ -55,6 +55,7 @@ public:
     ~MainWindow();
     void MainWindowShow();
 
+
 protected:
     void hideEvent(QHideEvent event);
 
@@ -126,7 +127,12 @@ private:
     GVolume *volume;
 
     double m_transparency;
+    QString currentThemeMode;
+
     QGSettings *m_transparency_gsettings = nullptr;
+    QGSettings *qtSettings = nullptr;
+
+    QWidget *line = nullptr;
 
     //authority
     //QDBusInterface *systemIface;
@@ -135,15 +141,19 @@ public:
     ejectInterface *m_eject;
 
     void initTransparentState();
+    void initThemeMode();
 //    double getTransparentData();
     void getTransparentData();
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
 
+
     bool ifSucess;
     int flagType;
 //    static bool isShow;
     int driveMountNum;
+    int ifGpartedHasStarted;
+    int driveNoGparted;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
@@ -154,11 +164,14 @@ Q_SIGNALS:
     void clicked();
     void convertShowWindow();
     void unloadMount();
+    void GPartedSignal();
+    void ejectDriveSignal();
 
 protected:
     void resizeEvent(QResizeEvent *event);
     //void enterEvent(QEvent *event);
     bool eventFilter(QObject *obj, QEvent *event);
+    void paintEvent(QPaintEvent *event);
     //void leaveEvent(QEvent *event);
 };
 
