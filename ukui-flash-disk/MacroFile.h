@@ -29,7 +29,14 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 #define NORMALDEVICE 0
 #define DATADEVICE 1
 #define OCCUPYDEVICE 2
+#define GPARTEDINTERFACE 3
 
+/**
+ * QT主题
+ */
+#define THEME_QT_SCHEMA "org.ukui.style"
 //opacity setting
 #define THEME_QT_TRANS "org.ukui.control-center.personalise"
+#define FONT_SIZE "system-font-size"
+#define MODE_QT_KEY "style-name"
 #endif //_MACROFILE_H_

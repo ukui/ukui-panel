@@ -30,6 +30,7 @@
 #include <QLabel>
 #include <QBoxLayout>
 #include <QPushButton>
+#include <qgsettings.h>
 
 #include "ejectInterface.h"
 #include "clickLabel.h"
@@ -58,6 +59,7 @@ public:
     ~QClickWidget();
 public Q_SLOTS:
     void mouseClicked();
+
 protected:
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);
@@ -82,7 +84,7 @@ private:
     QPoint mousePos;
     int m_Num;
     GDrive *m_Drive;
-    QPushButton *image_show_label;
+    QLabel *image_show_label;
     QLabel *m_driveName_label;
     ClickLabel *m_nameDis1_label;
     ClickLabel *m_nameDis2_label;
@@ -97,7 +99,11 @@ private:
     QWidget *disWidgetNumThree;
     QWidget *disWidgetNumFour;
 
+    QGSettings *fontSettings = nullptr;
+    QGSettings *qtSettings = nullptr;
 
+    int fontSize;
+    QString currentThemeMode;
 
 public:
     QPushButton *m_eject_button;
@@ -116,11 +122,13 @@ private Q_SLOTS:
     void switchWidgetClicked();
 private:
     QString size_human(qlonglong capacity);
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
     void resizeEvent(QResizeEvent *event);
 public:
-
+    void initFontSize();
+    void initThemeMode();
 
 };
 

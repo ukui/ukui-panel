@@ -18,16 +18,22 @@
 #include "ejectInterface.h"
 #include <qgsettings.h>
 
-ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType) : QWidget(parent),eject_image_button(nullptr),show_text_label(nullptr),
+ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType) : QWidget(parent),eject_image_label(nullptr),show_text_label(nullptr),
     mount_name_label(nullptr)
 {
+    initFontSetting();
+    getFontSize();
+
 //interface layout
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     EjectScreen = qApp->primaryScreen();
-    eject_image_button = new QPushButton();
-    eject_image_button->setFixedSize(30,30);
+    eject_image_label = new QLabel();
+    eject_image_label->setFixedSize(30,30);
     //QPixmap pixmap("kylin-media-removable-symbolic");
     eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
 
+    QPixmap pixmap = eject_image_icon.pixmap(QSize(25, 25));
+    eject_image_label->setPixmap(pixmap);
     //add it to show the eject button
 
 //    m_driveName_label = new QLabel();         ////
@@ -35,47 +41,47 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
 //    QString DriveName = getElidedText(m_driveName_label->font(), m_driveName, 180);
 //    m_driveName_label->setText(DriveName);
 //    m_driveName_label->setFixedSize(180,40);  ////
-    if(eject_image_button)
-    {
-        eject_image_button->setIcon(eject_image_icon);
-    }
+//    if(eject_image_button)
+//    {
+//        eject_image_button->setIcon(eject_image_icon);
+//    }
 
-    //set the size of the picture
-    eject_image_button->setIconSize(QSize(25,25));
+//    //set the size of the picture
+//    eject_image_button->setIconSize(QSize(25,25));
 
     show_text_label = new QLabel;
-    show_text_label->setFont(QFont("Noto Sans CJK SC",14));
+    show_text_label->setFont(QFont("Noto Sans CJK SC",fontSize));
     QString strNoraml = tr("usb has been unplugged safely");
     QString strOccupy = tr("usb is occupying unejectable");
     QString strDataDevice = tr("data device has been unloaded");
+    QString strGParted = tr("gparted has started");
     QString normalShow = getElidedText(show_text_label->font(),strNoraml,150);
     QString occupyShow = getElidedText(show_text_label->font(),strOccupy,150);
     QString datadeviceShow = getElidedText(show_text_label->font(),strDataDevice,150);
+    QString gpartedShow = getElidedText(show_text_label->font(),strGParted,150);
     //add the text of the eject interface
     if(show_text_label)
     {
         if(deviceType == NORMALDEVICE)
         {
             show_text_label->setText(normalShow);
-            QPalette pe;
-            pe.setColor(QPalette::WindowText,Qt::white);
-            show_text_label->setPalette(pe);
+//            QPalette pe;
+//            pe.setColor(QPalette::WindowText,Qt::white);
+//            show_text_label->setPalette(pe);
         }
         else if(deviceType == OCCUPYDEVICE)
         {
 //            show_text_label->setText(tr("usb is occupying unejectable"));
             show_text_label->setText(occupyShow);
-            QPalette pe;
-            pe.setColor(QPalette::WindowText,Qt::white);
-            show_text_label->setPalette(pe);
         }
         else if(deviceType == DATADEVICE)
         {
 //            show_text_label->setText(tr("data device has been unloaded"));
             show_text_label->setText(datadeviceShow);
-            QPalette pe;
-            pe.setColor(QPalette::WindowText,Qt::white);
-            show_text_label->setPalette(pe);
+        }
+        else if(deviceType == GPARTEDINTERFACE)
+        {
+            show_text_label->setText(gpartedShow);
         }
         else{}
     }
@@ -84,12 +90,13 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     if(ejectinterface_h_BoxLayout)
     {
         ejectinterface_h_BoxLayout->addStretch();
-        ejectinterface_h_BoxLayout->addWidget(eject_image_button);
+        ejectinterface_h_BoxLayout->addWidget(eject_image_label);
         ejectinterface_h_BoxLayout->addWidget(show_text_label);
         ejectinterface_h_BoxLayout->addStretch();
     }
     mountname_h_BoxLayout = new QHBoxLayout();
     mount_name_label = new QLabel();
+    mount_name_label->setFont(QFont("Noto Sans CJK SC",fontSize));
     if(mount_name_label)
     {
         mount_name_label->setText(mount_name);
@@ -105,57 +112,57 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
 
-    QPainterPath path;
-    auto rect = this->rect();
-    rect.adjust(0,0,-0,-0);
-    path.addRoundedRect(rect, 6, 6);
-    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
+//    QPainterPath path;
+//    auto rect = this->rect();
+//    rect.adjust(0,0,-0,-0);
+//    path.addRoundedRect(rect, 6, 6);
+//    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
 
     //set the mian style of the ejecet interface
-    this->setStyleSheet("QWidget{"
-                        "background:rgba(19,19,20,1);"
-                        "border:1px solid rgba(255, 255, 255, 0.05);"
-                        "border-radius:6px;"
-                        "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
-                        "border-radius:6px"
-                        "}");
+//    this->setStyleSheet("QWidget{"
+//                        "background:rgba(19,19,20,1);"
+//                        "border:1px solid rgba(255, 255, 255, 0.05);"
+//                        "border-radius:6px;"
+//                        "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
+//                        "border-radius:6px"
+//                        "}");
 
     //set the style of the ejecet-image-button
 
-    eject_image_button->setStyleSheet(
-                //正常状态样式
-                "QPushButton{"
-                "color:rgba(255,255,255,1);"
-                "line-height:24px;"
-                "opacity:1;"
-                "border:none;"
-                "}"
-                );
+//    eject_image_button->setStyleSheet(
+//                //正常状态样式
+//                "QPushButton{"
+//                "color:rgba(255,255,255,1);"
+//                "line-height:24px;"
+//                "opacity:1;"
+//                "border:none;"
+//                "}"
+//                );
     //set the syle of show_text_label
-    show_text_label->setStyleSheet(
-                //正常状态样式
-                "QLabel{"
-                "font-size:16px;"
-                "font-family:NotoSansCJKsc-Regular;"
-                "font-weight:400;"
-                "color:rgba(255,255,255,1);"
-                "line-height:24px;"
-                "opacity:1;"
-                "border:none;"
-                "}");
-    mount_name_label->setStyleSheet(
-                //正常状态样式
-                "QLabel{"
-                "width:93px;"
-                "height:15px;"
-                "font-size:14px;"
-                "font-family:NotoSansCJKsc-Regular;"
-                "font-weight:400;"
-                "color:rgba(255,255,255,0.35);"
-                "line-height:28px;"
-                "opacity:0.35;"
-                "border:none;"
-                "}");
+//    show_text_label->setStyleSheet(
+//                //正常状态样式
+//                "QLabel{"
+//                "font-size:16px;"
+//                "font-family:NotoSansCJKsc-Regular;"
+//                "font-weight:400;"
+//                "color:rgba(255,255,255,1);"
+//                "line-height:24px;"
+//                "opacity:1;"
+//                "border:none;"
+//                "}");
+//    mount_name_label->setStyleSheet(
+//                //正常状态样式
+//                "QLabel{"
+//                "width:93px;"
+//                "height:15px;"
+//                "font-size:14px;"
+//                "font-family:NotoSansCJKsc-Regular;"
+//                "font-weight:400;"
+//                "color:rgba(255,255,255,0.35);"
+//                "line-height:28px;"
+//                "opacity:0.35;"
+//                "border:none;"
+//                "}");
     this->setLayout(main_V_BoxLayput);
 
     //set the main signal-slot function to complete the eject interface to let it disappear automatically
@@ -164,6 +171,8 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(on_interface_hide()));
     interfaceHideTime->start(1000);
     moveEjectInterfaceRight();
+    initTransparentState();
+    this->getTransparentData();
 }
 
 ejectInterface::~ejectInterface()
@@ -171,14 +180,18 @@ ejectInterface::~ejectInterface()
 
 }
 
-
 //If the fillet does not take effect
 void ejectInterface::paintEvent(QPaintEvent *event)
  {
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+    QRect rect = this->rect();
+    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    p.setBrush(opt.palette.color(QPalette::Base));
+    p.setOpacity(m_transparency);
+    p.setPen(Qt::NoPen);
+    p.drawRoundedRect(rect, 6, 6);
     QWidget::paintEvent(event);
  }
 
@@ -277,4 +290,56 @@ int ejectInterface::getPanelHeight(QString str)
                               QDBusConnection::sessionBus() );
     QDBusReply<int> reply = interface.call("GetPanelSize", str);
     return reply;
+}
+
+void ejectInterface::initTransparentState()
+{
+    const QByteArray idtrans(THEME_QT_TRANS);
+
+    if(QGSettings::isSchemaInstalled(idtrans))
+    {
+        m_transparency_gsettings = new QGSettings(idtrans);
+    }
+}
+
+void ejectInterface::getTransparentData()
+{
+    if (!m_transparency_gsettings)
+    {
+       m_transparency = 0.95;
+       return;
+    }
+
+    QStringList keys = m_transparency_gsettings->keys();
+    if (keys.contains("transparency"))
+    {
+        m_transparency = m_transparency_gsettings->get("transparency").toDouble();
+    }
+
+}
+
+void ejectInterface::initFontSetting()
+{
+    const QByteArray id(THEME_QT_SCHEMA);
+
+    if(QGSettings::isSchemaInstalled(id))
+    {
+        fontSettings = new QGSettings(id);
+    }
+}
+
+void ejectInterface::getFontSize()
+{
+
+    if (!fontSettings)
+    {
+       fontSize = 11;
+       return;
+    }
+
+    QStringList keys = fontSettings->keys();
+    if (keys.contains("systemFont") || keys.contains("systemFontSize"))
+    {
+        fontSize = fontSettings->get("system-font").toInt();
+    }
 }

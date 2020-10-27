@@ -16,6 +16,7 @@
  *
  */
 #include "MainController.h"
+//#include "stdlib.h"
 
 MainController* MainController::mSelf = 0;  //static variable
 MainController* MainController::self()      //static function    //complete the singleton object
@@ -31,6 +32,8 @@ MainController::MainController()
 {
     init();
     m_DiskWindow = new MainWindow;         //main process singleton object
+    m_DiskWindow->setAttribute(Qt::WA_TranslucentBackground);
+    m_DiskWindow->setProperty("useSystemStyleBlur",true);
 }
 
 MainController::~MainController()
@@ -56,7 +59,16 @@ int MainController::IsNotRunning()
     //determine the session bus that if it has been connected
     char service_name[SERVICE_NAME_SIZE];
     memset(service_name, 0, SERVICE_NAME_SIZE);
-    snprintf(service_name, SERVICE_NAME_SIZE, "%s_%d",UKUI_FLASH_DISK_SERVICE,getuid());
+//    char *appName;
+//    std::string strAppName = "ukui-flash-disk";
+//    appName = strAppName.c_str();  此方法返回的是一个可读不可改的const char *类型
+    char *appName;
+    QString strAppName;
+    QByteArray ba = strAppName.toLatin1();
+    appName = ba.data();
+    snprintf(service_name, SERVICE_NAME_SIZE, "%s_%d_%s",UKUI_FLASH_DISK_SERVICE,getuid(),strcat(appName,getenv("DISPLAY")));
+    qDebug()<<"getenv(display)"<<getenv("DISPLAY");
+    qDebug()<<"service_name"<<service_name;
     QDBusConnection conn = QDBusConnection::sessionBus();
     if (!conn.isConnected())
         return 0;
