@@ -170,7 +170,7 @@ private slots:
     void registerShortcuts();
     void shortcutRegistered();
     void activateTask(int pos);
-    void DosaveSettings() { printf("\nsomething has been done\n");saveSettings(); }
+    void DosaveSettings() { saveSettings(); }
 
     ////////////////////////////
     /// quicklaunch slots
@@ -250,6 +250,7 @@ private:
     bool mShowGroupOnHover;
     bool mIconByClass;
     bool mCycleOnWheelScroll; //!< flag for processing the wheelEvent
+    bool hasPlaceHolder;
 
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);

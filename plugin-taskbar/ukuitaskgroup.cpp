@@ -161,7 +161,6 @@ UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin,
             toDomodifyQuicklaunchMenuAction(true);
         }
     });
-
     setContextMenuPolicy(Qt::CustomContextMenu);
    // connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
    //         this, SLOT(toDothis_customContextMenuRequested(const QPoint&)));
@@ -226,6 +225,9 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     {
         mAct = new QuickLaunchAction(fileName, this);
     }
+
+
+
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
     connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(onActiveWindowChanged(WId)));
