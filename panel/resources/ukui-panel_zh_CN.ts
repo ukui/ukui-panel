@@ -881,7 +881,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="119"/>
         <source>Hibernate Mode</source>
-        <translation>挂起</translation>
+        <translation>休眠</translation>
     </message>
     <message>
         <source>LogOut</source>
