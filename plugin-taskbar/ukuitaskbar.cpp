@@ -142,21 +142,21 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
             , this, &UKUITaskBar::onWindowChanged);
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &UKUITaskBar::onWindowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
-    QGSettings *changeTheme;
-        const QByteArray id_Theme("org.ukui.style");
-        if(QGSettings::isSchemaInstalled(id_Theme)){
-            changeTheme = new QGSettings(id_Theme);
-        }
-        connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
-            if(key=="iconThemeName"){
-                sleep(1);
-                for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
-                {
-                    UKUITaskGroup *group = it.value();
-                    group->updateIcon();
-                }
-            }
-        });
+//    QGSettings *changeTheme;
+//        const QByteArray id_Theme("org.ukui.style");
+//        if(QGSettings::isSchemaInstalled(id_Theme)){
+//            changeTheme = new QGSettings(id_Theme);
+//        }
+//        connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+//            if(key=="iconThemeName"){
+//                sleep(1);
+//                for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+//                {
+//                    UKUITaskGroup *group = it.value();
+//                    group->updateIcon();
+//                }
+//            }
+//        });
 
     /*监听系统应用的目录以及安卓兼容应用的目录*/
     FilectrlAdaptor *f;
