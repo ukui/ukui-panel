@@ -1340,7 +1340,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                   )->setDisabled(mLockPanel);
 */
 
-    menu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
+    menu->addAction(QIcon::fromTheme("document-page-setup"),
                     tr("Set up Panel"),
                     this, SLOT(setUpPanel())
                     );
