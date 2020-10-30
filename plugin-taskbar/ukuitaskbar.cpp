@@ -142,7 +142,21 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
             , this, &UKUITaskBar::onWindowChanged);
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &UKUITaskBar::onWindowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
-
+    QGSettings *changeTheme;
+        const QByteArray id_Theme("org.ukui.style");
+        if(QGSettings::isSchemaInstalled(id_Theme)){
+            changeTheme = new QGSettings(id_Theme);
+        }
+        connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+            if(key=="iconThemeName"){
+                sleep(1);
+                for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+                {
+                    UKUITaskGroup *group = it.value();
+                    group->updateIcon();
+                }
+            }
+        });
 
     /*监听系统应用的目录以及安卓兼容应用的目录*/
     FilectrlAdaptor *f;
@@ -845,6 +859,7 @@ void UKUITaskBar::setShowGroupOnHover(bool bFlag)
     mShowGroupOnHover = bFlag;
 }
 
+int i = 0;
 void UKUITaskBar::realign()
 {
     if(savecount < 0) savecount = 0;
@@ -895,8 +910,8 @@ void UKUITaskBar::realign()
     {
         UKUITaskGroup *group = it.value();
         //group->setFixedSize(mPlugin->panel()->panelSize(), mPlugin->panel()->panelSize());
+        //group->updateIcon();
         group->setIconSize(QSize(iconsize,iconsize));
-//        group->updateIcon();
     }
     for (int i = 0; i < mVBtn.size(); i++) {
         UKUITaskGroup * quicklaunch = mVBtn.value(i);
@@ -907,7 +922,6 @@ void UKUITaskBar::realign()
     mLayout->setCellMaximumSize(maxSize);
     mLayout->setDirection(rotated ? UKUi::GridLayout::TopToBottom : UKUi::GridLayout::LeftToRight);
     mLayout->setEnabled(true);
-
     //our placement on screen could have been changed
     emit showOnlySettingChanged();
     emit refreshIconGeometry();
