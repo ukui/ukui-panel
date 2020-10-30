@@ -86,6 +86,9 @@ protected:
 private:
     QMenu *rightPressMenu;
     IUKUIPanelPlugin * mPlugin;
+    QString version;
+
+    void getOsRelease();
 
 private slots:
     void ScreenServer();

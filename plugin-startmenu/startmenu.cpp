@@ -23,6 +23,11 @@
 #include <QDebug>
 #include <QMenu>
 #include <QStyle>
+#include <QFile>
+#include "QDebug"
+#include "QByteArray"
+#include "QFileInfo"
+
 #include "../panel/customstyle.h"
 
 UKUIStartMenuPlugin::UKUIStartMenuPlugin(const IUKUIPanelPluginStartupInfo &startupInfo):
@@ -53,7 +58,7 @@ UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* par
 {
     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     this->setStyle(new CustomStyle());
-//    this->setWindowFlags(Qt::NoFocus);
+    //    this->setWindowFlags(Qt::NoFocus);
     setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
     setAttribute(Qt::WA_ShowWithoutActivating,true);
     setFocusPolicy(Qt::NoFocus);
@@ -69,7 +74,7 @@ void UKUIStartMenuButton::realign()
     if (mPlugin->panel()->isHorizontal())
         this->setFixedSize(mPlugin->panel()->panelSize()*1.3,mPlugin->panel()->panelSize());
     else
-       this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*1.3);
+        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*1.3);
     this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
 
 }
@@ -104,37 +109,39 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     rightPressMenu->addMenu(pPowerSupply);
 
     pUserAction->addAction(QIcon::fromTheme("system-lock-screen-symbolic"),
-                              tr("Lock Screen"),
-                              this, SLOT(ScreenServer())
-                              );                              //锁屏
+                           tr("Lock Screen"),
+                           this, SLOT(ScreenServer())
+                           );                              //锁屏
     pUserAction->addAction(QIcon::fromTheme("stock-people-symbolic"),
-                              tr("Switch User"),
-                              this, SLOT(SessionSwitch())
-                              );                              //切换用户
+                           tr("Switch User"),
+                           this, SLOT(SessionSwitch())
+                           );                              //切换用户
     pUserAction->addAction(QIcon::fromTheme("system-logout-symbolic"),
-                              tr("Logout"),
-                              this, SLOT(SessionLogout())
-                              );                             //注销
-    pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
-                              tr("Hibernate Mode"),
-                              this, SLOT(SessionHibernate())
-                              );                             //休眠
+                           tr("Logout"),
+                           this, SLOT(SessionLogout())
+                           );                             //注销
+    //社区版本 安装时未强求建立 swap分区，若未建swap分区,会导致休眠(hibernate)失败，所以在20.04上屏蔽该功能
+    if(!QString::compare(version,"Ubuntu"))
+        pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
+                               tr("Hibernate Mode"),
+                               this, SLOT(SessionHibernate())
+                               );                             //休眠
     pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
-                              tr("Sleep Mode"),
-                              this, SLOT(SessionSleep())
-                              );                             //挂起
+                               tr("Sleep Mode"),
+                               this, SLOT(SessionSleep())
+                               );                             //挂起
     pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
-                              tr("Restart"),
-                              this, SLOT(SessionReboot())
-                              );                             //重启
+                            tr("Restart"),
+                            this, SLOT(SessionReboot())
+                            );                             //重启
     pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
-                              tr("TimeShutdown"),
-                              this, SLOT(SessionReboot())
-                              );                             //重启
+                            tr("TimeShutdown"),
+                            this, SLOT(SessionReboot())
+                            );                             //定时开关机
     pPowerSupply->addAction(QIcon::fromTheme("system-shutdown-symbolic"),
-                              tr("Power Off"),
-                              this, SLOT(SessionShutdown())
-                              );                             //关机
+                            tr("Power Off"),
+                            this, SLOT(SessionShutdown())
+                            );                             //关机
 
     rightPressMenu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), rightPressMenu->sizeHint()));
     rightPressMenu->show();
@@ -182,3 +189,15 @@ void UKUIStartMenuButton::SessionShutdown()
     system("ukui-session-tools --shutdown");
 }
 
+void UKUIStartMenuButton::getOsRelease()
+{
+    QFile file("/etc/lsb_release");
+    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if (str.contains("DISTRIB_ID")){
+            version=str.remove("DISTRIB_ID=");
+        }
+    }
+}
