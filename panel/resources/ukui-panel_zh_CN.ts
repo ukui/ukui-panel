@@ -876,7 +876,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="123"/>
         <source>Sleep Mode</source>
-        <translation>睡眠</translation>
+        <translation>挂起</translation>
     </message>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="119"/>
