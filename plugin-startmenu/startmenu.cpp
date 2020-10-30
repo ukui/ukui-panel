@@ -71,6 +71,7 @@ void UKUIStartMenuButton::realign()
     else
        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*1.3);
     this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+
 }
 
 void UKUIStartMenuButton::mousePressEvent(QMouseEvent* event)
@@ -83,6 +84,7 @@ void UKUIStartMenuButton::mousePressEvent(QMouseEvent* event)
         {
             QProcess *process =new QProcess(this);
             process->startDetached("/usr/bin/ukui-menu");
+            process->deleteLater();
         }
         else{qDebug()<<"not find /usr/bin/ukui-start-menu"<<endl;}
     }
@@ -101,34 +103,38 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     rightPressMenu->addMenu(pSleepHibernate);
     rightPressMenu->addMenu(pPowerSupply);
 
-    pUserAction->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-lock-screen-symbolic").pixmap(24,24).toImage()))),
+    pUserAction->addAction(QIcon::fromTheme("system-lock-screen-symbolic"),
                               tr("Lock Screen"),
                               this, SLOT(ScreenServer())
-                              );
-    pUserAction->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("stock-people-symbolic").pixmap(24,24).toImage()))),
+                              );                              //锁屏
+    pUserAction->addAction(QIcon::fromTheme("stock-people-symbolic"),
                               tr("Switch User"),
                               this, SLOT(SessionSwitch())
-                              );
-    pUserAction->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-logout-symbolic").pixmap(24,24).toImage()))),
+                              );                              //切换用户
+    pUserAction->addAction(QIcon::fromTheme("system-logout-symbolic"),
                               tr("Logout"),
                               this, SLOT(SessionLogout())
-                              );
-    pSleepHibernate->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("kylin-sleep-symbolic").pixmap(24,24).toImage()))),
-                              tr("Sleep Mode"),
-                              this, SLOT(SessionSleep())
-                              );
-    pSleepHibernate->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-sleep").pixmap(24,24).toImage()))),
+                              );                             //注销
+    pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
                               tr("Hibernate Mode"),
                               this, SLOT(SessionHibernate())
-                              );
-    pPowerSupply->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-restart-symbolic").pixmap(24,24).toImage()))),
+                              );                             //休眠
+    pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
+                              tr("Sleep Mode"),
+                              this, SLOT(SessionSleep())
+                              );                             //挂起
+    pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
                               tr("Restart"),
                               this, SLOT(SessionReboot())
-                              );
-    pPowerSupply->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("system-shutdown-symbolic").pixmap(24,24).toImage()))),
+                              );                             //重启
+    pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
+                              tr("TimeShutdown"),
+                              this, SLOT(SessionReboot())
+                              );                             //重启
+    pPowerSupply->addAction(QIcon::fromTheme("system-shutdown-symbolic"),
                               tr("Power Off"),
                               this, SLOT(SessionShutdown())
-                              );
+                              );                             //关机
 
     rightPressMenu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), rightPressMenu->sizeHint()));
     rightPressMenu->show();
@@ -149,19 +155,26 @@ void UKUIStartMenuButton::SessionLogout()
     system("ukui-session-tools --logout");
 }
 
-void UKUIStartMenuButton::SessionSleep()
-{
-    system("ukui-session-tools --suspend");
-}
-
 void UKUIStartMenuButton::SessionHibernate()
 {
     system("ukui-session-tools --hibernate");
 }
 
+void UKUIStartMenuButton::SessionSleep()
+{
+    system("ukui-session-tools --suspend");
+}
+
 void UKUIStartMenuButton::SessionReboot()
 {
     system("ukui-session-tools --reboot");
+}
+
+void UKUIStartMenuButton::TimeShutdown()
+{
+    QProcess *process_timeshutdowm =new QProcess(this);
+    process_timeshutdowm->startDetached("/usr/bin/ukui-menu");
+    process_timeshutdowm->deleteLater();
 }
 
 void UKUIStartMenuButton::SessionShutdown()

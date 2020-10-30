@@ -92,6 +92,7 @@ private slots:
     void SessionSwitch();
     void SessionLogout();
     void SessionReboot();
+    void TimeShutdown();
     void SessionShutdown();
     void SessionSleep();
     void SessionHibernate();
