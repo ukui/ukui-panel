@@ -350,6 +350,33 @@ void UKUITaskWidget::mouseMoveEvent(QMouseEvent* event)
 {
 }
 
+void UKUITaskWidget::closeGroup() {
+    printf("\n....\n");
+    emit closeSigtoGroup();
+}
+
+void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu * menu = new QMenu(tr("Widget"));
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    QAction *close = menu->addAction(QIcon::fromTheme("window-close-symbolic"), tr("close"));
+    QAction *restore = menu->addAction(QIcon::fromTheme("window-restore-symbolic"), tr("restore"));
+
+    QAction *maxim = menu->addAction(QIcon::fromTheme("window-maximize-symbolic"), tr("maximaze"));
+
+    QAction *minim = menu->addAction(QIcon::fromTheme("window-minimize-symbolic"), tr("minimize"));
+    connect(close, SIGNAL(triggered()), this, SLOT(closeGroup()));
+    connect(restore, SIGNAL(triggered()), this, SLOT(raiseApplication()));
+    connect(maxim, SIGNAL(triggered()), this, SLOT(maximizeApplication()));
+    connect(minim, SIGNAL(triggered()), this, SLOT(minimizeApplication()));
+    connect(menu, &QMenu::aboutToHide, [this] {
+        emit closeSigtoPop();
+
+    });
+    menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
+    plugin()->willShowWindow(menu);
+    menu->show();
+}
 /************************************************
 
  ************************************************/
@@ -358,6 +385,7 @@ bool UKUITaskWidget::isApplicationHidden() const
     KWindowInfo info(mWindow, NET::WMState);
     return (info.state() & NET::Hidden);
 }
+
 
 /************************************************
 
@@ -471,6 +499,7 @@ void UKUITaskWidget::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
     qDebug()<<"closeApplication";
+    KWindowSystem::activateWindow(mWindow);
     NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(mWindow);
 }
 

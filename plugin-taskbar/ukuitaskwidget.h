@@ -27,6 +27,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QStyle>
+#include <KWindowInfo>
 
 class QPainter;
 class QPalette;
@@ -108,6 +109,7 @@ protected:
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
+    void contextMenuEvent(QContextMenuEvent *event);
 
     void setWindowId(WId wid) {mWindow = wid;}
     virtual QMimeData * mimeData();
@@ -116,6 +118,7 @@ protected:
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
 
 private:
+    NET::States stat;
     WId mWindow;
     bool mUrgencyHint;
     QPoint mDragStartPosition;
@@ -131,6 +134,7 @@ private:
     QVBoxLayout *mVWindowsLayout;
     QHBoxLayout *mTopBarLayout;
 
+
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
     QTimer * mDNDTimer;
@@ -140,11 +144,14 @@ private:
 
 private slots:
     void activateWithDraggable();
+    void closeGroup();
 
 signals:
     void dropped(QObject * dragSource, QPoint const & pos);
     void dragging(QObject * dragSource, QPoint const & pos);
     void windowMaximize();
+    void closeSigtoPop();
+    void closeSigtoGroup();
 };
 
 typedef QHash<WId,UKUITaskWidget*> UKUITaskButtonHash;

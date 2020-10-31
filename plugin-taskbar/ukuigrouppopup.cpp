@@ -48,6 +48,7 @@ UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     QFrame(group),
     mGroup(group)
 {
+    rightclick = false;
     Q_ASSERT(group);
     setAcceptDrops(true);
     setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
@@ -139,7 +140,12 @@ void UKUIGroupPopup::leaveEvent(QEvent *event)
 //    qDebug()<<"UKUIGroupPopup::leaveEvent:"<<mCloseTimer.isActive();
 //    mCloseTimer.start();
 //    isSetByLeaveEvent = true;
-    QTimer::singleShot(300, this,SLOT(closeWindowDelay()));
+    if (!rightclick) {
+        QTimer::singleShot(300, this,SLOT(closeWindowDelay()));
+        rightclick = false;
+    } else {
+        rightclick = false;
+    }
 }
 
 /************************************************
@@ -163,6 +169,12 @@ void UKUIGroupPopup::closeWindowDelay()
         mCloseTimer.stop();
     }
     close();
+}
+
+void UKUIGroupPopup::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::RightButton)
+        rightclick = true;
+    else rightclick = false;
 }
 
 void UKUIGroupPopup::paintEvent(QPaintEvent *event)
