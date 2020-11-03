@@ -93,21 +93,21 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     settingsChanged();
 //    setButtonStyle(Qt::ToolButtonIconOnly);
     setAcceptDrops(true);
-//    QGSettings *changeTheme;
-//    const QByteArray id_Theme("org.ukui.style");
-//    if(QGSettings::isSchemaInstalled(id_Theme)){
-//        changeTheme = new QGSettings(id_Theme);
-//    }
-//    connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
-//        if(key=="iconThemeName"){
-//            sleep(1);
-//            for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
-//            {
-//                UKUITaskGroup *group = it.value();
-//                group->updateIcon();
-//            }
-//        }
-//    });
+    QGSettings *changeTheme;
+    const QByteArray id_Theme("org.ukui.style");
+    if(QGSettings::isSchemaInstalled(id_Theme)){
+        changeTheme = new QGSettings(id_Theme);
+    }
+    connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+        if(key=="iconThemeName"){
+            sleep(1);
+            for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+            {
+                UKUITaskGroup *group = it.value();
+                group->updateIcon();
+            }
+        }
+    });
     connect(mSignalMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped), this, &UKUITaskBar::activateTask);
     QTimer::singleShot(0, this, &UKUITaskBar::registerShortcuts);
 
