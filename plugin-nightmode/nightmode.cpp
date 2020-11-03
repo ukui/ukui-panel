@@ -36,6 +36,8 @@
 #define DEFAULT_QT_STYLE_NAME  "styleName"
 #define GTK_STYLE_NAME         "gtk-theme"
 #define DEFAULT_GTK_STYLE_NAME "gtkTheme"
+#define DEFAULT_STYLE          "ukui-white"
+#define BLACK_STYLE            "ukui-black"
 
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define SHOW_NIGHTMODE       "shownightmode"
@@ -136,12 +138,12 @@ void NightModeButton::mousePressEvent(QMouseEvent *event)
         if(gsettings->get(NIGHT_MODE_KEY).toBool()){
             gsettings->set(NIGHT_MODE_KEY, false);
             setNightMode(false);
-            setUkuiStyle("ukui-white");
+            setUkuiStyle(DEFAULT_STYLE);
             qDebug()<<"gsettings->get(NIGHT_MODE_KEY).toBool():"<<gsettings->get(NIGHT_MODE_KEY).toBool();
         }else{
             gsettings->set(NIGHT_MODE_KEY, true);
             setNightMode(true);
-            setUkuiStyle("ukui-black");
+            setUkuiStyle(BLACK_STYLE);
             qDebug()<<"gsettings->get(NIGHT_MODE_KEY).toBool()2:"<<gsettings->get(NIGHT_MODE_KEY).toBool();
         }
     }
@@ -176,7 +178,7 @@ void NightModeButton::turnNightMode()
             if(gsettings->keys().contains(NIGHT_MODE_KEY)){
                 gsettings->set(NIGHT_MODE_KEY, true);
                 setNightMode(true);
-                setUkuiStyle("ukui-black");
+                setUkuiStyle(BLACK_STYLE);
                 mode=false;
             }
         }
@@ -184,7 +186,7 @@ void NightModeButton::turnNightMode()
             if(gsettings->keys().contains(NIGHT_MODE_KEY)){
                 gsettings->set(NIGHT_MODE_KEY, false);
                 setNightMode(false);
-                setUkuiStyle("ukui-white");
+                setUkuiStyle(DEFAULT_STYLE);
                 mode=true;
             }
         }
@@ -254,25 +256,25 @@ void NightModeButton::setNightMode(const bool nightMode){
 /*设置主题*/
 void NightModeButton::setUkuiStyle(QString style)
 {
-    if(QString::compare(style,"ukui-white")==0){
+    if(QString::compare(style,DEFAULT_STYLE)==0){
         if(mqtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || mqtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
-            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,"ukui-white");
+            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,DEFAULT_STYLE);
         else
             qWarning()<<tr("don't contains the keys style-name");
 
         if(mgtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || mgtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
-            mgtkstyleGsettings->set(GTK_STYLE_NAME,"ukui-white");
+            mgtkstyleGsettings->set(GTK_STYLE_NAME,DEFAULT_STYLE);
         else
             qWarning()<<tr("don't contains the keys style-name");
 
     }
     else{
         if(mqtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || mqtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
-            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,"ukui-black");
+            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,BLACK_STYLE);
         else
             qWarning()<<tr("don't contains the keys style-name");
         if(mgtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || mgtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
-            mgtkstyleGsettings->set(GTK_STYLE_NAME,"ukui-black");
+            mgtkstyleGsettings->set(GTK_STYLE_NAME,BLACK_STYLE);
         else
             qWarning()<<tr("don't contains the keys style-name");
 
