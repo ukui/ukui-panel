@@ -95,17 +95,19 @@ QHash<QString,QString> QuickLaunchButton::settingsMap()
 void QuickLaunchButton::this_customContextMenuRequested(const QPoint & pos)
 {
     UKUIQuickLaunch *panel = qobject_cast<UKUIQuickLaunch*>(parent());
+    mMoveLeftAct->setEnabled( panel && panel->indexOfButton(this) > 0);
+    mMoveRightAct->setEnabled(panel && panel->indexOfButton(this) < panel->countOfButtons() - 1);
 
-    mMoveLeftAct->setEnabled( panel &&
-                              panel->indexOfButton(this) > 0 &&
-                              (mPlugin->panel()->isHorizontal() ? (panel->indexOfButton(this) % 5 != 0) :
-                               (mPlugin->panel()->isMaxSize() ? (panel->indexOfButton(this) % 2 != 0) :
-                                (panel->indexOfButton(this) % 3 != 0))));
-    mMoveRightAct->setEnabled(panel &&
-                              panel->indexOfButton(this) < panel->countOfButtons() - 1 &&
-                              (mPlugin->panel()->isHorizontal() ? (panel->indexOfButton(this) % 5 != 4) :
-                               (mPlugin->panel()->isMaxSize() ? (panel->indexOfButton(this) % 2 != 1) :
-                                (panel->indexOfButton(this) % 3 != 2))));
+//    mMoveLeftAct->setEnabled( panel &&
+//                              panel->indexOfButton(this) > 0 &&
+//                              (mPlugin->panel()->isHorizontal() ? (panel->indexOfButton(this) % 5 != 0) :
+//                               (mPlugin->panel()->isMaxSize() ? (panel->indexOfButton(this) % 2 != 0) :
+//                                (panel->indexOfButton(this) % 3 != 0))));
+//    mMoveRightAct->setEnabled(panel &&
+//                              panel->indexOfButton(this) < panel->countOfButtons() - 1 &&
+//                              (mPlugin->panel()->isHorizontal() ? (panel->indexOfButton(this) % 5 != 4) :
+//                               (mPlugin->panel()->isMaxSize() ? (panel->indexOfButton(this) % 2 != 1) :
+//                                (panel->indexOfButton(this) % 3 != 2))));
     mPlugin->willShowWindow(mMenu);
     mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), mMenu->sizeHint()).topLeft());
 }
