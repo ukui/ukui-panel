@@ -455,6 +455,7 @@ private slots:
     void userRequestForDeletion();
 
 private:
+    int scale;
     /**
      * @brief The UKUIPanelLayout of this panel. All the Plugins will be added
      * to the UI via this layout.

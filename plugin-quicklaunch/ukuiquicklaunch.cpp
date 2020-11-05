@@ -747,6 +747,7 @@ void UKUIQuickLaunch::buttonMoveLeft()
     if (index > 0)
     {
         mLayout->moveItem(index, index - 1);
+        mVBtn.move(index, index - 1);
         saveSettings();
     }
 }
@@ -762,6 +763,7 @@ void UKUIQuickLaunch::buttonMoveRight()
     if (index < countOfButtons() - 1)
     {
         mLayout->moveItem(index, index + 1);
+        mVBtn.move(index, index + 1);
         saveSettings();
     }
 }
