@@ -103,9 +103,14 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
         settings=new QGSettings(id);
     }
 
+    apps_number = settings->get("quicklaunchappsnumber").toInt();
     connect(pageup,SIGNAL(clicked()),this,SLOT(PageUp()));
     connect(pagedown,SIGNAL(clicked()),this,SLOT(PageDown()));
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
+        if (key == "quicklaunchappsnumber") {
+            apps_number = settings->get("quicklaunchappsnumber").toInt();
+            realign();
+        }
         if(key==PANEL_LINES)
         {
             realign();
@@ -196,7 +201,7 @@ void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
     }
     int i = 0;
     int counts = countOfButtons();
-    int shows = (counts < 5 ? counts : 5);
+    int shows = (counts < apps_number ? counts : apps_number);
     while (i != counts && shows && counts >0) {
         QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
         if (shows) {
@@ -228,8 +233,8 @@ void UKUIQuickLaunch::PageDown() {
 void UKUIQuickLaunch::GetMaxPage() {
     if (mPlugin->panel()->isHorizontal()) {
         int btn_cnt = countOfButtons();
-        max_page = (int)(btn_cnt / 5);
-        if (btn_cnt % 5 != 0) max_page += 1;
+        max_page = (int)(btn_cnt / apps_number);
+        if (btn_cnt % apps_number != 0) max_page += 1;
     } else if (mPlugin->panel()->isMaxSize()){
         int btn_cnt = countOfButtons();
         max_page = (int)(btn_cnt / 2);
@@ -273,10 +278,10 @@ void UKUIQuickLaunch::realign()
         /*这里可能存在cpu占用过高的情况*/
         if (panel->isHorizontal())
         {
-            i = (page_num - 1) * 5;
-            loop_times = 5;
-            if (counts < 5) loop_times = counts - i;
-            setMaximumWidth(mPlugin->panel()->panelSize() * 5 + 27);
+            i = (page_num - 1) * apps_number;
+            loop_times = apps_number;
+            if (counts < apps_number) loop_times = counts - i;
+            setMaximumWidth(mPlugin->panel()->panelSize() * apps_number + 27);
             if(settings->get(PANEL_LINES).toInt()==1)
             {
                 mLayout->setRowCount(panel->lineCount());
@@ -297,7 +302,7 @@ void UKUIQuickLaunch::realign()
                     (*it)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
                 }
             }
-            if (countOfButtons() <= 5) {
+            if (countOfButtons() <= apps_number) {
                 tmpwidget->setHidden(1);
             } else {
                 tmpwidget->setHidden(0);
@@ -385,7 +390,7 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
     //        btn->setMenu(Qt::InstantPopup);
     mVBtn.push_back(btn);
     mLayout->addWidget(btn);
-    if (countOfButtons() > 5) btn->setHidden(1);
+    if (countOfButtons() > apps_number) btn->setHidden(1);
     connect(btn, SIGNAL(switchButtons(QuickLaunchButton*,QuickLaunchButton*)), this, SLOT(switchButtons(QuickLaunchButton*,QuickLaunchButton*)));
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
@@ -715,7 +720,7 @@ void UKUIQuickLaunch::buttonDeleted()
     }
     btn->deleteLater();
     mLayout->removeWidget(btn);
-    if (countOfButtons() == 5) PageUp();
+    if (countOfButtons() == apps_number) PageUp();
     //GetMaxPage();
     realign();
     if (old_page != page_num) {

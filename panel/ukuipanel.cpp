@@ -255,6 +255,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     const QByteArray sid(SCALE_SETTINGS);
     QGSettings sgsettings(sid);
     scale = sgsettings.get("scaling-factor").toInt();
+    if (!scale) scale = 1;
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==ICON_SIZE_KEY){
             setIconSize(gsettings->get(ICON_SIZE_KEY).toInt() * scale,true);
