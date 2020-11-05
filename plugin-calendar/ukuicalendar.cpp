@@ -319,8 +319,8 @@ void IndicatorCalendar::updateTimeText()
                 );
     QFont font;
     font.setStretch(QFont::Expanded);
-    int i = 12 + mContent->mPlugin->panel()->panelSize() / 23;
-    font.setPixelSize(i);
+    int font_size = 12 + mContent->mPlugin->panel()->panelSize() / 23;
+    font.setPixelSize(font_size);
     mContent->setFont(font);
     updatePopupContent();
     mbIsNeedUpdate = false;
