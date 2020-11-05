@@ -103,6 +103,7 @@ private:
     QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
     QString desktopFilePath ="/usr/share/applications/";
     QString androidDesktopFilePath =QDir::homePath()+"/.local/share/applications/";
+    int apps_number;
 
     QToolButton *pageup;
     QToolButton *pagedown;
