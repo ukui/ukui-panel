@@ -99,6 +99,7 @@ extern "C" {
 #define PANEL_LINES    "panellines"
 #define TRAY_LINE      "traylines"
 #define PANEL_SIZE     "panelsize"
+#define ICON_SIZE      "iconsize"
 /************************************************
 
  ************************************************/
@@ -138,7 +139,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
         settings=new QGSettings(id);
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==PANEL_SIZE)
+        if(key==ICON_SIZE)
             trayIconSizeRefresh();
     });
 

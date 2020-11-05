@@ -36,7 +36,7 @@
 #define DEFAULT_QT_STYLE_NAME  "styleName"
 #define GTK_STYLE_NAME         "gtk-theme"
 #define DEFAULT_GTK_STYLE_NAME "gtkTheme"
-#define DEFAULT_STYLE          "ukui-white"
+#define DEFAULT_STYLE          "ukui-default"
 #define BLACK_STYLE            "ukui-black"
 
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"

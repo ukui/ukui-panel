@@ -128,7 +128,7 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                                );                             //休眠
     pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
                                tr("Sleep Mode"),
-                               this, SLOT(SessionSleep())
+                               this, SLOT(SessionSuspend())
                                );                             //挂起
     pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
                             tr("Restart"),
@@ -136,7 +136,7 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                             );                             //重启
     pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
                             tr("TimeShutdown"),
-                            this, SLOT(SessionReboot())
+                            this, SLOT(TimeShutdown())
                             );                             //定时开关机
     pPowerSupply->addAction(QIcon::fromTheme("system-shutdown-symbolic"),
                             tr("Power Off"),
@@ -148,47 +148,57 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
 }
 
 /*开始菜单按钮右键菜单选项，与开始菜单中电源按钮的右键功能是相同的*/
+//锁屏
 void UKUIStartMenuButton::ScreenServer()
 {
     system("ukui-screensaver-command -l");
 }
+
+//切换用户
 void UKUIStartMenuButton::SessionSwitch()
 {
     QProcess::startDetached(QString("ukui-session-tools --switchuser"));
 }
 
+//注销
 void UKUIStartMenuButton::SessionLogout()
 {
     system("ukui-session-tools --logout");
 }
 
+//休眠 睡眠
 void UKUIStartMenuButton::SessionHibernate()
 {
     system("ukui-session-tools --hibernate");
 }
 
-void UKUIStartMenuButton::SessionSleep()
+//挂起
+void UKUIStartMenuButton::SessionSuspend()
 {
     system("ukui-session-tools --suspend");
 }
 
+//重启
 void UKUIStartMenuButton::SessionReboot()
 {
     system("ukui-session-tools --reboot");
 }
 
+//定时关机
 void UKUIStartMenuButton::TimeShutdown()
 {
     QProcess *process_timeshutdowm =new QProcess(this);
-    process_timeshutdowm->startDetached("/usr/bin/ukui-menu");
+    process_timeshutdowm->startDetached("/usr/bin/time-shutdown");
     process_timeshutdowm->deleteLater();
 }
 
+//关机
 void UKUIStartMenuButton::SessionShutdown()
 {
     system("ukui-session-tools --shutdown");
 }
 
+//获取系统版本
 void UKUIStartMenuButton::getOsRelease()
 {
     QFile file("/etc/lsb_release");
