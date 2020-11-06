@@ -25,6 +25,7 @@
 #include <QSystemTrayIcon>
 #include <QTimer>
 #include <QColor>
+#include <peony-qt/file-utils.h>
 
 #include "clickLabel.h"
 #include "MacroFile.h"
@@ -720,6 +721,13 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                        char *driveName = g_drive_get_name(cacheDrive);
                        GVolume *element = (GVolume *)g_list_nth_data(volumeNumber,0);
                        char *volumeName = g_volume_get_name(element);
+                       QString apiName = QString(volumeName);
+                       char *deviceName = g_volume_get_identifier(element,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                       if(deviceName){
+                           QString unixDeviceName = QString(deviceName);
+                           Peony::FileUtils::handleVolumeLabelForFat32(apiName,unixDeviceName);
+                           g_free(deviceName);
+                       }
                        GFile *fileRoot = g_mount_get_root(g_volume_get_mount(element));
                        UDiskPathDis1 = g_file_get_path(fileRoot);
                        GFile *file = g_file_new_for_path(UDiskPathDis1);
@@ -731,7 +739,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                        if(num == 1)
                        {
                            newarea(DisNum,cacheDrive,driveName,
-                                   volumeName,
+                                   apiName,
                                    NULL,NULL,NULL, totalDis1,NULL,NULL,NULL, QString(UDiskPathDis1),NULL,NULL,NULL,1);
                        }
                        else
@@ -754,6 +762,13 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                         char *driveName = g_drive_get_name(cacheDrive);
                         GVolume *element1 = (GVolume *)g_list_nth_data(volumeNumber,0);
                         char *volumeName1 = g_volume_get_name(element1);
+                        QString apiName1 = QString(volumeName1);
+                        char *deviceName1 = g_volume_get_identifier(element1,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                        if(deviceName1){
+                            QString unixDeviceName = QString(deviceName1);
+                            Peony::FileUtils::handleVolumeLabelForFat32(apiName1,unixDeviceName);
+                            g_free(deviceName1);
+                        }
                         GFile *fileRoot1 = g_mount_get_root(g_volume_get_mount(element1));
                         UDiskPathDis1 = g_file_get_path(fileRoot1);
                         GFile *file1 = g_file_new_for_path(UDiskPathDis1);
@@ -762,6 +777,13 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 
                         GVolume *element2 = (GVolume *)g_list_nth_data(volumeNumber,1);
                         char *volumeName2 = g_volume_get_name(element2);
+                        QString apiName2 = QString(volumeName2);
+                        char *deviceName2 = g_volume_get_identifier(element2,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                        if(deviceName2){
+                            QString unixDeviceName = QString(deviceName2);
+                            Peony::FileUtils::handleVolumeLabelForFat32(apiName2,unixDeviceName);
+                            g_free(deviceName2);
+                        }
                         GFile *fileRoot2 = g_mount_get_root(g_volume_get_mount(element2));
                         UDiskPathDis2 = g_file_get_path(fileRoot2);
                         GFile *file2 = g_file_new_for_path(UDiskPathDis2);
@@ -774,15 +796,15 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                         {
 
                             newarea(DisNum,cacheDrive,driveName,
-                                    volumeName1,
-                                    volumeName2,
+                                    apiName1,
+                                    apiName2,
                                     NULL,NULL, totalDis1,totalDis2,NULL,NULL, QString(UDiskPathDis1),QString(UDiskPathDis2),NULL,NULL,1);
                         }
                         else
                         {
                             newarea(DisNum,cacheDrive,driveName,
-                                    volumeName1,
-                                    volumeName2,
+                                    apiName1,
+                                    apiName2,
                                     NULL,NULL, totalDis1,totalDis2,NULL,NULL, QString(UDiskPathDis1),QString(UDiskPathDis2),NULL,NULL,2);
                         }
 
@@ -1470,6 +1492,13 @@ void MainWindow::MainWindowShow()
                        char *driveName = g_drive_get_name(cacheDrive);
                        GVolume *element = (GVolume *)g_list_nth_data(volumeNumber,0);
                        char *volumeName = g_volume_get_name(element);
+                       QString apiName = QString(volumeName);
+                       char *deviceName = g_volume_get_identifier(element,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                       if(deviceName){
+                           QString unixDeviceName = QString(deviceName);
+                           Peony::FileUtils::handleVolumeLabelForFat32(apiName,unixDeviceName);
+                           g_free(deviceName);
+                       }
                        GFile *fileRoot = g_mount_get_root(g_volume_get_mount(element));
                        UDiskPathDis1 = g_file_get_path(fileRoot);
                        GFile *file = g_file_new_for_path(UDiskPathDis1);
@@ -1480,9 +1509,8 @@ void MainWindow::MainWindowShow()
                         *if the answer is yes,we set the last parameter is 1.*/
                        if(num == 1)
                        {
-
                            newarea(DisNum,cacheDrive,driveName,
-                                   volumeName,
+                                   apiName,
                                    NULL,NULL,NULL, totalDis1,NULL,NULL,NULL, QString(UDiskPathDis1),NULL,NULL,NULL,1);
                        }
 //                       else if(findGDriveList()->size() == 1)
@@ -1494,7 +1522,7 @@ void MainWindow::MainWindowShow()
                        else
                        {
                            newarea(DisNum,cacheDrive,driveName,
-                                   volumeName,
+                                   apiName,
                                    NULL,NULL,NULL, totalDis1,NULL,NULL,NULL, QString(UDiskPathDis1),NULL,NULL,NULL,2);
                        }
 
@@ -1511,6 +1539,13 @@ void MainWindow::MainWindowShow()
                         char *driveName = g_drive_get_name(cacheDrive);
                         GVolume *element1 = (GVolume *)g_list_nth_data(volumeNumber,0);
                         char *volumeName1 = g_volume_get_name(element1);
+                        QString apiName1 = QString(volumeName1);
+                        char *deviceName1 = g_volume_get_identifier(element1,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                        if(deviceName1){
+                            QString unixDeviceName1 = QString(deviceName1);
+                            Peony::FileUtils::handleVolumeLabelForFat32(apiName1,unixDeviceName1);
+                            g_free(deviceName1);
+                        }
                         GFile *fileRoot1 = g_mount_get_root(g_volume_get_mount(element1));
                         UDiskPathDis1 = g_file_get_path(fileRoot1);
                         GFile *file1 = g_file_new_for_path(UDiskPathDis1);
@@ -1519,6 +1554,13 @@ void MainWindow::MainWindowShow()
 
                         GVolume *element2 = (GVolume *)g_list_nth_data(volumeNumber,1);
                         char *volumeName2 = g_volume_get_name(element2);
+                        QString apiName2 = QString(volumeName2);
+                        char *deviceName2 = g_volume_get_identifier(element2,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                        if(deviceName2){
+                            QString unixDeviceName = QString(deviceName2);
+                            Peony::FileUtils::handleVolumeLabelForFat32(apiName2,unixDeviceName);
+                            g_free(deviceName2);
+                        }
                         GFile *fileRoot2 = g_mount_get_root(g_volume_get_mount(element2));
                         UDiskPathDis2 = g_file_get_path(fileRoot2);
                         GFile *file2 = g_file_new_for_path(UDiskPathDis2);
@@ -1531,15 +1573,15 @@ void MainWindow::MainWindowShow()
                         {
 
                             newarea(DisNum,cacheDrive,driveName,
-                                    volumeName1,
-                                    volumeName2,
+                                    apiName1,
+                                    apiName2,
                                     NULL,NULL, totalDis1,totalDis2,NULL,NULL, QString(UDiskPathDis1),QString(UDiskPathDis2),NULL,NULL,1);
                         }
                         else
                         {
                             newarea(DisNum,cacheDrive,driveName,
-                                    volumeName1,
-                                    volumeName2,
+                                    apiName1,
+                                    apiName2,
                                     NULL,NULL, totalDis1,totalDis2,NULL,NULL, QString(UDiskPathDis1),QString(UDiskPathDis2),NULL,NULL,2);
                         }
 
