@@ -99,6 +99,7 @@ extern "C" {
 #define PANEL_LINES    "panellines"
 #define TRAY_LINE      "traylines"
 #define PANEL_SIZE     "panelsize"
+#define ICON_SIZE      "iconsize"
 /************************************************
 
  ************************************************/
@@ -138,7 +139,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
         settings=new QGSettings(id);
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==PANEL_SIZE)
+        if(key==ICON_SIZE)
             trayIconSizeRefresh();
     });
 
@@ -383,20 +384,21 @@ void UKUITray::realign()
 
 void UKUITray::trayIconSizeRefresh()
 {
-    for(int i=0;i<mTrayIcons.size();i++)
-    {
-        if(mTrayIcons.at(i))
-        {
-            mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
-
-        }
-        else
-        {
-            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+    for(int i=0;i<mIcons.size();i++){
+        if(mIcons.at(i)){
+            handleStorageUi();
+            if(mPlugin->panel()->isHorizontal()){
+                mIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+            }else{
+                mIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
+            }
+            mIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }else{
+            qDebug()<<"错误的托盘图标";
         }
     }
 }
+
 /*creat iconMap of four  direction*/
 void UKUITray::createIconMap()
 {

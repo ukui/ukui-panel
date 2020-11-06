@@ -58,6 +58,7 @@ public:
     int spacing() { return layout()->spacing(); }
     void addButton(UKUITaskButton* button) { layout()->addWidget(button); }
     void removeWidget(QWidget *button) { layout()->removeWidget(button); }
+    void pubcloseWindowDelay() { closeWindowDelay(); }
 
 protected:
     void dragEnterEvent(QDragEnterEvent * event);
@@ -66,10 +67,12 @@ protected:
     void leaveEvent(QEvent * event);
     void enterEvent(QEvent * event);
     void paintEvent(QPaintEvent * event);
+    void mousePressEvent(QMouseEvent *event);
 
     void closeTimerSlot();
 
 private:
+    bool rightclick;
     UKUITaskGroup *mGroup;
     QTimer mCloseTimer;
 private slots:

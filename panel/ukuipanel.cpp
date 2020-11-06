@@ -89,6 +89,7 @@
 #define ICON_SIZE_SMALL   32
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
+#define SCALE_SETTINGS      "org.ukui.SettingsDaemon.plugins.xsettings"
 #define PANEL_SIZE_KEY      "panelsize"
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
@@ -250,12 +251,17 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
+
+    const QByteArray sid(SCALE_SETTINGS);
+    QGSettings sgsettings(sid);
+    scale = sgsettings.get("scaling-factor").toInt();
+    if (!scale) scale = 1;
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==ICON_SIZE_KEY){
-            setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
+            setIconSize(gsettings->get(ICON_SIZE_KEY).toInt() * scale,true);
         }
         if(key==PANEL_SIZE_KEY){
-            setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
+            setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt() * scale,true);
         }
         if(key == PANEL_POSITION_KEY){
             switch(gsettings->get(PANEL_POSITION_KEY).toInt())
@@ -394,8 +400,6 @@ void UKUIPanel::readSettings()
 
     mSettings->endGroup();
 
-    gsettings->set(PANEL_SIZE_KEY,gsettings->get(PANEL_SIZE_KEY).toInt());
-    gsettings->set(ICON_SIZE_KEY,gsettings->get(ICON_SIZE_KEY).toInt());
 }
 
 

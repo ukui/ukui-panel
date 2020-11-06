@@ -192,8 +192,8 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    QAction *a = menu->addAction(QIcon::fromTheme("process-stop"), tr("close"));
-    connect(a, SIGNAL(triggered()), this, SLOT(closeGroup()));
+    QAction *close = menu->addAction(QIcon::fromTheme("window-close-symbolic"), tr("close"));
+    connect(close, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {
         mPreventPopup = false;
     });
@@ -467,7 +467,8 @@ void UKUITaskGroup::onClicked(bool)
 {
     if (1 == mVisibleHash.size())
     {
-        return singleWindowClick();
+        singleWindowClick();
+        return;
     }
     if(mPopup->isVisible())
     {
@@ -1146,6 +1147,8 @@ void UKUITaskGroup::showAllWindowByList()
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
+        connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
+        connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
         btn->removeThumbNail();
         btn->updateTitle();
         btn->setTitleFixedWidth(winWidth - 80);
@@ -1248,6 +1251,8 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
+        connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
+        connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
         btn->addThumbNail();
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);

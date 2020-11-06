@@ -86,14 +86,18 @@ protected:
 private:
     QMenu *rightPressMenu;
     IUKUIPanelPlugin * mPlugin;
+    QString version;
+
+    void getOsRelease();
 
 private slots:
     void ScreenServer();
     void SessionSwitch();
     void SessionLogout();
     void SessionReboot();
+    void TimeShutdown();
     void SessionShutdown();
-    void SessionSleep();
+    void SessionSuspend();
     void SessionHibernate();
 };
 #endif

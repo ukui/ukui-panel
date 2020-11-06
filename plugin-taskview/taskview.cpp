@@ -83,7 +83,11 @@ void TaskView::realign()
 void TaskViewButton::mousePressEvent(QMouseEvent *event)
 {
     const Qt::MouseButton b = event->button();
-    QDBusInterface interface("org.ukui.WindowSwitch", "/org/ukui/WindowSwitch",
+
+    QString object = QString(getenv("DISPLAY"));
+    object = object.trimmed().replace(":", "_").replace(".", "_").replace("-", "_");
+    object = "/org/ukui/WindowSwitch/display/" + object;
+    QDBusInterface interface("org.ukui.WindowSwitch", object,
                              "org.ukui.WindowSwitch",
                              QDBusConnection::sessionBus());
     if (!interface.isValid()) {

@@ -76,6 +76,7 @@ private:
     UkuiWebviewDialog   *mWebViewDiag;
     bool mbActived;
     bool mbHasCreatedWebView;
+    int font_size;
     CalendarActiveLabel *mContent;
 
     QTimer *mTimer;
@@ -111,6 +112,7 @@ private:
     QString hourSystem_12_horzontal;
     QString hourSystem_12_vartical;
     QString current_date;
+    IUKUIPanelPlugin * mPlugin;
 
 };
 
@@ -122,6 +124,7 @@ Q_OBJECT
 public:
     explicit CalendarActiveLabel(IUKUIPanelPlugin *plugin,QWidget * = NULL);
 
+    IUKUIPanelPlugin * mPlugin;
 Q_SIGNALS:
     void wheelScrolled(int);
     void leftMouseButtonClicked();
@@ -136,8 +139,6 @@ private Q_SLOTS:
     void setControlTime();
     void setUpPanel();
 
-private:
-    IUKUIPanelPlugin * mPlugin;
 
 };
 
