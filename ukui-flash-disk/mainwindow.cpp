@@ -755,7 +755,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                        else
                        {
                            newarea(DisNum,cacheDrive,driveName,
-                                   volumeName,
+                                   apiName,
                                    NULL,NULL,NULL, totalDis1,NULL,NULL,NULL, QString(UDiskPathDis1),NULL,NULL,NULL,2);
                        }
 
