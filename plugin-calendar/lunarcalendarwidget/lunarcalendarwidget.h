@@ -189,8 +189,8 @@ public Q_SLOTS:
     void showNextYear();
 
     //上一月,下一月
-    void showPreviousMonth();
-    void showNextMonth();
+    void showPreviousMonth(bool btn_clicked=true);
+    void showNextMonth(bool btn_clicked=true);
 
     //转到今天
     void showToday();
