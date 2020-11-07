@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QtDBus/QDBusConnection>
 #include <QTranslator>
+#include <QTextCodec>
 #include "UnionVariable.h"
 #include "mainwindow.h"
 #include "MainController.h"
@@ -47,6 +48,8 @@ int main(int argc, char *argv[])
 //    }
 
 
+//    QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("GBK"));
 
     QIcon::setThemeName("ukui-icon-theme-default");
 

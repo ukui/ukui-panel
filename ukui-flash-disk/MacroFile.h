@@ -39,4 +39,6 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 #define THEME_QT_TRANS "org.ukui.control-center.personalise"
 #define FONT_SIZE "system-font-size"
 #define MODE_QT_KEY "style-name"
+#define AUTOLOAD "org.ukui.flash-disk.autoload"
+#define IFAUTOLOAD "ifautoload"
 #endif //_MACROFILE_H_

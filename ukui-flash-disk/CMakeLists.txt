@@ -65,3 +65,9 @@ install(FILES
     DESTINATION "/usr/share/ukui/ukui-panel/"
     COMPONENT Runtime
 )
+
+install(FILES
+    disk-resources/org.ukui.flash-disk.autoload.gschema.xml
+    DESTINATION "/usr/share/glib-2.0/schemas"
+    COMPONENT Runtime
+)
