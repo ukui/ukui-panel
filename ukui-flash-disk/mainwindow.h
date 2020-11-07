@@ -133,7 +133,9 @@ private:
     QGSettings *qtSettings = nullptr;
 
     QWidget *line = nullptr;
+    bool ifautoload;
 
+    QGSettings * ifsettings;
     //authority
     //QDBusInterface *systemIface;
 public:

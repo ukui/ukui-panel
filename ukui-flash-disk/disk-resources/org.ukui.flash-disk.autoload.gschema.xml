@@ -1,0 +1,9 @@
+<schemalist gettext-domain="ukui-flash-disk">
+  <schema id="org.ukui.flash-disk.autoload" path="/org/ukui/flash-disk/autoload/">
+    <key type="b" name="ifautoload">
+      <default>true</default>
+      <summary>auto load udisk</summary>
+      <description>Control if auto load udisk</description>
+    </key>
+  </schema>
+</schemalist>

@@ -34,7 +34,6 @@ Build-Depends: debhelper-compat (= 12),
                qtbase5-dev-tools,
                qttools5-dev-tools,
                qtbase5-private-dev,
-               libpeony-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/ukui/ukui-panel

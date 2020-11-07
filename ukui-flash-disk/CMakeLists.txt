@@ -23,12 +23,10 @@ find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
 pkg_check_modules(QGS REQUIRED gsettings-qt)
-pkg_check_modules(PEO REQUIRED peony)
 
 
 include_directories(${GLIB2_INCLUDE_DIRS})
 include_directories(${QGS_INCLUDE_DIRS})
-include_directories(${PEO_INCLUDE_DIRS})
 add_executable(ukui-flash-disk
     ukui-flash-disk.qrc
     disk-resources/ukui-flash-disk_zh_CN.ts
@@ -52,7 +50,7 @@ add_executable(ukui-flash-disk
 
 add_definitions(-DQT_NO_KEYWORDS)
 
-target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} ${QGS_LIBRARIES} ${PEO_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} ${QGS_LIBRARIES})
 
 install(TARGETS ukui-flash-disk DESTINATION bin)
 
@@ -65,5 +63,11 @@ install(FILES
 install(FILES
     ukui-flash-disk.qrc disk-resources/ukui-flash-disk_zh_CN.qm disk-resources/ukui-flash-disk_tr.qm
     DESTINATION "/usr/share/ukui/ukui-panel/"
+    COMPONENT Runtime
+)
+
+install(FILES
+    disk-resources/org.ukui.flash-disk.autoload.gschema.xml
+    DESTINATION "/usr/share/glib-2.0/schemas"
     COMPONENT Runtime
 )
