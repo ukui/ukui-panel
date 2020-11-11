@@ -28,31 +28,6 @@
 #include "clickLabel.h"
 #include "MacroFile.h"
 
-//typedef void(*GAsyncReadyCallback) (GDrive *source_object,GAsyncResult *res,gpointer user_data);
-
-//void frobnitz_result_func_mount(GMount *source_object,GAsyncResult *res,MainWindow *p_this)
-//{
-//    gboolean success = FALSE;
-//    GError *err = nullptr;
-
-//    success = g_mount_unmount_with_operation_finish(source_object,res,&err);
-//    if(success)
-//    {
-//        if(g_mount_can_unmount(source_object))
-//        {
-//            findGMountList()->removeOne(source_object);
-//            p_this->m_eject = new ejectInterface(p_this,g_volume_get_name(g_mount_get_volume(source_object)),DATADEVICE);
-//            p_this->m_eject->show();
-//        }
-//    }
-//    else
-//    {
-//        p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(g_volume_get_drive(g_mount_get_volume(source_object))),OCCUPYDEVICE);
-//        p_this->m_eject->show();
-//    }
-
-//}
-
 void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_this)
 {
     gboolean success =  FALSE;
@@ -89,13 +64,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
             }
         }
     }
-//    else
-//    {    ()<<"oh no"<<err->message<<err->code;
-//        qDebug()<<"howwohohwohow";
-//        p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),OCCUPYDEVICE);
-//        p_this->m_eject->show();
-//    }
-
 }
 
 
@@ -105,14 +73,6 @@ void frobnitz_result_func_drive(GDrive *source_object,GAsyncResult *res,MainWind
     gboolean success =  FALSE;
     GError *err = nullptr;
     success = g_drive_start_finish (source_object, res, &err);
-//    if(!err)
-//    {
-//        qDebug()<<"drive start sucess";
-//    }
-//    else
-//    {
-//        qDebug()<<"drive start failed"<<"-------------------"<<err->message<<err->code;
-//    }
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -121,12 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     driveNoGparted = 0;
     ifGpartedHasStarted = 0;
-//    const QByteArray idtrans(THEME_QT_TRANS);
-
-//    if(QGSettings::isSchemaInstalled(idtrans))
-//    {
-//        m_transparency_gsettings = new QGSettings(idtrans);
-//    }
     const QByteArray idd(THEME_QT_SCHEMA);
 
     if(QGSettings::isSchemaInstalled(idd))
@@ -239,16 +193,19 @@ void MainWindow::getDeviceInfo()
     while(current_drive_list)
     {
         GDrive *gdrive = (GDrive *)current_drive_list->data;
-        GVolume *g_volume = (GVolume *)g_list_nth(g_drive_get_volumes(gdrive),0);
-        char *devPath = g_volume_get_identifier(g_volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+//        GVolume *g_volume = (GVolume *)g_list_nth(g_drive_get_volumes(gdrive),0);
+        char *devPath = g_drive_get_identifier(gdrive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
         if(g_drive_can_eject(gdrive) || g_drive_can_stop(gdrive))
         {
-            if(g_volume_can_eject((GVolume *)g_list_nth_data(g_drive_get_volumes(gdrive),0)))
+            if(g_str_has_prefix(devPath,"/dev/sda") != true && g_str_has_prefix(devPath,"/dev/sr0") != true)
             {
                 *findGDriveList()<<gdrive;
+                qDebug()<<"i love you";
+                qDebug()<<"where"<<devPath;
             }
         }
         current_drive_list = current_drive_list->next;
+        qDebug()<<"devie name"<<g_drive_get_name(gdrive);
         //if(g_drive_can_eject)
     }
 //about volume
@@ -293,6 +250,7 @@ void MainWindow::getDeviceInfo()
     {
         m_systray->hide();
     }
+    qDebug()<<"drive size"<<findGDriveList()->size();
 }
 
 void MainWindow::onConvertShowWindow()
@@ -350,39 +308,22 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                    p_this);
     }
     //if the deveice is CD
-    p_this->root = g_mount_get_default_location(g_volume_get_mount(volume));
-    p_this->mount_uri = g_file_get_uri(p_this->root);
-    qDebug()<<"mount uri"<<p_this->mount_uri;
-    if(p_this->mount_uri)
+    char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);   //detective the kind of movable device
+    qDebug()<<"devPath"<<devPath;
+    if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/sdb") || g_str_has_prefix(devPath,"/dev/sd") && g_str_has_prefix(devPath,"/dev/sda") != true)
     {
-        qDebug()<<"mount uir is not null";
-        if(strcmp(p_this->mount_uri,"burn:///") == 0 || strcmp(p_this->mount_uri,"cdda://sr0/") == 0 || strcmp(p_this->mount_uri,"file:///"))
+        if(!findGDriveList()->contains(g_volume_get_drive(volume)))
         {
-            if(!findGDriveList()->contains(g_volume_get_drive(volume)))
-            {
-                *findGDriveList()<<g_volume_get_drive(volume);
-                qDebug()<<"drive name"<<g_drive_get_name(g_volume_get_drive(volume));
-            }
-            qDebug()<<"mount_uri"<<p_this->mount_uri;
+            *findGDriveList()<<g_volume_get_drive(volume);
         }
     }
-    else
-    {
-        char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);   //detective the kind of movable device
-        qDebug()<<"devPath"<<devPath;
-        if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/sdb"))
-        {
-            if(!findGDriveList()->contains(g_volume_get_drive(volume)))
-            {
-                *findGDriveList()<<g_volume_get_drive(volume);
-            }
-        }
-    }
-    g_object_unref(p_this->root);
-    g_free(p_this->mount_uri);
 //    g_object_unref(volume);
     p_this->ifGpartedHasStarted = 0;
     qDebug()<<"volume add final";
+    if(findGDriveList()->size() >= 0 || findGMountList()->size() >= 0)
+    {
+        p_this->m_systray->show();
+    }
 }
 
 
@@ -434,6 +375,10 @@ void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volum
     }
     g_object_unref(p_this->root);
     g_free(p_this->mount_uri);
+    if(findGDriveList()->size() == 0)
+    {
+        p_this->m_systray->hide();
+    }
 }
 
 //when the volumes were mounted we add its mounts number
@@ -452,12 +397,6 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     {
         qDebug()<<"不符合过滤条件的设备已被挂载";
     }
-//    if(findGMountList())
-//    *findGMountList()<<mount;
-    if(findGMountList()->size() >= 1)
-    {
-        p_this->m_systray->show();
-    }
 }
 
 //when the mountes were uninstalled we reduce mounts number
@@ -474,7 +413,7 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
             p_this->driveMountNum += 1;
         }
     }
-    if(findGMountList()->size() == 0)
+    if(findGMountList()->size() == 0 || findGDriveList()->size() == 0)
     {
         p_this->m_systray->hide();
     }
@@ -497,15 +436,30 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
         {
             Q_EMIT p_this->convertShowWindow();     //emit a signal to trigger the MainMainShow slot
         }
+        p_this->root = g_mount_get_default_location(g_volume_get_mount(source_object));
+        p_this->mount_uri = g_file_get_uri(p_this->root);
+        qDebug()<<"mount uri"<<p_this->mount_uri;
+        if(p_this->mount_uri)
+        {
+            qDebug()<<"mount uir is not null";
+            if(strcmp(p_this->mount_uri,"burn:///") == 0 || strcmp(p_this->mount_uri,"cdda://sr0/") == 0 || strcmp(p_this->mount_uri,"file:///data") !=0)
+            {
+                if(!findGDriveList()->contains(g_volume_get_drive(source_object)))
+                {
+                    if(g_drive_can_eject(g_volume_get_drive(source_object)))
+                    {
+                        *findGDriveList()<<g_volume_get_drive(source_object);
+                        qDebug()<<"drive name"<<g_drive_get_name(g_volume_get_drive(source_object));
+                    }
+                }
+                qDebug()<<"mount_uri"<<p_this->mount_uri;
+            }
+        }
+        g_object_unref(p_this->root);
+        g_free(p_this->mount_uri);
     }
     else
     {
-//        g_volume_mount(source_object,
-//                       G_MOUNT_MOUNT_NONE,
-//                       nullptr,
-//                       nullptr,
-//                       GAsyncReadyCallback(frobnitz_result_func_volume),
-//                       nullptr);
         qDebug()<<"sorry mount failed";
     }
     p_this->ifGpartedHasStarted = 0;
@@ -518,14 +472,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     driveNoGparted = 0;
     if(ifGpartedHasStarted == 0)
     {
-//    qDebug()<<m_transparency;
-//    QPalette palette = this->palette();
-//    QColor color = QColor(Qt::red);
-//    color.setAlphaF(m_transparency/100);
-//    palette.setBrush(QPalette::Window, color);
-//    this->setPalette(palette);
-//    this->setAutoFillBackground(true);
-//    this->setWindowOpacity(m_transparency/100);
     this->getTransparentData();
     qDebug()<<"findGMountList.size"<<findGMountList()->size();
     qDebug()<<"findGVolumeList.size"<<findGVolumeList()->size();
@@ -539,12 +485,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 #else
 //    QString convertStyle = "#centralWidget{background:rgba(19,19,20," + strTrans + ");}";
 #endif
-//    this->setStyleSheet(convertStyle);
-//    if(this->interfaceHideTime != NULL)
-//    {
-//        delete this->interfaceHideTime;
-//    }
-    //int hign = 200;
     triggerType = 1;  //It represents how we open the interface
     if(ui->centralWidget != NULL)
     {
@@ -574,6 +514,10 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 
           for(auto cacheDrive : *findGDriveList())
           {
+              GVolume *g_volume = (GVolume *)g_list_nth(g_drive_get_volumes(cacheDrive),0);
+              char *devPath = g_volume_get_identifier(g_volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+              qDebug()<<"what's data devpath"<<devPath;
+              qDebug()<<"it true or false"<<g_str_has_prefix(devPath,"/dev/sda");
               int singleSignal = 0;
               int cdSignal = 0;
               listVolumes = g_drive_get_volumes(cacheDrive);
@@ -600,33 +544,6 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
                       g_free(mount_uri);
                   }
               }
-//          for(auto cacheDrive : *findGDriveList())
-//          {
-
-//              qDebug()<<"findGDriveList().num"<<findGDriveList()->size();
-//              qDebug()<<"findGMountList().num"<<findGMountList()->size();
-
-//              int singleSignal = 0;
-//              int cdSignal = 0;
-//              listVolumes = g_drive_get_volumes(cacheDrive);
-//              for(vList = listVolumes; vList != NULL; vList = vList->next)
-//              {
-//                  volume = (GVolume *)vList->data;
-//                  if(g_volume_get_mount(volume) != NULL)
-//                  {
-//                      root = g_mount_get_default_location(g_volume_get_mount(volume));
-//                      mount_uri = g_file_get_uri(root);
-//                      if(g_str_has_prefix(mount_uri,"file:///"))
-//                      singleSignal += 1;
-
-//                      if(g_str_has_prefix(mount_uri,"burn:///")||g_str_has_prefix(mount_uri,"cdda://"))
-//                      cdSignal += 1;
-//                      qDebug()<<"Important:mount uri"<<mount_uri;
-//                      g_object_unref(volume);
-//                      g_object_unref(root);
-//                      g_free(mount_uri);
-//                  }
-//              }
               g_list_free(listVolumes);
               hign = findGMountList()->size()*40 + findGDriveList()->size()*55;
               this->setFixedSize(280,hign);
@@ -1332,6 +1249,7 @@ void MainWindow::moveBottomDirect(GDrive *drive)
 
 void MainWindow::MainWindowShow()
 {
+    this->getTransparentData();
     qDebug()<<"findGDriveList.size"<<findGDriveList()->size();
     qDebug()<<"findGMountList.size"<<findGMountList()->size();
     ui->centralWidget->setObjectName("centralWidget");
