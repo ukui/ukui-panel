@@ -234,13 +234,11 @@ void UKUITray::storageBar()
  */
 void UKUITray::showAndHideStorage(bool storageStatus)
 {
-    if(storageStatus)
-    {
+    if(storageStatus){
         storageFrame->hide();
-    }
-    else
-    {
+    }else{
         storageFrame->show();
+        handleStorageUi();
     }
 }
 
