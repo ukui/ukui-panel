@@ -87,23 +87,25 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
 
     pageup = new QToolButton(this);
     pagedown = new QToolButton(this);
-    pageup->setStyle(new CustomStyle);
-    pagedown->setStyle(new CustomStyle);
+    QStyle *style = new CustomStyle;
+    pageup->setStyle(style);
+    pagedown->setStyle(style);
     pageup->setText("∧");
     pagedown->setText("∨");
+    style->deleteLater();
 
 
     _style->addWidget(pageup, 0,Qt::AlignTop|Qt::AlignHCenter);
     _style->addWidget(pagedown,0,Qt::AlignHCenter);
     _style->setContentsMargins(0,1,0,10);
     //tmpwidget->setFixedSize(24,mPlugin->panel()->panelSize());
-    GetMaxPage();
-    old_page = page_num;
     if(QGSettings::isSchemaInstalled(id)){
         settings=new QGSettings(id);
     }
-
     apps_number = settings->get("quicklaunchappsnumber").toInt();
+    GetMaxPage();
+    old_page = page_num;
+
     connect(pageup,SIGNAL(clicked()),this,SLOT(PageUp()));
     connect(pagedown,SIGNAL(clicked()),this,SLOT(PageDown()));
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
@@ -457,14 +459,15 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
                 {
                     mVBtn.erase(it);
                     flag = 0;
+                    b->deleteLater();
                     break;
                 }
             }
             mLayout->removeWidget(b);
-            b->deleteLater();
         } else {
             ++i;
         }
+        b->deleteLater();
      }
     // GetMaxPage();
     //    btn->deleteLater();
@@ -475,6 +478,7 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
         PageUp();
     }
     saveSettings();
+    btn->deleteLater();
     mLayout->removeWidget(tmpwidget);
     mLayout->addWidget(tmpwidget);
     mLayout->removeWidget(mPlaceHolder);
@@ -505,18 +509,19 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
         QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
         QFileInfo fi(fileName);
         XdgDesktopFile xdg;
+        QuickLaunchAction *_action = NULL;
         if (xdg.load(fileName))
         {
             if (xdg.isSuitable())
-                addButton(new QuickLaunchAction(&xdg, this));
+                _action = new QuickLaunchAction(&xdg, this);
         }
         else if (fi.exists() && fi.isExecutable() && !fi.isDir())
         {
-            addButton(new QuickLaunchAction(fileName, fileName, "", this));
+            _action = new QuickLaunchAction(fileName, fileName, "", this);
         }
         else if (fi.exists())
         {
-            addButton(new QuickLaunchAction(fileName, this));
+            _action = new QuickLaunchAction(fileName, this);
         }
         else
         {
@@ -525,6 +530,9 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
                                      tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
                                      );
         }
+        if (_action)
+            addButton(_action);
+        _action->deleteLater();
     }
     saveSettings();
 }
@@ -627,9 +635,12 @@ bool UKUIQuickLaunch::CheckIfExist(QString arg)
         XdgDesktopFile xdg;
         xdg.load(fileName);
         bool state;
-        state=checkButton(new QuickLaunchAction(&xdg, this));
+        QuickLaunchAction *_action = new QuickLaunchAction(&xdg, this);
+        state=checkButton(_action);
+        _action->deleteLater();
         return state;
     }
+    return false;
 }
 
 /*为开始菜单提供从任务栏上移除的接口*/
@@ -639,7 +650,9 @@ bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     XdgDesktopFile xdg;
     xdg.load(fileName);
-    removeButton(new QuickLaunchAction(&xdg, this));
+    QuickLaunchAction *_action = new QuickLaunchAction(&xdg, this);
+    removeButton(_action);
+    _action->deleteLater();
     return true;
 }
 

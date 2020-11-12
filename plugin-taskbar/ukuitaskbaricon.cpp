@@ -122,16 +122,22 @@ void UKUITaskBarIcon::recursiveSearchFile(const QString& _filePath)
                 if(QString::fromLocal8Bit(nameCh).isEmpty() && QString::fromLocal8Bit(nameEn).isEmpty())
                 {
                     i++;
+                    free(nameCh);
+                    free(nameEn);
                     continue;
                 }
+                free(nameCh);
+                free(nameEn);
             }
             else {
                 char* name=g_key_file_get_string(keyfile,"Desktop Entry","Name", nullptr);
                 if(QString::fromLocal8Bit(name).isEmpty())
                 {
                     i++;
+                    free(name);
                     continue;
                 }
+                free(name);
             }
 
             filePathList.append(filePathStr);
@@ -384,6 +390,8 @@ QString UKUITaskBarIcon::getAppEnglishName(QString desktopfp)
     g_key_file_load_from_file(keyfile,filepath,flags,error);
     char* name=g_key_file_get_string(keyfile,"Desktop Entry","Name", nullptr);
     QString namestr=QString::fromLocal8Bit(name);
+    g_key_file_free(keyfile);
+    free(name);
     return namestr;
 }
 
@@ -398,8 +406,11 @@ QString UKUITaskBarIcon::getAppCategories(QString desktopfp)
     char* filepath=fpbyte.data();
     g_key_file_load_from_file(keyfile,filepath,flags,error);
     char* category=g_key_file_get_locale_string(keyfile,"Desktop Entry","Categories", nullptr, nullptr);
+    QString ret = QString::fromLocal8Bit(category);
     g_key_file_free(keyfile);
-    return QString::fromLocal8Bit(category);
+    free(filepath);
+    free(category);
+    return ret;
 }
 
 //获取应用图标
@@ -413,8 +424,10 @@ QString UKUITaskBarIcon::getAppIcon(QString desktopfp)
     char* filepath=fpbyte.data();
     g_key_file_load_from_file(keyfile,filepath,flags,error);
     char* icon=g_key_file_get_locale_string(keyfile,"Desktop Entry","Icon", nullptr, nullptr);
+    QString ret = QString::fromLocal8Bit(icon);
     g_key_file_free(keyfile);
-    return QString::fromLocal8Bit(icon);
+    free(icon);
+    return ret;
 }
 
 //获取应用命令
@@ -428,8 +441,10 @@ QString UKUITaskBarIcon::getAppExec(QString desktopfp)
     char* filepath=fpbyte.data();
     g_key_file_load_from_file(keyfile,filepath,flags,error);
     char* exec=g_key_file_get_locale_string(keyfile,"Desktop Entry","Exec", nullptr, nullptr);
+    QString ret = QString::fromLocal8Bit(exec);
     g_key_file_free(keyfile);
-    return QString::fromLocal8Bit(exec);
+    free(exec);
+    return ret;
 }
 
 //获取应用注释

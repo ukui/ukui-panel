@@ -268,18 +268,19 @@ void QuickLaunchButton::dropEvent(QDropEvent *e)
         QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
         QFileInfo fi(fileName);
         XdgDesktopFile xdg;
+        QuickLaunchAction *_action = NULL;
         if (xdg.load(fileName))
         {
             if (xdg.isSuitable())
-                uqk->pubAddButton(new QuickLaunchAction(&xdg, this));
+                _action = new QuickLaunchAction(&xdg, this);
         }
         else if (fi.exists() && fi.isExecutable() && !fi.isDir())
         {
-            uqk->pubAddButton(new QuickLaunchAction(fileName, fileName, "", this));
+            _action = new QuickLaunchAction(fileName, fileName, "", this);
         }
         else if (fi.exists())
         {
-            uqk->pubAddButton(new QuickLaunchAction(fileName, this));
+            _action = new QuickLaunchAction(fileName, this);
         }
         else
         {
@@ -288,8 +289,11 @@ void QuickLaunchButton::dropEvent(QDropEvent *e)
                                      tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
                                      );
         }
+        if (_action)
+            uqk->pubAddButton(_action);
     }
     uqk->saveSettings();
+
 }
 /***************************************************/
 

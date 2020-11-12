@@ -319,7 +319,7 @@ void IndicatorCalendar::updateTimeText()
                 );
     QFont font;
     font.setStretch(QFont::Expanded);
-    int font_size = 12 + mContent->mPlugin->panel()->panelSize() / 23;
+    int font_size = 10 + mContent->mPlugin->panel()->panelSize() / 23;
     font.setPixelSize(font_size);
     mContent->setFont(font);
     updatePopupContent();
@@ -815,7 +815,7 @@ void IndicatorCalendar::setTimeShowStyle()
     int size = panel()->panelSize() - 3;
     if(panel()->isHorizontal())
     {
-       mContent->setFixedSize(CALENDAR_WIDTH + 5, size);
+       mContent->setFixedSize(CALENDAR_WIDTH + 15, size);
     }
     else
     {
