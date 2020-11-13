@@ -112,6 +112,11 @@ private:
     int max_page;
     int old_page;
 
+    QMap<QString,bool> blacklist;
+    QMap<QString,bool> whitelist;
+    QString mModel;
+    QString SecurityConfigPath;
+
     void directoryUpdated(const QString &path);
     void GetMaxPage();
 
@@ -131,6 +136,8 @@ private slots:
     void buttonMoveRight();
     void PageUp();
     void PageDown();
+    QString readFile(const QString &filename);
+    void loadJsonfile();
 
 public slots:
     bool AddToTaskbar(QString arg);
@@ -139,6 +146,8 @@ public slots:
     bool CheckIfExist(QString arg);
     int GetPanelPosition(QString arg);
     int GetPanelSize(QString arg);
+    void ReloadSecurityConfig();
+    QString GetSecurityConfigPath();
 
 };
 
@@ -174,6 +183,11 @@ class FilectrlAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"out\" type=\"i\"/>\n"
 "      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
 "    </method>\n"
+"    <method name=\"ReloadSecurityConfig\">\n"
+"    </method>\n"
+"    <method name=\"GetSecurityConfigPath\">\n"
+"      <arg direction=\"out\" type=\"s\"/>\n"
+"    </method>\n"
 "  </interface>\n"
         "")
 public:
@@ -188,6 +202,8 @@ public Q_SLOTS: // METHODS
     bool FileDeleteFromTaskbar(const QString &arg);
     int GetPanelPosition(const QString &arg);
     int GetPanelSize(const QString &arg);
+    void ReloadSecurityConfig();
+    QString GetSecurityConfigPath();
 
 Q_SIGNALS: // SIGNALS
 
