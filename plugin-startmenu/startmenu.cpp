@@ -101,9 +101,9 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     rightPressMenu=new QMenu();
     rightPressMenu->setAttribute(Qt::WA_DeleteOnClose);
 
-    QMenu *pUserAction=new QMenu(tr("User Action"));         //用户操作
-    QMenu *pSleepHibernate=new QMenu(tr("Sleep or Hibernate"));  //重启或休眠
-    QMenu *pPowerSupply=new QMenu(tr("Power Supply"));        //电源
+    QMenu *pUserAction=new QMenu(tr("User Action"));              //用户操作
+    QMenu *pSleepHibernate=new QMenu(tr("Sleep or Hibernate"));   //重启或休眠
+    QMenu *pPowerSupply=new QMenu(tr("Power Supply"));            //电源
     rightPressMenu->addMenu(pUserAction);
     rightPressMenu->addMenu(pSleepHibernate);
     rightPressMenu->addMenu(pPowerSupply);
@@ -111,37 +111,44 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     pUserAction->addAction(QIcon::fromTheme("system-lock-screen-symbolic"),
                            tr("Lock Screen"),
                            this, SLOT(ScreenServer())
-                           );                              //锁屏
+                           );                                     //锁屏
     pUserAction->addAction(QIcon::fromTheme("stock-people-symbolic"),
                            tr("Switch User"),
                            this, SLOT(SessionSwitch())
-                           );                              //切换用户
+                           );                                     //切换用户
     pUserAction->addAction(QIcon::fromTheme("system-logout-symbolic"),
                            tr("Logout"),
                            this, SLOT(SessionLogout())
-                           );                             //注销
+                           );                                     //注销
+    /*
     //社区版本 安装时未强求建立 swap分区，若未建swap分区,会导致休眠(hibernate)失败，所以在20.04上屏蔽该功能
-    if(!QString::compare(version,"Ubuntu"))
+    getOsRelease();
+    if(QString::compare(version,"Ubuntu"))
+    */
+
+    //检测CanHibernate接口的返回值，判断是否可以执行挂起操作
+    if(!QString::compare(getCanHibernateResult(),"yes")){
         pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
-                               tr("Hibernate Mode"),
-                               this, SLOT(SessionHibernate())
-                               );                             //休眠
+                                   tr("Hibernate Mode"),
+                                   this, SLOT(SessionHibernate())
+                                   );                              //休眠
+    }
     pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
                                tr("Sleep Mode"),
                                this, SLOT(SessionSuspend())
-                               );                             //挂起
+                               );                                   //挂起
     pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
                             tr("Restart"),
                             this, SLOT(SessionReboot())
-                            );                             //重启
+                            );                                      //重启
     pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
                             tr("TimeShutdown"),
                             this, SLOT(TimeShutdown())
-                            );                             //定时开关机
+                            );                                      //定时开关机
     pPowerSupply->addAction(QIcon::fromTheme("system-shutdown-symbolic"),
                             tr("Power Off"),
                             this, SLOT(SessionShutdown())
-                            );                             //关机
+                            );                                      //关机
 
     rightPressMenu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), rightPressMenu->sizeHint()));
     rightPressMenu->show();
@@ -198,16 +205,35 @@ void UKUIStartMenuButton::SessionShutdown()
     system("ukui-session-tools --shutdown");
 }
 
-//获取系统版本
+//获取系统版本,若为ubuntu则取消休眠功能
 void UKUIStartMenuButton::getOsRelease()
 {
-    QFile file("/etc/lsb_release");
+    QFile file("/etc/lsb-release");
     if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
         QString str(line);
         if (str.contains("DISTRIB_ID")){
             version=str.remove("DISTRIB_ID=");
+            version=str.remove("\n");
         }
+    }
+}
+
+//
+QString UKUIStartMenuButton::getCanHibernateResult()
+{
+    QDBusInterface interface("org.freedesktop.login1", "/org/freedesktop/login1",
+                             "org.freedesktop.login1.Manager",
+                             QDBusConnection::systemBus());
+    if (!interface.isValid()) {
+        qCritical() << QDBusConnection::sessionBus().lastError().message();
+    }
+    /*调用远程的 CanHibernate 方法，判断是否可以执行休眠的操作,返回值为yes为允许执行休眠，no为无法执行休眠*/
+    QDBusReply<QString> reply = interface.call("CanHibernate");
+    if (reply.isValid()) {
+        return reply;
+    } else {
+        qCritical() << "Call Dbus method failed";
     }
 }

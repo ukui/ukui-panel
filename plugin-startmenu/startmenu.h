@@ -89,6 +89,7 @@ private:
     QString version;
 
     void getOsRelease();
+    QString getCanHibernateResult();
 
 private slots:
     void ScreenServer();
