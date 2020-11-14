@@ -229,7 +229,7 @@ QString UKUIStartMenuButton::getCanHibernateResult()
     if (!interface.isValid()) {
         qCritical() << QDBusConnection::sessionBus().lastError().message();
     }
-    /*调用远程的 CanHibernate 方法，判断是否可以执行休眠的操作,返回值为yes为允许执行休眠，no为无法执行休眠*/
+    /*调用远程的 CanHibernate 方法，判断是否可以执行休眠的操作,返回值为yes为允许执行休眠，no为无法执行休眠 na为交换分区不足*/
     QDBusReply<QString> reply = interface.call("CanHibernate");
     if (reply.isValid()) {
         return reply;
