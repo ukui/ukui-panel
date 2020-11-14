@@ -50,9 +50,10 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
       mPlugin(plugin)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->setStyle(new CustomStyle());
     setAcceptDrops(true);
     /*设置快速启动栏的按键不接受焦点*/
-    setFocusPolicy(Qt::NoFocus);
+    //setFocusPolicy(Qt::NoFocus);
     setAutoRaise(true);
     quicklanuchstatus = NORMAL;
 
@@ -73,7 +74,6 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(this_customContextMenuRequested(const QPoint&)));
     file_name=act->m_settingsMap["desktop"];
-    this->setStyle(new CustomStyle());
     repaint();
 
 }
@@ -149,7 +149,7 @@ void QuickLaunchButton::selfRemove()
 /*quicklanuchstatus的状态*/
 void QuickLaunchButton::enterEvent(QEvent *)
 {
-    quicklanuchstatus =HOVER;
+    //quicklanuchstatus =HOVER;
     repaint();
 }
 
@@ -157,7 +157,7 @@ void QuickLaunchButton::enterEvent(QEvent *)
 
 void QuickLaunchButton::leaveEvent(QEvent *)
 {
-    quicklanuchstatus=NORMAL;
+    //quicklanuchstatus=NORMAL;
     repaint();
 }
 
@@ -239,6 +239,12 @@ void QuickLaunchButton::dragMoveEvent(QDragMoveEvent * e)
 //        e->ignore();
 }
 
+void QuickLaunchButton::dragLeaveEvent(QDragLeaveEvent * e)
+{
+    repaint();
+    QToolButton::dragLeaveEvent(e);
+}
+
 /***************************************************/
 
 void QuickLaunchButton::dragEnterEvent(QDragEnterEvent *e)
@@ -247,6 +253,7 @@ void QuickLaunchButton::dragEnterEvent(QDragEnterEvent *e)
     const ButtonMimeData *mimeData = qobject_cast<const ButtonMimeData*>(e->mimeData());
     if (mimeData && mimeData->button())
           emit switchButtons(mimeData->button(), this);
+    repaint();
     QToolButton::dragEnterEvent(e);
 }
 
