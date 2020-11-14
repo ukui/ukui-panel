@@ -137,8 +137,6 @@ void CustomStyle::drawComplexControl(QStyle::ComplexControl cc, const QStyleOpti
         break;
     }
     return QProxyStyle::drawComplexControl(cc, opt, p, widget);
-
-
 }
 
 /*下面对于CE_ToolButtonLabel　的处理是因为quicklaunch 插件出现了箭头*/

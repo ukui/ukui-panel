@@ -80,6 +80,7 @@ protected:
     void leaveEvent(QEvent *event);
     void dropEvent(QDropEvent *e);
     virtual QMimeData * mimeData();
+    void dragLeaveEvent(QDragLeaveEvent *e);
 
 private:
     QuickLaunchAction *mAct;

@@ -990,8 +990,7 @@ QList<char *> UKUITray::listExistsPath(){
 
     for (int i = 0; childs[i] != NULL; i++){
         if (dconf_is_rel_dir (childs[i], NULL)){
-            char * val = g_strdup (childs[i]);
-
+            gchar *val = g_strdup (childs[i]);
             vals.append(val);
         }
     }
@@ -1026,6 +1025,8 @@ void UKUITray::regulateIcon(Window *mid)
         {
             if(bba.isEmpty())
             {
+                free(allpath);
+                free(prepath);
                 continue;
             }
             settings= new QGSettings(id, bba);
@@ -1091,12 +1092,14 @@ void UKUITray::regulateIcon(Window *mid)
                         }
                     }
                 });
+                delete allpath;
                 break;
             }
         }
         settings->deleteLater();
         delete  prepath;
         count++;
+        g_free(path);
     }
 
     if(count >= existsPath.count())
