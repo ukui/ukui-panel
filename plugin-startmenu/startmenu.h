@@ -82,6 +82,8 @@ public:
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mousePressEvent(QMouseEvent* event);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
 
 private:
     QMenu *rightPressMenu;

@@ -302,7 +302,7 @@ void IndicatorCalendar::updateTimeText()
                 "QLabel{"
                 "border-width:  0px;"                     //边框宽度像素
                 "border-radius: 6px;"                       //边框圆角半径像素
-   //             "font-size:     14px;"                      //字体，字体大小
+   //           "font-size:     14px;"                      //字体，字体大小
                 "color:         rgba(255,255,255,100%);"    //字体颜色
                 "padding:       0px;"                       //填衬
                 "text-align:center;"                        //文本居中
@@ -319,7 +319,7 @@ void IndicatorCalendar::updateTimeText()
                 );
     QFont font;
     font.setStretch(QFont::Expanded);
-    int font_size = 12 + mContent->mPlugin->panel()->panelSize() / 23;
+    int font_size = 10 + mContent->mPlugin->panel()->panelSize() / 23;
     font.setPixelSize(font_size);
     mContent->setFont(font);
     updatePopupContent();
@@ -815,11 +815,11 @@ void IndicatorCalendar::setTimeShowStyle()
     int size = panel()->panelSize() - 3;
     if(panel()->isHorizontal())
     {
-       mContent->setFixedSize(CALENDAR_WIDTH + 5, size);
+       mContent->setFixedSize(CALENDAR_WIDTH + 15, size);
     }
     else
     {
-        mContent->setFixedSize(size, CALENDAR_WIDTH);
+        mContent->setFixedSize(size - 8, CALENDAR_WIDTH);
     }
     mbIsNeedUpdate = true;
     timeout();

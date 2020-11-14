@@ -16,6 +16,7 @@
  *
  */
 #include "MainController.h"
+#include <KWindowEffects>
 //#include "stdlib.h"
 
 MainController* MainController::mSelf = 0;  //static variable
@@ -32,8 +33,9 @@ MainController::MainController()
 {
     init();
     m_DiskWindow = new MainWindow;         //main process singleton object
-    m_DiskWindow->setAttribute(Qt::WA_TranslucentBackground);
-    m_DiskWindow->setProperty("useSystemStyleBlur",true);
+//    m_DiskWindow->setAttribute(Qt::WA_TranslucentBackground);
+//    m_DiskWindow->setProperty("useSystemStyleBlur",true);
+    KWindowEffects::enableBlurBehind(m_DiskWindow->winId(),true);
 }
 
 MainController::~MainController()

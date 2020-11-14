@@ -59,9 +59,9 @@ UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* par
     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     this->setStyle(new CustomStyle());
     //    this->setWindowFlags(Qt::NoFocus);
-    setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
-    setAttribute(Qt::WA_ShowWithoutActivating,true);
-    setFocusPolicy(Qt::NoFocus);
+    //setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
+    //setAttribute(Qt::WA_ShowWithoutActivating,true);
+    //setFocusPolicy(Qt::NoFocus);
 }
 
 UKUIStartMenuButton::~UKUIStartMenuButton()
@@ -220,7 +220,7 @@ void UKUIStartMenuButton::getOsRelease()
     }
 }
 
-//
+//检测当前系统能否执行休眠操作
 QString UKUIStartMenuButton::getCanHibernateResult()
 {
     QDBusInterface interface("org.freedesktop.login1", "/org/freedesktop/login1",
@@ -236,4 +236,14 @@ QString UKUIStartMenuButton::getCanHibernateResult()
     } else {
         qCritical() << "Call Dbus method failed";
     }
+}
+
+void UKUIStartMenuButton::enterEvent(QEvent *) {
+    repaint();
+    return;
+}
+
+void UKUIStartMenuButton::leaveEvent(QEvent *) {
+    repaint();
+    return;
 }
