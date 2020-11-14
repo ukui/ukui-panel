@@ -148,10 +148,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
-    mBtn =new QToolButton;
-    mBtn->setStyle(new CustomStyle());
-    mBtn->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
-    mBtn->setVisible(false);
+    mBtn =new TrayButton(this);
     layout()->addWidget(mBtn);
     if(mPlugin)
     {
@@ -1355,4 +1352,24 @@ void UKUITray::handleStorageUi()
     //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
     storageFrame->setFixedSize(winWidth,winHeight);
     //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
+}
+
+TrayButton::TrayButton(QWidget* parent):
+    QToolButton(parent)
+{
+    setStyle(new CustomStyle());
+    setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+    setVisible(false);
+}
+
+TrayButton::~TrayButton() { }
+
+void TrayButton::enterEvent(QEvent *) {
+    repaint();
+    return;
+}
+
+void TrayButton::leaveEvent(QEvent *) {
+    repaint();
+    return;
 }
