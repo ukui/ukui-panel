@@ -56,8 +56,13 @@
 #include <QScreen>
 #include <QWidget>
 #include <QPushButton>
+#include <stdio.h>
+#include <pwd.h>
+#include <unistd.h>
+#include "json.h"
 using namespace  std;
-
+using QtJson::JsonObject;
+using QtJson::JsonArray;
 
 #define PAGEBUTTON_SMALL_SIZE  20
 #define PAGEBUTTON_MEDIUM_SIZE 30
@@ -74,6 +79,12 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     mPlugin(plugin),
     mPlaceHolder(0)
 {
+
+    struct passwd *pwd;
+    pwd=getpwuid(getuid());
+    pwd->pw_name;
+    SecurityConfigPath=QString("/home/")+pwd->pw_name+QString("/.config/ukui-panel-security-config.json");
+
     setAcceptDrops(true);
     mVBtn.clear();
 
@@ -146,10 +157,94 @@ UKUIQuickLaunch::~UKUIQuickLaunch()
     mVBtn.clear();
 }
 
+void UKUIQuickLaunch::ReloadSecurityConfig(){
+    this->loadJsonfile();
+    this->refreshQuickLaunch("ukui-panel1");
+}
+
+QString UKUIQuickLaunch::GetSecurityConfigPath(){
+    return SecurityConfigPath;
+}
+QString UKUIQuickLaunch::readFile(const QString &filename) {
+    QFile f(filename);
+    if (!f.open(QFile::ReadOnly)) {
+        return QString();
+    } else {
+        QTextStream in(&f);
+        return in.readAll();
+    }
+}
+
+void UKUIQuickLaunch::loadJsonfile() {
+    QString json = readFile(SecurityConfigPath);
+    if (json.isEmpty()) {
+        qFatal("Could not read JSON file!");
+        return ;
+    }
+    bool ok;
+    JsonObject result = QtJson::parse(json, ok).toMap();
+    QVariant fristLayer;
+    fristLayer=result.value("ukui-panel");
+    mModel=fristLayer.toMap().value("mode").toString();
+
+    QVariant blacklistLayer;
+    blacklistLayer=fristLayer.toMap().value("blacklist");
+    QVariant whitelistLayer;
+    whitelistLayer=fristLayer.toMap().value("whitelist");
+
+    if(!blacklistLayer.isNull()){
+        QList<QVariant> thirdLayer;
+        thirdLayer=blacklistLayer.toList();
+        QMap<QString,QVariant> fourthLayer;
+        fourthLayer=thirdLayer.at(0).toMap();
+        QList<QVariant> fifthLayer;
+        fifthLayer=fourthLayer.value("entries").toList();
+        QMap<QString,QVariant> attribute;
+        QMap<QString,bool> blackNames;
+        for(int i=0;i<fifthLayer.size();i++){
+            attribute=fifthLayer.at(i).toMap();
+            blackNames.insert(attribute.value("path").toString(),attribute.value("visible").toBool());
+        }
+        blacklist=blackNames;
+    }
+
+    if(!whitelistLayer.isNull()){
+        QList<QVariant> thirdLayer;
+        thirdLayer=whitelistLayer.toList();
+        QMap<QString,QVariant> fourthLayer;
+        fourthLayer=thirdLayer.at(0).toMap();
+        QList<QVariant> fifthLayer;
+        fifthLayer=fourthLayer.value("entries").toList();
+        QMap<QString,QVariant> attribute;
+        QMap<QString,bool> whiteNames;
+        for(int i=0;i<fifthLayer.size();i++){
+            attribute=fifthLayer.at(i).toMap();
+            whiteNames.insert(attribute.value("path").toString(),attribute.value("visible").toBool());
+        }
+        whitelist=whiteNames;
+    }
+}
+
 /*任务栏刷新  在快读启动栏初始化和云账户同步的时候调用*/
 void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
     if(!QString::compare(ssoclient,"ukui-panel2"))
         return;
+    QStringList mblacklist;
+    QStringList mwhitelist;
+    if(mModel=="blacklist"){
+        QMap<QString, bool>::const_iterator n;
+        for(n=blacklist.constBegin();n!=blacklist.constEnd();++n){
+            if(n.value())
+                mblacklist<<n.key();
+        }
+    }
+    if(mModel=="whitelist"){
+        QMap<QString, bool>::const_iterator n;
+        for(n=whitelist.constBegin();n!=whitelist.constEnd();++n){
+            if(n.value())
+                mwhitelist<<n.key();
+        }
+    }
     for(auto it = mVBtn.begin(); it != mVBtn.end();)
     {
         (*it)->deleteLater();
@@ -166,6 +261,16 @@ void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
     for (const QMap<QString, QVariant> &app : apps)
     {
         desktop = app.value("desktop", "").toString();
+
+        if(mblacklist.contains(desktop)){
+            desktop.clear();
+        }
+        if(mModel=="whitelist"){
+            if(!mwhitelist.contains(desktop)){
+                desktop.clear();
+            }
+        }
+
         file = app.value("file", "").toString();
         if (!desktop.isEmpty())
         {
@@ -184,22 +289,22 @@ void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
             */
             addButton(new QuickLaunchAction(&xdg, this));
         }
-        else if (! file.isEmpty())
-        {
-            addButton(new QuickLaunchAction(file, this));
-        }
-        else
-        {
-            execname = app.value("name", "").toString();
-            exec = app.value("exec", "").toString();
-            icon = app.value("icon", "").toString();
-	    if (icon.isNull())
-            {
-                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
-                continue;
-            }
-            addButton(new QuickLaunchAction(execname, exec, icon, this));
-        }
+//        else if (! file.isEmpty())
+//        {
+//            addButton(new QuickLaunchAction(file, this));
+//        }
+//        else
+//        {
+//            execname = app.value("name", "").toString();
+//            exec = app.value("exec", "").toString();
+//            icon = app.value("icon", "").toString();
+//	    if (icon.isNull())
+//            {
+//                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
+//                continue;
+//            }
+//            addButton(new QuickLaunchAction(execname, exec, icon, this));
+//        }
     }
     int i = 0;
     int counts = countOfButtons();
@@ -891,5 +996,17 @@ int FilectrlAdaptor::GetPanelSize(const QString &arg)
 {
     int out0;
     QMetaObject::invokeMethod(parent(), "GetPanelSize", Q_RETURN_ARG(int, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+void FilectrlAdaptor::ReloadSecurityConfig()
+{
+    QMetaObject::invokeMethod(parent(), "ReloadSecurityConfig");
+}
+
+QString FilectrlAdaptor::GetSecurityConfigPath()
+{
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "GetSecurityConfigPath", Q_RETURN_ARG(QString, out0));
     return out0;
 }
