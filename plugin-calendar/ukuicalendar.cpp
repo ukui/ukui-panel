@@ -317,11 +317,12 @@ void IndicatorCalendar::updateTimeText()
                 "background-color:rgba(190,216,239,12%);"
                 "}"
                 );
+    /*
     QFont font;
     font.setStretch(QFont::Expanded);
     int font_size = 10 + mContent->mPlugin->panel()->panelSize() / 23;
     font.setPixelSize(font_size);
-    mContent->setFont(font);
+    mContent->setFont(font);*/
     updatePopupContent();
     mbIsNeedUpdate = false;
 }
