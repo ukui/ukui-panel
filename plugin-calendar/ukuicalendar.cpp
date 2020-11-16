@@ -257,8 +257,10 @@ void IndicatorCalendar::updateTimeText()
 
     //    if (!isUpToDate || mbIsNeedUpdate)
     //    {
-    const QSize old_size = mContent->sizeHint();
+    //const QSize old_size = mContent->sizeHint();
     QString str;
+    const QByteArray _id("org.ukui.style");
+    QGSettings *fgsettings = new QGSettings(_id);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id))
     {
@@ -317,12 +319,13 @@ void IndicatorCalendar::updateTimeText()
                 "background-color:rgba(190,216,239,12%);"
                 "}"
                 );
-    /*
+
     QFont font;
     font.setStretch(QFont::Expanded);
-    int font_size = 10 + mContent->mPlugin->panel()->panelSize() / 23;
+    int font_size = fgsettings->get("system-font-size").toInt();//10 + mContent->mPlugin->panel()->panelSize() / 23;
     font.setPixelSize(font_size);
-    mContent->setFont(font);*/
+    mContent->setFont(font);
+
     updatePopupContent();
     mbIsNeedUpdate = false;
 }
@@ -816,11 +819,11 @@ void IndicatorCalendar::setTimeShowStyle()
     int size = panel()->panelSize() - 3;
     if(panel()->isHorizontal())
     {
-       mContent->setFixedSize(CALENDAR_WIDTH + 15, size);
+       mContent->setFixedSize(CALENDAR_WIDTH, size);
     }
     else
     {
-        mContent->setFixedSize(size - 8, CALENDAR_WIDTH);
+        mContent->setFixedSize(size, CALENDAR_WIDTH - 20);
     }
     mbIsNeedUpdate = true;
     timeout();

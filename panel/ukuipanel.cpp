@@ -87,8 +87,8 @@
 #define ICON_SIZE_LARGE   64
 #define ICON_SIZE_MEDIUM  48
 #define ICON_SIZE_SMALL   32
-#define PANEL_SIZE_LARGE_V 65
-#define PANEL_SIZE_MEDIUM_V 56
+#define PANEL_SIZE_LARGE_V 70
+#define PANEL_SIZE_MEDIUM_V 62
 #define PANEL_SIZE_SMALL_V 47
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
