@@ -145,7 +145,7 @@ void QuickLaunchAction::execAction(QString additionalAction)
                  } else {
                     //xdg 的方式实现点击打开应用，可正确读取转义的字符
                     if (!additionalAction.isEmpty()){
-                        if (xdg.startDetached())
+                        if (!xdg.startDetached())
                             showQMessage =true;
                     } else {
                         if (!xdg.actionActivate(additionalAction, QStringList{}))
