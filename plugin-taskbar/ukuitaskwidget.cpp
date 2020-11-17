@@ -365,7 +365,7 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
     QAction *maxim = menu->addAction(QIcon::fromTheme("window-maximize-symbolic"), tr("maximaze"));
 
     QAction *minim = menu->addAction(QIcon::fromTheme("window-minimize-symbolic"), tr("minimize"));
-    connect(close, SIGNAL(triggered()), this, SLOT(closeGroup()));
+    connect(close, SIGNAL(triggered()), this, SLOT(closeApplication()));
     connect(restore, SIGNAL(triggered()), this, SLOT(raiseApplication()));
     connect(maxim, SIGNAL(triggered()), this, SLOT(maximizeApplication()));
     connect(minim, SIGNAL(triggered()), this, SLOT(minimizeApplication()));
@@ -499,7 +499,6 @@ void UKUITaskWidget::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
     qDebug()<<"closeApplication";
-    KWindowSystem::activateWindow(mWindow);
     NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(mWindow);
 }
 
