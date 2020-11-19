@@ -311,7 +311,6 @@ void LunarCalendarWidget::initWidget()
     }
 
     //主布局
-    QWidget *asd = widgetTime;
     QVBoxLayout *verLayoutCalendar = new QVBoxLayout(this);
     verLayoutCalendar->setMargin(0);
     verLayoutCalendar->setSpacing(0);
@@ -504,9 +503,9 @@ void LunarCalendarWidget::monthChanged(const QString &arg1)
 void LunarCalendarWidget::clicked(const QDate &date, const LunarCalendarItem::DayType &dayType)
 {
     if (LunarCalendarItem::DayType_MonthPre == dayType) {
-        showPreviousMonth();
+        showPreviousMonth(false);
     } else if (LunarCalendarItem::DayType_MonthNext == dayType) {
-        showNextMonth();
+        showNextMonth(false);
     } else {
         this->date = date;
         dayChanged(this->date);
@@ -704,7 +703,7 @@ void LunarCalendarWidget::showNextYear()
 }
 
 //显示上月日期
-void LunarCalendarWidget::showPreviousMonth()
+void LunarCalendarWidget::showPreviousMonth(bool btn_clicked)
 {
     int year = date.year();
     int month = date.month();
@@ -716,31 +715,32 @@ void LunarCalendarWidget::showPreviousMonth()
     //extra:
     if (month > 1)
         month--;
-//    if (month < 1) {
-//        month = 12;
-//        year--;
-//    }
+    else  if (!btn_clicked)  {
+            month = 12;
+            year--;
+
+    }
 
     dateChanged(year, month, day);
 }
 
 //显示下月日期
-void LunarCalendarWidget::showNextMonth()
+void LunarCalendarWidget::showNextMonth(bool btn_clicked)
 {
     int year = date.year();
     int month = date.month();
     int day = date.day();
-    if (year >= 2099 && month == 12) {
+    if (year >= 2099 ) {
         return;
     }
 
     //extra
     if (month < 12)
         month++;
-//    if (month > 12) {
-//        month = 1;
-//        //year++;
-//    }
+    else  if (!btn_clicked){
+        month = 1;
+        year++;
+    }
 
     dateChanged(year, month, day);
 }

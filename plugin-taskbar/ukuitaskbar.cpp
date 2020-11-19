@@ -111,12 +111,13 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
 
     //往任务栏中加入任务栏按钮
     realign();
-
     mPlaceHolder->setMinimumSize(1, 1);
     mPlaceHolder->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
     mPlaceHolder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-    //mLayout->addWidget(mPlaceHolder);
-
+    if (!countOfButtons()) {
+        mLayout->addWidget(mPlaceHolder);
+        hasPlaceHolder = true;
+    }
 
     GetMaxPage();
     old_page = page_num;
@@ -141,7 +142,21 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
             , this, &UKUITaskBar::onWindowChanged);
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &UKUITaskBar::onWindowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
-
+//    QGSettings *changeTheme;
+//        const QByteArray id_Theme("org.ukui.style");
+//        if(QGSettings::isSchemaInstalled(id_Theme)){
+//            changeTheme = new QGSettings(id_Theme);
+//        }
+//        connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+//            if(key=="iconThemeName"){
+//                sleep(1);
+//                for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+//                {
+//                    UKUITaskGroup *group = it.value();
+//                    group->updateIcon();
+//                }
+//            }
+//        });
 
     /*监听系统应用的目录以及安卓兼容应用的目录*/
     FilectrlAdaptor *f;
@@ -244,6 +259,10 @@ void UKUITaskBar::GetMaxPage() {
 }
 
 void UKUITaskBar::refreshQuickLaunch(){
+    if (hasPlaceHolder) {
+        mLayout->removeWidget(mPlaceHolder);
+        hasPlaceHolder = false;
+    }
     for(auto it = mVBtn.begin(); it != mVBtn.end();)
     {
         (*it)->deleteLater();
@@ -492,6 +511,7 @@ void UKUITaskBar::groupBecomeEmptySlot()
         if (group == *i) {
             swid.removeOne(i.key());
             i = mKnownWindows.erase(i);
+            break;
         }
         else
             ++i;
@@ -504,12 +524,17 @@ void UKUITaskBar::groupBecomeEmptySlot()
         {
             pQuickBtn->setHidden(false);
             mLayout->moveItem(mLayout->indexOf(pQuickBtn), mLayout->indexOf(group));
-            mLayout->removeWidget(group);
             pQuickBtn->existSameQckBtn = false;
             break;
         }
     }
+    mLayout->removeWidget(group);
     group->deleteLater();
+    if (!countOfButtons()) {
+        mLayout->addWidget(mPlaceHolder);
+        hasPlaceHolder = true;
+    }
+
 }
 
 /************************************************
@@ -517,6 +542,10 @@ void UKUITaskBar::groupBecomeEmptySlot()
  ************************************************/
 void UKUITaskBar::addWindow(WId window)
 {
+    if (countOfButtons() && hasPlaceHolder) {
+        mLayout->removeWidget(mPlaceHolder);
+        hasPlaceHolder = false;
+    }
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
@@ -558,7 +587,7 @@ void UKUITaskBar::addWindow(WId window)
         connect(group, SIGNAL(t_saveSettings()), this, SLOT(saveSettingsSlot()));
         connect(group, SIGNAL(WindowAddtoTaskBar(QString)), this, SLOT(WindowAddtoTaskBar(QString)));
         connect(group, SIGNAL(WindowRemovefromTaskBar(QString)), this, SLOT(WindowRemovefromTaskBar(QString)));
-        connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
+        //connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
         connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
         connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
             switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
@@ -830,6 +859,7 @@ void UKUITaskBar::setShowGroupOnHover(bool bFlag)
     mShowGroupOnHover = bFlag;
 }
 
+int i = 0;
 void UKUITaskBar::realign()
 {
     if(savecount < 0) savecount = 0;
@@ -880,8 +910,8 @@ void UKUITaskBar::realign()
     {
         UKUITaskGroup *group = it.value();
         //group->setFixedSize(mPlugin->panel()->panelSize(), mPlugin->panel()->panelSize());
+        //group->updateIcon();
         group->setIconSize(QSize(iconsize,iconsize));
-//        group->updateIcon();
     }
     for (int i = 0; i < mVBtn.size(); i++) {
         UKUITaskGroup * quicklaunch = mVBtn.value(i);
@@ -892,7 +922,6 @@ void UKUITaskBar::realign()
     mLayout->setCellMaximumSize(maxSize);
     mLayout->setDirection(rotated ? UKUi::GridLayout::TopToBottom : UKUi::GridLayout::LeftToRight);
     mLayout->setEnabled(true);
-
     //our placement on screen could have been changed
     emit showOnlySettingChanged();
     emit refreshIconGeometry();
@@ -1124,6 +1153,10 @@ void UKUITaskBar::mousePressEvent(QMouseEvent *)
 
 void UKUITaskBar::addButton(QuickLaunchAction* action)
 {
+    if (countOfButtons() && hasPlaceHolder) {
+        mLayout->removeWidget(mPlaceHolder);
+        hasPlaceHolder = false;
+    }
     bool isNeedAddNewWidget = true;
     mLayout->setEnabled(false);
     UKUITaskGroup *btn = new UKUITaskGroup(action, mPlugin, this);
@@ -1254,7 +1287,11 @@ void UKUITaskBar::removeButton(QuickLaunchAction* action)
     // GetMaxPage();
     //    btn->deleteLater();
     //realign();
-  //  if (countOfButtons() <= 32) tmpwidget->setHidden(true);
+    if (countOfButtons() <= 32) tmpwidget->setHidden(true);
+    if (!countOfButtons()) {
+        mLayout->addWidget(mPlaceHolder);
+        hasPlaceHolder = true;
+    }
     saveSettings();
 }
 
@@ -1271,6 +1308,10 @@ void UKUITaskBar::removeButton(QString file)
             break;
         }
         ++i;
+    }
+    if (!countOfButtons()) {
+        mLayout->addWidget(mPlaceHolder);
+        hasPlaceHolder = true;
     }
    // if (countOfButtons() <= 32) tmpwidget->setHidden(true);
 }
@@ -1453,6 +1494,10 @@ void UKUITaskBar::FileDeleteFromTaskbar(QString file)
         ++i;
     }
    // if (countOfButtons() <= 32) tmpwidget->setHidden(true);
+    if (!countOfButtons()) {
+        mLayout->addWidget(mPlaceHolder);
+        hasPlaceHolder = true;
+    }
     saveSettings();
 }
 
@@ -1497,6 +1542,10 @@ void UKUITaskBar::buttonDeleted()
     btn->deleteLater();
     //GetMaxPage();
     //realign();
+    if (!countOfButtons()) {
+        mLayout->addWidget(mPlaceHolder);
+        hasPlaceHolder = true;
+    }
     saveSettings();
 
     /*//注释showPlaceHolder的原因是在开始菜单检测快速启动栏上面固定的应用数量的时候
@@ -1523,6 +1572,7 @@ void UKUITaskBar::saveSettings()
     for (int j = 0; j < size; ++j)
     {
         UKUITaskGroup *b = qobject_cast<UKUITaskGroup*>(mLayout->itemAt(j)->widget());
+        if (!(mVBtn.contains(b) || mKnownWindows.contains(mKnownWindows.key(b)))) continue;
         if (!b->statFlag && b->existSameQckBtn) continue;
         if (!b) continue;
         if (b->statFlag && b->existSameQckBtn){
