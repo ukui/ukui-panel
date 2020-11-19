@@ -111,13 +111,18 @@ void TaskView::realign()
 }
 
 /* 两种方式可调用任务视图
- * 1.调用Dbus接口
+ * 1.调用Dbus接口 
  * 2.调用二进制
 */
 void TaskViewButton::mousePressEvent(QMouseEvent *event)
 {
     const Qt::MouseButton b = event->button();
-    QDBusInterface interface("org.ukui.WindowSwitch", "/org/ukui/WindowSwitch",
+    //调用dbus接口
+#if 0
+    QString object = QString(getenv("DISPLAY"));
+    object = object.trimmed().replace(":", "_").replace(".", "_").replace("-", "_");
+    object = "/org/ukui/WindowSwitch/display/" + object;
+    QDBusInterface interface("org.ukui.WindowSwitch", object,
                              "org.ukui.WindowSwitch",
                              QDBusConnection::sessionBus());
     if (!interface.isValid()) {
@@ -138,6 +143,11 @@ void TaskViewButton::mousePressEvent(QMouseEvent *event)
         } else {
             qCritical() << "Call Dbus method failed";
         }
+    }
+#endif
+    //调用命令
+    if (Qt::LeftButton == b){
+    	system("ukui-window-switch --show-workspace");
     }
 
     QWidget::mousePressEvent(event);
