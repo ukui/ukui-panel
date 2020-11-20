@@ -615,6 +615,11 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
         QFileInfo fi(fileName);
         XdgDesktopFile xdg;
         QuickLaunchAction *_action = NULL;
+        if (!fileName.compare("computer:///"))
+            fileName = QString("/usr/share/applications/peony-computer.desktop");
+        if (!fileName.compare("trash:///"))
+            fileName = QString("/usr/share/applications/peony-trash.desktop");
+        if (CheckIfExist(fileName)) return;
         if (xdg.load(fileName))
         {
             if (xdg.isSuitable())
@@ -637,7 +642,6 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
         }
         if (_action)
             addButton(_action);
-        _action->deleteLater();
     }
     saveSettings();
 }
@@ -699,6 +703,7 @@ bool UKUIQuickLaunch::AddToTaskbar(QString arg)
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
     XdgDesktopFile xdg;
+    if (CheckIfExist(fileName)) return false;
     if (xdg.load(fileName))
     {
         /*This fuction returns true if the desktop file is applicable to the
@@ -746,6 +751,10 @@ bool UKUIQuickLaunch::CheckIfExist(QString arg)
         return state;
     }
     return false;
+}
+
+bool UKUIQuickLaunch::pubCheckIfExist(QString name) {
+    return CheckIfExist(name);
 }
 
 /*为开始菜单提供从任务栏上移除的接口*/

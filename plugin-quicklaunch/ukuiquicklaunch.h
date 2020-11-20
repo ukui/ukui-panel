@@ -87,6 +87,7 @@ public:
     void saveSettings();
     void showPlaceHolder();
     void pubAddButton (QuickLaunchAction *action) { addButton(action); }
+    bool pubCheckIfExist(QString name);
 
     friend class FilectrlAdaptor;
 

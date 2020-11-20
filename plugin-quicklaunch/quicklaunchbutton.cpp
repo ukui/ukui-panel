@@ -276,6 +276,11 @@ void QuickLaunchButton::dropEvent(QDropEvent *e)
         QFileInfo fi(fileName);
         XdgDesktopFile xdg;
         QuickLaunchAction *_action = NULL;
+        if (!fileName.compare("computer:///"))
+            fileName = QString("/usr/share/applications/peony-computer.desktop");
+        if (!fileName.compare("trash:///"))
+            fileName = QString("/usr/share/applications/peony-trash.desktop");
+        if (uqk->pubCheckIfExist(fileName)) return;
         if (xdg.load(fileName))
         {
             if (xdg.isSuitable())
