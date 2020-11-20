@@ -1295,7 +1295,11 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    double tran;
+    if(transparency_gsettings->keys().contains(TRANSPARENCY_KEY))
+        tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    else
+        tran=0.75;
     p.setBrush(QBrush(QColor(19,22,28,tran)));
 
     p.setRenderHint(QPainter::Antialiasing);
