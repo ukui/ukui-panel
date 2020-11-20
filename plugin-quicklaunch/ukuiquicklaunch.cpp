@@ -227,7 +227,7 @@ void UKUIQuickLaunch::loadJsonfile() {
 
 /*任务栏刷新  在快读启动栏初始化和云账户同步的时候调用*/
 void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
-    if(!QString::compare(ssoclient,"ukui-panel2"))
+    if(ssoclient != "ukui-panel2")
         return;
     QStringList mblacklist;
     QStringList mwhitelist;
