@@ -387,21 +387,17 @@ void UKUITray::realign()
 
 void UKUITray::trayIconSizeRefresh()
 {
-    for(int i=0;i<mTrayIcons.size();i++)
-    {
-        if(mTrayIcons.at(i)){
-            if (mPlugin->panel()->isHorizontal()){
-            mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
-            mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+    for(int i=0;i<mIcons.size();i++){
+        if(mIcons.at(i)){
+            handleStorageUi();
+            if(mPlugin->panel()->isHorizontal()){
+                mIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
             }else{
-                mTrayIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
-                mTrayIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+                mIcons.at(i)->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
             }
-
-        }
-        else
-        {
-            qDebug()<<"mTrayIcons add error   :  "<<mTrayIcons.at(i);
+            mIcons.at(i)->setIconSize(QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2));
+        }else{
+            qDebug()<<"错误的托盘图标";
         }
     }
 }
