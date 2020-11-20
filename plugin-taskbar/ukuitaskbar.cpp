@@ -1287,7 +1287,7 @@ void UKUITaskBar::removeButton(QuickLaunchAction* action)
     // GetMaxPage();
     //    btn->deleteLater();
     //realign();
-    if (countOfButtons() <= 32) tmpwidget->setHidden(true);
+    //if (countOfButtons() <= 32) tmpwidget->setHidden(true);
     if (!countOfButtons()) {
         mLayout->addWidget(mPlaceHolder);
         hasPlaceHolder = true;
