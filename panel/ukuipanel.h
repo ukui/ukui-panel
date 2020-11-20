@@ -700,7 +700,10 @@ private:
     // settings should be kept private for security
     UKUi::Settings *settings() const { return mSettings; }
 
+    QDBusInterface *m_cloudInterface;
+
     QMenu * menu;
+    QAction * m_lockAction;
 
     int MAX_SIZE_PANEL_IN_CALC;
     int MID_SIZE_PANEL_IN_CALC;
@@ -709,9 +712,11 @@ private:
     int MID_ICON_SIZE_IN_CLAC;
     int SML_ICON_SIZE_IN_CLAC;
     void getSize();
+    void connectToServer();
 
 private slots:
     void panelReset();
+    void keyChangedSlot(const QString &key);
 
 public:
     QGSettings *gsettings;
