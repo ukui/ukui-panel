@@ -222,6 +222,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mHideTimer.setInterval(PANEL_HIDE_DELAY);
     connect(&mHideTimer, SIGNAL(timeout()), this, SLOT(hidePanelWork()));
 
+    connectToServer();
     mShowDelayTimer.setSingleShot(true);
     mShowDelayTimer.setInterval(PANEL_SHOW_DELAY);
     connect(&mShowDelayTimer, &QTimer::timeout, [this] { showPanel(mAnimationTime > 0); });
