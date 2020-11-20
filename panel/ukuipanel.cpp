@@ -1398,10 +1398,10 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                       )->setDisabled(mLockPanel);
     }
 */
-    QAction * act_lock = menu->addAction(tr("Lock This Panel"));
-    act_lock->setCheckable(true);
-    act_lock->setChecked(mLockPanel);
-    connect(act_lock, &QAction::triggered, [this] { mLockPanel = !mLockPanel; saveSettings(false); });
+    m_lockAction = menu->addAction(tr("Lock This Panel"));
+    m_lockAction->setCheckable(true);
+    m_lockAction->setChecked(mLockPanel);
+    connect(m_lockAction, &QAction::triggered, [this] { mLockPanel = !mLockPanel; saveSettings(false); });
 
     //Hidden features, lock the panel
     /*
@@ -1711,4 +1711,31 @@ void UKUIPanel::panelReset()
 {
     QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     QFile::copy("/usr/share/ukui/panel.conf",QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
+}
+
+void UKUIPanel::connectToServer(){
+    m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
+                                          "/org/kylinssoclient/path",
+                                          "org.freedesktop.kylinssoclient.interface",
+                                          QDBusConnection::sessionBus());
+    if (!m_cloudInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        return;
+    }
+//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+}
+
+void UKUIPanel::keyChangedSlot(const QString &key) {
+    if(key == "ukui-panel") {
+        mSettings->beginGroup(mConfigGroup);
+        mSettings->sync();
+        mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL).toBool();
+        mSettings->endGroup();
+        m_lockAction->setChecked(mLockPanel);
+    }
 }
