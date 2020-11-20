@@ -366,7 +366,7 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 
     QAction *minim = menu->addAction(QIcon::fromTheme("window-minimize-symbolic"), tr("minimize"));
     connect(close, SIGNAL(triggered()), this, SLOT(closeApplication()));
-    connect(restore, SIGNAL(triggered()), this, SLOT(raiseApplication()));
+    connect(restore, SIGNAL(triggered()), this, SLOT(deMaximizeApplication()));
     connect(maxim, SIGNAL(triggered()), this, SLOT(maximizeApplication()));
     connect(minim, SIGNAL(triggered()), this, SLOT(minimizeApplication()));
     connect(menu, &QMenu::aboutToHide, [this] {

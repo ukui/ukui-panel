@@ -38,6 +38,7 @@
 #define DEFAULT_GTK_STYLE_NAME "gtkTheme"
 #define DEFAULT_STYLE          "ukui-default"
 #define BLACK_STYLE            "ukui-black"
+#define GTK_WHITE_STYLE        "ukui-white"
 
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define SHOW_NIGHTMODE       "shownightmode"
@@ -263,7 +264,7 @@ void NightModeButton::setUkuiStyle(QString style)
             qWarning()<<tr("don't contains the keys style-name");
 
         if(mgtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || mgtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
-            mgtkstyleGsettings->set(GTK_STYLE_NAME,DEFAULT_STYLE);
+            mgtkstyleGsettings->set(GTK_STYLE_NAME,GTK_WHITE_STYLE);
         else
             qWarning()<<tr("don't contains the keys style-name");
 
