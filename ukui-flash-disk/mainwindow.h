@@ -28,6 +28,7 @@
 #include <QApplication>
 #include <QEvent>
 #include <qgsettings.h>
+#include <QMap>
 
 #include "qclickwidget.h"
 #include "UnionVariable.h"
@@ -54,6 +55,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void MainWindowShow();
+    void GpartedStartedWindowShow();
 
 
 protected:
@@ -67,6 +69,7 @@ private:
     QPushButton *eject_image_button;
     void newarea(int No,
                  GDrive *Drive,
+                 GVolume *Volume,
                  QString Drivename,
                  QString nameDis1,
                  QString nameDis2,
@@ -96,6 +99,7 @@ private:
     static void volume_removed_callback (GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this);
     static void mount_added_callback (GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this);
     static void mount_removed_callback (GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this);
+    void ifgetPinitMount();
 
 private:
     QIcon iconSystray;
@@ -134,8 +138,16 @@ private:
 
     QWidget *line = nullptr;
     bool ifautoload;
+    bool insertorclick;
 
     QGSettings * ifsettings;
+    int telephoneNum;
+    QString tmpPath;
+    bool findPointMount;
+    QList<GVolume *> volumeDevice;
+    QMap<GDrive *,QList<GVolume *>> deviceMap;
+    QMap<GDrive *,QList<GVolume *>>::Iterator it;
+    int driveVolumeNum;
     //authority
     //QDBusInterface *systemIface;
 public:
@@ -148,14 +160,10 @@ public:
     void getTransparentData();
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
-
-
     bool ifSucess;
     int flagType;
 //    static bool isShow;
     int driveMountNum;
-    int ifGpartedHasStarted;
-    int driveNoGparted;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
@@ -166,15 +174,11 @@ Q_SIGNALS:
     void clicked();
     void convertShowWindow();
     void unloadMount();
-    void GPartedSignal();
-    void ejectDriveSignal();
-
+    void telephoneMount();
 protected:
     void resizeEvent(QResizeEvent *event);
-    //void enterEvent(QEvent *event);
     bool eventFilter(QObject *obj, QEvent *event);
     void paintEvent(QPaintEvent *event);
-    //void leaveEvent(QEvent *event);
 };
 
 #endif

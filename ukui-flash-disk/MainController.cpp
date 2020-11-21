@@ -33,9 +33,6 @@ MainController::MainController()
 {
     init();
     m_DiskWindow = new MainWindow;         //main process singleton object
-//    m_DiskWindow->setAttribute(Qt::WA_TranslucentBackground);
-//    m_DiskWindow->setProperty("useSystemStyleBlur",true);
-    KWindowEffects::enableBlurBehind(m_DiskWindow->winId(),true);
 }
 
 MainController::~MainController()

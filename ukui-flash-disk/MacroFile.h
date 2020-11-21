@@ -30,6 +30,8 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 #define DATADEVICE 1
 #define OCCUPYDEVICE 2
 #define GPARTEDINTERFACE 3
+#define DISTANCEPADDING 3
+#define DISTANCEMEND 3
 
 /**
  * QT主题

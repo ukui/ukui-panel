@@ -17,6 +17,7 @@
  */
 #include "ejectInterface.h"
 #include <qgsettings.h>
+#include <KWindowEffects>
 
 ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType) : QWidget(parent),eject_image_label(nullptr),show_text_label(nullptr),
     mount_name_label(nullptr)
@@ -183,16 +184,24 @@ ejectInterface::~ejectInterface()
 //If the fillet does not take effect
 void ejectInterface::paintEvent(QPaintEvent *event)
  {
+    QPainterPath path;
+    auto rect = this->rect();
+    rect.adjust(1, 1, -1, -1);
+    path.addRoundedRect(rect, 6, 6);
+    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
+
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
-    QRect rect = this->rect();
+    QRect rectReal = this->rect();
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
     p.setBrush(opt.palette.color(QPalette::Base));
     p.setOpacity(m_transparency);
     p.setPen(Qt::NoPen);
-    p.drawRoundedRect(rect, 6, 6);
+    p.drawRoundedRect(rectReal, 6, 6);
     QWidget::paintEvent(event);
+
+    KWindowEffects::enableBlurBehind(this->winId(), true, QRegion(path.toFillPolygon().toPolygon()));
  }
 
 //slot function to hide eject interface
