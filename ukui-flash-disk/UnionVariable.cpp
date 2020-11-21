@@ -18,12 +18,20 @@
 #include "UnionVariable.h"
 #include <QDir>
 #include <QFileInfoList>
-
+#include <QDebug>
+#include <syslog.h>
+#include <wait.h>
 
 static QList<GMount *> gmountList;
 QList<GMount *> *findGMountList()
 {
     return &gmountList;
+}
+
+static QList<GVolume *> gtelevolumeList;
+QList<GVolume *> *findTeleGVolumeList()
+{
+    return &gtelevolumeList;
 }
 
 static QList<GVolume *> gvolumeList;

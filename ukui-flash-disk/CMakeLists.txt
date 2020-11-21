@@ -45,6 +45,10 @@ add_executable(ukui-flash-disk
     MainController.h
     MainController.cpp
     MacroFile.h
+    interactivedialog.cpp
+    interactivedialog.h
+    gpartedinterface.cpp
+    gpartedinterface.h
         mainwindow.ui
         mainwindow.h
 )
