@@ -57,6 +57,15 @@ class GridLayout;
  */
 class UKUITrayPlugin;
 
+class TrayButton : public QToolButton {
+public :
+    TrayButton(QWidget* parent );
+    ~TrayButton();
+protected :
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
+};
+
 class UKUITray: public QFrame, QAbstractNativeEventFilter
 {
     Q_OBJECT
@@ -136,7 +145,7 @@ private:
     Display* mDisplay;
     UKUIStorageFrame *storageFrame;
     UKUiStorageWidget *m_pwidget;
-    QToolButton *mBtn;
+    TrayButton *mBtn;
     IUKUIPanel::Position mCurPosition;
     QMap<IUKUIPanel::Position, QIcon> mMapIcon;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);

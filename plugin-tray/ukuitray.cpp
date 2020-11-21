@@ -148,10 +148,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
-    mBtn =new QToolButton;
-    mBtn->setStyle(new CustomStyle());
-    mBtn->setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
-    mBtn->setVisible(false);
+    mBtn =new TrayButton(this);
     layout()->addWidget(mBtn);
     if(mPlugin)
     {
@@ -234,13 +231,11 @@ void UKUITray::storageBar()
  */
 void UKUITray::showAndHideStorage(bool storageStatus)
 {
-    if(storageStatus)
-    {
+    if(storageStatus){
         storageFrame->hide();
-    }
-    else
-    {
+    }else{
         storageFrame->show();
+        handleStorageUi();
     }
 }
 
@@ -990,8 +985,7 @@ QList<char *> UKUITray::listExistsPath(){
 
     for (int i = 0; childs[i] != NULL; i++){
         if (dconf_is_rel_dir (childs[i], NULL)){
-            char * val = g_strdup (childs[i]);
-
+            gchar *val = g_strdup (childs[i]);
             vals.append(val);
         }
     }
@@ -1026,6 +1020,8 @@ void UKUITray::regulateIcon(Window *mid)
         {
             if(bba.isEmpty())
             {
+                free(allpath);
+                free(prepath);
                 continue;
             }
             settings= new QGSettings(id, bba);
@@ -1091,12 +1087,14 @@ void UKUITray::regulateIcon(Window *mid)
                         }
                     }
                 });
+                delete allpath;
                 break;
             }
         }
         settings->deleteLater();
         delete  prepath;
         count++;
+        g_free(path);
     }
 
     if(count >= existsPath.count())
@@ -1352,4 +1350,24 @@ void UKUITray::handleStorageUi()
     //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
     storageFrame->setFixedSize(winWidth,winHeight);
     //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
+}
+
+TrayButton::TrayButton(QWidget* parent):
+    QToolButton(parent)
+{
+    setStyle(new CustomStyle());
+    setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
+    setVisible(false);
+}
+
+TrayButton::~TrayButton() { }
+
+void TrayButton::enterEvent(QEvent *) {
+    repaint();
+    return;
+}
+
+void TrayButton::leaveEvent(QEvent *) {
+    repaint();
+    return;
 }

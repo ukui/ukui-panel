@@ -5,6 +5,7 @@ set(HEADERS
     ukuiquicklaunch.h
     quicklaunchbutton.h
     quicklaunchaction.h
+    json.h
 #    ../panel/customstyle.h
 )
 
@@ -13,6 +14,7 @@ set(SOURCES
     ukuiquicklaunch.cpp
     quicklaunchbutton.cpp
     quicklaunchaction.cpp
+    json.cpp
 #    ../panel/customstyle.cpp
 )
 

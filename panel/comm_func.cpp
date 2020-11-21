@@ -506,6 +506,8 @@ bool copyFileToPath(QString sourceDir ,QString toDir, QString fileName, bool cov
             createFile->remove(toDir+fileName);
         }
     }//end if
+    free(createDir);
+    free(createFile);
 
     if(!QFile::copy(sourceDir+fileName, toDir+fileName))
     {

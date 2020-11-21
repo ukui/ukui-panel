@@ -75,6 +75,7 @@ namespace
             ++layout->mAnimatedItems;
             connect(animation, &QAbstractAnimation::finished, [layout] { --layout->mAnimatedItems; Q_ASSERT(0 <= layout->mAnimatedItems); });
             animation->start(DeleteWhenStopped);
+            animation->deleteLater();
         }
 
         ItemMoveAnimation(QLayoutItem *item)

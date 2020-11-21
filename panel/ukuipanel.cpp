@@ -87,6 +87,9 @@
 #define ICON_SIZE_LARGE   64
 #define ICON_SIZE_MEDIUM  48
 #define ICON_SIZE_SMALL   32
+#define PANEL_SIZE_LARGE_V 70
+#define PANEL_SIZE_MEDIUM_V 62
+#define PANEL_SIZE_SMALL_V 47
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
 #define SCALE_SETTINGS      "org.ukui.SettingsDaemon.plugins.xsettings"
@@ -219,6 +222,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mHideTimer.setInterval(PANEL_HIDE_DELAY);
     connect(&mHideTimer, SIGNAL(timeout()), this, SLOT(hidePanelWork()));
 
+    connectToServer();
     mShowDelayTimer.setSingleShot(true);
     mShowDelayTimer.setInterval(PANEL_SHOW_DELAY);
     connect(&mShowDelayTimer, &QTimer::timeout, [this] { showPanel(mAnimationTime > 0); });
@@ -282,19 +286,19 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
-    int height = QApplication::screens().at(0)->size().height();
-    int width = QApplication::screens().at(0)->size().width();
-    MAX_SIZE_PANEL_IN_CALC = 0.0851852 * height;
-    MID_SIZE_PANEL_IN_CALC = 0.0648148 * height;
-    SML_SIZE_PANEL_IN_CALC = 0.0425926 * height;
+//    int height = QApplication::screens().at(0)->size().height();
+//    int width = QApplication::screens().at(0)->size().width();
+    MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE;//0.0851852 * height;
+    MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM;//0.0648148 * height;
+    SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL;//0.0425926 * height;
     if (!isHorizontal()) {
-        MAX_SIZE_PANEL_IN_CALC *= ((float)height / (float)width);
-        MID_SIZE_PANEL_IN_CALC *= ((float)height / (float)width);
-        SML_SIZE_PANEL_IN_CALC *= ((float)height / (float)width);
+        MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE_V;//*= ((float)height / (float)width) * 1.25;
+        MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM_V;//*= ((float)height / (float)width) * 1.5;
+        SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL_V;//*= ((float)height / (float)width) * 1.75;
     }
-    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;
-    MID_ICON_SIZE_IN_CLAC = 0.695652174 * MID_SIZE_PANEL_IN_CALC;
-    SML_ICON_SIZE_IN_CLAC = 0.695652174 * SML_SIZE_PANEL_IN_CALC;
+    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;//ICON_SIZE_LARGE;
+    MID_ICON_SIZE_IN_CLAC =  0.695652174 * MID_SIZE_PANEL_IN_CALC;//ICON_SIZE_MEDIUM;
+    SML_ICON_SIZE_IN_CLAC =  0.695652174 * SML_SIZE_PANEL_IN_CALC;//ICON_SIZE_SMALL;
 
     readSettings();
 
@@ -339,19 +343,19 @@ void UKUIPanel::getSize() {
     } else if (size == MID_SIZE_PANEL_IN_CALC) {
         flg = 1;
     }
-    int height = QApplication::screens().at(0)->size().height();
-    int width = QApplication::screens().at(0)->size().width();
-    MAX_SIZE_PANEL_IN_CALC = 0.0851852 * height;
-    MID_SIZE_PANEL_IN_CALC = 0.0648148 * height;
-    SML_SIZE_PANEL_IN_CALC = 0.0425926 * height;
+    //int height = QApplication::screens().at(0)->size().height();
+    //int width = QApplication::screens().at(0)->size().width();
+    MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE;//0.0851852 * height;
+    MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM;//0.0648148 * height;
+    SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL;//0.0425926 * height;
     if (!isHorizontal()) {
-        MAX_SIZE_PANEL_IN_CALC *= ((float)height / (float)width) * 1.25;
-        MID_SIZE_PANEL_IN_CALC *= ((float)height / (float)width) * 1.5;
-        SML_SIZE_PANEL_IN_CALC *= ((float)height / (float)width) * 1.75;
+        MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE_V;//*= ((float)height / (float)width) * 1.25;
+        MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM_V;//*= ((float)height / (float)width) * 1.5;
+        SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL_V;//*= ((float)height / (float)width) * 1.75;
     }
-    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;
-    MID_ICON_SIZE_IN_CLAC = 0.695652174 * MID_SIZE_PANEL_IN_CALC;
-    SML_ICON_SIZE_IN_CLAC = 0.695652174 * SML_SIZE_PANEL_IN_CALC;
+    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;//ICON_SIZE_LARGE;
+    MID_ICON_SIZE_IN_CLAC =  0.695652174 * MID_SIZE_PANEL_IN_CALC;//ICON_SIZE_MEDIUM;
+    SML_ICON_SIZE_IN_CLAC =  0.695652174 * SML_SIZE_PANEL_IN_CALC;//ICON_SIZE_SMALL;
     switch (flg) {
     case 0:
         gsettings->set(PANEL_SIZE_KEY, SML_SIZE_PANEL_IN_CALC);
@@ -1291,7 +1295,11 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    double tran;
+    if(transparency_gsettings->keys().contains(TRANSPARENCY_KEY))
+        tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    else
+        tran=0.75;
     p.setBrush(QBrush(QColor(19,22,28,tran)));
 
     p.setRenderHint(QPainter::Antialiasing);
@@ -1395,10 +1403,10 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                       )->setDisabled(mLockPanel);
     }
 */
-    QAction * act_lock = menu->addAction(tr("Lock This Panel"));
-    act_lock->setCheckable(true);
-    act_lock->setChecked(mLockPanel);
-    connect(act_lock, &QAction::triggered, [this] { mLockPanel = !mLockPanel; saveSettings(false); });
+    m_lockAction = menu->addAction(tr("Lock This Panel"));
+    m_lockAction->setCheckable(true);
+    m_lockAction->setChecked(mLockPanel);
+    connect(m_lockAction, &QAction::triggered, [this] { mLockPanel = !mLockPanel; saveSettings(false); });
 
     //Hidden features, lock the panel
     /*
@@ -1708,4 +1716,31 @@ void UKUIPanel::panelReset()
 {
     QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     QFile::copy("/usr/share/ukui/panel.conf",QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
+}
+
+void UKUIPanel::connectToServer(){
+    m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
+                                          "/org/kylinssoclient/path",
+                                          "org.freedesktop.kylinssoclient.interface",
+                                          QDBusConnection::sessionBus());
+    if (!m_cloudInterface->isValid())
+    {
+        qDebug() << "fail to connect to service";
+        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
+        return;
+    }
+//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
+    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
+    // 将以后所有DBus调用的超时设置为 milliseconds
+    m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+}
+
+void UKUIPanel::keyChangedSlot(const QString &key) {
+    if(key == "ukui-panel") {
+        mSettings->beginGroup(mConfigGroup);
+        mSettings->sync();
+        mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL).toBool();
+        mSettings->endGroup();
+        m_lockAction->setChecked(mLockPanel);
+    }
 }
