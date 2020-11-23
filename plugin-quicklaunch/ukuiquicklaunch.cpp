@@ -159,7 +159,7 @@ UKUIQuickLaunch::~UKUIQuickLaunch()
 
 void UKUIQuickLaunch::ReloadSecurityConfig(){
     this->loadJsonfile();
-    this->refreshQuickLaunch("ukui-panel1");
+    this->refreshQuickLaunch("ukui-panel2");
 }
 
 QString UKUIQuickLaunch::GetSecurityConfigPath(){
@@ -227,7 +227,7 @@ void UKUIQuickLaunch::loadJsonfile() {
 
 /*任务栏刷新  在快读启动栏初始化和云账户同步的时候调用*/
 void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
-    if(ssoclient == "ukui-panel2")
+    if(ssoclient != "ukui-panel2" && ssoclient != "init")
         return;
     QStringList mblacklist;
     QStringList mwhitelist;
