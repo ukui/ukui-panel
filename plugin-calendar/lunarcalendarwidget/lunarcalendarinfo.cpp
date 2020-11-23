@@ -368,9 +368,6 @@ QString LunarCalendarInfo::getHoliday(int month, int day)
     case 0x030C:
         strHoliday = "植树节";
         break;
-    case 0x030F:
-        strHoliday = "消费者权益日";
-        break;
     case 0x0401:
         strHoliday = "愚人节";
         break;
@@ -466,6 +463,39 @@ QString LunarCalendarInfo::getLunarFestival(int month, int day)
     QString strFestival;
 
     switch (temp) {
+    case 0x0201:
+        strFestival = "二月";
+        break;
+    case 0x0301:
+        strFestival = "三月";
+        break;
+    case 0x0401:
+        strFestival = "四月";
+        break;
+    case 0x0501:
+        strFestival = "五月";
+        break;
+    case 0x0601:
+        strFestival = "六月";
+        break;
+    case 0x0701:
+        strFestival = "七月";
+        break;
+    case 0x0801:
+        strFestival = "八月";
+        break;
+    case 0x0901:
+        strFestival = "九月";
+        break;
+    case 0x0A01:
+        strFestival = "十月";
+        break;
+    case 0x0B01:
+        strFestival = "冬月";
+        break;
+    case 0x0C01:
+        strFestival = "腊月";
+        break;
     case 0x0101:
         strFestival = "春节";
         break;
