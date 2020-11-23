@@ -1741,6 +1741,7 @@ void UKUIPanel::keyChangedSlot(const QString &key) {
         mSettings->sync();
         mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL).toBool();
         mSettings->endGroup();
-        m_lockAction->setChecked(mLockPanel);
+        if(m_lockAction)
+            m_lockAction->setChecked(mLockPanel);
     }
 }
