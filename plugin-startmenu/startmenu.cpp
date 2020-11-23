@@ -141,10 +141,12 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                             tr("Restart"),
                             this, SLOT(SessionReboot())
                             );                                      //重启
-    pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
-                            tr("TimeShutdown"),
-                            this, SLOT(TimeShutdown())
-                            );                                      //定时开关机
+    QFileInfo file("/usr/bin/time-shutdown");
+    if(file.exists())
+        pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
+                                tr("TimeShutdown"),
+                                this, SLOT(TimeShutdown())
+                                );                                  //定时开关机
     pPowerSupply->addAction(QIcon::fromTheme("system-shutdown-symbolic"),
                             tr("Power Off"),
                             this, SLOT(SessionShutdown())
