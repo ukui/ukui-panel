@@ -564,7 +564,6 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
                 {
                     mVBtn.erase(it);
                     flag = 0;
-                    b->deleteLater();
                     break;
                 }
             }
@@ -572,7 +571,6 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
         } else {
             ++i;
         }
-        b->deleteLater();
      }
     // GetMaxPage();
     //    btn->deleteLater();
@@ -766,7 +764,6 @@ bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
     xdg.load(fileName);
     QuickLaunchAction *_action = new QuickLaunchAction(&xdg, this);
     removeButton(_action);
-    _action->deleteLater();
     return true;
 }
 
@@ -794,7 +791,6 @@ void UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
                     }
                 }
                 mLayout->removeWidget(b);
-                b->deleteLater();
             }
         }
         i++;
