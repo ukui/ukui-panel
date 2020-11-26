@@ -200,10 +200,10 @@ void UKUIQuickLaunch::loadJsonfile() {
         QList<QVariant> fifthLayer;
         fifthLayer=fourthLayer.value("entries").toList();
         QMap<QString,QVariant> attribute;
-        QMap<QString,bool> blackNames;
+        QList<QString> blackNames;
         for(int i=0;i<fifthLayer.size();i++){
             attribute=fifthLayer.at(i).toMap();
-            blackNames.insert(attribute.value("path").toString(),attribute.value("visible").toBool());
+            blackNames.append(attribute.value("path").toString());
         }
         blacklist=blackNames;
     }
@@ -216,10 +216,10 @@ void UKUIQuickLaunch::loadJsonfile() {
         QList<QVariant> fifthLayer;
         fifthLayer=fourthLayer.value("entries").toList();
         QMap<QString,QVariant> attribute;
-        QMap<QString,bool> whiteNames;
+        QList<QString> whiteNames;
         for(int i=0;i<fifthLayer.size();i++){
             attribute=fifthLayer.at(i).toMap();
-            whiteNames.insert(attribute.value("path").toString(),attribute.value("visible").toBool());
+            whiteNames.append(attribute.value("path").toString());
         }
         whitelist=whiteNames;
     }
@@ -231,20 +231,10 @@ void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
         return;
     QStringList mblacklist;
     QStringList mwhitelist;
-    if(mModel=="blacklist"){
-        QMap<QString, bool>::const_iterator n;
-        for(n=blacklist.constBegin();n!=blacklist.constEnd();++n){
-            if(n.value())
-                mblacklist<<n.key();
-        }
-    }
-    if(mModel=="whitelist"){
-        QMap<QString, bool>::const_iterator n;
-        for(n=whitelist.constBegin();n!=whitelist.constEnd();++n){
-            if(n.value())
-                mwhitelist<<n.key();
-        }
-    }
+    if(mModel=="blacklist")
+    mblacklist=blacklist;
+    if(mModel=="whitelist")
+    mwhitelist=whitelist;
     for(auto it = mVBtn.begin(); it != mVBtn.end();)
     {
         (*it)->deleteLater();
@@ -289,22 +279,22 @@ void UKUIQuickLaunch::refreshQuickLaunch(QString ssoclient){
             */
             addButton(new QuickLaunchAction(&xdg, this));
         }
-//        else if (! file.isEmpty())
-//        {
-//            addButton(new QuickLaunchAction(file, this));
-//        }
-//        else
-//        {
-//            execname = app.value("name", "").toString();
-//            exec = app.value("exec", "").toString();
-//            icon = app.value("icon", "").toString();
-//	    if (icon.isNull())
-//            {
-//                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
-//                continue;
-//            }
-//            addButton(new QuickLaunchAction(execname, exec, icon, this));
-//        }
+        else if (! file.isEmpty())
+        {
+            addButton(new QuickLaunchAction(file, this));
+        }
+        else
+        {
+            execname = app.value("name", "").toString();
+            exec = app.value("exec", "").toString();
+            icon = app.value("icon", "").toString();
+        if (icon.isNull())
+            {
+                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
+                continue;
+            }
+            //addButton(new QuickLaunchAction(execname, exec, icon, this));
+        }
     }
     int i = 0;
     int counts = countOfButtons();
