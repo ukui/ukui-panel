@@ -113,8 +113,8 @@ private:
     int max_page;
     int old_page;
 
-    QMap<QString,bool> blacklist;
-    QMap<QString,bool> whitelist;
+    QList<QString> blacklist;
+    QList<QString> whitelist;
     QString mModel;
     QString SecurityConfigPath;
 
