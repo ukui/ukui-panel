@@ -321,8 +321,8 @@ void IndicatorCalendar::updateTimeText()
                 );
 
     QFont font;
-    font.setStretch(QFont::Expanded);
-    int font_size = fgsettings->get("system-font-size").toInt();//10 + mContent->mPlugin->panel()->panelSize() / 23;
+    //font.setStretch(QFont::Expanded);
+    int font_size = fgsettings->get("system-font-size").toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
     font.setPixelSize(font_size);
     mContent->setFont(font);
 
