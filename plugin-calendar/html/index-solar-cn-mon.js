@@ -102,6 +102,7 @@ function update_month_ui(mode)
     var list = null;
     var bind_click_position = null;
     var bind_click_count  = 0;
+    year = parseInt(year_selector.value);
     if(scrollUp_count %3 ===1)//mode 2 &&the second ui  for month
    {
         if(mode === 0)
@@ -213,6 +214,7 @@ function new_month_selected_add() {
         month_selector.value = str.replace("</span>","");
         document.getElementById('month_div').className = 'hidden_div';
         calendar.style.display = "";
+        	year = parseInt(year_selector.value);
 		year++;
 		year_selector.value = year + '年';
     	selected_date_div.innerHTML = year_selector.value + month_selector.value;
@@ -227,6 +229,7 @@ function new_month_selected_minus() {
         month_selector.value = str.replace("</span>","");
         document.getElementById('month_div').className = 'hidden_div';
         calendar.style.display = "";
+        	year = parseInt(year_selector.value);
 		year--;
 		year_selector.value = year + '年';
     	selected_date_div.innerHTML = year_selector.value + month_selector.value;
@@ -721,7 +724,7 @@ function create_page(year, month) {
 
             current_cell.innerHTML = '<span class="solar_part">' +
                                      month_stuff['monthData'][index]['day'] +
-                                     '</span>' 
+                                     '</span>'
             // if (worktime && current_cell.className !== 'day_other_month') {
             //     current_cell.appendChild(worktime);
             // }
