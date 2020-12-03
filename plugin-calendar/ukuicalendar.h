@@ -34,7 +34,6 @@
 
 #include "../panel/common/ukuirotatedwidget.h"
 #include "../panel/iukuipanelplugin.h"
-#include "ukuiwebviewdialog.h"
 #include "../panel/popupmenu.h"
 #include "lunarcalendarwidget/frmlunarcalendarwidget.h"
 
@@ -53,12 +52,10 @@ public:
     virtual QString themeId() const { return QLatin1String("Calendar"); }
 //    virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
     bool isSeparate() const { return true; }
-    void activated(ActivationReason reason);
 
     void settingsChanged()override;
     void realign()override;
     void initializeCalendar();
-    void setbackground();
     void setTimeShowStyle();
     void setToolTip();
 //signals:
@@ -70,11 +67,9 @@ private Q_SLOTS:
     void wheelScrolled(int);
     void deletePopup();
     void updateTimeText();
-    void hidewebview();
 
 private:
     QWidget *mMainWidget;
-    UkuiWebviewDialog   *mWebViewDiag;
     frmLunarCalendarWidget *w;
     bool mbActived;
     bool mbHasCreatedWebView;
