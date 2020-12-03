@@ -57,7 +57,7 @@ void gpartedInterface::getTransparentData()
 
 void gpartedInterface::initWidgets()
 {
-    noticeLabel = new QLabel();
+    noticeLabel = new QLabel(this);
     noticeLabel->setText(tr("gparted has started,can not eject"));
     okButton = new QPushButton(tr("ok"));
     notice_H_BoxLayout = new QHBoxLayout();
