@@ -94,16 +94,16 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mCloseBtn->setIconSize(QSize(19,19));
     mCloseBtn->setFixedSize(QSize(19,19));
     mCloseBtn->hide();
-    mTitleLabel = new QLabel;
+    mTitleLabel = new QLabel(this);
     mTitleLabel->setMargin(0);
     //    mTitleLabel->setContentsMargins(0,0,0,10);
     //    mTitleLabel->adjustSize();
     //    mTitleLabel->setStyleSheet("QLabel{background-color: red;}");
 
-    mThumbnailLabel = new QLabel;
-    mAppIcon = new QLabel;
-    mVWindowsLayout = new QVBoxLayout;
-    mTopBarLayout = new QHBoxLayout;
+    mThumbnailLabel = new QLabel(this);
+    mAppIcon = new QLabel(this);
+    mVWindowsLayout = new QVBoxLayout(this);
+    mTopBarLayout = new QHBoxLayout(this);
     mTopBarLayout->setContentsMargins(0,0,0,0);
     //    mTopBarLayout->setAlignment(Qt::AlignVCenter);
     //    mTopBarLayout->setDirection(QBoxLayout::LeftToRight);
@@ -159,6 +159,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
 ************************************************/
 UKUITaskWidget::~UKUITaskWidget()
 {
+    this->deleteLater();
 }
 
 /************************************************
@@ -495,6 +496,10 @@ void UKUITaskWidget::unShadeApplication()
 /************************************************
 
  ************************************************/
+//void UKUITaskWidget::priv_closeApplication() {
+
+//}
+
 void UKUITaskWidget::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
@@ -809,7 +814,7 @@ void UKUITaskWidget::addThumbNail()
 {
     if(!mThumbnailLabel)
     {
-        mThumbnailLabel =  new QLabel;
+        mThumbnailLabel = new QLabel(this);
         mThumbnailLabel->setScaledContents(true);
         mThumbnailLabel->setMinimumSize(QSize(1, 1));
         //        mVWindowsLayout->addLayout(mTopBarLayout, 100);

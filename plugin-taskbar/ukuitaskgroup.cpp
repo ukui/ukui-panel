@@ -1127,7 +1127,7 @@ void UKUITaskGroup::showAllWindowByList()
     {
         removeSrollWidget();
     }
-    mpScrollArea = new QScrollArea();
+    mpScrollArea = new QScrollArea(this);
     mpScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
@@ -1137,7 +1137,7 @@ void UKUITaskGroup::showAllWindowByList()
     mpScrollArea->setFrameStyle(QFrame::NoFrame);
 
     mPopup->layout()->addWidget(mpScrollArea);
-    mpWidget = new QWidget();
+    mpWidget = new QWidget(this);
     mpWidget->setFixedWidth(mpScrollArea->width());
     mpScrollArea->setWidget(mpWidget);
     //mpWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -1253,6 +1253,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         UKUITaskWidget *btn = it.value();
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
+        btn->removeThumbNail();
         btn->addThumbNail();
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
