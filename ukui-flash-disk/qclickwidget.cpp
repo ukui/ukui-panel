@@ -170,7 +170,7 @@ QClickWidget::QClickWidget(QWidget *parent,
 
     QHBoxLayout *drivename_H_BoxLayout = new QHBoxLayout();
     drivename_H_BoxLayout = new QHBoxLayout();
-    image_show_label = new QLabel();
+    image_show_label = new QLabel(this);
     image_show_label->setFocusPolicy(Qt::NoFocus);
     image_show_label->installEventFilter(this);
     //to get theme picture for label
@@ -178,7 +178,7 @@ QClickWidget::QClickWidget(QWidget *parent,
     QPixmap pixmap = imgIcon.pixmap(QSize(25, 25));
     image_show_label->setPixmap(pixmap);
     image_show_label->setFixedSize(40,40);
-    m_driveName_label = new QLabel();
+    m_driveName_label = new QLabel(this);
     m_driveName_label->setFont(QFont("Noto Sans CJK SC",fontSize));
     QString DriveName = getElidedText(m_driveName_label->font(), m_driveName, 180);
     m_driveName_label->setText(DriveName);
@@ -279,7 +279,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis1_label->adjustSize();
         m_nameDis1_label->setText("- "+VolumeNameDis1+":");
         m_nameDis1_label->installEventFilter(this);
-        m_capacityDis1_label = new QLabel();
+        m_capacityDis1_label = new QLabel(this);
         QString str_capacityDis1 = size_human(m_capacityDis1);
         m_capacityDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis1_label->setText("("+str_capacityDis1+")");
@@ -303,7 +303,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis2_label->setText("- "+VolumeNameDis2+":");
         m_nameDis2_label->adjustSize();
         m_nameDis2_label->installEventFilter(this);
-        m_capacityDis2_label = new QLabel();
+        m_capacityDis2_label = new QLabel(this);
         QString str_capacityDis2 = size_human(m_capacityDis2);
         m_capacityDis2_label->setText("("+str_capacityDis2+")");
         m_capacityDis2_label->setFont(QFont("Microsoft YaHei",fontSize));
@@ -347,7 +347,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis1_label->adjustSize();
         m_nameDis1_label->installEventFilter(this);
         //m_nameDis1_label->setText("- "+m_nameDis1+":");
-        m_capacityDis1_label = new QLabel();
+        m_capacityDis1_label = new QLabel(this);
         QString str_capacityDis1 = size_human(m_capacityDis1);
         m_capacityDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis1_label->setText("("+str_capacityDis1+")");
@@ -372,7 +372,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis2_label->setText("- "+VolumeNameDis2+":");
         m_nameDis2_label->adjustSize();
         m_nameDis2_label->installEventFilter(this);
-        m_capacityDis2_label = new QLabel();
+        m_capacityDis2_label = new QLabel(this);
         QString str_capacityDis2 = size_human(m_capacityDis2);
         m_capacityDis2_label->setText("("+str_capacityDis2+")");
         m_capacityDis2_label->setFont(QFont("Microsoft YaHei",fontSize));
@@ -397,7 +397,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis3_label->setText("- "+VolumeNameDis3+":");
         m_nameDis3_label->adjustSize();
         m_nameDis3_label->installEventFilter(this);
-        m_capacityDis3_label = new QLabel();
+        m_capacityDis3_label = new QLabel(this);
         QString str_capacityDis3 = size_human(m_capacityDis3);
         m_capacityDis3_label->setText("("+str_capacityDis3+")");
         m_capacityDis3_label->setFont(QFont("Microsoft YaHei",fontSize));
@@ -447,7 +447,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis1_label->adjustSize();
         m_nameDis1_label->installEventFilter(this);
         //m_nameDis1_label->setText("- "+m_nameDis1+":");
-        m_capacityDis1_label = new QLabel();
+        m_capacityDis1_label = new QLabel(this);
         QString str_capacityDis1 = size_human(m_capacityDis1);
         m_capacityDis1_label->setText("("+str_capacityDis1+")");
         m_capacityDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
@@ -474,7 +474,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis2_label->adjustSize();
         m_nameDis2_label->installEventFilter(this);
         //m_nameDis2_label->setText("- "+m_nameDis2+":");
-        m_capacityDis2_label = new QLabel();
+        m_capacityDis2_label = new QLabel(this);
         QString str_capacityDis2 = size_human(m_capacityDis2);
         m_capacityDis2_label->setText("("+str_capacityDis2+")");
         m_capacityDis2_label->setFont(QFont("Microsoft YaHei",fontSize));
@@ -498,7 +498,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         QString VolumeNameDis3 = getElidedText(m_nameDis3_label->font(), m_nameDis3, 120);
         m_nameDis3_label->setText("- "+VolumeNameDis3+":");
         m_nameDis3_label->installEventFilter(this);
-        m_capacityDis3_label = new QLabel();
+        m_capacityDis3_label = new QLabel(this);
         QString str_capacityDis3 = size_human(m_capacityDis3);
         m_capacityDis3_label->setText("("+str_capacityDis3+")");
         m_capacityDis3_label->setFont(QFont("Microsoft YaHei",fontSize));
@@ -524,7 +524,7 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis4_label->adjustSize();
         m_nameDis4_label->installEventFilter(this);
         //m_nameDis4_label->setText("- "+m_nameDis4+":");
-        m_capacityDis4_label = new QLabel();
+        m_capacityDis4_label = new QLabel(this);
         QString str_capacityDis4 = size_human(m_capacityDis4);
         m_capacityDis4_label->setText("("+str_capacityDis4+")");
         m_capacityDis4_label->setFont(QFont("Microsoft YaHei",fontSize));

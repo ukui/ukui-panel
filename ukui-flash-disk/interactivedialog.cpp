@@ -68,7 +68,7 @@ void interactiveDialog::getTransparentData()
 
 void interactiveDialog::initWidgets()
 {
-    contentLable = new QLabel();
+    contentLable = new QLabel(this);
     contentLable->setText(tr("usb is occupying,do you want to eject it"));
     content_H_BoxLayout = new QHBoxLayout();
     content_H_BoxLayout->addWidget(contentLable);
