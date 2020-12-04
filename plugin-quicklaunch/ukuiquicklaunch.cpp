@@ -541,26 +541,19 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
 void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
 {
     QuickLaunchButton* btn = new QuickLaunchButton(action, mPlugin, this);
-    int i = 0;
-    int flag = 1;
-    int counts = countOfButtons();
-     while (i != counts && flag)
-     {
-        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-        if (b->file_name == btn->file_name) {
-            for(auto it = mVBtn.begin();it != mVBtn.end();it++)
-            {
-                if(*it == b)
-                {
-                    mVBtn.erase(it);
-                    flag = 0;
-                    break;
-                }
-            }
+    QuickLaunchButton* tmp;
+    for(auto it = mVBtn.begin();it != mVBtn.end();it++)
+    {
+        QuickLaunchButton *b = *it;
+        if(b->file_name == btn->file_name)
+        {
+            mVBtn.erase(it);
+            tmp = b;
             mLayout->removeWidget(b);
-        } else {
-            ++i;
-        }
+            b->deleteLater();
+            this->repaint();
+            break;
+         }
      }
     // GetMaxPage();
     //    btn->deleteLater();
