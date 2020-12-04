@@ -556,7 +556,7 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
          }
      }
     // GetMaxPage();
-    //    btn->deleteLater();
+    btn->deleteLater();
     realign();
 
     if (old_page != page_num) {
