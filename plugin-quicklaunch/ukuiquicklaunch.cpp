@@ -796,6 +796,7 @@ void UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
         i++;
     }
     saveSettings();
+    return false;
 }
 
 /*获取任务栏位置的接口*/
