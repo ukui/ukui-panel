@@ -124,10 +124,11 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     //社区版本 安装时未强求建立 swap分区，若未建swap分区,会导致休眠(hibernate)失败，所以在20.04上屏蔽该功能
     getOsRelease();
     if(QString::compare(version,"Ubuntu"))
+    或使用!QString::compare(getCanHibernateResult(),"yes") 【目前该接口有bug】
     */
 
     //检测CanHibernate接口的返回值，判断是否可以执行挂起操作
-    if(!QString::compare(getCanHibernateResult(),"yes")){
+    if(QString::compare(version,"Ubuntu")){
         pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
                                    tr("Hibernate Mode"),
                                    this, SLOT(SessionHibernate())
