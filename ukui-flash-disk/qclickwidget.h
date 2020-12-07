@@ -35,6 +35,8 @@
 #include "ejectInterface.h"
 #include "clickLabel.h"
 #include "UnionVariable.h"
+#include "interactivedialog.h"
+#include "gpartedinterface.h"
 class MainWindow;
 class QClickWidget : public QWidget
 {
@@ -43,6 +45,7 @@ public:
     explicit QClickWidget(QWidget *parent = nullptr,
                           int num = 0,
                           GDrive *Drive=NULL,
+                          GVolume *Volume=NULL,
                           QString driveName=NULL,
                           QString nameDis1=NULL,
                           QString nameDis2 =NULL,
@@ -106,13 +109,16 @@ private:
     QString currentThemeMode;
 
 public:
-    QPushButton *m_eject_button;
-    ejectInterface *m_eject;
+    QPushButton *m_eject_button = nullptr;
+    ejectInterface *m_eject = nullptr;
+    interactiveDialog *chooseDialog = nullptr;
+    gpartedInterface *gpartedface = nullptr;
     bool ifSucess;
     int flagType;
 Q_SIGNALS:
     void clicked();
     void clickedConvert();
+    void noDeviceSig();
 
 private Q_SLOTS:
     void on_volume1_clicked();

@@ -20,6 +20,7 @@ endif()
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
+find_package(KF5WindowSystem REQUIRED)
 
 pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
 pkg_check_modules(QGS REQUIRED gsettings-qt)
@@ -44,13 +45,17 @@ add_executable(ukui-flash-disk
     MainController.h
     MainController.cpp
     MacroFile.h
+    interactivedialog.cpp
+    interactivedialog.h
+    gpartedinterface.cpp
+    gpartedinterface.h
         mainwindow.ui
         mainwindow.h
 )
 
 add_definitions(-DQT_NO_KEYWORDS)
 
-target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} ${QGS_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} ${QGS_LIBRARIES} KF5::WindowSystem)
 
 install(TARGETS ukui-flash-disk DESTINATION bin)
 
@@ -63,5 +68,11 @@ install(FILES
 install(FILES
     ukui-flash-disk.qrc disk-resources/ukui-flash-disk_zh_CN.qm disk-resources/ukui-flash-disk_tr.qm
     DESTINATION "/usr/share/ukui/ukui-panel/"
+    COMPONENT Runtime
+)
+
+install(FILES
+    disk-resources/org.ukui.flash-disk.autoload.gschema.xml
+    DESTINATION "/usr/share/glib-2.0/schemas"
     COMPONENT Runtime
 )

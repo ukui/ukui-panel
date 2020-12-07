@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QtDBus/QDBusConnection>
 #include <QTranslator>
+#include <QTextCodec>
 #include "UnionVariable.h"
 #include "mainwindow.h"
 #include "MainController.h"
@@ -47,6 +48,10 @@ int main(int argc, char *argv[])
 //    }
 
 
+//    QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
+//    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+    QTextCodec *codec = QTextCodec::codecForName("utf8"); //Linux
+    QTextCodec::setCodecForLocale(codec);
 
     QIcon::setThemeName("ukui-icon-theme-default");
 
@@ -62,13 +67,13 @@ int main(int argc, char *argv[])
     {
         if (translator.load("/usr/share/ukui/ukui-panel/ukui-flash-disk_zh_CN.qm"))
         {
+            qDebug() << "load success";
             a.installTranslator(&translator);
         }
         else
         {
             qDebug() << "Load translations file" << locale << "failed!";
         }
-
     }
 
 //    //load qss
