@@ -1245,6 +1245,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     float minimumHeight = THUMBNAIL_HEIGHT;
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
+        it.value()->removeThumbNail();
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
         max_Height = attr.height > max_Height ? attr.height : max_Height;

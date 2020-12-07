@@ -812,7 +812,7 @@ void UKUITaskWidget::addThumbNail()
         mThumbnailLabel->setScaledContents(true);
         mThumbnailLabel->setMinimumSize(QSize(1, 1));
         //        mVWindowsLayout->addLayout(mTopBarLayout, 100);
-        mVWindowsLayout->addWidget(mThumbnailLabel, 0, Qt::AlignBottom);
+        mVWindowsLayout->addWidget(mThumbnailLabel, 0, Qt::AlignCenter);
     }
     else
     {
