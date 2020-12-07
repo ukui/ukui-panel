@@ -17,6 +17,7 @@
  */
 #include "ejectInterface.h"
 #include <qgsettings.h>
+#include <KWindowEffects>
 
 ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType) : QWidget(parent),eject_image_label(nullptr),show_text_label(nullptr),
     mount_name_label(nullptr)
@@ -27,7 +28,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
 //interface layout
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     EjectScreen = qApp->primaryScreen();
-    eject_image_label = new QLabel();
+    eject_image_label = new QLabel(this);
     eject_image_label->setFixedSize(30,30);
     //QPixmap pixmap("kylin-media-removable-symbolic");
     eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
@@ -49,7 +50,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
 //    //set the size of the picture
 //    eject_image_button->setIconSize(QSize(25,25));
 
-    show_text_label = new QLabel;
+    show_text_label = new QLabel(this);
     show_text_label->setFont(QFont("Noto Sans CJK SC",fontSize));
     QString strNoraml = tr("usb has been unplugged safely");
     QString strOccupy = tr("usb is occupying unejectable");
@@ -95,7 +96,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
         ejectinterface_h_BoxLayout->addStretch();
     }
     mountname_h_BoxLayout = new QHBoxLayout();
-    mount_name_label = new QLabel();
+    mount_name_label = new QLabel(this);
     mount_name_label->setFont(QFont("Noto Sans CJK SC",fontSize));
     if(mount_name_label)
     {
@@ -183,16 +184,24 @@ ejectInterface::~ejectInterface()
 //If the fillet does not take effect
 void ejectInterface::paintEvent(QPaintEvent *event)
  {
+    QPainterPath path;
+    auto rect = this->rect();
+    rect.adjust(1, 1, -1, -1);
+    path.addRoundedRect(rect, 6, 6);
+    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
+
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
-    QRect rect = this->rect();
+    QRect rectReal = this->rect();
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
     p.setBrush(opt.palette.color(QPalette::Base));
     p.setOpacity(m_transparency);
     p.setPen(Qt::NoPen);
-    p.drawRoundedRect(rect, 6, 6);
+    p.drawRoundedRect(rectReal, 6, 6);
     QWidget::paintEvent(event);
+
+    KWindowEffects::enableBlurBehind(this->winId(), true, QRegion(path.toFillPolygon().toPolygon()));
  }
 
 //slot function to hide eject interface

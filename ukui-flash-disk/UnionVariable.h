@@ -22,8 +22,14 @@
 #include <QString>
 #include <QFont>
 #include <QFontMetrics>
+#include <QTextCodec>
+#include <syslog.h>
 QList<GMount *> *findGMountList();
 QList<GVolume *> *findGVolumeList();
+QList<GVolume *> *findTeleGVolumeList();
 QList<GDrive *> *findGDriveList();
 QString getElidedText(QFont font, QString str, int MaxWidth);
+QString transcodeForGbkCode(QByteArray gbkName, QString &volumeName);
+void handleVolumeLabelForFat32Me(QString &volumeName,const QString &unixDevcieName);
+//int m_system(char *cmd);
 #endif
