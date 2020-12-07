@@ -1008,7 +1008,9 @@ bool UKUITaskGroup::isSetMaxWindow()
 
 void UKUITaskGroup::showPreview()
 {
-    if(mVisibleHash.size()<=10)
+    int n = 7;
+    if (plugin()->panel()->isHorizontal()) n = 10;
+    if(mVisibleHash.size() <= n)
     {
         showAllWindowByThumbnail();
     }
@@ -1035,17 +1037,19 @@ void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
 void UKUITaskGroup::v_adjustPopWindowSize(int winWidth, int winHeight, int v_all)
 {
     int fixed_size = v_all;
-    int iScreenWidth = QApplication::screens().at(0)->size().width();
-
-    if (fixed_size > iScreenWidth)
-        fixed_size = iScreenWidth;
 
     if(plugin()->panel()->isHorizontal())
     {
+        int iScreenWidth = QApplication::screens().at(0)->size().width();
+        if (fixed_size > iScreenWidth)
+            fixed_size = iScreenWidth;
         mPopup->setFixedSize(fixed_size,  winHeight + 6);
     }
     else
     {
+        int iScreenHeight = QApplication::screens().at(0)->size().height();
+        if (fixed_size > iScreenHeight)
+            fixed_size = iScreenHeight;
         mPopup->setFixedSize(winWidth + 6, fixed_size);
     }
     mPopup->adjustSize();
@@ -1149,7 +1153,7 @@ void UKUITaskGroup::showAllWindowByList()
         UKUITaskWidget *btn = it.value();
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
-        btn->removeThumbNail();
+        //btn->removeThumbNail();
         btn->updateTitle();
         btn->setTitleFixedWidth(winWidth - 80);
 //        btn->setFixedSize(mpScrollArea->width(),winheight);
@@ -1253,7 +1257,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         UKUITaskWidget *btn = it.value();
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
-        btn->removeThumbNail();
         btn->addThumbNail();
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
@@ -1339,7 +1342,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         }
     }
     /*end*/
-    int i = 0;
         for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
         {
             UKUITaskWidget *btn = it.value();
