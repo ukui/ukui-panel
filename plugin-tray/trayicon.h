@@ -91,6 +91,8 @@ private:
     void init();
     QRect iconGeometry();
     void  trayButtonPress(QMouseEvent *);
+    bool needReDraw();
+
     Window mIconId;
     Window mWindowId;
     QSize mIconSize;
