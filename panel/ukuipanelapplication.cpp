@@ -40,6 +40,9 @@
 #include <QFile>
 #include "comm_func.h"
 
+#define CONFIG_FILE_BACKUP     "/usr/share/ukui/panel.conf"
+#define CONFIG_FILE_LOCAL      ".config/ukui/panel.conf"
+
 UKUIPanelApplicationPrivate::UKUIPanelApplicationPrivate(UKUIPanelApplication *q)
     : mSettings(0),
       q_ptr(q)
@@ -103,7 +106,6 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
 
     parser.process(*this);
 
-//    QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     const QString configFile = parser.value(configFileOption);
 
     if (configFile.isEmpty())
@@ -114,6 +116,11 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
         if(!file.exists())
             copyFileToPath(defaultConf,loaclCong,"panel.conf",false);
         d->mSettings = new UKUi::Settings(QLatin1String("panel"), this);
+        if(!d->mSettings->contains("plugins")){
+            QFile::remove(QString(qgetenv("HOME"))+CONFIG_FILE_LOCAL);
+            QFile::copy(CONFIG_FILE_BACKUP,QString(qgetenv("HOME"))+CONFIG_FILE_LOCAL);
+            d->mSettings = new UKUi::Settings(QLatin1String("panel"), this);
+        }
     }
     else
     {

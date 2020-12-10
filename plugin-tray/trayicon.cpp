@@ -301,6 +301,20 @@ QRect TrayIcon::iconGeometry()
     return res;
 }
 
+/**
+ * @brief needReDraw 判断图标是否需要重新绘制（高亮处理）
+ * @return 不需要重新绘制的图标返回值为false
+ * 备注：ukui3.1 主题提供两套图标后，任务栏不需要进行重新绘制
+ */
+bool TrayIcon::needReDraw()
+{
+    QStringList ignoreAppList;
+    ignoreAppList<<"kylin-video";
+    if(ignoreAppList.contains(xfitMan().getApplicationName(mIconId))){
+        return false;
+    }
+    return true;
+}
 
 /*draw 函数执行的是绘图事件*/
 void TrayIcon::draw(QPaintEvent* /*event*/)
@@ -360,7 +374,8 @@ void TrayIcon::draw(QPaintEvent* /*event*/)
         iconRect = r;
     }
 
-    image=HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
+    if(needReDraw())
+        image=HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
     painter.drawImage(iconRect, image);
 
     if(ximage)

@@ -897,16 +897,9 @@ void UKUIPanel::setUpPanel()
 /*右键　系统监视器选项*/
 void UKUIPanel::systeMonitor()
 {
-    if(QFileInfo::exists(QString("/usr/bin/mate-system-monitor")) || QFileInfo::exists(QString("/usr/bin/ukui-system-monitor")))
-    {
-        QProcess *process =new QProcess(this);
-        if(QFileInfo::exists(QString("/usr/bin/ukui-system-monitor")))
-            process->startDetached("/usr/bin/ukui-system-monitor");
-        else
-            process->startDetached("/usr/bin/mate-system-monitor");
-    }
-    else
-        qDebug()<<"not find /usr/bin/mate-system-monitor or /usr/bin/ukui-system-monitor";
+    QProcess *process =new QProcess(this);
+    process->startDetached("/usr/bin/ukui-system-monitor");
+    process->deleteLater();
 }
 
 /*任务栏大小和方向的调整*/
@@ -1378,10 +1371,12 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
 
     menu->addSeparator();
 
-    menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                    tr("Show System Monitor"),
-                    this, SLOT(systeMonitor())
-                    );
+    if(QFileInfo::exists(QString("/usr/bin/ukui-system-monitor"))){
+        menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
+                        tr("Show System Monitor"),
+                        this, SLOT(systeMonitor())
+                        );
+    }
 
     menu->addSeparator();
 
