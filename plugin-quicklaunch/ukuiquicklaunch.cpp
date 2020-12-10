@@ -98,13 +98,13 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
 
     pageup = new QToolButton(this);
     pagedown = new QToolButton(this);
+
     QStyle *style = new CustomStyle;
     pageup->setStyle(style);
     pagedown->setStyle(style);
     pageup->setText("∧");
     pagedown->setText("∨");
     style->deleteLater();
-
 
     _style->addWidget(pageup, 0,Qt::AlignTop|Qt::AlignHCenter);
     _style->addWidget(pagedown,0,Qt::AlignHCenter);
@@ -489,7 +489,7 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
     mLayout->addWidget(btn);
     if (countOfButtons() > apps_number) btn->setHidden(1);
     connect(btn, SIGNAL(switchButtons(QuickLaunchButton*,QuickLaunchButton*)), this, SLOT(switchButtons(QuickLaunchButton*,QuickLaunchButton*)));
-    connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
+    connect(btn, SIGNAL(buttonDeleted()), this, SLOT(rightClicktoDeleted()));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
     connect(btn, SIGNAL(movedRight()), this, SLOT(buttonMoveRight()));
 
@@ -538,32 +538,22 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
 }
 
 /* 删除　button*/
-void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
+void UKUIQuickLaunch::removeButton(QString filename)
 {
-    QuickLaunchButton* btn = new QuickLaunchButton(action, mPlugin, this);
-    int i = 0;
-    int flag = 1;
-    int counts = countOfButtons();
-     while (i != counts && flag)
-     {
-        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-        if (b->file_name == btn->file_name) {
-            for(auto it = mVBtn.begin();it != mVBtn.end();it++)
-            {
-                if(*it == b)
-                {
-                    mVBtn.erase(it);
-                    flag = 0;
-                    break;
-                }
-            }
+    //QuickLaunchButton* btn = new QuickLaunchButton(action, mPlugin, this);
+    for(auto it = mVBtn.begin();it != mVBtn.end();it++)
+    {
+        QuickLaunchButton *b = *it;
+        if(b->file_name == filename)
+        {
+            mVBtn.erase(it);
             mLayout->removeWidget(b);
-        } else {
-            ++i;
-        }
+            b->deleteLater();
+            this->repaint();
+            break;
+         }
      }
     // GetMaxPage();
-    //    btn->deleteLater();
     realign();
 
     if (old_page != page_num) {
@@ -571,7 +561,6 @@ void UKUIQuickLaunch::removeButton(QuickLaunchAction* action)
         PageUp();
     }
     saveSettings();
-    btn->deleteLater();
     mLayout->removeWidget(tmpwidget);
     mLayout->addWidget(tmpwidget);
     mLayout->removeWidget(mPlaceHolder);
@@ -679,7 +668,7 @@ void UKUIQuickLaunch::directoryUpdated(const QString &path)
             foreach(QString file, deleteFile)
             {
                 // 处理操作每个被删除的文件....
-                FileDeleteFromTaskbar(path+file);
+                removeButton(path+file);
             }
         }
     }
@@ -750,42 +739,15 @@ bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
 {
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-    XdgDesktopFile xdg;
-    xdg.load(fileName);
-    QuickLaunchAction *_action = new QuickLaunchAction(&xdg, this);
-    removeButton(_action);
+    //QuickLaunchAction *_action = new QuickLaunchAction(&xdg, this);
+    removeButton(fileName);
     return true;
 }
 
 /*从任务栏上移除文件的接口*/
 void UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
 {
-    int i=0;
-    bool flag = true;
-    while (i < countOfButtons() && flag)
-    {
-        qDebug()<<i;
-        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-        if(NULL == b){
-            qDebug()<<"Quicklaunch  Error : find a QuickLaunchButton is empty ";
-            break;
-        }
-        else{
-            if(QString::compare(file,b->file_name)==0)
-            {
-                for(auto it = mVBtn.begin();it != mVBtn.end();it++){
-                    if(*it == b){
-                        mVBtn.erase(it);
-                        flag = false;
-                        break;
-                    }
-                }
-                mLayout->removeWidget(b);
-            }
-        }
-        i++;
-    }
-    saveSettings();
+    removeButton(file);
 }
 
 /*获取任务栏位置的接口*/
@@ -811,39 +773,22 @@ void UKUIQuickLaunch::switchButtons(QuickLaunchButton *button1, QuickLaunchButto
 
     int l = qMin(n1, n2);
     int m = qMax(n1, n2);
-
-    mLayout->moveItem(l, m);
-    mLayout->moveItem(m-1, l);
+    if (l == m
+            || mLayout->animatedMoveInProgress()
+       )
+        return;
+    mLayout->moveItem(l, m, true);
+    mLayout->moveItem(m-1, l, true);
     saveSettings();
 }
 
-/*快速启动栏的按钮删除 右键删除*/
-void UKUIQuickLaunch::buttonDeleted()
+/*右键删除*/
+void UKUIQuickLaunch::rightClicktoDeleted()
 {
     QuickLaunchButton *btn = qobject_cast<QuickLaunchButton*>(sender());
     if (!btn)
         return;
-    for(auto it = mVBtn.begin();it != mVBtn.end();it++)
-    {
-        if(*it == btn)
-        {
-            mVBtn.erase(it);
-            break;
-        }
-    }
-    btn->deleteLater();
-    mLayout->removeWidget(btn);
-    if (countOfButtons() == apps_number) PageUp();
-    //GetMaxPage();
-    realign();
-    if (old_page != page_num) {
-        old_page = page_num;
-        PageUp();
-    }
-    saveSettings();
-    mLayout->removeWidget(tmpwidget);
-    mLayout->addWidget(tmpwidget);
-    mLayout->removeWidget(mPlaceHolder);
+    removeButton(btn->file_name);
 
     /*//注释showPlaceHolder的原因是在开始菜单检测快速启动栏上面固定的应用数量的时候
       //countOfButtons无法获取快速启动栏上的应用为０的情况
