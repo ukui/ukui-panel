@@ -98,13 +98,13 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
 
     pageup = new QToolButton(this);
     pagedown = new QToolButton(this);
+
     QStyle *style = new CustomStyle;
     pageup->setStyle(style);
     pagedown->setStyle(style);
     pageup->setText("∧");
     pagedown->setText("∨");
     style->deleteLater();
-
 
     _style->addWidget(pageup, 0,Qt::AlignTop|Qt::AlignHCenter);
     _style->addWidget(pagedown,0,Qt::AlignHCenter);
@@ -773,9 +773,12 @@ void UKUIQuickLaunch::switchButtons(QuickLaunchButton *button1, QuickLaunchButto
 
     int l = qMin(n1, n2);
     int m = qMax(n1, n2);
-
-    mLayout->moveItem(l, m);
-    mLayout->moveItem(m-1, l);
+    if (l == m
+            || mLayout->animatedMoveInProgress()
+       )
+        return;
+    mLayout->moveItem(l, m, true);
+    mLayout->moveItem(m-1, l, true);
     saveSettings();
 }
 

@@ -93,7 +93,6 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
 //    mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
     mCloseBtn->setIconSize(QSize(19,19));
     mCloseBtn->setFixedSize(QSize(19,19));
-    mCloseBtn->hide();
     mTitleLabel = new QLabel(this);
     mTitleLabel->setMargin(0);
     //    mTitleLabel->setContentsMargins(0,0,0,10);
@@ -137,10 +136,11 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     //    mTopBarLayout->setSpacing(5);
     mTopBarLayout->addWidget(mAppIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
     mTopBarLayout->addWidget(mTitleLabel, 10, Qt::AlignLeft);
+    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight);
     //    mTopBarLayout->addStretch();
 //    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
     //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
-    mVWindowsLayout->addLayout(mTopBarLayout, 5);
+    mVWindowsLayout->addLayout(mTopBarLayout);
     mVWindowsLayout->addWidget(mThumbnailLabel, Qt::AlignCenter, Qt::AlignCenter);
     mVWindowsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     this->setLayout(mVWindowsLayout);
@@ -309,7 +309,6 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
         raiseApplication();
     }
     status = NORMAL;
-    mTopBarLayout->removeWidget(mCloseBtn);
     update();
     QWidget::mouseReleaseEvent(event);
 
@@ -322,16 +321,12 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 void UKUITaskWidget::enterEvent(QEvent *)
 {
     status = HOVER;
-    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
-    mCloseBtn->show();
     repaint();
 }
 
 void UKUITaskWidget::leaveEvent(QEvent *)
 {
     status = NORMAL;
-    mTopBarLayout->removeWidget(mCloseBtn);
-    mCloseBtn->hide();
     repaint();
 }
 QMimeData * UKUITaskWidget::mimeData()
@@ -765,7 +760,6 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
     case NORMAL:
     {
         p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
-        mTopBarLayout->removeWidget(mCloseBtn);
         break;
     }
     case HOVER:
@@ -818,7 +812,7 @@ void UKUITaskWidget::addThumbNail()
         mThumbnailLabel->setScaledContents(true);
         mThumbnailLabel->setMinimumSize(QSize(1, 1));
         //        mVWindowsLayout->addLayout(mTopBarLayout, 100);
-        mVWindowsLayout->addWidget(mThumbnailLabel, 0, Qt::AlignBottom);
+        mVWindowsLayout->addWidget(mThumbnailLabel, 0, Qt::AlignCenter);
     }
     else
     {
