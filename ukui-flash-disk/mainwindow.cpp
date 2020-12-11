@@ -246,7 +246,7 @@ void MainWindow::getDeviceInfo()
             *findGMountList()<<gmount;
         }
         current_mount_list = current_mount_list->next;
-        this->root = g_mount_get_default_location(g_volume_get_mount(gmount));
+        this->root = g_mount_get_default_location(gmount);
         this->mount_uri = g_file_get_uri(this->root);
         if(g_str_has_prefix(this->mount_uri,"file:///data"))
         {
