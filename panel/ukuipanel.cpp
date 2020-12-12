@@ -1300,6 +1300,102 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
+/// 以下所有函数均为任务栏拖拽相关（位置、大小）
+void UKUIPanel::setPanelPosition(Position position)
+{
+    QDBusMessage message=QDBusMessage::createSignal("/panel/settings", "com.ukui.panel.settings", "SendPanelSetings");
+    if(position==PositionTop)
+    {
+        setPosition(0,PositionTop,true);
+        gsettings->set(PANEL_POSITION_KEY,1);
+        message<<1;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else if(position==PositionLeft)
+    {
+        setPosition(0,PositionLeft,true);
+        gsettings->set(PANEL_POSITION_KEY,2);
+        message<<2;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else if(position==PositionRight)
+    {
+        this->setPosition(0,PositionRight,true);
+        gsettings->set(PANEL_POSITION_KEY,3);
+        message<<3;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else
+    {
+        setPosition(0,PositionBottom,true);
+        gsettings->set(PANEL_POSITION_KEY,0);
+        message<<0;
+        QDBusConnection::sessionBus().send(message);
+    }
+}
+
+
+IUKUIPanel::Position UKUIPanel::areaDivid(QPoint globalpos) {
+    int x = globalpos.rx();
+    int y = globalpos.ry();
+    float W = QApplication::screens().at(0)->size().width();
+    float H = QApplication::screens().at(0)->size().height();
+    float slope = H / W;
+    if ((x < 100 || x > W - 100) && (y > H - 100 || y < 100)) return mPosition;
+    if (y > (int)(x * slope) && y > (int)(H - x * slope)) return PositionBottom;
+    if (y > (int)(x * slope) && y < (int)(H - x * slope)) return PositionLeft;
+    if (y < (int)(x * slope) && y < (int)(H - x * slope)) return PositionTop;
+    if (y < (int)(x * slope) && y > (int)(H - x * slope)) return PositionRight;
+}
+
+
+void UKUIPanel::mousePressEvent(QMouseEvent *event) {
+    setCursor(Qt::DragMoveCursor);
+}
+
+void UKUIPanel::enterEvent(QEvent *event) {
+       // setCursor(Qt::SizeVerCursor);
+}
+
+void UKUIPanel::leaveEvent(QEvent *event) {
+    setCursor(Qt::ArrowCursor);
+}
+
+void UKUIPanel::mouseMoveEvent(QMouseEvent* event)
+{
+    if (mLockPanel) return;
+    if (movelock == -1) {
+        if (event->pos().ry() < 10) movelock = 0;
+        else movelock = 1;
+    }
+    if (!movelock) {
+        int panel_h = QApplication::screens().at(0)->size().height() - event->globalPos().ry();
+        int icon_size = panel_h*0.695652174;
+        setCursor(Qt::SizeVerCursor);
+        if (panel_h <= PANEL_SIZE_LARGE && panel_h >= PANEL_SIZE_SMALL) {
+            setPanelSize(panel_h, true);
+            setIconSize(icon_size, true);
+            gsettings->set(PANEL_SIZE_KEY, panel_h);
+            gsettings->set(ICON_SIZE_KEY, icon_size);
+        }
+        return;
+    }
+    setCursor(Qt::SizeAllCursor);
+    IUKUIPanel::Position currentpos = areaDivid(event->globalPos());
+    if (oldpos != currentpos)
+    {
+        setPanelPosition(currentpos);
+        oldpos = currentpos;
+    }
+}
+
+void UKUIPanel::mouseReleaseEvent(QMouseEvent* event)
+{
+    setCursor(Qt::ArrowCursor);
+    realign();
+    emit realigned();
+    movelock = -1;
+}
 
 /*Right-Clicked Menu of ukui-panel
  * it's a Popup Menu

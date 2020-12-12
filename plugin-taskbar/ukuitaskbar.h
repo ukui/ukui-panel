@@ -47,7 +47,31 @@
 #include <QStyleOption>
 #include <QPainter>
 #include <QtDBus/QtDBus>
+#include <QHash>
+#include <QString>
+#include <QVector>
+#include "qlayout.h"
+#include "qlayoutitem.h"
+#include "qlayoutitem.h"
+#include "qgridlayout.h"
+#include <QFileSystemWatcher>
+#include <QtCore/QObject>
+#include <QPushButton>
+#include <QToolButton>
 
+QT_BEGIN_NAMESPACE
+class QByteArray;
+template<class T> class QList;
+template<class Key, class Value> class QMap;
+class QString;
+class QStringList;
+class QVariant;
+QT_END_NAMESPACE
+
+class XdgDesktopFile;
+class QuickLaunchAction;
+class QSettings;
+class QLabel;
 class QSignalMapper;
 class UKUITaskButton;
 class ElidedButtonStyle;
@@ -82,6 +106,7 @@ public:
     int showDesktopNum() const { return mShowDesktopNum; }
     bool getCpuInfoFlg() const { return CpuInfoFlg; }
     bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
+    bool ignoreSymbolCMP(QString filename,QString groupname);
     bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
     bool isAutoRotate() const { return mAutoRotate; }
     bool isGroupingEnabled() const { return mGroupingEnabled; }
@@ -91,6 +116,23 @@ public:
     inline IUKUIPanel * panel() const { return mPlugin->panel(); }
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
+    void pubAddButton(QuickLaunchAction* action) { addButton(action); }
+    void pubSaveSettings() { saveSettings(); }
+    bool pubCheckIfExist(QString name);
+
+
+    ////////////////////////////////////////////////
+    /// \brief quicklaunch func
+    ///
+
+    int indexOfButton(UKUITaskGroup *button) const;
+    int countOfButtons() const;
+    //virtual QLayoutItem *takeAt(int index) = 0;
+    void saveSettings();
+    void showPlaceHolder();
+    void refreshQuickLaunch();
+    friend class FilectrlAdaptor;
+
 
 signals:
     void buttonRotationRefreshed(bool autoRotate, IUKUIPanel::Position position);
@@ -100,6 +142,8 @@ signals:
     void iconByClassChanged();
     void popupShown(UKUITaskGroup* sender);
     void sendToUkuiDEApp(void);
+//quicklaunch
+    void setsizeoftaskbarbutton(int _size);
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent * event);
@@ -108,32 +152,84 @@ protected:
     void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *e);
+    void dropEvent(QDropEvent *e);
 
 private slots:
+
     void refreshTaskList();
     void refreshButtonRotation();
     void refreshPlaceholderVisibility();
     void groupBecomeEmptySlot();
+    void saveSettingsSlot();
+   // void groupHiddenSlot();
+   // void groupVisibleSlot(QString name, bool will);
     void onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2);
     void onWindowAdded(WId window);
     void onWindowRemoved(WId window);
     void registerShortcuts();
     void shortcutRegistered();
     void activateTask(int pos);
+    void DosaveSettings() { saveSettings(); }
+
+    ////////////////////////////
+    /// quicklaunch slots
+    ///
+    bool checkButton(QuickLaunchAction* action);
+    void removeButton(QuickLaunchAction* action);
+    void removeButton(QString exec);
+    void buttonDeleted();
+    void switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button);
+    void PageUp();
+    void PageDown();
 
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
 
 private:
     void addWindow(WId window);
+    void addButton(QuickLaunchAction* action);
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
+    void _AddToTaskbar(QString arg);
+    void doInitGroupButton(QString sname);
+    void initRelationship();
+    bool isDesktopFile(QString urlName);
+
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
     TaskStatus taskstatus;
 
+    ////////////////////////////////////
+    /// quicklaunch parameter
+
+    QVector<UKUITaskGroup*> mVBtn;
+    QGSettings *settings;
+    QFileSystemWatcher *fsWatcher;
+    QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
+    QString desktopFilePath ="/usr/share/applications/";
+    QString androidDesktopFilePath =QDir::homePath()+"/.local/share/applications/";
+
+    QToolButton *pageup;
+    QToolButton *pagedown;
+    QWidget *tmpwidget;
+    QVector <UKUITaskGroup*> mBtnAll;
+    QVector <int> mBtncvd;
+    int show_num = 0;
+    int page_num = 1;
+    int max_page;
+    int old_page;
+    void ShowPage();
+    void GetMaxPage();
+    ///////////////////////////////////
+    /// quicklaunch function
+
+    void directoryUpdated(const QString &path);
+    int savecount;
+
 private:
     QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
+    QList <WId> swid;
     UKUi::GridLayout *mLayout;
 //    QList<GlobalKeyShortcut::Action*> mKeys;
     QSignalMapper *mSignalMapper;
@@ -142,6 +238,7 @@ private:
     Qt::ToolButtonStyle mButtonStyle;
     int mButtonWidth;
     int mButtonHeight;
+
     bool CpuInfoFlg = true;
     bool mCloseOnMiddleClick;
     bool mRaiseOnCurrentDesktop;
@@ -154,6 +251,7 @@ private:
     bool mShowGroupOnHover;
     bool mIconByClass;
     bool mCycleOnWheelScroll; //!< flag for processing the wheelEvent
+    bool hasPlaceHolder;
 
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
@@ -167,6 +265,68 @@ private:
     QWidget *mPlaceHolder;
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
+
+public slots:
+    bool AddToTaskbar(QString arg);
+    bool RemoveFromTaskbar(QString arg);
+    void FileDeleteFromTaskbar(QString arg);
+    bool CheckIfExist(QString arg);
+    int GetPanelPosition(QString arg);
+    int GetPanelSize(QString arg);
+    void WindowAddtoTaskBar(QString arg);
+    void WindowRemovefromTaskBar(QString arg);
+
+};
+
+class FilectrlAdaptor: public QDBusAbstractAdaptor
+{
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "com.ukui.panel.desktop")
+    Q_CLASSINFO("D-Bus Introspection", ""
+"  <interface name=\"com.ukui.panel.desktop\">\n"
+"    <method name=\"AddToTaskbar\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"RemoveFromTaskbar\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"FileDeleteFromTaskbar\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"CheckIfExist\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"GetPanelPosition\">\n"
+"      <arg direction=\"out\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"GetPanelSize\">\n"
+"      <arg direction=\"out\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"  </interface>\n"
+        "")
+public:
+    FilectrlAdaptor(QObject *parent);
+    virtual ~FilectrlAdaptor();
+
+public: // PROPERTIES
+public Q_SLOTS: // METHODS
+    bool AddToTaskbar(const QString &arg);
+    bool CheckIfExist(const QString &arg);
+    bool RemoveFromTaskbar(const QString &arg);
+    bool FileDeleteFromTaskbar(const QString &arg);
+    int GetPanelPosition(const QString &arg);
+    int GetPanelSize(const QString &arg);
+
+Q_SIGNALS: // SIGNALS
+
+signals:
+    void addtak(int);
 };
 
 #endif // UKUITASKBAR_H

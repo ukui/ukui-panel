@@ -316,6 +316,7 @@ public slots:
     void setAnimationTime(int animationTime, bool save); //!< \sa setPanelSize()
     void setShowDelay(int showDelay, bool save); //!< \sa setPanelSize()
     void setIconTheme(const QString& iconTheme);
+    void setPanelPosition(Position position);
 
     /**
      * @brief Saves the current configuration, i.e. writes the current
@@ -391,6 +392,11 @@ protected:
      */
     void showEvent(QShowEvent *event) override;
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
 
 public slots:
     /**
@@ -705,6 +711,9 @@ private:
     QMenu * menu;
     QAction * m_lockAction;
 
+    int movelock = -1;
+    IUKUIPanel::Position oldpos;
+
     int MAX_SIZE_PANEL_IN_CALC;
     int MID_SIZE_PANEL_IN_CALC;
     int SML_SIZE_PANEL_IN_CALC;
@@ -713,6 +722,7 @@ private:
     int SML_ICON_SIZE_IN_CLAC;
     void getSize();
     void connectToServer();
+    IUKUIPanel::Position areaDivid(QPoint globalpos);
 
 private slots:
     void panelReset();
