@@ -7,7 +7,7 @@ desktop=0
 hidable=false
 lineCount=1
 lockPanel=false
-plugins=startmenu,taskview,segmentation,taskbar,spacer,tray,calendar,showdesktop 
+plugins=startmenu,taskview,quicklaunch,segmentation,taskbar,spacer,tray,calendar, nightmode,showdesktop 
 position=Bottom
 reserve-space=true
 show-delay=0
@@ -18,13 +18,15 @@ width-percent=true
 [startmenu]
 type=startmenu
 
-[taskbar]
+[quicklaunch]
 alignment=Left
 apps\1\desktop=/usr/share/applications/peony.desktop
 apps\2\desktop=/usr/share/applications/firefox.desktop
-apps\3\desktop=/usr/share/applications/ubuntu-kylin-software-center.desktop
-apps\4\desktop=/usr/share/applications/ukui-control-center.desktop
-apps\size=4
+apps\3\desktop=/usr/share/applications/wps-office-wps.desktop
+apps\size=3
+type=quicklaunch
+
+[taskbar]
 type=taskbar
 
 [tray]

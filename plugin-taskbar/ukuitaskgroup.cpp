@@ -50,9 +50,15 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/highlight-effect.h"
 #include <QSize>
 #include <QScreen>
+#include <XdgIcon>
+#include <XdgDesktopFile>
+#include <QMessageBox>
 #include "../panel/customstyle.h"
+#define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
+#define PANELPOSITION       "panelposition"
 
 #define PREVIEW_WIDTH		468
 #define PREVIEW_HEIGHT		428
@@ -126,11 +132,55 @@ QPixmap qimageFromXImage(XImage* ximage)
     return QPixmap::fromImage(image);
 }
 
-
-
 /************************************************
 
  ************************************************/
+UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, UKUITaskBar * parent)
+    : UKUITaskButton(act, plugin, parent),
+      mPlugin(plugin),
+      mAct(act),
+      mParent(parent)
+{
+    statFlag = false;
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setAcceptDrops(true);
+    /*设置快速启动栏的按键不接受焦点*/
+    setFocusPolicy(Qt::NoFocus);
+    setAutoRaise(true);
+    quicklanuchstatus = NORMAL;
+
+    setDefaultAction(mAct);
+    mAct->setParent(this);
+
+    /*设置快速启动栏的菜单项*/
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    mgsettings = new QGSettings(id);
+    toDomodifyQuicklaunchMenuAction(true);
+    connect(mgsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==PANELPOSITION){
+            toDomodifyQuicklaunchMenuAction(true);
+        }
+    });
+    setContextMenuPolicy(Qt::CustomContextMenu);
+   // connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
+   //         this, SLOT(toDothis_customContextMenuRequested(const QPoint&)));
+    file_name=act->m_settingsMap["desktop"];
+    file = act->m_settingsMap["file"];
+    exec = act->m_settingsMap["exec"];
+    name = act->m_settingsMap["name"];
+    this->setStyle(new CustomStyle());
+    repaint();
+}
+
+
+
+////////////////////////////////////////////////////////////////////////
+/// \brief UKUITaskGroup::UKUITaskGroup
+/// \param groupName
+/// \param window
+/// \param parent
+///
+
 UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *parent)
     : UKUITaskButton(groupName,window, parent, parent),
     mGroupName(groupName),
@@ -138,14 +188,45 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     mPreventPopup(false),
     mSingleButton(true),
     mTimer(new QTimer(this)),
-    mpWidget(NULL)
+    mpWidget(NULL),
+    mParent(parent)
 {
     Q_ASSERT(parent);
     mpScrollArea = NULL;
     taskgroupStatus = NORMAL;
 
-    setObjectName(groupName);
-    setText(groupName);
+    QDir dir("/usr/share/applications/");
+    QFileInfoList list = dir.entryInfoList();
+    for (int i = 0; i < list.size(); i++) {
+        QFileInfo fileInfo = list.at(i);
+        if (parentTaskBar()->ignoreSymbolCMP(fileInfo.filePath(), groupName)) {
+            file_name = fileInfo.filePath();
+            break;
+        }
+    }
+    const auto url=QUrl(file_name);
+    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+    QFileInfo fi(fileName);
+    XdgDesktopFile xdg;
+    if (xdg.load(fileName))
+    {
+        /*This fuction returns true if the desktop file is applicable to the
+          current environment.
+          but I don't need this attributes now
+        */
+        //        if (xdg.isSuitable())
+        mAct = new QuickLaunchAction(&xdg, this);
+    }
+    else if (fi.exists() && fi.isExecutable() && !fi.isDir())
+    {
+        mAct = new QuickLaunchAction(fileName, fileName, "", this);
+    }
+    else if (fi.exists())
+    {
+        mAct = new QuickLaunchAction(fileName, this);
+    }
+
+
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
@@ -180,6 +261,42 @@ UKUITaskGroup::~UKUITaskGroup()
 /************************************************
 
  ************************************************/
+
+//void UKUITaskGroup::initGroupName(QString Name) {
+//    QFile file(Name);
+//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//        qDebug() << "Can't Read The Desktop File in /usr/share/application -- taskgroup init failed";
+//    }
+//    while (!file.atEnd()) {
+//        QByteArray line = file.readLine();
+//        QString str(line);
+//        qDebug() << str;
+//    }
+//}
+
+//void UKUITaskGroup::initFileName(QString Name) {
+//    path = "/usr/share/applications/"
+//    QFile file(Name);
+//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//        qDebug() << "Can't Read The Desktop File in /usr/share/application -- taskgroup init failed";
+//    }
+//    while (!file.atEnd()) {
+//        QByteArray line = file.readLine();
+//        QString str(line);
+//        qDebug() << str;
+//    }
+//}
+
+
+//void UKUITaskGroup::initDoubleName(QString Name) {
+//    if (file_name) {
+//        initGroupName(Name);
+//    }
+//    if (mGroupName) {
+//        initFileName(Name);
+//    }
+//}
+
 void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 {
     setPopupVisible(false, true);
@@ -192,8 +309,20 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    QAction *close = menu->addAction(QIcon::fromTheme("window-close-symbolic"), tr("close"));
-    connect(close, SIGNAL(triggered()), this, SLOT(closeGroup()));
+    if (!file_name.isEmpty()) {
+        menu->addAction(mAct);
+        menu->addActions(mAct->addtitionalActions());
+        menu->addSeparator();
+        menu->addSeparator();
+        QAction *mDeleteAct = menu->addAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-unfixed")), tr("delete from taskbar"));
+        connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(RemovefromTaskBar()));
+        QAction *mAddAct = menu->addAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-fixed")), tr("add to taskbar"));
+        connect(mAddAct, SIGNAL(triggered()), this, SLOT(AddtoTaskBar()));
+        if (existSameQckBtn) menu->removeAction(mAddAct);
+        else menu->removeAction(mDeleteAct);
+    }
+    QAction *mCloseAct = menu->addAction(QIcon::fromTheme("process-stop"), tr("close"));
+    connect(mCloseAct, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {
         mPreventPopup = false;
     });
@@ -201,7 +330,14 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
     plugin()->willShowWindow(menu);
     menu->show();
 }
-
+void UKUITaskGroup::RemovefromTaskBar()
+{
+    emit WindowRemovefromTaskBar(groupName());
+}
+void UKUITaskGroup::AddtoTaskBar()
+{
+    emit WindowAddtoTaskBar(groupName());
+}
 /************************************************
 
  ************************************************/
@@ -237,6 +373,26 @@ QWidget * UKUITaskGroup::addWindow(WId id)
     refreshVisibility();
 
     changeTaskButtonStyle();
+
+    //龙芯最小化窗口预览的特殊处理——截图存储
+    if (!parentTaskBar()->getCpuInfoFlg()) {
+        XImage *img = NULL;
+        Display *display = NULL;
+        QPixmap thumbnail;
+        XWindowAttributes attr;
+
+        display = XOpenDisplay(nullptr);
+        XGetWindowAttributes(display, id, &attr);
+        img = XGetImage(display, id, 0, 0, attr.width, attr.height, 0xffffffff, ZPixmap);
+        QThread::sleep(1);
+        if (img) {
+            thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            thumbnail.save(QString("/tmp/%1.png").arg(id));  //存储在tmp下
+        }
+        if (img) XDestroyImage(img);
+        if (display) XCloseDisplay(display);
+    }
+
     return btn;
 }
 
@@ -467,8 +623,7 @@ void UKUITaskGroup::onClicked(bool)
 {
     if (1 == mVisibleHash.size())
     {
-        singleWindowClick();
-        return;
+        return singleWindowClick();
     }
     if(mPopup->isVisible())
     {
@@ -554,8 +709,10 @@ void UKUITaskGroup::regroup()
 
 //        }
 //    }
-    /*else*/ if (cont == 0)
+    /*else*/ if (cont == 0) {
+       // emit groupHidden(groupName());
         hide();
+    }
     else
     {
         mSingleButton = false;
@@ -612,6 +769,9 @@ void UKUITaskGroup::refreshVisibility()
     }
 
     bool is = isVisible();
+  //  emit groupVisible(groupName(), will);
+   // else setVisible(will);
+  //  will &= this->isVisible();
     setVisible(will);
     if(!mPopup->isVisible())
     {
@@ -640,6 +800,7 @@ QMimeData * UKUITaskGroup::mimeData()
  ************************************************/
 void UKUITaskGroup::setPopupVisible(bool visible, bool fast)
 {
+    if (!statFlag) return;
     if (visible && !mPreventPopup && !mSingleButton)
     {
 //        QTimer::singleShot(400, this,SLOT(showPreview()));
@@ -716,7 +877,11 @@ int UKUITaskGroup::recalculateFrameWidth() const
     return iconSize().width() + qMin(txtWidth, max) + 30/* give enough room to margins and borders*/;
 
 }
-
+void UKUITaskGroup::toDothis_customContextMenuRequested(const QPoint & pos)
+{
+    mPlugin->willShowWindow(mMenu);
+    mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), mMenu->sizeHint()).topLeft());
+}
 /************************************************
 
  ************************************************/
@@ -746,6 +911,70 @@ QPoint UKUITaskGroup::recalculateFramePosition()
     return pos;
 }
 
+bool UKUITaskGroup::isDesktopFile(QString urlName) {
+    QString filetype = urlName.section('/', -1, -1).section('.', -1, -1);
+    if (filetype.isEmpty()) return false;
+    return filetype == QString("desktop");
+}
+
+QString UKUITaskGroup::isComputerOrTrash(QString urlName) {
+    if (!urlName.compare("computer:///"))
+        return QString("/usr/share/applications/peony-computer.desktop");
+    if (!urlName.compare("trash:///"))
+        return QString("/usr/share/applications/peony-trash.desktop");
+    return urlName;
+}
+
+void UKUITaskGroup::dropEvent(QDropEvent *event)
+{
+    UKUITaskBar *taskbar = qobject_cast<UKUITaskBar*>(parent());
+    const auto urls = event->mimeData()->urls().toSet();
+    int i = 0;
+    for (const QUrl &url : urls)
+    {
+        XdgDesktopFile xdg;
+        QString urlName(url.isLocalFile() ? url.toLocalFile() : url.url());
+        QFileInfo ur(urlName);
+        QString fileName("/usr/share/applications/");
+
+        fileName.append(urlName.section('/', -1, -1));
+        fileName = isComputerOrTrash(urlName);
+        urlName = isComputerOrTrash(urlName);
+
+        if (taskbar->pubCheckIfExist(urlName)) return;
+        if (taskbar->pubCheckIfExist(fileName)) return;
+        if (isDesktopFile(urlName)) {
+            if (ur.isSymLink()){
+                if (xdg.load(urlName) && xdg.isSuitable()) {
+                   if (taskbar->pubCheckIfExist(xdg.fileName())) return;
+                   taskbar->pubAddButton(new QuickLaunchAction(&xdg, this));
+                }
+            } else {
+                if (xdg.load(fileName) && xdg.isSuitable()) {
+                   if (taskbar->pubCheckIfExist(urlName)) return;
+                   taskbar->pubAddButton(new QuickLaunchAction(&xdg, this));
+                }
+            }
+        } else if (ur.exists() && ur.isExecutable() && !ur.isDir() || ur.isSymLink()) {
+            if (ur.size() <= 153600)
+                xdg.load(urlName);
+            taskbar->pubAddButton(new QuickLaunchAction(urlName, this));
+        } else if (ur.exists()) {
+            if (ur.size() <= 153600)
+                xdg.load(urlName);
+            taskbar->pubAddButton(new QuickLaunchAction(urlName, this));
+            //taskbar->pubAddButton(new QuickLaunchAction(urlName, urlName, "", this));
+        } else {
+            qWarning() << "XdgDesktopFile" << urlName << "is not valid";
+            QMessageBox::information(this, tr("Drop Error"),
+                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(urlName)
+                                     );
+        }
+    }
+    taskbar->pubSaveSettings();
+    emit t_saveSettings();
+    UKUITaskButton::dropEvent(event);
+}
 /************************************************
 
  ************************************************/
@@ -753,6 +982,10 @@ void UKUITaskGroup::leaveEvent(QEvent *event)
 {
     //QTimer::singleShot(300, this,SLOT(mouseLeaveOut()));
     mTaskGroupEvent = LEAVEEVENT;
+    if (!statFlag) {
+        update();
+        return;
+    }
     mEvent = event;
     if(mTimer->isActive())
     {
@@ -770,6 +1003,10 @@ void UKUITaskGroup::enterEvent(QEvent *event)
 {
     //QToolButton::enterEvent(event);
     mTaskGroupEvent = ENTEREVENT;
+    if (!statFlag) {
+        update();
+        return;
+    }
     mEvent = event;
     mTimer->start(400);
 //    if (sDraggging)
@@ -787,7 +1024,8 @@ void UKUITaskGroup::handleSavedEvent()
 {
     if (sDraggging)
         return;
-    if (parentTaskBar()->isShowGroupOnHover())
+    if (!statFlag) return;
+    if (statFlag && parentTaskBar()->isShowGroupOnHover())
     {
         setPopupVisible(true);
     }
@@ -812,6 +1050,13 @@ void UKUITaskGroup::dragEnterEvent(QDragEnterEvent *event)
     UKUITaskButton::dragEnterEvent(event);
 }
 
+void UKUITaskGroup::mouseReleaseEvent(QMouseEvent *event)
+{
+    // only show the popup if we aren't dragging a taskgroup
+
+    UKUITaskButton::mouseReleaseEvent(event);
+}
+
 /************************************************
 
  ************************************************/
@@ -830,7 +1075,6 @@ void UKUITaskGroup::mouseMoveEvent(QMouseEvent* event)
     setPopupVisible(false, true);
     UKUITaskButton::mouseMoveEvent(event);
 }
-
 /************************************************
 
  ************************************************/
@@ -1008,7 +1252,7 @@ bool UKUITaskGroup::isSetMaxWindow()
 
 void UKUITaskGroup::showPreview()
 {
-    int n = 7;
+    int n = 6;
     if (plugin()->panel()->isHorizontal()) n = 10;
     if(mVisibleHash.size() <= n)
     {
@@ -1131,17 +1375,17 @@ void UKUITaskGroup::showAllWindowByList()
     {
         removeSrollWidget();
     }
-    mpScrollArea = new QScrollArea(this);
+    mpScrollArea = new QScrollArea();
     mpScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     mpScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mpScrollArea->setWidgetResizable(true);
-    mpScrollArea->setFixedWidth(winWidth-10);
+   mpScrollArea->setFixedWidth(winWidth-10);
     mpScrollArea->setFrameStyle(QFrame::NoFrame);
 
     mPopup->layout()->addWidget(mpScrollArea);
-    mpWidget = new QWidget(this);
+    mpWidget = new QWidget();
     mpWidget->setFixedWidth(mpScrollArea->width());
     mpScrollArea->setWidget(mpWidget);
     //mpWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -1151,15 +1395,13 @@ void UKUITaskGroup::showAllWindowByList()
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
-        connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
-        connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
-        //btn->removeThumbNail();
+        btn->removeThumbNail();
         btn->updateTitle();
         btn->setTitleFixedWidth(winWidth - 80);
-//        btn->setFixedSize(mpScrollArea->width(),winheight);
         btn->adjustSize();
         mpWidget->layout()->setContentsMargins(0,0,0,0);
         mpWidget->layout()->addWidget(btn);
+        connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
     }
     /*end*/
     plugin()->willShowWindow(mPopup);
@@ -1177,6 +1419,7 @@ void UKUITaskGroup::showAllWindowByList()
     }
     mPopup->show();
 
+    repaint();
    emit popupShown(this);
 }
 
@@ -1245,7 +1488,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     float minimumHeight = THUMBNAIL_HEIGHT;
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
-        it.value()->removeThumbNail();
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
         max_Height = attr.height > max_Height ? attr.height : max_Height;
@@ -1256,9 +1498,8 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
-        connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
-        connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
         btn->addThumbNail();
+        connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
         img = XGetImage(display, it.key(), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
@@ -1371,7 +1612,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
 
     if(plugin()->panel()->isHorizontal())//set preview window position
     {
-        if(mPopup->size().width()/2 < QCursor::pos().x())
+        if(mPopup->size().width()/2 < QCursor::pos().x() && mVisibleHash.size() != 10)
         {
             previewPosition = 0 - mPopup->size().width()/2 + plugin()->panel()->panelSize()/2;
         }
@@ -1404,3 +1645,4 @@ void UKUITaskGroup::showAllWindowByThumbnail()
 
    emit popupShown(this);
 }
+

@@ -27,7 +27,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QStyle>
-#include <KWindowInfo>
+#include <QGSettings>
 
 class QPainter;
 class QPalette;
@@ -118,7 +118,6 @@ protected:
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
 
 private:
-    NET::States stat;
     WId mWindow;
     bool mUrgencyHint;
     QPoint mDragStartPosition;
@@ -131,9 +130,9 @@ private:
     QLabel *mThumbnailLabel;
     QLabel *mAppIcon;
     UKUITaskCloseButton *mCloseBtn;
+    QGSettings *transparency_gsettings;
     QVBoxLayout *mVWindowsLayout;
     QHBoxLayout *mTopBarLayout;
-
 
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
@@ -142,16 +141,18 @@ private:
     TaskWidgetStatus status;
     bool taskWidgetPress; //按钮左键是否按下
 
+    QGSettings *style_settings;
+    bool style_dark;
+
 private slots:
     void activateWithDraggable();
-    void closeGroup();
 
 signals:
     void dropped(QObject * dragSource, QPoint const & pos);
     void dragging(QObject * dragSource, QPoint const & pos);
     void windowMaximize();
+
     void closeSigtoPop();
-    void closeSigtoGroup();
 };
 
 typedef QHash<WId,UKUITaskWidget*> UKUITaskButtonHash;
