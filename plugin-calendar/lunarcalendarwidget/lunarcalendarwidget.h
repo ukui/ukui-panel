@@ -6,6 +6,7 @@
 #include <QDate>
 #include <QTimer>
 #include <QVBoxLayout>
+#include <QWheelEvent>
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
@@ -148,6 +149,10 @@ private Q_SLOTS:
     void dateChanged(int year, int month, int day);
     void timerUpdate();
 
+
+protected :
+    void wheelEvent(QWheelEvent *event);
+
 public:
     CalendarStyle getCalendarStyle()    const;
     WeekNameFormat getWeekNameFormat()  const;
@@ -189,8 +194,8 @@ public Q_SLOTS:
     void showNextYear();
 
     //上一月,下一月
-    void showPreviousMonth(bool btn_clicked=true);
-    void showNextMonth(bool btn_clicked=true);
+    void showPreviousMonth();
+    void showNextMonth();
 
     //转到今天
     void showToday();
