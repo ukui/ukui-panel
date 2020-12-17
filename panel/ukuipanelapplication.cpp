@@ -95,6 +95,9 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     parser.addHelpOption();
     parser.addVersionOption();
 
+    QCommandLineOption monitorRoleOption("reset");
+    parser.addOption(monitorRoleOption);
+
     QCommandLineOption configFileOption(QStringList()
             << QLatin1String("c") << QLatin1String("config") << QLatin1String("configfile"),
             QCoreApplication::translate("main", "Use alternate configuration file."),
@@ -102,6 +105,10 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     parser.addOption(configFileOption);
 
     parser.process(*this);
+
+    if(parser.isSet(monitorRoleOption)){
+        qDebug()<<"reset";
+    }
 
 //    QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     const QString configFile = parser.value(configFileOption);
