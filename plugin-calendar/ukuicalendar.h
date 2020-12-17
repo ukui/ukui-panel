@@ -34,8 +34,8 @@
 
 #include "../panel/common/ukuirotatedwidget.h"
 #include "../panel/iukuipanelplugin.h"
-#include "ukuiwebviewdialog.h"
 #include "../panel/popupmenu.h"
+#include "lunarcalendarwidget/frmlunarcalendarwidget.h"
 
 class QTimer;
 class CalendarActiveLabel;
@@ -52,12 +52,10 @@ public:
     virtual QString themeId() const { return QLatin1String("Calendar"); }
 //    virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
     bool isSeparate() const { return true; }
-    void activated(ActivationReason reason);
 
     void settingsChanged()override;
     void realign()override;
     void initializeCalendar();
-    void setbackground();
     void setTimeShowStyle();
     void setToolTip();
 //signals:
@@ -69,14 +67,12 @@ private Q_SLOTS:
     void wheelScrolled(int);
     void deletePopup();
     void updateTimeText();
-    void hidewebview();
 
 private:
     QWidget *mMainWidget;
-    UkuiWebviewDialog   *mWebViewDiag;
+    frmLunarCalendarWidget *w;
     bool mbActived;
     bool mbHasCreatedWebView;
-    int font_size;
     CalendarActiveLabel *mContent;
 
     QTimer *mTimer;
@@ -112,7 +108,6 @@ private:
     QString hourSystem_12_horzontal;
     QString hourSystem_12_vartical;
     QString current_date;
-    IUKUIPanelPlugin * mPlugin;
 
 };
 
@@ -123,8 +118,8 @@ Q_OBJECT
 
 public:
     explicit CalendarActiveLabel(IUKUIPanelPlugin *plugin,QWidget * = NULL);
+    ~CalendarActiveLabel();
 
-    IUKUIPanelPlugin * mPlugin;
 Q_SIGNALS:
     void wheelScrolled(int);
     void leftMouseButtonClicked();
@@ -133,12 +128,20 @@ Q_SIGNALS:
 protected:
     void wheelEvent(QWheelEvent *);
     void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
     virtual void contextMenuEvent(QContextMenuEvent *event);
 
 private Q_SLOTS:
     void setControlTime();
     void setUpPanel();
 
+private:
+    IUKUIPanelPlugin * mPlugin;
+    frmLunarCalendarWidget *w;
+    enum LunarCalendarState {ST_HIDE,ST_SHOW};
+    LunarCalendarState state;
+    int16_t mWidht;
+    int16_t mHeight;
 
 };
 

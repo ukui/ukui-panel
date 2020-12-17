@@ -78,13 +78,11 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mbHasCreatedWebView(false),
     mViewWidht(WEBVIEW_WIDTH),
     mViewHeight(0),
-    mPopupContent(NULL),
-    mWebViewDiag(NULL)
+    mPopupContent(NULL)
 {
 
     mMainWidget = new QWidget();
     mContent = new CalendarActiveLabel(this);
-    mWebViewDiag = new UkuiWebviewDialog;
 
     QVBoxLayout *borderLayout = new QVBoxLayout(mMainWidget);
     borderLayout->setContentsMargins(0, 0, 0, 0);
@@ -107,7 +105,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
-    connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
+//    connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id)) {
     gsettings = new QGSettings(id);
@@ -174,10 +172,6 @@ IndicatorCalendar::~IndicatorCalendar()
     if(mMainWidget != NULL)
     {
         mMainWidget->deleteLater();
-    }
-    if(mWebViewDiag != NULL)
-    {
-        mWebViewDiag->deleteLater();
     }
     if(mContent != NULL)
     {
@@ -257,10 +251,8 @@ void IndicatorCalendar::updateTimeText()
 
     //    if (!isUpToDate || mbIsNeedUpdate)
     //    {
-    //const QSize old_size = mContent->sizeHint();
+    const QSize old_size = mContent->sizeHint();
     QString str;
-    const QByteArray _id("org.ukui.style");
-    QGSettings *fgsettings = new QGSettings(_id);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id))
     {
@@ -304,8 +296,7 @@ void IndicatorCalendar::updateTimeText()
                 "QLabel{"
                 "border-width:  0px;"                     //边框宽度像素
                 "border-radius: 6px;"                       //边框圆角半径像素
-   //           "font-size:     14px;"                      //字体，字体大小
-                "color:         rgba(255,255,255,100%);"    //字体颜色
+                "font-size:     14px;"                      //字体，字体大小
                 "padding:       0px;"                       //填衬
                 "text-align:center;"                        //文本居中
                 "}"
@@ -319,13 +310,6 @@ void IndicatorCalendar::updateTimeText()
                 "background-color:rgba(190,216,239,12%);"
                 "}"
                 );
-
-    QFont font;
-    //font.setStretch(QFont::Expanded);
-    int font_size = fgsettings->get("system-font-size").toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
-    font.setPixelSize(font_size);
-    mContent->setFont(font);
-
     updatePopupContent();
     mbIsNeedUpdate = false;
 }
@@ -619,62 +603,12 @@ void IndicatorCalendar::initializeCalendar()
             mViewHeight = WEBVIEW_MIN_HEIGHT;
         }
     }
-
-    if(mWebViewDiag != NULL )
-    {
-        if(!mbHasCreatedWebView)
-        {
-            qDebug()<<"showCalendar:"<<showCalendar;
-            mWebViewDiag->creatwebview(showCalendar,panel()->panelSize());
-            mbHasCreatedWebView = true;
-        }
-    }
-}
-
-void IndicatorCalendar::activated(ActivationReason reason)
-{
-    if(mWebViewDiag != NULL )
-    {
-        mViewHeight = WEBVIEW_MAX_HEIGHT;
-        if(gsettings->get("calendar").toString() == "solarlunar")
-            mViewHeight = WEBVIEW_MIN_HEIGHT;
-        if (QLocale::system().name() != "zh_CN")
-            mViewHeight = WEBVIEW_MIN_HEIGHT;
-        int iScreenHeight = QApplication::screens().at(0)->size().height() - panel()->panelSize();
-        if (iScreenHeight < WEBVIEW_MAX_HEIGHT) {
-            mViewHeight = iScreenHeight;
-            if (iScreenHeight >= WEBVIEW_MIN_HEIGHT)
-                mViewHeight = WEBVIEW_MIN_HEIGHT;;
-        }
-        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht,mViewHeight)));
-        mWebViewDiag->show();
-        setbackground();
-        if(!mbActived)
-        {
-            mWebViewDiag->setHidden(false);
-            mWebViewDiag->webview()->reload();
-            mbActived = true;
-        }
-        else
-        {
-            mWebViewDiag->setHidden(true);
-            mWebViewDiag->webview()->reload();
-            mbActived = false;
-        }
-    }
 }
 
 
 void IndicatorCalendar::deletePopup()
 {
     mPopupContent = NULL;
-}
-
-void IndicatorCalendar::hidewebview()
-{
-    mWebViewDiag->setHidden(true);
-    mbActived = false;
-    mWebViewDiag->webview()->reload();
 }
 
 QString IndicatorCalendar::formatDateTime(const QDateTime &datetime, const QString &timeZoneName)
@@ -823,144 +757,24 @@ void IndicatorCalendar::setTimeShowStyle()
     }
     else
     {
-        mContent->setFixedSize(size, CALENDAR_WIDTH - 20);
+        mContent->setFixedSize(size, CALENDAR_WIDTH);
     }
     mbIsNeedUpdate = true;
     timeout();
 }
 
-void IndicatorCalendar::setbackground()
-{
-    GSettings *settings = NULL;
-    QString str;
-    char *path;
-    char color_hex[10];
-    path = g_strdup_printf ("%s/","/org/mate/desktop/interface");
-    settings = g_settings_new_with_path ("org.mate.interface",path);
-    if(!strcmp(g_settings_get_string(settings, "gtk-theme"),"ukui-blue"))
-    {
-        strcpy(color_hex,"#326898");
-    }
-    else if (!strcmp(g_settings_get_string(settings, "gtk-theme"),"ukui-black"))
-    {
-        strcpy(color_hex,"#000000");
-    }
-    if (!strcmp (color_hex, "#000000")){
-        str=QString::asprintf("\
-                      document.getElementById('container').style.background='%s';\
-                      document.getElementById('header').style.background='%s';\
-                      document.getElementById('day').style.color='%s';\
-                      document.getElementById('left_pane').style.background='%s';\
-                      document.getElementById('right_pane').style.background='%s';\
-                      var css1 = 'td {position: relative;left: 0;top: 0;border: 1px solid transparent;border-top: 1px solid #262e34;padding: 2px 12px;text-align: center;}';var style1 = document.createElement('style');\
-                      if (style1.styleSheet) {\
-                          style1.styleSheet.cssText = css1;\
-                      } else {\
-                                          style1.appendChild(document.createTextNode(css1));\
-                                      }\
-                      document.getElementsByTagName('td')[0].appendChild(style1);\
-                      var css1 = 'td:active {background: #2b87a8;}';var style1 = document.createElement('style');\
-                      if (style1.styleSheet) {\
-                          style1.styleSheet.cssText = css1;\
-                      } else {\
-                                          style1.appendChild(document.createTextNode(css1));\
-                                      }\
-                      document.getElementsByTagName('td')[0].appendChild(style1);\
-                      var css1 = 'td:hover {border: 1px solid #3593b5}';var style1 = document.createElement('style');\
-                      if (style1.styleSheet) {\
-                          style1.styleSheet.cssText = css1;\
-                      } else {\
-                                          style1.appendChild(document.createTextNode(css1));\
-                                      }\
-                      document.getElementsByTagName('td')[0].appendChild(style1);\
-                      var day_highlight_len=document.getElementsByClassName('day_highlight').length;\
-                      for (var i=0; i<day_today_len; i++){\
-                          document.getElementsByClassName('day_highlight')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';\
-                          document.getElementsByClassName('day_highlight')[i].getElementsByClassName('lunar_part ')[0].style.color='#ffffff';\
-                          }\
-                      var day_today_len=document.getElementsByClassName('day_today').length;\
-                      for (var i=0; i<day_today_len; i++){\
-                          document.getElementsByClassName('day_today')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';\
-                          document.getElementsByClassName('day_today')[i].getElementsByClassName('lunar_part ')[0].style.color='#ffffff';\
-                          }\
-                      var day_this_month_len=document.getElementsByClassName('day_this_month').length;\
-                      for (var i=0; i<day_this_month_len; i++){\
-                          document.getElementsByClassName('day_this_month')[i].getElementsByClassName('solar_part')[0].style.color='#ffffff';\
-                          document.getElementsByClassName('day_this_month')[i].getElementsByClassName('lunar_part ')[0].style.color='#aaaaaa';\
-                          }\
-                      var day_other_month_len=document.getElementsByClassName('day_other_month').length;\
-                      for (var i=0; i<day_other_month_len; i++){\
-                          document.getElementsByClassName('day_other_month')[i].getElementsByClassName('solar_part')[0].style.color='#777777';\
-                          document.getElementsByClassName('day_other_month')[i].getElementsByClassName('lunar_part ')[0].style.color='#777777';\
-                          }\
-                      document.getElementsByClassName('effect_button')[0].style.backgroundColor='%s';\
-                      document.getElementsByClassName('effect_button')[1].style.background='%s';\
-                      document.getElementsByClassName('effect_button')[2].style.background='%s';\
-                      document.getElementsByClassName('effect_button')[3].style.backgroundColor='%s';\
-                      document.getElementsByClassName('effect_button')[4].style.background='%s';\
-                      document.getElementsByClassName('effect_button')[5].style.background='%s';\
-                      document.getElementById('general_datetime_list').style.padding='5px 6px 20px 5px';\
-                      document.getElementById('general_datetime_list').style.borderBottom ='1px solid #343d45';\
-                      var li_length=document.getElementById('general_datetime_list').getElementsByTagName('li').length;\
-                      for (var i=0;i<li_length; i++){\
-                          document.getElementById('general_datetime_list').getElementsByTagName('li')[i].style.color='#aaaaaa';\
-                      }\
-                      document.getElementById('general_datetime_list').getElementsByTagName('li')[1].style.color='#3593b5';\
-                      var td_length=document.getElementById('hl_table').getElementsByTagName('td').length;\
-                      for (var i=0;i<td_length; i++){\
-                          document.getElementById('hl_table').getElementsByTagName('td')[i].style.color='#aaaaaa';\
-                      }\
-                      document.getElementsByClassName('worktime1')[1].style.height='15px';\
-                      document.getElementsByClassName('worktime2')[1].style.width='15px';\
-                      document.getElementsByClassName('worktime2')[1].style.height='15px';\
-                      ",\
-                     "#151a1e",color_hex,color_hex,"#151a1e","#1f2428",color_hex,color_hex,color_hex,color_hex,color_hex,color_hex);
-    }
-    else{
-        str=QString::asprintf("\
-                                      document.getElementById('container').style.background='%s';\
-                                      document.getElementById('header').style.background='%s';\
-                                      document.getElementById('day').style.color='%s';\
-                                      document.getElementsByClassName('effect_button')[0].style.backgroundColor='%s';\
-                                      document.getElementsByClassName('effect_button')[1].style.background='%s';\
-                                      document.getElementsByClassName('effect_button')[2].style.background='%s';\
-                                      document.getElementsByClassName('effect_button')[3].style.backgroundColor='%s';\
-                                      document.getElementsByClassName('effect_button')[4].style.background='%s';\
-                                      document.getElementsByClassName('effect_button')[5].style.background='%s';\
-                                      var css = 'table td:hover{border: 1px solid %s;}';var style = document.createElement('style');\
-                                      if (style.styleSheet) {\
-                                          style.styleSheet.cssText = css;\
-                                      } else {\
-                                          style.appendChild(document.createTextNode(css));\
-                                      }\
-                                      document.getElementsByTagName('head')[0].appendChild(style);\
-                                      var css = '.day_today{border: 1px solid %s;}';var style = document.createElement('style');\
-                                      if (style.styleSheet) {\
-                                          style.styleSheet.cssText = css;\
-                                      } else {\
-                                          style.appendChild(document.createTextNode(css));\
-                                      }\
-                                      document.getElementsByTagName('head')[0].appendChild(style);\
-                                      var css = '.day_today:hover{border: 1px solid %s;}';var style = document.createElement('style');\
-                                      if (style.styleSheet) {\
-                                          style.styleSheet.cssText = css;\
-                                      } else {\
-                                          style.appendChild(document.createTextNode(css));\
-                                      }\
-                                      document.getElementsByTagName('head')[0].appendChild(style);\
-                                      ",\
-                                      "#FFF",color_hex,color_hex,color_hex,color_hex,color_hex,color_hex,color_hex,color_hex,color_hex,color_hex,color_hex);
-    }
-    mWebViewDiag->webview()->page()->mainFrame()->evaluateJavaScript(str);
-}
-
-
 CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QLabel(parent),
     mPlugin(plugin)
 {
+    w=new frmLunarCalendarWidget();
+    w->hide();
+    state=ST_HIDE;
 }
-
+CalendarActiveLabel::~CalendarActiveLabel()
+{
+    delete w;
+}
 void CalendarActiveLabel::wheelEvent(QWheelEvent *event)
 {
     Q_EMIT wheelScrolled(event->delta());
@@ -984,6 +798,18 @@ void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
     }
 
     QLabel::mouseReleaseEvent(event);
+}
+
+void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
+{
+    const Qt::MouseButton b = event->button();
+
+    if (Qt::LeftButton == b)
+    {
+        w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->size()));
+        w->show();
+    }
+    //QWidget::mousePressEvent(event);
 }
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
