@@ -71,6 +71,7 @@ public:
      */
     QList<QAction *> addtitionalActions() const { return m_addtitionalActions; }
     QHash<QString, QString> m_settingsMap;
+    QIcon getIconfromAction();
 
 
 public slots:

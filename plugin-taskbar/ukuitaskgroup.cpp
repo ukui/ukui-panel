@@ -305,6 +305,7 @@ void UKUITaskGroup::initActionsInRightButtonMenu(){
     {
         mAct = new QuickLaunchAction(fileName, this);
     }
+    setGroupIcon(mAct->getIconfromAction());
 }
 
 /************************************************

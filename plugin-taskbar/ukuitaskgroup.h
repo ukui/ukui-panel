@@ -71,7 +71,7 @@
 #define DEKSTOP_FILE_PATH "/usr/share/applications/"
 #define GET_DESKTOP_EXEC_NAME_MAIN "cat %s | awk '{if($1~\"Exec=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
 #define GET_DESKTOP_EXEC_NAME_BACK "cat %s | awk '{if($1~\"StartupWMClass=\")print $1}' | cut -d '=' -f 2"
-//#define GET_PROCESS_EXEC_NAME_BACK "ps -aux | awk '{if($2~\"%d\")print $11}'"
+#define GET_DESKTOP_ICON "cat %s | awk '{if($1~\"Icon=\")print $1}' | cut -d '=' -f 2"
 #define GET_PROCESS_EXEC_NAME_MAIN "ps -aux | sed 's/ \\+/ /g' |awk '{if($2~\"%d\")print}'| cut -d ' ' -f 11-"
 
 
@@ -203,6 +203,7 @@ private:
     void initDesktopFileName(WId window);
     void initActionsInRightButtonMenu();
     void badBackFunctionToFindDesktop();
+    void setBackIcon();
 
     ///////////////////////////////
     // quicklaunch button
