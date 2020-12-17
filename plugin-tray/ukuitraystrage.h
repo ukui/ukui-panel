@@ -61,6 +61,7 @@ protected:
     void paintEvent(QPaintEvent *event)override;
 private:
     Atom _NET_SYSTEM_TRAY_OPCODE;
+    QGSettings *transparency_gsettings;
 };
 
 class UKUiStorageWidget:public QWidget
@@ -68,8 +69,6 @@ class UKUiStorageWidget:public QWidget
 public:
     UKUiStorageWidget();
     ~UKUiStorageWidget();
-protected:
-    void paintEvent(QPaintEvent*);
 };
 
 #endif

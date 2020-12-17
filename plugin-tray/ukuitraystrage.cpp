@@ -41,6 +41,10 @@
 #include <QLabel>
 #include <QMouseEvent>
 storageBarStatus status;
+
+#define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
+#define TRANSPARENCY_KEY            "transparency"
+
 /*收纳栏*/
 UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
     QWidget(parent, Qt::Popup)
@@ -52,21 +56,31 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
     setMinimumHeight(0);
     setMinimumWidth(0);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    setProperty("useSystemStyleBlur", true);   //设置毛玻璃效果
     /*
      * @brief setWindowFlags
      *
-     * 冲突的窗口属性 这里本应使用Popup窗口属性，但是popup的属性与托盘有冲突
-     * 会使得点击事件无法生效
+     * 冲突的窗口属性
+     * 这里本应使用Popup窗口属性，但是popup的属性与托盘有冲突,会使得点击事件无法生效
+     * 使用QToolTip 会导致了无法进入事件过滤来检测活动窗口的变化
      *
-     * 备选方案是使用QToolTip 这导致了无法进入事件过滤来检测活动窗口的变化
-     *
-     * Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint
+     * 最终使用的属性组合为 Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint
      * 这三个参数分别代表 设置窗体一直置顶，并且不会抢焦点 | 工具窗口 |设置窗体无边框，不可拖动拖拽拉伸
      *
      * 但是在某些情况下会出现在任务啦上依然会显示窗口，因此加入新的属性 X11BypassWindowManagerHint
      */
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
+
+    const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
+    if(QGSettings::isSchemaInstalled(transparency_id)){
+        transparency_gsettings = new QGSettings(transparency_id);
+        }
+    connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==TRANSPARENCY_KEY){
+            this->update();
+        }
+    });
 
 }
 
@@ -142,13 +156,15 @@ void UKUIStorageFrame::paintEvent(QPaintEvent *event)
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
-    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x4d)));
     p.setPen(Qt::NoPen);
-    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    QPainterPath path;
+    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    QColor color = palette().color(QPalette::Base);
+    color.setAlpha(tran);
+    QBrush brush =QBrush(color);
+    p.setBrush(brush);
+
+    p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,6,6);
-    path.addRoundedRect(opt.rect,6,6);
-    setProperty("blurRegion",QRegion(path.toFillPolygon().toPolygon()));
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
@@ -159,14 +175,3 @@ UKUiStorageWidget::UKUiStorageWidget(){
 UKUiStorageWidget::~UKUiStorageWidget(){
 }
 
-void UKUiStorageWidget::paintEvent(QPaintEvent *)
-{
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x4d)));
-    p.setPen(Qt::NoPen);
-    p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,6,6);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}

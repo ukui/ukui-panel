@@ -630,7 +630,6 @@ void UKUIPanelLayout::setItemGeometry(QLayoutItem *item, const QRect &geometry, 
         animation->setStartValue(item->geometry());
         animation->setEndValue(geometry);
         animation->start(animation->DeleteWhenStopped);
-        animation->deleteLater();
     }
     else
     {

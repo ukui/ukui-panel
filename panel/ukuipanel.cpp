@@ -49,8 +49,6 @@
 #include <XdgIcon>
 #include <XdgDirs>
 #include <QPainter>
-#include <QMetaEnum>
-#include <QtDBus>
 
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
@@ -87,20 +85,24 @@
 #define ICON_SIZE_LARGE   64
 #define ICON_SIZE_MEDIUM  48
 #define ICON_SIZE_SMALL   32
-#define PANEL_SIZE_LARGE_V 70
-#define PANEL_SIZE_MEDIUM_V 62
-#define PANEL_SIZE_SMALL_V 47
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
-#define SCALE_SETTINGS      "org.ukui.SettingsDaemon.plugins.xsettings"
 #define PANEL_SIZE_KEY      "panelsize"
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
 #define SHOW_TASKVIEW       "showtaskview"
 #define SHOW_NIGHTMODE      "shownightmode"
 
-#define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
-#define TRANSPARENCY_KEY            "transparency"
+#define TRANSPARENCY_SETTINGS     "org.ukui.control-center.personalise"
+#define TRANSPARENCY_KEY          "transparency"
+
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK      "ukui-black"
+#define STYLE_NAME_KEY_LIGHT      "ukui-light"
+#define STYLE_NAME_KEY_WHITE      "ukui-white"
 
 /************************************************
  Returns the Position by the string.
@@ -222,19 +224,12 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mHideTimer.setInterval(PANEL_HIDE_DELAY);
     connect(&mHideTimer, SIGNAL(timeout()), this, SLOT(hidePanelWork()));
 
-    connectToServer();
     mShowDelayTimer.setSingleShot(true);
     mShowDelayTimer.setInterval(PANEL_SHOW_DELAY);
     connect(&mShowDelayTimer, &QTimer::timeout, [this] { showPanel(mAnimationTime > 0); });
 
-/*
-    QDBusConnection::sessionBus().connect(QString(),
-                                          QString("/backend"),
-                                          "org.kde.kscreen.Backend",
-                                          "configChanged",
-                                          this,
-                                          SLOT(getSize()));
-*/
+
+
     /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
      * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
      * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
@@ -253,53 +248,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(mStandaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
 
-    const QByteArray id(PANEL_SETTINGS);
-    gsettings = new QGSettings(id);
-
-    const QByteArray sid(SCALE_SETTINGS);
-    QGSettings sgsettings(sid);
-    scale = sgsettings.get("scaling-factor").toInt();
-    if (!scale) scale = 1;
-    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==ICON_SIZE_KEY){
-            setIconSize(gsettings->get(ICON_SIZE_KEY).toInt() * scale,true);
-        }
-        if(key==PANEL_SIZE_KEY){
-            setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt() * scale,true);
-        }
-        if(key == PANEL_POSITION_KEY){
-            switch(gsettings->get(PANEL_POSITION_KEY).toInt())
-            {
-            case 0:
-                setPosition(0,Position::PositionBottom,true);
-                break;
-            case 1:
-                setPosition(0,Position::PositionTop,true);
-                break;
-            case 2:
-                setPosition(0,Position::PositionLeft,true);
-                break;
-            case 3:
-                setPosition(0,Position::PositionRight,true);
-                break;
-            }
-        }
-    });
-
-//    int height = QApplication::screens().at(0)->size().height();
-//    int width = QApplication::screens().at(0)->size().width();
-    MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE;//0.0851852 * height;
-    MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM;//0.0648148 * height;
-    SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL;//0.0425926 * height;
-    if (!isHorizontal()) {
-        MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE_V;//*= ((float)height / (float)width) * 1.25;
-        MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM_V;//*= ((float)height / (float)width) * 1.5;
-        SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL_V;//*= ((float)height / (float)width) * 1.75;
-    }
-    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;//ICON_SIZE_LARGE;
-    MID_ICON_SIZE_IN_CLAC =  0.695652174 * MID_SIZE_PANEL_IN_CALC;//ICON_SIZE_MEDIUM;
-    SML_ICON_SIZE_IN_CLAC =  0.695652174 * SML_SIZE_PANEL_IN_CALC;//ICON_SIZE_SMALL;
-
     readSettings();
 
     ensureVisible();
@@ -316,7 +264,11 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
     connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
 
+    const QByteArray id(PANEL_SETTINGS);
+    gsettings = new QGSettings(id);
 
+
+    updateStyleSheet();
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
@@ -330,46 +282,22 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
+    const QByteArray style_id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(style_id)){
+        style_gsettings = new QGSettings(style_id);
+        if(stylelist.contains(style_gsettings->get(STYLE_NAME).toString()))
+            HighLightEffect::getBackGroundColor(this->palette().background().color().red(),this->palette().background().color().green(),this->palette().background().color().blue());
+        }
+    connect(style_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            HighLightEffect::getBackGroundColor(this->palette().background().color().red(),this->palette().background().color().green(),this->palette().background().color().blue());
+        }
+    });
 
-    gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
-    gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
-}
-
-void UKUIPanel::getSize() {
-    int flg = 0;
-    int size = gsettings->get(PANEL_SIZE_KEY).toInt();
-    if (size == MAX_SIZE_PANEL_IN_CALC) {
-        flg = 2;
-    } else if (size == MID_SIZE_PANEL_IN_CALC) {
-        flg = 1;
-    }
-    //int height = QApplication::screens().at(0)->size().height();
-    //int width = QApplication::screens().at(0)->size().width();
-    MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE;//0.0851852 * height;
-    MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM;//0.0648148 * height;
-    SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL;//0.0425926 * height;
-    if (!isHorizontal()) {
-        MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE_V;//*= ((float)height / (float)width) * 1.25;
-        MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM_V;//*= ((float)height / (float)width) * 1.5;
-        SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL_V;//*= ((float)height / (float)width) * 1.75;
-    }
-    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;//ICON_SIZE_LARGE;
-    MID_ICON_SIZE_IN_CLAC =  0.695652174 * MID_SIZE_PANEL_IN_CALC;//ICON_SIZE_MEDIUM;
-    SML_ICON_SIZE_IN_CLAC =  0.695652174 * SML_SIZE_PANEL_IN_CALC;//ICON_SIZE_SMALL;
-    switch (flg) {
-    case 0:
-        gsettings->set(PANEL_SIZE_KEY, SML_SIZE_PANEL_IN_CALC);
-        gsettings->set(ICON_SIZE_KEY, SML_ICON_SIZE_IN_CLAC);
-        break;
-    case 1:
-        gsettings->set(PANEL_SIZE_KEY, MID_SIZE_PANEL_IN_CALC);
-        gsettings->set(ICON_SIZE_KEY, MID_ICON_SIZE_IN_CLAC);
-        break;
-    case 2:
-        gsettings->set(PANEL_SIZE_KEY, MAX_SIZE_PANEL_IN_CALC);
-        gsettings->set(ICON_SIZE_KEY, MAX_ICON_SIZE_IN_CLAC);
-        break;
-    }
+    setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
+    setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
 }
 
 /************************************************
@@ -403,7 +331,6 @@ void UKUIPanel::readSettings()
     mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL, false).toBool();
 
     mSettings->endGroup();
-
 }
 
 
@@ -444,6 +371,8 @@ void UKUIPanel::saveSettings(bool later)
     mSettings->setValue(CFG_KEY_LOCKPANEL, mLockPanel);
 
     mSettings->endGroup();
+
+    mOpacity = transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
 }
 
 
@@ -457,7 +386,6 @@ void UKUIPanel::ensureVisible()
 
     // the screen size might be changed
     realign();
-    getSize();
 }
 
 
@@ -504,7 +432,7 @@ void UKUIPanel::loadPlugins()
     for (auto const & plugin : plugins)
     {
         mLayout->addPlugin(plugin);
-        connect(plugin, &Plugin::dragLeft, [this] { mShowDelayTimer.stop(); hidePanel();});
+        connect(plugin, &Plugin::dragLeft, [this] { mShowDelayTimer.stop(); hidePanel(); });
     }
 }
 
@@ -687,6 +615,7 @@ void UKUIPanel::setMargins()
 */
 void UKUIPanel::realign()
 {
+    updateStyleSheet();
     emit realigned();
     if (!isVisible())
         return;
@@ -897,9 +826,16 @@ void UKUIPanel::setUpPanel()
 /*右键　系统监视器选项*/
 void UKUIPanel::systeMonitor()
 {
-    QProcess *process =new QProcess(this);
-    process->startDetached("/usr/bin/ukui-system-monitor");
-    process->deleteLater();
+    if(QFileInfo::exists(QString("/usr/bin/mate-system-monitor")) || QFileInfo::exists(QString("/usr/bin/ukui-system-monitor")))
+    {
+        QProcess *process =new QProcess(this);
+        if(QFileInfo::exists(QString("/usr/bin/ukui-system-monitor")))
+            process->startDetached("/usr/bin/ukui-system-monitor");
+        else
+            process->startDetached("/usr/bin/mate-system-monitor");
+    }
+    else
+        qDebug()<<"not find /usr/bin/mate-system-monitor or /usr/bin/ukui-system-monitor";
 }
 
 /*任务栏大小和方向的调整*/
@@ -929,21 +865,21 @@ void UKUIPanel::adjustPanel()
     pmenuaction_s->setCheckable(true);
     pmenuaction_m->setCheckable(true);
     pmenuaction_l->setCheckable(true);
-    pmenuaction_s->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==SML_SIZE_PANEL_IN_CALC);
-    pmenuaction_m->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==MID_SIZE_PANEL_IN_CALC);
-    pmenuaction_l->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==MAX_SIZE_PANEL_IN_CALC);
+    pmenuaction_s->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_SMALL);
+    pmenuaction_m->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_MEDIUM);
+    pmenuaction_l->setChecked(gsettings->get(PANEL_SIZE_KEY).toInt()==PANEL_SIZE_LARGE);
 
     connect(pmenuaction_s,&QAction::triggered,[this] {
-        gsettings->set(PANEL_SIZE_KEY,SML_SIZE_PANEL_IN_CALC);
-        gsettings->set(ICON_SIZE_KEY,SML_ICON_SIZE_IN_CLAC);
+        setPanelSize(PANEL_SIZE_SMALL,true);
+        setIconSize(ICON_SIZE_SMALL,true);
     });
     connect(pmenuaction_m,&QAction::triggered,[this] {
-        gsettings->set(PANEL_SIZE_KEY,MID_SIZE_PANEL_IN_CALC);
-        gsettings->set(ICON_SIZE_KEY,MID_ICON_SIZE_IN_CLAC);
+        setPanelSize(PANEL_SIZE_MEDIUM,true);
+        setIconSize(ICON_SIZE_MEDIUM,true);
     });
     connect(pmenuaction_l,&QAction::triggered,[this] {
-        gsettings->set(PANEL_SIZE_KEY,MAX_SIZE_PANEL_IN_CALC);
-        gsettings->set(ICON_SIZE_KEY,MAX_ICON_SIZE_IN_CLAC);
+        setPanelSize(PANEL_SIZE_LARGE,true);
+        setIconSize(ICON_SIZE_LARGE,true);
     });
     pmenu_panelsize->setDisabled(mLockPanel);
 
@@ -978,28 +914,28 @@ void UKUIPanel::adjustPanel()
     pmenuaction_right->setChecked(gsettings->get(PANEL_POSITION_KEY).toInt()==3);
 
 
-    connect(pmenuaction_top,&QAction::triggered, [this] { setPosition(0,PositionTop,true);});
-    connect(pmenuaction_bottom,&QAction::triggered, [this] { setPosition(0,PositionBottom,true);});
-    connect(pmenuaction_left,&QAction::triggered, [this] { setPosition(0,PositionLeft,true);});
-    connect(pmenuaction_right,&QAction::triggered, [this] { setPosition(0,PositionRight,true);});
+    connect(pmenuaction_top,&QAction::triggered, [this] { setPanelPosition(PositionTop);});
+    connect(pmenuaction_bottom,&QAction::triggered, [this] { setPanelPosition(PositionBottom);});
+    connect(pmenuaction_left,&QAction::triggered, [this] { setPanelPosition(PositionLeft);});
+    connect(pmenuaction_right,&QAction::triggered, [this] { setPanelPosition(PositionRight);});
     pmenu_positon->setWindowOpacity(0.9);
     pmenu_positon->setDisabled(mLockPanel);
 
-
-//    mSettings->beginGroup(mConfigGroup);
-//    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
-//    hidepanel->setDisabled(mLockPanel);
-//    hidepanel->setCheckable(true);
-//    hidepanel->setChecked(mHidable);
-//    connect(hidepanel, &QAction::triggered, [this] {
-//        mSettings->beginGroup(mConfigGroup);
-//        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
-//        mSettings->endGroup();
-//        if(mHidable)
-//            mHideTimer.stop();
-//        setHidable(!mHidable,true);
-//    });
-//    mSettings->endGroup();
+    mSettings->beginGroup(mConfigGroup);
+    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
+    hidepanel->setDisabled(mLockPanel);
+    hidepanel->setCheckable(true);
+    hidepanel->setChecked(mHidable);
+    connect(hidepanel, &QAction::triggered, [this] {
+        mSettings->beginGroup(mConfigGroup);
+        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+        mSettings->endGroup();
+        if(mHidable)
+            mHideTimer.stop();
+        setHidable(!mHidable,true);
+        mHidden=mHidable;
+    });
+    mSettings->endGroup();
 }
 /*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
@@ -1034,10 +970,21 @@ void UKUIPanel::showNightModeButton()
             gsettings->set(SHOW_NIGHTMODE,true);
     }
 }
+void UKUIPanel::updateStyleSheet()
+{
+//    QStringList sheet;
+//    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,0.9); }");
+//    setStyleSheet(sheet.join("\n"));
+}
 
-/*设置任务栏高度*/
+
+
+/************************************************
+
+ ************************************************/
 void UKUIPanel::setPanelSize(int value, bool save)
 {
+    gsettings->set(PANEL_SIZE_KEY,value);
     if (mPanelSize != value)
     {
         mPanelSize = value;
@@ -1048,12 +995,19 @@ void UKUIPanel::setPanelSize(int value, bool save)
     }
 }
 
-/*设置任务栏图标大小*/
+
+
+/************************************************
+
+ ************************************************/
+
 void UKUIPanel::setIconSize(int value, bool save)
 {
+    gsettings->set(ICON_SIZE_KEY,value);
     if (mIconSize != value)
     {
         mIconSize = value;
+        updateStyleSheet();
         mLayout->setLineSize(mIconSize);
 
         if (save)
@@ -1141,12 +1095,6 @@ void UKUIPanel::setPosition(int screen, IUKUIPanel::Position position, bool save
     }
 
     realign();
-
-    //dbus 发任务栏位置的信号，开始菜单等监听
-    QDBusMessage message=QDBusMessage::createSignal("/panel/settings", "com.ukui.panel.settings", "SendPanelSetings");
-    gsettings->set(PANEL_POSITION_KEY,position);
-    message<<position;
-    QDBusConnection::sessionBus().send(message);
 }
 
 /************************************************
@@ -1171,6 +1119,7 @@ void UKUIPanel::setAlignment(Alignment value, bool save)
 void UKUIPanel::setFontColor(QColor color, bool save)
 {
     mFontColor = color;
+    updateStyleSheet();
 
     if (save)
         saveSettings(true);
@@ -1182,11 +1131,42 @@ void UKUIPanel::setFontColor(QColor color, bool save)
 void UKUIPanel::setBackgroundColor(QColor color, bool save)
 {
     mBackgroundColor = color;
+    updateStyleSheet();
 
     if (save)
         saveSettings(true);
 }
 
+/*设置任务栏的背景色，可通过gsetting修改*/
+void UKUIPanel::setPanelBackground(bool effective)
+{
+    if(effective)
+    {
+        QStringList sheet;
+        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,22,%1); }").arg(transparency_gsettings->get(TRANSPARENCY_KEY).toDouble());
+        setStyleSheet(sheet.join("\n"));
+    }
+    else
+        updateStyleSheet();
+}
+
+
+/************************************************
+ *
+ ************************************************/
+void UKUIPanel::setOpacity(int opacity, bool save)
+{
+    mOpacity = opacity;
+    updateStyleSheet();
+
+    if (save)
+        saveSettings(true);
+}
+
+
+/************************************************
+ *
+ ************************************************/
 void UKUIPanel::setReserveSpace(bool reserveSpace, bool save)
 {
     if (mReserveSpace == reserveSpace)
@@ -1288,113 +1268,15 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    double tran;
-    if(transparency_gsettings->keys().contains(TRANSPARENCY_KEY))
-        tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-    else
-        tran=0.75;
-    p.setBrush(QBrush(QColor(19,22,28,tran)));
+    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    QColor color = palette().color(QPalette::Base);
+    color.setAlpha(tran);\
+    QBrush brush =QBrush(color);
+    p.setBrush(brush);
 
     p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,0,0);
+    p.drawRoundedRect(opt.rect,12,12);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
-/// 以下所有函数均为任务栏拖拽相关（位置、大小）
-void UKUIPanel::setPanelPosition(Position position)
-{
-    QDBusMessage message=QDBusMessage::createSignal("/panel/settings", "com.ukui.panel.settings", "SendPanelSetings");
-    if(position==PositionTop)
-    {
-        setPosition(0,PositionTop,true);
-        gsettings->set(PANEL_POSITION_KEY,1);
-        message<<1;
-        QDBusConnection::sessionBus().send(message);
-    }
-    else if(position==PositionLeft)
-    {
-        setPosition(0,PositionLeft,true);
-        gsettings->set(PANEL_POSITION_KEY,2);
-        message<<2;
-        QDBusConnection::sessionBus().send(message);
-    }
-    else if(position==PositionRight)
-    {
-        this->setPosition(0,PositionRight,true);
-        gsettings->set(PANEL_POSITION_KEY,3);
-        message<<3;
-        QDBusConnection::sessionBus().send(message);
-    }
-    else
-    {
-        setPosition(0,PositionBottom,true);
-        gsettings->set(PANEL_POSITION_KEY,0);
-        message<<0;
-        QDBusConnection::sessionBus().send(message);
-    }
-}
-
-
-IUKUIPanel::Position UKUIPanel::areaDivid(QPoint globalpos) {
-    int x = globalpos.rx();
-    int y = globalpos.ry();
-    float W = QApplication::screens().at(0)->size().width();
-    float H = QApplication::screens().at(0)->size().height();
-    float slope = H / W;
-    if ((x < 100 || x > W - 100) && (y > H - 100 || y < 100)) return mPosition;
-    if (y > (int)(x * slope) && y > (int)(H - x * slope)) return PositionBottom;
-    if (y > (int)(x * slope) && y < (int)(H - x * slope)) return PositionLeft;
-    if (y < (int)(x * slope) && y < (int)(H - x * slope)) return PositionTop;
-    if (y < (int)(x * slope) && y > (int)(H - x * slope)) return PositionRight;
-}
-
-
-void UKUIPanel::mousePressEvent(QMouseEvent *event) {
-    setCursor(Qt::DragMoveCursor);
-}
-
-void UKUIPanel::enterEvent(QEvent *event) {
-       // setCursor(Qt::SizeVerCursor);
-}
-
-void UKUIPanel::leaveEvent(QEvent *event) {
-    setCursor(Qt::ArrowCursor);
-}
-
-void UKUIPanel::mouseMoveEvent(QMouseEvent* event)
-{
-    if (mLockPanel) return;
-    if (movelock == -1) {
-        if (event->pos().ry() < 10) movelock = 0;
-        else movelock = 1;
-    }
-    if (!movelock) {
-        int panel_h = QApplication::screens().at(0)->size().height() - event->globalPos().ry();
-        int icon_size = panel_h*0.695652174;
-        setCursor(Qt::SizeVerCursor);
-        if (panel_h <= PANEL_SIZE_LARGE && panel_h >= PANEL_SIZE_SMALL) {
-            setPanelSize(panel_h, true);
-            setIconSize(icon_size, true);
-            gsettings->set(PANEL_SIZE_KEY, panel_h);
-            gsettings->set(ICON_SIZE_KEY, icon_size);
-        }
-        return;
-    }
-    setCursor(Qt::SizeAllCursor);
-    IUKUIPanel::Position currentpos = areaDivid(event->globalPos());
-    if (oldpos != currentpos)
-    {
-        setPanelPosition(currentpos);
-        oldpos = currentpos;
-    }
-}
-
-void UKUIPanel::mouseReleaseEvent(QMouseEvent* event)
-{
-    setCursor(Qt::ArrowCursor);
-    realign();
-    emit realigned();
-    movelock = -1;
 }
 
 /*Right-Clicked Menu of ukui-panel
@@ -1402,7 +1284,7 @@ void UKUIPanel::mouseReleaseEvent(QMouseEvent* event)
 */
 void UKUIPanel::showPopupMenu(Plugin *plugin)
 {
-    menu = new QMenu(this);
+    menu = new PopupMenu(tr("Panel"), this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     /* @new features
@@ -1429,8 +1311,8 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         }
     }
 
-/*
-//    menu->addTitle(QIcon(), tr("Panel"));
+    /*
+    menu->addTitle(QIcon(), tr("Panel"));
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                    tr("Configure Panel"),
                    this, SLOT(showConfigDialog())
@@ -1439,9 +1321,9 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                    tr("Manage Widgets"),
                    this, SLOT(showAddPluginDialog())
                   )->setDisabled(mLockPanel);
-*/
+    */
 
-    menu->addAction(QIcon::fromTheme("document-page-setup"),
+    menu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
                     tr("Set up Panel"),
                     this, SLOT(setUpPanel())
                     );
@@ -1453,8 +1335,9 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
-#if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
+#if 0
     QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
+    shownightmode->setDisabled(mLockPanel);
     shownightmode->setCheckable(true);
     shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
     connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
@@ -1467,12 +1350,10 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
 
     menu->addSeparator();
 
-    if(QFileInfo::exists(QString("/usr/bin/ukui-system-monitor"))){
-        menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                        tr("Show System Monitor"),
-                        this, SLOT(systeMonitor())
-                        );
-    }
+    menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
+                    tr("Show System Monitor"),
+                    this, SLOT(systeMonitor())
+                    );
 
     menu->addSeparator();
 
@@ -1494,10 +1375,10 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                       )->setDisabled(mLockPanel);
     }
 */
-    m_lockAction = menu->addAction(tr("Lock This Panel"));
-    m_lockAction->setCheckable(true);
-    m_lockAction->setChecked(mLockPanel);
-    connect(m_lockAction, &QAction::triggered, [this] { mLockPanel = !mLockPanel; saveSettings(false); });
+    QAction * act_lock = menu->addAction(tr("Lock This Panel"));
+    act_lock->setCheckable(true);
+    act_lock->setChecked(mLockPanel);
+    connect(act_lock, &QAction::triggered, [this] { mLockPanel = !mLockPanel; saveSettings(false); });
 
     //Hidden features, lock the panel
     /*
@@ -1803,36 +1684,126 @@ bool UKUIPanel::isPluginSingletonAndRunnig(QString const & pluginId) const
         return plugin->iPlugin()->flags().testFlag(IUKUIPanelPlugin::SingleInstance);
 }
 
+void UKUIPanel::setPanelPosition(Position position)
+{
+    QDBusMessage message=QDBusMessage::createSignal("/panel/settings", "com.ukui.panel.settings", "SendPanelSetings");
+    if(position==PositionTop)
+    {
+        setPosition(0,PositionTop,true);
+        gsettings->set(PANEL_POSITION_KEY,1);
+        message<<1;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else if(position==PositionLeft)
+    {
+        setPosition(0,PositionLeft,true);
+        gsettings->set(PANEL_POSITION_KEY,2);
+        message<<2;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else if(position==PositionRight)
+    {
+        this->setPosition(0,PositionRight,true);
+        gsettings->set(PANEL_POSITION_KEY,3);
+        message<<3;
+        QDBusConnection::sessionBus().send(message);
+    }
+    else
+    {
+        setPosition(0,PositionBottom,true);
+        gsettings->set(PANEL_POSITION_KEY,0);
+        message<<0;
+        QDBusConnection::sessionBus().send(message);
+    }
+}
+
+/*ukui-panel use gsettings to set panelsize & iconsize
+ * it need to emit signals to other application
+ * and for users to adjust through the command lines
+*/
+void UKUIPanel::setPanelsize(int panelsize)
+{
+    setPanelSize(panelsize,true);
+    gsettings->set(PANEL_SIZE_KEY,panelsize);
+}
+
+void UKUIPanel::setIconsize(int iconsize)
+{
+    setIconSize(iconsize,true);
+    gsettings->set(ICON_SIZE_KEY,iconsize);
+}
+
 void UKUIPanel::panelReset()
 {
     QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     QFile::copy("/usr/share/ukui/panel.conf",QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
 }
 
-void UKUIPanel::connectToServer(){
-    m_cloudInterface = new QDBusInterface("org.kylinssoclient.dbus",
-                                          "/org/kylinssoclient/path",
-                                          "org.freedesktop.kylinssoclient.interface",
-                                          QDBusConnection::sessionBus());
-    if (!m_cloudInterface->isValid())
-    {
-        qDebug() << "fail to connect to service";
-        qDebug() << qPrintable(QDBusConnection::systemBus().lastError().message());
-        return;
-    }
-//    QDBusConnection::sessionBus().connect(cloudInterface, SIGNAL(shortcutChanged()), this, SLOT(shortcutChangedSlot()));
-    QDBusConnection::sessionBus().connect(QString(), QString("/org/kylinssoclient/path"), QString("org.freedesktop.kylinssoclient.interface"), "keyChanged", this, SLOT(keyChangedSlot(QString)));
-    // 将以后所有DBus调用的超时设置为 milliseconds
-    m_cloudInterface->setTimeout(2147483647); // -1 为默认的25s超时
+/////////////////////////////////////////////////////////////////////////////////
+/// \brief UKUIPanel::areaDivid
+/// \param globalpos
+/// \return
+/// 以下所有函数均为任务栏拖拽相关（位置、大小）
+/////////////////////////////////////////////////////////////////////////////////
+
+IUKUIPanel::Position UKUIPanel::areaDivid(QPoint globalpos) {
+    int x = globalpos.rx();
+    int y = globalpos.ry();
+    float W = QApplication::screens().at(0)->size().width();
+    float H = QApplication::screens().at(0)->size().height();
+    float slope = H / W;
+    if ((x < 100 || x > W - 100) && (y > H - 100 || y < 100)) return mPosition;
+    if (y > (int)(x * slope) && y > (int)(H - x * slope)) return PositionBottom;
+    if (y > (int)(x * slope) && y < (int)(H - x * slope)) return PositionLeft;
+    if (y < (int)(x * slope) && y < (int)(H - x * slope)) return PositionTop;
+    if (y < (int)(x * slope) && y > (int)(H - x * slope)) return PositionRight;
 }
 
-void UKUIPanel::keyChangedSlot(const QString &key) {
-    if(key == "ukui-panel") {
-        mSettings->beginGroup(mConfigGroup);
-        mSettings->sync();
-        mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL).toBool();
-        mSettings->endGroup();
-        if(m_lockAction)
-            m_lockAction->setChecked(mLockPanel);
+
+void UKUIPanel::mousePressEvent(QMouseEvent *event) {
+    setCursor(Qt::DragMoveCursor);
+}
+
+void UKUIPanel::enterEvent(QEvent *event) {
+       // setCursor(Qt::SizeVerCursor);
+}
+
+void UKUIPanel::leaveEvent(QEvent *event) {
+    setCursor(Qt::ArrowCursor);
+}
+
+void UKUIPanel::mouseMoveEvent(QMouseEvent* event)
+{
+    if (mLockPanel) return;
+    if (movelock == -1) {
+        if (event->pos().ry() < 10) movelock = 0;
+        else movelock = 1;
     }
+    if (!movelock) {
+        int panel_h = QApplication::screens().at(0)->size().height() - event->globalPos().ry();
+        int icon_size = panel_h*0.695652174;
+        setCursor(Qt::SizeVerCursor);
+        if (panel_h <= PANEL_SIZE_LARGE && panel_h >= PANEL_SIZE_SMALL) {
+            setPanelSize(panel_h, true);
+            setIconSize(icon_size, true);
+            gsettings->set(PANEL_SIZE_KEY, panel_h);
+            gsettings->set(ICON_SIZE_KEY, icon_size);
+        }
+        return;
+    }
+    setCursor(Qt::SizeAllCursor);
+    IUKUIPanel::Position currentpos = areaDivid(event->globalPos());
+    if (oldpos != currentpos)
+    {
+        setPanelPosition(currentpos);
+        oldpos = currentpos;
+    }
+}
+
+void UKUIPanel::mouseReleaseEvent(QMouseEvent* event)
+{
+    setCursor(Qt::ArrowCursor);
+    realign();
+    emit realigned();
+    movelock = -1;
 }

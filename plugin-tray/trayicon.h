@@ -32,6 +32,7 @@
 #include <QFrame>
 #include <QList>
 #include <QStyleOption>
+#include <QGSettings>
 
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
@@ -91,8 +92,6 @@ private:
     void init();
     QRect iconGeometry();
     void  trayButtonPress(QMouseEvent *);
-    bool needReDraw();
-
     Window mIconId;
     Window mWindowId;
     QSize mIconSize;
@@ -100,10 +99,15 @@ private:
     Display* mDisplay;
 
     static bool isXCompositeAvailable();
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QSize mRectSize;
+    QGSettings *gsettings;
+    int tray_icon_color;
+    bool dark_style;
 
     enum TrayAppStatus{NORMAL, HOVER, PRESS};
     TrayAppStatus traystatus;
+
 };
 
 #endif // TRAYICON_H

@@ -53,6 +53,7 @@ public:
 
     int screenNum() const { return mScreenNum; }
     IUKUIPanel::Position position() const { return mPosition; }
+    void updateIconThemeSettings();
     IUKUIPanel::Position mPosition;
     void editChangedByManual();
 
@@ -76,6 +77,9 @@ private slots:
     void editChanged();
     void widthTypeChanged();
     void positionChanged();
+    void pickFontColor();
+    void pickBackgroundColor();
+    void pickBackgroundImage();
 
 private:
     Ui::ConfigPanelWidget *ui;
