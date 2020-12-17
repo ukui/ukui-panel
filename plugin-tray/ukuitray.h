@@ -1,10 +1,6 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  * (c)LGPL2+
  *
- * Copyright: 2019 Kylin team
- * Authors:
- *   hepuyao <hepuyao@kylinos.cn>
- *
  * Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
  *
  * This program or library is free software; you can redistribute it
@@ -56,15 +52,6 @@ class GridLayout;
  * @brief This makes our trayplugin
  */
 class UKUITrayPlugin;
-
-class TrayButton : public QToolButton {
-public :
-    TrayButton(QWidget* parent );
-    ~TrayButton();
-protected :
-    void enterEvent(QEvent *);
-    void leaveEvent(QEvent *);
-};
 
 class UKUITray: public QFrame, QAbstractNativeEventFilter
 {
@@ -145,7 +132,7 @@ private:
     Display* mDisplay;
     UKUIStorageFrame *storageFrame;
     UKUiStorageWidget *m_pwidget;
-    TrayButton *mBtn;
+    QToolButton *mBtn;
     IUKUIPanel::Position mCurPosition;
     QMap<IUKUIPanel::Position, QIcon> mMapIcon;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
