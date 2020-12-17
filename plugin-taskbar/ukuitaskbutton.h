@@ -136,6 +136,7 @@ public slots:
 
     void selfRemove();
     void this_customContextMenuRequested(const QPoint & pos);
+    void setGroupIcon(QIcon ico);
 
 
 protected:

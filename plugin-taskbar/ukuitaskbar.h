@@ -118,6 +118,7 @@ public:
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
     void pubAddButton(QuickLaunchAction* action) { addButton(action); }
     void pubSaveSettings() { saveSettings(); }
+    QString isComputerOrTrash(QString urlName);
     bool pubCheckIfExist(QString name);
 
 
@@ -131,6 +132,7 @@ public:
     void saveSettings();
     void showPlaceHolder();
     void refreshQuickLaunch();
+    bool isDesktopFile(QString urlName);
     friend class FilectrlAdaptor;
 
 
@@ -194,8 +196,6 @@ private:
     void _AddToTaskbar(QString arg);
     void doInitGroupButton(QString sname);
     void initRelationship();
-    bool isDesktopFile(QString urlName);
-
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
     TaskStatus taskstatus;
