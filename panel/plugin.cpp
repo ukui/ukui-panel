@@ -275,6 +275,9 @@ namespace
 #if defined(WITH_TRAY_PLUGIN)
         std::make_tuple(QLatin1String("tray"), plugin_ptr_t{new UKUITrayPluginLibrary}, loadPluginTranslation_tray_helper),// tray
 #endif
+    #if defined(WITH_QUICKLAUNCH_PLUGIN)
+            std::make_tuple(QLatin1String("statusnotifier"), plugin_ptr_t{new StatusNotifierLibrary}, loadPluginTranslation_statusnotifier_helper),// quicklaunch
+    #endif
 #if defined(WITH_WORLDCLOCK_PLUGIN)
         std::make_tuple(QLatin1String("worldclock"), plugin_ptr_t{new UKUiWorldClockLibrary}, loadPluginTranslation_worldclock_helper),// worldclock
 #endif

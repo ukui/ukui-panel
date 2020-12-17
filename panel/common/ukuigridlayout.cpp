@@ -642,7 +642,7 @@ void GridLayout::setGeometry(const QRect &geometry)
         int height = itemHeight + (0 < remain_height-- ? 1 : 0);
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
         for(int i=0;i<d->mItems.size();i++){
-        QLayoutItem *item=d->mItems[i];
+		QLayoutItem *item=d->mItems[i];
 #endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
         for (QLayoutItem *item : qAsConst(d->mItems)){

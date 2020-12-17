@@ -31,11 +31,6 @@
             <summary>show Quicklaunch Lines</summary>
             <description>show Quicklaunch Lines</description>
         </key>
-		<key name="quicklaunchappsnumber" type="i">
-            <default>5</default>
-            <summary>show Apps Number</summary>
-            <description>the size of apps number in quicklaunch</description>
-        </key>
         <key name="taskbarlines" type="i">
             <default>1</default>
             <summary>show Taskbar Lines</summary>

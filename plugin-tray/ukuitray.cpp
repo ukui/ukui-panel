@@ -57,6 +57,7 @@
 #undef Bool // defined as int in X11/Xlib.h
 
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/highlight-effect.h"
 
 #include <QPushButton>
 #include <QToolButton>
@@ -99,7 +100,7 @@ extern "C" {
 #define PANEL_LINES    "panellines"
 #define TRAY_LINE      "traylines"
 #define PANEL_SIZE     "panelsize"
-#define ICON_SIZE      "iconsize"
+#define PANEL_POSITION     "panelposition"
 /************************************************
 
  ************************************************/
@@ -139,7 +140,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
         settings=new QGSettings(id);
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==ICON_SIZE)
+        if(key == PANEL_SIZE ||key == PANEL_POSITION)
             trayIconSizeRefresh();
     });
 
@@ -148,7 +149,12 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
-    mBtn =new TrayButton(this);
+    mBtn =new QToolButton;
+    mBtn->setStyle(new CustomStyle());
+    mBtn->setIcon(QIcon::fromTheme("pan-up-symbolic"));
+    mBtn->setProperty("useIconHighlightEffect", true);
+    mBtn->setProperty("iconHighlightEffectMode", true);
+    mBtn->setVisible(false);
     layout()->addWidget(mBtn);
     if(mPlugin)
     {
@@ -231,11 +237,13 @@ void UKUITray::storageBar()
  */
 void UKUITray::showAndHideStorage(bool storageStatus)
 {
-    if(storageStatus){
+    if(storageStatus)
+    {
         storageFrame->hide();
-    }else{
+    }
+    else
+    {
         storageFrame->show();
-        handleStorageUi();
     }
 }
 
@@ -393,15 +401,13 @@ void UKUITray::trayIconSizeRefresh()
         }
     }
 }
-
 /*creat iconMap of four  direction*/
 void UKUITray::createIconMap()
 {
-    mMapIcon[IUKUIPanel::PositionBottom] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-up-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionLeft] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-end-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionTop] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-down-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionRight] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-start-symbolic").pixmap(24,24).toImage())));
-
+    mMapIcon[IUKUIPanel::PositionBottom] = QIcon::fromTheme("pan-up-symbolic");
+    mMapIcon[IUKUIPanel::PositionLeft]   = QIcon::fromTheme("pan-end-symbolic");
+    mMapIcon[IUKUIPanel::PositionTop]    = QIcon::fromTheme("pan-down-symbolic");
+    mMapIcon[IUKUIPanel::PositionRight]  = QIcon::fromTheme("pan-start-symbolic");
 }
 
 /*这里的changeIcon是改变收纳箭头的图标*/
@@ -985,7 +991,8 @@ QList<char *> UKUITray::listExistsPath(){
 
     for (int i = 0; childs[i] != NULL; i++){
         if (dconf_is_rel_dir (childs[i], NULL)){
-            gchar *val = g_strdup (childs[i]);
+            char * val = g_strdup (childs[i]);
+
             vals.append(val);
         }
     }
@@ -1020,8 +1027,6 @@ void UKUITray::regulateIcon(Window *mid)
         {
             if(bba.isEmpty())
             {
-                free(allpath);
-                free(prepath);
                 continue;
             }
             settings= new QGSettings(id, bba);
@@ -1087,14 +1092,12 @@ void UKUITray::regulateIcon(Window *mid)
                         }
                     }
                 });
-                delete allpath;
                 break;
             }
         }
         settings->deleteLater();
         delete  prepath;
         count++;
-        g_free(path);
     }
 
     if(count >= existsPath.count())
@@ -1350,24 +1353,4 @@ void UKUITray::handleStorageUi()
     //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
     storageFrame->setFixedSize(winWidth,winHeight);
     //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
-}
-
-TrayButton::TrayButton(QWidget* parent):
-    QToolButton(parent)
-{
-    setStyle(new CustomStyle());
-    setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
-    setVisible(false);
-}
-
-TrayButton::~TrayButton() { }
-
-void TrayButton::enterEvent(QEvent *) {
-    repaint();
-    return;
-}
-
-void TrayButton::leaveEvent(QEvent *) {
-    repaint();
-    return;
 }
