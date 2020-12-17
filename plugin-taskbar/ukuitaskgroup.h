@@ -68,11 +68,19 @@
 
 #define PREVIEW_WIDGET_MIN_WIDTH            276
 #define PREVIEW_WIDGET_MIN_HEIGHT           200
-#define DEKSTOP_FILE_PATH "/usr/share/applications/"
-#define GET_DESKTOP_EXEC_NAME_MAIN "cat %s | awk '{if($1~\"Exec=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
-#define GET_DESKTOP_EXEC_NAME_BACK "cat %s | awk '{if($1~\"StartupWMClass=\")print $1}' | cut -d '=' -f 2"
-#define GET_DESKTOP_ICON "cat %s | awk '{if($1~\"Icon=\")print $1}' | cut -d '=' -f 2"
-#define GET_PROCESS_EXEC_NAME_MAIN "ps -aux | sed 's/ \\+/ /g' |awk '{if($2~\"%d\")print}'| cut -d ' ' -f 11-"
+
+#define DEKSTOP_FILE_PATH                   "/usr/share/applications/"
+#define GET_DESKTOP_EXEC_NAME_MAIN          "cat %s | awk '{if($1~\"Exec=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
+#define GET_DESKTOP_EXEC_NAME_BACK          "cat %s | awk '{if($1~\"StartupWMClass=\")print $1}' | cut -d '=' -f 2"
+#define GET_DESKTOP_ICON                    "cat %s | awk '{if($1~\"Icon=\")print $1}' | cut -d '=' -f 2"
+#define GET_PROCESS_EXEC_NAME_MAIN          "ps -aux | sed 's/ \\+/ /g' |awk '{if($2~\"%d\")print}'| cut -d ' ' -f 11-"
+
+#define USR_SHARE_APP_CURRENT   "/usr/share/applications/."
+#define USR_SHARE_APP_UPER      "/usr/share/applications/.."
+#define PEONY_TRASH             "/usr/share/applications/peony-trash.desktop"
+#define PEONY_COMUTER           "/usr/share/applications/peony-trash.desktop"
+#define PEONY_HOME              "/usr/share/applications/peony-trash.desktop"
+#define PEONY_MAIN              "/usr/share/applications/peony.desktop"
 
 
 class QVBoxLayout;

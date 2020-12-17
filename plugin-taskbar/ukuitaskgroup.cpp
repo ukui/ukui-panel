@@ -254,15 +254,18 @@ void UKUITaskGroup::initDesktopFileName(WId window) {
         bool flag = false;
         QFileInfo fileInfo = list.at(i);
         QString _cmd;
+        if (fileInfo.filePath() == QString(USR_SHARE_APP_CURRENT) ||
+            fileInfo.filePath() == QString(USR_SHARE_APP_UPER) )
+            continue;
         _cmd.sprintf(GET_DESKTOP_EXEC_NAME_MAIN, fileInfo.filePath().toStdString().data());
         QString desktopFileExeName = getDesktopFileName(_cmd);
         flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
         if (flag && !desktopFileExeName.isEmpty()) {
             file_name = fileInfo.filePath();
-            if (file_name == QString("/usr/share/applications/peony-home.desktop") ||
-                file_name == QString("/usr/share/applications/peony-trash.desktop") ||
-                file_name == QString("/usr/share/applications/peony-computer.desktop") )
-                file_name = QString("/usr/share/applications/peony.desktop");
+            if (file_name == QString(PEONY_COMUTER) ||
+                file_name == QString(PEONY_TRASH) ||
+                file_name == QString(PEONY_HOME) )
+                file_name = QString(PEONY_MAIN);
             break;
         }
     }
@@ -270,6 +273,9 @@ void UKUITaskGroup::initDesktopFileName(WId window) {
         for (int i = 0; i < list.size(); i++) {
             bool flag = false;
             QFileInfo fileInfo = list.at(i);
+            if (fileInfo.filePath() == QString(USR_SHARE_APP_CURRENT) ||
+                fileInfo.filePath() == QString(USR_SHARE_APP_UPER) )
+                continue;
             QString _cmd;
             _cmd.sprintf(GET_DESKTOP_EXEC_NAME_BACK, fileInfo.filePath().toStdString().data());
             QString desktopFileExeName = getDesktopFileName(_cmd);
@@ -284,6 +290,7 @@ void UKUITaskGroup::initDesktopFileName(WId window) {
 }
 
 void UKUITaskGroup::initActionsInRightButtonMenu(){
+    if (file_name.isEmpty()) return;
     const auto url=QUrl(file_name);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
@@ -1303,9 +1310,11 @@ void UKUITaskGroup::showPreview()
 void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
 {
     int size = mVisibleHash.size();
+    float max_width = (float)winHeight / 0.618;
+    int width = winWidth*size + (size + 1)*3;
     if(plugin()->panel()->isHorizontal())
     {
-        mPopup->setFixedSize(winWidth*size + (size + 1)*3, winHeight + 6);
+        mPopup->setFixedSize((width > max_width ? (int)max_width : width), winHeight + 6);
     }
     else
     {
@@ -1555,9 +1564,11 @@ void UKUITaskGroup::showAllWindowByThumbnail()
                 float tmp = (float)attr.height / (float)max_Height;
                 imgHeight =  imgHeight * tmp;
             }
-            if ((int)imgWidth > (int)minimumWidth)
+            float max_width = (float)winHeight / 0.618;
+            if ((int)imgWidth > (int)max_width)
             {
-                imgWidth = minimumWidth;
+                imgWidth = max_width;
+
             }
             if (btn->isVisibleTo(mPopup)) {
                 v_all += (int)imgWidth;
