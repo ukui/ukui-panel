@@ -63,6 +63,10 @@ QuickLaunchAction::QuickLaunchAction(const QString & name,
     connect(this, &QAction::triggered, this, [this] { execAction(); });
 }
 
+QIcon QuickLaunchAction::getIconfromAction() {
+     return this->icon();
+}
+
 /*用xdg的方式解析*/
 QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
                                      QWidget * parent)

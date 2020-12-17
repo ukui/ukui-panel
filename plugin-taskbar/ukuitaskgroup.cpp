@@ -38,6 +38,7 @@
 #include <QMenu>
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <functional>
+#include <QProcess>
 
 #include <QtX11Extras/QX11Info>
 #include <X11/Xlib.h>
@@ -59,30 +60,6 @@
 #include "../panel/customstyle.h"
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANELPOSITION       "panelposition"
-
-#define PREVIEW_WIDTH		468
-#define PREVIEW_HEIGHT		428
-#define SPACE_WIDTH			8
-#define SPACE_HEIGHT		8
-#define THUMBNAIL_WIDTH		(PREVIEW_WIDTH - SPACE_WIDTH)
-#define THUMBNAIL_HEIGHT	(PREVIEW_HEIGHT - SPACE_HEIGHT)
-#define ICON_WIDTH			48
-#define ICON_HEIGHT			48
-#define MAX_SIZE_OF_Thumb   16777215
-
-#define SCREEN_MAX_WIDTH_SIZE     1400
-#define SCREEN_MAX_HEIGHT_SIZE    1050
-
-#define SCREEN_MIN_WIDTH_SIZE    800
-#define SCREEN_MIN_HEIGHT_SIZE   600
-
-#define SCREEN_MID_WIDTH_SIZE    1600
-
-#define PREVIEW_WIDGET_MAX_WIDTH            352
-#define PREVIEW_WIDGET_MAX_HEIGHT           264
-
-#define PREVIEW_WIDGET_MIN_WIDTH            276
-#define PREVIEW_WIDGET_MIN_HEIGHT           200
 
 QPixmap qimageFromXImage(XImage* ximage)
 {
@@ -195,38 +172,9 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     mpScrollArea = NULL;
     taskgroupStatus = NORMAL;
 
-    QDir dir("/usr/share/applications/");
-    QFileInfoList list = dir.entryInfoList();
-    for (int i = 0; i < list.size(); i++) {
-        QFileInfo fileInfo = list.at(i);
-        if (parentTaskBar()->ignoreSymbolCMP(fileInfo.filePath(), groupName)) {
-            file_name = fileInfo.filePath();
-            break;
-        }
-    }
-    const auto url=QUrl(file_name);
-    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-    QFileInfo fi(fileName);
-    XdgDesktopFile xdg;
-    if (xdg.load(fileName))
-    {
-        /*This fuction returns true if the desktop file is applicable to the
-          current environment.
-          but I don't need this attributes now
-        */
-        //        if (xdg.isSuitable())
-        mAct = new QuickLaunchAction(&xdg, this);
-    }
-    else if (fi.exists() && fi.isExecutable() && !fi.isDir())
-    {
-        mAct = new QuickLaunchAction(fileName, fileName, "", this);
-    }
-    else if (fi.exists())
-    {
-        mAct = new QuickLaunchAction(fileName, this);
-    }
+    initDesktopFileName(window);
 
-
+    initActionsInRightButtonMenu();
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
@@ -256,6 +204,108 @@ UKUITaskGroup::~UKUITaskGroup()
 //        VLayout->deleteLater();
 //        VLayout = NULL;
 //    }
+}
+
+
+bool DesktopFileNameCompare(QString str1, QString str2) {
+    if (str1 == str2)
+        return true;
+    if (str2.contains(str1))
+        return true;
+    if (str1.contains(str2))
+        return true;
+    return false;
+}
+
+QString getDesktopFileName(QString cmd) {
+    char name[200];
+    FILE *fp1 = NULL;
+    if ((fp1 = popen(cmd.toStdString().data(), "r")) == NULL)
+        return QString();
+    memset(name, 0, sizeof(name));
+    fgets(name, sizeof(name),fp1);
+    pclose(fp1);
+    return QString(name);
+}
+
+void UKUITaskGroup::badBackFunctionToFindDesktop() {
+    if (file_name.isEmpty()) {
+        QDir dir("/usr/share/applications/");
+        QFileInfoList list = dir.entryInfoList();
+        for (int i = 0; i < list.size(); i++) {
+            QFileInfo fileInfo = list.at(i);
+            if (parentTaskBar()->ignoreSymbolCMP(fileInfo.filePath(), groupName())) {
+                file_name = fileInfo.filePath();
+                break;
+            }
+        }
+    }
+}
+
+void UKUITaskGroup::initDesktopFileName(WId window) {
+    KWindowInfo info(window, 0, NET::WM2DesktopFileName);
+    QString cmd;
+    cmd.sprintf(GET_PROCESS_EXEC_NAME_MAIN, info.pid());
+    QString processExeName = getDesktopFileName(cmd);
+
+    QDir dir(DEKSTOP_FILE_PATH);
+    QFileInfoList list = dir.entryInfoList();
+    for (int i = 0; i < list.size(); i++) {
+        bool flag = false;
+        QFileInfo fileInfo = list.at(i);
+        QString _cmd;
+        _cmd.sprintf(GET_DESKTOP_EXEC_NAME_MAIN, fileInfo.filePath().toStdString().data());
+        QString desktopFileExeName = getDesktopFileName(_cmd);
+        flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
+        if (flag && !desktopFileExeName.isEmpty()) {
+            file_name = fileInfo.filePath();
+            if (file_name == QString("/usr/share/applications/peony-home.desktop") ||
+                file_name == QString("/usr/share/applications/peony-trash.desktop") ||
+                file_name == QString("/usr/share/applications/peony-computer.desktop") )
+                file_name = QString("/usr/share/applications/peony.desktop");
+            break;
+        }
+    }
+    if (file_name.isEmpty()) {
+        for (int i = 0; i < list.size(); i++) {
+            bool flag = false;
+            QFileInfo fileInfo = list.at(i);
+            QString _cmd;
+            _cmd.sprintf(GET_DESKTOP_EXEC_NAME_BACK, fileInfo.filePath().toStdString().data());
+            QString desktopFileExeName = getDesktopFileName(_cmd);
+            flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
+            if (flag && !desktopFileExeName.isEmpty()) {
+                file_name = fileInfo.filePath();
+                break;
+            }
+        }
+    }
+    badBackFunctionToFindDesktop();
+}
+
+void UKUITaskGroup::initActionsInRightButtonMenu(){
+    const auto url=QUrl(file_name);
+    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+    QFileInfo fi(fileName);
+    XdgDesktopFile xdg;
+    if (xdg.load(fileName))
+    {
+        /*This fuction returns true if the desktop file is applicable to the
+          current environment.
+          but I don't need this attributes now
+        */
+        //        if (xdg.isSuitable())
+        mAct = new QuickLaunchAction(&xdg, this);
+    }
+    else if (fi.exists() && fi.isExecutable() && !fi.isDir())
+    {
+        mAct = new QuickLaunchAction(fileName, fileName, "", this);
+    }
+    else if (fi.exists())
+    {
+        mAct = new QuickLaunchAction(fileName, this);
+    }
+    setGroupIcon(mAct->getIconfromAction());
 }
 
 /************************************************
@@ -332,7 +382,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 }
 void UKUITaskGroup::RemovefromTaskBar()
 {
-    emit WindowRemovefromTaskBar(groupName());
+    emit WindowRemovefromTaskBar(file_name);
 }
 void UKUITaskGroup::AddtoTaskBar()
 {
@@ -911,20 +961,6 @@ QPoint UKUITaskGroup::recalculateFramePosition()
     return pos;
 }
 
-bool UKUITaskGroup::isDesktopFile(QString urlName) {
-    QString filetype = urlName.section('/', -1, -1).section('.', -1, -1);
-    if (filetype.isEmpty()) return false;
-    return filetype == QString("desktop");
-}
-
-QString UKUITaskGroup::isComputerOrTrash(QString urlName) {
-    if (!urlName.compare("computer:///"))
-        return QString("/usr/share/applications/peony-computer.desktop");
-    if (!urlName.compare("trash:///"))
-        return QString("/usr/share/applications/peony-trash.desktop");
-    return urlName;
-}
-
 void UKUITaskGroup::dropEvent(QDropEvent *event)
 {
     UKUITaskBar *taskbar = qobject_cast<UKUITaskBar*>(parent());
@@ -938,12 +974,12 @@ void UKUITaskGroup::dropEvent(QDropEvent *event)
         QString fileName("/usr/share/applications/");
 
         fileName.append(urlName.section('/', -1, -1));
-        fileName = isComputerOrTrash(urlName);
-        urlName = isComputerOrTrash(urlName);
+        fileName = taskbar->isComputerOrTrash(urlName);
+        urlName = taskbar->isComputerOrTrash(urlName);
 
         if (taskbar->pubCheckIfExist(urlName)) return;
         if (taskbar->pubCheckIfExist(fileName)) return;
-        if (isDesktopFile(urlName)) {
+        if (taskbar->isDesktopFile(urlName)) {
             if (ur.isSymLink()){
                 if (xdg.load(urlName) && xdg.isSuitable()) {
                    if (taskbar->pubCheckIfExist(xdg.fileName())) return;
