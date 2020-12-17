@@ -6,6 +6,7 @@
 #include <QDate>
 #include <QTimer>
 #include <QVBoxLayout>
+#include <QWheelEvent>
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
@@ -137,6 +138,9 @@ private:
     QGSettings *style_settings;
     bool dark_style;
 
+protected :
+    void wheelEvent(QWheelEvent *event);
+
 private Q_SLOTS:
     void initWidget();
     void initStyle();
@@ -189,8 +193,8 @@ public Q_SLOTS:
     void showNextYear();
 
     //上一月,下一月
-    void showPreviousMonth(bool btn_clicked=true);
-    void showNextMonth(bool btn_clicked=true);
+    void showPreviousMonth(bool date_clicked = true);
+    void showNextMonth(bool date_clicked = true);
 
     //转到今天
     void showToday();
