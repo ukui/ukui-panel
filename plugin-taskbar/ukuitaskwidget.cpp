@@ -49,6 +49,14 @@
 #include <KWindowSystem/NETWM>
 #include <QtX11Extras/QX11Info>
 
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
+
 bool UKUITaskWidget::sDraggging = false;
 
 /************************************************
@@ -79,7 +87,6 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     Q_ASSERT(taskbar);
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
     setMinimumWidth(1);
     setMinimumHeight(1);
     setAcceptDrops(true);
@@ -87,6 +94,7 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     status=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
+    this->setProperty("useSystemStyleBlur", true);
 
     //for layout
     mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
@@ -135,12 +143,12 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     mTitleLabel->setContentsMargins(0, 0, 5, 0);
     //    mTopBarLayout->setSpacing(5);
     mTopBarLayout->addWidget(mAppIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    mTopBarLayout->addWidget(mTitleLabel, 10, Qt::AlignLeft);
-    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight);
+    mTopBarLayout->addWidget(mTitleLabel, 0, Qt::AlignLeft);
+    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
     //    mTopBarLayout->addStretch();
 //    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
     //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
-    mVWindowsLayout->addLayout(mTopBarLayout);
+    mVWindowsLayout->addLayout(mTopBarLayout, 5);
     mVWindowsLayout->addWidget(mThumbnailLabel, Qt::AlignCenter, Qt::AlignCenter);
     mVWindowsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     this->setLayout(mVWindowsLayout);
@@ -152,6 +160,27 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
     connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskWidget::updateIcon);
     connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
+
+    const QByteArray style_id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(style_id)){
+        style_settings = new QGSettings(style_id);
+        if(stylelist.contains(style_settings->get(STYLE_NAME).toString())){
+            style_dark=true;
+        }else{
+            style_dark=false;
+        }
+        }
+    connect(style_settings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            if(stylelist.contains(style_settings->get(STYLE_NAME).toString())){
+                style_dark=true;
+            }else{
+                style_dark=false;
+            }
+        }
+    });
 }
 
 /************************************************
@@ -159,7 +188,6 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
 ************************************************/
 UKUITaskWidget::~UKUITaskWidget()
 {
-    this->deleteLater();
 }
 
 /************************************************
@@ -170,11 +198,7 @@ void UKUITaskWidget::updateText()
     KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
     QString title = info.visibleName().isEmpty() ? info.name() : info.visibleName();
     mTitleLabel->setText(title);
-    QPalette pa;
-    pa.setColor(QPalette::WindowText,Qt::white);
-    mTitleLabel->setPalette(pa);
-    //    setText(title.replace("&", "&&"));
-    //    setToolTip(title);
+
 }
 
 /************************************************
@@ -321,12 +345,14 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 void UKUITaskWidget::enterEvent(QEvent *)
 {
     status = HOVER;
+    update();
     repaint();
 }
 
 void UKUITaskWidget::leaveEvent(QEvent *)
 {
     status = NORMAL;
+    update();
     repaint();
 }
 QMimeData * UKUITaskWidget::mimeData()
@@ -337,18 +363,6 @@ QMimeData * UKUITaskWidget::mimeData()
     stream << (qlonglong)(mWindow);
     mimedata->setData(mimeDataFormat(), ba);
     return mimedata;
-}
-
-/************************************************
-
- ************************************************/
-void UKUITaskWidget::mouseMoveEvent(QMouseEvent* event)
-{
-}
-
-void UKUITaskWidget::closeGroup() {
-    printf("\n....\n");
-    emit closeSigtoGroup();
 }
 
 void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -373,6 +387,14 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
     plugin()->willShowWindow(menu);
     menu->show();
 }
+
+/************************************************
+
+ ************************************************/
+void UKUITaskWidget::mouseMoveEvent(QMouseEvent* event)
+{
+}
+
 /************************************************
 
  ************************************************/
@@ -381,7 +403,6 @@ bool UKUITaskWidget::isApplicationHidden() const
     KWindowInfo info(mWindow, NET::WMState);
     return (info.state() & NET::Hidden);
 }
-
 
 /************************************************
 
@@ -491,10 +512,6 @@ void UKUITaskWidget::unShadeApplication()
 /************************************************
 
  ************************************************/
-//void UKUITaskWidget::priv_closeApplication() {
-
-//}
-
 void UKUITaskWidget::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
@@ -755,24 +772,39 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
 
     // 绘制底色
     p.save();
-    switch(status)
-    {
-    case NORMAL:
-    {
-        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
-        break;
-    }
-    case HOVER:
-    {
-        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
-        break;
-    }
-    case PRESS:
-    {
-        p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
 
-        break;
-    }
+    if(style_dark){
+        switch(status)
+        {
+        case NORMAL:
+            p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
+            //mTopBarLayout->removeWidget(mCloseBtn);
+            break;
+        case HOVER:
+            p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
+            break;
+        case PRESS:
+            p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+            break;
+        default:
+            break;
+            }
+    }else{
+        switch(status)
+        {
+        case NORMAL:
+            p.fillPath(rectPath, QColor(0xff,0xff,0xff,0xb2));
+            //mTopBarLayout->removeWidget(mCloseBtn);
+            break;
+        case HOVER:
+            p.fillPath(rectPath, QColor(0xff,0xff,0xff,0x66));
+            break;
+        case PRESS:
+            p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+            break;
+        default:
+            break;
+            }
     }
     p.restore();
 #endif
@@ -798,7 +830,7 @@ void UKUITaskWidget::removeThumbNail()
     if(mThumbnailLabel)
     {
         mVWindowsLayout->removeWidget(mThumbnailLabel);
-        mThumbnailLabel->setParent(NULL);
+        mThumbnailLabel->setParent(this);
         mThumbnailLabel->deleteLater();
         mThumbnailLabel = NULL;
     }
@@ -808,11 +840,11 @@ void UKUITaskWidget::addThumbNail()
 {
     if(!mThumbnailLabel)
     {
-        mThumbnailLabel = new QLabel(this);
+        mThumbnailLabel =  new QLabel(this);
         mThumbnailLabel->setScaledContents(true);
         mThumbnailLabel->setMinimumSize(QSize(1, 1));
         //        mVWindowsLayout->addLayout(mTopBarLayout, 100);
-        mVWindowsLayout->addWidget(mThumbnailLabel, 0, Qt::AlignCenter);
+        mVWindowsLayout->addWidget(mThumbnailLabel, 0, Qt::AlignBottom);
     }
     else
     {
@@ -824,7 +856,7 @@ void UKUITaskWidget::addThumbNail()
 void UKUITaskWidget::setTitleFixedWidth(int size)
 {
     mTitleLabel->setFixedWidth(size);
-    mTitleLabel->adjustSize();
+    //mTitleLabel->adjustSize();
 }
 
 int UKUITaskWidget::getWidth()
