@@ -67,7 +67,6 @@ void PluginMoveProcessor::start()
     cursorAnimation->setStartValue(QCursor::pos());
     cursorAnimation->setEndValue(mPlugin->mapToGlobal(mPlugin->rect().center()));
     cursorAnimation->start(QAbstractAnimation::DeleteWhenStopped);
-    cursorAnimation->deleteLater();
 }
 
 

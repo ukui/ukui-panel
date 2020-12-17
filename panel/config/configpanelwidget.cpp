@@ -110,8 +110,21 @@ ConfigPanelWidget::ConfigPanelWidget(UKUIPanel *panel, QWidget *parent) :
     connect(ui->spinBox_animation,          SIGNAL(valueChanged(int)),      this, SLOT(editChanged()));
     connect(ui->spinBox_delay,              SIGNAL(valueChanged(int)),      this, SLOT(editChanged()));
 
+    connect(ui->checkBox_customFontColor,   SIGNAL(toggled(bool)),          this, SLOT(editChanged()));
+    connect(ui->pushButton_customFontColor, SIGNAL(clicked(bool)),          this, SLOT(pickFontColor()));
+    connect(ui->checkBox_customBgColor,     SIGNAL(toggled(bool)),          this, SLOT(editChanged()));
+    connect(ui->pushButton_customBgColor,   SIGNAL(clicked(bool)),          this, SLOT(pickBackgroundColor()));
+    connect(ui->checkBox_customBgImage,     SIGNAL(toggled(bool)),          this, SLOT(editChanged()));
+    connect(ui->lineEdit_customBgImage,     SIGNAL(textChanged(QString)),   this, SLOT(editChanged()));
+    connect(ui->pushButton_customBgImage,   SIGNAL(clicked(bool)),          this, SLOT(pickBackgroundImage()));
+    connect(ui->slider_opacity,             &QSlider::valueChanged,         this, &ConfigPanelWidget::editChanged);
 
     connect(ui->checkBox_reserveSpace, &QAbstractButton::toggled, [this](bool checked) { mPanel->setReserveSpace(checked, true); });
+
+    connect(ui->groupBox_icon, &QGroupBox::clicked, this, &ConfigPanelWidget::editChanged);
+#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
+    connect(ui->comboBox_icon, QOverload<int>::of(&QComboBox::activated), this, &ConfigPanelWidget::editChanged);
+#endif
     QStringList sheet;
     QGSettings *gsettings;
     gsettings= new QGSettings("org.mate.interface", "", this);
@@ -127,7 +140,19 @@ ConfigPanelWidget::ConfigPanelWidget(UKUIPanel *panel, QWidget *parent) :
 void ConfigPanelWidget::reset()
 {
     QStringList sheet;
-    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
+//    QGSettings *gsettings;
+//    gsettings= new QGSettings("org.mate.interface", "", this);
+//    QString mode;
+//    mode=gsettings->get("gtk-theme").toString();
+//    qDebug()<<"ukui-theme:"<<mode;
+//    if(mode=="ukui-blue")
+//    {
+//        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
+//    }
+//    else
+//    {
+        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
+//    }
     setStyleSheet(sheet.join("\n"));
     ui->spinBox_panelSize->setValue(mOldPanelSize);
     ui->spinBox_iconSize->setValue(mOldIconSize);
@@ -150,7 +175,16 @@ void ConfigPanelWidget::reset()
     ui->spinBox_length->setValue(mOldLength);
 
     mFontColor.setNamedColor(mOldFontColor.name());
+    ui->pushButton_customFontColor->setStyleSheet(QString("background: %1").arg(mOldFontColor.name()));
+    mBackgroundColor.setNamedColor(mOldBackgroundColor.name());
+    ui->pushButton_customBgColor->setStyleSheet(QString("background: %1").arg(mOldBackgroundColor.name()));
+    ui->lineEdit_customBgImage->setText(mOldBackgroundImage);
+    ui->slider_opacity->setValue(mOldOpacity);
     ui->checkBox_reserveSpace->setChecked(mOldReserveSpace);
+
+    ui->checkBox_customFontColor->setChecked(mOldFontColor.isValid());
+    ui->checkBox_customBgColor->setChecked(mOldBackgroundColor.isValid());
+    ui->checkBox_customBgImage->setChecked(QFileInfo(mOldBackgroundImage).exists());
 
     // update position
     positionChanged();
@@ -215,6 +249,8 @@ void ConfigPanelWidget::fillComboBox_alignment()
  ************************************************/
 void ConfigPanelWidget::fillComboBox_icon()
 {
+    ui->groupBox_icon->setChecked(!mPanel->iconTheme().isEmpty());
+
     QStringList themeList;
     QStringList processed;
     const QStringList baseDirs = QIcon::themeSearchPaths();
@@ -240,6 +276,26 @@ void ConfigPanelWidget::fillComboBox_icon()
             }
         }
     }
+    if (!themeList.isEmpty())
+    {
+        themeList.sort();
+        ui->comboBox_icon->insertItems(0, themeList);
+        QString curTheme = QIcon::themeName();
+        if (!curTheme.isEmpty())
+            ui->comboBox_icon->setCurrentText(curTheme);
+    }
+}
+
+
+/************************************************
+ *
+ ************************************************/
+void ConfigPanelWidget::updateIconThemeSettings()
+{
+    ui->groupBox_icon->setChecked(!mPanel->iconTheme().isEmpty());
+    QString curTheme = QIcon::themeName();
+    if (!curTheme.isEmpty())
+        ui->comboBox_icon->setCurrentText(curTheme);
 }
 
 /************************************************
@@ -282,7 +338,19 @@ ConfigPanelWidget::~ConfigPanelWidget()
 void ConfigPanelWidget::editChanged()
 {
     QStringList sheet;
-    sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
+//    QGSettings *gsettings;
+//    gsettings= new QGSettings("org.mate.interface", "", this);
+//    QString mode;
+//    mode=gsettings->get("gtk-theme").toString();
+//    qDebug()<<"ukui-theme:"<<mode;
+//    if(mode=="ukui-blue")
+//    {
+//        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(230,232,235,90%); }");
+//    }
+//    else
+//    {
+        sheet << QString("UKUIPanel #BackgroundWidget { background-color: rgba(19,22,28,90%); }");
+//    }
     setStyleSheet(sheet.join("\n"));
     mPanel->setPanelSize(ui->spinBox_panelSize->value(), true);
     mPanel->setIconSize(ui->spinBox_iconSize->value(), true);
@@ -303,6 +371,23 @@ void ConfigPanelWidget::editChanged()
     mPanel->setVisibleMargin(ui->checkBox_visibleMargin->isChecked(), true);
     mPanel->setAnimationTime(ui->spinBox_animation->value(), true);
     mPanel->setShowDelay(ui->spinBox_delay->value(), true);
+
+    mPanel->setFontColor(ui->checkBox_customFontColor->isChecked() ? mFontColor : QColor(), true);
+    if (ui->checkBox_customBgColor->isChecked())
+    {
+        mPanel->setBackgroundColor(mBackgroundColor, true);
+        mPanel->setOpacity(ui->slider_opacity->value(), true);
+    }
+    else
+    {
+        mPanel->setBackgroundColor(QColor(), true);
+        mPanel->setOpacity(100, true);
+    }
+
+    if (!ui->groupBox_icon->isChecked())
+        mPanel->setIconTheme(QString());
+    else if (!ui->comboBox_icon->currentText().isEmpty())
+        mPanel->setIconTheme(ui->comboBox_icon->currentText());
 }
 
 
@@ -377,6 +462,54 @@ void ConfigPanelWidget::positionChanged()
 
         editChanged();
 
+}
+
+
+/************************************************
+ *
+ ************************************************/
+void ConfigPanelWidget::pickFontColor()
+{
+    QColorDialog d(QColor(mFontColor.name()), this);
+    d.setWindowTitle(tr("Pick color"));
+    d.setWindowModality(Qt::WindowModal);
+    if (d.exec() && d.currentColor().isValid())
+    {
+        mFontColor.setNamedColor(d.currentColor().name());
+        ui->pushButton_customFontColor->setStyleSheet(QString("background: %1").arg(mFontColor.name()));
+        editChanged();
+    }
+}
+
+/************************************************
+ *
+ ************************************************/
+void ConfigPanelWidget::pickBackgroundColor()
+{
+    QColorDialog d(QColor(mBackgroundColor.name()), this);
+    d.setWindowTitle(tr("Pick color"));
+    d.setWindowModality(Qt::WindowModal);
+    if (d.exec() && d.currentColor().isValid())
+    {
+        mBackgroundColor.setNamedColor(d.currentColor().name());
+        ui->pushButton_customBgColor->setStyleSheet(QString("background: %1").arg(mBackgroundColor.name()));
+        editChanged();
+    }
+}
+
+/************************************************
+ *
+ ************************************************/
+void ConfigPanelWidget::pickBackgroundImage()
+{
+    QString picturesLocation;
+    picturesLocation = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+
+    QFileDialog* d = new QFileDialog(this, tr("Pick image"), picturesLocation, tr("Images (*.png *.gif *.jpg)"));
+    d->setAttribute(Qt::WA_DeleteOnClose);
+    d->setWindowModality(Qt::WindowModal);
+    connect(d, &QFileDialog::fileSelected, ui->lineEdit_customBgImage, &QLineEdit::setText);
+    d->show();
 }
 
 void ConfigPanelWidget::positionChanged_top()

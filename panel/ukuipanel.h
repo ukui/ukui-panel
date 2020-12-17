@@ -218,8 +218,6 @@ public:
     int iconSize() const override { return mIconSize; } //!< Implement IUKUIPanel::iconSize().
     int lineCount() const override { return mLineCount; } //!< Implement IUKUIPanel::lineCount().
     int panelSize() const override{ return mPanelSize; }
-    int sizeModel() const override{ return (mPanelSize == SML_SIZE_PANEL_IN_CALC ? 0 : (mPanelSize == MID_SIZE_PANEL_IN_CALC ? 1 : 2)); }
-    bool isMaxSize() const override{ return mPanelSize == MAX_SIZE_PANEL_IN_CALC; }
     int length() const { return mLength; }
     bool lengthInPercents() const { return mLengthInPercents; }
     UKUIPanel::Alignment alignment() const { return mAlignment; }
@@ -227,7 +225,7 @@ public:
     QColor fontColor() const { return mFontColor; }
     QColor backgroundColor() const { return mBackgroundColor; }
     QString backgroundImage() const { return mBackgroundImage; }
-    int opacity() const { return mOpacity; }
+    int opacity() const override { return mOpacity; }
     int reserveSpace() const { return mReserveSpace; }
     bool hidable() const { return mHidable; }
     bool visibleMargin() const { return mVisibleMargin; }
@@ -310,12 +308,14 @@ public slots:
     void setAlignment(UKUIPanel::Alignment value, bool save); //!< \sa setPanelSize()
     void setFontColor(QColor color, bool save); //!< \sa setPanelSize()
     void setBackgroundColor(QColor color, bool save); //!< \sa setPanelSize()
+    void setOpacity(int opacity, bool save); //!< \sa setPanelSize()
     void setReserveSpace(bool reserveSpace, bool save); //!< \sa setPanelSize()
     void setHidable(bool hidable, bool save); //!< \sa setPanelSize()
     void setVisibleMargin(bool visibleMargin, bool save); //!< \sa setPanelSize()
     void setAnimationTime(int animationTime, bool save); //!< \sa setPanelSize()
     void setShowDelay(int showDelay, bool save); //!< \sa setPanelSize()
     void setIconTheme(const QString& iconTheme);
+    void setPanelBackground(bool effective);
 
     /**
      * @brief Saves the current configuration, i.e. writes the current
@@ -392,6 +392,12 @@ protected:
     void showEvent(QShowEvent *event) override;
     void paintEvent(QPaintEvent *);
 
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+
 public slots:
     /**
      * @brief Shows the ConfigPanelDialog and shows the "Config Panel"
@@ -455,7 +461,6 @@ private slots:
     void userRequestForDeletion();
 
 private:
-    int scale;
     /**
      * @brief The UKUIPanelLayout of this panel. All the Plugins will be added
      * to the UI via this layout.
@@ -591,6 +596,9 @@ private:
      * @brief Stores the position where the panel is shown
      */
     IUKUIPanel::Position mPosition;
+
+    IUKUIPanel::Position oldpos;
+
     /**
      * @brief Returns the index of the screen on which this panel should be
      * shown. This is the user configured value which can differ from the
@@ -697,30 +705,33 @@ private:
      */
     bool mLockPanel;
 
+    /**
+     * @brief Updates the style sheet for the panel. First, the stylesheet is
+     * created from the preferences. Then, it is set via
+     * QWidget::setStyleSheet().
+     */
+    void updateStyleSheet();
+
     // settings should be kept private for security
     UKUi::Settings *settings() const { return mSettings; }
 
-    QDBusInterface *m_cloudInterface;
+    PopupMenu * menu;
 
-    QMenu * menu;
-    QAction * m_lockAction;
+    IUKUIPanel::Position areaDivid(QPoint globalpos);
 
-    int MAX_SIZE_PANEL_IN_CALC;
-    int MID_SIZE_PANEL_IN_CALC;
-    int SML_SIZE_PANEL_IN_CALC;
-    int MAX_ICON_SIZE_IN_CLAC;
-    int MID_ICON_SIZE_IN_CLAC;
-    int SML_ICON_SIZE_IN_CLAC;
-    void getSize();
-    void connectToServer();
+    int movelock = -1;
+
 
 private slots:
+    void setPanelPosition(Position position);
+    void setPanelsize(int panelsize);
+    void setIconsize(int iconsize);
     void panelReset();
-    void keyChangedSlot(const QString &key);
 
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
+    QGSettings *style_gsettings;
 
 };
 

@@ -76,6 +76,7 @@ void ConfigPanelDialog::showConfigPluginsPage()
 
 void ConfigPanelDialog::updateIconThemeSettings()
 {
+    mPanelPage->updateIconThemeSettings();
 }
 
 void ConfigPanelDialog::configPosition_top()
