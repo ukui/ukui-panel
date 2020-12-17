@@ -502,14 +502,12 @@ void LunarCalendarWidget::monthChanged(const QString &arg1)
 
 void LunarCalendarWidget::clicked(const QDate &date, const LunarCalendarItem::DayType &dayType)
 {
-    if (LunarCalendarItem::DayType_MonthPre == dayType) {
-        showPreviousMonth();
-    } else if (LunarCalendarItem::DayType_MonthNext == dayType) {
-        showNextMonth();
-    } else {
-        this->date = date;
-        dayChanged(this->date);
-    }
+    this->date = date;
+    dayChanged(this->date);
+    if (LunarCalendarItem::DayType_MonthPre == dayType)
+        showPreviousMonth(false);
+    else if (LunarCalendarItem::DayType_MonthNext == dayType)
+        showNextMonth(false);
 }
 
 void LunarCalendarWidget::dayChanged(const QDate &date)
@@ -519,7 +517,6 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
     int month = date.month();
     int day = date.day();
     int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month);
-
     //选中当前日期,其他日期恢复,这里还有优化空间,比方说类似单选框机制
     for (int i = 0; i < 42; i++) {
         //当月第一天是星期天要另外计算
@@ -703,7 +700,7 @@ void LunarCalendarWidget::showNextYear()
 }
 
 //显示上月日期
-void LunarCalendarWidget::showPreviousMonth()
+void LunarCalendarWidget::showPreviousMonth(bool date_clicked)
 {
     int year = date.year();
     int month = date.month();
@@ -713,7 +710,7 @@ void LunarCalendarWidget::showPreviousMonth()
     }
 
     //extra:
-    month--;
+    if (date_clicked) month--;
     if (month < 1) {
                month = 12;
                year--;
@@ -723,7 +720,7 @@ void LunarCalendarWidget::showPreviousMonth()
 }
 
 //显示下月日期
-void LunarCalendarWidget::showNextMonth()
+void LunarCalendarWidget::showNextMonth(bool date_clicked)
 {
     int year = date.year();
     int month = date.month();
@@ -733,7 +730,7 @@ void LunarCalendarWidget::showNextMonth()
     }
 
     //extra
-    month++;
+    if (date_clicked)month++;
     if (month > 12) {
                month = 1;
                year++;
