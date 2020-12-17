@@ -503,9 +503,9 @@ void LunarCalendarWidget::monthChanged(const QString &arg1)
 void LunarCalendarWidget::clicked(const QDate &date, const LunarCalendarItem::DayType &dayType)
 {
     if (LunarCalendarItem::DayType_MonthPre == dayType) {
-        showPreviousMonth(false);
+        showPreviousMonth();
     } else if (LunarCalendarItem::DayType_MonthNext == dayType) {
-        showNextMonth(false);
+        showNextMonth();
     } else {
         this->date = date;
         dayChanged(this->date);
@@ -703,7 +703,7 @@ void LunarCalendarWidget::showNextYear()
 }
 
 //显示上月日期
-void LunarCalendarWidget::showPreviousMonth(bool btn_clicked)
+void LunarCalendarWidget::showPreviousMonth()
 {
     int year = date.year();
     int month = date.month();
@@ -713,19 +713,17 @@ void LunarCalendarWidget::showPreviousMonth(bool btn_clicked)
     }
 
     //extra:
-    if (month > 1)
-        month--;
-    else  if (!btn_clicked)  {
-            month = 12;
-            year--;
-
+    month--;
+    if (month < 1) {
+               month = 12;
+               year--;
     }
 
     dateChanged(year, month, day);
 }
 
 //显示下月日期
-void LunarCalendarWidget::showNextMonth(bool btn_clicked)
+void LunarCalendarWidget::showNextMonth()
 {
     int year = date.year();
     int month = date.month();
@@ -735,11 +733,10 @@ void LunarCalendarWidget::showNextMonth(bool btn_clicked)
     }
 
     //extra
-    if (month < 12)
-        month++;
-    else  if (!btn_clicked){
-        month = 1;
-        year++;
+    month++;
+    if (month > 12) {
+               month = 1;
+               year++;
     }
 
     dateChanged(year, month, day);
@@ -952,4 +949,11 @@ void LunarCalendarWidget::setHoverBgColor(const QColor &hoverBgColor)
         this->hoverBgColor = hoverBgColor;
         initStyle();
     }
+}
+
+void LunarCalendarWidget::wheelEvent(QWheelEvent *event) {
+    if (event->delta() > 0)
+        showPreviousMonth();
+    else
+        showNextMonth();
 }
