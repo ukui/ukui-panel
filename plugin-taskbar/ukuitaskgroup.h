@@ -145,7 +145,7 @@ signals:
     void WindowRemovefromTaskBar(QString arg);
 
 private:
-    bool isDesktopFile(QString urlName);
+    //bool isDesktopFile(QString urlName);
     UKUITaskBar * mParent;
     UKUITaskGroup *mpQckLchBtn;
     void changeTaskButtonStyle();
@@ -171,6 +171,9 @@ private:
     void v_adjustPopWindowSize(int width, int height, int v_all);
     void regroup();
     QString isComputerOrTrash(QString urlName);
+    void initDesktopFileName(WId window);
+    void initActionsInRightButtonMenu();
+    void badBackFunctionToFindDesktop();
 
     ///////////////////////////////
     // quicklaunch button

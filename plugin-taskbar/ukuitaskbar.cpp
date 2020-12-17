@@ -376,49 +376,56 @@ void UKUITaskBar::dragMoveEvent(QDragMoveEvent * event)
     QWidget::dragMoveEvent(event);
 }
 
+QString UKUITaskBar::isComputerOrTrash(QString urlName) {
+    if (!urlName.compare("computer:///"))
+        return QString("/usr/share/applications/peony-computer.desktop");
+    if (!urlName.compare("trash:///"))
+        return QString("/usr/share/applications/peony-trash.desktop");
+    return urlName;
+}
+
 void UKUITaskBar::dropEvent(QDropEvent *e)
 {
     //saveSettings();
     const auto urls = e->mimeData()->urls().toSet();
     for (const QUrl &url : urls)
     {
-        QString urlName(url.isLocalFile() ? url.toLocalFile() : url.url());
-        QString fileName("/usr/share/applications/");
-        fileName.append(urlName.right(urlName.length() - urlName.lastIndexOf("/") - 1));
-        QFileInfo fi(fileName);
-        QFileInfo ur(urlName);
-        if (!urlName.compare("computer:///"))
-            fileName = QString("/usr/share/applications/peony-computer.desktop");
-        if (!urlName.compare("trash:///"))
-            fileName = QString("/usr/share/applications/peony-trash.desktop");
-        if (pubCheckIfExist(fileName)) return;
-        if (pubCheckIfExist(urlName)) return;
         XdgDesktopFile xdg;
-        if (xdg.load(fileName))
-        {
-            if (xdg.isSuitable())
-                addButton(new QuickLaunchAction(&xdg, this));
-        }
-        else if (fi.exists() && fi.isExecutable() && !fi.isDir())
-        {
-            addButton(new QuickLaunchAction(fileName, fileName, "", this));
-        }
-        else if (fi.exists())
-        {
-            addButton(new QuickLaunchAction(fileName, this));
-        }
-        else if (xdg.load(urlName))
-        {
-            if (xdg.isSuitable())
-                addButton(new QuickLaunchAction(&xdg, this));
-        }
-        else if (ur.exists())
-        {
+        QString urlName(url.isLocalFile() ? url.toLocalFile() : url.url());
+        QFileInfo ur(urlName);
+        QString fileName("/usr/share/applications/");
+
+        fileName.append(urlName.section('/', -1, -1));
+        fileName = isComputerOrTrash(urlName);
+        urlName = isComputerOrTrash(urlName);
+
+        if (CheckIfExist(urlName)) return;
+        if (CheckIfExist(fileName)) return;
+        if (isDesktopFile(urlName)) {
+            if (ur.isSymLink()){
+                if (xdg.load(urlName) && xdg.isSuitable()) {
+                   if (CheckIfExist(xdg.fileName())) return;
+                   addButton(new QuickLaunchAction(&xdg, this));
+                }
+            } else {
+                if (xdg.load(fileName) && xdg.isSuitable()) {
+                   if (CheckIfExist(urlName)) return;
+                   addButton(new QuickLaunchAction(&xdg, this));
+                }
+            }
+        } else if (ur.exists() && ur.isExecutable() && !ur.isDir() || ur.isSymLink()) {
+            if (ur.size() <= 153600)
+                xdg.load(urlName);
             addButton(new QuickLaunchAction(urlName, this));
+        } else if (ur.exists()) {
+            if (ur.size() <= 153600)
+                xdg.load(urlName);
+            addButton(new QuickLaunchAction(urlName, this));
+            //taskbar->pubAddButton(new QuickLaunchAction(urlName, urlName, "", this));
         } else {
-            qWarning() << "XdgDesktopFile" << fileName << "is not valid";
+            qWarning() << "XdgDesktopFile" << urlName << "is not valid";
             QMessageBox::information(this, tr("Drop Error"),
-                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(urlName)
                                      );
         }
     }
@@ -523,7 +530,7 @@ void UKUITaskBar::groupBecomeEmptySlot()
     for (auto it = mVBtn.begin(); it!=mVBtn.end(); ++it)
     {
         UKUITaskGroup *pQuickBtn = *it;
-        if(ignoreSymbolCMP(pQuickBtn->file_name, group->groupName())
+        if(pQuickBtn->file_name == group->file_name
            &&(layout()->indexOf(pQuickBtn) >= 0 ))
         {
             pQuickBtn->setHidden(false);
@@ -599,7 +606,7 @@ void UKUITaskBar::addWindow(WId window)
         for (auto it = mVBtn.begin(); it!=mVBtn.end(); ++it)
         {
             UKUITaskGroup *pQuickBtn = *it;
-            if(ignoreSymbolCMP(pQuickBtn->file_name, group_id)
+            if(pQuickBtn->file_name == group->file_name
                &&(layout()->indexOf(pQuickBtn) >= 0 ))
             {
                 mLayout->addWidget(group);
@@ -1177,7 +1184,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
     for (auto it = mKnownWindows.begin(); it!=mKnownWindows.end(); ++it)
     {
         UKUITaskGroup *group = *it;
-        if(ignoreSymbolCMP(btn->file_name, group->groupName())
+        if(btn->file_name == group->file_name
            &&(layout()->indexOf(group) >= 0 ))
         {
             mLayout->addWidget(btn);
@@ -1391,7 +1398,7 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
     for (auto it = mVBtn.begin(); it!=mVBtn.end(); ++it)
     {
         UKUITaskGroup *pQuickBtn = *it;
-        if(ignoreSymbolCMP(pQuickBtn->file_name, arg)
+        if(pQuickBtn->file_name == arg
            && (layout()->indexOf(pQuickBtn) >= 0 ))
         {
             doInitGroupButton(pQuickBtn->file_name);
@@ -1477,7 +1484,7 @@ void UKUITaskBar::doInitGroupButton(QString sname) {
     {
         UKUITaskGroup *group = it.value();
         if (group->existSameQckBtn) {
-            if (ignoreSymbolCMP(sname, group->groupName())) {
+            if (sname == group->file_name) {
                     group->existSameQckBtn = false;
                     group->setQckLchBtn(NULL);
                     break;
@@ -1536,7 +1543,7 @@ void UKUITaskBar::buttonDeleted()
             {
                 UKUITaskGroup *group = it.value();
                 if (group->existSameQckBtn) {
-                    if (ignoreSymbolCMP(btn->file_name, group->groupName())) {
+                    if (btn->file_name == group->file_name) {
                             group->existSameQckBtn = false;
                             group->setQckLchBtn(NULL);
                     }

@@ -59,6 +59,35 @@
 #include <QPushButton>
 #include <QToolButton>
 
+#define PREVIEW_WIDTH		468
+#define PREVIEW_HEIGHT		428
+#define SPACE_WIDTH			8
+#define SPACE_HEIGHT		8
+#define THUMBNAIL_WIDTH		(PREVIEW_WIDTH - SPACE_WIDTH)
+#define THUMBNAIL_HEIGHT	(PREVIEW_HEIGHT - SPACE_HEIGHT)
+#define ICON_WIDTH			48
+#define ICON_HEIGHT			48
+#define MAX_SIZE_OF_Thumb   16777215
+
+#define SCREEN_MAX_WIDTH_SIZE     1400
+#define SCREEN_MAX_HEIGHT_SIZE    1050
+
+#define SCREEN_MIN_WIDTH_SIZE    800
+#define SCREEN_MIN_HEIGHT_SIZE   600
+
+#define SCREEN_MID_WIDTH_SIZE    1600
+
+#define PREVIEW_WIDGET_MAX_WIDTH            352
+#define PREVIEW_WIDGET_MAX_HEIGHT           264
+
+#define PREVIEW_WIDGET_MIN_WIDTH            276
+#define PREVIEW_WIDGET_MIN_HEIGHT           200
+#define DEKSTOP_FILE_PATH "/usr/share/applications/"
+#define GET_DESKTOP_EXEC_NAME_MAIN "cat %s | awk '{if($1~\"Exec=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
+#define GET_DESKTOP_EXEC_NAME_BACK "cat %s | awk '{if($1~\"StartupWMClass=\")print $1}' | cut -d '=' -f 2"
+//#define GET_PROCESS_EXEC_NAME_BACK "ps -aux | awk '{if($2~\"%d\")print $11}'"
+#define GET_PROCESS_EXEC_NAME_MAIN "ps -aux | sed 's/ \\+/ /g' |awk '{if($2~\"%d\")print}'| cut -d ' ' -f 11-"
+
 QT_BEGIN_NAMESPACE
 class QByteArray;
 template<class T> class QList;
@@ -118,6 +147,7 @@ public:
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
     void pubAddButton(QuickLaunchAction* action) { addButton(action); }
     void pubSaveSettings() { saveSettings(); }
+    QString isComputerOrTrash(QString urlName);
     bool pubCheckIfExist(QString name);
 
 
@@ -131,6 +161,7 @@ public:
     void saveSettings();
     void showPlaceHolder();
     void refreshQuickLaunch();
+    bool isDesktopFile(QString urlName);
     friend class FilectrlAdaptor;
 
 
@@ -194,8 +225,6 @@ private:
     void _AddToTaskbar(QString arg);
     void doInitGroupButton(QString sname);
     void initRelationship();
-    bool isDesktopFile(QString urlName);
-
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
     TaskStatus taskstatus;
