@@ -150,6 +150,12 @@ public:
     // IUKUIPanel overrides ........
     IUKUIPanel::Position position() const override { return mPosition; }
     QRect globalGeometry() const override;
+    /**
+     * @brief calculatePopupWindowPos 计算任务栏弹窗的位置
+     * @param absolutePos
+     * @param windowSize 窗口尺寸
+     * @return
+     */
     QRect calculatePopupWindowPos(QPoint const & absolutePos, QSize const & windowSize) const override;
     QRect calculatePopupWindowPos(const IUKUIPanelPlugin *plugin, const QSize &windowSize) const override;
     void willShowWindow(QWidget * w) override;
@@ -721,6 +727,7 @@ private slots:
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
+    QTimer *time;
 
 };
 
