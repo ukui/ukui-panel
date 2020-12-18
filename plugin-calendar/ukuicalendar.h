@@ -57,9 +57,16 @@ public:
     void settingsChanged()override;
     void realign()override;
     void initializeCalendar();
+    /**
+     * @brief setbackground 设置背景相关，mate-panel以及最初的ukui-panel使用了此样式，后续此样式无效
+     */
     void setbackground();
     void setTimeShowStyle();
     void setToolTip();
+    /**
+     * @brief modifyCalendarWidget 修改日历显示位置
+     */
+    void modifyCalendarWidget();
 //signals:
 Q_SIGNALS:
     void deactivated();
@@ -133,10 +140,20 @@ Q_SIGNALS:
 protected:
     void wheelEvent(QWheelEvent *);
     void mouseReleaseEvent(QMouseEvent* event);
+    /**
+     * @brief contextMenuEvent 右键菜单设置项
+     * @param event
+     */
     virtual void contextMenuEvent(QContextMenuEvent *event);
 
 private Q_SLOTS:
+    /**
+     * @brief setControlTime 右键菜单选项，在控制面板设置时间
+     */
     void setControlTime();
+    /**
+     * @brief setUpPanel 设置任务栏选项
+     */
     void setUpPanel();
 
 

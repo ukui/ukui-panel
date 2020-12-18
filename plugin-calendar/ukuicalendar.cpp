@@ -53,6 +53,7 @@
 #define WEBVIEW_WIDTH (454)
 #define WEBVIEW_MAX_HEIGHT (704)
 #define WEBVIEW_MIN_HEIGHT (600)
+#define POPUP_BORDER_SPACING 4
 #define HOUR_SYSTEM_CONTROL "org.ukui.control-center.panel.plugins"
 #define HOUR_SYSTEM_24_Horizontal "hh:mm ddd  yyyy/MM/dd"
 #define HOUR_SYSTEM_24_Vertical "hh:mm ddd  MM/dd"
@@ -631,6 +632,28 @@ void IndicatorCalendar::initializeCalendar()
     }
 }
 
+/**
+ * @brief IndicatorCalendar::activated
+ * @param reason
+ * 如下两种方式也可以设置位置，由于ui问题弃用
+ * 1.mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
+ * 2.
+//        QRect screen = QApplication::desktop()->availableGeometry();
+//        switch (panel()->position()) {
+//        case IUKUIPanel::PositionBottom:
+//            mWebViewDiag->move(screen.width()-mViewWidht-POPUP_BORDER_SPACING,screen.height()-mViewHeight-POPUP_BORDER_SPACING);
+//            break;
+//        case IUKUIPanel::PositionTop:
+//            mWebViewDiag->move(screen.width()-mViewWidht-POPUP_BORDER_SPACING,panel()->panelSize()+POPUP_BORDER_SPACING);
+//            break;
+//        case IUKUIPanel::PositionLeft:
+//            mWebViewDiag->move(panel()->panelSize()+POPUP_BORDER_SPACING,screen.height()-mViewHeight-POPUP_BORDER_SPACING);
+//            break;
+//        default:
+//            mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
+//            break;
+//        }
+ */
 void IndicatorCalendar::activated(ActivationReason reason)
 {
     if(mWebViewDiag != NULL )
@@ -646,9 +669,8 @@ void IndicatorCalendar::activated(ActivationReason reason)
             if (iScreenHeight >= WEBVIEW_MIN_HEIGHT)
                 mViewHeight = WEBVIEW_MIN_HEIGHT;;
         }
-        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht,mViewHeight)));
+        modifyCalendarWidget();
         mWebViewDiag->show();
-        setbackground();
         if(!mbActived)
         {
             mWebViewDiag->setHidden(false);
@@ -829,6 +851,33 @@ void IndicatorCalendar::setTimeShowStyle()
     timeout();
 }
 
+/**
+ * @brief IndicatorCalendar::modifyCalendarWidget
+ * 任务栏上弹出窗口的位置标准为距离屏幕边缘及任务栏边缘分别为4像素
+ */
+void IndicatorCalendar::modifyCalendarWidget()
+{
+       int totalHeight = qApp->primaryScreen()->size().height() + qApp->primaryScreen()->geometry().y();
+       int totalWidth = qApp->primaryScreen()->size().width() + qApp->primaryScreen()->geometry().x();
+
+       switch (panel()->position()) {
+       case IUKUIPanel::PositionBottom:
+           mWebViewDiag->setGeometry(totalWidth-mViewWidht-4,totalHeight-panel()->panelSize()-mViewHeight-4,mViewWidht,mViewHeight);
+           break;
+       case IUKUIPanel::PositionTop:
+           mWebViewDiag->setGeometry(totalWidth-mViewWidht-4,qApp->primaryScreen()->geometry().y()+panel()->panelSize()+4,mViewWidht,mViewHeight);
+           break;
+       case IUKUIPanel::PositionLeft:
+           mWebViewDiag->setGeometry(qApp->primaryScreen()->geometry().x()+panel()->panelSize()+4,totalHeight-mViewHeight-4,mViewWidht,mViewHeight);
+           break;
+       case IUKUIPanel::PositionRight:
+           mWebViewDiag->setGeometry(totalWidth-panel()->panelSize()-mViewWidht-4,totalHeight-mViewHeight-4,mViewWidht,mViewHeight);
+           break;
+       default:
+           mWebViewDiag->setGeometry(qApp->primaryScreen()->geometry().x()+panel()->panelSize()+4,totalHeight-mViewHeight,mViewWidht,mViewHeight);
+           break;
+       }
+}
 void IndicatorCalendar::setbackground()
 {
     GSettings *settings = NULL;
