@@ -462,6 +462,11 @@ private slots:
 
 private:
     /**
+     * @brief initLoadPlugins 初始化插件加载
+     * 包含初始化及监听
+     */
+    void initLoadPlugins();
+    /**
      * @brief The UKUIPanelLayout of this panel. All the Plugins will be added
      * to the UI via this layout.
      */
@@ -524,6 +529,11 @@ private:
      * layout.
      */
     void loadPlugins();
+    /**
+     * @brief resetloadPlugins 监听到平板模式与插件模式的切换信号
+     * @param panel_mode 传入的参数，任务栏插件模式
+     */
+    void resetloadPlugins(QString panel_mode);
 
     /**
      * @brief Calculates and sets the geometry (i.e. the position and the size
@@ -720,6 +730,9 @@ private:
     IUKUIPanel::Position areaDivid(QPoint globalpos);
 
     int movelock = -1;
+    QGSettings *panelmodel_gsettings;
+    PanelPluginsModel *padmodel;
+    PanelPluginsModel *pcmodel;
 
 
 private slots:

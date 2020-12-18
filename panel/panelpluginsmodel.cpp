@@ -372,3 +372,8 @@ void PanelPluginsModel::onRemovePlugin(QModelIndex const & index)
     else
         plugin->second->requestRemove();
 }
+
+void PanelPluginsModel::onRemovePlugin()
+{
+    qDeleteAll(plugins());
+}

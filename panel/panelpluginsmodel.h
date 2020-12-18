@@ -255,6 +255,7 @@ public slots:
      * this slot.
      */
     void onRemovePlugin(QModelIndex const & index);
+    void onRemovePlugin();
 
 private:
     /*!

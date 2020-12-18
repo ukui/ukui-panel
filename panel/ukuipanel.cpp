@@ -70,6 +70,8 @@
 #define CFG_KEY_ALIGNMENT          "alignment"
 #define CFG_KEY_RESERVESPACE       "reserve-space"
 #define CFG_KEY_PLUGINS            "plugins"
+#define CFG_KEY_PLUGINS_PC            "plugins-pc"
+#define CFG_KEY_PLUGINS_PAD           "plugins-pad"
 #define CFG_KEY_HIDABLE            "hidable"
 #define CFG_KEY_VISIBLE_MARGIN     "visible-margin"
 #define CFG_KEY_ANIMATION          "animation-duration"
@@ -139,7 +141,7 @@ QString UKUIPanel::positionToStr(IUKUIPanel::Position position)
     return QString();
 }
 
-
+QStringList pluginDesktopDirs();
 /************************************************
 
  ************************************************/
@@ -228,8 +230,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mShowDelayTimer.setInterval(PANEL_SHOW_DELAY);
     connect(&mShowDelayTimer, &QTimer::timeout, [this] { showPanel(mAnimationTime > 0); });
 
-
-
+    initLoadPlugins();
     /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
      * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
      * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
@@ -248,12 +249,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(mStandaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
 
+
     readSettings();
 
     ensureVisible();
-
-    loadPlugins();
-
     show();
     // show it the first time, despite setting
     if (mHidable)
@@ -375,7 +374,6 @@ void UKUIPanel::saveSettings(bool later)
     mOpacity = transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
 }
 
-
 /*确保任务栏在调整分辨率和增加·屏幕之后能保持显示正常*/
 void UKUIPanel::ensureVisible()
 {
@@ -404,6 +402,52 @@ void UKUIPanel::show()
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
 }
 
+void UKUIPanel::initLoadPlugins()
+{
+    loadPlugins();
+    //插件列表初始化,ukui3.1开放
+    #if 0
+    QString names_key(mConfigGroup);
+    names_key += '/';
+    names_key += QLatin1String(CFG_KEY_PLUGINS_PC);
+    QString names_key1(mConfigGroup);
+    names_key1 += '/';
+    names_key1 += QLatin1String(CFG_KEY_PLUGINS_PAD);
+    pcmodel= new PanelPluginsModel(this,names_key , pluginDesktopDirs());
+    padmodel = new PanelPluginsModel(this,names_key1 , pluginDesktopDirs());
+    padmodel->onRemovePlugin();
+    pcmodel->onRemovePlugin();
+
+    //创建监听模式切换的gsettings
+    const QByteArray panelmodel_id("org.ukui.SettingsDaemon.plugins.tablet-mode");
+    //开机第一次检测模式执行对应的任务栏
+    if(QGSettings::isSchemaInstalled(panelmodel_id)){
+        panelmodel_gsettings = new QGSettings(panelmodel_id);
+        if(panelmodel_gsettings->get("tablet-mode").toBool()){
+            resetloadPlugins(CFG_KEY_PLUGINS_PC);
+        }
+        else{
+            resetloadPlugins(CFG_KEY_PLUGINS_PC);
+        }
+        mHidden = mHidable;
+        realign();
+    }
+
+    //监听模式切换执行对应的插件加载
+    connect(panelmodel_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if (key=="tabletMode"){
+            if(panelmodel_gsettings->get("tablet-mode").toBool()){
+                resetloadPlugins(CFG_KEY_PLUGINS_PAD);
+            }
+            else{
+                resetloadPlugins(CFG_KEY_PLUGINS_PC);
+            }
+            mHidden = mHidable;
+            realign();
+        }
+    });
+#endif
+}
 
 QStringList pluginDesktopDirs()
 {
@@ -428,6 +472,21 @@ void UKUIPanel::loadPlugins()
     connect(mPlugins.data(), &PanelPluginsModel::pluginAdded, this, &UKUIPanel::pluginAdded);
     connect(mPlugins.data(), &PanelPluginsModel::pluginRemoved, this, &UKUIPanel::pluginRemoved);
 
+    const auto plugins = mPlugins->plugins();
+    for (auto const & plugin : plugins)
+    {
+        mLayout->addPlugin(plugin);
+        connect(plugin, &Plugin::dragLeft, [this] { mShowDelayTimer.stop(); hidePanel(); });
+    }
+}
+
+void UKUIPanel::resetloadPlugins(QString panel_mode){
+    QString names_key1(mConfigGroup);
+    names_key1 += '/';
+    names_key1 += panel_mode;
+    pcmodel = new PanelPluginsModel(this,names_key1 , pluginDesktopDirs());
+
+    mPlugins.reset(pcmodel);
     const auto plugins = mPlugins->plugins();
     for (auto const & plugin : plugins)
     {
