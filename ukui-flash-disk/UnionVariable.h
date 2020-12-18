@@ -25,6 +25,7 @@
 #include <QTextCodec>
 #include <syslog.h>
 QList<GMount *> *findGMountList();
+QList<GMount *> *findTeleGMountList();
 QList<GVolume *> *findGVolumeList();
 QList<GVolume *> *findTeleGVolumeList();
 QList<GDrive *> *findGDriveList();

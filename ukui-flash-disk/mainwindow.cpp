@@ -67,8 +67,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
     }
 }
 
-
-
 void frobnitz_result_func_drive(GDrive *source_object,GAsyncResult *res,MainWindow *p_this)
 {
     gboolean success =  FALSE;
@@ -153,15 +151,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::initThemeMode()
 {
-//    if(!qtSettings)
-//    {
-//        currentThemeMode = "ukui-white";
-//    }
-//    QStringList keys = qtSettings->keys();
-//    if(keys.contains("styleName"))
-//    {
-//        currentThemeMode = qtSettings->get("style-name").toString();
-//    }
     connect(qtSettings,&QGSettings::changed,this,[=](const QString &key)
     {
         auto style = qtSettings->get(key).toString();
@@ -207,7 +196,6 @@ void MainWindow::getDeviceInfo()
                     if(g_list_length(g_drive_get_volumes(gdrive)) != 0)
                     {
                         *findGDriveList()<<gdrive;
-
                     }
                 }
 
@@ -417,6 +405,13 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     {
         qDebug()<<"不符合过滤条件的设备已被挂载";
     }
+
+    if(g_mount_get_drive(mount) == NULL)
+    {
+        *findTeleGMountList()<<mount;
+        findGMountList()->removeOne(mount);
+    }
+
     if(findGMountList()->size() >= 1)
     {
         p_this->m_systray->show();
@@ -428,6 +423,10 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
 {
     qDebug()<<mount<<"mount remove";
     findGMountList()->removeOne(mount);
+    if(g_mount_get_drive(mount) == NULL)
+    {
+        findTeleGMountList()->removeOne(mount);
+    }
     p_this->driveMountNum = 0;
 
     for(int i = 0; i<g_list_length(g_drive_get_volumes(g_mount_get_drive(mount)));i++)
@@ -479,8 +478,8 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 }
             }
         }
-        g_object_unref(p_this->root);
-        g_free(p_this->mount_uri);
+//        g_object_unref(p_this->root);
+//        g_free(p_this->mount_uri);
     }
     else
     {
@@ -887,6 +886,7 @@ void MainWindow::MainWindowShow()
     qDebug()<<"findGVolumeList.size"<<findGVolumeList()->size();
     qDebug()<<"findTeleGVolumeList.size"<<findTeleGVolumeList()->size();
     qDebug()<<"findGDriveList.size"<<findGDriveList()->size();
+    qDebug()<<"findTeleGmountList.size"<<findTeleGMountList()->size();
     QString strTrans;
     strTrans =  QString::number(m_transparency, 10, 2);
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
@@ -1245,7 +1245,7 @@ void MainWindow::MainWindowShow()
               for(auto cacheVolume:*findGVolumeList())
               {
                   num++;
-                  hign = findGMountList()->size() *40 + findGDriveList()->size() *55 + findTeleGVolumeList()->size() *90;
+                  hign = findGMountList()->size() *40 + findGDriveList()->size() *55 + findTeleGMountList()->size() *90;
                   this->setFixedSize(280,hign);
 //                  if(g_volume_get_drive(cacheVolume) == NULL)
 //                  {
@@ -1281,7 +1281,6 @@ void MainWindow::MainWindowShow()
                                   NULL,NULL,NULL,totalDis1,NULL,NULL,NULL, QString(UDiskPathDis1),NULL,NULL,NULL,2);
                       }
 
-    //                  g_free(driveName);
                       g_free(g_volume_get_name(cacheVolume));
                       g_object_unref(file);
                       g_free(UDiskPathDis1);

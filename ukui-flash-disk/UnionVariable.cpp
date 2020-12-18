@@ -46,6 +46,12 @@ QList<GDrive *> *findGDriveList()
     return &gdriveList;
 }
 
+static QList<GMount *> gtelemountList;
+QList<GMount *> *findTeleGMountList()
+{
+    return &gtelemountList;
+}
+
 QString getElidedText(QFont font, QString str, int MaxWidth)
 {
     if (str.isEmpty())
