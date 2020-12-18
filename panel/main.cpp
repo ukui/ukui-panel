@@ -41,34 +41,50 @@
     CONFIG_ID      Section name in config file ~/.config/ukui/panel.conf
                    (default main)
  */
-void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+    QByteArray localMsg = msg.toLocal8Bit();
+    QByteArray currentTime = QTime::currentTime().toString().toLocal8Bit();
 
-    QString txt;
-          switch (type) {
-          //调试信息提示
-          case QtDebugMsg:
-                  txt = QString("Debug: %1").arg(msg);
-                  break;
+    QString logFilePath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/ukui-panel.log";
 
-          //一般的warning提示
-          case QtWarningMsg:
-                  txt = QString("Warning: %1").arg(msg);
-          break;
-          //严重错误提示
-          case QtCriticalMsg:
-                  txt = QString("Critical: %1").arg(msg);
-          break;
-          //致命错误提示
-          case QtFatalMsg:
-                  txt = QString("Fatal: %1").arg(msg);
-                  abort();
-          }
-    QFile outFile(qgetenv("HOME") +"/.config/ukui/ukui-panel.log");
-    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream ts(&outFile);  //
-    ts << txt << endl;
+    bool showDebug = true;
+    if (!QFile::exists(logFilePath)) {
+        showDebug = false;
+    }
+    FILE *log_file = nullptr;
+
+    if (showDebug) {
+        log_file = fopen(logFilePath.toLocal8Bit().constData(), "a+");
+    }
+
+    const char *file = context.file ? context.file : "";
+    const char *function = context.function ? context.function : "";
+    switch (type) {
+    case QtDebugMsg:
+        if (!log_file) {
+            break;
+        }
+        fprintf(log_file, "Debug: %s: %s (%s:%u, %s)\n", currentTime.constData(), localMsg.constData(), file, context.line, function);
+        break;
+    case QtInfoMsg:
+        fprintf(log_file? log_file: stdout, "Info: %s: %s (%s:%u, %s)\n", currentTime.constData(), localMsg.constData(), file, context.line, function);
+        break;
+    case QtWarningMsg:
+        fprintf(log_file? log_file: stderr, "Warning: %s: %s (%s:%u, %s)\n", currentTime.constData(), localMsg.constData(), file, context.line, function);
+        break;
+    case QtCriticalMsg:
+        fprintf(log_file? log_file: stderr, "Critical: %s: %s (%s:%u, %s)\n", currentTime.constData(), localMsg.constData(), file, context.line, function);
+        break;
+    case QtFatalMsg:
+        fprintf(log_file? log_file: stderr, "Fatal: %s: %s (%s:%u, %s)\n", currentTime.constData(), localMsg.constData(), file, context.line, function);
+        break;
+    }
+
+    if (log_file)
+        fclose(log_file);
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -86,6 +102,8 @@ int main(int argc, char *argv[])
     }
 
     UKUIPanelApplication app(argc, argv);
+
+    qInstallMessageHandler(messageOutput);
 
     //Singleton
     QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
@@ -111,8 +129,6 @@ int main(int argc, char *argv[])
         else
             qDebug() << "Load translations file" << locale << "failed!";
     }
-    //注册MessageHandler
-    qInstallMessageHandler(outputMessage);
 
     return app.exec();
 }
