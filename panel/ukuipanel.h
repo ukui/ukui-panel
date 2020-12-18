@@ -721,6 +721,7 @@ private slots:
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
+    QTimer *time;
 
 };
 
