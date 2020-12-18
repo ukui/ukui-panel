@@ -90,6 +90,7 @@
 #define PANEL_SIZE_LARGE_V 70
 #define PANEL_SIZE_MEDIUM_V 62
 #define PANEL_SIZE_SMALL_V 47
+#define POPUP_BORDER_SPACING 4
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
 #define SCALE_SETTINGS      "org.ukui.SettingsDaemon.plugins.xsettings"
@@ -286,6 +287,12 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
+    time = new QTimer(this);
+    connect(time, &QTimer::timeout, this,[=] (){
+        mShowDelayTimer.stop();
+        hidePanel();
+        time->stop();
+    });
 //    int height = QApplication::screens().at(0)->size().height();
 //    int width = QApplication::screens().at(0)->size().width();
     MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE;//0.0851852 * height;
@@ -986,20 +993,25 @@ void UKUIPanel::adjustPanel()
     pmenu_positon->setDisabled(mLockPanel);
 
 
-//    mSettings->beginGroup(mConfigGroup);
-//    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
-//    hidepanel->setDisabled(mLockPanel);
-//    hidepanel->setCheckable(true);
-//    hidepanel->setChecked(mHidable);
-//    connect(hidepanel, &QAction::triggered, [this] {
-//        mSettings->beginGroup(mConfigGroup);
-//        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
-//        mSettings->endGroup();
-//        if(mHidable)
-//            mHideTimer.stop();
-//        setHidable(!mHidable,true);
-//    });
-//    mSettings->endGroup();
+    mSettings->beginGroup(mConfigGroup);
+    QAction * hidepanel = menu->addAction(tr("Hide Panel"));
+    hidepanel->setDisabled(mLockPanel);
+    hidepanel->setCheckable(true);
+    hidepanel->setChecked(mHidable);
+    qDebug()<<" 点击前  mHidable  ****:"<<mHidable;
+    connect(hidepanel, &QAction::triggered, [this] {
+        mSettings->beginGroup(mConfigGroup);
+        mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
+        mSettings->endGroup();
+        if(mHidable)
+            mHideTimer.stop();
+        qDebug()<<" 点击后  mHidable  ****:"<<mHidable;
+        setHidable(!mHidable,true);
+        mHidden=mHidable;
+        mShowDelayTimer.start();
+        time->start(1000);
+    });
+    mSettings->endGroup();
 }
 /*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
