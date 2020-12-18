@@ -77,8 +77,8 @@
 
 #define USR_SHARE_APP_CURRENT   "/usr/share/applications/."
 #define USR_SHARE_APP_UPER      "/usr/share/applications/.."
-#define PEONY_TRASH             "/usr/share/applications/peony-trash.desktop"
-#define PEONY_COMUTER           "/usr/share/applications/peony-trash.desktop"
+#define PEONY_TRASH             "/usr/share/applications/peony-computer.desktop"
+#define PEONY_COMUTER           "/usr/share/applications/peony-home.desktop"
 #define PEONY_HOME              "/usr/share/applications/peony-trash.desktop"
 #define PEONY_MAIN              "/usr/share/applications/peony.desktop"
 
