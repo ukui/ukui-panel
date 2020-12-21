@@ -232,7 +232,7 @@ void LunarCalendarWidget::initWidget()
     QPushButton *btnToday = new QPushButton;
     btnToday->setObjectName("btnToday");
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnToday->setText(tr("Today"));
+    btnToday->setText(tr("今天"));
 
     //年份下拉框
     cboxYear = new QComboBox;
