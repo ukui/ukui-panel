@@ -67,8 +67,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_
     }
 }
 
-
-
 void frobnitz_result_func_drive(GDrive *source_object,GAsyncResult *res,MainWindow *p_this)
 {
     gboolean success =  FALSE;
@@ -153,15 +151,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::initThemeMode()
 {
-//    if(!qtSettings)
-//    {
-//        currentThemeMode = "ukui-white";
-//    }
-//    QStringList keys = qtSettings->keys();
-//    if(keys.contains("styleName"))
-//    {
-//        currentThemeMode = qtSettings->get("style-name").toString();
-//    }
     connect(qtSettings,&QGSettings::changed,this,[=](const QString &key)
     {
         auto style = qtSettings->get(key).toString();
@@ -207,7 +196,6 @@ void MainWindow::getDeviceInfo()
                     if(g_list_length(g_drive_get_volumes(gdrive)) != 0)
                     {
                         *findGDriveList()<<gdrive;
-
                     }
                 }
 
@@ -246,6 +234,13 @@ void MainWindow::getDeviceInfo()
             *findGMountList()<<gmount;
         }
         current_mount_list = current_mount_list->next;
+        this->root = g_mount_get_default_location(gmount);
+        this->mount_uri = g_file_get_uri(this->root);
+        if(g_str_has_prefix(this->mount_uri,"file:///data"))
+        {
+            findGVolumeList()->removeOne(g_mount_get_volume(gmount));
+            findGMountList()->removeOne(gmount);
+        }
     }
 
  //determine the systray icon should be showed  or be hieded
@@ -410,6 +405,13 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     {
         qDebug()<<"不符合过滤条件的设备已被挂载";
     }
+
+    if(g_mount_get_drive(mount) == NULL)
+    {
+        *findTeleGMountList()<<mount;
+        findGMountList()->removeOne(mount);
+    }
+
     if(findGMountList()->size() >= 1)
     {
         p_this->m_systray->show();
@@ -421,6 +423,10 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
 {
     qDebug()<<mount<<"mount remove";
     findGMountList()->removeOne(mount);
+    if(g_mount_get_drive(mount) == NULL)
+    {
+        findTeleGMountList()->removeOne(mount);
+    }
     p_this->driveMountNum = 0;
 
     for(int i = 0; i<g_list_length(g_drive_get_volumes(g_mount_get_drive(mount)));i++)
@@ -458,8 +464,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
             qDebug()<<"sig has emited";
             Q_EMIT p_this->convertShowWindow();     //emit a signal to trigger the MainMainShow slot
         }
-        p_this->root = g_mount_get_default_location(g_volume_get_mount(source_object));
-        p_this->mount_uri = g_file_get_uri(p_this->root);
+
         if(p_this->mount_uri)
         {
             if(strcmp(p_this->mount_uri,"burn:///") == 0 || strcmp(p_this->mount_uri,"cdda://sr0/") == 0 || strcmp(p_this->mount_uri,"file:///data") !=0)
@@ -473,8 +478,8 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 }
             }
         }
-        g_object_unref(p_this->root);
-        g_free(p_this->mount_uri);
+//        g_object_unref(p_this->root);
+//        g_free(p_this->mount_uri);
     }
     else
     {
@@ -881,6 +886,7 @@ void MainWindow::MainWindowShow()
     qDebug()<<"findGVolumeList.size"<<findGVolumeList()->size();
     qDebug()<<"findTeleGVolumeList.size"<<findTeleGVolumeList()->size();
     qDebug()<<"findGDriveList.size"<<findGDriveList()->size();
+    qDebug()<<"findTeleGmountList.size"<<findTeleGMountList()->size();
     QString strTrans;
     strTrans =  QString::number(m_transparency, 10, 2);
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
@@ -981,7 +987,7 @@ void MainWindow::MainWindowShow()
                       }
                       break;
                       case 2:
-                      num++;                     
+                      num++;
                       if(num == 1)
                       {
                           newarea(1,cacheDrive,NULL,g_drive_get_name(cacheDrive),
@@ -1029,7 +1035,7 @@ void MainWindow::MainWindowShow()
                            g_free(deviceName);
                            qDebug()<<"2222";
                        }
-                       GFile *fileRoot = g_mount_get_root(g_volume_get_mount(element));                     
+                       GFile *fileRoot = g_mount_get_root(g_volume_get_mount(element));
                        UDiskPathDis1 = g_file_get_path(fileRoot);
                        GFile *file = g_file_new_for_path(UDiskPathDis1);
                        GFileInfo *info = g_file_query_filesystem_info(file,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
@@ -1239,7 +1245,7 @@ void MainWindow::MainWindowShow()
               for(auto cacheVolume:*findGVolumeList())
               {
                   num++;
-                  hign = findGMountList()->size() *40 + findGDriveList()->size() *55 + findTeleGVolumeList()->size() *90;
+                  hign = findGMountList()->size() *40 + findGDriveList()->size() *55 + findTeleGMountList()->size() *90;
                   this->setFixedSize(280,hign);
 //                  if(g_volume_get_drive(cacheVolume) == NULL)
 //                  {
@@ -1275,7 +1281,6 @@ void MainWindow::MainWindowShow()
                                   NULL,NULL,NULL,totalDis1,NULL,NULL,NULL, QString(UDiskPathDis1),NULL,NULL,NULL,2);
                       }
 
-    //                  g_free(driveName);
                       g_free(g_volume_get_name(cacheVolume));
                       g_object_unref(file);
                       g_free(UDiskPathDis1);
@@ -1555,8 +1560,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
     return false;
 }
-
-
 
 //new a gsettings object to get the information of the opacity of the window
 void MainWindow::initTransparentState()
