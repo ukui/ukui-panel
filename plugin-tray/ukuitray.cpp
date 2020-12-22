@@ -691,10 +691,10 @@ void UKUITray::onIconDestroyed(QObject * icon)
     //is already finished, so the qobject_cast to child will return nullptr in all cases
     mIcons.removeAll(static_cast<TrayIcon *>(icon));
     mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
-    if(0 == mStorageIcons.size())
-    {
-        mBtn->setVisible(false);
-    }
+//    if(0 == mStorageIcons.size())
+//    {
+//        mBtn->setVisible(false);
+//    }
 }
 
 /*将托盘应用置为freeze的状态*/
