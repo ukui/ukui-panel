@@ -818,6 +818,18 @@ function popup_div(event) {
             div.className = 'visible_div';
             document.getElementById('month_div').className = 'hidden_div';
             calendar.style.display = "none";
+            year = parseInt(year_selector.value);
+            var li = document.getElementById('year_div');
+                    year_selector.value = year + '年';
+                    // selected_date_div.innerHTML = year_selector.value + month_selector.value;
+                    for (var index =  0;  index < 16;  index++) {
+
+                        // li.children[0].children[index].innerHTML = '<br />';
+                        var currentYear = year + index;
+                        //li.children[0].children[index].innerHTML= '<br />' + curretYear + '年';
+                        li.children[0].children[index].innerHTML ='<span class="year_month_grid">'+ currentYear+ '年' + '</span>';
+                        li.children[0].children[index].addEventListener('click', new_month_selected); // new year implies new month
+                    }
         } else {
             div.className = 'hidden_div';
             calendar.style.display = "";
