@@ -247,6 +247,7 @@ public:
      * when the panel-specific icon theme changes.
      */
     void updateConfigDialog() const;
+    void bootOptionsFilter(QString opt);
 
 public slots:
     /**

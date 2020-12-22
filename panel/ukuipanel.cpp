@@ -55,6 +55,8 @@
 //#include <glib.h>
 //#include <gio/gio.h>
 #include <QGSettings>
+#include <sys/stat.h>
+#include <unistd.h>
 // Turn on this to show the time required to load each plugin during startup
 // #define DEBUG_PLUGIN_LOADTIME
 #ifdef DEBUG_PLUGIN_LOADTIME
@@ -167,6 +169,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mAnimation(nullptr),
     mLockPanel(false)
 {
+    // 快捷参数
+    if (UKUIPanelApplication::arguments().length() > 1) {
+        bootOptionsFilter(QApplication::arguments().at(1));
+    }
     //You can find information about the flags and widget attributes in your
     //Qt documentation or at https://doc.qt.io/qt-5/qt.html
     //Qt::FramelessWindowHint = Produces a borderless window. The user cannot
@@ -400,6 +406,20 @@ void UKUIPanel::show()
 {
     QWidget::show();
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
+}
+
+void UKUIPanel::bootOptionsFilter(QString opt) {
+    if (opt == "--reset") {
+//        resetloadPlugins(CFG_KEY_PLUGINS_PC);
+        system("killall ukui-panel");
+        qDebug()<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+    }
+    else if(opt == "--pad"){
+            resetloadPlugins(CFG_KEY_PLUGINS_PAD);
+    }
+    else if(opt == "--pc"){
+            resetloadPlugins(CFG_KEY_PLUGINS_PC);
+    }
 }
 
 void UKUIPanel::initLoadPlugins()
@@ -995,6 +1015,14 @@ void UKUIPanel::adjustPanel()
         mHidden=mHidable;
     });
     mSettings->endGroup();
+
+    QAction * resetPanel = menu->addAction(tr("Reset Panel"));
+    connect(resetPanel, &QAction::triggered, [this] {
+        system("rm ~/.config/ukui/panel.conf");
+        system("cp /usr/share/ukui/panel.conf ~/.config/ukui/");
+        sleep(3);
+        resetloadPlugins(CFG_KEY_PLUGINS_PC);
+    });
 }
 /*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
