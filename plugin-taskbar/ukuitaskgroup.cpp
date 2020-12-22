@@ -236,6 +236,10 @@ void UKUITaskGroup::badBackFunctionToFindDesktop() {
             QFileInfo fileInfo = list.at(i);
             if (parentTaskBar()->ignoreSymbolCMP(fileInfo.filePath(), groupName())) {
                 file_name = fileInfo.filePath();
+                if (file_name == QString(PEONY_COMUTER) ||
+                    file_name == QString(PEONY_TRASH) ||
+                    file_name == QString(PEONY_HOME))
+                    file_name = QString(PEONY_MAIN);
                 break;
             }
         }
@@ -282,6 +286,10 @@ void UKUITaskGroup::initDesktopFileName(WId window) {
             flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
             if (flag && !desktopFileExeName.isEmpty()) {
                 file_name = fileInfo.filePath();
+                if (file_name == QString(PEONY_COMUTER) ||
+                    file_name == QString(PEONY_TRASH) ||
+                    file_name == QString(PEONY_HOME) )
+                    file_name = QString(PEONY_MAIN);
                 break;
             }
         }

@@ -119,6 +119,7 @@ Q_OBJECT
 public:
     explicit CalendarActiveLabel(IUKUIPanelPlugin *plugin,QWidget * = NULL);
     ~CalendarActiveLabel();
+    IUKUIPanelPlugin* getmPlugin() { return mPlugin; }
 
 Q_SIGNALS:
     void wheelScrolled(int);

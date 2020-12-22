@@ -151,6 +151,7 @@ signals:
     void dropped(QObject * dragSource, QPoint const & pos);
     void dragging(QObject * dragSource, QPoint const & pos);
     void windowMaximize();
+    void iconThemeChanged();
 
     void closeSigtoPop();
 };
