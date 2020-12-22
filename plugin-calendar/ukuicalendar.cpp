@@ -251,7 +251,9 @@ void IndicatorCalendar::updateTimeText()
 
     //    if (!isUpToDate || mbIsNeedUpdate)
     //    {
-    const QSize old_size = mContent->sizeHint();
+    //const QSize old_size = mContent->sizeHint();
+    const QByteArray _id("org.ukui.style");
+    QGSettings *fgsettings = new QGSettings(_id);
     QString str;
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id))
@@ -296,7 +298,7 @@ void IndicatorCalendar::updateTimeText()
                 "QLabel{"
                 "border-width:  0px;"                     //边框宽度像素
                 "border-radius: 6px;"                       //边框圆角半径像素
-                "font-size:     14px;"                      //字体，字体大小
+                //"font-size:     14px;"                      //字体，字体大小
                 "padding:       0px;"                       //填衬
                 "text-align:center;"                        //文本居中
                 "}"
@@ -310,6 +312,11 @@ void IndicatorCalendar::updateTimeText()
                 "background-color:rgba(190,216,239,12%);"
                 "}"
                 );
+    QFont font;
+    int font_size = fgsettings->get("system-font-size").toInt() +
+                    mContent->getmPlugin()->panel()->panelSize() / 23 - 1;
+    font.setPixelSize(font_size);
+    mContent->setFont(font);
     updatePopupContent();
     mbIsNeedUpdate = false;
 }
@@ -757,7 +764,7 @@ void IndicatorCalendar::setTimeShowStyle()
     }
     else
     {
-        mContent->setFixedSize(size, CALENDAR_WIDTH);
+        mContent->setFixedSize(size, CALENDAR_WIDTH - 20);
     }
     mbIsNeedUpdate = true;
     timeout();

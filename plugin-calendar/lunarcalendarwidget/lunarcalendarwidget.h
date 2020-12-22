@@ -7,6 +7,14 @@
 #include <QTimer>
 #include <QVBoxLayout>
 #include <QWheelEvent>
+#include "qfontdatabase.h"
+#include "qdatetime.h"
+#include "qlayout.h"
+#include "qlabel.h"
+#include "qpushbutton.h"
+#include "qtoolbutton.h"
+#include "qcombobox.h"
+#include "qdebug.h"
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
@@ -93,6 +101,7 @@ private:
     QTimer *timer;
     QVBoxLayout *timeShow;
     QWidget *widgetTime;
+    QPushButton *btnToday;
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
     QComboBox *cboxYear;                //年份下拉框

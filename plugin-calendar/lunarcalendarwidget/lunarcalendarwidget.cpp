@@ -1,14 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
 #include "lunarcalendarwidget.h"
-#include "qfontdatabase.h"
-#include "qdatetime.h"
-#include "qlayout.h"
-#include "qlabel.h"
-#include "qpushbutton.h"
-#include "qtoolbutton.h"
-#include "qcombobox.h"
-#include "qdebug.h"
 
 #define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
 #define LUNAR_KEY                 "calendar"
@@ -49,6 +41,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 #endif
     }
 
+    btnToday = new QPushButton;
     btnClick = false;
 
     calendarStyle = CalendarStyle_Red;
@@ -81,6 +74,25 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
             setColor(dark_style);
         }
     });
+
+    //实时监听系统字体的改变
+    const QByteArray id("org.ukui.style");
+    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
+    connect(fontSetting, &QGSettings::changed,[=](QString key) {
+        if ("systemFont" == key || "systemFontSize" ==key) {
+            QFont font = this->font();
+            btnToday->setFont(font);
+            cboxMonth->setFont(font);
+            cboxYear->setFont(font);
+            for (int i = 0; i < 42; i++) {
+                dayItems.value(i)->setFont(font);
+            }
+            for (int i = 0; i < 7; i++) {
+                labWeeks.value(i)->setFont(font);
+            }
+        }
+    });
+
 
     initWidget();
     initDate();
@@ -229,7 +241,6 @@ void LunarCalendarWidget::initWidget()
     btnNextMonth->setIconSize(QSize(iconFont.pointSize(),iconFont.pointSize()));
 
     //转到今天
-    QPushButton *btnToday = new QPushButton;
     btnToday->setObjectName("btnToday");
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnToday->setText(tr("Today"));
