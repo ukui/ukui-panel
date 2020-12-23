@@ -40,6 +40,9 @@
 #include <QFile>
 #include "comm_func.h"
 
+#define CONFIG_FILE_BACKUP     "/usr/share/ukui/panel.conf"
+#define CONFIG_FILE_LOCAL      ".config/ukui/panel.conf"
+
 UKUIPanelApplicationPrivate::UKUIPanelApplicationPrivate(UKUIPanelApplication *q)
     : mSettings(0),
       q_ptr(q)
@@ -96,7 +99,11 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     parser.addVersionOption();
 
     QCommandLineOption monitorRoleOption("reset");
+    QCommandLineOption padRoleOption("pad");
+    QCommandLineOption pcRoleOption("pc");
     parser.addOption(monitorRoleOption);
+    parser.addOption(padRoleOption);
+    parser.addOption(pcRoleOption);
 
     QCommandLineOption configFileOption(QStringList()
             << QLatin1String("c") << QLatin1String("config") << QLatin1String("configfile"),
@@ -106,9 +113,12 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
 
     parser.process(*this);
 
-    if(parser.isSet(monitorRoleOption)){
-        qDebug()<<"reset";
-    }
+//    if(parser.isSet(monitorRoleOption)){
+//        QFile::remove(QString(qgetenv("HOME"))+CONFIG_FILE_LOCAL);
+//        QFile::copy(CONFIG_FILE_BACKUP,QString(qgetenv("HOME"))+CONFIG_FILE_LOCAL);
+//        d->mSettings = new UKUi::Settings(QLatin1String("panel"), this);
+
+//    }
 
 //    QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
     const QString configFile = parser.value(configFileOption);

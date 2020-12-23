@@ -55,56 +55,13 @@
 //#include <glib.h>
 //#include <gio/gio.h>
 #include <QGSettings>
+#include <sys/stat.h>
+#include <unistd.h>
 // Turn on this to show the time required to load each plugin during startup
 // #define DEBUG_PLUGIN_LOADTIME
 #ifdef DEBUG_PLUGIN_LOADTIME
 #include <QElapsedTimer>
 #endif
-
-// Config keys and groups
-#define CFG_KEY_SCREENNUM          "desktop"
-#define CFG_KEY_POSITION           "position"
-#define CFG_KEY_LINECNT            "lineCount"
-#define CFG_KEY_LENGTH             "width"
-#define CFG_KEY_PERCENT            "width-percent"
-#define CFG_KEY_ALIGNMENT          "alignment"
-#define CFG_KEY_RESERVESPACE       "reserve-space"
-#define CFG_KEY_PLUGINS            "plugins"
-#define CFG_KEY_PLUGINS_PC            "plugins-pc"
-#define CFG_KEY_PLUGINS_PAD           "plugins-pad"
-#define CFG_KEY_HIDABLE            "hidable"
-#define CFG_KEY_VISIBLE_MARGIN     "visible-margin"
-#define CFG_KEY_ANIMATION          "animation-duration"
-#define CFG_KEY_SHOW_DELAY         "show-delay"
-#define CFG_KEY_LOCKPANEL          "lockPanel"
-
-#define GSETTINGS_SCHEMA_SCREENSAVER "org.mate.interface"
-#define KEY_MODE "gtk-theme"
-
-#define PANEL_SIZE_LARGE  92
-#define PANEL_SIZE_MEDIUM 70
-#define PANEL_SIZE_SMALL  46
-#define ICON_SIZE_LARGE   64
-#define ICON_SIZE_MEDIUM  48
-#define ICON_SIZE_SMALL   32
-
-#define PANEL_SETTINGS      "org.ukui.panel.settings"
-#define PANEL_SIZE_KEY      "panelsize"
-#define ICON_SIZE_KEY       "iconsize"
-#define PANEL_POSITION_KEY  "panelposition"
-#define SHOW_TASKVIEW       "showtaskview"
-#define SHOW_NIGHTMODE      "shownightmode"
-
-#define TRANSPARENCY_SETTINGS     "org.ukui.control-center.personalise"
-#define TRANSPARENCY_KEY          "transparency"
-
-#define ORG_UKUI_STYLE            "org.ukui.style"
-#define STYLE_NAME                "styleName"
-#define STYLE_NAME_KEY_DARK       "ukui-dark"
-#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
-#define STYLE_NAME_KEY_BLACK      "ukui-black"
-#define STYLE_NAME_KEY_LIGHT      "ukui-light"
-#define STYLE_NAME_KEY_WHITE      "ukui-white"
 
 /************************************************
  Returns the Position by the string.
@@ -167,6 +124,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mAnimation(nullptr),
     mLockPanel(false)
 {
+    // 快捷参数
+    if (UKUIPanelApplication::arguments().length() > 1) {
+        bootOptionsFilter(QApplication::arguments().at(1));
+    }
     //You can find information about the flags and widget attributes in your
     //Qt documentation or at https://doc.qt.io/qt-5/qt.html
     //Qt::FramelessWindowHint = Produces a borderless window. The user cannot
@@ -249,6 +210,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(mStandaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
 
+    getMacroNumber();
 
     readSettings();
 
@@ -332,6 +294,47 @@ void UKUIPanel::readSettings()
     mSettings->endGroup();
 }
 
+void UKUIPanel::getMacroNumber() {
+    //int height = QApplication::screens().at(0)->size().height();
+    //int width = QApplication::screens().at(0)->size().width();
+    MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE;//0.0851852 * height;
+    MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM;//0.0648148 * height;
+    SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL;//0.0425926 * height;
+    if (!isHorizontal()) {
+        MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE_V;//*= ((float)height / (float)width) * 1.25;
+        MID_SIZE_PANEL_IN_CALC = PANEL_SIZE_MEDIUM_V;//*= ((float)height / (float)width) * 1.5;
+        SML_SIZE_PANEL_IN_CALC = PANEL_SIZE_SMALL_V;//*= ((float)height / (float)width) * 1.75;
+    }
+    MAX_ICON_SIZE_IN_CLAC = 0.695652174 * MAX_SIZE_PANEL_IN_CALC;//ICON_SIZE_LARGE;
+    MID_ICON_SIZE_IN_CLAC =  0.695652174 * MID_SIZE_PANEL_IN_CALC;//ICON_SIZE_MEDIUM;
+    SML_ICON_SIZE_IN_CLAC =  0.695652174 * SML_SIZE_PANEL_IN_CALC;//ICON_SIZE_SMALL;
+}
+
+void UKUIPanel::getSize() {
+    int flg = 0;
+    int size = gsettings->get(PANEL_SIZE_KEY).toInt();
+    if (size == MAX_SIZE_PANEL_IN_CALC) {
+        flg = 2;
+    } else if (size == MID_SIZE_PANEL_IN_CALC) {
+        flg = 1;
+    }
+    getMacroNumber();
+    switch (flg) {
+    case 0:
+        gsettings->set(PANEL_SIZE_KEY, SML_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY, SML_ICON_SIZE_IN_CLAC);
+        break;
+    case 1:
+        gsettings->set(PANEL_SIZE_KEY, MID_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY, MID_ICON_SIZE_IN_CLAC);
+        break;
+    case 2:
+        gsettings->set(PANEL_SIZE_KEY, MAX_SIZE_PANEL_IN_CALC);
+        gsettings->set(ICON_SIZE_KEY, MAX_ICON_SIZE_IN_CLAC);
+        break;
+    }
+}
+
 
 /************************************************
 
@@ -400,6 +403,20 @@ void UKUIPanel::show()
 {
     QWidget::show();
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
+}
+
+void UKUIPanel::bootOptionsFilter(QString opt) {
+    if (opt == "--reset") {
+//        resetloadPlugins(CFG_KEY_PLUGINS_PC);
+        system("killall ukui-panel");
+        qDebug()<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+    }
+    else if(opt == "--pad"){
+            resetloadPlugins(CFG_KEY_PLUGINS_PAD);
+    }
+    else if(opt == "--pc"){
+            resetloadPlugins(CFG_KEY_PLUGINS_PC);
+    }
 }
 
 void UKUIPanel::initLoadPlugins()
@@ -995,6 +1012,14 @@ void UKUIPanel::adjustPanel()
         mHidden=mHidable;
     });
     mSettings->endGroup();
+
+    QAction * resetPanel = menu->addAction(tr("Reset Panel"));
+    connect(resetPanel, &QAction::triggered, [this] {
+        system("rm ~/.config/ukui/panel.conf");
+        system("cp /usr/share/ukui/panel.conf ~/.config/ukui/");
+        sleep(3);
+        resetloadPlugins(CFG_KEY_PLUGINS_PC);
+    });
 }
 /*右键　显示桌面选项*/
 void UKUIPanel::showDesktop()
