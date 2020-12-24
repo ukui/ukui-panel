@@ -45,6 +45,7 @@
 #include <QtDBus/QtDBus>
 #include <QPushButton>
 #include <QToolButton>
+#include <QToolTip>
 
 QT_BEGIN_NAMESPACE
 class QByteArray;
@@ -145,6 +146,8 @@ public slots:
     bool RemoveFromTaskbar(QString arg);
     void FileDeleteFromTaskbar(QString arg);
     bool CheckIfExist(QString arg);
+    bool ShowTooltipText(QString arg);
+    bool HideTooltipText(QString arg);
     int GetPanelPosition(QString arg);
     int GetPanelSize(QString arg);
     void ReloadSecurityConfig();
@@ -176,6 +179,10 @@ class FilectrlAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"out\" type=\"b\"/>\n"
 "      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
 "    </method>\n"
+"    <method name=\"ShowTooltipText\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
 "    <method name=\"GetPanelPosition\">\n"
 "      <arg direction=\"out\" type=\"i\"/>\n"
 "      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
@@ -201,6 +208,7 @@ public Q_SLOTS: // METHODS
     bool CheckIfExist(const QString &arg);
     bool RemoveFromTaskbar(const QString &arg);
     bool FileDeleteFromTaskbar(const QString &arg);
+    bool ShowTooltipText(const QString &arg);
     int GetPanelPosition(const QString &arg);
     int GetPanelSize(const QString &arg);
     void ReloadSecurityConfig();
