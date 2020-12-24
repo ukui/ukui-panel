@@ -527,7 +527,7 @@ void IndicatorCalendar::settingsChanged()
         realign();
     }
 
-    setTimeText();
+//    setTimeText();
 }
 
 
