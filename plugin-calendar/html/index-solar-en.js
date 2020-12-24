@@ -818,7 +818,7 @@ function popup_div(event) {
             div.className = 'visible_div';
             document.getElementById('month_div').className = 'hidden_div';
             calendar.style.display = "none";
-    	    year = parseInt(year_selector.value);
+            year = parseInt(year_selector.value);
             var li = document.getElementById('year_div');
                     year_selector.value = year + '年';
                     // selected_date_div.innerHTML = year_selector.value + month_selector.value;

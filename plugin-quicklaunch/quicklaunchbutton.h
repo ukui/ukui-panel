@@ -60,6 +60,9 @@ public:
 
     QHash<QString,QString> settingsMap();
     QString file_name;
+    QString file;
+    QString name;
+    QString exec;
     static QString mimeDataFormat() { return QLatin1String("x-ukui/quicklaunch-button"); }
 
 signals:
@@ -94,6 +97,7 @@ private:
     QuickLaunchStatus quicklanuchstatus;
     CustomStyle toolbuttonstyle;
     QGSettings *mgsettings;
+    QString isComputerOrTrash(QString urlName);
 
     void modifyQuicklaunchMenuAction(bool direction);
 
