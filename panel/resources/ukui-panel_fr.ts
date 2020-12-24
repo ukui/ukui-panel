@@ -791,7 +791,8 @@ Voulez-vous supprimer ce panneau ?</translation>
         <location filename="../../plugin-quicklaunch/ukuiquicklaunch.cpp" line="591"/>
         <source>Drop application
 icons here</source>
-        <translation>Déposer les icônes d&apos;application ici</translation>
+        <translation>Déposer l&apos;application
+icône ici</translation>
     </message>
 </context>
 <context>
