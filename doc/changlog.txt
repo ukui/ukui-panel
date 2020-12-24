@@ -1,0 +1,24 @@
++ukui-panel (3.0.1-42) v101; urgency=medium
++
++  * 更新任务栏高分屏适配代码 Link#28059
++    提供给输入法显示toolTips的相关接口 Link #20236
++    点击快速启动栏打开应用改为gio的方式加载 Link #24172
++    解决任务栏注释出现的段错误问题 Link #29586
++
++ -- hepuyao <hepuyao@kylinos.cn>  Thu, 24 Dec 2020 15:10:02 +0800
++
++ukui-panel (3.0.1-40~1224) v101; urgency=medium
++
++  * 解决u盘图标不消失的问题
++
++ -- hepuyao <hepuyao@kylinos.cn>  Fri, 11 Dec 2020 13:49:52 +0800
++
++ukui-panel (3.0.1-39) v101; urgency=medium
++
++  * 任务栏判断配置文件异常
++    解决翻译文件“睡眠”和“休眠”统一 #27572
++    任务栏托盘图标高亮逻辑优化  #22328
++    修改判断右键是否需要添加系统监视器的接口
++
++ -- hepuyao <hepuyao@kylinos.cn>  Thu, 10 Dec 2020 20:25:05 +0800
+
