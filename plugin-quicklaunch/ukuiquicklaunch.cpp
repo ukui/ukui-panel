@@ -750,6 +750,19 @@ void UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
     removeButton(file);
 }
 
+bool UKUIQuickLaunch::ShowTooltipText(QString arg)
+{
+    QRect rect;
+    QToolTip::showText(QCursor::pos(),arg,nullptr,rect,3600000);
+    return true;
+}
+
+bool UKUIQuickLaunch::HideTooltipText(QString arg)
+{
+    QToolTip::hideText();
+    return true;
+}
+
 /*获取任务栏位置的接口*/
 int UKUIQuickLaunch::GetPanelPosition(QString arg)
 {
@@ -920,6 +933,14 @@ bool FilectrlAdaptor::FileDeleteFromTaskbar(const QString &arg)
 {
     bool out0;
     QMetaObject::invokeMethod(parent(), "FileDeleteFromTaskbar", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+
+bool FilectrlAdaptor::ShowTooltipText(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "ShowTooltipText", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
     return out0;
 }
 
