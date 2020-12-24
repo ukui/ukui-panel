@@ -74,6 +74,9 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(this_customContextMenuRequested(const QPoint&)));
     file_name=act->m_settingsMap["desktop"];
+    file = act->m_settingsMap["file"];
+    exec = act->m_settingsMap["exec"];
+    name = act->m_settingsMap["name"];
     repaint();
 
 }
@@ -272,37 +275,45 @@ void QuickLaunchButton::dropEvent(QDropEvent *e)
     const auto urls = e->mimeData()->urls().toSet();
     for (const QUrl &url : urls)
     {
-        QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-        QFileInfo fi(fileName);
         XdgDesktopFile xdg;
-        QuickLaunchAction *_action = NULL;
-        if (!fileName.compare("computer:///"))
-            fileName = QString("/usr/share/applications/peony-computer.desktop");
-        if (!fileName.compare("trash:///"))
-            fileName = QString("/usr/share/applications/peony-trash.desktop");
+        QString urlName(url.isLocalFile() ? url.toLocalFile() : url.url());
+        QFileInfo ur(urlName);
+        QString fileName("/usr/share/applications/");
+
+        fileName.append(urlName.section('/', -1, -1));
+        fileName = uqk->isComputerOrTrash(urlName);
+        urlName = uqk->isComputerOrTrash(urlName);
+
+        if (uqk->pubCheckIfExist(urlName)) return;
         if (uqk->pubCheckIfExist(fileName)) return;
-        if (xdg.load(fileName))
-        {
-            if (xdg.isSuitable())
-                _action = new QuickLaunchAction(&xdg, this);
-        }
-        else if (fi.exists() && fi.isExecutable() && !fi.isDir())
-        {
-            _action = new QuickLaunchAction(fileName, fileName, "", this);
-        }
-        else if (fi.exists())
-        {
-            _action = new QuickLaunchAction(fileName, this);
-        }
-        else
-        {
-            qWarning() << "XdgDesktopFile" << fileName << "is not valid";
+        if (uqk->isDesktopFile(urlName)) {
+            if (ur.isSymLink()){
+                if (xdg.load(urlName) && xdg.isSuitable()) {
+                   if (uqk->pubCheckIfExist(xdg.fileName())) return;
+                   uqk->pubAddButton(new QuickLaunchAction(&xdg, this));
+                }
+            } else {
+                if (xdg.load(fileName) && xdg.isSuitable()) {
+                   if (uqk->pubCheckIfExist(urlName)) return;
+                   uqk->pubAddButton(new QuickLaunchAction(&xdg, this));
+                }
+            }
+        } else if (ur.exists() && ur.isExecutable() && !ur.isDir() || ur.isSymLink()) {
+            if (ur.size() <= 153600)
+                xdg.load(urlName);
+            uqk->pubAddButton(new QuickLaunchAction(urlName, this));
+        } else if (ur.exists()) {
+            if (ur.size() <= 153600) {
+                xdg.load(urlName);
+            }
+            uqk->pubAddButton(new QuickLaunchAction(urlName, this));
+            //taskbar->pubAddButton(new QuickLaunchAction(urlName, urlName, "", this));
+        } else {
+            qWarning() << "XdgDesktopFile" << urlName << "is not valid";
             QMessageBox::information(this, tr("Drop Error"),
-                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(urlName)
                                      );
         }
-        if (_action)
-            uqk->pubAddButton(_action);
     }
     uqk->saveSettings();
 

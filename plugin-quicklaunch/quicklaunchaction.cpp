@@ -160,8 +160,12 @@ void QuickLaunchAction::execAction(QString additionalAction)
             break;
         case ActionFile:
             QFileInfo fileinfo(exec);
+            QString openfile = exec;
+            if (fileinfo.isSymLink()) {
+                openfile = fileinfo.symLinkTarget();
+            }
             if (fileinfo.exists()) {
-                QDesktopServices::openUrl(QUrl(exec));
+                QDesktopServices::openUrl(QUrl::fromLocalFile(openfile));
             } else {
                 showQMessage =true;
             }
