@@ -88,6 +88,8 @@ public:
     void showPlaceHolder();
     void pubAddButton (QuickLaunchAction *action) { addButton(action); }
     bool pubCheckIfExist(QString name);
+    QString isComputerOrTrash(QString urlName);
+    bool isDesktopFile(QString urlName);
 
     friend class FilectrlAdaptor;
 
