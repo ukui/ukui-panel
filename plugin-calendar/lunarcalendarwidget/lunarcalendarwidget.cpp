@@ -86,9 +86,11 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
             cboxYear->setFont(font);
             for (int i = 0; i < 42; i++) {
                 dayItems.value(i)->setFont(font);
+                dayItems.value(i)->repaint();
             }
             for (int i = 0; i < 7; i++) {
                 labWeeks.value(i)->setFont(font);
+                labWeeks.value(i)->repaint();
             }
         }
     });
