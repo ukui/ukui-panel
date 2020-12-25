@@ -36,12 +36,12 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="821"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="828"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="825"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="832"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>
@@ -427,7 +427,7 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>IndicatorCalendar</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="412"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="419"/>
         <source>&apos;&lt;b&gt;&apos;HH:mm:ss&apos;&lt;/b&gt;&lt;br/&gt;&lt;font size=&quot;-2&quot;&gt;&apos;ddd, d MMM yyyy&apos;&lt;br/&gt;&apos;TT&apos;&lt;/font&gt;&apos;</source>
         <translation></translation>
     </message>
@@ -435,44 +435,44 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>LunarCalendarWidget</name>
     <message>
-        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="235"/>
+        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="246"/>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>今天</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="767"/>
+        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="778"/>
         <source>Sun</source>
-        <translation type="unfinished"></translation>
+        <translation>星期日</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="768"/>
+        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="779"/>
         <source>Mon</source>
-        <translation type="unfinished"></translation>
+        <translation>星期一</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="769"/>
+        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="780"/>
         <source>Tue</source>
-        <translation type="unfinished"></translation>
+        <translation>星期二</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="770"/>
+        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="781"/>
         <source>Wed</source>
-        <translation type="unfinished"></translation>
+        <translation>星期三</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="771"/>
+        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="782"/>
         <source>Thu</source>
-        <translation type="unfinished"></translation>
+        <translation>星期四</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="772"/>
+        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="783"/>
         <source>Fri</source>
-        <translation type="unfinished"></translation>
+        <translation>星期五</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="773"/>
+        <location filename="../../plugin-calendar/lunarcalendarwidget/lunarcalendarwidget.cpp" line="784"/>
         <source>Sat</source>
-        <translation type="unfinished"></translation>
+        <translation>星期六</translation>
     </message>
 </context>
 <context>
@@ -775,27 +775,27 @@ Colorize icons based on widget style (palette)</source>
 <context>
     <name>UKUIPanel</name>
     <message>
-        <location filename="../ukuipanel.cpp" line="1414"/>
+        <location filename="../ukuipanel.cpp" line="1411"/>
         <source>Set up Panel</source>
         <translation>设置任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1420"/>
+        <location filename="../ukuipanel.cpp" line="1417"/>
         <source>Show Taskview</source>
         <translation>显示任务视图按钮</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1434"/>
+        <location filename="../ukuipanel.cpp" line="1431"/>
         <source>Show Desktop</source>
         <translation>显示桌面</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1441"/>
+        <location filename="../ukuipanel.cpp" line="1438"/>
         <source>Show System Monitor</source>
         <translation>系统监视器</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="928"/>
+        <location filename="../ukuipanel.cpp" line="925"/>
         <source>Small</source>
         <translation>小尺寸</translation>
     </message>
@@ -804,83 +804,83 @@ Colorize icons based on widget style (palette)</source>
         <translation type="vanished">中尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="930"/>
+        <location filename="../ukuipanel.cpp" line="927"/>
         <source>Medium</source>
         <translation>中尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="932"/>
+        <location filename="../ukuipanel.cpp" line="929"/>
         <source>Large</source>
         <translation>大尺寸</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="937"/>
+        <location filename="../ukuipanel.cpp" line="934"/>
         <source>Adjustment Size</source>
         <translation>调整大小</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="970"/>
+        <location filename="../ukuipanel.cpp" line="967"/>
         <source>Up</source>
         <translation>上</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="972"/>
+        <location filename="../ukuipanel.cpp" line="969"/>
         <source>Bottom</source>
         <translation>下</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="974"/>
+        <location filename="../ukuipanel.cpp" line="971"/>
         <source>Left</source>
         <translation>左</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="976"/>
+        <location filename="../ukuipanel.cpp" line="973"/>
         <source>Right</source>
         <translation>右</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="979"/>
+        <location filename="../ukuipanel.cpp" line="976"/>
         <source>Adjustment Position</source>
         <translation>调整位置</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1004"/>
+        <location filename="../ukuipanel.cpp" line="1001"/>
         <source>Hide Panel</source>
         <translation>隐藏任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1019"/>
+        <location filename="../ukuipanel.cpp" line="1016"/>
         <source>Reset Panel</source>
         <translation>重置任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1374"/>
+        <location filename="../ukuipanel.cpp" line="1371"/>
         <source>Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1426"/>
+        <location filename="../ukuipanel.cpp" line="1423"/>
         <source>Show Nightmode</source>
         <translation>显示夜间模式按钮</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1465"/>
+        <location filename="../ukuipanel.cpp" line="1462"/>
         <source>Lock This Panel</source>
         <translation>锁定任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1482"/>
+        <location filename="../ukuipanel.cpp" line="1479"/>
         <source>About Kylin</source>
         <translation>关于麒麟</translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1638"/>
+        <location filename="../ukuipanel.cpp" line="1635"/>
         <source>Remove Panel</source>
         <comment>Dialog Title</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ukuipanel.cpp" line="1639"/>
+        <location filename="../ukuipanel.cpp" line="1636"/>
         <source>Removing a panel can not be undone.
 Do you want to remove this panel?</source>
         <translation></translation>
@@ -1106,32 +1106,32 @@ icons here</source>
 <context>
     <name>UKUITaskGroup</name>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="367"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="375"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="374"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="382"/>
         <source>delete from taskbar</source>
         <translation>从任务栏取消固定</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="376"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="384"/>
         <source>add to taskbar</source>
         <translation>固定到任务栏</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="381"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="389"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="1012"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="1020"/>
         <source>Drop Error</source>
         <translation>路径错误</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="1013"/>
+        <location filename="../../plugin-taskbar/ukuitaskgroup.cpp" line="1021"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation>路径&apos;%1&apos;无法被添加到快速启动栏</translation>
     </message>
@@ -1317,6 +1317,14 @@ icons here</source>
         <location filename="../common/ukuiscreensaver.cpp" line="233"/>
         <source>Lock Screen</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>UkuiWebviewDialog</name>
+    <message>
+        <location filename="../../build/plugin-calendar/calendar_autogen/include/ui_ukuiwebviewdialog.h" line="35"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

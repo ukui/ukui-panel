@@ -45,7 +45,6 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     btnClick = false;
 
     calendarStyle = CalendarStyle_Red;
-    weekNameFormat = WeekNameFormat_Short;
     date = QDate::currentDate();
 
     widgetTime = new QWidget;
@@ -301,8 +300,6 @@ void LunarCalendarWidget::initWidget()
         labWeeks.append(lab);
     }
 
-    setWeekNameFormat(WeekNameFormat_Long);
-
     //日期标签widget
     QWidget *widgetBody = new QWidget;
     widgetBody->setObjectName("widgetBody");
@@ -408,7 +405,7 @@ void LunarCalendarWidget::initDate()
     btnClick = false;
 
     //首先判断当前月的第一天是星期几
-    int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month);
+    int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month, FirstdayisSun);
     //当前月天数
     int countDay = LunarCalendarInfo::Instance()->getMonthDays(year, month);
     //上月天数
@@ -527,7 +524,7 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
     int year = date.year();
     int month = date.month();
     int day = date.day();
-    int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month);
+    int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month, FirstdayisSun);
     //选中当前日期,其他日期恢复,这里还有优化空间,比方说类似单选框机制
     for (int i = 0; i < 42; i++) {
         //当月第一天是星期天要另外计算
@@ -555,11 +552,6 @@ void LunarCalendarWidget::dateChanged(int year, int month, int day)
 LunarCalendarWidget::CalendarStyle LunarCalendarWidget::getCalendarStyle() const
 {
     return this->calendarStyle;
-}
-
-LunarCalendarWidget::WeekNameFormat LunarCalendarWidget::getWeekNameFormat() const
-{
-    return this->weekNameFormat;
 }
 
 QDate LunarCalendarWidget::getDate() const
@@ -765,12 +757,10 @@ void LunarCalendarWidget::setCalendarStyle(const LunarCalendarWidget::CalendarSt
     }
 }
 
-void LunarCalendarWidget::setWeekNameFormat(const LunarCalendarWidget::WeekNameFormat &weekNameFormat)
+void LunarCalendarWidget::setWeekNameFormat(bool FirstDayisSun)
 {
-    if (this->weekNameFormat != weekNameFormat) {
-        this->weekNameFormat = weekNameFormat;
-
-        QStringList listWeek;
+    FirstdayisSun = FirstDayisSun;
+    if (FirstdayisSun) {
 //        listWeek << "日" << "一" << "二" << "三" << "四" << "五" << "六";
 //        listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
 //        listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
@@ -782,7 +772,16 @@ void LunarCalendarWidget::setWeekNameFormat(const LunarCalendarWidget::WeekNameF
           labWeeks.at(4)->setText((tr("Thu")));
           labWeeks.at(5)->setText((tr("Fri")));
           labWeeks.at(6)->setText((tr("Sat")));
+    } else {
+        labWeeks.at(0)->setText((tr("Mon")));
+        labWeeks.at(1)->setText((tr("Tue")));
+        labWeeks.at(2)->setText((tr("Wed")));
+        labWeeks.at(3)->setText((tr("Thu")));
+        labWeeks.at(4)->setText((tr("Fri")));
+        labWeeks.at(5)->setText((tr("Sat")));
+        labWeeks.at(6)->setText((tr("Sun")));
     }
+    initDate();
 }
 
 void LunarCalendarWidget::setDate(const QDate &date)

@@ -331,12 +331,14 @@ int LunarCalendarInfo::getTotalMonthDays(int year, int month)
 }
 
 //计算指定年月对应星期几
-int LunarCalendarInfo::getFirstDayOfWeek(int year, int month)
+int LunarCalendarInfo::getFirstDayOfWeek(int year, int month, bool FirstDayisSun)
 {
     int week = 0;
     week = (year + (year - 1) / 4 - (year - 1) / 100 + (year - 1) / 400) % 7;
     week += getTotalMonthDays(year, month);
-    week = week % 7;
+    week = week % 7 - (!FirstDayisSun);
+    if (week == -1)
+        week = 6;
     return week;
 }
 
