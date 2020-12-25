@@ -6,6 +6,7 @@
 #define TRANSPARENCY_KEY            "transparency"
 #define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
 #define LUNAR_KEY "calendar"
+#define FIRST_DAY_KEY "firstday"
 
 frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmLunarCalendarWidget)
 {
@@ -34,10 +35,16 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
     if(QGSettings::isSchemaInstalled(calendar_id)){
         calendar_gsettings = new QGSettings(calendar_id);
     }
+    on_cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
+    on_ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
     connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==LUNAR_KEY){
             on_ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
         }
+        if (key == FIRST_DAY_KEY) {printf("\nasdfasdf\n");
+            on_cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
+        }
+      //  if (key == )
     });
 
 }
@@ -62,9 +69,9 @@ void frmLunarCalendarWidget::on_cboxSelectType_currentIndexChanged(int index)
     ui->lunarCalendarWidget->setSelectType((LunarCalendarWidget::SelectType)index);
 }
 
-void frmLunarCalendarWidget::on_cboxWeekNameFormat_currentIndexChanged(int index)
+void frmLunarCalendarWidget::on_cboxWeekNameFormat_currentIndexChanged(bool FirstDayisSun)
 {
-    ui->lunarCalendarWidget->setWeekNameFormat((LunarCalendarWidget::WeekNameFormat)index);
+    ui->lunarCalendarWidget->setWeekNameFormat(FirstDayisSun);
 }
 
 void frmLunarCalendarWidget::on_ckShowLunar_stateChanged(bool arg1)

@@ -43,7 +43,6 @@ class LunarCalendarWidget : public QWidget
     Q_ENUMS(SelectType)
 
     Q_PROPERTY(CalendarStyle calendarStyle READ getCalendarStyle WRITE setCalendarStyle)
-    Q_PROPERTY(WeekNameFormat weekNameFormat READ getWeekNameFormat WRITE setWeekNameFormat)
     Q_PROPERTY(QDate date READ getDate WRITE setDate)
 
     Q_PROPERTY(QColor weekTextColor READ getWeekTextColor WRITE setWeekTextColor)
@@ -110,7 +109,7 @@ private:
     QList<LunarCalendarItem *> dayItems;//日期元素
 
     CalendarStyle calendarStyle;        //整体样式
-    WeekNameFormat weekNameFormat;      //星期名称格式
+    bool FirstdayisSun;                 //首日期为周日
     QDate date;                         //当前日期
 
     QColor weekTextColor;               //星期名称文字颜色
@@ -163,7 +162,6 @@ private Q_SLOTS:
 
 public:
     CalendarStyle getCalendarStyle()    const;
-    WeekNameFormat getWeekNameFormat()  const;
     QDate getDate()                     const;
 
     QColor getWeekTextColor()           const;
@@ -211,7 +209,7 @@ public Q_SLOTS:
     //设置整体样式
     void setCalendarStyle(const CalendarStyle &calendarStyle);
     //设置星期名称格式
-    void setWeekNameFormat(const WeekNameFormat &weekNameFormat);
+    void setWeekNameFormat(bool FirstDayisSun);
 
     //设置日期
     void setDate(const QDate &date);

@@ -32,7 +32,7 @@ public:
     int getTotalMonthDays(int year, int month);
 
     //计算指定年月对应星期几
-    int getFirstDayOfWeek(int year, int month);
+    int getFirstDayOfWeek(int year, int month, bool FirstDayisSun);
 
     //计算国际节日
     QString getHoliday(int month, int day);
