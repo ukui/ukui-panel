@@ -95,7 +95,6 @@ public:
     ~LunarCalendarWidget();
 
 private:
-    bool isInited = false;
     QLabel *datelabel;
     QLabel *timelabel;
     QTimer *timer;
