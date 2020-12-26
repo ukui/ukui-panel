@@ -35,13 +35,11 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
     if(QGSettings::isSchemaInstalled(calendar_id)){
         calendar_gsettings = new QGSettings(calendar_id);
     }
-    on_cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
-    on_ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
     connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==LUNAR_KEY){
+        if(key == LUNAR_KEY){
             on_ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
         }
-        if (key == FIRST_DAY_KEY) {printf("\nasdfasdf\n");
+        if (key == FIRST_DAY_KEY) {
             on_cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
         }
       //  if (key == )

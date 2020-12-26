@@ -4,6 +4,7 @@
 
 #define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
 #define LUNAR_KEY                 "calendar"
+#define FIRST_DAY_KEY "firstday"
 
 #define ORG_UKUI_STYLE            "org.ukui.style"
 #define STYLE_NAME                "styleName"
@@ -85,16 +86,20 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
             cboxYear->setFont(font);
             for (int i = 0; i < 42; i++) {
                 dayItems.value(i)->setFont(font);
+                dayItems.value(i)->repaint();
             }
             for (int i = 0; i < 7; i++) {
                 labWeeks.value(i)->setFont(font);
+                labWeeks.value(i)->repaint();
             }
         }
     });
 
 
     initWidget();
-    initDate();
+    //initDate();
+    setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
+    setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
 }
 
 LunarCalendarWidget::~LunarCalendarWidget()
@@ -781,7 +786,7 @@ void LunarCalendarWidget::setWeekNameFormat(bool FirstDayisSun)
         labWeeks.at(5)->setText((tr("Sat")));
         labWeeks.at(6)->setText((tr("Sun")));
     }
-    initDate();
+        initDate();
 }
 
 void LunarCalendarWidget::setDate(const QDate &date)
