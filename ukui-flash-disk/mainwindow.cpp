@@ -1514,7 +1514,7 @@ void MainWindow::moveBottomNoBase()
     int y=QApplication::primaryScreen()->geometry().y();
 
     if(position==0)
-        this->setGeometry(QRect(x + QApplication::primaryScreen()->geometry().width()-this->width() - DISTANCEMEND - DISTANCEPADDING,y+ QApplication::primaryScreen()->geometry().height()-panelSize-this->height() - DISTANCEPADDING - DISTANCEMEND,this->width(),this->height()));
+        this->setGeometry(QRect(x + QApplication::primaryScreen()->geometry().width()-this->width() - DISTANCEMEND - DISTANCEPADDING,y+ QApplication::primaryScreen()->geometry().height()-panelSize-this->height() - DISTANCEPADDING,this->width(),this->height()));
     else if(position==1)
         this->setGeometry(QRect(x + QApplication::primaryScreen()->geometry().width()-this->width() - DISTANCEMEND - DISTANCEPADDING,y+ panelSize + DISTANCEPADDING,this->width(),this->height()));  // Style::minw,Style::minh the width and the height of the interface  which you want to show
     else if(position==2)
@@ -1620,7 +1620,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     QPainterPath path;
     auto rect = this->rect();
     rect.adjust(1, 1, -1, -1);
-    path.addRoundedRect(rect, 6, 6);
+    path.addRoundedRect(rect, 4, 4);
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
 
     QStyleOption opt;
@@ -1631,7 +1631,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     p.setBrush(opt.palette.color(QPalette::Base));
     p.setOpacity(m_transparency);
     p.setPen(Qt::NoPen);
-    p.drawRoundedRect(rectReal, 6, 6);
+    p.drawRoundedRect(rectReal, 4, 4);
     QWidget::paintEvent(event);
 
     KWindowEffects::enableBlurBehind(this->winId(), true, QRegion(path.toFillPolygon().toPolygon()));
