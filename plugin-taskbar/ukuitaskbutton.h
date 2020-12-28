@@ -87,6 +87,8 @@ public:
      * */
     bool hasDragAndDropHover() const;
 
+    void setGroupIcon(QIcon ico);
+
 public slots:
     void raiseApplication();
     void minimizeApplication();
