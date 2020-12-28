@@ -185,6 +185,35 @@ bool UKUITaskBar::acceptWindow(WId window) const
     return !NET::typeMatchesMask(info.windowType(NET::AllTypesMask), normalFlag);
 }
 
+bool UKUITaskBar::ignoreSymbolCMP(QString filename,QString groupname) {
+    if (filename.isEmpty()) return false;
+    groupname.replace(" ", "");
+    groupname.replace("-", ".");
+    groupname.replace(".demo", "");
+    groupname.replace(".py", "");
+    groupname.replace("org.", "");
+    groupname.replace(".qt", "");
+    filename.replace(" ", "");
+    filename.replace("-", ".");
+    filename.replace("org.", "");
+    filename.replace(".desktop", "");
+    if (groupname.toLower().contains(filename.toLower(), Qt::CaseInsensitive))
+        return true;
+    if (filename.toLower().contains(groupname.toLower(), Qt::CaseInsensitive))
+        return true;
+    if (groupname.toLower().contains("kylinweather") && filename.toLower().contains("china.weather"))
+        return true;
+    if (groupname.toLower().contains("srhuijian") && filename.toLower().contains("huijian"))
+        return true;
+    if (groupname.contains("用户手册") && filename.toLower().contains("kylin.user.guid"))
+        return true;
+    if (groupname.toLower().contains("wpsoffice") && filename.toLower().contains("wps.office.prometheus"))
+        return true;
+    if (groupname.toLower().contains("ukuisystemmonitor") && filename.toLower().contains("ukui.system.monitor"))
+        return true;
+    return false;
+}
+
 /************************************************
 
  ************************************************/
