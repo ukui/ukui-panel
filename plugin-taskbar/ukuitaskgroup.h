@@ -41,9 +41,22 @@
 #include <QScrollArea>
 #include "../panel/ukuipanelpluginconfigdialog.h"
 #include "../panel/pluginsettings.h"
+#include "../plugin-quicklaunch/quicklaunchaction.h"
 #include <QAbstractButton>
 //#include <Xlib.h>
 
+#define DEKSTOP_FILE_PATH                   "/usr/share/applications/"
+#define GET_DESKTOP_EXEC_NAME_MAIN          "cat %s | awk '{if($1~\"Exec=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
+#define GET_DESKTOP_EXEC_NAME_BACK          "cat %s | awk '{if($1~\"StartupWMClass=\")print $1}' | cut -d '=' -f 2"
+#define GET_DESKTOP_ICON                    "cat %s | awk '{if($1~\"Icon=\")print $1}' | cut -d '=' -f 2"
+#define GET_PROCESS_EXEC_NAME_MAIN          "ps -aux | sed 's/ \\+/ /g' |awk '{if($2~\"%d\")print}'| cut -d ' ' -f 11-"
+
+#define USR_SHARE_APP_CURRENT   "/usr/share/applications/."
+#define USR_SHARE_APP_UPER      "/usr/share/applications/.."
+#define PEONY_TRASH             "/usr/share/applications/peony-trash.desktop"
+#define PEONY_COMUTER           "/usr/share/applications/peony-computer.desktop"
+#define PEONY_HOME              "/usr/share/applications/peony-home.desktop"
+#define PEONY_MAIN              "/usr/share/applications/peony.desktop"
 
 class QVBoxLayout;
 class IUKUIPanelPlugin;
@@ -148,6 +161,13 @@ private:
     void adjustPopWindowSize(int width, int height);
     void v_adjustPopWindowSize(int width, int height, int v_all);
     void regroup();
+
+
+    QString file_name;
+    QuickLaunchAction *mAct;
+    void initActionsInRightButtonMenu();
+    void initDesktopFileName(WId window);
+    void badBackFunctionToFindDesktop();
 
 };
 

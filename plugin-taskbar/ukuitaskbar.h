@@ -91,6 +91,7 @@ public:
     inline IUKUIPanel * panel() const { return mPlugin->panel(); }
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
+    bool ignoreSymbolCMP(QString filename,QString groupname);
 
 signals:
     void buttonRotationRefreshed(bool autoRotate, IUKUIPanel::Position position);

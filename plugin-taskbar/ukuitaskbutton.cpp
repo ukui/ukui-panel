@@ -144,6 +144,9 @@ void UKUITaskButton::updateText()
 */
 void UKUITaskButton::updateIcon()
 {
+    if (mAppName == QString("emo-system-ShellMethods") ||
+        mAppName == QString("Qq"))
+        sleep(1);
     QIcon ico;
     int mIconSize=mPlugin->panel()->iconSize();
     if (mParentTaskBar->isIconByClass())
@@ -163,8 +166,17 @@ void UKUITaskButton::updateIcon()
 #endif
         ico = KWindowSystem::icon(mWindow, devicePixels, devicePixels);
     }
-    setIcon(ico.isNull() ? QIcon::fromTheme("application-x-desktop") : ico);
+    if (mIcon.isNull())
+        mIcon = QIcon::fromTheme("application-x-desktop");
+    if (ico.isNull())
+        ico = QIcon::fromTheme("application-x-desktop");
+    setIcon(ico.isNull() ? mIcon : ico);
     setIconSize(QSize(mIconSize,mIconSize));
+}
+
+void UKUITaskButton::setGroupIcon(QIcon ico)
+{
+    mIcon = ico;
 }
 
 /************************************************
