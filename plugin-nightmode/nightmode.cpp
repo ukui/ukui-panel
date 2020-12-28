@@ -156,7 +156,7 @@ void NightModeButton::setNightMode(const bool nightMode){
                              QDBusConnection::sessionBus());
 
     if (!iproperty.isValid()) {
-        qDebug() << "this is invalid";
+        this->setVisible(false);
         return;
     }
     QHash<QString, QVariant> data;
