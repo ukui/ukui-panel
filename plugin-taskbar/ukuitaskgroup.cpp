@@ -381,7 +381,8 @@ QWidget * UKUITaskGroup::checkedButton() const
  */
 void UKUITaskGroup::changeTaskButtonStyle()
 {
-    if(mButtonHash.size()>1)
+    printf("\nvisible num : %d\n", mVisibleHash.size());
+    if(mVisibleHash.size()>1)
         this->setStyle(new CustomStyle("taskbutton",true));
     else
         this->setStyle(new CustomStyle("taskbutton",false));
@@ -732,6 +733,8 @@ void UKUITaskGroup::refreshVisibility()
         btn->setVisible(visible);
         if (btn->isVisibleTo(mPopup) && !mVisibleHash.contains(i.key()))
             mVisibleHash.insert(i.key(), i.value());
+        else if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key()))
+            mVisibleHash.remove(i.key());
         will |= visible;
     }
 
