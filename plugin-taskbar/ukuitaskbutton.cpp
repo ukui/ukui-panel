@@ -118,6 +118,8 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
             updateIcon();
         }
     });
+    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged)
+                , this, &UKUITaskButton::updateIcon);
 }
 
 /************************************************

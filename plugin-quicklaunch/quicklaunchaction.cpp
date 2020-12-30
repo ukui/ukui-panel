@@ -74,10 +74,23 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     m_settingsMap["desktop"] = xdg->fileName();
 
     QString title(xdg->localizedValue("Name").toString());
-    QString icon(xdg->localizedValue("Icon").toString());
+    QIcon icon=QIcon::fromTheme(xdg->localizedValue("Icon").toString());
+    //add special path search /use/share/pixmaps
+    if (icon.isNull())
+    {
+        QString path = QString("/usr/share/pixmaps/%1.%2").arg(xdg->localizedValue("Icon").toString()).arg("png");
+        QString path_svg = QString("/usr/share/pixmaps/%1.%2").arg(xdg->localizedValue("Icon").toString()).arg("svg");
+        //qDebug() << "createDesktopFileThumbnail path:" <<path;
+        if(QFile::exists(path)){
+            icon=QIcon(path);
+        }
+        else if(QFile::exists(path_svg)){
+            icon=QIcon(path_svg);
+        }
+    }
     setText(title);
 
-    setIcon(QIcon::fromTheme(icon));
+    setIcon(icon);
 
     setData(xdg->fileName());
     connect(this, &QAction::triggered, this, [this] { execAction(); });
