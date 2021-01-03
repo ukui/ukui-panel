@@ -25,6 +25,9 @@
 #include <QToolButton>
 #include <QProcess>
 #include <QGSettings>
+#include <QHash>
+#include <QDBusConnection>
+#include <QDBusMessage>
 
 #include "../panel/ukuipanel.h"
 #include "../panel/ukuicontrolstyle.h"
@@ -33,6 +36,12 @@ class NightModeButton:public QToolButton
 {
     Q_OBJECT
 public:
+    /**
+     * @brief NightModeButton
+     * @param plugin
+     * @param parent
+     * 夜间模式按钮 初始化
+     */
     NightModeButton(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     ~NightModeButton();
 
@@ -47,6 +56,7 @@ protected:
 private:
     void setNightMode(const bool nightMode);
     void setUkuiStyle(QString );
+    void getNightModeState();
 
     IUKUIPanelPlugin * mPlugin;
     QMenu *nightModeMenu;
@@ -55,17 +65,23 @@ private:
     QGSettings *mgtkstyleGsettings;
     QSettings *mqsettings;
     QSettings  * kwinSettings;
+    int colorTemperature;
     bool mode;
 
 private slots:
-    void turnNightMode();
     void setUpNightMode();
+    void nightChangedSlot(QHash<QString,QVariant> nightArg);
 };
 
 class NightMode : public QObject, public IUKUIPanelPlugin
 {
     Q_OBJECT
 public:
+    /**
+     * @brief NightMode
+     * @param startupInfo
+     * 夜间模式插件，插件上通过添加NightModeButton按钮实现夜间模式相关功能
+     */
     NightMode(const IUKUIPanelPluginStartupInfo &startupInfo);
     ~NightMode();
 
