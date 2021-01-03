@@ -275,7 +275,6 @@ void UKUITaskGroup::initDesktopFileName(WId window) {
 }
 
 void UKUITaskGroup::initActionsInRightButtonMenu(){
-    printf("\n%s\n",file_name.toStdString().data());
     if (file_name.isEmpty()) return;
     const auto url=QUrl(file_name);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
@@ -381,7 +380,6 @@ QWidget * UKUITaskGroup::checkedButton() const
  */
 void UKUITaskGroup::changeTaskButtonStyle()
 {
-    printf("\nvisible num : %d\n", mVisibleHash.size());
     if(mVisibleHash.size()>1)
         this->setStyle(new CustomStyle("taskbutton",true));
     else
