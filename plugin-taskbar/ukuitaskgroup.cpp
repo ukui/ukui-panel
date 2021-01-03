@@ -459,6 +459,7 @@ void UKUITaskGroup::onActiveWindowChanged(WId window)
 void UKUITaskGroup::onDesktopChanged(int number)
 {
     refreshVisibility();
+    changeTaskButtonStyle();
 }
 
 /************************************************
