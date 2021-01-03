@@ -97,19 +97,32 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     initializeCalendar();
     mTimer->setTimerType(Qt::PreciseTimer);
 
-    hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
-    hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
-    hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
-    hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
-    current_date=CURRENT_DATE;
+    const QByteArray id(HOUR_SYSTEM_CONTROL);
+    gsettings = new QGSettings(id);
+
+    if(QString::compare(gsettings->get("date").toString(),"cn"))
+    {
+        qDebug()<<" date   en ";
+        hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
+        hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
+        hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
+        hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
+        current_date=CURRENT_DATE_CN;
+    }
+    else
+    {
+        qDebug()<<" date   cn ";
+        hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
+        hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
+        hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
+        hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
+        current_date=CURRENT_DATE;
+    }
 
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
 //    connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
-    const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id)) {
-    gsettings = new QGSettings(id);
-
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key)
     {
         if (key == HOUR_SYSTEM_KEY)

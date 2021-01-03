@@ -161,7 +161,7 @@ private slots:
     void onClicked(bool checked);
     void onChildButtonClicked();
     void onActiveWindowChanged(WId window);
-    void onDesktopChanged(int number);
+    void onDesktopChanged();
 
     void closeGroup();
     void refreshIconsGeometry();
