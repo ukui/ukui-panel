@@ -177,7 +177,7 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     initActionsInRightButtonMenu();
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
-    connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
+    connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged()));
     connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(onActiveWindowChanged(WId)));
     connect(parent, &UKUITaskBar::refreshIconGeometry, this, &UKUITaskGroup::refreshIconsGeometry);
     connect(parent, &UKUITaskBar::buttonStyleRefreshed, this, &UKUITaskGroup::setToolButtonsStyle);
@@ -478,7 +478,7 @@ QWidget * UKUITaskGroup::checkedButton() const
  */
 void UKUITaskGroup::changeTaskButtonStyle()
 {
-    if(mButtonHash.size()>1)
+    if(mVisibleHash.size()>1)
         this->setStyle(new CustomStyle("taskbutton",true));
     else
         this->setStyle(new CustomStyle("taskbutton",false));
@@ -552,9 +552,10 @@ void UKUITaskGroup::onActiveWindowChanged(WId window)
 /************************************************
 
  ************************************************/
-void UKUITaskGroup::onDesktopChanged(int number)
+void UKUITaskGroup::onDesktopChanged()
 {
     refreshVisibility();
+    changeTaskButtonStyle();
 }
 
 /************************************************
@@ -830,6 +831,8 @@ void UKUITaskGroup::refreshVisibility()
         btn->setVisible(visible);
         if (btn->isVisibleTo(mPopup) && !mVisibleHash.contains(i.key()))
             mVisibleHash.insert(i.key(), i.value());
+        if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key()))
+                    mVisibleHash.remove(i.key());
         will |= visible;
     }
 
@@ -1403,7 +1406,8 @@ int UKUITaskGroup::calcAverageWidth()
         int size = mVisibleHash.size();
         int iScreenWidth = QApplication::screens().at(0)->size().width();
         int iMarginWidth = (size+1)*3;
-        int iAverageWidth = (iScreenWidth - iMarginWidth)/size;//calculate average width of window
+        int iAverageWidth;
+        iAverageWidth =  (size == 0 ? size : (iScreenWidth - iMarginWidth)/size);//calculate average width of window
         return iAverageWidth;
     }
     else
