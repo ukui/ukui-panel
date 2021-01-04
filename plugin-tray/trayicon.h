@@ -27,23 +27,29 @@
 
 #ifndef TRAYICON_H
 #define TRAYICON_H
-
+//Qt
 #include <QObject>
 #include <QFrame>
 #include <QList>
 #include <QStyleOption>
 #include <QMimeData>
 #include <QToolButton>
-
+//X11
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
+//panel
 #include "../panel/highlight-effect.h"
+
 #define TRAY_ICON_SIZE_DEFAULT 16
 
 class QWidget;
 class UKUIPanel;
 class IUKUIPanelPlugin;
 
+/**
+ * @brief The TrayIcon class
+ * 承载托盘应用
+ */
 class TrayIcon: public QToolButton
 {
     Q_OBJECT
@@ -90,6 +96,8 @@ protected:
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
+
+    //拖拽相关
     void dragEnterEvent(QDragEnterEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
     void mouseMoveEvent(QMouseEvent *e);
@@ -116,6 +124,10 @@ private:
     TrayAppStatus traystatus;
 };
 
+/**
+ * @brief The TrayButtonMimeData class
+ * 拖拽托盘按钮的时候用到的TrayButtonMimeData
+ */
 class TrayButtonMimeData: public QMimeData
 {
     Q_OBJECT
