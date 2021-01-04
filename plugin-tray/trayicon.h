@@ -32,6 +32,8 @@
 #include <QFrame>
 #include <QList>
 #include <QStyleOption>
+#include <QMimeData>
+#include <QToolButton>
 
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
@@ -42,7 +44,7 @@ class QWidget;
 class UKUIPanel;
 class IUKUIPanelPlugin;
 
-class TrayIcon: public QFrame
+class TrayIcon: public QToolButton
 {
     Q_OBJECT
 
@@ -72,6 +74,7 @@ public:
 
     QSize sizeHint() const;
     IUKUIPanelPlugin *mPlugin;
+    static QString mimeDataFormat() { return QLatin1String("x-ukui/tray-button"); }
 
 
 public slots:
@@ -79,6 +82,7 @@ public slots:
 
 signals:
     void notifyTray(Window);
+    void switchButtons(TrayIcon *from, TrayIcon *to);
 
 protected:
     bool event(QEvent *event);
@@ -86,12 +90,18 @@ protected:
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
+    void dragEnterEvent(QDragEnterEvent *e);
+    void dragMoveEvent(QDragMoveEvent * e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    virtual QMimeData * mimeData();
 
 private:
     void init();
     QRect iconGeometry();
     void  trayButtonPress(QMouseEvent *);
     bool needReDraw();
+    QPoint mDragStart;
 
     Window mIconId;
     Window mWindowId;
@@ -104,6 +114,23 @@ private:
 
     enum TrayAppStatus{NORMAL, HOVER, PRESS};
     TrayAppStatus traystatus;
+};
+
+class TrayButtonMimeData: public QMimeData
+{
+    Q_OBJECT
+public:
+    TrayButtonMimeData():
+        QMimeData(),
+        mButton(0)
+    {
+    }
+
+    TrayIcon *button() const { return mButton; }
+    void setButton(TrayIcon *button) { mButton = button; }
+
+private:
+    TrayIcon *mButton;
 };
 
 #endif // TRAYICON_H

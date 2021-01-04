@@ -143,13 +143,14 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
             trayIconSizeRefresh();
     });
 
-    setLayout(new UKUi::GridLayout(this));
+    mLayout = new UKUi::GridLayout(this);
+    setLayout(mLayout);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
     mBtn =new TrayButton(this);
-    layout()->addWidget(mBtn);
+    mLayout->addWidget(mBtn);
     if(mPlugin)
     {
         mCurPosition = mPlugin->panel()->position();
@@ -326,7 +327,7 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
  */
 void UKUITray::realign()
 {
-    layout()->setEnabled(false);
+    mLayout->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
 
 
@@ -339,15 +340,15 @@ void UKUITray::realign()
     if (panel->isHorizontal())
     {
 
-        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
-        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
+        dynamic_cast<UKUi::GridLayout*>(mLayout)->setRowCount(panel->lineCount());
+        dynamic_cast<UKUi::GridLayout*>(mLayout)->setColumnCount(0);
         mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
     }
     else
     {
 
-        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
-        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
+        dynamic_cast<UKUi::GridLayout*>(mLayout)->setColumnCount(panel->lineCount());
+        dynamic_cast<UKUi::GridLayout*>(mLayout)->setRowCount(0);
         mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
 
 
@@ -373,7 +374,7 @@ void UKUITray::realign()
         mCurPosition = panel->position();
         emit positionChanged();
     }
-    layout()->setEnabled(true);
+    mLayout->setEnabled(true);
 
 }
 
@@ -761,6 +762,7 @@ void UKUITray::freezeTrayApp(Window winId)
 */
 void UKUITray::addTrayIcon(Window winId)
 {
+    qDebug()<<"addTrayIcon";
     // decline to add an icon for a window we already manage
     TrayIcon *icon = findTrayIcon(winId);
     if(icon)
@@ -770,7 +772,8 @@ void UKUITray::addTrayIcon(Window winId)
         icon = new TrayIcon(winId, mIconSize, this);
         mIcons.append(icon);
         mTrayIcons.append(icon);
-        layout()->addWidget(icon);
+        mLayout->addWidget(icon);
+        connect(icon, SIGNAL(switchButtons(TrayIcon*,TrayIcon*)), this, SLOT(switchButtons(TrayIcon*,TrayIcon*)));
 
         connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
         connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
@@ -829,6 +832,7 @@ void UKUITray::addHideIcon(Window winId)
 /*与控制面板交互，移动应用到托盘栏或者收纳栏*/
 void UKUITray::moveIconToTray(Window winId)
 {
+    qDebug()<<"moveIconToTray";
     TrayIcon *storageicon = findStorageIcon(winId);
     TrayIcon *hideicon = findHideIcon(winId);
 
@@ -840,7 +844,7 @@ void UKUITray::moveIconToTray(Window winId)
         //storageLayout->removeWidget(storageicon);
         disconnect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         mTrayIcons.append(storageicon);
-        layout()->addWidget(storageicon);
+        mLayout->addWidget(storageicon);
 
         if(mStorageIcons.size() > 0)
         {
@@ -864,7 +868,7 @@ void UKUITray::moveIconToTray(Window winId)
         //storageLayout->removeWidget(storageicon);
         disconnect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         mTrayIcons.append(hideicon);
-        layout()->addWidget(hideicon);
+        mLayout->addWidget(hideicon);
 
         //      connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
         //      connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
@@ -882,7 +886,7 @@ void UKUITray::moveIconToStorage(Window winId)
         return;
     else if(icon)
     {
-        layout()->removeWidget(icon);
+        mLayout->removeWidget(icon);
         mTrayIcons.removeOne(icon);
         disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         mStorageIcons.append(icon);
@@ -939,7 +943,7 @@ void UKUITray::moveIconToHide(Window winId)
         return;
     else if(trayicon)
     {
-        layout()->removeWidget(trayicon);
+        mLayout->removeWidget(trayicon);
         mTrayIcons.removeOne(trayicon);
         disconnect(trayicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         mHideIcons.append(trayicon);
@@ -1366,4 +1370,20 @@ void TrayButton::enterEvent(QEvent *) {
 void TrayButton::leaveEvent(QEvent *) {
     repaint();
     return;
+}
+
+void UKUITray::switchButtons(TrayIcon *button1, TrayIcon *button2)
+{
+    if (button1 == button2)
+        return;
+
+    int n1 = mLayout->indexOf(button1);
+    int n2 = mLayout->indexOf(button2);
+
+    int l = qMin(n1, n2);
+    int m = qMax(n1, n2);
+
+    mLayout->moveItem(l, m);
+    mLayout->moveItem(m-1, l);
+//    saveSettings();
 }

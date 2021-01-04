@@ -104,6 +104,7 @@ private slots:
     void onIconDestroyed(QObject * icon);
     void freezeTrayApp(Window winId);
     void trayIconSizeRefresh();
+    void switchButtons(TrayIcon *button1, TrayIcon *button2);
 
 private:
     VisualID getVisual();
@@ -140,6 +141,7 @@ private:
     int mDamageEvent;
     int mDamageError;
     QSize mIconSize;
+    UKUi::GridLayout *mLayout;
 
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
