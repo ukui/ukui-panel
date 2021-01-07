@@ -88,18 +88,12 @@ void messageOutput(QtMsgType type, const QMessageLogContext &context, const QStr
 
 int main(int argc, char *argv[])
 {
-    Display *display = XOpenDisplay(NULL);
-    Screen *scrn = DefaultScreenOfDisplay(display);
-    if(scrn == nullptr) {
-        return 0;
-    }
-    int width = scrn->width;
-    if (width >= 2560) {
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-        QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    #endif
-    }
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#endif
 
     UKUIPanelApplication app(argc, argv);
 

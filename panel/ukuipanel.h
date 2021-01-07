@@ -219,6 +219,8 @@ public:
      * \sa positionToStr()
      */
     static IUKUIPanel::Position strToPosition(const QString &str, IUKUIPanel::Position defaultValue);
+    static IUKUIPanel::Position intToPosition(const int p, IUKUIPanel::Position defaultValue);
+
 
     // Settings
     int iconSize() const override { return mIconSize; } //!< Implement IUKUIPanel::iconSize().

@@ -52,6 +52,8 @@
 #include "../panel/iukuipanelplugin.h"
 #include <QSize>
 #include <QScreen>
+#include <XdgIcon>
+#include <XdgDesktopFile>
 #include "../panel/customstyle.h"
 
 #define PREVIEW_WIDTH		468
@@ -147,6 +149,10 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     setObjectName(groupName);
     setText(groupName);
 
+    initDesktopFileName(window);
+
+    initActionsInRightButtonMenu();
+
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
     connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(onActiveWindowChanged(WId)));
@@ -175,6 +181,123 @@ UKUITaskGroup::~UKUITaskGroup()
 //        VLayout->deleteLater();
 //        VLayout = NULL;
 //    }
+}
+
+
+bool DesktopFileNameCompare(QString str1, QString str2) {
+    if (str1 == str2)
+        return true;
+    if (str2.contains(str1))
+        return true;
+    if (str1.contains(str2))
+        return true;
+    return false;
+}
+
+QString getDesktopFileName(QString cmd) {
+    char name[200];
+    FILE *fp1 = NULL;
+    if ((fp1 = popen(cmd.toStdString().data(), "r")) == NULL)
+        return QString();
+    memset(name, 0, sizeof(name));
+    fgets(name, sizeof(name),fp1);
+    pclose(fp1);
+    return QString(name);
+}
+
+void UKUITaskGroup::badBackFunctionToFindDesktop() {
+    if (file_name.isEmpty()) {
+        QDir dir("/usr/share/applications/");
+        QFileInfoList list = dir.entryInfoList();
+        for (int i = 0; i < list.size(); i++) {
+            QFileInfo fileInfo = list.at(i);
+            if (parentTaskBar()->ignoreSymbolCMP(fileInfo.filePath(), groupName())) {
+                file_name = fileInfo.filePath();
+                if (file_name == QString(PEONY_COMUTER) ||
+                    file_name == QString(PEONY_TRASH) ||
+                    file_name == QString(PEONY_HOME))
+                    file_name = QString(PEONY_MAIN);
+                break;
+            }
+        }
+    }
+}
+
+void UKUITaskGroup::initDesktopFileName(WId window) {
+    KWindowInfo info(window, 0, NET::WM2DesktopFileName);
+    QString cmd;
+    cmd.sprintf(GET_PROCESS_EXEC_NAME_MAIN, info.pid());
+    QString processExeName = getDesktopFileName(cmd);
+
+    QDir dir(DEKSTOP_FILE_PATH);
+    QFileInfoList list = dir.entryInfoList();
+    for (int i = 0; i < list.size(); i++) {
+        bool flag = false;
+        QFileInfo fileInfo = list.at(i);
+        QString _cmd;
+        if (fileInfo.filePath() == QString(USR_SHARE_APP_CURRENT) ||
+            fileInfo.filePath() == QString(USR_SHARE_APP_UPER) )
+            continue;
+        _cmd.sprintf(GET_DESKTOP_EXEC_NAME_MAIN, fileInfo.filePath().toStdString().data());
+        QString desktopFileExeName = getDesktopFileName(_cmd);
+        flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
+        if (flag && !desktopFileExeName.isEmpty()) {
+            file_name = fileInfo.filePath();
+            if (file_name == QString(PEONY_COMUTER) ||
+                file_name == QString(PEONY_TRASH) ||
+                file_name == QString(PEONY_HOME) )
+                file_name = QString(PEONY_MAIN);
+            break;
+        }
+    }
+    if (file_name.isEmpty()) {
+        for (int i = 0; i < list.size(); i++) {
+            bool flag = false;
+            QFileInfo fileInfo = list.at(i);
+            if (fileInfo.filePath() == QString(USR_SHARE_APP_CURRENT) ||
+                fileInfo.filePath() == QString(USR_SHARE_APP_UPER) )
+                continue;
+            QString _cmd;
+            _cmd.sprintf(GET_DESKTOP_EXEC_NAME_BACK, fileInfo.filePath().toStdString().data());
+            QString desktopFileExeName = getDesktopFileName(_cmd);
+            flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
+            if (flag && !desktopFileExeName.isEmpty()) {
+                file_name = fileInfo.filePath();
+                if (file_name == QString(PEONY_COMUTER) ||
+                    file_name == QString(PEONY_TRASH) ||
+                    file_name == QString(PEONY_HOME) )
+                    file_name = QString(PEONY_MAIN);
+                break;
+            }
+        }
+    }
+    badBackFunctionToFindDesktop();
+}
+
+void UKUITaskGroup::initActionsInRightButtonMenu(){
+    if (file_name.isEmpty()) return;
+    const auto url=QUrl(file_name);
+    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
+    QFileInfo fi(fileName);
+    XdgDesktopFile xdg;
+    if (xdg.load(fileName))
+    {
+        /*This fuction returns true if the desktop file is applicable to the
+          current environment.
+          but I don't need this attributes now
+        */
+        //        if (xdg.isSuitable())
+        mAct = new QuickLaunchAction(&xdg, this);
+    }
+    else if (fi.exists() && fi.isExecutable() && !fi.isDir())
+    {
+        mAct = new QuickLaunchAction(fileName, fileName, "", this);
+    }
+    else if (fi.exists())
+    {
+        mAct = new QuickLaunchAction(fileName, this);
+    }
+    setGroupIcon(mAct->getIconfromAction());
 }
 
 /************************************************
@@ -257,7 +380,7 @@ QWidget * UKUITaskGroup::checkedButton() const
  */
 void UKUITaskGroup::changeTaskButtonStyle()
 {
-    if(mButtonHash.size()>1)
+    if(mVisibleHash.size()>1)
         this->setStyle(new CustomStyle("taskbutton",true));
     else
         this->setStyle(new CustomStyle("taskbutton",false));
@@ -334,6 +457,7 @@ void UKUITaskGroup::onActiveWindowChanged(WId window)
 void UKUITaskGroup::onDesktopChanged(int number)
 {
     refreshVisibility();
+    changeTaskButtonStyle();
 }
 
 /************************************************
@@ -608,6 +732,8 @@ void UKUITaskGroup::refreshVisibility()
         btn->setVisible(visible);
         if (btn->isVisibleTo(mPopup) && !mVisibleHash.contains(i.key()))
             mVisibleHash.insert(i.key(), i.value());
+        else if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key()))
+            mVisibleHash.remove(i.key());
         will |= visible;
     }
 

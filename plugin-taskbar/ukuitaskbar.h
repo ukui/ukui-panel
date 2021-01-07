@@ -72,25 +72,151 @@ public:
     explicit UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     virtual ~UKUITaskBar();
 
+    /**
+     * @brief realign
+     *
+     * it's use to realign the position of taskbar, the size and the position of taskgroup buttons and refresh the style of
+     *
+     * the icon in buttons.
+     *
+     */
     void realign();
 
+    /**
+     * @brief buttonStyle
+     *
+     * To get the style of the group buttons, the parameter in this class called mButtonStyle.
+     *
+     * @return Qt::ToolButtonStyle
+     */
     Qt::ToolButtonStyle buttonStyle() const { return mButtonStyle; }
+
+    /**
+     * @brief buttonWidth
+     *
+     * To get the width of the buttons, the parameter in this class called mButtonWidth.
+     *
+     * @return int
+     */
     int buttonWidth() const { return mButtonWidth; }
+
+    /**
+     * @brief closeOnMiddleClick
+     *
+     * To get the press of the mid-button on mouse, the parameter in this class called mCloseOnMiddleClick.
+     *
+     * @return bool
+     */
     bool closeOnMiddleClick() const { return mCloseOnMiddleClick; }
+
+    /**
+     * @brief raiseOnCurrentDesktop
+     *
+     * To get the window is on current desktop or not, to judge wether show the button.
+     *
+     * The parameter in this class called mRaiseOnCurrentDesktop.
+     *
+     * @return bool
+     */
     bool raiseOnCurrentDesktop() const { return mRaiseOnCurrentDesktop; }
+
+    /**
+     * @brief isShowOnlyOneDesktopTasks
+     *
+     * To get the group button contains just one window or more on one desktop.
+     *
+     * The parameter in this class called mShowOnlyOneDesktopTasks.
+     *
+     * @return bool
+     */
     bool isShowOnlyOneDesktopTasks() const { return mShowOnlyOneDesktopTasks; }
+
+    /**
+     * @brief showDesktopNum
+     *
+     * To get the number of the desktop which group buttons are showed.
+     *
+     * The parameter in this class called mshowDesktopNum.
+     *
+     * @return int
+     */
     int showDesktopNum() const { return mShowDesktopNum; }
+
+    /**
+     * @brief getCpuInfoFlg
+     *
+     * To get wether the type of the cpu is Loonson.
+     *
+     * @return
+     */
     bool getCpuInfoFlg() const { return CpuInfoFlg; }
+
+    /**
+     * @brief isShowOnlyCurrentScreenTasks
+     *
+     * To get wether the task window is only show on current screen.
+     *
+     * @return
+     */
     bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
+
+    /**
+     * @brief isShowOnlyMinimizedTasks
+     *
+     * To get wether the task window is only show in minimaized.
+     *
+     * @return
+     */
     bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
+
+    /**
+     * @brief isAutoRotate
+     *
+     * To get wether the auto rotation is on.
+     *
+     * @return
+     */
     bool isAutoRotate() const { return mAutoRotate; }
+
+    /**
+     * @brief isGroupingEnabled
+     *
+     * To get wether the window grouping is enable or not.
+     *
+     * @return
+     */
     bool isGroupingEnabled() const { return mGroupingEnabled; }
+
+    /**
+     * @brief isShowGroupOnHover
+     *
+     * To get wether the button is on hover by mouse or others.
+     *
+     * @return
+     */
     bool isShowGroupOnHover() const { return mShowGroupOnHover; }
+
+    /**
+     * @brief isIconByClass
+     *
+     * To get wether the group icon is in same class of the window or not.
+     *
+     * @return
+     */
     bool isIconByClass() const { return mIconByClass; }
+
+    /**
+     * @brief setShowGroupOnHover
+     *
+     * To set the flag of group button on hover.
+     *
+     * @param bFlag
+     */
     void setShowGroupOnHover(bool bFlag);
     inline IUKUIPanel * panel() const { return mPlugin->panel(); }
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
+    bool ignoreSymbolCMP(QString filename,QString groupname);
 
 signals:
     void buttonRotationRefreshed(bool autoRotate, IUKUIPanel::Position position);

@@ -74,10 +74,23 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     m_settingsMap["desktop"] = xdg->fileName();
 
     QString title(xdg->localizedValue("Name").toString());
-    QString icon(xdg->localizedValue("Icon").toString());
+    QIcon icon=QIcon::fromTheme(xdg->localizedValue("Icon").toString());
+    //add special path search /use/share/pixmaps
+    if (icon.isNull())
+    {
+        QString path = QString("/usr/share/pixmaps/%1.%2").arg(xdg->localizedValue("Icon").toString()).arg("png");
+        QString path_svg = QString("/usr/share/pixmaps/%1.%2").arg(xdg->localizedValue("Icon").toString()).arg("svg");
+        //qDebug() << "createDesktopFileThumbnail path:" <<path;
+        if(QFile::exists(path)){
+            icon=QIcon(path);
+        }
+        else if(QFile::exists(path_svg)){
+            icon=QIcon(path_svg);
+        }
+    }
     setText(title);
 
-    setIcon(QIcon::fromTheme(icon));
+    setIcon(icon);
 
     setData(xdg->fileName());
     connect(this, &QAction::triggered, this, [this] { execAction(); });
@@ -134,14 +147,15 @@ void QuickLaunchAction::execAction(QString additionalAction)
             XdgDesktopFile xdg;
             if(xdg.load(exec))
             {
-                if(exec.contains("ubuntu-kylin-software-center",Qt::CaseSensitive)){
-                    //无法打开麒麟应用商店，因此改为gio的方式加载
+                //if(exec.contains("ubuntu-kylin-software-center",Qt::CaseSensitive)){
+                    //无法打开麒麟应用商店，备份还原工具。因此改为gio的方式加载
                     QByteArray ba = exec.toLatin1();
                     char * filepath=ba.data();
                     GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(filepath);
                     if (!g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
                         showQMessage =true;
                     g_object_unref(appinfo);
+#if 0
                  } else {
                     //xdg 的方式实现点击打开应用，可正确读取转义的字符
                     if (!additionalAction.isEmpty()){
@@ -152,14 +166,19 @@ void QuickLaunchAction::execAction(QString additionalAction)
                             showQMessage =true;
                     }
                 }
+#endif
             } else
                 showQMessage =true;
         }
             break;
         case ActionFile:
             QFileInfo fileinfo(exec);
+            QString openfile = exec;
+            if (fileinfo.isSymLink()) {
+                openfile = fileinfo.symLinkTarget();
+            }
             if (fileinfo.exists()) {
-                QDesktopServices::openUrl(QUrl(exec));
+                QDesktopServices::openUrl(QUrl::fromLocalFile(openfile));
             } else {
                 showQMessage =true;
             }

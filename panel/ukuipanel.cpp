@@ -93,7 +93,6 @@
 #define POPUP_BORDER_SPACING 4
 
 #define PANEL_SETTINGS      "org.ukui.panel.settings"
-#define SCALE_SETTINGS      "org.ukui.SettingsDaemon.plugins.xsettings"
 #define PANEL_SIZE_KEY      "panelsize"
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
@@ -117,6 +116,14 @@ IUKUIPanel::Position UKUIPanel::strToPosition(const QString& str, IUKUIPanel::Po
     return defaultValue;
 }
 
+IUKUIPanel::Position UKUIPanel::intToPosition(const int position, IUKUIPanel::Position defaultValue)
+{
+    if (position == 1)    return UKUIPanel::PositionTop;
+    if (position == 2)   return UKUIPanel::PositionLeft;
+    if (position == 3)  return UKUIPanel::PositionRight;
+    if (position == 0) return UKUIPanel::PositionBottom;
+    return defaultValue;
+}
 
 /************************************************
  Return  string representation of the position
@@ -256,34 +263,17 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     const QByteArray id(PANEL_SETTINGS);
     gsettings = new QGSettings(id);
+    setPosition(0,intToPosition(gsettings->get(PANEL_POSITION_KEY).toInt(),PositionBottom),true);
 
-    const QByteArray sid(SCALE_SETTINGS);
-    QGSettings sgsettings(sid);
-    scale = sgsettings.get("scaling-factor").toInt();
-    if (!scale) scale = 1;
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==ICON_SIZE_KEY){
-            setIconSize(gsettings->get(ICON_SIZE_KEY).toInt() * scale,true);
+            setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
         }
         if(key==PANEL_SIZE_KEY){
-            setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt() * scale,true);
+            setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
         }
         if(key == PANEL_POSITION_KEY){
-            switch(gsettings->get(PANEL_POSITION_KEY).toInt())
-            {
-            case 0:
-                setPosition(0,Position::PositionBottom,true);
-                break;
-            case 1:
-                setPosition(0,Position::PositionTop,true);
-                break;
-            case 2:
-                setPosition(0,Position::PositionLeft,true);
-                break;
-            case 3:
-                setPosition(0,Position::PositionRight,true);
-                break;
-            }
+            setPosition(0,intToPosition(gsettings->get(PANEL_POSITION_KEY).toInt(),PositionBottom),true);
         }
     });
 
@@ -402,9 +392,9 @@ void UKUIPanel::readSettings()
               mSettings->value(CFG_KEY_PERCENT, true).toBool(),
               false);
     mScreenNum = mSettings->value(CFG_KEY_SCREENNUM, QApplication::desktop()->primaryScreen()).toInt();
-    setPosition(mScreenNum,
-                strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), PositionBottom),
-                false);
+//    setPosition(mScreenNum,
+//                strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), PositionBottom),
+//                false);
     setAlignment(Alignment(mSettings->value(CFG_KEY_ALIGNMENT, mAlignment).toInt()), false);
     mReserveSpace = mSettings->value(CFG_KEY_RESERVESPACE, true).toBool();
     mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL, false).toBool();
@@ -437,7 +427,7 @@ void UKUIPanel::saveSettings(bool later)
     mSettings->setValue(CFG_KEY_PERCENT, mLengthInPercents);
 
     mSettings->setValue(CFG_KEY_SCREENNUM, mScreenNum);
-    mSettings->setValue(CFG_KEY_POSITION, positionToStr(mPosition));
+//    mSettings->setValue(CFG_KEY_POSITION, positionToStr(mPosition));
 
     mSettings->setValue(CFG_KEY_ALIGNMENT, mAlignment);
 

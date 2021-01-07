@@ -581,6 +581,18 @@ void UKUIQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
     }
 }
 
+bool UKUIQuickLaunch::isDesktopFile(QString urlName) {
+   return urlName.section('/', -1, -1).section('.', -1, -1) == QString("desktop");
+}
+
+
+QString UKUIQuickLaunch::isComputerOrTrash(QString urlName) {
+    if (!urlName.compare("computer:///"))
+        return QString("/usr/share/applications/peony-computer.desktop");
+    if (!urlName.compare("trash:///"))
+        return QString("/usr/share/applications/peony-trash.desktop");
+    return urlName;
+}
 
 void UKUIQuickLaunch::dropEvent(QDropEvent *e)
 {
@@ -588,37 +600,44 @@ void UKUIQuickLaunch::dropEvent(QDropEvent *e)
     const auto urls = e->mimeData()->urls().toSet();
     for (const QUrl &url : urls)
     {
-        QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-        QFileInfo fi(fileName);
         XdgDesktopFile xdg;
-        QuickLaunchAction *_action = NULL;
-        if (!fileName.compare("computer:///"))
-            fileName = QString("/usr/share/applications/peony-computer.desktop");
-        if (!fileName.compare("trash:///"))
-            fileName = QString("/usr/share/applications/peony-trash.desktop");
+        QString urlName(url.isLocalFile() ? url.toLocalFile() : url.url());
+        QFileInfo ur(urlName);
+        QString fileName("/usr/share/applications/");
+
+        fileName.append(urlName.section('/', -1, -1));
+        fileName = isComputerOrTrash(urlName);
+        urlName = isComputerOrTrash(urlName);
+
+        if (CheckIfExist(urlName)) return;
         if (CheckIfExist(fileName)) return;
-        if (xdg.load(fileName))
-        {
-            if (xdg.isSuitable())
-                _action = new QuickLaunchAction(&xdg, this);
-        }
-        else if (fi.exists() && fi.isExecutable() && !fi.isDir())
-        {
-            _action = new QuickLaunchAction(fileName, fileName, "", this);
-        }
-        else if (fi.exists())
-        {
-            _action = new QuickLaunchAction(fileName, this);
-        }
-        else
-        {
-            qWarning() << "XdgDesktopFile" << fileName << "is not valid";
+        if (isDesktopFile(urlName)) {
+            if (ur.isSymLink()){
+                if (xdg.load(urlName) && xdg.isSuitable()) {
+                   if (CheckIfExist(xdg.fileName())) return;
+                   addButton(new QuickLaunchAction(&xdg, this));
+                }
+            } else {
+                if (xdg.load(fileName) && xdg.isSuitable()) {
+                   if (CheckIfExist(urlName)) return;
+                   addButton(new QuickLaunchAction(&xdg, this));
+                }
+            }
+        } else if (ur.exists() && ur.isExecutable() && !ur.isDir() || ur.isSymLink()) {
+            if (ur.size() <= 153600)
+                xdg.load(urlName);
+            addButton(new QuickLaunchAction(urlName, this));
+        } else if (ur.exists()) {
+            if (ur.size() <= 153600)
+                xdg.load(urlName);
+            addButton(new QuickLaunchAction(urlName, this));
+            //taskbar->pubAddButton(new QuickLaunchAction(urlName, urlName, "", this));
+        } else {
+            qWarning() << "XdgDesktopFile" << urlName << "is not valid";
             QMessageBox::information(this, tr("Drop Error"),
-                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(urlName)
                                      );
         }
-        if (_action)
-            addButton(_action);
     }
     saveSettings();
 }
@@ -731,7 +750,15 @@ bool UKUIQuickLaunch::CheckIfExist(QString arg)
 }
 
 bool UKUIQuickLaunch::pubCheckIfExist(QString name) {
-    return CheckIfExist(name);
+    for (int i = 0; i < mVBtn.size(); i++) {
+        QString cmpName;
+        cmpName = (!mVBtn.value(i)->file_name.isEmpty() ? mVBtn.value(i)->file_name :
+                   (!mVBtn.value(i)->file.isEmpty() ? mVBtn.value(i)->file :
+                    (!mVBtn.value(i)->name.isEmpty() ? mVBtn.value(i)->name : mVBtn.value(i)->exec)));
+        if (cmpName.isEmpty()) return false;
+        if (cmpName.compare(name) == 0) return true;
+    }
+    return false;
 }
 
 /*为开始菜单提供从任务栏上移除的接口*/
@@ -748,6 +775,19 @@ bool UKUIQuickLaunch::RemoveFromTaskbar(QString arg)
 void UKUIQuickLaunch::FileDeleteFromTaskbar(QString file)
 {
     removeButton(file);
+}
+
+bool UKUIQuickLaunch::ShowTooltipText(QString arg)
+{
+    QRect rect;
+    QToolTip::showText(QCursor::pos(),arg,nullptr,rect,3600000);
+    return true;
+}
+
+bool UKUIQuickLaunch::HideTooltipText(QString arg)
+{
+    QToolTip::hideText();
+    return true;
 }
 
 /*获取任务栏位置的接口*/
@@ -920,6 +960,14 @@ bool FilectrlAdaptor::FileDeleteFromTaskbar(const QString &arg)
 {
     bool out0;
     QMetaObject::invokeMethod(parent(), "FileDeleteFromTaskbar", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+
+bool FilectrlAdaptor::ShowTooltipText(const QString &arg)
+{
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "ShowTooltipText", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
     return out0;
 }
 
