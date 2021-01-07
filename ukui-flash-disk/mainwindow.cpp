@@ -149,6 +149,24 @@ MainWindow::~MainWindow()
 //    delete open_widget;
 }
 
+void MainWindow::onRequestSendDesktopNotify(QString message)
+{
+    QDBusInterface iface("org.freedesktop.Notifications",
+                         "/org/freedesktop/Notifications",
+                         "org.freedesktop.Notifications",
+                         QDBusConnection::sessionBus());
+    QList<QVariant> args;
+    args<<(QCoreApplication::applicationName())
+       <<((unsigned int) 0)
+      <<QString("/usr/share/icons/Adwaita/24x24/devices/media-removable-symbolic.symbolic.png")
+     <<tr("kindly reminder") //显示的是什么类型的信息
+    <<message //显示的具体信息
+    <<QStringList()
+    <<QVariantMap()
+    <<(int)-1;
+    iface.callWithArgumentList(QDBus::AutoDetect,"Notify",args);
+}
+
 void MainWindow::initThemeMode()
 {
     connect(qtSettings,&QGSettings::changed,this,[=](const QString &key)
@@ -198,7 +216,6 @@ void MainWindow::getDeviceInfo()
                         *findGDriveList()<<gdrive;
                     }
                 }
-
             }
         }
         current_drive_list = current_drive_list->next;
@@ -259,6 +276,7 @@ void MainWindow::onConvertShowWindow()
 {
     insertorclick = true;
     MainWindowShow();
+    onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"));
 }
 
 //the drive-connected callback function the is triggered when the usb device is inseted
@@ -286,6 +304,13 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
     p_this->deviceMap.insert(drive,p_this->volumeDevice);
 
     p_this->triggerType = 0;
+
+        qDebug()<<"while has entered";
+        qDebug()<<"list size"<<findGDriveList()->size();
+        int index = 0;
+        qDebug()<<"g_list_length"<<g_list_length(g_drive_get_volumes(drive));
+        qDebug()<<"0001"<<g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(drive),0)) ;
+
 }
 
 //the drive-disconnected callback function the is triggered when the usb device is pull out
@@ -313,7 +338,6 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
     qDebug()<<"volume add";
-    *findGVolumeList()<<volume;
     if(g_volume_get_drive(volume) == NULL)
     {
         *findTeleGVolumeList() << volume;
@@ -321,6 +345,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
     p_this->ifautoload = p_this->ifsettings->get(IFAUTOLOAD).toBool();
     if(p_this->ifautoload == true)
     {
+        *findGVolumeList()<<volume;
         g_volume_mount(volume,
                    G_MOUNT_MOUNT_NONE,
                    nullptr,
@@ -334,15 +359,15 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
     {
         if(!findGDriveList()->contains(g_volume_get_drive(volume)))
         {
+            if(p_this->ifautoload == true)
             *findGDriveList()<<g_volume_get_drive(volume);
         }
     }
-    if(findGDriveList()->size() >= 0 || findGMountList()->size() >= 0)
+    if(findGDriveList()->size() > 0 || findGMountList()->size() > 0)
     {
         p_this->m_systray->show();
     }
 }
-
 
 //when the U disk is pull out we should reduce all its partitions
 void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
@@ -406,6 +431,11 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
         qDebug()<<"不符合过滤条件的设备已被挂载";
     }
 
+    if(!findGDriveList()->contains(g_mount_get_drive(mount)))
+    {
+        *findGDriveList()<<g_mount_get_drive(mount);
+    }
+
     if(g_mount_get_drive(mount) == NULL)
     {
         *findTeleGMountList()<<mount;
@@ -423,19 +453,26 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
 {
     qDebug()<<mount<<"mount remove";
     findGMountList()->removeOne(mount);
+
     if(g_mount_get_drive(mount) == NULL)
     {
         findTeleGMountList()->removeOne(mount);
     }
     p_this->driveMountNum = 0;
 
-    for(int i = 0; i<g_list_length(g_drive_get_volumes(g_mount_get_drive(mount)));i++)
+    for(int i = 0; i<=g_list_length(g_drive_get_volumes(g_mount_get_drive(mount)));i++)
     {
+        if(g_list_length(g_drive_get_volumes(g_mount_get_drive(mount))) == 0)
+        {
+            findGDriveList()->removeOne(g_mount_get_drive(mount));
+        }
+
         if(g_volume_get_mount((GVolume *)g_list_nth(g_drive_get_volumes(g_mount_get_drive(mount)),i)) == NULL)
         {
             p_this->driveMountNum += 1;
         }
     }
+
     if(findGMountList()->size() == 0 || findGDriveList()->size() == 0 )
     {
         if(findTeleGVolumeList()->size() != 1)
@@ -446,6 +483,29 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
     if(findGMountList()->size() ==0  && findTeleGVolumeList()->size() == 1)
     {
         p_this->m_systray->hide();
+    }
+    for(auto cacheDrive : *findGDriveList())
+    {
+        qDebug()<<"while has entered";
+        qDebug()<<"list size"<<findGDriveList()->size();
+        int index = 0;
+        qDebug()<<"g_list_length"<<g_list_length(g_drive_get_volumes(cacheDrive));
+        qDebug()<<"000"<<g_volume_get_mount((GVolume *)g_list_nth(g_drive_get_volumes(cacheDrive),0)) ;
+        for(int i = 0; i<g_list_length(g_drive_get_volumes(cacheDrive));i++)
+        {
+            if(g_volume_get_mount((GVolume *)g_list_nth_data((g_drive_get_volumes(cacheDrive)),i)) != NULL)
+            {
+                qDebug()<<g_volume_get_mount((GVolume *)g_list_nth_data(g_drive_get_volumes(cacheDrive),i))<<"mount name";
+                index += 1;
+                qDebug()<<"in index value"<<index;
+            }
+            qDebug()<<"out index value"<<index;
+            if(index == 0)
+            {
+                qDebug()<<"index value";
+                findGDriveList()->removeOne(cacheDrive);
+            }
+        }
     }
 }
 
