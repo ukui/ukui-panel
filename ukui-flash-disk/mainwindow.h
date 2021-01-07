@@ -170,6 +170,7 @@ public Q_SLOTS:
     void onConvertShowWindow();
     void on_Maininterface_hide();
     void on_clickPanelToHideInterface();
+    void onRequestSendDesktopNotify(QString message);
 Q_SIGNALS:
     void clicked();
     void convertShowWindow();
