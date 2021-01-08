@@ -63,7 +63,7 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
     /*设置快速启动栏的菜单项*/
     const QByteArray id(UKUI_PANEL_SETTINGS);
     mgsettings = new QGSettings(id);
-    modifyQuicklaunchMenuAction(true);
+    QTimer::singleShot(5000,[this] {modifyQuicklaunchMenuAction(true);});
     connect(mgsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==PANELPOSITION){
             modifyQuicklaunchMenuAction(true);
