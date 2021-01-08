@@ -736,10 +736,10 @@ QString QClickWidget::size_human(qlonglong capacity)
         QStringListIterator i(list);
         QString unit("bytes");
 
-        while(capacity >= 1024.0 && i.hasNext())
+        while(capacity >= 1000.0 && i.hasNext())
         {
             unit = i.next();
-            capacity /= 1024.0;
+            capacity /= 1000.0;
         }
         QString str_capacity=QString(" %1%2").arg(capacity).arg(unit);
         return str_capacity;
