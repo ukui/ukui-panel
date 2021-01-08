@@ -44,7 +44,7 @@ ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
     IUKUIPanelPlugin(startupInfo)
 {
     state=NORMAL;
-    this->setToolTip(tr("Show Desktop"));
+    QTimer::singleShot(5000,[this] {this->setToolTip(tr("Show Desktop"));});
     realign();
 
 }
