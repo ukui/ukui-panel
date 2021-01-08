@@ -62,7 +62,6 @@ public:
      */
     void setbackground();
     void setTimeShowStyle();
-    void setToolTip();
     /**
      * @brief modifyCalendarWidget 修改日历显示位置
      */

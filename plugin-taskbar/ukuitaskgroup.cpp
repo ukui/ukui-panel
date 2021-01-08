@@ -1303,7 +1303,7 @@ void UKUITaskGroup::showAllWindowByList()
     }
     mPopup->show();
 
-   emit popupShown(this);
+//   emit popupShown(this);
 }
 
 
@@ -1528,5 +1528,5 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         mPopup->show();
     }
 
-   emit popupShown(this);
+//   emit popupShown(this);
 }

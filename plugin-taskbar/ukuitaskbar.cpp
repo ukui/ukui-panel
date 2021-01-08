@@ -477,7 +477,7 @@ void UKUITaskBar::refreshButtonRotation()
     bool autoRotate = mAutoRotate && (mButtonStyle != Qt::ToolButtonIconOnly);
 
     IUKUIPanel::Position panelPosition = mPlugin->panel()->position();
-    emit buttonRotationRefreshed(autoRotate, panelPosition);
+//    emit buttonRotationRefreshed(autoRotate, panelPosition);
 }
 
 /************************************************

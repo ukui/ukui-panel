@@ -23,13 +23,16 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
-
+//Qt
 #include <QAction>
 #include <QtX11Extras/QX11Info>
 #include <QStyleOption>
 #include <QPainter>
+#include <QTimer>
+//Kf5
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
+//panel
 #include "showdesktop.h"
 #include "../panel/common/ukuinotification.h"
 #include "../panel/pluginsettings.h"
@@ -44,7 +47,7 @@ ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
     IUKUIPanelPlugin(startupInfo)
 {
     state=NORMAL;
-    this->setToolTip(tr("Show Desktop"));
+    QTimer::singleShot(5000,[this] {this->setToolTip(tr("Show Desktop"));});
     realign();
 
 }

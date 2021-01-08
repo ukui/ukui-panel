@@ -55,7 +55,12 @@ protected:
 
 private:
     void setNightMode(const bool nightMode);
+    void controlCenterSetNightMode(const bool nightMode);
     void setUkuiStyle(QString );
+    /**
+     * @brief getNightModeState
+     * 通过dbus获取夜间模式状态
+     */
     void getNightModeState();
 
     IUKUIPanelPlugin * mPlugin;

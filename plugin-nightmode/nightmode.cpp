@@ -93,7 +93,7 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
                                           this,
                                           SLOT(nightChangedSlot(QHash<QString,QVariant>)));
     getNightModeState();
-    setNightMode(mode);
+    controlCenterSetNightMode(mode);
 }
 NightModeButton::~NightModeButton(){
     delete gsettings;
@@ -179,6 +179,34 @@ void NightModeButton::setNightMode(const bool nightMode){
     }
 }
 
+void NightModeButton::controlCenterSetNightMode(const bool nightMode){
+    QDBusInterface iproperty("org.ukui.KWin",
+                             "/ColorCorrect",
+                             "org.ukui.kwin.ColorCorrect",
+                             QDBusConnection::sessionBus());
+
+    if (!iproperty.isValid()) {
+        this->setVisible(false);
+        return;
+    }
+    QHash<QString, QVariant> data;
+
+    if(nightMode){
+        data.insert("Active", true);
+        data.insert("NightTemperature", colorTemperature);
+        iproperty.call("setNightColorConfig", data);
+        QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
+        this->setIcon(icon);
+        this->setToolTip(tr("nightmode open"));
+    }
+    else{
+        data.insert("Active", false);
+        iproperty.call("setNightColorConfig", data);
+        this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
+        this->setToolTip(tr("nightmode close"));
+    }
+}
+
 void NightModeButton::getNightModeState()
 {
     QDBusInterface ipropertyinfo("org.ukui.KWin",
@@ -205,7 +233,7 @@ void NightModeButton::getNightModeState()
 void NightModeButton::nightChangedSlot(QHash<QString, QVariant> nightArg)
 {
     getNightModeState();
-    setNightMode(mode);
+    controlCenterSetNightMode(mode);
 }
 
 /*设置主题*/

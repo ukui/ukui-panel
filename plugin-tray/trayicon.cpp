@@ -33,6 +33,7 @@
 #include <QBitmap>
 #include <QStyle>
 #include <QScreen>
+#include <QDrag>
 
 #include "../panel/ukuipanel.h"
 #include "trayicon.h"
@@ -48,6 +49,8 @@
 #define XEMBED_EMBEDDED_NOTIFY 0
 
 static bool xError;
+#define MIMETYPE "ukui/UkuiTray"
+
 
 int windowErrorHandler(Display *d, XErrorEvent *e)
 {
@@ -66,7 +69,7 @@ int windowErrorHandler(Display *d, XErrorEvent *e)
 
  ************************************************/
 TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
-    QFrame(parent),
+    QToolButton(parent),
     mIconId(iconId),
     mWindowId(0),
     mIconSize(iconSize),
@@ -87,6 +90,8 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     traystatus=NORMAL;
     setObjectName("TrayIcon");
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    setAcceptDrops(true);
 
     QTimer::singleShot(200, [this] { init(); update(); });
     repaint();
@@ -286,7 +291,7 @@ bool TrayIcon::event(QEvent *event)
         }
     }
 
-    return QFrame::event(event);
+    return QToolButton::event(event);
 }
 
 
@@ -461,3 +466,72 @@ void TrayIcon::notifyAppFreeze()
 {
     emit notifyTray(mIconId);
 }
+
+#if 1
+void TrayIcon::mouseMoveEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::RightButton)
+        return;
+    if (!(e->buttons() & Qt::LeftButton))
+        return;
+    if ((e->pos() - mDragStart).manhattanLength() < QApplication::startDragDistance())
+        return;
+
+    if (e->modifiers() == Qt::ControlModifier)
+    {
+        return;
+    }
+    QDrag *drag = new QDrag(this);
+    QIcon ico = icon();
+    int size = 16;
+    QPixmap img = ico.pixmap(ico.actualSize({size, size}));
+
+    drag->setMimeData(mimeData());
+    drag->setPixmap(img);
+
+            drag->setHotSpot(img.rect().bottomRight());
+
+
+    drag->exec();
+    drag->deleteLater();
+
+    QAbstractButton::mouseMoveEvent(e);
+}
+
+void TrayIcon::dragMoveEvent(QDragMoveEvent * e)
+{
+    if (e->mimeData()->hasFormat(MIMETYPE))
+        e->acceptProposedAction();
+    else
+        e->ignore();
+}
+
+void TrayIcon::dragEnterEvent(QDragEnterEvent *e)
+{
+    e->acceptProposedAction();
+    const TrayButtonMimeData *mimeData = qobject_cast<const TrayButtonMimeData*>(e->mimeData());
+    if (mimeData && mimeData->button())
+          emit switchButtons(mimeData->button(), this);
+    QToolButton::dragEnterEvent(e);
+}
+
+QMimeData * TrayIcon::mimeData()
+{
+    TrayButtonMimeData *mimeData = new TrayButtonMimeData();
+//    QByteArray ba;
+//    mimeData->setData(mimeDataFormat(), ba);
+    mimeData->setButton(this);
+    return mimeData;
+}
+
+void TrayIcon::mousePressEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
+    {
+        mDragStart = e->pos();
+        return;
+    }
+
+    QToolButton::mousePressEvent(e);
+}
+#endif
