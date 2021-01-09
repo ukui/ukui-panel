@@ -169,7 +169,6 @@ void UKUITaskButton::updateIcon()
         ico = KWindowSystem::icon(mWindow, devicePixels, devicePixels);
     }
     if (mIcon.isNull()) {
-        printf("\n its NULL, loser\n");
         mIcon = QIcon::fromTheme("application-x-desktop");
     }
     if (ico.isNull())
