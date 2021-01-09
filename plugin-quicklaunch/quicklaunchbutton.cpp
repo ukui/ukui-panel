@@ -131,7 +131,6 @@ void QuickLaunchButton::contextMenuEvent(QContextMenuEvent *) {
     connect(mMoveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
     connect(mMoveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
     connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
-    addAction(mDeleteAct);
     mMenu = new QMenu(this);
     mMenu->setAttribute(Qt::WA_DeleteOnClose);
     mMenu->addAction(mAct);
@@ -146,7 +145,6 @@ void QuickLaunchButton::contextMenuEvent(QContextMenuEvent *) {
     mMoveLeftAct->setEnabled( panel && panel->indexOfButton(this) > 0);
     mMoveRightAct->setEnabled(panel && panel->indexOfButton(this) < panel->countOfButtons() - 1);
 
-    mMenu->show();
     mPlugin->willShowWindow(mMenu);
     mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), mMenu->sizeHint()).topLeft());
 }
