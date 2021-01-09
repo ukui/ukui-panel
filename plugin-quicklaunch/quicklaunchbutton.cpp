@@ -60,19 +60,6 @@ QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, IUKUIPanelPlugin *
     setDefaultAction(mAct);
     mAct->setParent(this);
 
-    /*设置快速启动栏的菜单项*/
-    const QByteArray id(UKUI_PANEL_SETTINGS);
-    mgsettings = new QGSettings(id);
-    QTimer::singleShot(5000,[this] {modifyQuicklaunchMenuAction(true);});
-    connect(mgsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==PANELPOSITION){
-            modifyQuicklaunchMenuAction(true);
-        }
-    });
-
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
-            this, SLOT(this_customContextMenuRequested(const QPoint&)));
     file_name=act->m_settingsMap["desktop"];
     file = act->m_settingsMap["file"];
     exec = act->m_settingsMap["exec"];
@@ -92,54 +79,6 @@ QHash<QString,QString> QuickLaunchButton::settingsMap()
 {
     Q_ASSERT(mAct);
     return mAct->settingsMap();
-}
-
-/*与鼠标右键的选项有关*/
-void QuickLaunchButton::this_customContextMenuRequested(const QPoint & pos)
-{
-    UKUIQuickLaunch *panel = qobject_cast<UKUIQuickLaunch*>(parent());
-    mMoveLeftAct->setEnabled( panel && panel->indexOfButton(this) > 0);
-    mMoveRightAct->setEnabled(panel && panel->indexOfButton(this) < panel->countOfButtons() - 1);
-
-//    mMoveLeftAct->setEnabled( panel &&
-//                              panel->indexOfButton(this) > 0 &&
-//                              (mPlugin->panel()->isHorizontal() ? (panel->indexOfButton(this) % 5 != 0) :
-//                               (mPlugin->panel()->isMaxSize() ? (panel->indexOfButton(this) % 2 != 0) :
-//                                (panel->indexOfButton(this) % 3 != 0))));
-//    mMoveRightAct->setEnabled(panel &&
-//                              panel->indexOfButton(this) < panel->countOfButtons() - 1 &&
-//                              (mPlugin->panel()->isHorizontal() ? (panel->indexOfButton(this) % 5 != 4) :
-//                               (mPlugin->panel()->isMaxSize() ? (panel->indexOfButton(this) % 2 != 1) :
-//                                (panel->indexOfButton(this) % 3 != 2))));
-    mPlugin->willShowWindow(mMenu);
-    mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), mMenu->sizeHint()).topLeft());
-}
-
-/*调整快速启动栏的菜单项*/
-void QuickLaunchButton::modifyQuicklaunchMenuAction(bool direction)
-{
-    if(mPlugin->panel()->isHorizontal()){
-            mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("move to left"), this);
-            mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("move to right"), this);
-    }
-    else{
-            mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("move to up"), this);
-            mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("move to down"), this);
-    }
-
-    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("delete from quicklaunch"), this);
-    connect(mMoveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
-    connect(mMoveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
-    connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
-    //addAction(mDeleteAct);
-    mMenu = new QuicklaunchMenu();
-    mMenu->addAction(mAct);
-    mMenu->addActions(mAct->addtitionalActions());
-    mMenu->addSeparator();
-    mMenu->addAction(mMoveLeftAct);
-    mMenu->addAction(mMoveRightAct);
-    mMenu->addSeparator();
-    mMenu->addAction(mDeleteAct);
 }
 
 void QuickLaunchButton::selfRemove()
@@ -178,8 +117,44 @@ void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
     QToolButton::mousePressEvent(e);
 }
 
-/***************************************************/
+void QuickLaunchButton::contextMenuEvent(QContextMenuEvent *) {
+    if(mPlugin->panel()->isHorizontal()){
+            mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("move to left"), this);
+            mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("move to right"), this);
+    }
+    else{
+            mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("move to up"), this);
+            mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("move to down"), this);
+    }
 
+    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("delete from quicklaunch"), this);
+    connect(mMoveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
+    connect(mMoveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
+    connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
+    addAction(mDeleteAct);
+    mMenu = new QMenu(this);
+    mMenu->setAttribute(Qt::WA_DeleteOnClose);
+    mMenu->addAction(mAct);
+    mMenu->addActions(mAct->addtitionalActions());
+    mMenu->addSeparator();
+    mMenu->addAction(mMoveLeftAct);
+    mMenu->addAction(mMoveRightAct);
+    mMenu->addSeparator();
+    mMenu->addAction(mDeleteAct);
+
+    UKUIQuickLaunch *panel = qobject_cast<UKUIQuickLaunch*>(parent());
+    mMoveLeftAct->setEnabled( panel && panel->indexOfButton(this) > 0);
+    mMoveRightAct->setEnabled(panel && panel->indexOfButton(this) < panel->countOfButtons() - 1);
+
+    mMenu->show();
+    mPlugin->willShowWindow(mMenu);
+    mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), mMenu->sizeHint()).topLeft());
+}
+
+/**
+ * 以下与拖拽相关
+ * mimeData mouseMoveEvent dragMoveEvent dragEnterEvent dropEvent
+ */
 QMimeData * QuickLaunchButton::mimeData()
 {
     ButtonMimeData *mimeData = new ButtonMimeData();
@@ -271,7 +246,6 @@ void QuickLaunchButton::mouseReleaseEvent(QMouseEvent* e)
 void QuickLaunchButton::dropEvent(QDropEvent *e)
 {
     UKUIQuickLaunch *uqk = qobject_cast<UKUIQuickLaunch*>(parent());
-    qDebug()<<"UKUIQuickLaunch::dropEvent";
     const auto urls = e->mimeData()->urls().toSet();
     for (const QUrl &url : urls)
     {
@@ -318,12 +292,3 @@ void QuickLaunchButton::dropEvent(QDropEvent *e)
     uqk->saveSettings();
 
 }
-/***************************************************/
-
-void QuickLaunchButton::contextMenuEvent(QContextMenuEvent *) { }
-
-QuicklaunchMenu::QuicklaunchMenu() { }
-
-QuicklaunchMenu::~QuicklaunchMenu() { }
-
-void QuicklaunchMenu::contextMenuEvent(QContextMenuEvent *) { }
