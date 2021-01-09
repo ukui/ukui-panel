@@ -168,11 +168,13 @@ void UKUITaskButton::updateIcon()
 #endif
         ico = KWindowSystem::icon(mWindow, devicePixels, devicePixels);
     }
-    if (mIcon.isNull())
+    if (mIcon.isNull()) {
+        printf("\n its NULL, loser\n");
         mIcon = QIcon::fromTheme("application-x-desktop");
+    }
     if (ico.isNull())
-        ico = QIcon::fromTheme("application-x-desktop");
-    setIcon(ico.isNull() ? mIcon : ico);
+        ico = mIcon;
+    setIcon(ico);
     setIconSize(QSize(mIconSize,mIconSize));
 }
 
