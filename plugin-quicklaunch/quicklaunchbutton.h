@@ -41,15 +41,7 @@
 class IUKUIPanelPlugin;
 //class CustomStyle;
 #include "../panel/ukuicontrolstyle.h"
-class QuicklaunchMenu:public QMenu
-{
-public:
-    QuicklaunchMenu();
-    ~QuicklaunchMenu();
-protected:
-    void contextMenuEvent(QContextMenuEvent*);
 
-};
 class QuickLaunchButton : public QToolButton
 {
     Q_OBJECT
@@ -73,17 +65,25 @@ signals:
 
 protected:
     //! Disable that annoying small arrow when there is a menu
+    /**
+     * @brief contextMenuEvent
+     * 右键菜单选项，从customContextMenuRequested的方式
+     * 改为用contextMenuEvent函数处理
+     */
+    void contextMenuEvent(QContextMenuEvent*);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+    /**
+     *  以下是拖拽相关函数
+     */
+    void dropEvent(QDropEvent *e);
+    virtual QMimeData * mimeData();
+    void dragLeaveEvent(QDragLeaveEvent *e);
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent* e);
     void dragEnterEvent(QDragEnterEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
-    void contextMenuEvent(QContextMenuEvent*);
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
-    void dropEvent(QDropEvent *e);
-    virtual QMimeData * mimeData();
-    void dragLeaveEvent(QDragLeaveEvent *e);
 
 private:
     QuickLaunchAction *mAct;
@@ -91,18 +91,13 @@ private:
     QAction *mDeleteAct;
     QAction *mMoveLeftAct;
     QAction *mMoveRightAct;
-    QuicklaunchMenu *mMenu;
+    QMenu *mMenu;
     QPoint mDragStart;
     enum QuickLaunchStatus{NORMAL, HOVER, PRESS};
     QuickLaunchStatus quicklanuchstatus;
     CustomStyle toolbuttonstyle;
     QGSettings *mgsettings;
     QString isComputerOrTrash(QString urlName);
-
-    void modifyQuicklaunchMenuAction(bool direction);
-
-private slots:
-    void this_customContextMenuRequested(const QPoint & pos);
 public slots:
     void selfRemove();
 };
