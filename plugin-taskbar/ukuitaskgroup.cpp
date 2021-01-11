@@ -475,6 +475,8 @@ void UKUITaskGroup::onWindowRemoved(WId window)
         button->deleteLater();
         if (!parentTaskBar()->getCpuInfoFlg())
             system(QString("rm -f /tmp/%1.png").arg(window).toLatin1());
+        if (isLeaderWindow(window))
+            setLeaderWindow(mButtonHash.begin().key());
         if (mButtonHash.count())
         {
             if(mPopup->isVisible())
