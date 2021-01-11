@@ -144,6 +144,10 @@ void UKUITaskButton::updateText()
  * 目的是为了能够显示正确的application-x-desktop的图标的大小
  *
 */
+void UKUITaskButton::setLeaderWindow(WId leaderWindow) {
+    mWindow = leaderWindow;
+}
+
 void UKUITaskButton::updateIcon()
 {
     if (mAppName == QString("emo-system-ShellMethods") ||
@@ -171,8 +175,9 @@ void UKUITaskButton::updateIcon()
     if (mIcon.isNull()) {
         mIcon = QIcon::fromTheme("application-x-desktop");
     }
-    if (ico.isNull())
+    if (ico.isNull()) {
         ico = mIcon;
+    }
     setIcon(ico);
     setIconSize(QSize(mIconSize,mIconSize));
 }
