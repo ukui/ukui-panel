@@ -623,7 +623,7 @@ void UKUITaskGroup::onClicked(bool)
 
 void UKUITaskGroup::singleWindowClick()
 {
-    UKUITaskWidget *btn = mButtonHash.begin().value();
+    UKUITaskWidget *btn = mVisibleHash.value(windowId());
     if(btn)
     {
         if(!btn->isFocusState())
@@ -632,7 +632,7 @@ void UKUITaskGroup::singleWindowClick()
             {
                 mPopup->hide();
             }
-            KWindowSystem::activateWindow(mButtonHash.begin().key());
+            KWindowSystem::activateWindow(windowId());
         }
         else
         {
@@ -738,7 +738,7 @@ void UKUITaskGroup::refreshVisibility()
             mVisibleHash.remove(i.key());
         will |= visible;
     }
-
+    setLeaderWindow(mVisibleHash.begin().key());
     bool is = isVisible();
     setVisible(will);
     if(!mPopup->isVisible())
