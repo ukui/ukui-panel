@@ -39,37 +39,30 @@ include(GNUInstallDirs) # Standard directories for installation
 set(UKUI_PKG_CONFIG_DESCRIPTION "Shared library for UKUi applications")
 
 set(HEADERS
-    ukuihtmldelegate.h
     ukuisettings.h
     ukuiplugininfo.h
     ukuiapplication.h
     ukuisingleapplication.h
     ukuitranslator.h
-    ukuiprogramfinder.h
 
     ukuigridlayout.h
-    ukuirotatedwidget.h
     ukuiglobals.h
 )
 
 set(PUBLIC_CLASSES
-    HtmlDelegate
     Settings
     PluginInfo
     Application
     SingleApplication
     Translator
-    ProgramFinder
 
     PageSelectWidget
 
     GridLayout
-    RotatedWidget
     Globals
 )
 
 set(SOURCES
-    ukuihtmldelegate.cpp
     ukuiplugininfo.cpp
     ukuisettings.cpp
     ukuiapplication.cpp
@@ -78,17 +71,14 @@ set(SOURCES
     ukuiprogramfinder.cpp
 
     ukuigridlayout.cpp
-    ukuirotatedwidget.cpp
 )
 
 set(MOCS
-    ukuihtmldelegate.h
     ukuisettings.h
     ukuiscreensaver.h
     ukuiapplication.h
 
     ukuigridlayout.h
-    ukuirotatedwidget.h
 )
 
 set(FORMS

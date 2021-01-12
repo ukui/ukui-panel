@@ -8,7 +8,6 @@ add_subdirectory(common)
 
 set(PRIV_HEADERS
     panelpluginsmodel.h
-    windownotifier.h
     ukuipanel.h
     ukuipanelapplication.h
     ukuipanelapplication_p.h
@@ -16,9 +15,7 @@ set(PRIV_HEADERS
     plugin.h
     pluginsettings_p.h
     ukuipanellimits.h
-    popupmenu.h
     pluginmoveprocessor.h
-    ukuipanelpluginconfigdialog.h
     highlight-effect.h
 )
 
@@ -30,16 +27,13 @@ set(PUB_HEADERS
     iukuipanel.h
     comm_func.h
 
-    common/ukuihtmldelegate.h
     common/ukuisettings.h
     common/ukuiplugininfo.h
     common/ukuiapplication.h
     common/ukuisingleapplication.h
     common/ukuitranslator.h
-    common/ukuiprogramfinder.h
 
     common/ukuigridlayout.h
-    common/ukuirotatedwidget.h
     common/ukuiglobals.h
     ukuicontrolstyle.h
     highlight-effect.cpp
@@ -55,21 +49,17 @@ set(SOURCES
     ukuipanellayout.cpp
     plugin.cpp
     pluginsettings.cpp
-    popupmenu.cpp
     pluginmoveprocessor.cpp
     ukuipanelpluginconfigdialog.cpp
     comm_func.cpp
 
-    common/ukuihtmldelegate.cpp
     common/ukuiplugininfo.cpp
     common/ukuisettings.cpp
     common/ukuiapplication.cpp
     common/ukuisingleapplication.cpp
     common/ukuitranslator.cpp
-    common/ukuiprogramfinder.cpp
 
     common/ukuigridlayout.cpp
-    common/ukuirotatedwidget.cpp
     ukuicontrolstyle.cpp
     customstyle.cpp
 )

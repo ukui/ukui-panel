@@ -31,12 +31,9 @@
 #include <QLabel>
 #include <QtWebKitWidgets/QWebView>
 #include <QGSettings>
-
-#include "../panel/common/ukuirotatedwidget.h"
+#include <QMenu>
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
-#include "../panel/popupmenu.h"
-
 class QTimer;
 class CalendarActiveLabel;
 class UkuiCalendarWebView;

@@ -38,7 +38,6 @@
 #include <QtDBus/QtDBus>
 #include "common/ukuisettings.h"
 #include "iukuipanel.h"
-#include "popupmenu.h"
 #include "ukuipanelglobals.h"
 #include "highlight-effect.h"
 

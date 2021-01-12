@@ -30,7 +30,6 @@
 #include "iukuipanelplugin.h"
 #include "ukuipanelapplication.h"
 #include "ukuipanellayout.h"
-#include "popupmenu.h"
 #include "plugin.h"
 #include "panelpluginsmodel.h"
 #include "windownotifier.h"
