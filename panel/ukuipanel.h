@@ -256,7 +256,7 @@ public:
      * \brief Updates the config dialog. Used for updating its icons
      * when the panel-specific icon theme changes.
      */
-    void updateConfigDialog() const;
+//    void updateConfigDialog() const;
 
 public slots:
     /**
@@ -415,7 +415,7 @@ public slots:
      * by UKUIPanelApplication). That is why this method/slot has to be
      * public.
      */
-    void showConfigDialog();
+//    void showConfigDialog();
 
 private slots:
     /**
@@ -427,7 +427,7 @@ private slots:
      * be connected to this slot so this method gets called whenever the
      * user clicks that button.
      */
-    void showAddPluginDialog();
+//    void showAddPluginDialog();
     /**
      * @brief Recalculates the geometry of the panel and reserves the
      * window manager strut, i.e. it calls setPanelGeometry() and
@@ -691,7 +691,7 @@ private:
      * @brief Pointer to the current ConfigPanelDialog if there is any. Make
      * sure to test this pointer for validity because it is lazily loaded.
      */
-   QPointer<ConfigPanelDialog> mConfigDialog;
+//   QPointer<ConfigPanelDialog> mConfigDialog;
     //ConfigPanelDialog  *mConfigDialog;
     //QPointer<ConfigPanelWidget> mConfigWidget;
 

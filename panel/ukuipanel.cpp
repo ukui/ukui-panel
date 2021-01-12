@@ -30,7 +30,6 @@
 #include "iukuipanelplugin.h"
 #include "ukuipanelapplication.h"
 #include "ukuipanellayout.h"
-#include "config/configpaneldialog.h"
 #include "popupmenu.h"
 #include "plugin.h"
 #include "panelpluginsmodel.h"
@@ -462,7 +461,7 @@ UKUIPanel::~UKUIPanel()
 {
     mLayout->setEnabled(false);
     delete mAnimation;
-    delete mConfigDialog.data();
+//    delete mConfigDialog.data();
     // do not save settings because of "user deleted panel" functionality saveSettings();
 }
 
@@ -833,49 +832,49 @@ int UKUIPanel::findAvailableScreen(UKUIPanel::Position position)
 }
 
 
+///************************************************
+
+// ************************************************/
+//void UKUIPanel::showConfigDialog()
+//{
+//        if (mConfigDialog.isNull())
+//            mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
+
+//        mConfigDialog->showConfigPanelPage();
+//        mStandaloneWindows->observeWindow(mConfigDialog.data());
+//        mConfigDialog->show();
+//        mConfigDialog->raise();
+//        mConfigDialog->activateWindow();
+//        WId wid = mConfigDialog->windowHandle()->winId();
+
+//        KWindowSystem::activateWindow(wid);
+//        KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
+
+//    mConfigDialog = new ConfigPanelDialog(this, nullptr);
+//    mConfigDialog->show();
+//    //mConfigWidget->positionChanged();
+
+//}
+
+
 /************************************************
 
  ************************************************/
-void UKUIPanel::showConfigDialog()
-{
-        if (mConfigDialog.isNull())
-            mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
+//void UKUIPanel::showAddPluginDialog()
+//{
+//    if (mConfigDialog.isNull())
+//        mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
 
-        mConfigDialog->showConfigPanelPage();
-        mStandaloneWindows->observeWindow(mConfigDialog.data());
-        mConfigDialog->show();
-        mConfigDialog->raise();
-        mConfigDialog->activateWindow();
-        WId wid = mConfigDialog->windowHandle()->winId();
+//    mConfigDialog->showConfigPluginsPage();
+//    mStandaloneWindows->observeWindow(mConfigDialog.data());
+//    mConfigDialog->show();
+//    mConfigDialog->raise();
+//    mConfigDialog->activateWindow();
+//    WId wid = mConfigDialog->windowHandle()->winId();
 
-        KWindowSystem::activateWindow(wid);
-        KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
-
-    mConfigDialog = new ConfigPanelDialog(this, nullptr);
-    mConfigDialog->show();
-    //mConfigWidget->positionChanged();
-
-}
-
-
-/************************************************
-
- ************************************************/
-void UKUIPanel::showAddPluginDialog()
-{
-    if (mConfigDialog.isNull())
-        mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
-
-    mConfigDialog->showConfigPluginsPage();
-    mStandaloneWindows->observeWindow(mConfigDialog.data());
-    mConfigDialog->show();
-    mConfigDialog->raise();
-    mConfigDialog->activateWindow();
-    WId wid = mConfigDialog->windowHandle()->winId();
-
-    KWindowSystem::activateWindow(wid);
-    KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
-}
+//    KWindowSystem::activateWindow(wid);
+//    KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
+//}
 
 
 /*右键　设置任务栏选项*/
@@ -1689,16 +1688,16 @@ void UKUIPanel::setIconTheme(const QString& iconTheme)
     a->setIconTheme(iconTheme);
 }
 
-void UKUIPanel::updateConfigDialog() const
-{
-    if (!mConfigDialog.isNull() && mConfigDialog->isVisible())
-    {
-        mConfigDialog->updateIconThemeSettings();
-        const QList<QWidget*> widgets = mConfigDialog->findChildren<QWidget*>();
-        for (QWidget *widget : widgets)
-            widget->update();
-    }
-}
+//void UKUIPanel::updateConfigDialog() const
+//{
+//    if (!mConfigDialog.isNull() && mConfigDialog->isVisible())
+//    {
+//        mConfigDialog->updateIconThemeSettings();
+//        const QList<QWidget*> widgets = mConfigDialog->findChildren<QWidget*>();
+//        for (QWidget *widget : widgets)
+//            widget->update();
+//    }
+//}
 
 bool UKUIPanel::isPluginSingletonAndRunnig(QString const & pluginId) const
 {

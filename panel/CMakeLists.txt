@@ -19,10 +19,6 @@ set(PRIV_HEADERS
     popupmenu.h
     pluginmoveprocessor.h
     ukuipanelpluginconfigdialog.h
-    config/configpaneldialog.h
-    config/configpanelwidget.h
-    config/configpluginswidget.h
-    config/addplugindialog.h
     highlight-effect.h
 )
 
@@ -68,10 +64,6 @@ set(SOURCES
     popupmenu.cpp
     pluginmoveprocessor.cpp
     ukuipanelpluginconfigdialog.cpp
-    config/configpaneldialog.cpp
-    config/configpanelwidget.cpp
-    config/configpluginswidget.cpp
-    config/addplugindialog.cpp
     comm_func.cpp
 
     common/ukuihtmldelegate.cpp
@@ -95,9 +87,6 @@ set(SOURCES
 )
 
 set(UI
-    config/configpanelwidget.ui
-    config/configpluginswidget.ui
-    config/addplugindialog.ui
     common/configdialog/ukuiconfigdialog.ui
 )
 
