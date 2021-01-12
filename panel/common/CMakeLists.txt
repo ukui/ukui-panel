@@ -50,19 +50,12 @@ set(HEADERS
     ukuitranslator.h
     ukuiprogramfinder.h
 
-#    configdialog/ukuiconfigdialog.h
-#    configdialog/ukuiconfigdialogcmdlineoptions.h
-#    configdialog/ukuipageselectwidget.h
-
-    ukuipower/ukuipower.h
     ukuinotification.h
     ukuiautostartentry.h
     ukuigridlayout.h
     ukuirotatedwidget.h
     ukuiglobals.h
     ukuibacklight.h
-    #ukuibacklight/virtual_backend.h
-    #ukuibacklight/linux_backend/linuxbackend.h
 )
 
 set(PUBLIC_CLASSES
@@ -100,12 +93,6 @@ set(SOURCES
     ukuitranslator.cpp
     ukuiprogramfinder.cpp
 
-#    configdialog/ukuiconfigdialog.cpp
-#    configdialog/ukuiconfigdialogcmdlineoptions.cpp
-#    configdialog/ukuipageselectwidget.cpp
-
-    ukuipower/ukuipower.cpp
-    ukuipower/ukuipowerproviders.cpp
     ukuiautostartentry.cpp
     ukuinotification.cpp
     ukuigridlayout.cpp
@@ -123,14 +110,8 @@ set(MOCS
     ukuiapplication.h
     ukuibacklight.h
 
-#    configdialog/ukuiconfigdialog.h
-#    configdialog/ukuiconfigdialog_p.h
-#    configdialog/ukuipageselectwidget.h
-
     ukuinotification.h
     ukuinotification_p.h
-    ukuipower/ukuipower.h
-    ukuipower/ukuipowerproviders.h
     ukuigridlayout.h
     ukuirotatedwidget.h
     ukuibacklight/virtual_backend.h

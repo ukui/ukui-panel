@@ -38,10 +38,6 @@ set(PUB_HEADERS
     common/ukuitranslator.h
     common/ukuiprogramfinder.h
 
-#    common/configdialog/ukuiconfigdialog.h
-#    common/configdialog/ukuiconfigdialogcmdlineoptions.h
-#    common/configdialog/ukuipageselectwidget.h
-
     common/ukuinotification.h
     common/ukuiautostartentry.h
     common/ukuigridlayout.h
@@ -74,10 +70,6 @@ set(SOURCES
     common/ukuitranslator.cpp
     common/ukuiprogramfinder.cpp
 
-#    common/configdialog/ukuiconfigdialog.cpp
-#    common/configdialog/ukuiconfigdialogcmdlineoptions.cpp
-#    common/configdialog/ukuipageselectwidget.cpp
-
     common/ukuiautostartentry.cpp
     common/ukuinotification.cpp
     common/ukuigridlayout.cpp
@@ -85,11 +77,6 @@ set(SOURCES
     ukuicontrolstyle.cpp
     customstyle.cpp
 )
-
-set(UI
-#    common/configdialog/ukuiconfigdialog.ui
-)
-
 
 file(GLOB CONFIG_FILES resources/*.conf resources/*.qss)
 ############################################
