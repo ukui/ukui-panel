@@ -35,7 +35,6 @@ message(STATUS "Building ${PROJECT_NAME} with Qt ${Qt5Core_VERSION}")
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs) # Standard directories for installation
 
-#add_subdirectory(ukuibacklight/linux_backend/driver)
 
 set(UKUI_PKG_CONFIG_DESCRIPTION "Shared library for UKUi applications")
 
@@ -55,7 +54,6 @@ set(HEADERS
     ukuigridlayout.h
     ukuirotatedwidget.h
     ukuiglobals.h
-    ukuibacklight.h
 )
 
 set(PUBLIC_CLASSES
@@ -79,7 +77,6 @@ set(PUBLIC_CLASSES
     GridLayout
     RotatedWidget
     Globals
-    Backlight
 )
 
 set(SOURCES
@@ -97,9 +94,6 @@ set(SOURCES
     ukuinotification.cpp
     ukuigridlayout.cpp
     ukuirotatedwidget.cpp
-    ukuibacklight.cpp
-    ukuibacklight/virtual_backend.cpp
-    ukuibacklight/linux_backend/linuxbackend.cpp
 )
 
 set(MOCS
@@ -108,33 +102,18 @@ set(MOCS
     ukuisettings.h
     ukuiscreensaver.h
     ukuiapplication.h
-    ukuibacklight.h
 
     ukuinotification.h
     ukuinotification_p.h
     ukuigridlayout.h
     ukuirotatedwidget.h
-    ukuibacklight/virtual_backend.h
-    ukuibacklight/linux_backend/linuxbackend.h
 )
 
 set(FORMS
     configdialog/ukuiconfigdialog.ui
 )
 
-set(POLKIT_FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/org.ukui.backlight.pkexec.policy"
-)
-
-# Build Polkit file
-configure_file ( polkit/org.ukui.backlight.pkexec.policy.in "${CMAKE_CURRENT_BINARY_DIR}/org.ukui.backlight.pkexec.policy" )
-
 file(GLOB UKUI_CONFIG_FILES resources/*.conf)
-
-QT5_ADD_DBUS_INTERFACE(DBUS_INTERFACE_SRCS
-    dbus/org.freedesktop.Notifications.xml
-    notifications_interface
-)
 
 QT5_ADD_DBUS_ADAPTOR(DBUS_ADAPTOR_SRCS
     dbus/org.ukui.SingleApplication.xml
