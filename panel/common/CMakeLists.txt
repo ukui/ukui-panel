@@ -50,9 +50,9 @@ set(HEADERS
     ukuitranslator.h
     ukuiprogramfinder.h
 
-    configdialog/ukuiconfigdialog.h
-    configdialog/ukuiconfigdialogcmdlineoptions.h
-    configdialog/ukuipageselectwidget.h
+#    configdialog/ukuiconfigdialog.h
+#    configdialog/ukuiconfigdialogcmdlineoptions.h
+#    configdialog/ukuipageselectwidget.h
 
     ukuipower/ukuipower.h
     ukuinotification.h
@@ -100,9 +100,9 @@ set(SOURCES
     ukuitranslator.cpp
     ukuiprogramfinder.cpp
 
-    configdialog/ukuiconfigdialog.cpp
-    configdialog/ukuiconfigdialogcmdlineoptions.cpp
-    configdialog/ukuipageselectwidget.cpp
+#    configdialog/ukuiconfigdialog.cpp
+#    configdialog/ukuiconfigdialogcmdlineoptions.cpp
+#    configdialog/ukuipageselectwidget.cpp
 
     ukuipower/ukuipower.cpp
     ukuipower/ukuipowerproviders.cpp
@@ -123,9 +123,9 @@ set(MOCS
     ukuiapplication.h
     ukuibacklight.h
 
-    configdialog/ukuiconfigdialog.h
-    configdialog/ukuiconfigdialog_p.h
-    configdialog/ukuipageselectwidget.h
+#    configdialog/ukuiconfigdialog.h
+#    configdialog/ukuiconfigdialog_p.h
+#    configdialog/ukuipageselectwidget.h
 
     ukuinotification.h
     ukuinotification_p.h
