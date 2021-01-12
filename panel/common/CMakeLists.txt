@@ -42,15 +42,11 @@ set(HEADERS
     ukuihtmldelegate.h
     ukuisettings.h
     ukuiplugininfo.h
-    ukuipowermanager.h
-    ukuiscreensaver.h
     ukuiapplication.h
     ukuisingleapplication.h
     ukuitranslator.h
     ukuiprogramfinder.h
 
-    ukuinotification.h
-    ukuiautostartentry.h
     ukuigridlayout.h
     ukuirotatedwidget.h
     ukuiglobals.h
@@ -60,20 +56,13 @@ set(PUBLIC_CLASSES
     HtmlDelegate
     Settings
     PluginInfo
-    PowerManager
-    ScreenSaver
     Application
     SingleApplication
     Translator
     ProgramFinder
 
-    ConfigDialog
-    ConfigDialogCmdLineOptions
     PageSelectWidget
 
-    Power
-    Notification
-    AutostartEntry
     GridLayout
     RotatedWidget
     Globals
@@ -82,29 +71,22 @@ set(PUBLIC_CLASSES
 set(SOURCES
     ukuihtmldelegate.cpp
     ukuiplugininfo.cpp
-    ukuipowermanager.cpp
     ukuisettings.cpp
-    ukuiscreensaver.cpp
     ukuiapplication.cpp
     ukuisingleapplication.cpp
     ukuitranslator.cpp
     ukuiprogramfinder.cpp
 
-    ukuiautostartentry.cpp
-    ukuinotification.cpp
     ukuigridlayout.cpp
     ukuirotatedwidget.cpp
 )
 
 set(MOCS
     ukuihtmldelegate.h
-    ukuipowermanager.h
     ukuisettings.h
     ukuiscreensaver.h
     ukuiapplication.h
 
-    ukuinotification.h
-    ukuinotification_p.h
     ukuigridlayout.h
     ukuirotatedwidget.h
 )

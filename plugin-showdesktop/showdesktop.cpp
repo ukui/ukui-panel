@@ -34,7 +34,6 @@
 #include <KWindowSystem/NETWM>
 //panel
 #include "showdesktop.h"
-#include "../panel/common/ukuinotification.h"
 #include "../panel/pluginsettings.h"
 
 #define DEFAULT_SHORTCUT "Control+Alt+D"

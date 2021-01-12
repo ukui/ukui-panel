@@ -38,8 +38,6 @@ set(PUB_HEADERS
     common/ukuitranslator.h
     common/ukuiprogramfinder.h
 
-    common/ukuinotification.h
-    common/ukuiautostartentry.h
     common/ukuigridlayout.h
     common/ukuirotatedwidget.h
     common/ukuiglobals.h
@@ -70,8 +68,6 @@ set(SOURCES
     common/ukuitranslator.cpp
     common/ukuiprogramfinder.cpp
 
-    common/ukuiautostartentry.cpp
-    common/ukuinotification.cpp
     common/ukuigridlayout.cpp
     common/ukuirotatedwidget.cpp
     ukuicontrolstyle.cpp
@@ -109,12 +105,6 @@ set(QTX_LIBRARIES Qt5::Widgets Qt5::Xml Qt5::DBus)
 #)
 
 ukui_app_translation_loader(SOURCES ${PROJECT_NAME})
-
-
-QT5_ADD_DBUS_INTERFACE(DBUS_INTERFACE_SRCS
-    common/dbus/org.freedesktop.Notifications.xml
-    notifications_interface
-)
 
 QT5_ADD_DBUS_ADAPTOR(DBUS_ADAPTOR_SRCS
     common/dbus/org.ukui.SingleApplication.xml
