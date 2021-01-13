@@ -35,125 +35,57 @@ message(STATUS "Building ${PROJECT_NAME} with Qt ${Qt5Core_VERSION}")
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs) # Standard directories for installation
 
-#add_subdirectory(ukuibacklight/linux_backend/driver)
 
 set(UKUI_PKG_CONFIG_DESCRIPTION "Shared library for UKUi applications")
 
 set(HEADERS
-    ukuihtmldelegate.h
     ukuisettings.h
     ukuiplugininfo.h
-    ukuipowermanager.h
-    ukuiscreensaver.h
     ukuiapplication.h
     ukuisingleapplication.h
     ukuitranslator.h
-    ukuiprogramfinder.h
 
-    configdialog/ukuiconfigdialog.h
-    configdialog/ukuiconfigdialogcmdlineoptions.h
-    configdialog/ukuipageselectwidget.h
-
-    ukuipower/ukuipower.h
-    ukuinotification.h
-    ukuiautostartentry.h
     ukuigridlayout.h
-    ukuirotatedwidget.h
     ukuiglobals.h
-    ukuibacklight.h
-    #ukuibacklight/virtual_backend.h
-    #ukuibacklight/linux_backend/linuxbackend.h
 )
 
 set(PUBLIC_CLASSES
-    HtmlDelegate
     Settings
     PluginInfo
-    PowerManager
-    ScreenSaver
     Application
     SingleApplication
     Translator
-    ProgramFinder
 
-    ConfigDialog
-    ConfigDialogCmdLineOptions
     PageSelectWidget
 
-    Power
-    Notification
-    AutostartEntry
     GridLayout
-    RotatedWidget
     Globals
-    Backlight
 )
 
 set(SOURCES
-    ukuihtmldelegate.cpp
     ukuiplugininfo.cpp
-    ukuipowermanager.cpp
     ukuisettings.cpp
-    ukuiscreensaver.cpp
     ukuiapplication.cpp
     ukuisingleapplication.cpp
     ukuitranslator.cpp
     ukuiprogramfinder.cpp
 
-    configdialog/ukuiconfigdialog.cpp
-    configdialog/ukuiconfigdialogcmdlineoptions.cpp
-    configdialog/ukuipageselectwidget.cpp
-
-    ukuipower/ukuipower.cpp
-    ukuipower/ukuipowerproviders.cpp
-    ukuiautostartentry.cpp
-    ukuinotification.cpp
     ukuigridlayout.cpp
-    ukuirotatedwidget.cpp
-    ukuibacklight.cpp
-    ukuibacklight/virtual_backend.cpp
-    ukuibacklight/linux_backend/linuxbackend.cpp
 )
 
 set(MOCS
-    ukuihtmldelegate.h
-    ukuipowermanager.h
     ukuisettings.h
     ukuiscreensaver.h
     ukuiapplication.h
-    ukuibacklight.h
 
-    configdialog/ukuiconfigdialog.h
-    configdialog/ukuiconfigdialog_p.h
-    configdialog/ukuipageselectwidget.h
-
-    ukuinotification.h
-    ukuinotification_p.h
-    ukuipower/ukuipower.h
-    ukuipower/ukuipowerproviders.h
     ukuigridlayout.h
-    ukuirotatedwidget.h
-    ukuibacklight/virtual_backend.h
-    ukuibacklight/linux_backend/linuxbackend.h
 )
 
 set(FORMS
     configdialog/ukuiconfigdialog.ui
 )
 
-set(POLKIT_FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/org.ukui.backlight.pkexec.policy"
-)
-
-# Build Polkit file
-configure_file ( polkit/org.ukui.backlight.pkexec.policy.in "${CMAKE_CURRENT_BINARY_DIR}/org.ukui.backlight.pkexec.policy" )
-
 file(GLOB UKUI_CONFIG_FILES resources/*.conf)
-
-QT5_ADD_DBUS_INTERFACE(DBUS_INTERFACE_SRCS
-    dbus/org.freedesktop.Notifications.xml
-    notifications_interface
-)
 
 QT5_ADD_DBUS_ADAPTOR(DBUS_ADAPTOR_SRCS
     dbus/org.ukui.SingleApplication.xml
