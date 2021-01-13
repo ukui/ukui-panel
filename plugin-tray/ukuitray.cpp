@@ -63,6 +63,8 @@
 #include <QLabel>
 #include <QMouseEvent>
 
+#include "traydynamicgsetting.h"
+
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
 #define _NET_SYSTEM_TRAY_ORIENTATION_VERT 1
 
@@ -90,7 +92,7 @@ extern "C" {
 
 #define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.panel.tray"
 #define KEYBINDINGS_CUSTOM_DIR "/org/ukui/tray/keybindings/"
-#define MAX_CUSTOM_SHORTCUTS 100
+
 #define ACTION_KEY "action"
 #define RECORD_KEY "record"
 #define BINDING_KEY "binding"
@@ -117,7 +119,6 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mPlugin(plugin),
     mDisplay(QX11Info::display())
 {
-    mMapIcon.clear();
     m_pwidget = NULL;
     status=ST_HIDE;
 
@@ -137,7 +138,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
-    mBtn =new TrayButton(this);
+    mBtn =new StorageArrow(this);
     mLayout->addWidget(mBtn);
     if(mPlugin)
     {
@@ -145,33 +146,15 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     }
 
     storageFrame=new UKUIStorageFrame;
-    storageFrame->setLayout(new UKUi::GridLayout);
+    mStorageLayout = new UKUi::GridLayout(storageFrame);
+    storageFrame->setLayout(mStorageLayout);
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
-    connect(this,SIGNAL(positionChanged()),this,SLOT(changeIcon()));
-    createIconMap();
     realign();
-    changeIcon();
     QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
 }
 
 UKUITray::~UKUITray()
 {
-    for(int i  = 0; i < mTrayIcons.size(); i++)
-    {
-        if(mTrayIcons[i])
-        {
-            mTrayIcons[i]->deleteLater();
-            mTrayIcons[i] = NULL;
-        }
-    }
-    for(int i  = 0; i < mStorageIcons.size(); i++)
-    {
-        if(mStorageIcons[i])
-        {
-            mStorageIcons[i]->deleteLater();
-            mStorageIcons[i] = NULL;
-        }
-    }
     for(int i  = 0; i < mIcons.size(); i++)
     {
         if(mIcons[i])
@@ -183,7 +166,6 @@ UKUITray::~UKUITray()
     mIcons.clear();
     mStorageIcons.clear();
     mTrayIcons.clear();
-    mMapIcon.clear();
     freezeApp();
     stopTray();
 }
@@ -296,13 +278,10 @@ void UKUITray::realign()
 
         dynamic_cast<UKUi::GridLayout*>(mLayout)->setRowCount(panel->lineCount());
         dynamic_cast<UKUi::GridLayout*>(mLayout)->setColumnCount(0);
-        mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
     }
     else{
-
         dynamic_cast<UKUi::GridLayout*>(mLayout)->setColumnCount(panel->lineCount());
         dynamic_cast<UKUi::GridLayout*>(mLayout)->setRowCount(0);
-        mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
     }
 
     if(storageFrame){
@@ -342,28 +321,6 @@ void UKUITray::trayIconSizeRefresh()
     }
 }
 
-/*creat iconMap of four  direction*/
-void UKUITray::createIconMap()
-{
-    mMapIcon[IUKUIPanel::PositionBottom] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-up-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionLeft] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-end-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionTop] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-down-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionRight] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-start-symbolic").pixmap(24,24).toImage())));
-
-}
-
-/*这里的changeIcon是改变收纳箭头的图标*/
-void UKUITray::changeIcon()
-{
-    QIcon icon;
-    QMap<IUKUIPanel::Position, QIcon>::const_iterator it = mMapIcon.find(mCurPosition);
-    if(it != mMapIcon.end()){
-        icon = it.value();
-    }
-    mBtn->setIcon(icon);
-    mBtn->setFixedSize(QSize(30,mPlugin->panel()->panelSize()));
-}
-
 /*监听托盘事件*/
 void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
 {
@@ -389,7 +346,7 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
 
     case SYSTEM_TRAY_BEGIN_MESSAGE:
     case SYSTEM_TRAY_CANCEL_MESSAGE:
-        qDebug() << "we don't show balloon messages.";
+//        qDebug() << "we don't show balloon messages.";
         break;
 
     default:
@@ -659,7 +616,6 @@ void UKUITray::freezeTrayApp(Window winId)
 
 void UKUITray::addTrayIcon(Window winId)
 {
-    qDebug()<<"addTrayIcon";
     // decline to add an icon for a window we already manage
     TrayIcon *icon = findTrayIcon(winId);
     if(icon)
@@ -703,7 +659,6 @@ void UKUITray::addStorageIcon(Window winId)
 /*与控制面板交互，移动应用到托盘栏或者收纳栏*/
 void UKUITray::moveIconToTray(Window winId)
 {
-    qDebug()<<"moveIconToTray";
     TrayIcon *storageicon = findStorageIcon(winId);
 
     if(!storageicon)
@@ -731,7 +686,6 @@ void UKUITray::moveIconToTray(Window winId)
 
 void UKUITray::moveIconToStorage(Window winId)
 {
-    qDebug()<<"inter moveIconToStorage";
     TrayIcon *icon = findTrayIcon(winId);
     if(!icon)
         return;
@@ -755,26 +709,6 @@ void UKUITray::moveIconToStorage(Window winId)
         connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
-}
-
-QList<char *> UKUITray::listExistsPath(){
-    char ** childs;
-    int len;
-
-    DConfClient * client = dconf_client_new();
-    childs = dconf_client_list (client, KEYBINDINGS_CUSTOM_DIR, &len);
-    g_object_unref (client);
-
-    QList<char *> vals;
-
-    for (int i = 0; childs[i] != NULL; i++){
-        if (dconf_is_rel_dir (childs[i], NULL)){
-            gchar *val = g_strdup (childs[i]);
-            vals.append(val);
-        }
-    }
-    g_strfreev (childs);
-    return vals;
 }
 
 void UKUITray::regulateIcon(Window *mid)
@@ -918,67 +852,13 @@ void UKUITray::newAppDetect(int wid)
     }
 }
 
-void UKUITray::freezeApp()
-{
-    QList<char *> existsPath = listExistsPath();
-    for (char * path : existsPath){
-        QString p =KEYBINDINGS_CUSTOM_DIR;
-        std::string str = p.toStdString();
-        const int len = str.length();
-        char * prepath = new char[len+1];
-        strcpy(prepath,str.c_str());
-        char * allpath = strcat(prepath, path);
-
-        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
-
-        QGSettings *settings;
-        const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
-        if(QGSettings::isSchemaInstalled(id)) {
-            settings= new QGSettings(ba, bba,this);
-
-            settings->set(ACTION_KEY,"freeze");
-        }
-    }
-}
-
-
-QString UKUITray::findFreePath(){
-    int i = 0;
-    char * dir;
-    bool found;
-    QList<char *> existsdirs;
-
-    existsdirs = listExistsPath();
-
-    for (; i < MAX_CUSTOM_SHORTCUTS; i++){
-        found = true;
-        dir = QString("custom%1/").arg(i).toLatin1().data();
-        for (int j = 0; j < existsdirs.count(); j++)
-            if (!g_strcmp0(dir, existsdirs.at(j))){
-                found = false;
-                break;
-            }
-        if (found)
-            break;
-    }
-
-    if (i == MAX_CUSTOM_SHORTCUTS){
-        qDebug() << "Keyboard Shortcuts" << "Too many custom shortcuts";
-        return "";
-    }
-    return QString("%1%2").arg(KEYBINDINGS_CUSTOM_DIR).arg(QString(dir));
-}
-
 void UKUITray::handleStorageUi()
 {
-    //    qDebug()<<"void UKUITray::handleStorageUi():"<<mStorageIcons.size();
-    int winWidth = 0;
-    int winHeight = 0;
     if(m_pwidget)
     {
-        if(storageFrame->layout()->count()){
-            storageFrame->layout()->removeWidget(m_pwidget);
+        qDebug()<<"handleStorageUi  m_pwidget is true";
+        if(mStorageLayout->count()){
+            mStorageLayout->removeWidget(m_pwidget);
         }
         UKUi::GridLayout *vLayout = dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout());
         if(vLayout)
@@ -989,97 +869,7 @@ void UKUITray::handleStorageUi()
         m_pwidget = NULL;
     }
     m_pwidget =  new UKUiStorageWidget;
-    m_pwidget->setLayout(new UKUi::GridLayout);
-
-    switch(mStorageIcons.size())
-    {
-    case 1:
-        winWidth  = mWinWidth;
-        winHeight = mWinHeight;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(1);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-        break;
-    case 2:
-        winWidth  = mWinWidth*2;
-        winHeight = mWinHeight;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(2);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-        break;
-    case 3:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-        break;
-    case 4:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
-        break;
-    case 5:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
-        break;
-    case 6:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
-        break;
-    case 7:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
-        break;
-    case 8:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
-        break;
-    case 9:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
-        break;
-    case 10:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*4;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
-        break;
-    case 11:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*4;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
-        break;
-    case 12:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*4;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
-        break;
-    default:
-        break;
-    }
+    m_pwidget->setStorageWidgetButtonLayout(mStorageIcons.size());
 
     for(auto it = mStorageIcons.begin();it != mStorageIcons.end();++it)
     {
@@ -1087,9 +877,7 @@ void UKUITray::handleStorageUi()
         (*it)->setFixedSize(mWinWidth,mWinHeight);
     }
     storageFrame->layout()->addWidget(m_pwidget);
-    //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
-    storageFrame->setFixedSize(winWidth,winHeight);
-    //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
+    storageFrame->setStorageFrameSize(mStorageIcons.size());
 }
 
 void UKUITray::switchButtons(TrayIcon *button1, TrayIcon *button2)

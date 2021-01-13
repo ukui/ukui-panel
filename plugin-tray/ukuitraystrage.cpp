@@ -152,21 +152,55 @@ void UKUIStorageFrame::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-UKUiStorageWidget::UKUiStorageWidget(){
-    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-}
-
-UKUiStorageWidget::~UKUiStorageWidget(){
-}
-
-void UKUiStorageWidget::paintEvent(QPaintEvent *)
+#define mWinWidth 46
+#define mWinHeight 46
+void UKUIStorageFrame::setStorageFrameSize(int size)
 {
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    p.setBrush(QBrush(QColor(0x13,0x14,0x14,0x4d)));
-    p.setPen(Qt::NoPen);
-    p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,6,6);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+    int winWidth = 0;
+    int winHeight = 0;
+
+    this->setLayout(new UKUi::GridLayout);
+
+    switch(size)
+    {
+    case 1:
+        winWidth  = mWinWidth;
+        winHeight = mWinHeight;
+        break;
+    case 2:
+        winWidth  = mWinWidth*2;
+        winHeight = mWinHeight;
+        break;
+    case 3:
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight;
+        break;
+    case 4:
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*2;
+        break;
+    case 5:
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*2;
+        break;
+    case 6:
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*2;
+        break;
+    case 7:
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*3;
+        break;
+    case 8:
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*3;
+        break;
+    case 9:
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*3;
+        break;
+    default:
+        break;
+    }
+    this->setFixedSize(winWidth,winHeight);
 }

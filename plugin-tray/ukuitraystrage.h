@@ -56,20 +56,13 @@ class UKUIStorageFrame:public QWidget
 public:
     UKUIStorageFrame(QWidget* parent =0);
     ~UKUIStorageFrame();
+
+    void setStorageFrameSize(int size);
 protected:
     bool eventFilter(QObject *, QEvent *);
     void paintEvent(QPaintEvent *event)override;
 private:
     Atom _NET_SYSTEM_TRAY_OPCODE;
-};
-
-class UKUiStorageWidget:public QWidget
-{
-public:
-    UKUiStorageWidget();
-    ~UKUiStorageWidget();
-protected:
-    void paintEvent(QPaintEvent*);
 };
 
 #endif

@@ -3,12 +3,20 @@
 
 //Qt
 #include <QToolButton>
-class TrayButton : public QToolButton {
+#include <QPushButton>
+#include <QGSettings>
+enum storageArrowStatus{NORMAL,HOVER,PRESS};
+class StorageArrow : public QToolButton {
 public :
-    TrayButton(QWidget* parent );
-    ~TrayButton();
+    StorageArrow(QWidget* parent );
+    ~StorageArrow();
 protected :
-    void enterEvent(QEvent *);
-    void leaveEvent(QEvent *);
+    void paintEvent(QEvent *);
+private:
+    void setArrowIcon();
+    int GetTaskbarInfo();
+    QGSettings *gsetting;
+    int panelPosition;
+    int iconsize;
 };
 #endif

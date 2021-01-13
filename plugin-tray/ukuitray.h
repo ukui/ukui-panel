@@ -46,7 +46,7 @@
 #include "../panel/ukuicontrolstyle.h"
 #include "ukuitraystrage.h"
 #include "storagearrow.h"
-
+#include "ukuistoragewidget.h"
 class TrayIcon;
 class QSize;
 namespace UKUi {
@@ -82,19 +82,6 @@ public:
     void setIconSize();
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
     UKUITrayPlugin *mPlugin;
-
-    /**
-     * 通过设置gsetting来调节应用在托盘或者收纳
-     * 以下listExistsPath findFreePath
-     */
-    /**
-     * @brief listExistsPath
-     * @return
-     *
-     * 列出存在的可供gsettings使用的路径
-     */
-    QList<char *> listExistsPath();
-    QString findFreePath();
     /**
      * @brief regulateIcon
      * @param mid
@@ -107,12 +94,12 @@ public:
      * 检测到新的应用（第一次添加应用）
      */
     void newAppDetect(int wid);
-    /**
-     * @brief freezeApp
-     * 将所有的托盘应用的状态至为freeze
-     * 一般存在与在任务栏退出的时候
-     */
-    void freezeApp();
+//    /**
+//     * @brief freezeApp
+//     * 将所有的托盘应用的状态至为freeze
+//     * 一般存在与在任务栏退出的时候
+//     */
+//    void freezeApp();
     /**
      * @brief showAndHideStorage
      * 在取消了panel的WindowDoesNotAcceptFocus属性之后，托盘栏会有点击之后的隐藏并再次弹出的操作
@@ -125,7 +112,6 @@ public slots:
      * 点击收纳按钮的时候的槽函数
      */
     void storageBar();
-    void changeIcon();
     /**
      * @brief realign
      * 关于设置托盘栏图标大小的方法
@@ -199,7 +185,6 @@ private:
     TrayIcon* findIcon(Window trayId);
     TrayIcon* findTrayIcon(Window trayId);
     TrayIcon* findStorageIcon(Window trayId);
-    void createIconMap();
 
     bool mValid;
     Window mTrayId;
@@ -216,17 +201,21 @@ private:
     UKUi::GridLayout *mLayout;
     /**
      * @brief mStorageLayout
+     * 收纳栏上布局
+     */
+    UKUi::GridLayout *mStorageLayout;
+    /**
+     * @brief mStorageItemLayout
      * 收纳栏上的图标布局
      */
-//    UKUi::GridLayout *mStorageLayout;
+    UKUi::GridLayout *mStorageItemLayout;
 
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
     UKUIStorageFrame *storageFrame;
     UKUiStorageWidget *m_pwidget;
-    TrayButton *mBtn;
+    StorageArrow *mBtn;
     IUKUIPanel::Position mCurPosition;
-    QMap<IUKUIPanel::Position, QIcon> mMapIcon;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QGSettings *settings;
 };
