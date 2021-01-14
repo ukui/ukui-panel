@@ -155,17 +155,17 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
 
 UKUITray::~UKUITray()
 {
-    for(int i  = 0; i < mIcons.size(); i++)
-    {
-        if(mIcons[i])
-        {
-            mIcons[i]->deleteLater();
-            mIcons[i] = NULL;
-        }
-    }
-    mIcons.clear();
-    mStorageIcons.clear();
-    mTrayIcons.clear();
+//    for(int i  = 0; i < mIcons.size(); i++)
+//    {
+//        if(mIcons[i])
+//        {
+//            mIcons[i]->deleteLater();
+//            mIcons[i] = NULL;
+//        }
+//    }
+//    mIcons.clear();
+//    mStorageIcons.clear();
+//    mTrayIcons.clear();
     freezeApp();
     stopTray();
 }

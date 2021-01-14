@@ -1,3 +1,9 @@
+ukui-panel (3.0.1-49dev1) v101; urgency=medium
+
+  * 解决任务栏崩溃问题
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 14 Jan 2021 17:17:38 +0800
+
 ukui-panel (3.0.1-1) unstable; urgency=medium
 
   * New upstream release.

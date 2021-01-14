@@ -58,6 +58,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
 
 
 NightMode::~NightMode(){
+    delete gsettings;
 }
 
 void NightMode::realign()
@@ -96,7 +97,6 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     controlCenterSetNightMode(mode);
 }
 NightModeButton::~NightModeButton(){
-    delete gsettings;
     delete mqtstyleGsettings;
     delete mgtkstyleGsettings;
 }
