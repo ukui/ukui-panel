@@ -6,12 +6,12 @@
 #include <QPushButton>
 #include <QGSettings>
 enum storageArrowStatus{NORMAL,HOVER,PRESS};
-class StorageArrow : public QToolButton {
+class StorageArrow : public QPushButton {
 public :
     StorageArrow(QWidget* parent );
     ~StorageArrow();
 protected :
-    void paintEvent(QEvent *);
+//    void paintEvent(QEvent *);
 private:
     void setArrowIcon();
     int GetTaskbarInfo();

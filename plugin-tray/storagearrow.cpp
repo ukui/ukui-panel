@@ -13,10 +13,10 @@
 
 storageArrowStatus state=NORMAL;
 StorageArrow::StorageArrow(QWidget* parent):
-    QToolButton(parent)
+    QPushButton(parent)
 {
     setStyle(new CustomStyle());
-    setVisible(false);
+//    setVisible(false);
 
     const QByteArray id(PANEL_SETTINGS);
     gsetting = new QGSettings(id);
@@ -37,31 +37,31 @@ StorageArrow::StorageArrow(QWidget* parent):
 
 StorageArrow::~StorageArrow() { }
 
-void StorageArrow::paintEvent(QEvent *e)
-{
-    QStyleOption opt;
-    opt.initFrom(this);
-    QPainter p(this);
+//void StorageArrow::paintEvent(QEvent *e)
+//{
+//    QStyleOption opt;
+//    opt.initFrom(this);
+//    QPainter p(this);
 
-    switch(state)
-    {
-    case NORMAL:
-        p.setBrush(QColor(0xff,0xff,0xff,0x0f));
-        p.setPen(Qt::NoPen);
-        break;
-    case HOVER:
-        p.setBrush(QColor(0xff,0xff,0xff,0x1f));
-        p.setPen(Qt::NoPen);
-        break;
-    case PRESS:
-//        p.setBrush(Qt::green);
-        p.setPen(Qt::NoPen);
-        break;
-    }
-    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    p.drawRoundedRect(opt.rect,4,4);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
+//    switch(state)
+//    {
+//    case NORMAL:
+//        p.setBrush(QColor(0xff,0xff,0xff,0x0f));
+//        p.setPen(Qt::NoPen);
+//        break;
+//    case HOVER:
+//        p.setBrush(QColor(0xff,0xff,0xff,0x1f));
+//        p.setPen(Qt::NoPen);
+//        break;
+//    case PRESS:
+////        p.setBrush(Qt::green);
+//        p.setPen(Qt::NoPen);
+//        break;
+//    }
+//    p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+//    p.drawRoundedRect(opt.rect,4,4);
+//    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+//}
 
 int StorageArrow::GetTaskbarInfo()
 {

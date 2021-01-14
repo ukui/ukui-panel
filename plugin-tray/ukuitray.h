@@ -80,6 +80,15 @@ public:
      * 目前托盘应用不使用此方式设置控件的大小而是使用setIconSize和setFixedSize来设置
      */
     void setIconSize();
+
+    /** @brief nativeEventFilter
+     * 托盘应用的事件过滤器
+     * 通过继承QAbstractNativeEventFilter的类中重新实现nativeEventFilter接口:
+     * 安装　：　void QCoreApplication::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
+     * 或者　　　void QAbstractEventDispatcher::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
+     * XCB(Linux)　对应的eventType 类型如下：
+     * 事件类型(eventType)：“xcb_generic_event_t”　　　消息类型(message)：xcb_generic_event_t *	　结果类型(result)：无
+    */
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
     UKUITrayPlugin *mPlugin;
     /**
@@ -94,12 +103,6 @@ public:
      * 检测到新的应用（第一次添加应用）
      */
     void newAppDetect(int wid);
-//    /**
-//     * @brief freezeApp
-//     * 将所有的托盘应用的状态至为freeze
-//     * 一般存在与在任务栏退出的时候
-//     */
-//    void freezeApp();
     /**
      * @brief showAndHideStorage
      * 在取消了panel的WindowDoesNotAcceptFocus属性之后，托盘栏会有点击之后的隐藏并再次弹出的操作
@@ -133,19 +136,13 @@ private slots:
      */
     void startTray();
     void stopTray();
-    void stopStorageTray();
+//    void stopStorageTray();
     /**
      * @brief onIconDestroyed
      * @param icon
      * 将托盘图标从托盘栏/收纳栏中移除
      */
     void onIconDestroyed(QObject * icon);
-    /**
-     * @brief freezeTrayApp
-     * @param winId
-     * 将托盘应用置为freeze的状态
-     */
-    void freezeTrayApp(Window winId);
     void trayIconSizeRefresh();
     /**
      * @brief switchButtons

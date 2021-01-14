@@ -194,13 +194,6 @@ void UKUITray::showAndHideStorage(bool storageStatus)
     }
 }
 
-/*托盘应用的事件过滤器
- * 通过继承QAbstractNativeEventFilter的类中重新实现nativeEventFilter接口:
- * 安装　：　void QCoreApplication::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
- * 或者　　　void QAbstractEventDispatcher::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
- * XCB(Linux)　对应的eventType 类型如下：
- * 事件类型(eventType)：“xcb_generic_event_t”　　　消息类型(message)：xcb_generic_event_t *	　结果类型(result)：无
-*/
 bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, long *)
 {
     if (eventType != "xcb_generic_event_t")
@@ -534,84 +527,23 @@ void UKUITray::stopTray()
     mValid = false;
 }
 
-void UKUITray::stopStorageTray()
-{
-    for (auto & icon : mStorageIcons)
-        disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-    qDeleteAll(mStorageIcons);
-    if (mTrayId){
-        XDestroyWindow(mDisplay, mTrayId);
-        mTrayId = 0;
-    }
-}
+//void UKUITray::stopStorageTray()
+//{
+//    for (auto & icon : mStorageIcons)
+//        disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+//    qDeleteAll(mStorageIcons);
+//    if (mTrayId){
+//        XDestroyWindow(mDisplay, mTrayId);
+//        mTrayId = 0;
+//    }
+//}
 
 void UKUITray::onIconDestroyed(QObject * icon)
 {
     //in the time QOjbect::destroyed is emitted, the child destructor
     //is already finished, so the qobject_cast to child will return nullptr in all cases
     mIcons.removeAll(static_cast<TrayIcon *>(icon));
-    mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
-}
-
-void UKUITray::freezeTrayApp(Window winId)
-{
-    QList<char *> existsPath = listExistsPath();
-    int bingdingStr;
-
-    for (char * path : existsPath)
-    {
-        QString p =KEYBINDINGS_CUSTOM_DIR;
-        std::string str = p.toStdString();
-        const int len = str.length();
-        char * prepath = new char[len+1];
-        strcpy(prepath,str.c_str());
-        char * allpath = strcat(prepath, path);
-
-        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
-
-        QGSettings *settings = NULL;
-        const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
-        if(QGSettings::isSchemaInstalled(id))
-        {
-            if(bba.isEmpty()){
-                continue;
-            }
-            settings= new QGSettings(ba, bba,this);
-            if(settings){
-                if(settings->keys().contains(BINDING_KEY)){
-                    bingdingStr=settings->get(BINDING_KEY).toInt();
-                }
-            }
-
-            if(winId==bingdingStr){
-                settings->set(ACTION_KEY,"freeze");
-            }
-        }
-
-        if(settings){
-            settings->deleteLater();
-        }
-    }
-    /*
-     * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
-     * 这可能会导致panel的崩溃
-     *
-     * 将handleStorageUi　放到freezeTrayApp　函数最后以避免崩溃问题
-    */
-    TrayIcon *storageicon = findStorageIcon(winId);
-    if(storageicon){
-        mStorageIcons.removeOne(storageicon);
-        storageicon->deleteLater();
-        storageicon=NULL;
-    }
-    TrayIcon *trayicon = findTrayIcon(winId);
-    if(trayicon){
-        mTrayIcons.removeOne(trayicon);
-        trayicon->deleteLater();
-        trayicon=NULL;
-    }
-    handleStorageUi();
+//    mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
 }
 
 void UKUITray::addTrayIcon(Window winId)
@@ -628,7 +560,7 @@ void UKUITray::addTrayIcon(Window winId)
         connect(icon, SIGNAL(switchButtons(TrayIcon*,TrayIcon*)), this, SLOT(switchButtons(TrayIcon*,TrayIcon*)));
 
         connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
-        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(icon,&TrayIcon::notifyTray,[=](Window id){ freezeTrayApp(id);});
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
 }
@@ -645,7 +577,7 @@ void UKUITray::addStorageIcon(Window winId)
         //storageLayout->addWidget(storageicon);
 
         connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-        connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(storageicon,&TrayIcon::notifyTray,[=](Window id){freezeTrayApp(id);});
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         if(mStorageIcons.size() > 0){
             if(!mBtn->isVisible()){
@@ -678,7 +610,7 @@ void UKUITray::moveIconToTray(Window winId)
         }
 
         connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-        connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(storageicon,&TrayIcon::notifyTray,[this](Window id){freezeTrayApp(id);});
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
     trayIconSizeRefresh();
@@ -706,7 +638,7 @@ void UKUITray::moveIconToStorage(Window winId)
         }
 
         connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
-        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(icon,&TrayIcon::notifyTray,[this](Window id){freezeTrayApp(id);});
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
 }
@@ -801,7 +733,6 @@ void UKUITray::regulateIcon(Window *mid)
     }
 }
 
-/*检测到新的应用（第一次添加应用）*/
 void UKUITray::newAppDetect(int wid)
 {
     QString availablepath = findFreePath();
@@ -856,7 +787,6 @@ void UKUITray::handleStorageUi()
 {
     if(m_pwidget)
     {
-        qDebug()<<"handleStorageUi  m_pwidget is true";
         if(mStorageLayout->count()){
             mStorageLayout->removeWidget(m_pwidget);
         }

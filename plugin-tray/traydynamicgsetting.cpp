@@ -89,3 +89,45 @@ void freezeApp()
         }
     }
 }
+
+void freezeTrayApp(int winId)
+{
+    QList<char *> existsPath = listExistsPath();
+    int bingdingStr;
+
+    for (char * path : existsPath)
+    {
+        QString p =KEYBINDINGS_CUSTOM_DIR;
+        std::string str = p.toStdString();
+        const int len = str.length();
+        char * prepath = new char[len+1];
+        strcpy(prepath,str.c_str());
+        char * allpath = strcat(prepath, path);
+
+        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
+        const QByteArray bba(allpath);
+
+        QGSettings *settings = NULL;
+        const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
+        if(QGSettings::isSchemaInstalled(id))
+        {
+            if(bba.isEmpty()){
+                continue;
+            }
+            settings= new QGSettings(ba, bba);
+            if(settings){
+                if(settings->keys().contains(BINDING_KEY)){
+                    bingdingStr=settings->get(BINDING_KEY).toInt();
+                }
+            }
+
+            if(winId==bingdingStr){
+                settings->set(ACTION_KEY,"freeze");
+            }
+        }
+
+        if(settings){
+            settings->deleteLater();
+        }
+    }
+}

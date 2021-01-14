@@ -9,6 +9,8 @@
 #include <QList>
 #include <QDebug>
 #include <QGSettings>
+//x11
+#include <X11/X.h>
 
 /**
  * 通过设置gsetting来调节应用在托盘或者收纳
@@ -22,6 +24,12 @@
  */
 QList<char *> listExistsPath();
 QString findFreePath();
+/**
+ * @brief freezeTrayApp
+ * @param winId
+ * 将托盘应用置为freeze的状态
+ */
+void freezeTrayApp(int winId);
 
 /**
  * @brief freezeApp
