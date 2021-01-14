@@ -213,9 +213,7 @@ void NightModeButton::getNightModeState()
                                  "/ColorCorrect",
                                  "org.ukui.kwin.ColorCorrect",
                                  QDBusConnection::sessionBus());
-    QHash<QString, QVariant> datainfo ;
     QDBusMessage msg=  ipropertyinfo.call("nightColorInfo");
-//    datainfo=msg;
 
     const QDBusArgument &dbusArg = msg.arguments().at( 0 ).value<QDBusArgument>();
     QMap<QString,QVariant > map;
