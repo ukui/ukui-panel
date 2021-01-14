@@ -36,7 +36,6 @@
 #include <QStyleOption>
 #include <QGSettings>
 #include <QPainter>
-#include "popupmenu.h"
 
 class IUKUIPanelPlugin;
 //class CustomStyle;

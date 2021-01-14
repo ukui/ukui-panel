@@ -1039,7 +1039,7 @@ void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 {
-    PopupMenu *menuCalender=new PopupMenu(this);
+    QMenu *menuCalender=new QMenu(this);
     menuCalender->setAttribute(Qt::WA_DeleteOnClose);
 
     menuCalender->addAction(QIcon::fromTheme("document-page-setup"),

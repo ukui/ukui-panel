@@ -8,7 +8,6 @@ add_subdirectory(common)
 
 set(PRIV_HEADERS
     panelpluginsmodel.h
-    windownotifier.h
     ukuipanel.h
     ukuipanelapplication.h
     ukuipanelapplication_p.h
@@ -16,13 +15,7 @@ set(PRIV_HEADERS
     plugin.h
     pluginsettings_p.h
     ukuipanellimits.h
-    popupmenu.h
     pluginmoveprocessor.h
-    ukuipanelpluginconfigdialog.h
-    config/configpaneldialog.h
-    config/configpanelwidget.h
-    config/configpluginswidget.h
-    config/addplugindialog.h
     highlight-effect.h
 )
 
@@ -34,22 +27,13 @@ set(PUB_HEADERS
     iukuipanel.h
     comm_func.h
 
-    common/ukuihtmldelegate.h
     common/ukuisettings.h
     common/ukuiplugininfo.h
     common/ukuiapplication.h
     common/ukuisingleapplication.h
     common/ukuitranslator.h
-    common/ukuiprogramfinder.h
 
-    common/configdialog/ukuiconfigdialog.h
-    common/configdialog/ukuiconfigdialogcmdlineoptions.h
-    common/configdialog/ukuipageselectwidget.h
-
-    common/ukuinotification.h
-    common/ukuiautostartentry.h
     common/ukuigridlayout.h
-    common/ukuirotatedwidget.h
     common/ukuiglobals.h
     ukuicontrolstyle.h
     highlight-effect.cpp
@@ -65,42 +49,20 @@ set(SOURCES
     ukuipanellayout.cpp
     plugin.cpp
     pluginsettings.cpp
-    popupmenu.cpp
     pluginmoveprocessor.cpp
     ukuipanelpluginconfigdialog.cpp
-    config/configpaneldialog.cpp
-    config/configpanelwidget.cpp
-    config/configpluginswidget.cpp
-    config/addplugindialog.cpp
     comm_func.cpp
 
-    common/ukuihtmldelegate.cpp
     common/ukuiplugininfo.cpp
     common/ukuisettings.cpp
     common/ukuiapplication.cpp
     common/ukuisingleapplication.cpp
     common/ukuitranslator.cpp
-    common/ukuiprogramfinder.cpp
 
-    common/configdialog/ukuiconfigdialog.cpp
-    common/configdialog/ukuiconfigdialogcmdlineoptions.cpp
-    common/configdialog/ukuipageselectwidget.cpp
-
-    common/ukuiautostartentry.cpp
-    common/ukuinotification.cpp
     common/ukuigridlayout.cpp
-    common/ukuirotatedwidget.cpp
     ukuicontrolstyle.cpp
     customstyle.cpp
 )
-
-set(UI
-    config/configpanelwidget.ui
-    config/configpluginswidget.ui
-    config/addplugindialog.ui
-    common/configdialog/ukuiconfigdialog.ui
-)
-
 
 file(GLOB CONFIG_FILES resources/*.conf resources/*.qss)
 ############################################
@@ -133,12 +95,6 @@ set(QTX_LIBRARIES Qt5::Widgets Qt5::Xml Qt5::DBus)
 #)
 
 ukui_app_translation_loader(SOURCES ${PROJECT_NAME})
-
-
-QT5_ADD_DBUS_INTERFACE(DBUS_INTERFACE_SRCS
-    common/dbus/org.freedesktop.Notifications.xml
-    notifications_interface
-)
 
 QT5_ADD_DBUS_ADAPTOR(DBUS_ADAPTOR_SRCS
     common/dbus/org.ukui.SingleApplication.xml
