@@ -293,33 +293,30 @@ void IndicatorCalendar::updateTimeText()
         else
             str=tzNow.toString(hourSystem_24_vartical);
     }
-    mContent->setText(str);
-    mContent->setStyleSheet(
-                //正常状态样式
-                "QLabel{"
-                "border-width:  0px;"                     //边框宽度像素
-                "border-radius: 6px;"                       //边框圆角半径像素
-   //           "font-size:     14px;"                      //字体，字体大小
-                "color:         rgba(255,255,255,100%);"    //字体颜色
-                "padding:       0px;"                       //填衬
-                "text-align:center;"                        //文本居中
-                "}"
-                //鼠标悬停样式
-                "QLabel:hover{"
-                "background-color:rgba(190,216,239,20%);"
-                "border-radius:6px;"                       //边框圆角半径像素
-                "}"
-                //鼠标按下样式
-                "QLabel:pressed{"
-                "background-color:rgba(190,216,239,12%);"
-                "}"
-                );
 
-    QFont font;
-    //font.setStretch(QFont::Expanded);
+    QString style;
     int font_size = fgsettings->get("system-font-size").toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
-    font.setPixelSize(font_size);
-    mContent->setFont(font);
+    style.sprintf( //正常状态样式
+                   "QLabel{"
+                   "border-width:  0px;"                     //边框宽度像素
+                   "border-radius: 6px;"                       //边框圆角半径像素
+                 "font-size:     %dpx;"                      //字体，字体大小
+                   "color:         rgba(255,255,255,100%%);"    //字体颜色
+                   "padding:       0px;"                       //填衬
+                   "text-align:center;"                        //文本居中
+                   "}"
+                   //鼠标悬停样式
+                   "QLabel:hover{"
+                   "background-color:rgba(190,216,239,20%%);"
+                   "border-radius:6px;"                       //边框圆角半径像素
+                   "}"
+                   //鼠标按下样式
+                   "QLabel:pressed{"
+                   "background-color:rgba(190,216,239,12%%);"
+                   "}", font_size);
+    mContent->setStyleSheet(style);
+    mContent->setText(str);
+
 
     updatePopupContent();
     mbIsNeedUpdate = false;
@@ -847,7 +844,7 @@ void IndicatorCalendar::setTimeShowStyle()
     }
     else
     {
-        mContent->setFixedSize(size, CALENDAR_WIDTH - 20);
+        mContent->setFixedSize(size, CALENDAR_WIDTH);
     }
     mbIsNeedUpdate = true;
     timeout();

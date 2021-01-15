@@ -147,14 +147,19 @@ void QuickLaunchAction::execAction(QString additionalAction)
             XdgDesktopFile xdg;
             if(xdg.load(exec))
             {
+               if (additionalAction.isEmpty()){
                     GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
                     if (!g_app_info_launch_uris(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
                         showQMessage =true;
                     g_object_unref(appinfo);
+                } else {
+                    if (!xdg.actionActivate(additionalAction, QStringList{}))
+                        showQMessage =true;
+                }
 #if 0
                  } else {
                     //xdg 的方式实现点击打开应用，可正确读取转义的字符
-                    if (!additionalAction.isEmpty()){
+                    if (additionalAction.isEmpty()){
                         if (!xdg.startDetached())
                             showQMessage =true;
                     } else {
