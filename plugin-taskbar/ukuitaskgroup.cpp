@@ -1232,7 +1232,8 @@ int UKUITaskGroup::calcAverageWidth()
         int size = mVisibleHash.size();
         int iScreenWidth = QApplication::screens().at(0)->size().width();
         int iMarginWidth = (size+1)*3;
-        int iAverageWidth = (iScreenWidth - iMarginWidth)/size;//calculate average width of window
+        int iAverageWidth;
+        iAverageWidth = (size == 0 ? size : (iScreenWidth - iMarginWidth)/size);//calculate average width of window
         return iAverageWidth;
     }
     else
@@ -1279,7 +1280,7 @@ void UKUITaskGroup::showAllWindowByList()
         UKUITaskWidget *btn = it.value();
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
-        //btn->removeThumbNail();
+        btn->removeThumbNail();
         btn->updateTitle();
         btn->setTitleFixedWidth(winWidth - 80);
 //        btn->setFixedSize(mpScrollArea->width(),winheight);

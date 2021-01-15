@@ -149,16 +149,21 @@ void QuickLaunchAction::execAction(QString additionalAction)
             {
                 //if(exec.contains("ubuntu-kylin-software-center",Qt::CaseSensitive)){
                     //无法打开麒麟应用商店，备份还原工具。因此改为gio的方式加载
+                if (additionalAction.isEmpty()){
                     QByteArray ba = exec.toLatin1();
                     char * filepath=ba.data();
                     GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(filepath);
                     if (!g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
                         showQMessage =true;
                     g_object_unref(appinfo);
+                } else {
+                    if (!xdg.actionActivate(additionalAction, QStringList{}))
+                        showQMessage =true;
+                }
 #if 0
                  } else {
                     //xdg 的方式实现点击打开应用，可正确读取转义的字符
-                    if (!additionalAction.isEmpty()){
+                    if (additionalAction.isEmpty()){
                         if (!xdg.startDetached())
                             showQMessage =true;
                     } else {
