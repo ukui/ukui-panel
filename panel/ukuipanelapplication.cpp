@@ -28,7 +28,6 @@
 #include "ukuipanelapplication.h"
 #include "ukuipanelapplication_p.h"
 #include "ukuipanel.h"
-#include "config/configpaneldialog.h"
 //#include <UKUi/Settings>
 #include "common/ukuisettings.h"
 #include <QtDebug>
@@ -202,7 +201,7 @@ void UKUIPanelApplication::addNewPanel()
     d->mSettings->setValue("panels", panels);
 
     // Poupup the configuration dialog to allow user configuration right away
-    p->showConfigDialog();
+//    p->showConfigDialog();
 }
 
 UKUIPanel* UKUIPanelApplication::addPanel(const QString& name)
@@ -358,8 +357,8 @@ void UKUIPanelApplication::setIconTheme(const QString &iconTheme)
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
         for(UKUIPanel* panel : qAsConst(mPanels)){
 #endif
-            panel->update();
-            panel->updateConfigDialog();
+//            panel->update();
+//            panel->updateConfigDialog();
         }
     }
 }

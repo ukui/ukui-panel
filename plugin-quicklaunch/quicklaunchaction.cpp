@@ -147,13 +147,9 @@ void QuickLaunchAction::execAction(QString additionalAction)
             XdgDesktopFile xdg;
             if(xdg.load(exec))
             {
-                //if(exec.contains("ubuntu-kylin-software-center",Qt::CaseSensitive)){
-                    //无法打开麒麟应用商店，备份还原工具。因此改为gio的方式加载
-                if (additionalAction.isEmpty()){
-                    QByteArray ba = exec.toLatin1();
-                    char * filepath=ba.data();
-                    GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(filepath);
-                    if (!g_app_info_launch(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
+               if (additionalAction.isEmpty()){
+                    GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
+                    if (!g_app_info_launch_uris(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
                         showQMessage =true;
                     g_object_unref(appinfo);
                 } else {

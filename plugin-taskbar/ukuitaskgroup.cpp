@@ -475,6 +475,8 @@ void UKUITaskGroup::onWindowRemoved(WId window)
         button->deleteLater();
         if (!parentTaskBar()->getCpuInfoFlg())
             system(QString("rm -f /tmp/%1.png").arg(window).toLatin1());
+        if (isLeaderWindow(window))
+            setLeaderWindow(mButtonHash.begin().key());
         if (mButtonHash.count())
         {
             if(mPopup->isVisible())
@@ -621,7 +623,7 @@ void UKUITaskGroup::onClicked(bool)
 
 void UKUITaskGroup::singleWindowClick()
 {
-    UKUITaskWidget *btn = mButtonHash.begin().value();
+    UKUITaskWidget *btn = mVisibleHash.value(windowId());
     if(btn)
     {
         if(!btn->isFocusState())
@@ -630,7 +632,7 @@ void UKUITaskGroup::singleWindowClick()
             {
                 mPopup->hide();
             }
-            KWindowSystem::activateWindow(mButtonHash.begin().key());
+            KWindowSystem::activateWindow(windowId());
         }
         else
         {
@@ -736,7 +738,7 @@ void UKUITaskGroup::refreshVisibility()
             mVisibleHash.remove(i.key());
         will |= visible;
     }
-
+    setLeaderWindow(mVisibleHash.begin().key());
     bool is = isVisible();
     setVisible(will);
     if(!mPopup->isVisible())
@@ -1304,7 +1306,7 @@ void UKUITaskGroup::showAllWindowByList()
     }
     mPopup->show();
 
-   emit popupShown(this);
+//   emit popupShown(this);
 }
 
 
@@ -1529,5 +1531,5 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         mPopup->show();
     }
 
-   emit popupShown(this);
+//   emit popupShown(this);
 }

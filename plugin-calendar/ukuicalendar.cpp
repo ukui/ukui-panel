@@ -97,11 +97,9 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mContent->setAlignment(Qt::AlignCenter);
 
     settingsChanged();
-    initializeCalendar();
     mTimer->setTimerType(Qt::PreciseTimer);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     gsettings = new QGSettings(id);
-    qDebug() << gsettings->get("date").toString().data();
     if(QString::compare(gsettings->get("date").toString(),"cn"))
     {
             hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
@@ -148,12 +146,10 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
             }
             if(key == "date")
             {
-                qDebug()<<"key == date";
                 if(gsettings->keys().contains("date"))
                 {
                     if(QString::compare(gsettings->get("date").toString(),"cn"))
                     {
-                        qDebug()<<" date   en ";
                         hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
                         hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
                         hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
@@ -162,7 +158,6 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
                     }
                     else
                     {
-                        qDebug()<<" date   cn ";
                         hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
                         hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
                         hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
@@ -175,9 +170,10 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
         });
     }
 
+    initializeCalendar();
     setTimeShowStyle();
     mContent->setWordWrap(true);
-    setToolTip();
+    QTimer::singleShot(5000,[this] {setToolTip(tr("Time and Date")); });
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -200,23 +196,11 @@ IndicatorCalendar::~IndicatorCalendar()
     }
 }
 
-void IndicatorCalendar::setToolTip()
-{
-    QDateTime now = QDateTime::currentDateTime();
-    QString timeZoneName = mActiveTimeZone;
-    if (timeZoneName == QLatin1String("local"))
-        timeZoneName = QString::fromLatin1(QTimeZone::systemTimeZoneId());
-    QTimeZone timeZone(timeZoneName.toLatin1());
-    QDateTime tzNow = now.toTimeZone(timeZone);
-    mContent->setToolTip(tzNow.toString(CURRENT_DATE));
-}
-
 void IndicatorCalendar::timeout()
 {
     if (QDateTime{}.time().msec() > 500)
         restartTimer();
     updateTimeText();
-    setToolTip();
 }
 
 void IndicatorCalendar::updateTimeText()
@@ -352,7 +336,15 @@ void IndicatorCalendar::restartTimer()
     mTimer->stop();
     // check the time every second even if the clock doesn't show seconds
     // because otherwise, the shown time might be vey wrong after resume
-    mTimer->setInterval(1000);
+    //    mTimer->setInterval(1000);
+    QString delaytime=QTime::currentTime().toString();
+    QList<QString> pathresult=delaytime.split(":");
+    int second=pathresult.at(2).toInt();
+    if(second==0){
+        mTimer->setInterval(60*1000);
+    }else{
+        mTimer->setInterval((60-second)*1000);
+    }
 
     int delay = static_cast<int>(1000 - (static_cast<long long>(QTime::currentTime().msecsSinceStartOfDay()) % 1000));
     QTimer::singleShot(delay, Qt::PreciseTimer, this, &IndicatorCalendar::updateTimeText);
@@ -855,7 +847,7 @@ void IndicatorCalendar::setTimeShowStyle()
     }
     else
     {
-        mContent->setFixedSize(size, CALENDAR_WIDTH - 20);
+        mContent->setFixedSize(size, CALENDAR_WIDTH);
     }
     mbIsNeedUpdate = true;
     timeout();
@@ -1047,7 +1039,7 @@ void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 {
-    PopupMenu *menuCalender=new PopupMenu(this);
+    QMenu *menuCalender=new QMenu(this);
     menuCalender->setAttribute(Qt::WA_DeleteOnClose);
 
     menuCalender->addAction(QIcon::fromTheme("document-page-setup"),
