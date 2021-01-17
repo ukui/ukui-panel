@@ -153,9 +153,7 @@ void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption
         }
     case CE_PushButtonBevel:
     {
-        qDebug()<<__FUNCTION__<<"ce_pushbuttonbevel";
         if (const QStyleOptionButton *btn = qstyleoption_cast<const QStyleOptionButton *>(opt)) {
-            qDebug()<<__FUNCTION__<<"ce_pushbuttonbevel";
             QRect br = btn->rect;
             int dbi = proxy()->pixelMetric(PM_ButtonDefaultIndicator, btn, widget);
             if (btn->features & QStyleOptionButton::AutoDefaultButton)

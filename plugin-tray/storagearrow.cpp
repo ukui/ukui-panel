@@ -89,3 +89,13 @@ void StorageArrow::setArrowIcon()
     setIconSize(QSize(iconsize/2,iconsize/2));
     setFixedSize(iconsize,iconsize * 1.3);
 }
+
+void StorageArrow::enterEvent(QEvent *) {
+    repaint();
+    return;
+}
+
+void StorageArrow::leaveEvent(QEvent *) {
+    repaint();
+    return;
+}

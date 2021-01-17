@@ -43,12 +43,14 @@
 #include "trayicon.h"
 #include "../panel/ukuipanellayout.h"
 #include "../panel/common/ukuigridlayout.h"
+#include "../panel/common_fun/listengsettings.h"
 #include "xfitman.h"
 
 class UKUiStorageWidget;
 enum storageBarStatus{ST_HIDE,ST_SHOW};
 /**
  * @brief This makes our storage
+ * 此界面是收纳的主窗口，里面添加了一个UKUiStorageWidget
  */
 class UKUIStorageFrame:public QWidget
 {
@@ -58,11 +60,16 @@ public:
     ~UKUIStorageFrame();
 
     void setStorageFrameSize(int size);
+    void setStorageFramGeometry();
 protected:
     bool eventFilter(QObject *, QEvent *);
     void paintEvent(QPaintEvent *event)override;
 private:
     Atom _NET_SYSTEM_TRAY_OPCODE;
+
+    int panelsize;
+    int iconsize;
+    int panelPosition;
 };
 
 #endif

@@ -35,6 +35,7 @@
 #undef Bool // defined as int in X11/Xlib.h
 
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/common_fun/listengsettings.h"
 
 #include <QPushButton>
 #include <QToolButton>
@@ -64,10 +65,16 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
      * 这三个参数分别代表 设置窗体一直置顶，并且不会抢焦点 | 工具窗口 |设置窗体无边框，不可拖动拖拽拉伸
      *
      * 但是在某些情况下会出现在任务啦上依然会显示窗口，因此加入新的属性 X11BypassWindowManagerHint
+     * Qt::WindowDoesNotAcceptFocus:不接受焦点
      */
-    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint);
+//    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint | Qt::WindowDoesNotAcceptFocus);
+    setWindowFlags(Qt::Popup| Qt::WindowDoesNotAcceptFocus);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
 
+    ListenGsettings *m_ListenGsettings = new ListenGsettings();
+    QObject::connect(m_ListenGsettings,&ListenGsettings::iconsizechanged,[this](int size){iconsize=size;});
+    QObject::connect(m_ListenGsettings,&ListenGsettings::panelpositionchanged,[this](int size){panelPosition=size;});
+    QObject::connect(m_ListenGsettings,&ListenGsettings::panelsizechanged,[this](int size){panelsize=size;});
 }
 
 UKUIStorageFrame::~UKUIStorageFrame(){
@@ -152,6 +159,29 @@ void UKUIStorageFrame::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
+void UKUIStorageFrame::setStorageFramGeometry()
+{
+//    int totalHeight = qApp->primaryScreen()->size().height() + qApp->primaryScreen()->geometry().y();
+//    int totalWidth = qApp->primaryScreen()->size().width() + qApp->primaryScreen()->geometry().x();
+
+//    switch (panel()->position()) {
+//    case IUKUIPanel::PositionBottom:
+//        this->setGeometry(totalWidth-mViewWidht-4,totalHeight-panel()->panelSize()-mViewHeight-4,mViewWidht,mViewHeight);
+//        break;
+//    case IUKUIPanel::PositionTop:
+//        mWebViewDiag->setGeometry(totalWidth-mViewWidht-4,qApp->primaryScreen()->geometry().y()+panel()->panelSize()+4,mViewWidht,mViewHeight);
+//        break;
+//    case IUKUIPanel::PositionLeft:
+//        mWebViewDiag->setGeometry(qApp->primaryScreen()->geometry().x()+panel()->panelSize()+4,totalHeight-mViewHeight-4,mViewWidht,mViewHeight);
+//        break;
+//    case IUKUIPanel::PositionRight:
+//        mWebViewDiag->setGeometry(totalWidth-panel()->panelSize()-mViewWidht-4,totalHeight-mViewHeight-4,mViewWidht,mViewHeight);
+//        break;
+//    default:
+//        mWebViewDiag->setGeometry(qApp->primaryScreen()->geometry().x()+panel()->panelSize()+4,totalHeight-mViewHeight,mViewWidht,mViewHeight);
+//        break;
+//    }
+}
 #define mWinWidth 46
 #define mWinHeight 46
 void UKUIStorageFrame::setStorageFrameSize(int size)
@@ -175,32 +205,48 @@ void UKUIStorageFrame::setStorageFrameSize(int size)
         winWidth  = mWinWidth*3;
         winHeight = mWinHeight;
         break;
-    case 4:
+    case 4 ... 6:
         winWidth  = mWinWidth*3;
         winHeight = mWinHeight*2;
         break;
-    case 5:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        break;
-    case 6:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        break;
-    case 7:
+    case 7 ... 9:
         winWidth  = mWinWidth*3;
         winHeight = mWinHeight*3;
         break;
-    case 8:
+    case 10 ... 12:
         winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
+        winHeight = mWinHeight*4;
         break;
-    case 9:
+    case 13 ... 40:
+        //默认情况下的布局
         winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
+        winHeight = mWinHeight*4;
         break;
     default:
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*4;
         break;
     }
     this->setFixedSize(winWidth,winHeight);
+
+//    int totalHeight = qApp->primaryScreen()->size().height() + qApp->primaryScreen()->geometry().y();
+//    int totalWidth = qApp->primaryScreen()->size().width() + qApp->primaryScreen()->geometry().x();
+
+//    switch (panelPosition) {
+//    case 0:
+//        this->setGeometry(totalWidth-this->cursor().pos().x()-winWidth/2-4,totalHeight-panelsize-winHeight-4,winWidth,winHeight);
+//        break;
+//    case  1:
+//        this->setGeometry(totalWidth-winWidth-4,qApp->primaryScreen()->geometry().y()+panelsize+4,winWidth,winHeight);
+//        break;
+//    case 2:
+//        this->setGeometry(qApp->primaryScreen()->geometry().x()+panelsize+4,totalHeight-winHeight-4,winWidth,winHeight);
+//        break;
+//    case 3:
+//        this->setGeometry(totalWidth-panelsize-winWidth-4,totalHeight-winHeight-4,winWidth,winHeight);
+//        break;
+//    default:
+//        this->setGeometry(qApp->primaryScreen()->geometry().x()+panelsize+4,totalHeight-winHeight,winWidth,winHeight);
+//        break;
+//    }
 }

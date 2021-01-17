@@ -310,6 +310,9 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     }
     UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
     connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
+    connect(a, &UKUIPanelApplication::primaryScreenChanged, [=]{
+        gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt()+1);
+    });
 
 
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
@@ -986,14 +989,12 @@ void UKUIPanel::adjustPanel()
     hidepanel->setDisabled(mLockPanel);
     hidepanel->setCheckable(true);
     hidepanel->setChecked(mHidable);
-    qDebug()<<" 点击前  mHidable  ****:"<<mHidable;
     connect(hidepanel, &QAction::triggered, [this] {
         mSettings->beginGroup(mConfigGroup);
         mHidable = mSettings->value(CFG_KEY_HIDABLE, mHidable).toBool();
         mSettings->endGroup();
         if(mHidable)
             mHideTimer.stop();
-        qDebug()<<" 点击后  mHidable  ****:"<<mHidable;
         setHidable(!mHidable,true);
         mHidden=mHidable;
         mShowDelayTimer.start();

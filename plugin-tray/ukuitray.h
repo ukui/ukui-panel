@@ -212,7 +212,6 @@ private:
     UKUIStorageFrame *storageFrame;
     UKUiStorageWidget *m_pwidget;
     StorageArrow *mBtn;
-    IUKUIPanel::Position mCurPosition;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QGSettings *settings;
 };

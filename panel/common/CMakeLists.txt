@@ -162,25 +162,6 @@ configure_package_config_file(
 #************************************************
 set(CFG_UKUI_TARGETS_FILE "${UKUI_INSTALL_CMAKE_DIR}/${UKUI_LIBRARY_NAME}/${UKUI_LIBRARY_NAME}-targets.cmake")
 
-configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ukui-config.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/install/${UKUI_LIBRARY_NAME}-config.cmake"
-    INSTALL_DESTINATION "${UKUI_INSTALL_CMAKE_DIR}/${UKUI_LIBRARY_NAME}"
-)
-
-write_basic_package_version_file(
-    "${CMAKE_BINARY_DIR}/${UKUI_LIBRARY_NAME}-config-version.cmake"
-    VERSION ${UKUI_VERSION}
-    COMPATIBILITY AnyNewerVersion
-)
-
-install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/install/${UKUI_LIBRARY_NAME}-config.cmake"
-    "${CMAKE_BINARY_DIR}/${UKUI_LIBRARY_NAME}-config-version.cmake"
-    DESTINATION "${UKUI_INSTALL_CMAKE_DIR}/${UKUI_LIBRARY_NAME}"
-    COMPONENT Devel
-)
-
 #install(EXPORT
 #    ${UKUI_LIBRARY_NAME}-targets
 #    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${UKUI_LIBRARY_NAME}"

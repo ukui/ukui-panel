@@ -140,14 +140,10 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     QTimer::singleShot(0, this, SLOT(startTray()));
     mBtn =new StorageArrow(this);
     mLayout->addWidget(mBtn);
-    if(mPlugin)
-    {
-        mCurPosition = mPlugin->panel()->position();
-    }
-
     storageFrame=new UKUIStorageFrame;
     mStorageLayout = new UKUi::GridLayout(storageFrame);
     storageFrame->setLayout(mStorageLayout);
+    handleStorageUi();
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
     realign();
     QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
@@ -182,6 +178,7 @@ void UKUITray::storageBar()
         status = ST_HIDE;
         showAndHideStorage(true);
     }
+    realign();
 }
 
 void UKUITray::showAndHideStorage(bool storageStatus)
@@ -288,11 +285,6 @@ void UKUITray::realign()
             storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,-storageFramePosition)), storageFrame->size()));
         }
     }
-
-    if(mCurPosition != panel->position()){
-        mCurPosition = panel->position();
-        emit positionChanged();
-    }
     mLayout->setEnabled(true);
 
 }
@@ -301,7 +293,6 @@ void UKUITray::trayIconSizeRefresh()
 {
     for(int i=0;i<mIcons.size();i++){
         if(mIcons.at(i)){
-            handleStorageUi();
             if(mPlugin->panel()->isHorizontal()){
                 mIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
             }else{
@@ -583,7 +574,6 @@ void UKUITray::addStorageIcon(Window winId)
             if(!mBtn->isVisible()){
                 mBtn->setVisible(true);
             }
-            handleStorageUi();
         }
     }
 }
@@ -785,6 +775,7 @@ void UKUITray::newAppDetect(int wid)
 
 void UKUITray::handleStorageUi()
 {
+
     if(m_pwidget)
     {
         if(mStorageLayout->count()){

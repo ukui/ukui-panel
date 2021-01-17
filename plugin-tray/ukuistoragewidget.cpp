@@ -31,7 +31,6 @@ void UKUiStorageWidget::paintEvent(QPaintEvent *event)
 #define mWinHeight 46
 void UKUiStorageWidget::setStorageWidgetButtonLayout(int size)
 {
-    qDebug()<<"UKUiStorageWidget::setStorageWidgetButtonLayout";
     int winWidth = 0;
     int winHeight = 0;
 
@@ -60,70 +59,42 @@ void UKUiStorageWidget::setStorageWidgetButtonLayout(int size)
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(1);
         break;
-    case 4:
+    case 4 ... 6:
         winWidth  = mWinWidth*3;
         winHeight = mWinHeight*2;
         this->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(2);
         break;
-    case 5:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        this->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(2);
-        break;
-    case 6:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        this->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(2);
-        break;
-    case 7:
+    case 7 ... 9:
         winWidth  = mWinWidth*3;
         winHeight = mWinHeight*3;
         this->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(3);
         break;
-    case 8:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
-        this->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(3);
-        break;
-    case 9:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
-        this->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(3);
-        break;
-    case 10:
+    case 10 ... 12:
         winWidth  = mWinWidth*3;
         winHeight = mWinHeight*4;
         this->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(4);
         break;
-    case 11:
+    case 13 ... 40:
+        //默认情况下的布局
         winWidth  = mWinWidth*3;
         winHeight = mWinHeight*4;
         this->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(4);
-        break;
-    case 12:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*4;
-        this->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(4);
+        dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(4);
+//        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(7);
         break;
     default:
+        //
+        winWidth  = mWinWidth*3;
+        winHeight = mWinHeight*4;
+        this->setFixedSize(winWidth,winHeight);
+        dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(4);
+//        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(7);
         break;
     }
 }

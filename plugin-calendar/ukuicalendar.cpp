@@ -573,7 +573,6 @@ void IndicatorCalendar::initializeCalendar()
         {
             firstDay= gsettings->get("firstday").toString();
         }
-        qDebug()<<"QLocale::system().name():"<<QLocale::system().name();
         if (QLocale::system().name() == "zh_CN")
         {
 
@@ -627,7 +626,6 @@ void IndicatorCalendar::initializeCalendar()
     {
         if(!mbHasCreatedWebView)
         {
-            qDebug()<<"showCalendar:"<<showCalendar;
             mWebViewDiag->creatwebview(showCalendar,panel()->panelSize());
             mbHasCreatedWebView = true;
         }
