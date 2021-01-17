@@ -623,7 +623,7 @@ void UKUITaskGroup::onClicked(bool)
 
 void UKUITaskGroup::singleWindowClick()
 {
-    UKUITaskWidget *btn = mButtonHash.begin().value();
+    UKUITaskWidget *btn = mVisibleHash.value(windowId());
     if(btn)
     {
         if(!btn->isFocusState())
@@ -632,7 +632,7 @@ void UKUITaskGroup::singleWindowClick()
             {
                 mPopup->hide();
             }
-            KWindowSystem::activateWindow(mButtonHash.begin().key());
+            KWindowSystem::activateWindow(windowId());
         }
         else
         {
@@ -738,7 +738,7 @@ void UKUITaskGroup::refreshVisibility()
             mVisibleHash.remove(i.key());
         will |= visible;
     }
-
+    setLeaderWindow(mVisibleHash.begin().key());
     bool is = isVisible();
     setVisible(will);
     if(!mPopup->isVisible())
@@ -1234,7 +1234,8 @@ int UKUITaskGroup::calcAverageWidth()
         int size = mVisibleHash.size();
         int iScreenWidth = QApplication::screens().at(0)->size().width();
         int iMarginWidth = (size+1)*3;
-        int iAverageWidth = (iScreenWidth - iMarginWidth)/size;//calculate average width of window
+        int iAverageWidth;
+        iAverageWidth = (size == 0 ? size : (iScreenWidth - iMarginWidth)/size);//calculate average width of window
         return iAverageWidth;
     }
     else
@@ -1281,7 +1282,7 @@ void UKUITaskGroup::showAllWindowByList()
         UKUITaskWidget *btn = it.value();
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
-        //btn->removeThumbNail();
+        btn->removeThumbNail();
         btn->updateTitle();
         btn->setTitleFixedWidth(winWidth - 80);
 //        btn->setFixedSize(mpScrollArea->width(),winheight);
