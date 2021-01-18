@@ -5,6 +5,7 @@ set(CMAKE_AUTORCC ON)
 
 add_subdirectory(common)
 #add_subdirectory(xdg)
+add_subdirectory(common_fun)
 
 set(PRIV_HEADERS
     panelpluginsmodel.h
@@ -35,6 +36,7 @@ set(PUB_HEADERS
 
     common/ukuigridlayout.h
     common/ukuiglobals.h
+    common_fun/listengsettings.h
     ukuicontrolstyle.h
     highlight-effect.cpp
     customstyle.h
@@ -60,6 +62,7 @@ set(SOURCES
     common/ukuitranslator.cpp
 
     common/ukuigridlayout.cpp
+    common_fun/listengsettings.cpp
     ukuicontrolstyle.cpp
     customstyle.cpp
 )

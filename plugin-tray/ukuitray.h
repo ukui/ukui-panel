@@ -46,7 +46,7 @@
 #include "../panel/ukuicontrolstyle.h"
 #include "ukuitraystrage.h"
 #include "storagearrow.h"
-
+#include "ukuistoragewidget.h"
 class TrayIcon;
 class QSize;
 namespace UKUi {
@@ -80,21 +80,17 @@ public:
      * 目前托盘应用不使用此方式设置控件的大小而是使用setIconSize和setFixedSize来设置
      */
     void setIconSize();
+
+    /** @brief nativeEventFilter
+     * 托盘应用的事件过滤器
+     * 通过继承QAbstractNativeEventFilter的类中重新实现nativeEventFilter接口:
+     * 安装　：　void QCoreApplication::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
+     * 或者　　　void QAbstractEventDispatcher::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
+     * XCB(Linux)　对应的eventType 类型如下：
+     * 事件类型(eventType)：“xcb_generic_event_t”　　　消息类型(message)：xcb_generic_event_t *	　结果类型(result)：无
+    */
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
     UKUITrayPlugin *mPlugin;
-
-    /**
-     * 通过设置gsetting来调节应用在托盘或者收纳
-     * 以下listExistsPath findFreePath
-     */
-    /**
-     * @brief listExistsPath
-     * @return
-     *
-     * 列出存在的可供gsettings使用的路径
-     */
-    QList<char *> listExistsPath();
-    QString findFreePath();
     /**
      * @brief regulateIcon
      * @param mid
@@ -108,12 +104,6 @@ public:
      */
     void newAppDetect(int wid);
     /**
-     * @brief freezeApp
-     * 将所有的托盘应用的状态至为freeze
-     * 一般存在与在任务栏退出的时候
-     */
-    void freezeApp();
-    /**
      * @brief showAndHideStorage
      * 在取消了panel的WindowDoesNotAcceptFocus属性之后，托盘栏会有点击之后的隐藏并再次弹出的操作
      */
@@ -125,7 +115,6 @@ public slots:
      * 点击收纳按钮的时候的槽函数
      */
     void storageBar();
-    void changeIcon();
     /**
      * @brief realign
      * 关于设置托盘栏图标大小的方法
@@ -147,19 +136,13 @@ private slots:
      */
     void startTray();
     void stopTray();
-    void stopStorageTray();
+//    void stopStorageTray();
     /**
      * @brief onIconDestroyed
      * @param icon
      * 将托盘图标从托盘栏/收纳栏中移除
      */
     void onIconDestroyed(QObject * icon);
-    /**
-     * @brief freezeTrayApp
-     * @param winId
-     * 将托盘应用置为freeze的状态
-     */
-    void freezeTrayApp(Window winId);
     void trayIconSizeRefresh();
     /**
      * @brief switchButtons
@@ -199,7 +182,6 @@ private:
     TrayIcon* findIcon(Window trayId);
     TrayIcon* findTrayIcon(Window trayId);
     TrayIcon* findStorageIcon(Window trayId);
-    void createIconMap();
 
     bool mValid;
     Window mTrayId;
@@ -216,17 +198,20 @@ private:
     UKUi::GridLayout *mLayout;
     /**
      * @brief mStorageLayout
+     * 收纳栏上布局
+     */
+    UKUi::GridLayout *mStorageLayout;
+    /**
+     * @brief mStorageItemLayout
      * 收纳栏上的图标布局
      */
-//    UKUi::GridLayout *mStorageLayout;
+    UKUi::GridLayout *mStorageItemLayout;
 
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
     UKUIStorageFrame *storageFrame;
     UKUiStorageWidget *m_pwidget;
-    TrayButton *mBtn;
-    IUKUIPanel::Position mCurPosition;
-    QMap<IUKUIPanel::Position, QIcon> mMapIcon;
+    StorageArrow *mBtn;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QGSettings *settings;
 };

@@ -58,6 +58,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
 
 
 NightMode::~NightMode(){
+    delete gsettings;
 }
 
 void NightMode::realign()
@@ -96,7 +97,6 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     controlCenterSetNightMode(mode);
 }
 NightModeButton::~NightModeButton(){
-    delete gsettings;
     delete mqtstyleGsettings;
     delete mgtkstyleGsettings;
 }
@@ -213,9 +213,7 @@ void NightModeButton::getNightModeState()
                                  "/ColorCorrect",
                                  "org.ukui.kwin.ColorCorrect",
                                  QDBusConnection::sessionBus());
-    QHash<QString, QVariant> datainfo ;
     QDBusMessage msg=  ipropertyinfo.call("nightColorInfo");
-//    datainfo=msg;
 
     const QDBusArgument &dbusArg = msg.arguments().at( 0 ).value<QDBusArgument>();
     QMap<QString,QVariant > map;

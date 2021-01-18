@@ -27,7 +27,9 @@ set(HEADERS
     trayicon.h
     xfitman.h
     ukuitraystrage.h
+    ukuistoragewidget.h
     storagearrow.h
+    traydynamicgsetting.h
 )
 
 set(SOURCES
@@ -36,7 +38,9 @@ set(SOURCES
     trayicon.cpp
     xfitman.cpp
     ukuitraystrage.cpp
+    ukuistoragewidget.cpp
     storagearrow.cpp
+    traydynamicgsetting.cpp
 )
 
 set(LIBRARIES

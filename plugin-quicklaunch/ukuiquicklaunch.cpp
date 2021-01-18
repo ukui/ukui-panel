@@ -514,11 +514,9 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
      * 若在快速启动栏　应用数量为０的时候b->file_name为空
      * 会造成任务栏的崩溃
       */
-    qDebug()<<"检测到目前已经固定到任务栏的应用数量 "<<countOfButtons();
     if(countOfButtons()>0){
         while (i != counts) {
             QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-            qDebug()<<"mLayout->itemAt("<<i<<") ";
             if (b->file_name == btn->file_name){
                 checkresult=true;
                 break;

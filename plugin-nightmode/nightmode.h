@@ -65,7 +65,6 @@ private:
 
     IUKUIPanelPlugin * mPlugin;
     QMenu *nightModeMenu;
-    QGSettings *gsettings;
     QGSettings *mqtstyleGsettings;
     QGSettings *mgtkstyleGsettings;
     QSettings *mqsettings;

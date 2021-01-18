@@ -106,14 +106,15 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     parser.process(*this);
 
     const QString configFile = parser.value(configFileOption);
-
     if (configFile.isEmpty())
     {
         QString defaultConf = QString(PLUGIN_DESKTOPS_DIR)+"/../";
         QString loaclCong = QString(qgetenv("HOME"))+"/.config/ukui/";
         QFile file(loaclCong+"panel.conf");
-        if(!file.exists())
+        if(!file.exists()){
             copyFileToPath(defaultConf,loaclCong,"panel.conf",false);
+//            QFile::copy(CONFIG_FILE_BACKUP,QString(qgetenv("HOME"))+CONFIG_FILE_LOCAL);
+        }
         d->mSettings = new UKUi::Settings(QLatin1String("panel"), this);
         if(!d->mSettings->contains("plugins")){
             QFile::remove(QString(qgetenv("HOME"))+CONFIG_FILE_LOCAL);
