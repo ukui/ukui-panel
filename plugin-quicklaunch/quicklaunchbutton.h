@@ -70,8 +70,14 @@ protected:
      * 改为用contextMenuEvent函数处理
      */
     void contextMenuEvent(QContextMenuEvent*);
+    /**
+     * @brief enterEvent leaveEvent
+     * @param event
+     * leaveEvent  和 enterEvent仅仅是为了刷新按钮状态
+     */
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
+
     /**
      *  以下是拖拽相关函数
      */
@@ -92,16 +98,37 @@ private:
     QAction *mMoveRightAct;
     QMenu *mMenu;
     QPoint mDragStart;
+    /**
+     * @brief The QuickLaunchStatus enum
+     * 快速启动栏Button的状态
+     */
     enum QuickLaunchStatus{NORMAL, HOVER, PRESS};
     QuickLaunchStatus quicklanuchstatus;
+    /**
+     * @brief toolbuttonstyle
+     * 弃用接口，等待删除
+     */
     CustomStyle toolbuttonstyle;
+    /**
+     * @brief mgsettings
+     * 弃用，等待删除
+     */
     QGSettings *mgsettings;
+    /**
+     * @brief isComputerOrTrash
+     * @param urlName
+     * @return
+     * 未使用的接口
+     */
     QString isComputerOrTrash(QString urlName);
 public slots:
     void selfRemove();
 };
 
-
+/**
+ * @brief The ButtonMimeData class
+ * 拖拽的时候需要用到
+ */
 class ButtonMimeData: public QMimeData
 {
     Q_OBJECT
