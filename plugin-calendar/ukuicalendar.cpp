@@ -1037,11 +1037,11 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
     QMenu *menuCalender=new QMenu(this);
     menuCalender->setAttribute(Qt::WA_DeleteOnClose);
 
-    menuCalender->addAction(QIcon::fromTheme("document-page-setup"),
+    menuCalender->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
                    tr("Time and Date Setting"),
                    this, SLOT(setControlTime())
                   );
-    menuCalender->addAction(QIcon::fromTheme("document-page-setup"),
+    menuCalender->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
                    tr("Config panel"),
                    this, SLOT(setUpPanel())
                   );

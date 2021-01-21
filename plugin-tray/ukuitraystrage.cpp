@@ -67,8 +67,8 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
      * 但是在某些情况下会出现在任务啦上依然会显示窗口，因此加入新的属性 X11BypassWindowManagerHint
      * Qt::WindowDoesNotAcceptFocus:不接受焦点
      */
-//    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint | Qt::WindowDoesNotAcceptFocus);
-    setWindowFlags(Qt::Popup| Qt::WindowDoesNotAcceptFocus);
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint /*| Qt::WindowDoesNotAcceptFocus*/);
+//    setWindowFlags(Qt::Popup| Qt::WindowDoesNotAcceptFocus);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
 
     ListenGsettings *m_ListenGsettings = new ListenGsettings();
@@ -128,7 +128,7 @@ bool UKUIStorageFrame::eventFilter(QObject *obj, QEvent *event)
         }
         else if (event->type() == QEvent::WindowDeactivate &&status==ST_SHOW)
         {
-            //qDebug()<<"激活外部窗口";
+//            qDebug()<<"激活外部窗口";
             this->hide();
             status=ST_HIDE;
             return true;

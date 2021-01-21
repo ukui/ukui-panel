@@ -1346,7 +1346,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                   )->setDisabled(mLockPanel);
 */
 
-    menu->addAction(QIcon::fromTheme("document-page-setup"),
+    menu->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
                     tr("Set up Panel"),
                     this, SLOT(setUpPanel())
                     );
