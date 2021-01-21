@@ -129,7 +129,7 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
     opennightmode->setChecked(mode);
     connect(opennightmode, &QAction::triggered, [this] { setNightMode(!mode); });
 
-    nightModeMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
+    nightModeMenu->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
                              tr("Set Up NightMode"),
                              this, SLOT(setUpNightMode())
                              );
@@ -169,13 +169,13 @@ void NightModeButton::setNightMode(const bool nightMode){
         iproperty.call("setNightColorConfig", data);
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
         this->setIcon(icon);
-        this->setToolTip(tr("nightmode open"));
+        this->setToolTip(tr("nightmode opened"));
     }
     else{
         data.insert("Active", false);
         iproperty.call("setNightColorConfig", data);
         this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-        this->setToolTip(tr("nightmode close"));
+        this->setToolTip(tr("nightmode closed"));
     }
 }
 
@@ -197,13 +197,13 @@ void NightModeButton::controlCenterSetNightMode(const bool nightMode){
         iproperty.call("setNightColorConfig", data);
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
         this->setIcon(icon);
-        this->setToolTip(tr("nightmode open"));
+        QTimer::singleShot(5000,[this] { this->setToolTip(tr("night mode open")); });
     }
     else{
         data.insert("Active", false);
         iproperty.call("setNightColorConfig", data);
         this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-        this->setToolTip(tr("nightmode close"));
+        QTimer::singleShot(5000,[this] { this->setToolTip(tr("night mode close")); });
     }
 }
 
