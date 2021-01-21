@@ -5,7 +5,7 @@ set(CMAKE_AUTORCC ON)
 
 add_subdirectory(common)
 #add_subdirectory(xdg)
-add_subdirectory(common_fun)
+#add_subdirectory(common_fun)
 
 set(PRIV_HEADERS
     panelpluginsmodel.h
