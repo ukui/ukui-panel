@@ -1,3 +1,27 @@
+ukui-panel (3.0.1-55) v101; urgency=medium
+
+  * 解决任务栏第一次进入系统点击收纳按钮的崩溃问题
+
+ -- hepuyao <hepuyao@kylinos.cn>  Fri, 22 Jan 2021 16:02:22 +0800
+
+ukui-panel (3.0.1-54) v101; urgency=medium
+
+  * solve the problem : nightmode SetUp icon is error
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 21 Jan 2021 19:24:50 +0800
+
+ukui-panel (3.0.1-53) v101; urgency=medium
+
+  * solve the plugin-tray Storage Widget can't click
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 21 Jan 2021 15:31:44 +0800
+
+ukui-panel (3.0.1-52) v101; urgency=medium
+
+  * 解决文件夹添加造成的编译报错的问题
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 21 Jan 2021 13:36:07 +0800
+
 ukui-panel (3.0.1-51) v101; urgency=medium
 
   * 针对华为990 开始菜单，侧边栏，飞行模式的特殊处理

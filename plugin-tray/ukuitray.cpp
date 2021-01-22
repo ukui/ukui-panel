@@ -145,6 +145,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     storageFrame->setLayout(mStorageLayout);
     handleStorageUi();
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
+    mBtn->setVisible(false);
     realign();
     QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
 }
@@ -168,6 +169,7 @@ UKUITray::~UKUITray()
 
 void UKUITray::storageBar()
 {
+    if(mStorageIcons.size()<1) mBtn->setVisible(false);
     if(status==ST_HIDE)
     {
         status = ST_SHOW;
@@ -285,6 +287,8 @@ void UKUITray::realign()
             storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,-storageFramePosition)), storageFrame->size()));
         }
     }
+
+    if(mStorageIcons.size()<1) mBtn->setVisible(false);
     mLayout->setEnabled(true);
 
 }
@@ -534,7 +538,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
     //in the time QOjbect::destroyed is emitted, the child destructor
     //is already finished, so the qobject_cast to child will return nullptr in all cases
     mIcons.removeAll(static_cast<TrayIcon *>(icon));
-//    mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
+    mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
 }
 
 void UKUITray::addTrayIcon(Window winId)
