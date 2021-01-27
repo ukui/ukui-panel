@@ -51,7 +51,6 @@ public:
     bool isSeparate() const { return true; }
     void activated(ActivationReason reason);
 
-    void settingsChanged()override;
     void realign()override;
     void initializeCalendar();
     /**
@@ -69,7 +68,6 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void timeout();
-    void wheelScrolled(int);
     void deletePopup();
     void updateTimeText();
     void hidewebview();
@@ -101,11 +99,6 @@ private:
 
     void restartTimer();
 
-    void setTimeText();
-    QString formatDateTime(const QDateTime &datetime, const QString &timeZoneName);
-    void updatePopupContent();
-    bool formatHasTimeZone(QString format);
-    QString preformat(const QDateTime &dateTime,const QString &format, const QTimeZone &timeZone);
     bool mbIsNeedUpdate;
     QGSettings *gsettings;
     QString hourSystemMode;
