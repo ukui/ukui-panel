@@ -156,7 +156,7 @@ void MainWindow::onRequestSendDesktopNotify(QString message)
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
     QList<QVariant> args;
-    args<<(QCoreApplication::applicationName())
+    args<<(tr("ukui-flash-disk"))
        <<((unsigned int) 0)
       <<QString("/usr/share/icons/Adwaita/24x24/devices/media-removable-symbolic.symbolic.png")
      <<tr("kindly reminder") //显示的是什么类型的信息
@@ -643,17 +643,6 @@ void MainWindow::newarea(int No,
     {
         this->vboxlayout->addWidget(line);
     }
-
-//    open_widget->setStyleSheet(
-//                //正常状态样式
-//                "QClickWidget{"
-//                "height:79px;"
-//                "}"
-//                "QClickWidget:hover{"
-//                "background-color:rgba(255,255,255,30);"
-//                "}"
-//                );
-
 }
 
 void MainWindow::moveBottomRight()
