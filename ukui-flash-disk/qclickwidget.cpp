@@ -730,18 +730,42 @@ QString QClickWidget::size_human(qlonglong capacity)
     //    float capacity = this->size();
     if(capacity != NULL && capacity != 1)
     {
+        int conversionNum = 0;
         QStringList list;
         list << "KB" << "MB" << "GB" << "TB";
 
         QStringListIterator i(list);
         QString unit("bytes");
 
-        while(capacity >= 1000.0 && i.hasNext())
+        qlonglong conversion = capacity;
+
+        while(conversion >= 1000.0 && i.hasNext())
         {
             unit = i.next();
-            capacity /= 1000.0;
+            conversion /= 1000.0;
+            conversionNum++;
         }
-        QString str_capacity=QString(" %1%2").arg(capacity).arg(unit);
+
+        qlonglong remain  = capacity - conversion * qPow(1000,conversionNum);
+        float showRemain;
+        if(conversionNum == 3)
+        {
+            showRemain = (float)remain /1000/1000/1000;
+        }
+        if(conversionNum == 2)
+        {
+            showRemain = (float)remain /1000/1000;
+        }
+        if(conversionNum == 1)
+        {
+            showRemain = (float)remain /1000;
+        }
+
+        double showValue = conversion + showRemain;
+
+        QString str2=QString::number(showValue,'f',1);
+
+        QString str_capacity=QString(" %1%2").arg(str2).arg(unit);
         return str_capacity;
      //   return QString().setNum(capacity,'f',2)+" "+unit;
     }
