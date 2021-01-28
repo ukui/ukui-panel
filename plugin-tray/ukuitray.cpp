@@ -150,7 +150,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     //进入桌面后可能存在的托盘区域未刷新问题
     QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
     //针对ukui桌面环境特殊应用的处理，保证稳定性
-    QTimer::singleShot(3000,[this] { panelStartupFcitx()});
+    QTimer::singleShot(3000,[this] { panelStartupFcitx();});
 }
 
 UKUITray::~UKUITray()
