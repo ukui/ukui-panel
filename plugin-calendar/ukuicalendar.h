@@ -47,28 +47,21 @@ public:
 
     virtual QWidget *widget() { return mMainWidget; }
     virtual QString themeId() const { return QLatin1String("Calendar"); }
-//    virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
     bool isSeparate() const { return true; }
     void activated(ActivationReason reason);
 
     void realign()override;
     void initializeCalendar();
-    /**
-     * @brief setbackground 设置背景相关，mate-panel以及最初的ukui-panel使用了此样式，后续此样式无效
-     */
-    void setbackground();
     void setTimeShowStyle();
     /**
      * @brief modifyCalendarWidget 修改日历显示位置
      */
     void modifyCalendarWidget();
-//signals:
 Q_SIGNALS:
     void deactivated();
 
 private Q_SLOTS:
     void timeout();
-    void deletePopup();
     void updateTimeText();
     void hidewebview();
 
@@ -86,20 +79,10 @@ private:
     int16_t mViewWidht;
     int16_t mViewHeight;
 
-    QStringList mTimeZones;
-    QMap<QString, QString> mTimeZoneCustomNames;
-    QString mDefaultTimeZone;
     QString mActiveTimeZone;
-    QString mFormat;
-
-    bool mAutoRotate;
-    QLabel *mPopupContent;
-
-    QDateTime mShownTime;
 
     void restartTimer();
 
-    bool mbIsNeedUpdate;
     QGSettings *gsettings;
     QString hourSystemMode;
 
@@ -121,14 +104,8 @@ public:
     explicit CalendarActiveLabel(IUKUIPanelPlugin *plugin,QWidget * = NULL);
 
     IUKUIPanelPlugin * mPlugin;
-Q_SIGNALS:
-    void wheelScrolled(int);
-    void leftMouseButtonClicked();
-    void middleMouseButtonClicked();
 
 protected:
-    void wheelEvent(QWheelEvent *);
-    void mouseReleaseEvent(QMouseEvent* event);
     /**
      * @brief contextMenuEvent 右键菜单设置项
      * @param event

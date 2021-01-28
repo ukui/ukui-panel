@@ -73,13 +73,10 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     IUKUIPanelPlugin(startupInfo),
     mTimer(new QTimer(this)),
     mUpdateInterval(1),
-    mAutoRotate(true),
     mbActived(false),
-    mbIsNeedUpdate(false),
     mbHasCreatedWebView(false),
     mViewWidht(WEBVIEW_WIDTH),
     mViewHeight(0),
-    mPopupContent(NULL),
     mWebViewDiag(NULL)
 {
 
@@ -187,10 +184,6 @@ IndicatorCalendar::~IndicatorCalendar()
     {
         mContent->deleteLater();
     }
-    if(mPopupContent != NULL)
-    {
-        mPopupContent->deleteLater();
-    }
 }
 
 void IndicatorCalendar::timeout()
@@ -209,47 +202,6 @@ void IndicatorCalendar::updateTimeText()
     QTimeZone timeZone(timeZoneName.toLatin1());
     QDateTime tzNow = now.toTimeZone(timeZone);
 
-
-    bool isUpToDate(true);
-    if (!mShownTime.isValid()) // first time or forced update
-    {
-        isUpToDate = false;
-        if (mUpdateInterval < 60000)
-            mShownTime = tzNow.addSecs(-tzNow.time().msec()); // s
-        else if (mUpdateInterval < 3600000)
-            mShownTime = tzNow.addSecs(-tzNow.time().second()); // m
-        else
-            mShownTime = tzNow.addSecs(-tzNow.time().minute() * 60 - tzNow.time().second()); // h
-    }
-    else
-    {
-        qint64 diff = mShownTime.secsTo(tzNow);
-        if (mUpdateInterval < 60000)
-        {
-            if (diff < 0 || diff >= 1)
-            {
-                isUpToDate = false;
-                mShownTime = tzNow.addSecs(-tzNow.time().msec());
-            }
-        }
-        else if (mUpdateInterval < 3600000)
-        {
-            if (diff < 0 || diff >= 60)
-            {
-                isUpToDate = false;
-                mShownTime = tzNow.addSecs(-tzNow.time().second());
-            }
-        }
-        else if (diff < 0 || diff >= 3600)
-        {
-            isUpToDate = false;
-            mShownTime = tzNow.addSecs(-tzNow.time().minute() * 60 - tzNow.time().second());
-        }
-    }
-
-    //    if (!isUpToDate || mbIsNeedUpdate)
-    //    {
-    //const QSize old_size = mContent->sizeHint();
     QString str;
     const QByteArray _id("org.ukui.style");
     QGSettings *fgsettings = new QGSettings(_id);
@@ -313,9 +265,6 @@ void IndicatorCalendar::updateTimeText()
                    "}", font_size);
     mContent->setStyleSheet(style);
     mContent->setText(str);
-
-
-    mbIsNeedUpdate = false;
 }
 
 void IndicatorCalendar::restartTimer()
@@ -482,12 +431,6 @@ void IndicatorCalendar::activated(ActivationReason reason)
     }
 }
 
-
-void IndicatorCalendar::deletePopup()
-{
-    mPopupContent = NULL;
-}
-
 void IndicatorCalendar::hidewebview()
 {
     mWebViewDiag->setHidden(true);
@@ -511,7 +454,6 @@ void IndicatorCalendar::setTimeShowStyle()
     {
         mContent->setFixedSize(size, CALENDAR_WIDTH);
     }
-    mbIsNeedUpdate = true;
     timeout();
 }
 
@@ -548,31 +490,6 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
     mPlugin(plugin)
 {
     QTimer::singleShot(1000,[this] {setToolTip(tr("Time and Date")); });
-}
-
-void CalendarActiveLabel::wheelEvent(QWheelEvent *event)
-{
-    Q_EMIT wheelScrolled(event->delta());
-
-    QLabel::wheelEvent(event);
-}
-
-void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
-{
-    switch (event->button())
-    {
-    case Qt::LeftButton:
-        Q_EMIT leftMouseButtonClicked();
-        break;
-
-    case Qt::MidButton:
-        Q_EMIT middleMouseButtonClicked();
-        break;
-
-    default:;
-    }
-
-    QLabel::mouseReleaseEvent(event);
 }
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
