@@ -171,7 +171,6 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     initializeCalendar();
     setTimeShowStyle();
     mContent->setWordWrap(true);
-    QTimer::singleShot(5000,[this] {setToolTip(tr("Time and Date")); });
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -548,6 +547,7 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
     QLabel(parent),
     mPlugin(plugin)
 {
+    QTimer::singleShot(1000,[this] {setToolTip(tr("Time and Date")); });
 }
 
 void CalendarActiveLabel::wheelEvent(QWheelEvent *event)
