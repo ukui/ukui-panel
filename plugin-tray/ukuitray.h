@@ -40,6 +40,7 @@
 #include <string>
 #include <QToolButton>
 #include <QMap>
+#include <QProcess>
 
 #include "../panel/iukuipanel.h"
 #include "../panel/customstyle.h"
@@ -214,6 +215,14 @@ private:
     StorageArrow *mBtn;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QGSettings *settings;
+
+    //针对ukui桌面环境应用的特殊处理
+    bool fcitx_flag = false;
+    /**
+     * @brief panelStartupFcitx
+     * 任务栏拉起fcitx
+     */
+    void panelStartupFcitx();
 };
 
 #endif
