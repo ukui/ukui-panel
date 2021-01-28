@@ -28,7 +28,6 @@
 #include "ukuipanelapplication.h"
 #include "ukuipanelapplication_p.h"
 #include "ukuipanel.h"
-#include "config/configpaneldialog.h"
 //#include <UKUi/Settings>
 #include "common/ukuisettings.h"
 #include <QtDebug>
@@ -107,14 +106,15 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     parser.process(*this);
 
     const QString configFile = parser.value(configFileOption);
-
     if (configFile.isEmpty())
     {
         QString defaultConf = QString(PLUGIN_DESKTOPS_DIR)+"/../";
         QString loaclCong = QString(qgetenv("HOME"))+"/.config/ukui/";
         QFile file(loaclCong+"panel.conf");
-        if(!file.exists())
+        if(!file.exists()){
             copyFileToPath(defaultConf,loaclCong,"panel.conf",false);
+//            QFile::copy(CONFIG_FILE_BACKUP,QString(qgetenv("HOME"))+CONFIG_FILE_LOCAL);
+        }
         d->mSettings = new UKUi::Settings(QLatin1String("panel"), this);
         if(!d->mSettings->contains("plugins")){
             QFile::remove(QString(qgetenv("HOME"))+CONFIG_FILE_LOCAL);
@@ -202,7 +202,7 @@ void UKUIPanelApplication::addNewPanel()
     d->mSettings->setValue("panels", panels);
 
     // Poupup the configuration dialog to allow user configuration right away
-    p->showConfigDialog();
+//    p->showConfigDialog();
 }
 
 UKUIPanel* UKUIPanelApplication::addPanel(const QString& name)
@@ -358,8 +358,8 @@ void UKUIPanelApplication::setIconTheme(const QString &iconTheme)
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
         for(UKUIPanel* panel : qAsConst(mPanels)){
 #endif
-            panel->update();
-            panel->updateConfigDialog();
+//            panel->update();
+//            panel->updateConfigDialog();
         }
     }
 }

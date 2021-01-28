@@ -135,30 +135,104 @@ private slots:
     bool checkButton(QuickLaunchAction* action);
     void removeButton(QString filename);
     void switchButtons(QuickLaunchButton *button1, QuickLaunchButton *button2);
+    /**
+     * @brief rightClicktoDeleted
+     * 快速启动栏右键删除函数
+     */
     void rightClicktoDeleted();
+    /**
+     * @brief buttonMoveLeft
+     * 快速启动栏右键菜单-左移函数
+     */
     void buttonMoveLeft();
+    /**
+     * @brief buttonMoveRight
+     * 快速启动栏右键菜单右移函数
+     */
     void buttonMoveRight();
+    /**
+     * @brief PageUp  PageDown
+     * 翻页按钮
+     */
     void PageUp();
     void PageDown();
     QString readFile(const QString &filename);
+    /**
+     * @brief loadJsonfile
+     * 加载json文件
+     */
     void loadJsonfile();
 
 public slots:
+    /**
+     * @brief AddToTaskbar
+     * @param arg
+     * @return
+     * 添加到任务栏
+     */
     bool AddToTaskbar(QString arg);
+    /**
+     * @brief RemoveFromTaskbar
+     * 从任务栏取消固定
+     * @param arg
+     * @return
+     */
     bool RemoveFromTaskbar(QString arg);
+    /**
+     * @brief FileDeleteFromTaskbar
+     * 从任务栏移除文件的接口
+     * @param arg
+     */
     void FileDeleteFromTaskbar(QString arg);
+    /**
+     * @brief CheckIfExist
+     * 检测此应用是否在任务栏上已经存在
+     * @param arg
+     * @return
+     */
     bool CheckIfExist(QString arg);
+    /**
+     * @brief ShowTooltipText
+     * 给输入法提供的信号，显示tooltip
+     * @param arg
+     * @return
+     */
     bool ShowTooltipText(QString arg);
+    /**
+     * @brief HideTooltipText
+     * @param arg
+     * @return
+     * 弃用
+     */
     bool HideTooltipText(QString arg);
+    /**
+     * @brief GetPanelPosition
+     * 通过dbus获取任务栏的位置
+     * @param arg
+     * @return
+     */
     int GetPanelPosition(QString arg);
+    /**
+     * @brief GetPanelSize
+     * 通过dbus获取任务栏的高度
+     * @param arg
+     * @return
+     */
     int GetPanelSize(QString arg);
+    /**
+     * @brief ReloadSecurityConfig GetSecurityConfigPath
+     * 安全管控相关
+     */
     void ReloadSecurityConfig();
     QString GetSecurityConfigPath();
 
 };
 
 
-
+/**
+ * @brief The FilectrlAdaptor class
+ * 处理dbus的方法的类
+ */
 class FilectrlAdaptor: public QDBusAbstractAdaptor
 {
     Q_OBJECT

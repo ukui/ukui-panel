@@ -498,7 +498,6 @@ void UKUITaskWidget::unShadeApplication()
 void UKUITaskWidget::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
-    qDebug()<<"closeApplication";
     NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(mWindow);
 }
 

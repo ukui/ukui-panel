@@ -45,7 +45,7 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     mButton =new TaskViewButton();
     mButton->setStyle(new CustomStyle());
     mButton->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
-    mButton->setToolTip(tr("Show Taskview"));
+    QTimer::singleShot(5000,[this] {mButton->setToolTip(tr("Show Taskview")); });
 
     /* hide/show taskview
      * Monitor gsettings to set TaskViewButton size

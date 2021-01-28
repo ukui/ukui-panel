@@ -75,6 +75,8 @@ public:
     bool isOnCurrentScreen() const;
     bool isMinimized() const;
     void updateText();
+    void setLeaderWindow(WId leaderWindow);
+    bool isLeaderWindow(WId compare) { return mWindow == compare; }
 
     Qt::Corner origin() const;
     virtual void setAutoRotation(bool value, IUKUIPanel::Position position);

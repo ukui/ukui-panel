@@ -58,6 +58,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
 
 
 NightMode::~NightMode(){
+    delete gsettings;
 }
 
 void NightMode::realign()
@@ -93,10 +94,9 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
                                           this,
                                           SLOT(nightChangedSlot(QHash<QString,QVariant>)));
     getNightModeState();
-    setNightMode(mode);
+    controlCenterSetNightMode(mode);
 }
 NightModeButton::~NightModeButton(){
-    delete gsettings;
     delete mqtstyleGsettings;
     delete mgtkstyleGsettings;
 }
@@ -129,7 +129,7 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
     opennightmode->setChecked(mode);
     connect(opennightmode, &QAction::triggered, [this] { setNightMode(!mode); });
 
-    nightModeMenu->addAction(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("document-page-setup").pixmap(24,24).toImage()))),
+    nightModeMenu->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
                              tr("Set Up NightMode"),
                              this, SLOT(setUpNightMode())
                              );
@@ -169,13 +169,41 @@ void NightModeButton::setNightMode(const bool nightMode){
         iproperty.call("setNightColorConfig", data);
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
         this->setIcon(icon);
-        this->setToolTip(tr("nightmode open"));
+        this->setToolTip(tr("nightmode opened"));
     }
     else{
         data.insert("Active", false);
         iproperty.call("setNightColorConfig", data);
         this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
-        this->setToolTip(tr("nightmode close"));
+        this->setToolTip(tr("nightmode closed"));
+    }
+}
+
+void NightModeButton::controlCenterSetNightMode(const bool nightMode){
+    QDBusInterface iproperty("org.ukui.KWin",
+                             "/ColorCorrect",
+                             "org.ukui.kwin.ColorCorrect",
+                             QDBusConnection::sessionBus());
+
+    if (!iproperty.isValid()) {
+        this->setVisible(false);
+        return;
+    }
+    QHash<QString, QVariant> data;
+
+    if(nightMode){
+        data.insert("Active", true);
+        data.insert("NightTemperature", colorTemperature);
+        iproperty.call("setNightColorConfig", data);
+        QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
+        this->setIcon(icon);
+        QTimer::singleShot(5000,[this] { this->setToolTip(tr("night mode open")); });
+    }
+    else{
+        data.insert("Active", false);
+        iproperty.call("setNightColorConfig", data);
+        this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
+        QTimer::singleShot(5000,[this] { this->setToolTip(tr("night mode close")); });
     }
 }
 
@@ -185,9 +213,7 @@ void NightModeButton::getNightModeState()
                                  "/ColorCorrect",
                                  "org.ukui.kwin.ColorCorrect",
                                  QDBusConnection::sessionBus());
-    QHash<QString, QVariant> datainfo ;
     QDBusMessage msg=  ipropertyinfo.call("nightColorInfo");
-//    datainfo=msg;
 
     const QDBusArgument &dbusArg = msg.arguments().at( 0 ).value<QDBusArgument>();
     QMap<QString,QVariant > map;
@@ -205,7 +231,7 @@ void NightModeButton::getNightModeState()
 void NightModeButton::nightChangedSlot(QHash<QString, QVariant> nightArg)
 {
     getNightModeState();
-    setNightMode(mode);
+    controlCenterSetNightMode(mode);
 }
 
 /*设置主题*/

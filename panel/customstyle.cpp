@@ -67,7 +67,7 @@ void CustomStyle::drawComplexControl(QStyle::ComplexControl cc, const QStyleOpti
 //    if(control == CC_ToolButton)
 //    {
 //        /// 我们需要获取ToolButton的详细信息，通过qstyleoption_cast可以得到
-//        /// 对应的option，通过拷贝构造函数得到一份备份用于绘制子控件
+//        /// 对应的option，通过拷贝构造函数得到一CustomStyle份备份用于绘制子控件
 //        /// 我们一般不用在意option是怎么得到的，大部分的Qt控件都能够提供了option的init方法
 
 //    }
@@ -143,6 +143,50 @@ void CustomStyle::drawComplexControl(QStyle::ComplexControl cc, const QStyleOpti
 void CustomStyle::drawControl(QStyle::ControlElement element, const QStyleOption *opt, QPainter *p, const QWidget *widget) const
 {
     switch (element) {
+
+    case CE_PushButton:
+        if (const QStyleOptionButton *btn = qstyleoption_cast<const QStyleOptionButton *>(opt)) {
+            proxy()->drawControl(CE_PushButtonBevel, btn, p, widget);
+            QStyleOptionButton subopt = *btn;
+            subopt.rect = subElementRect(SE_PushButtonContents, btn, widget);
+            proxy()->drawControl(CE_PushButtonLabel, &subopt, p, widget);
+        }
+    case CE_PushButtonBevel:
+    {
+        if (const QStyleOptionButton *btn = qstyleoption_cast<const QStyleOptionButton *>(opt)) {
+            QRect br = btn->rect;
+            int dbi = proxy()->pixelMetric(PM_ButtonDefaultIndicator, btn, widget);
+            if (btn->features & QStyleOptionButton::AutoDefaultButton)
+                br.setCoords(br.left() + dbi, br.top() + dbi, br.right() - dbi, br.bottom() - dbi);
+
+            QStyleOptionButton tmpBtn = *btn;
+            tmpBtn.rect = br;
+            drawPrimitive(PE_PanelButtonCommand, &tmpBtn, p, widget);
+            return;
+//            qDebug()<<" ************** PushButton *********************** ";
+//            p->save();
+//            //        painter->setRenderHint(QPainter::Antialiasing,true);
+//            //        painter->setPen(Qt::NoPen);
+//            //        painter->drawRoundedRect(option->rect,6,6);
+//            if (opt->state & State_MouseOver) {
+//                if (opt->state & State_Sunken) {
+//                    p->setRenderHint(QPainter::Antialiasing,true);
+//                    p->setPen(Qt::NoPen);
+//                    p->setBrush(QColor(0xff,0xff,0xff));
+//                    p->drawRoundedRect(opt->rect.adjusted(2,2,-2,-2),6,6);
+//                } else {
+//                    p->setRenderHint(QPainter::Antialiasing,true);
+//                    p->setPen(Qt::NoPen);
+//                    p->setBrush(QColor(0xff,0xff,0xff));
+//                    p->drawRoundedRect(opt->rect.adjusted(2,2,-2,-2),6,6);
+//                }
+//            }
+//            p->restore();
+//            return;
+        }
+        break;
+    }
+
     case CE_ToolButtonLabel:
     {
         if (const QStyleOptionToolButton *toolbutton
@@ -289,7 +333,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
             painter->save();
             painter->setRenderHint(QPainter::Antialiasing,true);
             painter->setPen(Qt::NoPen);
-            //        painter->setBrush(QColor(0xff,0xff,0xff,0xff));
+            //        painter->setBrush(QColor(0xff,0xff,0xff,0xffoption));
             painter->drawRoundedRect(option->rect,6,6);
             if (option->state & State_MouseOver) {
                 if (option->state & State_Sunken) {
@@ -332,27 +376,27 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
         }
     }
 
-
     case PE_PanelButtonCommand:{
-        painter->save();
-        painter->setRenderHint(QPainter::TextAntialiasing,true);
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(Qt::blue);
-        if (option->state & State_MouseOver) {
-            if (option->state & State_Sunken) {
-                painter->setRenderHint(QPainter::Antialiasing,true);
-                painter->setPen(Qt::NoPen);
-                painter->setBrush(QColor(0xff,0x00,0x00));
-                painter->drawRoundedRect(option->rect,6,6);
-            } else {
-                painter->setRenderHint(QPainter::Antialiasing,true);
-                painter->setPen(Qt::NoPen);
-                painter->setBrush(QColor(0x00,0xff,0x00));
-                painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
+        if(const QStyleOptionButton *button = qstyleoption_cast<const QStyleOptionButton *>(option))
+        {
+            painter->save();
+            if (option->state & State_MouseOver) {
+                if (option->state & State_Sunken) {
+                    painter->setRenderHint(QPainter::Antialiasing,true);
+                    painter->setPen(Qt::NoPen);
+                    painter->setBrush(QColor(0xff,0xff,0xff,0x0f));
+                    painter->drawRoundedRect(button->rect,6,6);
+                } else {
+                    painter->setRenderHint(QPainter::Antialiasing,true);
+                    painter->setPen(Qt::NoPen);
+                    painter->setBrush(QColor(0xff,0xff,0xff,0x1f));
+                    painter->drawRoundedRect(button->rect.adjusted(2,2,-2,-2),6,6);
+                }
             }
+            painter->restore();
+            return;
         }
-        painter->restore();
-        return;
+        break;
     }break;
     }
     return QProxyStyle::drawPrimitive(element, option, painter, widget);

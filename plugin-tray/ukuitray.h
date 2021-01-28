@@ -45,7 +45,8 @@
 #include "../panel/customstyle.h"
 #include "../panel/ukuicontrolstyle.h"
 #include "ukuitraystrage.h"
-
+#include "storagearrow.h"
+#include "ukuistoragewidget.h"
 class TrayIcon;
 class QSize;
 namespace UKUi {
@@ -57,39 +58,69 @@ class GridLayout;
  */
 class UKUITrayPlugin;
 
-class TrayButton : public QToolButton {
-public :
-    TrayButton(QWidget* parent );
-    ~TrayButton();
-protected :
-    void enterEvent(QEvent *);
-    void leaveEvent(QEvent *);
-};
-
 class UKUITray: public QFrame, QAbstractNativeEventFilter
 {
     Q_OBJECT
 //    Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 public:
+    /**
+     * @brief UKUITray
+     * @param plugin
+     * @param parent
+     * 托盘应用共分为两个区域 Tray Storage
+     * Tray区域 ：UKUITray ； Storage区域：UKUIStorageFrame
+     * 图标可存放在两个区域中的任何一个区域，如果应用退出则被销毁
+     */
     UKUITray(UKUITrayPlugin *plugin, QWidget* parent = 0);
     ~UKUITray();
 
     QSize iconSize() const { return mIconSize; }
+    /**
+     * @brief setIconSize
+     * 目前托盘应用不使用此方式设置控件的大小而是使用setIconSize和setFixedSize来设置
+     */
     void setIconSize();
+
+    /** @brief nativeEventFilter
+     * 托盘应用的事件过滤器
+     * 通过继承QAbstractNativeEventFilter的类中重新实现nativeEventFilter接口:
+     * 安装　：　void QCoreApplication::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
+     * 或者　　　void QAbstractEventDispatcher::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
+     * XCB(Linux)　对应的eventType 类型如下：
+     * 事件类型(eventType)：“xcb_generic_event_t”　　　消息类型(message)：xcb_generic_event_t *	　结果类型(result)：无
+    */
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
     UKUITrayPlugin *mPlugin;
-
-    //control app show in tray/traystorege  by ukui-control-center
-    QList<char *> listExistsPath();
-    QString findFreePath();
+    /**
+     * @brief regulateIcon
+     * @param mid
+     * 调节图标，监听图标所在的位置
+     */
     void regulateIcon(Window *mid);
+    /**
+     * @brief newAppDetect
+     * @param wid 应用的窗口id
+     * 检测到新的应用（第一次添加应用）
+     */
     void newAppDetect(int wid);
-    void freezeApp();
+    /**
+     * @brief showAndHideStorage
+     * 在取消了panel的WindowDoesNotAcceptFocus属性之后，托盘栏会有点击之后的隐藏并再次弹出的操作
+     */
     void showAndHideStorage(bool);
 
 public slots:
+    /**
+     * @brief storageBar
+     * 点击收纳按钮的时候的槽函数
+     */
     void storageBar();
-    void changeIcon();
+    /**
+     * @brief realign
+     * 关于设置托盘栏图标大小的方法
+     * ukui采用与lxqt-panel不同的方式
+     * 直接在realign函数中进行设置每个托盘应用所在的位置的大小和位置
+     */
     void realign();
 
 signals:
@@ -98,12 +129,28 @@ signals:
     void positionChanged();
 
 private slots:
+    /**
+     * @brief startTray
+     * freedesktop systray specification
+     * 托盘规范
+     */
     void startTray();
     void stopTray();
-    void stopStorageTray();
+//    void stopStorageTray();
+    /**
+     * @brief onIconDestroyed
+     * @param icon
+     * 将托盘图标从托盘栏/收纳栏中移除
+     */
     void onIconDestroyed(QObject * icon);
-    void freezeTrayApp(Window winId);
     void trayIconSizeRefresh();
+    /**
+     * @brief switchButtons
+     * @param button1 移动前的图标
+     * @param button2 移动后的图标
+     * 交换两个图标
+     */
+    void switchButtons(TrayIcon *button1, TrayIcon *button2);
 
 private:
     VisualID getVisual();
@@ -115,39 +162,56 @@ private:
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
 
-    /*
-     * @brief Dynamic mobile tray application
+    /**
+     * @brief addTrayIcon
+     * @param id
+     * 添加托盘应用到托盘栏
      */
     void addTrayIcon(Window id);
     void addStorageIcon(Window winId);
-    void addHideIcon(Window winId);
     void moveIconToStorage(Window id);
     void moveIconToTray(Window winId);
-    void moveIconToHide(Window winId);
+    /**
+     * @brief handleStorageUi
+     * 收纳栏样式
+     * 根据panel的大小自动调节收纳栏
+     * 未设置m_pwidget的透明属性会导致收纳栏异常（布局混乱）
+     * 因此不使用QWidget，而是继承 QWidget 写一个 UKUiStorageWidget，并设置其基础样式
+     */
     void handleStorageUi();
     TrayIcon* findIcon(Window trayId);
     TrayIcon* findTrayIcon(Window trayId);
     TrayIcon* findStorageIcon(Window trayId);
-    TrayIcon* findHideIcon(Window trayId);
-    void createIconMap();
 
     bool mValid;
     Window mTrayId;
     QList<TrayIcon*> mIcons;
     QList<TrayIcon*> mTrayIcons;
     QList<TrayIcon*> mStorageIcons;
-    QList<TrayIcon*> mHideIcons;
     int mDamageEvent;
     int mDamageError;
     QSize mIconSize;
+    /**
+     * @brief mLayout
+     * 托盘上的图标布局
+     */
+    UKUi::GridLayout *mLayout;
+    /**
+     * @brief mStorageLayout
+     * 收纳栏上布局
+     */
+    UKUi::GridLayout *mStorageLayout;
+    /**
+     * @brief mStorageItemLayout
+     * 收纳栏上的图标布局
+     */
+    UKUi::GridLayout *mStorageItemLayout;
 
     Atom _NET_SYSTEM_TRAY_OPCODE;
     Display* mDisplay;
     UKUIStorageFrame *storageFrame;
     UKUiStorageWidget *m_pwidget;
-    TrayButton *mBtn;
-    IUKUIPanel::Position mCurPosition;
-    QMap<IUKUIPanel::Position, QIcon> mMapIcon;
+    StorageArrow *mBtn;
     QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QGSettings *settings;
 };

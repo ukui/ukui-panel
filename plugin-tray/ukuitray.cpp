@@ -63,6 +63,8 @@
 #include <QLabel>
 #include <QMouseEvent>
 
+#include "traydynamicgsetting.h"
+
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
 #define _NET_SYSTEM_TRAY_ORIENTATION_VERT 1
 
@@ -72,6 +74,9 @@
 
 #define XEMBED_EMBEDDED_NOTIFY  0
 #define XEMBED_MAPPED          (1 << 0)
+
+#define mWinWidth 46
+#define mWinHeight 46
 
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
@@ -87,7 +92,7 @@ extern "C" {
 
 #define KEYBINDINGS_CUSTOM_SCHEMA "org.ukui.panel.tray"
 #define KEYBINDINGS_CUSTOM_DIR "/org/ukui/tray/keybindings/"
-#define MAX_CUSTOM_SHORTCUTS 100
+
 #define ACTION_KEY "action"
 #define RECORD_KEY "record"
 #define BINDING_KEY "binding"
@@ -100,22 +105,7 @@ extern "C" {
 #define TRAY_LINE      "traylines"
 #define PANEL_SIZE     "panelsize"
 #define ICON_SIZE      "iconsize"
-/************************************************
 
- ************************************************/
-
-/*
- * @Note 托盘应用共分为三个区域 Tray Storage Hide
- * Tray区域 ：UKUITray ； Storage区域：UKUIStorageFrame ； Hide区域没有界面
- * 图标可存放在三个区域中的任何一个区域，如果应用退出则被销毁
- *
- * @bug:
- * 1.图标移动过程中可能存在重影（一个图标的轮廓显示在另一个图标上方）
- * 2.图标模糊现象，目前存在的情况是安装系统起来的时候可能会有托盘图标模糊
- *   注销后模糊现象消失（已经修改改变图标大小的方式）
- *
- *
-*/
 bool flag=false;
 extern storageBarStatus status;
 
@@ -129,7 +119,6 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mPlugin(plugin),
     mDisplay(QX11Info::display())
 {
-    mMapIcon.clear();
     m_pwidget = NULL;
     status=ST_HIDE;
 
@@ -143,75 +132,40 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
             trayIconSizeRefresh();
     });
 
-    setLayout(new UKUi::GridLayout(this));
+    mLayout = new UKUi::GridLayout(this);
+    setLayout(mLayout);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
-    mBtn =new TrayButton(this);
-    layout()->addWidget(mBtn);
-    if(mPlugin)
-    {
-        mCurPosition = mPlugin->panel()->position();
-    }
-
+    mBtn =new StorageArrow(this);
+    mLayout->addWidget(mBtn);
     storageFrame=new UKUIStorageFrame;
-    storageFrame->setLayout(new UKUi::GridLayout);
+    mStorageLayout = new UKUi::GridLayout(storageFrame);
+    storageFrame->setLayout(mStorageLayout);
+    handleStorageUi();
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
-    connect(this,SIGNAL(positionChanged()),this,SLOT(changeIcon()));
-    createIconMap();
     realign();
-    changeIcon();
     QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
 }
 
-
-/************************************************
- ************************************************/
 UKUITray::~UKUITray()
 {
-    for(int i  = 0; i < mTrayIcons.size(); i++)
-    {
-        if(mTrayIcons[i])
-        {
-            mTrayIcons[i]->deleteLater();
-            mTrayIcons[i] = NULL;
-        }
-    }
-    for(int i  = 0; i < mStorageIcons.size(); i++)
-    {
-        if(mStorageIcons[i])
-        {
-            mStorageIcons[i]->deleteLater();
-            mStorageIcons[i] = NULL;
-        }
-    }
-    for(int i  = 0; i < mHideIcons.size(); i++)
-    {
-        if(mHideIcons[i])
-        {
-            mHideIcons[i]->deleteLater();
-            mHideIcons[i] = NULL;
-        }
-    }
-    for(int i  = 0; i < mIcons.size(); i++)
-    {
-        if(mIcons[i])
-        {
-            mIcons[i]->deleteLater();
-            mIcons[i] = NULL;
-        }
-    }
-    mIcons.clear();
-    mStorageIcons.clear();
-    mHideIcons.clear();
-    mTrayIcons.clear();
-    mMapIcon.clear();
+//    for(int i  = 0; i < mIcons.size(); i++)
+//    {
+//        if(mIcons[i])
+//        {
+//            mIcons[i]->deleteLater();
+//            mIcons[i] = NULL;
+//        }
+//    }
+//    mIcons.clear();
+//    mStorageIcons.clear();
+//    mTrayIcons.clear();
     freezeApp();
     stopTray();
 }
 
-/*slot funtion of clicked mBtn*/
 void UKUITray::storageBar()
 {
     if(status==ST_HIDE)
@@ -224,11 +178,9 @@ void UKUITray::storageBar()
         status = ST_HIDE;
         showAndHideStorage(true);
     }
+    realign();
 }
 
-/* when clicked mBtn , show or hide storageFrame
- * 在取消了panel的WindowDoesNotAcceptFocus属性之后，托盘栏会有点击之后的隐藏并再次弹出的操作
- */
 void UKUITray::showAndHideStorage(bool storageStatus)
 {
     if(storageStatus){
@@ -239,13 +191,6 @@ void UKUITray::showAndHideStorage(bool storageStatus)
     }
 }
 
-/*托盘应用的事件过滤器
- * 通过继承QAbstractNativeEventFilter的类中重新实现nativeEventFilter接口:
- * 安装　：　void QCoreApplication::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
- * 或者　　　void QAbstractEventDispatcher::installNativeEventFilter(QAbstractNativeEventFilter *filterObj)
- * XCB(Linux)　对应的eventType 类型如下：
- * 事件类型(eventType)：“xcb_generic_event_t”　　　消息类型(message)：xcb_generic_event_t *	　结果类型(result)：无
-*/
 bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, long *)
 {
     if (eventType != "xcb_generic_event_t")
@@ -289,7 +234,6 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
         if (icon)
         {
             icon->windowDestroyed(event_window);
-            mHideIcons.removeAll(icon);
             mTrayIcons.removeAll(icon);
             mStorageIcons.removeAll(icon);
             delete icon;
@@ -310,70 +254,38 @@ bool UKUITray::nativeEventFilter(const QByteArray &eventType, void *message, lon
     return false;
 }
 
-
-/*
- * @brief Adjust the size of the tray in real time
- * @Note
- * 关于设置托盘栏图标大小的方法
- * ukui采用与lxqt-panel不同的方式
- * 直接在realign函数中进行设置每个托盘应用所在的位置的大小和位置
- *
- * tr:
- * About the method of setting the icon size of the tray bar
- * ukui takes a different approach from lxqt-panel
- * Set the size and position of each tray application location directly
- * in the realign function
- */
 void UKUITray::realign()
 {
-    layout()->setEnabled(false);
+    mLayout->setEnabled(false);
     IUKUIPanel *panel = mPlugin->panel();
-
-
 
     /*　刷新托盘收纳栏界面
      * 不要在这里对收纳栏的图标执setFixedSize和setIconSize的操作
      * 这些应该在handleStorageUi()函数中执行
      * handleStorageUi();
     */
-    if (panel->isHorizontal())
-    {
+    if (panel->isHorizontal()){
 
-        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(panel->lineCount());
-        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(0);
-        mBtn->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
+        dynamic_cast<UKUi::GridLayout*>(mLayout)->setRowCount(panel->lineCount());
+        dynamic_cast<UKUi::GridLayout*>(mLayout)->setColumnCount(0);
     }
-    else
-    {
-
-        dynamic_cast<UKUi::GridLayout*>(layout())->setColumnCount(panel->lineCount());
-        dynamic_cast<UKUi::GridLayout*>(layout())->setRowCount(0);
-        mBtn->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->iconSize());
-
-
+    else{
+        dynamic_cast<UKUi::GridLayout*>(mLayout)->setColumnCount(panel->lineCount());
+        dynamic_cast<UKUi::GridLayout*>(mLayout)->setRowCount(0);
     }
 
-    if(storageFrame)
-    {
+    if(storageFrame){
         int storageFramePosition;
-        if(mPlugin->panel()->isHorizontal())
-        {
+        if(mPlugin->panel()->isHorizontal()){
             storageFramePosition=(storageFrame->size().width()-mBtn->size().width())/2;
             storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(-storageFramePosition,0)), storageFrame->size()));
         }
-        else
-        {
+        else{
             storageFramePosition=(storageFrame->size().height()-mBtn->size().height())/2;
             storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,-storageFramePosition)), storageFrame->size()));
         }
     }
-
-    if(mCurPosition != panel->position())
-    {
-        mCurPosition = panel->position();
-        emit positionChanged();
-    }
-    layout()->setEnabled(true);
+    mLayout->setEnabled(true);
 
 }
 
@@ -381,7 +293,6 @@ void UKUITray::trayIconSizeRefresh()
 {
     for(int i=0;i<mIcons.size();i++){
         if(mIcons.at(i)){
-            handleStorageUi();
             if(mPlugin->panel()->isHorizontal()){
                 mIcons.at(i)->setFixedSize(mPlugin->panel()->iconSize(),mPlugin->panel()->panelSize());
             }else{
@@ -392,29 +303,6 @@ void UKUITray::trayIconSizeRefresh()
             qDebug()<<"错误的托盘图标";
         }
     }
-}
-
-/*creat iconMap of four  direction*/
-void UKUITray::createIconMap()
-{
-    mMapIcon[IUKUIPanel::PositionBottom] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-up-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionLeft] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-end-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionTop] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-down-symbolic").pixmap(24,24).toImage())));
-    mMapIcon[IUKUIPanel::PositionRight] = QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("pan-start-symbolic").pixmap(24,24).toImage())));
-
-}
-
-/*这里的changeIcon是改变收纳箭头的图标*/
-void UKUITray::changeIcon()
-{
-    QIcon icon;
-    QMap<IUKUIPanel::Position, QIcon>::const_iterator it = mMapIcon.find(mCurPosition);
-    if(it != mMapIcon.end())
-    {
-        icon = it.value();
-    }
-    mBtn->setIcon(icon);
-    mBtn->setFixedSize(QSize(30,mPlugin->panel()->panelSize()));
 }
 
 /*监听托盘事件*/
@@ -442,7 +330,7 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
 
     case SYSTEM_TRAY_BEGIN_MESSAGE:
     case SYSTEM_TRAY_CANCEL_MESSAGE:
-        qDebug() << "we don't show balloon messages.";
+//        qDebug() << "we don't show balloon messages.";
         break;
 
     default:
@@ -454,9 +342,6 @@ void UKUITray::clientMessageEvent(xcb_generic_event_t *e)
     }
 }
 
-/************************************************
-
- ************************************************/
 /*遍历mIcons中的TrayIcon*/
 TrayIcon* UKUITray::findIcon(Window id)
 {
@@ -477,7 +362,7 @@ TrayIcon* UKUITray::findTrayIcon(Window id)
 {
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(int i=0;i<mTrayIcons.size();i++){
-	TrayIcon *trayicon = mTrayIcons[i];
+    TrayIcon *trayicon = mTrayIcons[i];
 #endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     for(TrayIcon* trayicon : qAsConst(mTrayIcons) ){
@@ -492,7 +377,7 @@ TrayIcon* UKUITray::findStorageIcon(Window id)
 {
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(int i=0;i<mStorageIcons.size();i++){
-	TrayIcon *storageicon=mStorageIcons[i];
+    TrayIcon *storageicon=mStorageIcons[i];
 #endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
     for(TrayIcon* storageicon :qAsConst(mStorageIcons)){
@@ -503,24 +388,6 @@ TrayIcon* UKUITray::findStorageIcon(Window id)
     return 0;
 }
 
-TrayIcon* UKUITray::findHideIcon(Window id)
-{
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-    for(int i=0;i<mHideIcons.size();i++){
-	TrayIcon* hideicon=mHideIcons[i];
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-    for(TrayIcon* hideicon :qAsConst(mHideIcons)){
-#endif
-        if (hideicon->iconId() == id || hideicon->windowId() == id)
-            return hideicon;
-    }
-    return 0;
-}
-/************************************************
-
-************************************************/
-/*目前托盘应用不使用此方式设置控件的大小而是使用setIconSize和setFixedSize来设置*/
 void UKUITray::setIconSize()
 {
     mIconSize=QSize(mPlugin->panel()->iconSize()/2,mPlugin->panel()->iconSize()/2);
@@ -535,10 +402,6 @@ void UKUITray::setIconSize()
                     1);
 }
 
-
-/************************************************
-
-************************************************/
 VisualID UKUITray::getVisual()
 {
     VisualID visualId = 0;
@@ -556,8 +419,7 @@ VisualID UKUITray::getVisual()
     {
         int i;
         XRenderPictFormat* format;
-        for (i = 0; i < nvi; i++)
-        {
+        for (i = 0; i < nvi; i++){
             format = XRenderFindVisualFormat(dsp, xvi[i].visual);
             if (format &&
                     format->type == PictTypeDirect &&
@@ -573,10 +435,10 @@ VisualID UKUITray::getVisual()
     return visualId;
 }
 
-
-/************************************************
-   freedesktop systray specification
- ************************************************/
+/**
+ * @brief UKUITray::startTray
+ * freedesktop系统托盘规范
+ */
 void UKUITray::startTray()
 {
     Display* dsp = mDisplay;
@@ -585,8 +447,7 @@ void UKUITray::startTray()
     QString s = QString("_NET_SYSTEM_TRAY_S%1").arg(DefaultScreen(dsp));
     Atom _NET_SYSTEM_TRAY_S = XfitMan::atom(s.toLatin1());
     //this limit the tray apps  | will not run more Same apps
-    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != None)
-    {
+    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != None){
         qWarning() << "Another systray is running";
         mValid = false;
         return;
@@ -596,8 +457,7 @@ void UKUITray::startTray()
     mTrayId = XCreateSimpleWindow(dsp, root, -1, -1, 1, 1, 0, 0, 0);
 
     XSetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S, mTrayId, CurrentTime);
-    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != mTrayId)
-    {
+    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != mTrayId){
         qWarning() << "Can't get systray manager";
         stopTray();
         mValid = false;
@@ -616,8 +476,7 @@ void UKUITray::startTray()
 
     // ** Visual ********************************
     VisualID visualId = getVisual();
-    if (visualId)
-    {
+    if (visualId){
         XChangeProperty(mDisplay,
                         mTrayId,
                         XfitMan::atom("_NET_SYSTEM_TRAY_VISUAL"),
@@ -627,8 +486,6 @@ void UKUITray::startTray()
                         (unsigned char*)&visualId,
                         1);
     }
-    // ******************************************
-
     setIconSize();
 
     XClientMessageEvent ev;
@@ -649,131 +506,52 @@ void UKUITray::startTray()
     qApp->installNativeEventFilter(this);
 }
 
-
-/************************************************
-
- ************************************************/
 void UKUITray::stopTray()
 {
     for (auto & icon : mIcons)
         disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     qDeleteAll(mIcons);
-    if (mTrayId)
-    {
+    if (mTrayId){
         XDestroyWindow(mDisplay, mTrayId);
         mTrayId = 0;
     }
     mValid = false;
 }
 
-void UKUITray::stopStorageTray()
-{
-    for (auto & icon : mStorageIcons)
-        disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-    qDeleteAll(mStorageIcons);
-    if (mTrayId)
-    {
-        XDestroyWindow(mDisplay, mTrayId);
-        mTrayId = 0;
-    }
-}
+//void UKUITray::stopStorageTray()
+//{
+//    for (auto & icon : mStorageIcons)
+//        disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
+//    qDeleteAll(mStorageIcons);
+//    if (mTrayId){
+//        XDestroyWindow(mDisplay, mTrayId);
+//        mTrayId = 0;
+//    }
+//}
 
-/*将托盘图标从托盘栏/收纳栏中移除*/
 void UKUITray::onIconDestroyed(QObject * icon)
 {
     //in the time QOjbect::destroyed is emitted, the child destructor
     //is already finished, so the qobject_cast to child will return nullptr in all cases
     mIcons.removeAll(static_cast<TrayIcon *>(icon));
-    mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
+//    mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
 }
 
-/*将托盘应用置为freeze的状态*/
-void UKUITray::freezeTrayApp(Window winId)
-{
-    QList<char *> existsPath = listExistsPath();
-    int bingdingStr;
-
-    for (char * path : existsPath)
-    {
-        QString p =KEYBINDINGS_CUSTOM_DIR;
-        std::string str = p.toStdString();
-        const int len = str.length();
-        char * prepath = new char[len+1];
-        strcpy(prepath,str.c_str());
-        char * allpath = strcat(prepath, path);
-
-        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
-
-        QGSettings *settings = NULL;
-        const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
-        if(QGSettings::isSchemaInstalled(id))
-        {
-            if(bba.isEmpty())
-            {
-                continue;
-            }
-            settings= new QGSettings(ba, bba,this);
-            if(settings)
-            {
-                if(settings->keys().contains(BINDING_KEY))
-                {
-                    bingdingStr=settings->get(BINDING_KEY).toInt();
-                }
-            }
-
-            if(winId==bingdingStr)
-            {
-                settings->set(ACTION_KEY,"freeze");
-            }
-        }
-
-        if(settings)
-        {
-            settings->deleteLater();
-        }
-    }
-    /*
-     * 在任何一个托盘应用异常退出的时候都需要刷新收纳栏的界面
-     * 这可能会导致panel的崩溃
-     *
-     * 将handleStorageUi　放到freezeTrayApp　函数最后以避免崩溃问题
-    */
-    TrayIcon *storageicon = findStorageIcon(winId);
-    if(storageicon)
-    {
-        mStorageIcons.removeOne(storageicon);
-        storageicon->deleteLater();
-        storageicon=NULL;
-    }
-    TrayIcon *trayicon = findTrayIcon(winId);
-    if(trayicon)
-    {
-        mTrayIcons.removeOne(trayicon);
-        trayicon->deleteLater();
-        trayicon=NULL;
-    }
-    handleStorageUi();
-}
-
-
-/*add*Icon  是添加托盘应用到托盘栏/收纳栏
-*/
 void UKUITray::addTrayIcon(Window winId)
 {
     // decline to add an icon for a window we already manage
     TrayIcon *icon = findTrayIcon(winId);
     if(icon)
         return;
-    else
-    {
+    else{
         icon = new TrayIcon(winId, mIconSize, this);
         mIcons.append(icon);
         mTrayIcons.append(icon);
-        layout()->addWidget(icon);
+        mLayout->addWidget(icon);
+        connect(icon, SIGNAL(switchButtons(TrayIcon*,TrayIcon*)), this, SLOT(switchButtons(TrayIcon*,TrayIcon*)));
 
         connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
-        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(icon,&TrayIcon::notifyTray,[=](Window id){ freezeTrayApp(id);});
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
 }
@@ -783,46 +561,20 @@ void UKUITray::addStorageIcon(Window winId)
     TrayIcon *storageicon = findStorageIcon(winId);
     if(storageicon)
         return;
-    else
-    {
+    else{
         storageicon = new TrayIcon(winId, mIconSize, this);
         mIcons.append(storageicon);
         mStorageIcons.append(storageicon);
         //storageLayout->addWidget(storageicon);
 
         connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-        connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(storageicon,&TrayIcon::notifyTray,[=](Window id){freezeTrayApp(id);});
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-        if(mStorageIcons.size() > 0)
-        {
-            if(!mBtn->isVisible())
-            {
+        if(mStorageIcons.size() > 0){
+            if(!mBtn->isVisible()){
                 mBtn->setVisible(true);
             }
-            handleStorageUi();
         }
-    }
-}
-
-/*
- * @brief It is not yet clear whether the feature will be released
- * Note:
- * 关于完全隐藏托盘图标（不在任务栏中也不在收纳栏中）
- * 目前依然采用“隐藏托盘图标即放置到收纳栏”的方案
- * hide区域是一个在tray和storage之外的区域，没有界面
- *
- * 在moveIconToTray ，moveIconToStorage 中均判断是否为一个hide图标
- *
-*/
-void UKUITray::addHideIcon(Window winId)
-{
-    TrayIcon *hideicon = findHideIcon(winId);
-    if(!hideicon)
-        return;
-    else
-    {
-        mIcons.append(hideicon);
-        mHideIcons.append(hideicon);
     }
 }
 
@@ -830,166 +582,57 @@ void UKUITray::addHideIcon(Window winId)
 void UKUITray::moveIconToTray(Window winId)
 {
     TrayIcon *storageicon = findStorageIcon(winId);
-    TrayIcon *hideicon = findHideIcon(winId);
 
-    if(!storageicon && !hideicon)
+    if(!storageicon)
         return;
-    else if(storageicon)
-    {
+    else{
         mStorageIcons.removeOne(storageicon);
         //storageLayout->removeWidget(storageicon);
         disconnect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         mTrayIcons.append(storageicon);
-        layout()->addWidget(storageicon);
+        mLayout->addWidget(storageicon);
 
-        if(mStorageIcons.size() > 0)
-        {
+        if(mStorageIcons.size() > 0){
             handleStorageUi();
         }
-        else
-        {
+        else{
             mBtn->setVisible(false);
         }
 
         connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-        connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(storageicon,&TrayIcon::notifyTray,[this](Window id){freezeTrayApp(id);});
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-
-    }
-
-    else if(hideicon)
-    {
-        qDebug()<<"inter   move Icon to tray   findHideIcon";
-        mHideIcons.removeOne(hideicon);
-        //storageLayout->removeWidget(storageicon);
-        disconnect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-        mTrayIcons.append(hideicon);
-        layout()->addWidget(hideicon);
-
-        //      connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-        //      connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
-        connect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
     trayIconSizeRefresh();
 }
 
 void UKUITray::moveIconToStorage(Window winId)
 {
-    qDebug()<<"inter moveIconToStorage";
     TrayIcon *icon = findTrayIcon(winId);
-    TrayIcon *hideicon = findHideIcon(winId);
-    if(!icon && !hideicon)
+    if(!icon)
         return;
-    else if(icon)
-    {
-        layout()->removeWidget(icon);
+    else{
+        mLayout->removeWidget(icon);
         mTrayIcons.removeOne(icon);
         disconnect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
         mStorageIcons.append(icon);
 
-        if(mStorageIcons.size() > 0)
-        {
-            if(!mBtn->isVisible())
-            {
+        if(mStorageIcons.size() > 0){
+            if(!mBtn->isVisible()){
                 mBtn->setVisible(true);
             }
             handleStorageUi();
         }
-        else
-        {
+        else{
             mBtn->setVisible(false);
         }
 
         connect(icon,&QObject::destroyed,icon,&TrayIcon::notifyAppFreeze);
-        connect(icon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
+        connect(icon,&TrayIcon::notifyTray,[this](Window id){freezeTrayApp(id);});
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
-
-    else if(hideicon)
-    {
-        mHideIcons.removeOne(hideicon);
-        //storageLayout->removeWidget(storageicon);
-        disconnect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-        mStorageIcons.append(hideicon);
-
-        if(mStorageIcons.size() > 0)
-        {
-            if(!mBtn->isVisible())
-            {
-                mBtn->setVisible(true);
-            }
-            handleStorageUi();
-        }
-        else
-        {
-            mBtn->setVisible(false);
-        }
-
-        //      connect(storageicon,&QObject::destroyed,storageicon,&TrayIcon::notifyAppFreeze);
-        //      connect(storageicon,&TrayIcon::notifyTray,this,&UKUITray::freezeTrayApp);
-        connect(hideicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-    }
 }
 
-void UKUITray::moveIconToHide(Window winId)
-{
-    TrayIcon *trayicon = findTrayIcon(winId);
-    TrayIcon *storageicon = findStorageIcon(winId);
-    if(!trayicon && !storageicon)
-        return;
-    else if(trayicon)
-    {
-        layout()->removeWidget(trayicon);
-        mTrayIcons.removeOne(trayicon);
-        disconnect(trayicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-        mHideIcons.append(trayicon);
-        connect(trayicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-    }
-
-    else if(storageicon)
-    {
-        mStorageIcons.removeOne(storageicon);
-        disconnect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-        mHideIcons.append(storageicon);
-
-        if(mStorageIcons.size() > 0)
-        {
-            if(!mBtn->isVisible())
-            {
-                mBtn->setVisible(true);
-            }
-            handleStorageUi();
-        }
-        else
-        {
-            mBtn->setVisible(false);
-        }
-        connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
-    }
-}
-
-/*列出存在的可供gsettings使用的路径*/
-QList<char *> UKUITray::listExistsPath(){
-    char ** childs;
-    int len;
-
-    DConfClient * client = dconf_client_new();
-    childs = dconf_client_list (client, KEYBINDINGS_CUSTOM_DIR, &len);
-    g_object_unref (client);
-
-    QList<char *> vals;
-
-    for (int i = 0; childs[i] != NULL; i++){
-        if (dconf_is_rel_dir (childs[i], NULL)){
-            gchar *val = g_strdup (childs[i]);
-            vals.append(val);
-        }
-    }
-    g_strfreev (childs);
-    return vals;
-}
-
-/*调节图标，监听图标所在的位置*/
 void UKUITray::regulateIcon(Window *mid)
 {
     int wid=(int)*mid;
@@ -1014,31 +657,25 @@ void UKUITray::regulateIcon(Window *mid)
         const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
         if(QGSettings::isSchemaInstalled(id))
         {
-            if(bba.isEmpty())
-            {
+            if(bba.isEmpty()){
                 free(allpath);
                 free(prepath);
                 continue;
             }
             settings= new QGSettings(id, bba);
-            if(settings)
-            {
-                if(settings->keys().contains(RECORD_KEY))
-                {
+            if(settings){
+                if(settings->keys().contains(RECORD_KEY)){
                     settings->set(ACTION_KEY,settings->get(RECORD_KEY).toString());
                 }
 
-                if(settings->keys().contains(ACTION_KEY))
-                {
+                if(settings->keys().contains(ACTION_KEY)){
                     actionStr = settings->get(ACTION_KEY).toString();
                 }
 
-                if(settings->keys().contains(NAME_KEY))
-                {
+                if(settings->keys().contains(NAME_KEY)){
                     nameStr = settings->get(NAME_KEY).toString();
                 }
-                if(nameStr=="" || nameStr=="ErrorApplication")
-                {
+                if(nameStr=="" || nameStr=="ErrorApplication"){
                     settings->reset(NAME_KEY);
                     settings->reset(BINDING_KEY);
                     settings->reset(ACTION_KEY);
@@ -1050,35 +687,21 @@ void UKUITray::regulateIcon(Window *mid)
             {
                 settings->set(BINDING_KEY, wid);
                 bingdingStr=wid;
-                if(QString::compare(actionStr,"tray")==0)
-                {
+                if(QString::compare(actionStr,"tray")==0){
                     addTrayIcon(bingdingStr);
                 }
-                if(QString::compare(actionStr,"storage")==0)
-                {
+                if(QString::compare(actionStr,"storage")==0){
                     addStorageIcon(bingdingStr);
                 }
-                if(QString::compare(actionStr,"hide")==0)
-                {
-                    addHideIcon(bingdingStr);
-                }
-                connect(settings, &QGSettings::changed, this, [=] (const QString &key)
-                {
+                connect(settings, &QGSettings::changed, this, [=] (const QString &key){
                     if(key=="action"){
                         if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0){
                             moveIconToTray(bingdingStr);
                         }
-                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0)
-                        {
+                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
                             moveIconToStorage(bingdingStr);
                         }
-                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"hide")==0)
-                        {
-
-                            moveIconToHide(bingdingStr);
-                        }
-                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"freeze")==0)
-                        {
+                        else if(QString::compare(settings->get(ACTION_KEY).toString(),"freeze")==0){
 
                         }
                     }
@@ -1100,7 +723,6 @@ void UKUITray::regulateIcon(Window *mid)
     }
 }
 
-/*检测到新的应用（第一次添加应用）*/
 void UKUITray::newAppDetect(int wid)
 {
     QString availablepath = findFreePath();
@@ -1116,15 +738,13 @@ void UKUITray::newAppDetect(int wid)
         newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
 
         QStringList trayIconNameList;
-        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel";
-        if(trayIconNameList.contains(xfitMan().getApplicationName(wid)))
-        {
+        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"mktip";
+        if(trayIconNameList.contains(xfitMan().getApplicationName(wid))){
             newsetting->set(ACTION_KEY,"tray");
             newsetting->set(RECORD_KEY,"tray");
             addTrayIcon(wid);
         }
-        else
-        {
+        else{
             newsetting->set(ACTION_KEY,"storage");
             newsetting->set(RECORD_KEY,"storage");
             addStorageIcon(wid);
@@ -1134,22 +754,15 @@ void UKUITray::newAppDetect(int wid)
 
     QGSettings* settings;
     const QByteArray keyId(KEYBINDINGS_CUSTOM_SCHEMA);
-    if(QGSettings::isSchemaInstalled(keyId))
-    {
+    if(QGSettings::isSchemaInstalled(keyId)){
         settings= new QGSettings(id, idd,this);
-        connect(settings, &QGSettings::changed, this, [=] (const QString &key)
-        {
-            if(key=="action")
-            {
-                if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0)
-                {
+        connect(settings, &QGSettings::changed, this, [=] (const QString &key){
+            if(key=="action"){
+                if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0){
                     moveIconToTray(wid);
                 }
                 else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
                     moveIconToStorage(wid);
-                }
-                else if(QString::compare(settings->get(ACTION_KEY).toString(),"hide")==0){
-                    moveIconToHide(wid);
                 }
                 else{
                     qDebug()<<"get error action";
@@ -1160,79 +773,13 @@ void UKUITray::newAppDetect(int wid)
     }
 }
 
-/*将所有的托盘应用的状态至为freeze
- * 一般存在与在任务栏退出的时候
-*/
-void UKUITray::freezeApp()
-{
-    QList<char *> existsPath = listExistsPath();
-    for (char * path : existsPath){
-        QString p =KEYBINDINGS_CUSTOM_DIR;
-        std::string str = p.toStdString();
-        const int len = str.length();
-        char * prepath = new char[len+1];
-        strcpy(prepath,str.c_str());
-        char * allpath = strcat(prepath, path);
-
-        const QByteArray ba(KEYBINDINGS_CUSTOM_SCHEMA);
-        const QByteArray bba(allpath);
-
-        QGSettings *settings;
-        const QByteArray id(KEYBINDINGS_CUSTOM_SCHEMA);
-        if(QGSettings::isSchemaInstalled(id)) {
-            settings= new QGSettings(ba, bba,this);
-
-            settings->set(ACTION_KEY,"freeze");
-        }
-    }
-}
-
-
-QString UKUITray::findFreePath(){
-    int i = 0;
-    char * dir;
-    bool found;
-    QList<char *> existsdirs;
-
-    existsdirs = listExistsPath();
-
-    for (; i < MAX_CUSTOM_SHORTCUTS; i++){
-        found = true;
-        dir = QString("custom%1/").arg(i).toLatin1().data();
-        for (int j = 0; j < existsdirs.count(); j++)
-            if (!g_strcmp0(dir, existsdirs.at(j))){
-                found = false;
-                break;
-            }
-        if (found)
-            break;
-    }
-
-    if (i == MAX_CUSTOM_SHORTCUTS){
-        qDebug() << "Keyboard Shortcuts" << "Too many custom shortcuts";
-        return "";
-    }
-    return QString("%1%2").arg(KEYBINDINGS_CUSTOM_DIR).arg(QString(dir));
-}
-
-/*
- * @brief  收纳栏样式
- *
- * 根据panel的大小自动调节收纳栏
- * 未设置m_pwidget的透明属性会导致收纳栏异常（布局混乱）
- * 因此不使用QWidget，而是继承 QWidget 写一个 UKUiStorageWidget，并设置其基础样式
- *
-*/
 void UKUITray::handleStorageUi()
 {
-    //    qDebug()<<"void UKUITray::handleStorageUi():"<<mStorageIcons.size();
-    int winWidth = 0;
-    int winHeight = 0;
+
     if(m_pwidget)
     {
-        if(storageFrame->layout()->count())
-        {
-            storageFrame->layout()->removeWidget(m_pwidget);
+        if(mStorageLayout->count()){
+            mStorageLayout->removeWidget(m_pwidget);
         }
         UKUi::GridLayout *vLayout = dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout());
         if(vLayout)
@@ -1243,99 +790,7 @@ void UKUITray::handleStorageUi()
         m_pwidget = NULL;
     }
     m_pwidget =  new UKUiStorageWidget;
-    m_pwidget->setLayout(new UKUi::GridLayout);
-
-#define mWinWidth 46
-#define mWinHeight 46
-    switch(mStorageIcons.size())
-    {
-    case 1:
-        winWidth  = mWinWidth;
-        winHeight = mWinHeight;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(1);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-        break;
-    case 2:
-        winWidth  = mWinWidth*2;
-        winHeight = mWinHeight;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(2);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-        break;
-    case 3:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(1);
-        break;
-    case 4:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
-        break;
-    case 5:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
-        break;
-    case 6:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*2;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(2);
-        break;
-    case 7:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
-        break;
-    case 8:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
-        break;
-    case 9:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*3;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(3);
-        break;
-    case 10:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*4;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
-        break;
-    case 11:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*4;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
-        break;
-    case 12:
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*4;
-        m_pwidget->setFixedSize(winWidth,winHeight);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setColumnCount(3);
-        dynamic_cast<UKUi::GridLayout*>(m_pwidget->layout())->setRowCount(4);
-        break;
-    default:
-        break;
-    }
+    m_pwidget->setStorageWidgetButtonLayout(mStorageIcons.size());
 
     for(auto it = mStorageIcons.begin();it != mStorageIcons.end();++it)
     {
@@ -1343,27 +798,17 @@ void UKUITray::handleStorageUi()
         (*it)->setFixedSize(mWinWidth,mWinHeight);
     }
     storageFrame->layout()->addWidget(m_pwidget);
-    //    qDebug()<<"m_pwidget:"<<m_pwidget->size();
-    storageFrame->setFixedSize(winWidth,winHeight);
-    //    qDebug()<<"tys size"<<storageFrame->width()<<","<<storageFrame->height();
+    storageFrame->setStorageFrameSize(mStorageIcons.size());
 }
 
-TrayButton::TrayButton(QWidget* parent):
-    QToolButton(parent)
+void UKUITray::switchButtons(TrayIcon *button1, TrayIcon *button2)
 {
-    setStyle(new CustomStyle());
-    setIcon(QIcon("/usr/share/ukui-panel/panel/img/up.svg"));
-    setVisible(false);
-}
-
-TrayButton::~TrayButton() { }
-
-void TrayButton::enterEvent(QEvent *) {
-    repaint();
-    return;
-}
-
-void TrayButton::leaveEvent(QEvent *) {
-    repaint();
-    return;
+    if (button1 == button2)
+        return;
+    int n1 = mLayout->indexOf(button1);
+    int n2 = mLayout->indexOf(button2);
+    int l = qMin(n1, n2);
+    int m = qMax(n1, n2);
+    mLayout->moveItem(l, m);
+    mLayout->moveItem(m-1, l);
 }

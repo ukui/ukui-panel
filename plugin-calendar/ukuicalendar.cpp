@@ -97,11 +97,9 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mContent->setAlignment(Qt::AlignCenter);
 
     settingsChanged();
-    initializeCalendar();
     mTimer->setTimerType(Qt::PreciseTimer);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     gsettings = new QGSettings(id);
-    qDebug() << gsettings->get("date").toString().data();
     if(QString::compare(gsettings->get("date").toString(),"cn"))
     {
             hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
@@ -148,12 +146,10 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
             }
             if(key == "date")
             {
-                qDebug()<<"key == date";
                 if(gsettings->keys().contains("date"))
                 {
                     if(QString::compare(gsettings->get("date").toString(),"cn"))
                     {
-                        qDebug()<<" date   en ";
                         hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
                         hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
                         hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
@@ -162,7 +158,6 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
                     }
                     else
                     {
-                        qDebug()<<" date   cn ";
                         hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
                         hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
                         hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
@@ -175,9 +170,10 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
         });
     }
 
+    initializeCalendar();
     setTimeShowStyle();
     mContent->setWordWrap(true);
-    setToolTip();
+    QTimer::singleShot(5000,[this] {setToolTip(tr("Time and Date")); });
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -200,23 +196,11 @@ IndicatorCalendar::~IndicatorCalendar()
     }
 }
 
-void IndicatorCalendar::setToolTip()
-{
-    QDateTime now = QDateTime::currentDateTime();
-    QString timeZoneName = mActiveTimeZone;
-    if (timeZoneName == QLatin1String("local"))
-        timeZoneName = QString::fromLatin1(QTimeZone::systemTimeZoneId());
-    QTimeZone timeZone(timeZoneName.toLatin1());
-    QDateTime tzNow = now.toTimeZone(timeZone);
-    mContent->setToolTip(tzNow.toString(CURRENT_DATE));
-}
-
 void IndicatorCalendar::timeout()
 {
     if (QDateTime{}.time().msec() > 500)
         restartTimer();
     updateTimeText();
-    setToolTip();
 }
 
 void IndicatorCalendar::updateTimeText()
@@ -309,33 +293,30 @@ void IndicatorCalendar::updateTimeText()
         else
             str=tzNow.toString(hourSystem_24_vartical);
     }
-    mContent->setText(str);
-    mContent->setStyleSheet(
-                //正常状态样式
-                "QLabel{"
-                "border-width:  0px;"                     //边框宽度像素
-                "border-radius: 6px;"                       //边框圆角半径像素
-   //           "font-size:     14px;"                      //字体，字体大小
-                "color:         rgba(255,255,255,100%);"    //字体颜色
-                "padding:       0px;"                       //填衬
-                "text-align:center;"                        //文本居中
-                "}"
-                //鼠标悬停样式
-                "QLabel:hover{"
-                "background-color:rgba(190,216,239,20%);"
-                "border-radius:6px;"                       //边框圆角半径像素
-                "}"
-                //鼠标按下样式
-                "QLabel:pressed{"
-                "background-color:rgba(190,216,239,12%);"
-                "}"
-                );
 
-    QFont font;
-    //font.setStretch(QFont::Expanded);
+    QString style;
     int font_size = fgsettings->get("system-font-size").toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
-    font.setPixelSize(font_size);
-    mContent->setFont(font);
+    style.sprintf( //正常状态样式
+                   "QLabel{"
+                   "border-width:  0px;"                     //边框宽度像素
+                   "border-radius: 6px;"                       //边框圆角半径像素
+                 "font-size:     %dpx;"                      //字体，字体大小
+                   "color:         rgba(255,255,255,100%%);"    //字体颜色
+                   "padding:       0px;"                       //填衬
+                   "text-align:center;"                        //文本居中
+                   "}"
+                   //鼠标悬停样式
+                   "QLabel:hover{"
+                   "background-color:rgba(190,216,239,20%%);"
+                   "border-radius:6px;"                       //边框圆角半径像素
+                   "}"
+                   //鼠标按下样式
+                   "QLabel:pressed{"
+                   "background-color:rgba(190,216,239,12%%);"
+                   "}", font_size);
+    mContent->setStyleSheet(style);
+    mContent->setText(str);
+
 
     updatePopupContent();
     mbIsNeedUpdate = false;
@@ -352,7 +333,15 @@ void IndicatorCalendar::restartTimer()
     mTimer->stop();
     // check the time every second even if the clock doesn't show seconds
     // because otherwise, the shown time might be vey wrong after resume
-    mTimer->setInterval(1000);
+    //    mTimer->setInterval(1000);
+    QString delaytime=QTime::currentTime().toString();
+    QList<QString> pathresult=delaytime.split(":");
+    int second=pathresult.at(2).toInt();
+    if(second==0){
+        mTimer->setInterval(60*1000);
+    }else{
+        mTimer->setInterval((60-second)*1000);
+    }
 
     int delay = static_cast<int>(1000 - (static_cast<long long>(QTime::currentTime().msecsSinceStartOfDay()) % 1000));
     QTimer::singleShot(delay, Qt::PreciseTimer, this, &IndicatorCalendar::updateTimeText);
@@ -581,7 +570,6 @@ void IndicatorCalendar::initializeCalendar()
         {
             firstDay= gsettings->get("firstday").toString();
         }
-        qDebug()<<"QLocale::system().name():"<<QLocale::system().name();
         if (QLocale::system().name() == "zh_CN")
         {
 
@@ -635,7 +623,6 @@ void IndicatorCalendar::initializeCalendar()
     {
         if(!mbHasCreatedWebView)
         {
-            qDebug()<<"showCalendar:"<<showCalendar;
             mWebViewDiag->creatwebview(showCalendar,panel()->panelSize());
             mbHasCreatedWebView = true;
         }
@@ -855,7 +842,7 @@ void IndicatorCalendar::setTimeShowStyle()
     }
     else
     {
-        mContent->setFixedSize(size, CALENDAR_WIDTH - 20);
+        mContent->setFixedSize(size, CALENDAR_WIDTH);
     }
     mbIsNeedUpdate = true;
     timeout();
@@ -1047,14 +1034,14 @@ void CalendarActiveLabel::mouseReleaseEvent(QMouseEvent* event)
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 {
-    PopupMenu *menuCalender=new PopupMenu(this);
+    QMenu *menuCalender=new QMenu(this);
     menuCalender->setAttribute(Qt::WA_DeleteOnClose);
 
-    menuCalender->addAction(QIcon::fromTheme("document-page-setup"),
+    menuCalender->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
                    tr("Time and Date Setting"),
                    this, SLOT(setControlTime())
                   );
-    menuCalender->addAction(QIcon::fromTheme("document-page-setup"),
+    menuCalender->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
                    tr("Config panel"),
                    this, SLOT(setUpPanel())
                   );
