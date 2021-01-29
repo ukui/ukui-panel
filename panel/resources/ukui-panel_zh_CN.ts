@@ -4,12 +4,17 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1041"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="551"/>
+        <source>Time and Date</source>
+        <translation>时间与日期</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="585"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1045"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="589"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>
@@ -32,14 +37,9 @@
 <context>
     <name>IndicatorCalendar</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="176"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="174"/>
         <source>Time and Date</source>
         <translation>时间与日期</translation>
-    </message>
-    <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="428"/>
-        <source>&apos;&lt;b&gt;&apos;HH:mm:ss&apos;&lt;/b&gt;&lt;br/&gt;&lt;font size=&quot;-2&quot;&gt;&apos;ddd, d MMM yyyy&apos;&lt;br/&gt;&apos;TT&apos;&lt;/font&gt;&apos;</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -47,6 +47,7 @@
     <message>
         <location filename="../../ukui-flash-disk/mainwindow.ui" line="14"/>
         <location filename="../../build/ukui-flash-disk/ukui-flash-disk_autogen/include/ui_mainwindow.h" line="40"/>
+        <location filename="../../obj-x86_64-linux-gnu/ukui-flash-disk/ukui-flash-disk_autogen/include/ui_mainwindow.h" line="40"/>
         <location filename="../../ukui-flash-disk/ui_mainwindow.h" line="40"/>
         <source>MainWindow</source>
         <translation></translation>
@@ -254,30 +255,35 @@
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="14"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="94"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="94"/>
         <source>Spacer Settings</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="20"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="95"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="95"/>
         <source>Space width:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="40"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="96"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="96"/>
         <source>Space type:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="57"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="97"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="97"/>
         <source>fixed</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="71"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="98"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="98"/>
         <source>expandable</source>
         <translation></translation>
     </message>
@@ -699,6 +705,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-calendar/ukuiwebviewdialog.ui" line="13"/>
         <location filename="../../build/plugin-calendar/calendar_autogen/include/ui_ukuiwebviewdialog.h" line="35"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-calendar/calendar_autogen/include/ui_ukuiwebviewdialog.h" line="35"/>
         <source>Dialog</source>
         <translation></translation>
     </message>
