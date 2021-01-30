@@ -35,6 +35,7 @@
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
 #include "../panel/common/ukuigridlayout.h"
+#include "../panel/common_fun/listengsettings.h"
 class QTimer;
 class CalendarActiveLabel;
 class UkuiCalendarWebView;
@@ -82,6 +83,7 @@ private:
     QString mActiveTimeZone;
 
     QGSettings *gsettings;
+    QGSettings *fgsettings;
     QString hourSystemMode;
 
     QString hourSystem_24_horzontal;

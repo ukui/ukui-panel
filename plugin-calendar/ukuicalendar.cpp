@@ -67,7 +67,9 @@
 #define HOUR_SYSTEM_12_Vertical_CN   "Ahh:mm ddd  MM-dd"
 #define CURRENT_DATE_CN "yyyy-MM-dd dddd"
 
-#define HOUR_SYSTEM_KEY "hoursystem"
+#define HOUR_SYSTEM_KEY  "hoursystem"
+#define SYSTEM_FONT_SIZE "systemFontSize"
+#define SYSTEM_FONT_SET  "org.ukui.style"
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
     IUKUIPanelPlugin(startupInfo),
@@ -119,9 +121,16 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QString delaytime=QTime::currentTime().toString();
     QList<QString> pathresult=delaytime.split(":");
     int second=pathresult.at(2).toInt();
-    updateTimeText();
     connect(mTimer, &QTimer::timeout, [this]{updateTimeText(); mTimer->stop(); mTimer->start(60*1000);});
     mTimer->start((60-second)*1000);
+
+    const QByteArray _id(SYSTEM_FONT_SET);
+    fgsettings = new QGSettings(_id);
+    connect(fgsettings, &QGSettings::changed, this, [=] (const QString &keys){
+        if(keys == SYSTEM_FONT_SIZE){
+            updateTimeText();
+        }
+    });
 
     connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
     if(QGSettings::isSchemaInstalled(id)) {
@@ -178,6 +187,11 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     initializeCalendar();
     setTimeShowStyle();
     mContent->setWordWrap(true);
+
+    ListenGsettings *m_ListenGsettings = new ListenGsettings();
+    QObject::connect(m_ListenGsettings,&ListenGsettings::iconsizechanged,[this]{updateTimeText();});
+    QObject::connect(m_ListenGsettings,&ListenGsettings::panelpositionchanged,[this]{updateTimeText();});
+    updateTimeText();
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -194,6 +208,8 @@ IndicatorCalendar::~IndicatorCalendar()
     {
         mContent->deleteLater();
     }
+    gsettings->deleteLater();
+    fgsettings->deleteLater();
 }
 
 void IndicatorCalendar::updateTimeText()
@@ -202,8 +218,6 @@ void IndicatorCalendar::updateTimeText()
     QDateTime tzNow = QDateTime::currentDateTime();
 
     QString str;
-    const QByteArray _id("org.ukui.style");
-    QGSettings *fgsettings = new QGSettings(_id);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id))
     {
@@ -243,7 +257,7 @@ void IndicatorCalendar::updateTimeText()
     }
 
     QString style;
-    int font_size = fgsettings->get("system-font-size").toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
+    int font_size = fgsettings->get(SYSTEM_FONT_SIZE).toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
     style.sprintf( //正常状态样式
                    "QLabel{"
                    "border-width:  0px;"                     //边框宽度像素
