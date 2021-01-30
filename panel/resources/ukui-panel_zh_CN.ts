@@ -538,7 +538,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="150"/>
         <source>TimeShutdown</source>
-        <translation>定时开关机</translation>
+        <translation>定时关机</translation>
     </message>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="154"/>

@@ -1,4 +1,10 @@
-ukui-panel (3.0.1-57) v101; urgency=medium
+ukui-panel (3.0.1-59) v101; urgency=medium
+
+  * 任务栏隐藏的时候发出信号 Link#31042
+
+ --  <hepuyao@kylinos.cn>  Sat, 30 Jan 2021 10:04:40 +0800
+
+ukui-panel (3.0.1-58) v101; urgency=medium
 
   * 解决任务栏异常退出的时候输入法可能无法显示的问题 #35498
   * 解决可能出现的任务栏收纳栏中没有应用但是存在收纳箭头的问题 #33259
