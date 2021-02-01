@@ -416,6 +416,7 @@ void IndicatorCalendar::activated(ActivationReason reason)
         }
         modifyCalendarWidget();
         mWebViewDiag->show();
+        mWebViewDiag->activateWindow();
         if(!mbActived)
         {
             mWebViewDiag->setHidden(false);
