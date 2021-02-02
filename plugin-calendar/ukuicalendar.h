@@ -34,6 +34,8 @@
 #include <QMenu>
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
+#include "../panel/common/ukuigridlayout.h"
+#include "../panel/common_fun/listengsettings.h"
 class QTimer;
 class CalendarActiveLabel;
 class UkuiCalendarWebView;
@@ -48,8 +50,6 @@ public:
     virtual QWidget *widget() { return mMainWidget; }
     virtual QString themeId() const { return QLatin1String("Calendar"); }
     bool isSeparate() const { return true; }
-    void activated(ActivationReason reason);
-
     void realign()override;
     void initializeCalendar();
     void setTimeShowStyle();
@@ -61,9 +61,9 @@ Q_SIGNALS:
     void deactivated();
 
 private Q_SLOTS:
-    void timeout();
     void updateTimeText();
     void hidewebview();
+    void CalendarWidgetShow();
 
 private:
     QWidget *mMainWidget;
@@ -72,6 +72,7 @@ private:
     bool mbHasCreatedWebView;
     int font_size;
     CalendarActiveLabel *mContent;
+    UKUi::GridLayout *mLayout;
 
     QTimer *mTimer;
     int mUpdateInterval;
@@ -81,9 +82,8 @@ private:
 
     QString mActiveTimeZone;
 
-    void restartTimer();
-
     QGSettings *gsettings;
+    QGSettings *fgsettings;
     QString hourSystemMode;
 
     QString hourSystem_24_horzontal;
@@ -111,6 +111,10 @@ protected:
      * @param event
      */
     virtual void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+
+Q_SIGNALS:
+    void pressTimeText();
 
 private Q_SLOTS:
     /**

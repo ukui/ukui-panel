@@ -83,8 +83,7 @@ class UKUI_PANEL_API UKUIPanel : public QFrame, public IUKUIPanel
 
     Q_PROPERTY(QString position READ qssPosition)
 
-    Q_CLASSINFO("D-Bus Interface", "com.ukui.panel.settings")
-
+    Q_CLASSINFO("D-Bus Interface", "org.ukui.panel.settings")
     // for configuration dialog
     friend class ConfigPanelWidget;
     friend class ConfigPluginsWidget;

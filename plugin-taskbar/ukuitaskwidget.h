@@ -93,6 +93,16 @@ public slots:
     void moveApplication();
     void resizeApplication();
     void setApplicationLayer();
+    /**
+     * @brief setWindowKeepAbove
+     * 窗口置顶
+     */
+    void setWindowKeepAbove();
+    /**
+     * @brief setWindowStatusClear
+     * 取消置顶
+     */
+    void setWindowStatusClear();
 
     void setOrigin(Qt::Corner);
 

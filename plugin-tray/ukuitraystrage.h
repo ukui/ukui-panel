@@ -70,6 +70,9 @@ private:
     int panelsize;
     int iconsize;
     int panelPosition;
+
+private slots:
+    void hideStorageFrame();
 };
 
 #endif

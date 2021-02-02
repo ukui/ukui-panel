@@ -67,7 +67,9 @@
 #define HOUR_SYSTEM_12_Vertical_CN   "Ahh:mm ddd  MM-dd"
 #define CURRENT_DATE_CN "yyyy-MM-dd dddd"
 
-#define HOUR_SYSTEM_KEY "hoursystem"
+#define HOUR_SYSTEM_KEY  "hoursystem"
+#define SYSTEM_FONT_SIZE "systemFontSize"
+#define SYSTEM_FONT_SET  "org.ukui.style"
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
     IUKUIPanelPlugin(startupInfo),
@@ -84,16 +86,19 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mContent = new CalendarActiveLabel(this);
     mWebViewDiag = new UkuiWebviewDialog(this);
 
-    QVBoxLayout *borderLayout = new QVBoxLayout(mMainWidget);
-    borderLayout->setContentsMargins(0, 0, 0, 0);
-    borderLayout->setSpacing(0);
-    borderLayout->setAlignment(Qt::AlignCenter);
-    borderLayout->addWidget(mContent);
+    QVBoxLayout *borderLayout = new QVBoxLayout(this);
+
+    mLayout = new UKUi::GridLayout(mMainWidget);
+    setLayout(mLayout);
+    mLayout->setContentsMargins(0, 0, 0, 0);
+    mLayout->setSpacing(0);
+    mLayout->setAlignment(Qt::AlignCenter);
+    mLayout->addWidget(mContent);
 
     mContent->setObjectName(QLatin1String("WorldClockContent"));
     mContent->setAlignment(Qt::AlignCenter);
 
-    mTimer->setTimerType(Qt::PreciseTimer);
+    mTimer->setTimerType(Qt::VeryCoarseTimer);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     gsettings = new QGSettings(id);
     if(QString::compare(gsettings->get("date").toString(),"cn"))
@@ -113,7 +118,20 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
             current_date=CURRENT_DATE;
         }
 
-    connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
+    QString delaytime=QTime::currentTime().toString();
+    QList<QString> pathresult=delaytime.split(":");
+    int second=pathresult.at(2).toInt();
+    connect(mTimer, &QTimer::timeout, [this]{updateTimeText(); mTimer->stop(); mTimer->start(60*1000);});
+    mTimer->start((60-second)*1000);
+
+    const QByteArray _id(SYSTEM_FONT_SET);
+    fgsettings = new QGSettings(_id);
+    connect(fgsettings, &QGSettings::changed, this, [=] (const QString &keys){
+        if(keys == SYSTEM_FONT_SIZE){
+            updateTimeText();
+        }
+    });
+
     connect(mWebViewDiag, SIGNAL(deactivated()), SLOT(hidewebview()));
     if(QGSettings::isSchemaInstalled(id)) {
         connect(gsettings, &QGSettings::changed, this, [=] (const QString &key)
@@ -164,10 +182,16 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
             }
         });
     }
+    connect(mContent,&CalendarActiveLabel::pressTimeText,[=]{CalendarWidgetShow();});
 
     initializeCalendar();
     setTimeShowStyle();
     mContent->setWordWrap(true);
+
+    ListenGsettings *m_ListenGsettings = new ListenGsettings();
+    QObject::connect(m_ListenGsettings,&ListenGsettings::iconsizechanged,[this]{updateTimeText();});
+    QObject::connect(m_ListenGsettings,&ListenGsettings::panelpositionchanged,[this]{updateTimeText();});
+    updateTimeText();
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -184,27 +208,16 @@ IndicatorCalendar::~IndicatorCalendar()
     {
         mContent->deleteLater();
     }
-}
-
-void IndicatorCalendar::timeout()
-{
-    if (QDateTime{}.time().msec() > 500)
-        restartTimer();
-    updateTimeText();
+    gsettings->deleteLater();
+    fgsettings->deleteLater();
 }
 
 void IndicatorCalendar::updateTimeText()
 {
-    QDateTime now = QDateTime::currentDateTime();
-    QString timeZoneName = mActiveTimeZone;
-    if (timeZoneName == QLatin1String("local"))
-        timeZoneName = QString::fromLatin1(QTimeZone::systemTimeZoneId());
-    QTimeZone timeZone(timeZoneName.toLatin1());
-    QDateTime tzNow = now.toTimeZone(timeZone);
+    qDebug()<<"IndicatorCalendar::updateTimeText"<<QDateTime::currentDateTime().toString();
+    QDateTime tzNow = QDateTime::currentDateTime();
 
     QString str;
-    const QByteArray _id("org.ukui.style");
-    QGSettings *fgsettings = new QGSettings(_id);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     if(QGSettings::isSchemaInstalled(id))
     {
@@ -244,7 +257,7 @@ void IndicatorCalendar::updateTimeText()
     }
 
     QString style;
-    int font_size = fgsettings->get("system-font-size").toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
+    int font_size = fgsettings->get(SYSTEM_FONT_SIZE).toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
     style.sprintf( //正常状态样式
                    "QLabel{"
                    "border-width:  0px;"                     //边框宽度像素
@@ -265,26 +278,6 @@ void IndicatorCalendar::updateTimeText()
                    "}", font_size);
     mContent->setStyleSheet(style);
     mContent->setText(str);
-}
-
-void IndicatorCalendar::restartTimer()
-{
-    mTimer->stop();
-    // check the time every second even if the clock doesn't show seconds
-    // because otherwise, the shown time might be vey wrong after resume
-    //    mTimer->setInterval(1000);
-    QString delaytime=QTime::currentTime().toString();
-    QList<QString> pathresult=delaytime.split(":");
-    int second=pathresult.at(2).toInt();
-    if(second==0){
-        mTimer->setInterval(60*1000);
-    }else{
-        mTimer->setInterval((60-second)*1000);
-    }
-
-    int delay = static_cast<int>(1000 - (static_cast<long long>(QTime::currentTime().msecsSinceStartOfDay()) % 1000));
-    QTimer::singleShot(delay, Qt::PreciseTimer, this, &IndicatorCalendar::updateTimeText);
-    QTimer::singleShot(delay, Qt::PreciseTimer, mTimer, SLOT(start()));
 }
 
 /*when widget is loading need initialize here*/
@@ -377,29 +370,7 @@ void IndicatorCalendar::initializeCalendar()
     }
 }
 
-/**
- * @brief IndicatorCalendar::activated
- * @param reason
- * 如下两种方式也可以设置位置，由于ui问题弃用
- * 1.mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
- * 2.
-//        QRect screen = QApplication::desktop()->availableGeometry();
-//        switch (panel()->position()) {
-//        case IUKUIPanel::PositionBottom:
-//            mWebViewDiag->move(screen.width()-mViewWidht-POPUP_BORDER_SPACING,screen.height()-mViewHeight-POPUP_BORDER_SPACING);
-//            break;
-//        case IUKUIPanel::PositionTop:
-//            mWebViewDiag->move(screen.width()-mViewWidht-POPUP_BORDER_SPACING,panel()->panelSize()+POPUP_BORDER_SPACING);
-//            break;
-//        case IUKUIPanel::PositionLeft:
-//            mWebViewDiag->move(panel()->panelSize()+POPUP_BORDER_SPACING,screen.height()-mViewHeight-POPUP_BORDER_SPACING);
-//            break;
-//        default:
-//            mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
-//            break;
-//        }
- */
-void IndicatorCalendar::activated(ActivationReason reason)
+void IndicatorCalendar::CalendarWidgetShow()
 {
     if(mWebViewDiag != NULL )
     {
@@ -430,6 +401,28 @@ void IndicatorCalendar::activated(ActivationReason reason)
         }
     }
 }
+/**
+ * @brief IndicatorCalendar::activated
+ * @param reason
+ * 如下两种方式也可以设置位置，由于ui问题弃用
+ * 1.mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
+ * 2.
+//        QRect screen = QApplication::desktop()->availableGeometry();
+//        switch (panel()->position()) {
+//        case IUKUIPanel::PositionBottom:
+//            mWebViewDiag->move(screen.width()-mViewWidht-POPUP_BORDER_SPACING,screen.height()-mViewHeight-POPUP_BORDER_SPACING);
+//            break;
+//        case IUKUIPanel::PositionTop:
+//            mWebViewDiag->move(screen.width()-mViewWidht-POPUP_BORDER_SPACING,panel()->panelSize()+POPUP_BORDER_SPACING);
+//            break;
+//        case IUKUIPanel::PositionLeft:
+//            mWebViewDiag->move(panel()->panelSize()+POPUP_BORDER_SPACING,screen.height()-mViewHeight-POPUP_BORDER_SPACING);
+//            break;
+//        default:
+//            mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
+//            break;
+//        }
+ */
 
 void IndicatorCalendar::hidewebview()
 {
@@ -454,7 +447,6 @@ void IndicatorCalendar::setTimeShowStyle()
     {
         mContent->setFixedSize(size, CALENDAR_WIDTH);
     }
-    timeout();
 }
 
 /**
@@ -492,6 +484,10 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
     QTimer::singleShot(1000,[this] {setToolTip(tr("Time and Date")); });
 }
 
+void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
+{
+    Q_EMIT pressTimeText();
+}
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *menuCalender=new QMenu(this);

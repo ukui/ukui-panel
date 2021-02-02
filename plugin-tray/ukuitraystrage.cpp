@@ -41,6 +41,8 @@
 #include <QToolButton>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QtDBus/QDBusConnection>
+
 storageBarStatus status;
 /*收纳栏*/
 UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
@@ -68,13 +70,15 @@ UKUIStorageFrame::UKUIStorageFrame(QWidget *parent):
      * Qt::WindowDoesNotAcceptFocus:不接受焦点
      */
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint| Qt::X11BypassWindowManagerHint /*| Qt::WindowDoesNotAcceptFocus*/);
-//    setWindowFlags(Qt::Popup| Qt::WindowDoesNotAcceptFocus);
+//    setWindowFlags(Qt::Popup/*| Qt::WindowDoesNotAcceptFocus*/);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
 
     ListenGsettings *m_ListenGsettings = new ListenGsettings();
     QObject::connect(m_ListenGsettings,&ListenGsettings::iconsizechanged,[this](int size){iconsize=size;});
     QObject::connect(m_ListenGsettings,&ListenGsettings::panelpositionchanged,[this](int size){panelPosition=size;});
     QObject::connect(m_ListenGsettings,&ListenGsettings::panelsizechanged,[this](int size){panelsize=size;});
+
+    QDBusConnection::sessionBus().connect(QString(), QString("/panel"), "org.ukui.panel.settings", "PanelHided", this, SLOT(hideStorageFrame(void)));
 }
 
 UKUIStorageFrame::~UKUIStorageFrame(){
@@ -249,4 +253,10 @@ void UKUIStorageFrame::setStorageFrameSize(int size)
 //        this->setGeometry(qApp->primaryScreen()->geometry().x()+panelsize+4,totalHeight-winHeight,winWidth,winHeight);
 //        break;
 //    }
+}
+
+void UKUIStorageFrame::hideStorageFrame()
+{
+    qDebug()<<"UKUIStorageFrame::hideStorageFrame";
+    this->hide();
 }

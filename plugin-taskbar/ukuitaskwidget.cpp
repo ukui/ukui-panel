@@ -355,16 +355,22 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu * menu = new QMenu(tr("Widget"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
+    /* 对应预览图右键功能 关闭 还原 最大化  最小化 置顶 取消置顶*/
     QAction *close = menu->addAction(QIcon::fromTheme("window-close-symbolic"), tr("close"));
     QAction *restore = menu->addAction(QIcon::fromTheme("window-restore-symbolic"), tr("restore"));
 
     QAction *maxim = menu->addAction(QIcon::fromTheme("window-maximize-symbolic"), tr("maximaze"));
 
     QAction *minim = menu->addAction(QIcon::fromTheme("window-minimize-symbolic"), tr("minimize"));
+    QAction *above = menu->addAction(QIcon::fromTheme("ukui-fixed"), tr("above"));
+    QAction *clear = menu->addAction(QIcon::fromTheme("ukui-unfixed"), tr("clear"));
+
     connect(close, SIGNAL(triggered()), this, SLOT(closeApplication()));
     connect(restore, SIGNAL(triggered()), this, SLOT(deMaximizeApplication()));
     connect(maxim, SIGNAL(triggered()), this, SLOT(maximizeApplication()));
     connect(minim, SIGNAL(triggered()), this, SLOT(minimizeApplication()));
+    connect(above, SIGNAL(triggered()), this, SLOT(setWindowKeepAbove()));
+    connect(clear, SIGNAL(triggered()), this, SLOT(setWindowStatusClear()));
     connect(menu, &QMenu::aboutToHide, [this] {
         emit closeSigtoPop();
 
@@ -472,6 +478,16 @@ void UKUITaskWidget::deMaximizeApplication()
         raiseApplication();
 }
 
+
+void UKUITaskWidget::setWindowKeepAbove()
+{
+    KWindowSystem::setState(mWindow, NET::KeepAbove);
+}
+
+void UKUITaskWidget::setWindowStatusClear()
+{
+    KWindowSystem::clearState(mWindow, NET::KeepAbove);
+}
 /************************************************
 
  ************************************************/

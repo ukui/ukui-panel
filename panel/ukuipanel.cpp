@@ -1627,6 +1627,8 @@ void UKUIPanel::hidePanelWork()
             mHideTimer.start();
         }
     }
+    QDBusMessage message =QDBusMessage::createSignal("/panel", "org.ukui.panel.settings", "PanelHided");
+    QDBusConnection::sessionBus().send(message);
 }
 
 void UKUIPanel::setHidable(bool hidable, bool save)
