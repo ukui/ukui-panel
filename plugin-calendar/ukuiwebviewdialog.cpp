@@ -29,6 +29,7 @@
 #include <QScreen>
 #include <QBitmap>
 #include <QPainter>
+#include <xcb/xcb.h>
 
 #define CALENDAR_MAX_HEIGHT 704
 #define CALENDAR_MIN_HEIGHT 600
@@ -36,7 +37,7 @@
 #define CALENDAR_MAX_WIDTH 454
 
 UkuiWebviewDialog::UkuiWebviewDialog(QWidget *parent) :
-    QDialog(parent, Qt::Popup),
+    QDialog(parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint),
     mWebView(NULL),
     ui(new Ui::UkuiWebviewDialog)
 {
@@ -151,4 +152,21 @@ bool UkuiWebviewDialog::event(QEvent *event)
     }
 
     return QDialog::event(event);
+}
+
+bool UkuiWebviewDialog::nativeEvent(const QByteArray &eventType, void *message, long *result)
+
+{
+    Q_UNUSED(result);
+    if (eventType != "xcb_generic_event_t") {
+        return false;
+    }
+    xcb_generic_event_t *event = (xcb_generic_event_t*)message;
+    switch (event->response_type & ~0x80) {
+    qDebug()<<"YYF - event->response_type : "<<event->response_type;//YYF 20200922
+    case XCB_FOCUS_OUT:
+        this->hide();
+        break;
+    }
+    return false;
 }

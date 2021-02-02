@@ -4,12 +4,17 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1041"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="484"/>
+        <source>Time and Date</source>
+        <translation>时间与日期</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="497"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="1045"/>
+        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="501"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>
@@ -32,14 +37,8 @@
 <context>
     <name>IndicatorCalendar</name>
     <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="176"/>
         <source>Time and Date</source>
-        <translation>时间与日期</translation>
-    </message>
-    <message>
-        <location filename="../../plugin-calendar/ukuicalendar.cpp" line="428"/>
-        <source>&apos;&lt;b&gt;&apos;HH:mm:ss&apos;&lt;/b&gt;&lt;br/&gt;&lt;font size=&quot;-2&quot;&gt;&apos;ddd, d MMM yyyy&apos;&lt;br/&gt;&apos;TT&apos;&lt;/font&gt;&apos;</source>
-        <translation></translation>
+        <translation type="vanished">时间与日期</translation>
     </message>
 </context>
 <context>
@@ -47,6 +46,7 @@
     <message>
         <location filename="../../ukui-flash-disk/mainwindow.ui" line="14"/>
         <location filename="../../build/ukui-flash-disk/ukui-flash-disk_autogen/include/ui_mainwindow.h" line="40"/>
+        <location filename="../../obj-x86_64-linux-gnu/ukui-flash-disk/ukui-flash-disk_autogen/include/ui_mainwindow.h" line="40"/>
         <location filename="../../ukui-flash-disk/ui_mainwindow.h" line="40"/>
         <source>MainWindow</source>
         <translation></translation>
@@ -254,30 +254,35 @@
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="14"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="94"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="94"/>
         <source>Spacer Settings</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="20"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="95"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="95"/>
         <source>Space width:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="40"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="96"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="96"/>
         <source>Space type:</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="57"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="97"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="97"/>
         <source>fixed</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../../plugin-spacer/spacerconfiguration.ui" line="71"/>
         <location filename="../../build/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="98"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-spacer/spacer_autogen/include/ui_spacerconfiguration.h" line="98"/>
         <source>expandable</source>
         <translation></translation>
     </message>
@@ -532,7 +537,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="150"/>
         <source>TimeShutdown</source>
-        <translation>定时开关机</translation>
+        <translation>定时关机</translation>
     </message>
     <message>
         <location filename="../../plugin-startmenu/startmenu.cpp" line="154"/>
@@ -543,97 +548,97 @@ icons here</source>
 <context>
     <name>UKUITaskButton</name>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="563"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="569"/>
         <source>Application</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="597"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="603"/>
         <source>To &amp;Desktop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="599"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="605"/>
         <source>&amp;All Desktops</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="607"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="613"/>
         <source>Desktop &amp;%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="614"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="620"/>
         <source>&amp;To Current Desktop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="622"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="628"/>
         <source>&amp;Move</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="625"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="631"/>
         <source>Resi&amp;ze</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="632"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="638"/>
         <source>Ma&amp;ximize</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="639"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="645"/>
         <source>Maximize vertically</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="644"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="650"/>
         <source>Maximize horizontally</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="650"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="656"/>
         <source>&amp;Restore</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="654"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="660"/>
         <source>Mi&amp;nimize</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="660"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="666"/>
         <source>Roll down</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="666"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="672"/>
         <source>Roll up</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="674"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="680"/>
         <source>&amp;Layer</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="676"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="682"/>
         <source>Always on &amp;top</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="682"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="688"/>
         <source>&amp;Normal</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="688"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="694"/>
         <source>Always on &amp;bottom</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="696"/>
+        <location filename="../../plugin-taskbar/ukuitaskbutton.cpp" line="702"/>
         <source>&amp;Close</source>
         <translation>&amp;关闭</translation>
     </message>
@@ -659,24 +664,34 @@ icons here</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="358"/>
+        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="359"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="359"/>
+        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="360"/>
         <source>restore</source>
         <translation>还原</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="361"/>
+        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="362"/>
         <source>maximaze</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="363"/>
+        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="364"/>
         <source>minimize</source>
         <translation>最小化</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="365"/>
+        <source>above</source>
+        <translation>置顶</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-taskbar/ukuitaskwidget.cpp" line="366"/>
+        <source>clear</source>
+        <translation>取消置顶</translation>
     </message>
 </context>
 <context>
@@ -699,6 +714,7 @@ icons here</source>
     <message>
         <location filename="../../plugin-calendar/ukuiwebviewdialog.ui" line="13"/>
         <location filename="../../build/plugin-calendar/calendar_autogen/include/ui_ukuiwebviewdialog.h" line="35"/>
+        <location filename="../../obj-x86_64-linux-gnu/plugin-calendar/calendar_autogen/include/ui_ukuiwebviewdialog.h" line="35"/>
         <source>Dialog</source>
         <translation></translation>
     </message>

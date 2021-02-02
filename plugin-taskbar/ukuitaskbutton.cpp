@@ -118,8 +118,14 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
             updateIcon();
         }
     });
-    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged)
+
+    QStringList windowList;
+    qDebug()<<"Window  Name"<<KWindowInfo(this->windowId(), 0, NET::WM2WindowClass).windowClassClass();
+    windowList<<"kylin-kmre-window"<<"kydroid-display-window";
+    if(windowList.contains(KWindowInfo(this->windowId(), 0, NET::WM2WindowClass).windowClassClass())){
+        connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged)
                 , this, &UKUITaskButton::updateIcon);
+    }
 }
 
 /************************************************

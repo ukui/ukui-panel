@@ -57,6 +57,7 @@ private:
     QSize      mQsize;
 protected:
     virtual bool event(QEvent *event);
+    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 };
 
 #endif // UKUIWEBVIEWDIALOG_H
