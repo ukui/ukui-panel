@@ -162,11 +162,6 @@ void UKUITaskButton::updateIcon()
 
     QIcon ico;
     int mIconSize=mPlugin->panel()->iconSize();
-    if (mAppName == QString("Mate-terminal")) {
-        setIcon(mIcon);
-        setIconSize(QSize(mIconSize,mIconSize));
-        return;
-    }
     if (mParentTaskBar->isIconByClass())
     {
         ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
