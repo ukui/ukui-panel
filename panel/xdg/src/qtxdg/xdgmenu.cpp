@@ -591,6 +591,7 @@ void XdgMenuPrivate::processApps(QDomElement& element)
     Q_Q(XdgMenu);
     XdgMenuApplinkProcessor processor(element, q);
     processor.run();
+    processor.deleteLater();
 }
 
 

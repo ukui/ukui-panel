@@ -506,7 +506,7 @@ void UKUIQuickLaunch::addButton(QuickLaunchAction* action)
 bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
 {
     bool checkresult;
-    QuickLaunchButton* btn = new QuickLaunchButton(action, mPlugin, this);
+    QString strFileName;
     int i = 0;
     int counts = countOfButtons();
 
@@ -514,10 +514,13 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
      * 若在快速启动栏　应用数量为０的时候b->file_name为空
      * 会造成任务栏的崩溃
       */
+    if (!action)
+        return false;
+    strFileName = action->m_settingsMap["desktop"];
     if(countOfButtons()>0){
         while (i != counts) {
             QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(i)->widget());
-            if (b->file_name == btn->file_name){
+            if (b->file_name == strFileName){
                 checkresult=true;
                 break;
             }
@@ -532,7 +535,6 @@ bool UKUIQuickLaunch::checkButton(QuickLaunchAction* action)
         qDebug()<<"countOfButtons =0  "<<countOfButtons();
         return false;
     }
-    delete btn;
 }
 
 /* 删除　button*/
