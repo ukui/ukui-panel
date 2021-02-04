@@ -129,7 +129,11 @@ const wchar_t* qstring2wchar_t(QString str)
     wchar_t *anotherVar=new wchar_t[str.size()+1];
     //copy above allocated variable to this one
     wcscpy(anotherVar, someVar);
-
+    // release resource
+    if (someVar) 
+    {
+        delete[] someVar;
+    }
     return anotherVar;
 }
 

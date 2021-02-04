@@ -178,6 +178,7 @@ void XdgMenuWidgetPrivate::mouseMoveEvent(QMouseEvent *event)
     QDrag *drag = new QDrag(q);
     drag->setMimeData(mimeData);
     drag->exec(Qt::CopyAction | Qt::LinkAction);
+    drag->deleteLater();
 }
 
 
