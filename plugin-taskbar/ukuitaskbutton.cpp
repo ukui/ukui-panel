@@ -159,6 +159,7 @@ void UKUITaskButton::updateIcon()
     if (mAppName == QString("emo-system-ShellMethods") ||
         mAppName == QString("Qq"))
         sleep(1);
+
     QIcon ico;
     int mIconSize=mPlugin->panel()->iconSize();
     if (mParentTaskBar->isIconByClass())
