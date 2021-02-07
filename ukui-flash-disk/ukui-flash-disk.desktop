@@ -1,6 +1,5 @@
 [Desktop Entry]
 Name=ukui flash disk
-Name[]=u盘管理工具
 comment=Ukui Flash Disk
 Comment[zh_CN]=u盘管理工具
 Exec=ukui-flash-disk

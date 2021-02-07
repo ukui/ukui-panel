@@ -126,6 +126,8 @@ private:
 
     char *mount_uri;
     GFile *root;
+    char *mount_uriSecond;
+    GFile *rootSecond;
     GList *listVolumes;
     GList *vList;
     GVolume *volume;
@@ -144,9 +146,9 @@ private:
     int telephoneNum;
     QString tmpPath;
     bool findPointMount;
-    QList<GVolume *> volumeDevice;
-    QMap<GDrive *,QList<GVolume *>> deviceMap;
-    QMap<GDrive *,QList<GVolume *>>::Iterator it;
+    QList<GMount *> volumeDevice;
+    QMap<GDrive *,QList<GMount *>> deviceMap;
+    QMap<GDrive *,QList<GMount *>>::Iterator it;
     int driveVolumeNum;
     //authority
     //QDBusInterface *systemIface;
@@ -171,6 +173,7 @@ public Q_SLOTS:
     void on_Maininterface_hide();
     void on_clickPanelToHideInterface();
     void onRequestSendDesktopNotify(QString message);
+    void onInsertAbnormalDiskNotify(QString message);
 Q_SIGNALS:
     void clicked();
     void convertShowWindow();
