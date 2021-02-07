@@ -277,7 +277,10 @@ bool TrayIcon::event(QEvent *event)
             qDebug()<<"QEvent::MouseButtonDblClick";
             event->accept();
             break;
-
+        case QEvent::ContextMenu:
+            qDebug()<<"ContextMenu";
+            moveMenu();
+            break;
         default:
             break;
         }
@@ -453,12 +456,30 @@ void TrayIcon::paintEvent(QPaintEvent *)
     p.drawRoundedRect(opt.rect,6,6);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+#include "../panel/iukuipanelplugin.h"
+void TrayIcon::moveMenu()
+{
+    qDebug()<<"move Menu";
+    QMenu *menu;
+    menu =new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    QAction *action;
+    action = menu->addAction(tr("移入任务栏/收纳"));
+    connect(action, &QAction::triggered, [this] { emit iconIsMoving(mIconId);});
+    menu->setGeometry(QCursor::pos().x()-20,QCursor::pos().y()-20,150,50);
+//    menu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), menu->sizeHint()));
+    menu->show();
+}
 
 void TrayIcon::notifyAppFreeze()
 {
     emit notifyTray(mIconId);
 }
 
+void TrayIcon::emitIconId()
+{
+    emit iconIsMoving(mIconId);
+}
 #if 1
 void TrayIcon::mouseMoveEvent(QMouseEvent *e)
 {
@@ -492,6 +513,8 @@ void TrayIcon::mouseMoveEvent(QMouseEvent *e)
 
 void TrayIcon::dragMoveEvent(QDragMoveEvent * e)
 {
+    qDebug()<<"dragMoveEvent"<<mIconId;
+    emit iconIsMoving(mIconId);
     if (e->mimeData()->hasFormat(MIMETYPE))
         e->acceptProposedAction();
     else
@@ -500,6 +523,7 @@ void TrayIcon::dragMoveEvent(QDragMoveEvent * e)
 
 void TrayIcon::dragEnterEvent(QDragEnterEvent *e)
 {
+    qDebug()<<"TrayIcon::dragEnterEvent";
     e->acceptProposedAction();
     const TrayButtonMimeData *mimeData = qobject_cast<const TrayButtonMimeData*>(e->mimeData());
     if (mimeData && mimeData->button())
@@ -509,6 +533,7 @@ void TrayIcon::dragEnterEvent(QDragEnterEvent *e)
 
 QMimeData * TrayIcon::mimeData()
 {
+    qDebug()<<"rayIcon::mimeData";
     TrayButtonMimeData *mimeData = new TrayButtonMimeData();
 //    QByteArray ba;
 //    mimeData->setData(mimeDataFormat(), ba);
@@ -518,6 +543,7 @@ QMimeData * TrayIcon::mimeData()
 
 void TrayIcon::mousePressEvent(QMouseEvent *e)
 {
+    qDebug()<<"TrayIcon::mousePressEvent";
     if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
     {
         mDragStart = e->pos();

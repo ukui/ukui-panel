@@ -26,6 +26,7 @@
 #include <QStyleOption>
 #include <QMimeData>
 #include <QToolButton>
+#include <QMenu>
 //X11
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
@@ -69,6 +70,7 @@ public:
 
     QSize iconSize() const { return mIconSize; }
     void setIconSize(QSize iconSize);
+    void moveMenu();
 
     QSize sizeHint() const;
     IUKUIPanelPlugin *mPlugin;
@@ -77,9 +79,11 @@ public:
 
 public slots:
     void notifyAppFreeze();
+    void emitIconId();
 
 signals:
     void notifyTray(Window);
+    void iconIsMoving(Window);
     void switchButtons(TrayIcon *from, TrayIcon *to);
 
 protected:

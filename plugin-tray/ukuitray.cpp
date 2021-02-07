@@ -288,6 +288,16 @@ void UKUITray::realign()
     if(mStorageIcons.size()<1) mBtn->setVisible(false);
     mLayout->setEnabled(true);
 
+    //设置任务栏
+    for(int i=0;i<mTrayIcons.size();i++){
+    TrayIcon *trayicon = mTrayIcons[i];
+    connect(trayicon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToStorage(id);});
+    }
+    for(int i=0;i<mStorageIcons.size();i++){
+    TrayIcon *trayicon = mStorageIcons[i];
+    connect(trayicon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToTray(id);});
+    }
+
 }
 
 void UKUITray::trayIconSizeRefresh()
@@ -605,6 +615,7 @@ void UKUITray::moveIconToTray(Window winId)
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
     trayIconSizeRefresh();
+    handleStorageUi();
 }
 
 void UKUITray::moveIconToStorage(Window winId)
@@ -632,6 +643,7 @@ void UKUITray::moveIconToStorage(Window winId)
         connect(icon,&TrayIcon::notifyTray,[this](Window id){freezeTrayApp(id);});
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
+    handleStorageUi();
 }
 
 void UKUITray::regulateIcon(Window *mid)
@@ -692,17 +704,25 @@ void UKUITray::regulateIcon(Window *mid)
                 bingdingStr=wid;
                 if(QString::compare(actionStr,"tray")==0){
                     addTrayIcon(bingdingStr);
+//                    TrayIcon *icon = findTrayIcon(bingdingStr);
+//                    connect(icon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToStorage(id);});
                 }
                 if(QString::compare(actionStr,"storage")==0){
                     addStorageIcon(bingdingStr);
+//                    TrayIcon *icon = findStorageIcon(bingdingStr);
+//                    connect(icon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToTray(id);});
                 }
                 connect(settings, &QGSettings::changed, this, [=] (const QString &key){
                     if(key=="action"){
                         if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0){
                             moveIconToTray(bingdingStr);
+//                            TrayIcon *icon = findStorageIcon(bingdingStr);
+//                            connect(icon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToTray(id);});
                         }
                         else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
                             moveIconToStorage(bingdingStr);
+//                            TrayIcon *icon = findTrayIcon(bingdingStr);
+//                            connect(icon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToStorage(id);});
                         }
                         else if(QString::compare(settings->get(ACTION_KEY).toString(),"freeze")==0){
 
@@ -804,6 +824,10 @@ void UKUITray::handleStorageUi()
     storageFrame->setStorageFrameSize(mStorageIcons.size());
 }
 
+void UKUITray::contextMenuEvent(QContextMenuEvent *event)
+{
+
+}
 void UKUITray::switchButtons(TrayIcon *button1, TrayIcon *button2)
 {
     if (button1 == button2)

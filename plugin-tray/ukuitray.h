@@ -102,6 +102,8 @@ public:
      */
     void showAndHideStorage(bool);
 
+protected:
+    void contextMenuEvent(QContextMenuEvent *event);
 public slots:
     /**
      * @brief storageBar
