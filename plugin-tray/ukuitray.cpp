@@ -128,8 +128,10 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
         settings=new QGSettings(id);
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==ICON_SIZE)
+        if(key==ICON_SIZE){
             trayIconSizeRefresh();
+            handleStorageUi();
+        }
     });
 
     mLayout = new UKUi::GridLayout(this);

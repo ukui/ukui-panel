@@ -223,11 +223,11 @@ void UKUIStorageFrame::setStorageFrameSize(int size)
         break;
     case 13 ... 40:
         //默认情况下的布局
-        winWidth  = mWinWidth*3;
+        winWidth  = mWinWidth*4;
         winHeight = mWinHeight*4;
         break;
     default:
-        winWidth  = mWinWidth*3;
+        winWidth  = mWinWidth*4;
         winHeight = mWinHeight*4;
         break;
     }

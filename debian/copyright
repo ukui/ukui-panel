@@ -38,34 +38,7 @@ Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2010-2012, Razor team
 License: LGPL-2.1+
 
-Files: panel/common/configdialog/*
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012, Alec Moskvin <alecm@gmx.com>
-License: LGPL-2.1+
-
-Files: panel/common/configdialog/ukuiconfigdialog_p.h
-Copyright: 2018, Luís Pereira <luis.artur.pereira@gmail.com>
-           2012, Alec Moskvin <alecm@gmx.com>
-License: LGPL-2.1+
-
-Files: panel/common/configdialog/ukuiconfigdialogcmdlineoptions.cpp
-       panel/common/configdialog/ukuiconfigdialogcmdlineoptions.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2016, 2018, Luís Pereira <luis.artur.pereira@gmail.com>
-License: LGPL-2.1+
-
-Files: panel/common/configdialog/ukuipageselectwidget.cpp
-       panel/common/configdialog/ukuipageselectwidget.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2011, Razor team
-License: LGPL-2.1+
-
 Files: panel/common/dbus/*
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
-License: LGPL-2.1+
-
-Files: panel/common/polkit/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2010-2012, Razor team
 License: LGPL-2.1+
@@ -81,79 +54,14 @@ Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2012-2013, Razor team
 License: LGPL-2.1+
 
-Files: panel/common/ukuiautostartentry.cpp
-       panel/common/ukuiautostartentry.h
-       panel/common/ukuinotification.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012, Alec Moskvin <alecm@gmx.com>
-License: LGPL-2.1+
-
-Files: panel/common/ukuibacklight.cpp
-       panel/common/ukuibacklight.h
-Copyright: 2016, P.L. Lucas
-License: GPL-2+
-
-Files: panel/common/ukuibacklight/*
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2016, 2018, P.L. Lucas
-License: GPL-2+
-
 Files: panel/common/ukuibacklight/linux_backend/*
 Copyright: 2016, P.L. Lucas
 License: GPL-2+
-
-Files: panel/common/ukuiconfigdialog.cpp
-       panel/common/ukuiconfigdialog.h
-       panel/common/ukuinotification.cpp
-       panel/common/ukuinotification_p.h
-Copyright: 2019, minglequn <minglequn@kylinos.cn>
-           2012, Alec Moskvin <alecm@gmx.com>
-License: LGPL-2.1+
-
-Files: panel/common/ukuiglobals.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2013, - LXQt team
-License: LGPL-2.1+
 
 Files: panel/common/ukuigridlayout.cpp
        panel/common/ukuigridlayout.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2012, Razor team
-License: LGPL-2.1+
-
-Files: panel/common/ukuipower/*
-Copyright: LGPL2+ / 2019-2020, UKUI team / 2010-2011, Razor team
-License: LGPL-2.1+
-
-Files: panel/common/ukuipowermanager.cpp
-       panel/common/ukuipowermanager.h
-Copyright: 2019-2020, UKUI team
-           2010-2011, Razor team
-License: LGPL-2.1+
-
-Files: panel/common/ukuiprogramfinder.cpp
-       panel/common/ukuiprogramfinder.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2013, Alec Moskvin <alecm@gmx.com>
-License: LGPL-2.1+
-
-Files: panel/common/ukuirotatedwidget.cpp
-       panel/common/ukuirotatedwidget.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2013, Razor team
-License: LGPL-2.1+
-
-Files: panel/common/ukuiscreensaver.cpp
-Copyright: 2019, minglequn <minglequn@kylinos.cn>
-           2016, Luís Pereira <luis.artur.pereira@gmail.com>
-           2012, The Chromium Authors.
-           2010-2011, Razor team
-License: LGPL-2.1+
-
-Files: panel/common/ukuiscreensaver.h
-Copyright: 2019-2020, UKUI team
-           2016, Luís Pereira <luis.artur.pereira@gmail.com>
-           2010-2011, Razor team
 License: LGPL-2.1+
 
 Files: panel/common/ukuisingleapplication.cpp
@@ -176,12 +84,6 @@ License: LGPL-2.1+
 Files: panel/config/addplugindialog.h
 Copyright: 2019-2020, LXQt team
            2010-2011, Razor team
-License: LGPL-2.1+
-
-Files: panel/config/configpluginswidget.cpp
-       panel/config/configpluginswidget.h
-Copyright: 2019-2020, UKUI team
-           2015, LXQt team
 License: LGPL-2.1+
 
 Files: panel/highlight-effect.cpp
@@ -224,55 +126,6 @@ License: LGPL-2.1+
 Files: panel/ukuipanelglobals.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2013, LXQt team
-License: LGPL-2.1+
-
-Files: panel/xdg/*
-Copyright: 2014, 2016-2019, Luís Pereira <luis.artur.pereira@gmail.com>
-License: LGPL-2.1+
-
-Files: panel/xdg/cmake/*
-Copyright: 2012-2019, LXQt team
-           2010-2012, Razor team
-License: GPL-2+
-
-Files: panel/xdg/src/qtxdg/*
-Copyright: 2010-2011, Razor team
-License: LGPL-2.1+
-
-Files: panel/xdg/src/qtxdg/desktopenvironment_p.cpp
-Copyright: 2014, UKUi team
-License: LGPL-2.1+
-
-Files: panel/xdg/src/qtxdg/qtxdglogging.cpp
-       panel/xdg/src/qtxdg/qtxdglogging.h
-       panel/xdg/src/qtxdg/xdgmacros.h
-       panel/xdg/src/qtxdg/xdgmimeapps.cpp
-       panel/xdg/src/qtxdg/xdgmimeapps.h
-       panel/xdg/src/qtxdg/xdgmimeapps_p.h
-       panel/xdg/src/qtxdg/xdgmimeappsbackendinterface.cpp
-       panel/xdg/src/qtxdg/xdgmimeappsbackendinterface.h
-       panel/xdg/src/qtxdg/xdgmimeappsglibbackend.cpp
-       panel/xdg/src/qtxdg/xdgmimeappsglibbackend.h
-       panel/xdg/src/qtxdg/xdgmimetype.cpp
-       panel/xdg/src/qtxdg/xdgmimetype.h
-Copyright: 2014, 2016-2019, Luís Pereira <luis.artur.pereira@gmail.com>
-License: LGPL-2.1+
-
-Files: panel/xdg/src/qtxdg/xdgautostart.cpp
-       panel/xdg/src/qtxdg/xdgautostart.h
-Copyright: 2012, Razor team
-License: LGPL-2.1+
-
-Files: panel/xdg/src/qtxdg/xdgdesktopfile_p.h
-Copyright: 2015, UKUi team
-License: LGPL-2.1+
-
-Files: panel/xdg/src/xdgiconloader/*
-Copyright: 2014, Digia Plc and/or its subsidiary(-ies).
-License: LGPL-2.1 or LGPL-3
-
-Files: panel/xdg/src/xdgiconloader/plugin/*
-Copyright: 2017, UKUi team
 License: LGPL-2.1+
 
 Files: plugin-calendar/*
@@ -363,11 +216,6 @@ License: LGPL-2.1+
 
 Files: plugin-taskbar/resources/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-License: LGPL-2.1+
-
-Files: plugin-taskbar/ukuitaskbarconfiguration.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2011, Razor team
 License: LGPL-2.1+
 
 Files: plugin-taskbar/ukuitaskbaricon.cpp
