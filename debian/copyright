@@ -54,10 +54,6 @@ Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2012-2013, Razor team
 License: LGPL-2.1+
 
-Files: panel/common/ukuibacklight/linux_backend/*
-Copyright: 2016, P.L. Lucas
-License: GPL-2+
-
 Files: panel/common/ukuigridlayout.cpp
        panel/common/ukuigridlayout.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
@@ -76,16 +72,6 @@ Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2013, LXQt team
 License: LGPL-2.1+
 
-Files: panel/config/*
-Copyright: 2019-2020, UKUI team
-           2010-2011, Razor team
-License: LGPL-2.1+
-
-Files: panel/config/addplugindialog.h
-Copyright: 2019-2020, LXQt team
-           2010-2011, Razor team
-License: LGPL-2.1+
-
 Files: panel/highlight-effect.cpp
        panel/highlight-effect.h
        panel/ukuicontrolstyle.cpp
@@ -102,16 +88,10 @@ License: LGPL-2.1+
 Files: panel/pluginsettings.cpp
        panel/pluginsettings.h
        panel/pluginsettings_p.h
-       panel/popupmenu.cpp
        panel/windownotifier.cpp
        panel/windownotifier.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2015, LXQt team
-License: LGPL-2.1+
-
-Files: panel/popupmenu.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
 License: LGPL-2.1+
 
 Files: panel/resources/*
@@ -242,32 +222,11 @@ Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
 Files: plugin-tray/*
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2011, Razor team
+Copyright: 2019, 2020, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
 Files: plugin-tray/resources/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
-License: LGPL-2.1+
-
-Files: plugin-tray/trayicon.h
-       plugin-tray/xfitman.cpp
-       plugin-tray/xfitman.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2011, Razor team
-License: LGPL-2.1+
-
-Files: plugin-tray/traystorage.h
-       plugin-tray/ukuitray.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2019, Kylin team
-License: LGPL-2.1+
-
-Files: plugin-tray/ukuitrayplugin.cpp
-       plugin-tray/ukuitrayplugin.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2013, Razor team
 License: LGPL-2.1+
 
 Files: ukui-flash-disk/*
