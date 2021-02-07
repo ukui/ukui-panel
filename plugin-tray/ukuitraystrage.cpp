@@ -2,7 +2,7 @@
  * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
+ * it under the terms of the GNU  Lesser General Public License as published by
  * the Free Software Foundation; either version 2.1, or (at your option)
  * any later version.
  *
@@ -15,6 +15,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
  *
  */
+
+
 #include "ukuitraystrage.h"
 #include <QApplication>
 #include <QDebug>
