@@ -34,6 +34,8 @@
 #include <QMenu>
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
+#include "../panel/common/ukuigridlayout.h"
+#include "../panel/common_fun/listengsettings.h"
 class QTimer;
 class CalendarActiveLabel;
 class UkuiCalendarWebView;
@@ -47,32 +49,21 @@ public:
 
     virtual QWidget *widget() { return mMainWidget; }
     virtual QString themeId() const { return QLatin1String("Calendar"); }
-//    virtual IUKUIPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
     bool isSeparate() const { return true; }
-    void activated(ActivationReason reason);
-
-    void settingsChanged()override;
     void realign()override;
     void initializeCalendar();
-    /**
-     * @brief setbackground 设置背景相关，mate-panel以及最初的ukui-panel使用了此样式，后续此样式无效
-     */
-    void setbackground();
     void setTimeShowStyle();
     /**
      * @brief modifyCalendarWidget 修改日历显示位置
      */
     void modifyCalendarWidget();
-//signals:
 Q_SIGNALS:
     void deactivated();
 
 private Q_SLOTS:
-    void timeout();
-    void wheelScrolled(int);
-    void deletePopup();
     void updateTimeText();
     void hidewebview();
+    void CalendarWidgetShow();
 
 private:
     QWidget *mMainWidget;
@@ -81,6 +72,7 @@ private:
     bool mbHasCreatedWebView;
     int font_size;
     CalendarActiveLabel *mContent;
+    UKUi::GridLayout *mLayout;
 
     QTimer *mTimer;
     int mUpdateInterval;
@@ -88,26 +80,10 @@ private:
     int16_t mViewWidht;
     int16_t mViewHeight;
 
-    QStringList mTimeZones;
-    QMap<QString, QString> mTimeZoneCustomNames;
-    QString mDefaultTimeZone;
     QString mActiveTimeZone;
-    QString mFormat;
 
-    bool mAutoRotate;
-    QLabel *mPopupContent;
-
-    QDateTime mShownTime;
-
-    void restartTimer();
-
-    void setTimeText();
-    QString formatDateTime(const QDateTime &datetime, const QString &timeZoneName);
-    void updatePopupContent();
-    bool formatHasTimeZone(QString format);
-    QString preformat(const QDateTime &dateTime,const QString &format, const QTimeZone &timeZone);
-    bool mbIsNeedUpdate;
     QGSettings *gsettings;
+    QGSettings *fgsettings;
     QString hourSystemMode;
 
     QString hourSystem_24_horzontal;
@@ -128,19 +104,17 @@ public:
     explicit CalendarActiveLabel(IUKUIPanelPlugin *plugin,QWidget * = NULL);
 
     IUKUIPanelPlugin * mPlugin;
-Q_SIGNALS:
-    void wheelScrolled(int);
-    void leftMouseButtonClicked();
-    void middleMouseButtonClicked();
 
 protected:
-    void wheelEvent(QWheelEvent *);
-    void mouseReleaseEvent(QMouseEvent* event);
     /**
      * @brief contextMenuEvent 右键菜单设置项
      * @param event
      */
     virtual void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+
+Q_SIGNALS:
+    void pressTimeText();
 
 private Q_SLOTS:
     /**

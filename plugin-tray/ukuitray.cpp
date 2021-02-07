@@ -145,8 +145,12 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     storageFrame->setLayout(mStorageLayout);
     handleStorageUi();
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
+    mBtn->setVisible(false);
     realign();
+    //进入桌面后可能存在的托盘区域未刷新问题
     QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
+    //针对ukui桌面环境特殊应用的处理，保证稳定性
+    QTimer::singleShot(3000,[this] { panelStartupFcitx();});
 }
 
 UKUITray::~UKUITray()
@@ -168,6 +172,7 @@ UKUITray::~UKUITray()
 
 void UKUITray::storageBar()
 {
+    if(mStorageIcons.size()<1) mBtn->setVisible(false);
     if(status==ST_HIDE)
     {
         status = ST_SHOW;
@@ -285,6 +290,8 @@ void UKUITray::realign()
             storageFrame->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,-storageFramePosition)), storageFrame->size()));
         }
     }
+
+    if(mStorageIcons.size()<1) mBtn->setVisible(false);
     mLayout->setEnabled(true);
 
 }
@@ -534,7 +541,7 @@ void UKUITray::onIconDestroyed(QObject * icon)
     //in the time QOjbect::destroyed is emitted, the child destructor
     //is already finished, so the qobject_cast to child will return nullptr in all cases
     mIcons.removeAll(static_cast<TrayIcon *>(icon));
-//    mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
+    mStorageIcons.removeAll(static_cast<TrayIcon *>(icon));
 }
 
 void UKUITray::addTrayIcon(Window winId)
@@ -682,9 +689,11 @@ void UKUITray::regulateIcon(Window *mid)
                     settings->reset(RECORD_KEY);
                 }
             }
-
             if(nameStr==xfitMan().getApplicationName(wid))
             {
+                if(nameStr=="fcitx") {
+                    fcitx_flag=true;
+                }
                 settings->set(BINDING_KEY, wid);
                 bingdingStr=wid;
                 if(QString::compare(actionStr,"tray")==0){
@@ -811,4 +820,16 @@ void UKUITray::switchButtons(TrayIcon *button1, TrayIcon *button2)
     int m = qMax(n1, n2);
     mLayout->moveItem(l, m);
     mLayout->moveItem(m-1, l);
+}
+
+//特殊处理
+//任务栏异常退出可能导致输入法异常，此时任务栏再次起来不会重新拉起输入法,此处特殊处理
+void UKUITray::panelStartupFcitx()
+{
+    if(!fcitx_flag){
+        qDebug()<<"fcitx未启动";
+        QProcess *process =new QProcess(this);
+        process->startDetached("fcitx");
+        process->deleteLater();
+    }
 }

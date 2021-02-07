@@ -88,6 +88,14 @@ public:
         mAllocated = false;
         mId = id;
     }
+    ~XdgMenuApplinkProcessor()
+    {
+        if (mDesktopFile) 
+        {
+            delete mDesktopFile;
+            mDesktopFile = nullptr;
+        }
+    }
 
     XdgDesktopFile* desktopFile() const { return mDesktopFile; }
     bool allocated() const { return mAllocated; }
