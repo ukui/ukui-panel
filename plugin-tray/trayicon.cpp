@@ -83,7 +83,7 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     setObjectName("TrayIcon");
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    setAcceptDrops(true);
+    setAcceptDrops(false);
 
     QTimer::singleShot(200, [this] { init(); update(); });
     repaint();
@@ -274,11 +274,9 @@ bool TrayIcon::event(QEvent *event)
 //            break;
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonDblClick:
-            qDebug()<<"QEvent::MouseButtonDblClick";
             event->accept();
             break;
         case QEvent::ContextMenu:
-            qDebug()<<"ContextMenu";
             moveMenu();
             break;
         default:
@@ -459,7 +457,6 @@ void TrayIcon::paintEvent(QPaintEvent *)
 #include "../panel/iukuipanelplugin.h"
 void TrayIcon::moveMenu()
 {
-    qDebug()<<"move Menu";
     QMenu *menu;
     menu =new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
@@ -513,7 +510,6 @@ void TrayIcon::mouseMoveEvent(QMouseEvent *e)
 
 void TrayIcon::dragMoveEvent(QDragMoveEvent * e)
 {
-    qDebug()<<"dragMoveEvent"<<mIconId;
     emit iconIsMoving(mIconId);
     if (e->mimeData()->hasFormat(MIMETYPE))
         e->acceptProposedAction();
@@ -523,7 +519,6 @@ void TrayIcon::dragMoveEvent(QDragMoveEvent * e)
 
 void TrayIcon::dragEnterEvent(QDragEnterEvent *e)
 {
-    qDebug()<<"TrayIcon::dragEnterEvent";
     e->acceptProposedAction();
     const TrayButtonMimeData *mimeData = qobject_cast<const TrayButtonMimeData*>(e->mimeData());
     if (mimeData && mimeData->button())
@@ -533,7 +528,6 @@ void TrayIcon::dragEnterEvent(QDragEnterEvent *e)
 
 QMimeData * TrayIcon::mimeData()
 {
-    qDebug()<<"rayIcon::mimeData";
     TrayButtonMimeData *mimeData = new TrayButtonMimeData();
 //    QByteArray ba;
 //    mimeData->setData(mimeDataFormat(), ba);
@@ -543,7 +537,6 @@ QMimeData * TrayIcon::mimeData()
 
 void TrayIcon::mousePressEvent(QMouseEvent *e)
 {
-    qDebug()<<"TrayIcon::mousePressEvent";
     if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
     {
         mDragStart = e->pos();
