@@ -781,7 +781,7 @@ QString QClickWidget::size_human(qlonglong capacity)
         QString str_capacity = tr("blank CD");
         return str_capacity;
     }
-     QString str_capacity = tr("another device");
+     QString str_capacity = tr("other user device");
      return str_capacity;
 }
 
