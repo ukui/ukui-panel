@@ -48,7 +48,7 @@ public:
     void setupSettings();
 
 protected:
-    void mousePressEvent(QMouseEvent* event);
+//    void mousePressEvent(QMouseEvent* event);
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     void contextMenuEvent(QContextMenuEvent *event);
@@ -72,6 +72,8 @@ private:
     int colorTemperature;
     bool mode;
 
+public slots:
+        void pressBitton();
 private slots:
     void setUpNightMode();
     void nightChangedSlot(QHash<QString,QVariant> nightArg);

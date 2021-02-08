@@ -1,8 +1,9 @@
 ukui-panel (3.0.1-59) v101; urgency=medium
 
   * 任务栏隐藏的时候发出信号 Link#31042
+    增加预览右键置顶选项
 
- --  <hepuyao@kylinos.cn>  Sat, 30 Jan 2021 10:04:40 +0800
+ --  hepuyao <hepuyao@kylinos.cn>  Sat, 30 Jan 2021 10:04:40 +0800
 
 ukui-panel (3.0.1-58) v101; urgency=medium
 
