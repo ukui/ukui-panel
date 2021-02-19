@@ -26,6 +26,8 @@
 #include <QTimer>
 #include <QColor>
 #include <KWindowEffects>
+#include <stdio.h>
+#include <string.h>
 #include "clickLabel.h"
 #include "MacroFile.h"
 
@@ -218,6 +220,27 @@ void MainWindow::getDeviceInfo()
         current_drive_list = current_drive_list->next;
     }
 //about volume
+
+    FILE *fp;
+
+    int a = 0;
+    char buf[128];
+
+    fp = fopen("/proc/cmdline","r");
+    while(fscanf(fp,"%s",buf) >0 )
+    {
+        if(strcmp(buf,"live") == 0)
+        {
+            a++;
+        }
+        qDebug()<<"a"<<a;
+    }
+    fclose(fp);
+    if(a > 0)
+    {
+        QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload false");
+    }
+
     GList *current_volume_list = g_volume_monitor_get_volumes(g_volume_monitor);
     while(current_volume_list)
     {
@@ -337,11 +360,35 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
     qDebug()<<"volume add";
+
+    FILE *fp;
+
+    int a = 0;
+    char buf[128];
+
+    fp = fopen("/proc/cmdline","r");
+    while(fscanf(fp,"%s",buf) >0 )
+    {
+        if(strcmp(buf,"live") == 0)
+        {
+            a++;
+        }
+        qDebug()<<"a"<<a;
+    }
+    fclose(fp);
     if(g_volume_get_drive(volume) == NULL)
     {
         *findTeleGVolumeList() << volume;
     }
     p_this->ifautoload = p_this->ifsettings->get(IFAUTOLOAD).toBool();
+    if(a > 0)
+    {
+        QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload false");
+    }
+    else
+    {
+        QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload true");
+    }
     if(p_this->ifautoload == true)
     {
         *findGVolumeList()<<volume;
