@@ -32,7 +32,7 @@
             <description>show Quicklaunch Lines</description>
         </key>
 		<key name="quicklaunchappsnumber" type="i">
-            <default>5</default>
+            <default>8</default>
             <summary>show Apps Number</summary>
             <description>the size of apps number in quicklaunch</description>
         </key>
