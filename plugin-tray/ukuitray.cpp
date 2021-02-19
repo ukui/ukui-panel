@@ -131,7 +131,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
-    QTimer::singleShot(5000, this, SLOT(startTray()));
+    QTimer::singleShot(3000, this, SLOT(startTray()));
     mBtn =new StorageArrow(this);
     mLayout->addWidget(mBtn);
     storageFrame=new UKUIStorageFrame;
@@ -297,7 +297,6 @@ void UKUITray::realign()
     TrayIcon *trayicon = mStorageIcons[i];
     connect(trayicon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToTray(id);});
     }
-
 }
 
 void UKUITray::trayIconSizeRefresh()

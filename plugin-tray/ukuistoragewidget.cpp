@@ -108,8 +108,8 @@ void UKUiStorageWidget::setStorageWidgetButtonLayout(int size)
         break;
     default:
         //
-        winWidth  = mWinWidth*3;
-        winHeight = mWinHeight*4;
+        winWidth  = 0;
+        winHeight = 0;
         this->setFixedSize(winWidth,winHeight);
         dynamic_cast<UKUi::GridLayout*>(this->layout())->setColumnCount(4);
 //        dynamic_cast<UKUi::GridLayout*>(this->layout())->setRowCount(7);

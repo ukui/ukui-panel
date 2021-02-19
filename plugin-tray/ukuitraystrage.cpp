@@ -229,8 +229,8 @@ void UKUIStorageFrame::setStorageFrameSize(int size)
         winHeight = mWinHeight*4;
         break;
     default:
-        winWidth  = mWinWidth*4;
-        winHeight = mWinHeight*4;
+        winWidth  = 0;
+        winHeight = 0;
         break;
     }
     this->setFixedSize(winWidth,winHeight);
