@@ -1,28 +1,20 @@
-/* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL2+
+/*
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
- * Copyright: 2011 Razor team
- * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.com>
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU  Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
+ * any later version.
  *
- * Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
- *
- * This program or library is free software; you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * END_COMMON_COPYRIGHT_HEADER */
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
+ *
+ */
 
 /********************************************************************
   Inspired by freedesktops tint2 ;)
@@ -128,8 +120,10 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
         settings=new QGSettings(id);
     }
     connect(settings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==ICON_SIZE)
+        if(key==ICON_SIZE){
             trayIconSizeRefresh();
+            handleStorageUi();
+        }
     });
 
     mLayout = new UKUi::GridLayout(this);
@@ -137,7 +131,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
-    QTimer::singleShot(0, this, SLOT(startTray()));
+    QTimer::singleShot(5000, this, SLOT(startTray()));
     mBtn =new StorageArrow(this);
     mLayout->addWidget(mBtn);
     storageFrame=new UKUIStorageFrame;
@@ -293,6 +287,16 @@ void UKUITray::realign()
 
     if(mStorageIcons.size()<1) mBtn->setVisible(false);
     mLayout->setEnabled(true);
+
+    //设置任务栏
+    for(int i=0;i<mTrayIcons.size();i++){
+    TrayIcon *trayicon = mTrayIcons[i];
+    connect(trayicon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToStorage(id);});
+    }
+    for(int i=0;i<mStorageIcons.size();i++){
+    TrayIcon *trayicon = mStorageIcons[i];
+    connect(trayicon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToTray(id);});
+    }
 
 }
 
@@ -611,6 +615,7 @@ void UKUITray::moveIconToTray(Window winId)
         connect(storageicon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
     trayIconSizeRefresh();
+    handleStorageUi();
 }
 
 void UKUITray::moveIconToStorage(Window winId)
@@ -638,6 +643,7 @@ void UKUITray::moveIconToStorage(Window winId)
         connect(icon,&TrayIcon::notifyTray,[this](Window id){freezeTrayApp(id);});
         connect(icon, &QObject::destroyed, this, &UKUITray::onIconDestroyed);
     }
+    handleStorageUi();
 }
 
 void UKUITray::regulateIcon(Window *mid)
@@ -698,17 +704,25 @@ void UKUITray::regulateIcon(Window *mid)
                 bingdingStr=wid;
                 if(QString::compare(actionStr,"tray")==0){
                     addTrayIcon(bingdingStr);
+//                    TrayIcon *icon = findTrayIcon(bingdingStr);
+//                    connect(icon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToStorage(id);});
                 }
                 if(QString::compare(actionStr,"storage")==0){
                     addStorageIcon(bingdingStr);
+//                    TrayIcon *icon = findStorageIcon(bingdingStr);
+//                    connect(icon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToTray(id);});
                 }
                 connect(settings, &QGSettings::changed, this, [=] (const QString &key){
                     if(key=="action"){
                         if(QString::compare(settings->get(ACTION_KEY).toString(),"tray")==0){
                             moveIconToTray(bingdingStr);
+//                            TrayIcon *icon = findStorageIcon(bingdingStr);
+//                            connect(icon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToTray(id);});
                         }
                         else if(QString::compare(settings->get(ACTION_KEY).toString(),"storage")==0){
                             moveIconToStorage(bingdingStr);
+//                            TrayIcon *icon = findTrayIcon(bingdingStr);
+//                            connect(icon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToStorage(id);});
                         }
                         else if(QString::compare(settings->get(ACTION_KEY).toString(),"freeze")==0){
 
@@ -810,6 +824,10 @@ void UKUITray::handleStorageUi()
     storageFrame->setStorageFrameSize(mStorageIcons.size());
 }
 
+void UKUITray::contextMenuEvent(QContextMenuEvent *event)
+{
+
+}
 void UKUITray::switchButtons(TrayIcon *button1, TrayIcon *button2)
 {
     if (button1 == button2)

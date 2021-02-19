@@ -131,15 +131,15 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
 
     //检测CanHibernate接口的返回值，判断是否可以执行挂起操作
     if(QString::compare(version,"Ubuntu")){
-        pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
+        pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
                                    tr("Hibernate Mode"),
                                    this, SLOT(SessionHibernate())
                                    );                              //休眠
     }
-    pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
+    pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
                                tr("Sleep Mode"),
                                this, SLOT(SessionSuspend())
-                               );                                   //挂起
+                               );                                   //睡眠
     pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
                             tr("Restart"),
                             this, SLOT(SessionReboot())
@@ -184,7 +184,7 @@ void UKUIStartMenuButton::SessionHibernate()
     system("ukui-session-tools --hibernate");
 }
 
-//挂起
+//睡眠
 void UKUIStartMenuButton::SessionSuspend()
 {
     system("ukui-session-tools --suspend");

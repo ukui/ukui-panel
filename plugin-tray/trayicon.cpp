@@ -1,28 +1,20 @@
-/* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL2+
+/*
+ * Copyright (C) 2019 Tianjin KYLIN Information Technology Co., Ltd.
  *
- * Copyright: 2011 Razor team
- * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.com>
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU  Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1, or (at your option)
+ * any later version.
  *
- * Copyright: 2019 Tianjin KYLIN Information Technology Co., Ltd. *
- *
- * This program or library is free software; you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * END_COMMON_COPYRIGHT_HEADER */
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
+ *
+ */
 
 
 // Warning: order of those include is important.
@@ -91,7 +83,7 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     setObjectName("TrayIcon");
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    setAcceptDrops(true);
+    setAcceptDrops(false);
 
     QTimer::singleShot(200, [this] { init(); update(); });
     repaint();
@@ -251,10 +243,10 @@ void TrayIcon::setIconSize(QSize iconSize)
 
     const QSize req_size{mIconSize * metric(PdmDevicePixelRatio)};
     if (mWindowId)
-        xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
+        xfitMan().resizeWindow(mWindowId, req_size.width()*2, req_size.height()*2);
 
     if (mIconId)
-        xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
+        xfitMan().resizeWindow(mIconId, req_size.width()*2, req_size.height()*2);
 }
 
 /*处理　TrayIcon　绘图，点击等事件*/
@@ -282,10 +274,11 @@ bool TrayIcon::event(QEvent *event)
 //            break;
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonDblClick:
-            qDebug()<<"QEvent::MouseButtonDblClick";
             event->accept();
             break;
-
+        case QEvent::ContextMenu:
+            moveMenu();
+            break;
         default:
             break;
         }
@@ -461,12 +454,29 @@ void TrayIcon::paintEvent(QPaintEvent *)
     p.drawRoundedRect(opt.rect,6,6);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+#include "../panel/iukuipanelplugin.h"
+void TrayIcon::moveMenu()
+{
+    QMenu *menu;
+    menu =new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    QAction *action;
+    action = menu->addAction(tr("移入任务栏/收纳"));
+    connect(action, &QAction::triggered, [this] { emit iconIsMoving(mIconId);});
+    menu->setGeometry(QCursor::pos().x()-20,QCursor::pos().y()-20,150,50);
+//    menu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), menu->sizeHint()));
+    menu->show();
+}
 
 void TrayIcon::notifyAppFreeze()
 {
     emit notifyTray(mIconId);
 }
 
+void TrayIcon::emitIconId()
+{
+    emit iconIsMoving(mIconId);
+}
 #if 1
 void TrayIcon::mouseMoveEvent(QMouseEvent *e)
 {
@@ -500,6 +510,7 @@ void TrayIcon::mouseMoveEvent(QMouseEvent *e)
 
 void TrayIcon::dragMoveEvent(QDragMoveEvent * e)
 {
+    emit iconIsMoving(mIconId);
     if (e->mimeData()->hasFormat(MIMETYPE))
         e->acceptProposedAction();
     else

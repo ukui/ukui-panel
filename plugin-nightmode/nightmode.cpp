@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QDir>
+#include <QTimer>
 #include "nightmode.h"
 #include "../panel/customstyle.h"
 
@@ -54,6 +55,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
             realign();
     });
     realign();
+
 }
 
 
@@ -95,6 +97,12 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
                                           SLOT(nightChangedSlot(QHash<QString,QVariant>)));
     getNightModeState();
     controlCenterSetNightMode(mode);
+
+    this->setEnabled(false);
+    QTimer *timer = new QTimer(this);
+    connect(timer,&QTimer::timeout,[this] {this->setEnabled(true);});
+    timer->start(5000);
+     connect(this,&NightModeButton::clicked,this, [this] { pressBitton();});
 }
 NightModeButton::~NightModeButton(){
     delete mqtstyleGsettings;
@@ -102,20 +110,32 @@ NightModeButton::~NightModeButton(){
 }
 
 /*NOTE:目前夜间模式的点击按钮实现的是　设置夜间模式＋切换主题*/
-void NightModeButton::mousePressEvent(QMouseEvent *event)
+//void NightModeButton::mousePressEvent(QMouseEvent *event)
+//{
+//    if(event->button()==Qt::LeftButton){
+//        getNightModeState();
+//        if(mode){
+//            setUkuiStyle(DEFAULT_STYLE);
+
+//        }else{
+//            setUkuiStyle(BLACK_STYLE);
+//        }
+//        setNightMode(!mode);
+//    }
+//}
+
+void NightModeButton::pressBitton()
 {
-    if(event->button()==Qt::LeftButton){
-        getNightModeState();
-        if(mode){
-            setUkuiStyle(DEFAULT_STYLE);
+    getNightModeState();
+    if(mode){
+        setUkuiStyle(DEFAULT_STYLE);
 
-        }else{
-            setUkuiStyle(BLACK_STYLE);
-        }
-        setNightMode(!mode);
+    }else{
+        setUkuiStyle(BLACK_STYLE);
     }
+    setNightMode(!mode);
+    this->setEnabled(false);
 }
-
 /*夜间模式右键菜单*/
 void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
 {

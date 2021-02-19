@@ -341,6 +341,9 @@ void UKUITaskGroup::closeGroup()
 #else
     for (UKUITaskWidget *button : qAsConst(mButtonHash) )
         if (button->isOnDesktop(KWindowSystem::currentDesktop()))
+            button->minimizeApplication();
+    for (UKUITaskWidget *button : qAsConst(mButtonHash) )
+        if (button->isOnDesktop(KWindowSystem::currentDesktop()))
             button->closeApplication();
 #endif
 }
