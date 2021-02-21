@@ -192,6 +192,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QObject::connect(m_ListenGsettings,&ListenGsettings::iconsizechanged,[this]{updateTimeText();});
     QObject::connect(m_ListenGsettings,&ListenGsettings::panelpositionchanged,[this]{updateTimeText();});
     updateTimeText();
+    QTimer::singleShot(10000,[this] { panelStartupFcitx();});
 }
 
 IndicatorCalendar::~IndicatorCalendar()
