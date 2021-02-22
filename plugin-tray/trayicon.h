@@ -19,6 +19,7 @@
 
 #ifndef TRAYICON_H
 #define TRAYICON_H
+#include "../panel/iukuipanelplugin.h"
 //Qt
 #include <QObject>
 #include <QFrame>
@@ -70,10 +71,13 @@ public:
 
     QSize iconSize() const { return mIconSize; }
     void setIconSize(QSize iconSize);
+    /**
+     * @brief moveMenu  右键菜单，移动图标至任务栏/收纳
+     */
     void moveMenu();
 
     QSize sizeHint() const;
-    IUKUIPanelPlugin *mPlugin;
+
     static QString mimeDataFormat() { return QLatin1String("x-ukui/tray-button"); }
 
 
@@ -105,13 +109,23 @@ private:
     QRect iconGeometry();
     void  trayButtonPress(QMouseEvent *);
     bool needReDraw();
+    /**
+     * @brief caculateMenuWindowPos
+     * 计算右键菜单的位置
+     * @param absolutePos
+     * @param windowSize menu的sizeHint
+     * @return 返回值是QRect，可直接使用，无需转换
+     */
+    QRect caculateMenuWindowPos(QPoint const & absolutePos, QSize const & windowSize);
     QPoint mDragStart;
 
+    IUKUIPanelPlugin *mPlugin;
     Window mIconId;
     Window mWindowId;
     QSize mIconSize;
     Damage mDamage;
     Display* mDisplay;
+    QMenu *menu;
 
     static bool isXCompositeAvailable();
     QSize mRectSize;

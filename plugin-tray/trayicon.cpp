@@ -243,10 +243,10 @@ void TrayIcon::setIconSize(QSize iconSize)
 
     const QSize req_size{mIconSize * metric(PdmDevicePixelRatio)};
     if (mWindowId)
-        xfitMan().resizeWindow(mWindowId, req_size.width()*2, req_size.height()*2);
+        xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
 
     if (mIconId)
-        xfitMan().resizeWindow(mIconId, req_size.width()*2, req_size.height()*2);
+        xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
 }
 
 /*处理　TrayIcon　绘图，点击等事件*/
@@ -277,7 +277,10 @@ bool TrayIcon::event(QEvent *event)
             event->accept();
             break;
         case QEvent::ContextMenu:
-            moveMenu();
+//            moveMenu();
+            break;
+        case QEvent::Enter:
+//            this->setToolTip("右键可选择移入任务栏/收纳");
             break;
         default:
             break;
@@ -433,38 +436,39 @@ void TrayIcon::paintEvent(QPaintEvent *)
     {
     case NORMAL:
     {
-        //                  p.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
+//                          p.setBrush(QBrush(QColor(0x00,0xFF,0x00,0x19)));
         p.setPen(Qt::NoPen);
         break;
     }
     case HOVER:
     {
-        //                  p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x1f)));
+//                          p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x1f)));
         p.setPen(Qt::NoPen);
         break;
     }
     case PRESS:
     {
-        //                  p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
+//                          p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
         p.setPen(Qt::NoPen);
         break;
     }
     }
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    p.drawRoundedRect(opt.rect,6,6);
+    const QSize req_size{mIconSize * metric(PdmDevicePixelRatio)};
+    xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
+    p.drawRoundedRect(opt.rect.x(),opt.rect.y(),opt.rect.width(), req_size.height(),0,0);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
-#include "../panel/iukuipanelplugin.h"
+
 void TrayIcon::moveMenu()
 {
-    QMenu *menu;
+
     menu =new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
     QAction *action;
     action = menu->addAction(tr("移入任务栏/收纳"));
     connect(action, &QAction::triggered, [this] { emit iconIsMoving(mIconId);});
-    menu->setGeometry(QCursor::pos().x()-20,QCursor::pos().y()-20,150,50);
-//    menu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), menu->sizeHint()));
+    menu->setGeometry(caculateMenuWindowPos(QCursor::pos(), menu->sizeHint()));
     menu->show();
 }
 
@@ -477,6 +481,33 @@ void TrayIcon::emitIconId()
 {
     emit iconIsMoving(mIconId);
 }
+
+QRect TrayIcon::caculateMenuWindowPos(const QPoint &absolutePos, const QSize &windowSize)
+{
+    int x = absolutePos.x(), y = absolutePos.y();
+
+    QRect res(QPoint(x, y), windowSize);
+
+    QRect screen = QApplication::desktop()->screenGeometry(this);
+    // NOTE: We cannot use AvailableGeometry() which returns the work area here because when in a
+    // multihead setup with different resolutions. In this case, the size of the work area is limited
+    // by the smallest monitor and may be much smaller than the current screen and we will place the
+    // menu at the wrong place. This is very bad for UX. So let's use the full size of the screen.
+    if (res.right() > screen.right())
+        res.moveRight(screen.right());
+
+    if (res.bottom() > screen.bottom())
+        res.moveBottom(screen.bottom());
+
+    if (res.left() < screen.left())
+        res.moveLeft(screen.left());
+
+    if (res.top() < screen.top())
+        res.moveTop(screen.top());
+
+    return res;
+}
+
 #if 1
 void TrayIcon::mouseMoveEvent(QMouseEvent *e)
 {
