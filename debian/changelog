@@ -1,3 +1,15 @@
+ukui-panel (3.0.1-61) v101; urgency=medium
+
+  * 快速启动栏应用更新
+
+ -- hepuyao <hepuyao@kylinos.cn>  Fri, 19 Feb 2021 14:22:16 +0800
+
+ukui-panel (3.0.1-60) v101; urgency=medium
+
+  * 任务栏消息通知区域图标新增 移入 任务栏/收纳 功能
+
+ --  <hepuyao@kylinos.cn>  Sun, 07 Feb 2021 19:20:23 +0800
+
 ukui-panel (3.0.1-59) v101; urgency=medium
 
   * 任务栏隐藏的时候发出信号 Link#31042

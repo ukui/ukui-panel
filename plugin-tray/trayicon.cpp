@@ -277,10 +277,10 @@ bool TrayIcon::event(QEvent *event)
             event->accept();
             break;
         case QEvent::ContextMenu:
-            moveMenu();
+//            moveMenu();
             break;
         case QEvent::Enter:
-            this->setToolTip("右键可选择移入任务栏/收纳");
+//            this->setToolTip("右键可选择移入任务栏/收纳");
             break;
         default:
             break;
@@ -442,7 +442,7 @@ void TrayIcon::paintEvent(QPaintEvent *)
     }
     case HOVER:
     {
-                          p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x1f)));
+//                          p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x1f)));
         p.setPen(Qt::NoPen);
         break;
     }
