@@ -61,4 +61,5 @@ install(FILES
     DESTINATION "/usr/share/glib-2.0/schemas/"
     COMPONENT Runtime
 )
+install(FILES resources/trayAppSetting.sh  DESTINATION "/usr/share/ukui/ukui-panel/plugin-tray/")
 BUILD_UKUI_PLUGIN(${PLUGIN})
