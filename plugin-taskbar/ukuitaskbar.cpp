@@ -48,10 +48,12 @@
 #include "ukuitaskgroup.h"
 #include "ukuitaskbaricon.h"
 #include "quicklaunchaction.h"
+#include "json.h"
 #define PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANEL_LINES    "panellines"
 using namespace UKUi;
-
+using QtJson::JsonObject;
+using QtJson::JsonArray;
 /************************************************
 
 ************************************************/
@@ -76,6 +78,8 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mPlaceHolder(new QWidget(this)),
     mStyle(new LeftAlignedTextStyle())
 {
+
+    SecurityConfigPath=QDir::homePath()+QString("/.config/ukui-panel-security-config.json");
 
     taskstatus=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
@@ -227,6 +231,74 @@ UKUITaskBar::~UKUITaskBar()
     mVBtn.clear();
 }
 
+void UKUITaskBar::ReloadSecurityConfig(){
+    this->loadJsonfile();
+    this->refreshQuickLaunch();
+}
+
+QString UKUITaskBar::GetSecurityConfigPath(){
+    return SecurityConfigPath;
+}
+QString UKUITaskBar::readFile(const QString &filename) {
+    QFile f(filename);
+    if (!f.open(QFile::ReadOnly)) {
+        return QString();
+    } else {
+        QTextStream in(&f);
+        return in.readAll();
+    }
+}
+
+void UKUITaskBar::loadJsonfile() {
+    QString json = readFile(SecurityConfigPath);
+    if (json.isEmpty()) {
+        qFatal("Could not read JSON file!");
+        return ;
+    }
+    bool ok;
+    JsonObject result = QtJson::parse(json, ok).toMap();
+    QVariant fristLayer;
+    fristLayer=result.value("ukui-panel");
+    mModel=fristLayer.toMap().value("mode").toString();
+
+    QVariant blacklistLayer;
+    blacklistLayer=fristLayer.toMap().value("blacklist");
+    QVariant whitelistLayer;
+    whitelistLayer=fristLayer.toMap().value("whitelist");
+
+    if(!blacklistLayer.isNull()){
+        QList<QVariant> thirdLayer;
+        thirdLayer=blacklistLayer.toList();
+        QMap<QString,QVariant> fourthLayer;
+        fourthLayer=thirdLayer.at(0).toMap();
+        QList<QVariant> fifthLayer;
+        fifthLayer=fourthLayer.value("entries").toList();
+        QMap<QString,QVariant> attribute;
+        QList<QString> blackNames;
+        for(int i=0;i<fifthLayer.size();i++){
+            attribute=fifthLayer.at(i).toMap();
+            blackNames.append(attribute.value("path").toString());
+        }
+        blacklist=blackNames;
+    }
+
+    if(!whitelistLayer.isNull()){
+        QList<QVariant> thirdLayer;
+        thirdLayer=whitelistLayer.toList();
+        QMap<QString,QVariant> fourthLayer;
+        fourthLayer=thirdLayer.at(0).toMap();
+        QList<QVariant> fifthLayer;
+        fifthLayer=fourthLayer.value("entries").toList();
+        QMap<QString,QVariant> attribute;
+        QList<QString> whiteNames;
+        for(int i=0;i<fifthLayer.size();i++){
+            attribute=fifthLayer.at(i).toMap();
+            whiteNames.append(attribute.value("path").toString());
+        }
+        whitelist=whiteNames;
+    }
+}
+
 void UKUITaskBar::PageUp() {
     --page_num;
     if (page_num < 1) page_num = max_page;
@@ -263,6 +335,14 @@ void UKUITaskBar::refreshQuickLaunch(){
         mLayout->removeWidget(mPlaceHolder);
         hasPlaceHolder = false;
     }
+
+    QStringList mblacklist;
+    QStringList mwhitelist;
+    if(mModel=="blacklist")
+    mblacklist=blacklist;
+    if(mModel=="whitelist")
+    mwhitelist=whitelist;
+
     for(auto it = mVBtn.begin(); it != mVBtn.end();)
     {
         (*it)->deleteLater();
@@ -280,6 +360,16 @@ void UKUITaskBar::refreshQuickLaunch(){
     for (const QMap<QString, QVariant> &app : apps)
     {
         desktop = app.value("desktop", "").toString();
+
+        if(mblacklist.contains(desktop)){
+            desktop.clear();
+        }
+        if(mModel=="whitelist"){
+            if(!mwhitelist.contains(desktop)){
+                desktop.clear();
+            }
+        }
+
         file = app.value("file", "").toString();
         if (!desktop.isEmpty())
         {
@@ -296,7 +386,7 @@ void UKUITaskBar::refreshQuickLaunch(){
             execname = app.value("name", "").toString();
             exec = app.value("exec", "").toString();
             icon = app.value("icon", "").toString();
-            addButton(new QuickLaunchAction(execname, exec, icon, this));
+//            addButton(new QuickLaunchAction(execname, exec, icon, this));
         }
     }
 }
@@ -1689,5 +1779,17 @@ int FilectrlAdaptor::GetPanelSize(const QString &arg)
 {
     int out0;
     QMetaObject::invokeMethod(parent(), "GetPanelSize", Q_RETURN_ARG(int, out0), Q_ARG(QString, arg));
+    return out0;
+}
+
+void FilectrlAdaptor::ReloadSecurityConfig()
+{
+    QMetaObject::invokeMethod(parent(), "ReloadSecurityConfig");
+}
+
+QString FilectrlAdaptor::GetSecurityConfigPath()
+{
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "GetSecurityConfigPath", Q_RETURN_ARG(QString, out0));
     return out0;
 }
