@@ -710,6 +710,13 @@ private:
 
     QMenu * menu;
     QAction * m_lockAction;
+    /**
+     * @brief mDbusXrandInter
+     * 华为990双屏的dbus
+     */
+    QDBusInterface  *mDbusXrandInter;
+    QRect mcurrentScreenRect;
+    QString flag_hw990;
 
     int MAX_SIZE_PANEL_IN_CALC;
     int MID_SIZE_PANEL_IN_CALC;
@@ -719,10 +726,14 @@ private:
     int SML_ICON_SIZE_IN_CLAC;
     void getSize();
     void connectToServer();
+    void caculateScreenGeometry();
+    int getScreenGeometry(QString methodName);
 
 private slots:
     void panelReset();
     void keyChangedSlot(const QString &key);
+    void priScreenChanged(int x, int y, int width, int height);
+
 
 public:
     QGSettings *gsettings;
