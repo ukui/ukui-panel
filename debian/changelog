@@ -1,3 +1,9 @@
+ukui-panel (3.0.1-64) v101; urgency=medium
+
+  * 支持华为990上双屏
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 25 Feb 2021 18:51:27 +0800
+
 ukui-panel (3.0.1-62) v101; urgency=medium
 
   * 暂时屏蔽任务栏消息通知区域 移入 任务栏/收纳功能
