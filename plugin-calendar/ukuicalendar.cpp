@@ -386,7 +386,8 @@ void IndicatorCalendar::CalendarWidgetShow()
             if (iScreenHeight >= WEBVIEW_MIN_HEIGHT)
                 mViewHeight = WEBVIEW_MIN_HEIGHT;;
         }
-        modifyCalendarWidget();
+//        modifyCalendarWidget();
+        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
         mWebViewDiag->show();
         mWebViewDiag->activateWindow();
         if(!mbActived)
