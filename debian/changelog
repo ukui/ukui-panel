@@ -1,3 +1,9 @@
+ukui-panel (3.0.1-64hw4) v101; urgency=medium
+
+  * 4k双屏200%缩放情况下任务栏位置适配
+
+ -- hepuyao <hepuyao@kylinos.cn>  Fri, 26 Feb 2021 10:30:04 +0800
+
 ukui-panel (3.0.1-64) v101; urgency=medium
 
   * 支持华为990上双屏

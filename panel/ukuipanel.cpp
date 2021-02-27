@@ -104,6 +104,9 @@
 #define DBUS_PATH            "/org/ukui/SettingsDaemon/wayland"
 #define DBUS_INTERFACE       "org.ukui.SettingsDaemon.wayland"
 
+#define SCALE_NAME            "org.ukui.SettingsDaemon.plugins.xsettings"
+#define SCALE_KEY             "scalingFactor"
+
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -342,9 +345,14 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
-
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
+
+    const QByteArray scale_id(SCALE_NAME);
+    if(QGSettings::isSchemaInstalled(scale_id)){
+        scale_gsetting = new QGSettings(SCALE_NAME);
+        scale_flag=scale_gsetting->get(SCALE_KEY).toInt();
+        }
 }
 
 void UKUIPanel::getSize() {
@@ -583,6 +591,7 @@ int UKUIPanel::getScreenGeometry(QString methodName)
 void UKUIPanel::setPanelGeometry(bool animate)
 {
     QRect currentScreen;
+    QRect rect;
 
     if(flag_hw990=="hw_990"){
         int priX, priY, priWid, priHei;
@@ -592,29 +601,40 @@ void UKUIPanel::setPanelGeometry(bool animate)
         priHei = getScreenGeometry("height");
 
         qDebug("Start: Primary screen geometry is x=%d, y=%d, windth=%d, height=%d", priX, priY, priWid, priHei);
-        QRect mRect;
-        mRect.setRect(priX, priY, priWid, priHei);
-        mcurrentScreenRect.setRect(priX, priY, QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
+//        QRect mRect;
+//        mRect.setRect(priX, priY, priWid, priHei);
+        if(priWid > 2500 && scale_flag==2 ){
+            currentScreen.setRect(priX, priY, priWid/2, priHei/2);
+//            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width()/2, QApplication::desktop()->screenGeometry(0).height()/2);
+            qDebug()<<"4k 缩放屏"<<QApplication::desktop()->screenGeometry(0)<<scale_flag;
+        }else{
+            qDebug()<<"非 4k 缩放屏"<<QApplication::desktop()->screenGeometry(0)<<scale_flag;
+            currentScreen.setRect(priX, priY, priWid, priHei);
+//            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width(), QApplication::desktop()->screenGeometry(0).height());
+        }
         if(priWid==0){
             qDebug("初始化获取到的dbus信号错误，获取的宽度为0");
-            mRect = QGuiApplication::screens().at(0)->geometry();
+            currentScreen = QGuiApplication::screens().at(0)->geometry();
         }
-        currentScreen = mRect;
+//        currentScreen = mRect;
     }else{
         qDebug("非华为990机器");
         currentScreen=QGuiApplication::screens().at(0)->geometry();
         qDebug()<<"currentScreen   :"<<currentScreen;
     }
 
-//    const QRect currentScreen = QApplication::desktop()->screenGeometry(0);
-    QRect rect;
+//    const QRect currentScreen = QApplication::desktop()->screenGeometry(0);   QGuiApplication::screens().at(0)->geometry().width()
 
+    qDebug()<<"rect 1 "<<rect;
     if (isHorizontal())
     {
         // Horiz panel ***************************
         rect.setHeight(qMax(PANEL_MINIMUM_SIZE, mPanelSize));
-        if (mLengthInPercents)
+        qDebug()<<"mLengthInPercents:"<<mLengthInPercents<<"mlength"<<mLength<<""<<currentScreen.width() * mLength / 100.0;
+        if (mLengthInPercents){
+             qDebug()<<"mLengthInPercents:"<<mLengthInPercents<<"mlength"<<mLength<<""<<currentScreen.width() * mLength / 100.0;
             rect.setWidth(currentScreen.width() * mLength / 100.0);
+        }
         else
         {
             if (mLength <= 0)
@@ -622,7 +642,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
             else
                 rect.setWidth(mLength);
         }
-
+        qDebug()<<"rect 2 "<<rect;
         rect.setWidth(qMax(rect.size().width(), mLayout->minimumSize().width()));
 
         // Horiz ......................
@@ -640,6 +660,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
             rect.moveRight(currentScreen.right());
             break;
         }
+        qDebug()<<"rect 3"<<rect;
 
         // Vert .......................
         if (mPosition == IUKUIPanel::PositionTop)
@@ -730,6 +751,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
         {
             setMargins();
             setGeometry(rect);
+            qDebug()<<"任务栏最终设置的位置"<<rect;
         }
     }
 }
