@@ -122,7 +122,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QList<QString> pathresult=delaytime.split(":");
     int second=pathresult.at(2).toInt();
     connect(mTimer, &QTimer::timeout, [this]{updateTimeText(); mTimer->stop(); mTimer->start(60*1000);});
-    mTimer->start((60-second)*1000);
+    mTimer->start((60 +1 -second)*1000);
 
     const QByteArray _id(SYSTEM_FONT_SET);
     fgsettings = new QGSettings(_id);
@@ -192,6 +192,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QObject::connect(m_ListenGsettings,&ListenGsettings::iconsizechanged,[this]{updateTimeText();});
     QObject::connect(m_ListenGsettings,&ListenGsettings::panelpositionchanged,[this]{updateTimeText();});
     updateTimeText();
+    QTimer::singleShot(10000,[this] { updateTimeText();});
 }
 
 IndicatorCalendar::~IndicatorCalendar()
