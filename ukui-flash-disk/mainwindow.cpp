@@ -31,6 +31,11 @@
 #include "clickLabel.h"
 #include "MacroFile.h"
 
+
+#define DBUS_NAME            "org.ukui.SettingsDaemon"
+#define DBUS_PATH            "/org/ukui/SettingsDaemon/wayland"
+#define DBUS_INTERFACE       "org.ukui.SettingsDaemon.wayland"
+
 void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_this)
 {
     gboolean success =  FALSE;
@@ -1693,7 +1698,7 @@ void MainWindow::moveBottomNoBase()
         panelSize=SmallPanelSize;
     }
 
-    int x=QApplication::primaryScreen()->geometry().x();
+    int x=getScreenGeometry("x");
     int y=QApplication::primaryScreen()->geometry().y();
 
     if(position==0)
@@ -1706,6 +1711,26 @@ void MainWindow::moveBottomNoBase()
         this->setGeometry(QRect(x+QApplication::primaryScreen()->geometry().width()-panelSize-this->width() - DISTANCEPADDING,y + QApplication::primaryScreen()->geometry().height() - this->height() - DISTANCEPADDING,this->width(),this->height()));
 }
 
+int MainWindow::getScreenGeometry(QString methodName)
+{
+    int res = 0;
+    QDBusMessage message = QDBusMessage::createMethodCall(DBUS_NAME,
+                               DBUS_PATH,
+                               DBUS_INTERFACE,
+                               methodName);
+    QDBusMessage response = QDBusConnection::sessionBus().call(message);
+    if (response.type() == QDBusMessage::ReplyMessage)
+    {
+        if(response.arguments().isEmpty() == false) {
+            int value = response.arguments().takeFirst().toInt();
+            res = value;
+            qDebug() << value;
+        }
+    } else {
+        qDebug()<<methodName<<"called failed";
+    }
+    return res;
+}
 /*
  * determine how to open the maininterface,if trigger is 0,the main interface show when we inset USB
  * device directly,if trigger is 1,we show main interface by clicking the systray icon.

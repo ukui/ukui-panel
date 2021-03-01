@@ -162,6 +162,7 @@ public:
     void getTransparentData();
     int getPanelPosition(QString str);
     int getPanelHeight(QString str);
+    int getScreenGeometry(QString methodName);
     bool ifSucess;
     int flagType;
 //    static bool isShow;
