@@ -25,7 +25,7 @@
         <location filename="../config/addplugindialog.ui" line="105"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_addplugindialog.h" line="118"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>වසන්න</translation>
     </message>
     <message>
         <location filename="../config/addplugindialog.cpp" line="116"/>
@@ -85,7 +85,7 @@
         <location filename="../config/configpanelwidget.ui" line="44"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="440"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්‍රමාණය</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="68"/>
@@ -109,7 +109,7 @@
         <location filename="../config/configpanelwidget.ui" line="96"/>
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="446"/>
         <source>%</source>
-        <translation type="unfinished"></translation>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="101"/>
@@ -154,7 +154,7 @@
         <location filename="../../build/panel/ukui-panel_autogen/include/ui_configpanelwidget.h" line="455"/>
         <location filename="../config/configpanelwidget.cpp" line="235"/>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>වම</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="224"/>
@@ -162,7 +162,7 @@
         <location filename="../config/configpanelwidget.cpp" line="236"/>
         <location filename="../config/configpanelwidget.cpp" line="242"/>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>මැද</translation>
     </message>
     <message>
         <location filename="../config/configpanelwidget.ui" line="229"/>
