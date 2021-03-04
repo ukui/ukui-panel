@@ -488,7 +488,8 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
 
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
-    Q_EMIT pressTimeText();
+    if (Qt::LeftButton == event->button())
+        Q_EMIT pressTimeText();
 }
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 {
