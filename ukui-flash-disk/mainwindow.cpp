@@ -144,7 +144,7 @@ void MainWindow::onRequestSendDesktopNotify(QString message)
     QList<QVariant> args;
     args<<(tr("ukui-flash-disk"))
        <<((unsigned int) 0)
-      <<QString("/usr/share/icons/Adwaita/24x24/devices/media-removable-symbolic.symbolic.png")
+      <<QString("media-removable-symbolic")
      <<tr("kindly reminder") //显示的是什么类型的信息
     <<message //显示的具体信息
     <<QStringList()
@@ -162,7 +162,7 @@ void MainWindow::onInsertAbnormalDiskNotify(QString message)
     QList<QVariant> args;
     args<<(tr("ukui-flash-disk"))
        <<((unsigned int) 0)
-      <<QString("/usr/share/icons/Adwaita/24x24/devices/media-removable-symbolic.symbolic.png")
+      <<QString("media-removable-symbolic")
      <<tr("wrong reminder") //显示的是什么类型的信息
     <<message //显示的具体信息
     <<QStringList()
