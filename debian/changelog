@@ -1,3 +1,10 @@
+ukui-panel (3.0.1-65) v101; urgency=medium
+
+  * 解决 #40253 任务栏崩溃问题
+         #40306 任务栏时间刷新格式不及时的问题
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 04 Mar 2021 20:36:10 +0800
+
 ukui-panel (3.0.1-64) v101; urgency=medium
 
   * 支持华为990上双屏
