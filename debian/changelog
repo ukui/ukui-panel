@@ -1,3 +1,16 @@
+ukui-panel (3.0.1-64hw6) v101; urgency=medium
+
+  * 解决任务栏重启的bug #40838
+    任务栏支持wayland窗口显示
+
+ -- hepuyao <hepuyao@kylinos.cn>  Fri, 05 Mar 2021 13:44:13 +0800
+
+ukui-panel (3.0.1-64hw5) v101; urgency=medium
+
+  * u盘适配wayland 双屏
+
+ -- hepuyao <hepuyao@kylinos.cn>  Mon, 01 Mar 2021 11:20:23 +0800
+
 ukui-panel (3.0.1-64hw4) v101; urgency=medium
 
   * 4k双屏200%缩放情况下任务栏位置适配

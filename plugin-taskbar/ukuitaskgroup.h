@@ -58,6 +58,10 @@
 #define PEONY_HOME              "/usr/share/applications/peony-home.desktop"
 #define PEONY_MAIN              "/usr/share/applications/peony.desktop"
 
+#define WAYLAND_GROUP_HIDE     0
+#define WAYLAND_GROUP_ACTIVATE 1
+#define WAYLAND_GROUP_CLOSE    2
+
 class QVBoxLayout;
 class IUKUIPanelPlugin;
 
@@ -70,6 +74,7 @@ class UKUITaskGroup: public UKUITaskButton
 
 public:
     UKUITaskGroup(const QString & groupName, WId window, UKUITaskBar * parent);
+    UKUITaskGroup(const QString & iconName, const QString & caption, WId window, UKUITaskBar *parent = 0);
     virtual ~UKUITaskGroup();
     QString groupName() const { return mGroupName; }
 
@@ -79,6 +84,7 @@ public:
 
     QWidget * addWindow(WId id);
     QWidget * checkedButton() const;
+    QWidget * wl_addWindow(WId id);
 
     // Returns the next or the previous button in the popup
     // if circular is true, then it will go around the list of buttons
@@ -101,6 +107,9 @@ public:
     void showAllWindowByThumbnail();//when number of window is no more than 30,need show all window of app by a thumbnail
     void singleWindowClick();
     void VisibleWndRemoved(WId window);
+    void setActivateState_wl(bool _state);
+    void wl_widgetUpdateTitle(QString caption);
+
 public slots:
     void onWindowRemoved(WId window);
     void timeout();
@@ -139,6 +148,7 @@ signals:
     void popupShown(UKUITaskGroup* sender);
 
 private:
+    bool isWaylandGroup;
     void changeTaskButtonStyle();
     QString mGroupName;
     UKUIGroupPopup * mPopup;
@@ -168,6 +178,9 @@ private:
     void initActionsInRightButtonMenu();
     void initDesktopFileName(WId window);
     void badBackFunctionToFindDesktop();
+
+    void winClickActivate_wl(bool _getActive);
+    void closeGroup_wl();
 
 };
 

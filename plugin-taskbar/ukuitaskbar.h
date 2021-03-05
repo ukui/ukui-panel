@@ -246,12 +246,14 @@ private slots:
     void registerShortcuts();
     void shortcutRegistered();
     void activateTask(int pos);
+    void wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption);
 
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
 
 private:
     void addWindow(WId window);
+    void addWindow_wl(QString iconName, QString caption, WId window);
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
 

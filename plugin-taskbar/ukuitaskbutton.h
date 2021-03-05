@@ -61,7 +61,8 @@ class UKUITaskButton : public QToolButton
     Q_PROPERTY(Qt::Corner origin READ origin WRITE setOrigin)
 
 public:
-    explicit UKUITaskButton(QString appName,const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
+    explicit UKUITaskButton(QString appName, const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
+    explicit UKUITaskButton(QString iconName, QString caption, const WId window, UKUITaskBar * taskbar, QWidget *parent = 0);
     virtual ~UKUITaskButton();
 
     bool isApplicationHidden() const;
@@ -90,6 +91,10 @@ public:
     bool hasDragAndDropHover() const;
 
     void setGroupIcon(QIcon ico);
+    bool isWinActivate;  //1为激活状态，0为隐藏状态
+    QString mIconName;
+    QString mCaption;
+
 
 public slots:
     void raiseApplication();
@@ -137,6 +142,7 @@ private:
     bool mDrawPixmap;
     UKUITaskBar * mParentTaskBar;
     IUKUIPanelPlugin * mPlugin;
+
     enum TaskButtonStatus{NORMAL, HOVER, PRESS};
     TaskButtonStatus taskbuttonstatus;
     QIcon mIcon;

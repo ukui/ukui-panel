@@ -140,7 +140,8 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     mPreventPopup(false),
     mSingleButton(true),
     mTimer(new QTimer(this)),
-    mpWidget(NULL)
+    mpWidget(NULL),
+    isWaylandGroup(false)
 {
     Q_ASSERT(parent);
     mpScrollArea = NULL;
@@ -164,6 +165,29 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
 }
 
+UKUITaskGroup::UKUITaskGroup(const QString & iconName, const QString & caption, WId window, UKUITaskBar *parent) :
+    UKUITaskButton(iconName, caption, window, parent, parent),
+    mTimer(new QTimer(this)),
+    mPopup(new UKUIGroupPopup(this)),
+    mPreventPopup(false),
+    mpWidget(NULL),
+    isWaylandGroup(true)
+{
+    //setObjectName(caption);
+    //setText(caption);
+    Q_ASSERT(parent);
+    taskgroupStatus = NORMAL;
+    isWinActivate = true;
+    setIcon(QIcon::fromTheme(iconName));
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
+    connect(parent, &UKUITaskBar::buttonStyleRefreshed, this, &UKUITaskGroup::setToolButtonsStyle);
+    //connect(parent, &UKUITaskBar::showOnlySettingChanged, this, &UKUITaskGroup::refreshVisibility);
+    connect(parent, &UKUITaskBar::popupShown, this, &UKUITaskGroup::groupPopupShown);
+    mTimer->setTimerType(Qt::PreciseTimer);
+    connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
+}
+
+
 UKUITaskGroup::~UKUITaskGroup()
 {
 //    if(mPopup)
@@ -183,6 +207,12 @@ UKUITaskGroup::~UKUITaskGroup()
 //    }
 }
 
+void UKUITaskGroup::wl_widgetUpdateTitle(QString caption) {
+    if (caption.isNull())
+        return;
+    for (UKUITaskWidget *button : qAsConst(mButtonHash) )
+        button->wl_updateTitle(caption);
+}
 
 bool DesktopFileNameCompare(QString str1, QString str2) {
     if (str1 == str2)
@@ -307,7 +337,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 {
     setPopupVisible(false, true);
     mPreventPopup = true;
-    if (mSingleButton)
+    if (mSingleButton && !isWaylandGroup)
     {
         UKUITaskButton::contextMenuEvent(event);
         return;
@@ -328,8 +358,22 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 /************************************************
 
  ************************************************/
+void UKUITaskGroup::closeGroup_wl() {
+    QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
+    QList<QVariant> args;
+    quint32 m_wid=windowId();
+    args.append(m_wid);
+    args.append(WAYLAND_GROUP_CLOSE);
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
+}
+
 void UKUITaskGroup::closeGroup()
 {
+    if (isWaylandGroup) {
+        closeGroup_wl();
+        return;
+    }
     //To Do
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(auto it=mButtonHash.begin();it!=mButtonHash.end();it++)
@@ -351,12 +395,33 @@ void UKUITaskGroup::closeGroup()
 /************************************************
 
  ************************************************/
-QWidget * UKUITaskGroup::addWindow(WId id)
+QWidget * UKUITaskGroup::wl_addWindow(WId id)
 {
 
     if (mButtonHash.contains(id))
         return mButtonHash.value(id);
-    UKUITaskWidget *btn = new UKUITaskWidget(id, parentTaskBar(), mPopup);
+    UKUITaskWidget *btn;
+    if (isWaylandGroup) {
+        btn = new UKUITaskWidget(QString("asdfaewf"), id, parentTaskBar(), mPopup);
+        mButtonHash.insert(id, btn);
+        return btn;
+    }
+    else
+        btn = new UKUITaskWidget(id, parentTaskBar(), mPopup);
+    mButtonHash.insert(id, btn);
+    connect(btn, SIGNAL(clicked()), this, SLOT(onClicked(bool)));
+    connect(btn, SIGNAL(windowMaximize()), this, SLOT(onChildButtonClicked()));
+
+    this->setStyle(new CustomStyle("taskbutton",true));
+    return btn;
+}
+
+QWidget * UKUITaskGroup::addWindow(WId id)
+{
+    if (mButtonHash.contains(id))
+        return mButtonHash.value(id);
+    UKUITaskWidget *btn;
+        btn = new UKUITaskWidget(id, parentTaskBar(), mPopup);
     mButtonHash.insert(id, btn);
     connect(btn, SIGNAL(clicked()), this, SLOT(onChildButtonClicked()));
     connect(btn, SIGNAL(windowMaximize()), this, SLOT(onChildButtonClicked()));
@@ -592,8 +657,32 @@ void UKUITaskGroup::draggingTimerTimeout()
 /************************************************
 
  ************************************************/
+void UKUITaskGroup::setActivateState_wl(bool _state) {
+    isWinActivate = _state;
+    taskgroupStatus = (_state ? HOVER : NORMAL);
+    repaint();
+}
+
+void UKUITaskGroup::winClickActivate_wl(bool _getActive) {
+    QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
+    QList<QVariant> args;
+    quint32 m_wid=windowId();
+    args.append(m_wid);
+    args.append((_getActive ? WAYLAND_GROUP_ACTIVATE : WAYLAND_GROUP_HIDE));
+    isWinActivate = _getActive;
+    taskgroupStatus = (_getActive ? HOVER : NORMAL);
+    repaint();
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
+}
+
 void UKUITaskGroup::onClicked(bool)
 {
+    if (isWaylandGroup) {
+        printf("asdfadsaf\n");
+        winClickActivate_wl(!isWinActivate);
+        return;
+    }
     if (1 == mVisibleHash.size())
     {
         singleWindowClick();
@@ -1154,6 +1243,7 @@ void UKUITaskGroup::showPreview()
 void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
 {
     int size = mVisibleHash.size();
+    if (isWaylandGroup) size = 1;
     if(plugin()->panel()->isHorizontal())
     {
         mPopup->setFixedSize(winWidth*size + (size + 1)*3, winHeight + 6);
@@ -1315,6 +1405,57 @@ void UKUITaskGroup::showAllWindowByList()
 
 void UKUITaskGroup::showAllWindowByThumbnail()
 {
+    if (isWaylandGroup) {
+        int previewPosition = 0;
+        mpWidget = new QWidget();
+        mpWidget->setAttribute(Qt::WA_TranslucentBackground);
+        for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+        {
+            QPixmap thumbnail;
+            UKUITaskWidget *btn = it.value();
+            thumbnail = QIcon::fromTheme(mIconName).pixmap(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT - 160);
+            btn->setThumbNail(thumbnail);
+            btn->wl_updateTitle(mCaption);
+            btn->wl_updateIcon(mIconName);
+            btn->setFixedSize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT - 160);
+            //mpWidget->layout()->setContentsMargins(0,0,0,0);
+            //mpWidget->layout()->addWidget(btn);
+        }
+        adjustPopWindowSize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT - 160);
+        if(plugin()->panel()->isHorizontal())//set preview window position
+        {
+            if(mPopup->size().width()/2 < QCursor::pos().x())
+            {
+                previewPosition = 0 - mPopup->size().width()/2 + plugin()->panel()->panelSize()/2;
+            }
+            else
+            {
+                previewPosition = 0 -(QCursor::pos().x() + plugin()->panel()->panelSize()/2);
+            }
+            mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(previewPosition,0)), mPopup->size()));
+        }
+        else
+        {
+            if(mPopup->size().height()/2 < QCursor::pos().y())
+            {
+                previewPosition = 0 - mPopup->size().height()/2 + plugin()->panel()->panelSize()/2;
+            }
+            else
+            {
+                previewPosition = 0 -(QCursor::pos().y() + plugin()->panel()->panelSize()/2);
+            }
+            mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,previewPosition)), mPopup->size()));
+        }
+        if(mPopup->isVisible())
+        {
+    //        mPopup-
+        }
+        else
+        {
+            mPopup->show();
+        }
+        return;
+    }
     XImage *img = NULL;
     Display *display = NULL;
     QPixmap thumbnail;

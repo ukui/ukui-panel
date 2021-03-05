@@ -131,6 +131,9 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel.plugins.service");
     QDBusConnection::sessionBus().registerService("com.ukui.panel.plugins.service");
     QDBusConnection::sessionBus().registerObject("/taskbar/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
+    QDBusConnection::sessionBus().connect(QString(), QString("/"), "com.ukui.panel", "event", this, SLOT(wl_kwinSigHandler(quint32,int, QString, QString)));
+    printf("\ninit finished\n");
+    //addWindow_wl(QString("application-x-desktop"), QString("ajioajsiof"), 45517);
 }
 
 /************************************************
@@ -149,6 +152,29 @@ UKUITaskBar::~UKUITaskBar()
 /************************************************
 
  ************************************************/
+void UKUITaskBar::wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption) {
+    printf("\nenter in handler\n");
+    qDebug()<<"UKUITaskBar::wl_kwinSigHandler"<<wl_winId<<opNo<<wl_iconName<<wl_caption;
+    if (!opNo) {
+        qDebug()<<" ! opNo";
+        addWindow_wl(wl_iconName, wl_caption, wl_winId);
+    }
+    switch (opNo) {
+    case 1:
+        mKnownWindows.find(wl_winId).value()->setActivateState_wl(false);
+        break;
+    case 2:
+        onWindowRemoved(wl_winId);
+        break;
+    case 3:
+        mKnownWindows.find(wl_winId).value()->setActivateState_wl(true);
+        break;
+    case 4:
+        mKnownWindows.find(wl_winId).value()->wl_widgetUpdateTitle(wl_caption);
+        break;
+    }
+}
+
 bool UKUITaskBar::acceptWindow(WId window) const
 {
     QFlags<NET::WindowTypeMask> ignoreList;
@@ -331,6 +357,62 @@ void UKUITaskBar::groupBecomeEmptySlot()
     }
     mLayout->removeWidget(group);
     group->deleteLater();
+}
+
+void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
+{
+    // If grouping disabled group behaves like regular button
+    const QString group_id = caption;
+    //针对ukui-menu和ukui-sidebar做的特殊处理，及时窗口是普通窗口，也不在任务栏显示
+    if(group_id.compare("ukui-menu")==0 || group_id.compare("ukui-sidebar")==0)
+    {
+        return;
+    }
+    UKUITaskGroup *group = nullptr;
+    auto i_group = mKnownWindows.find(window);
+    if (mKnownWindows.end() != i_group)
+    {
+        if ((*i_group)->groupName() == group_id)
+            group = *i_group;
+        else
+            (*i_group)->onWindowRemoved(window);
+    }
+
+    /*check if window belongs to some existing group
+     * 安卓兼容应用的组名为kydroid-display-window
+     * 需要将安卓兼容目录的分组特性关闭
+    */
+    if (!group && mGroupingEnabled && group_id.compare("kydroid-display-window"))
+    {
+        for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
+        {
+            if ((*i)->groupName() == group_id)
+            {
+                group = *i;
+                break;
+            }
+        }
+    }
+
+    if (!group)
+    {
+        group = new UKUITaskGroup(iconName, caption, window, this);
+        connect(group, SIGNAL(groupBecomeEmpty(QString)), this, SLOT(groupBecomeEmptySlot()));
+        connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
+        connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
+        connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
+            buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
+        });
+
+        //group->setFixedSize(panel()->panelSize(),panel()->panelSize());
+        //group->setFixedSize(40,40);
+        mLayout->addWidget(group) ;
+        group->wl_widgetUpdateTitle(caption);
+        group->setToolButtonsStyle(mButtonStyle);
+    }
+
+    mKnownWindows[window] = group;
+    group->wl_addWindow(window);
 }
 
 /************************************************

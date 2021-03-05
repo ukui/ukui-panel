@@ -128,6 +128,18 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
     }
 }
 
+UKUITaskButton::UKUITaskButton(QString iconName,QString caption, const WId window, UKUITaskBar * taskbar, QWidget *parent) :
+    QToolButton(parent),
+    mIconName(iconName),
+    mCaption(caption),
+    mWindow(window),
+    mParentTaskBar(taskbar),
+    mPlugin(mParentTaskBar->plugin())
+{
+    isWinActivate = true;
+    mIcon = QIcon::fromTheme("application-x-desktop");
+}
+
 /************************************************
 
 ************************************************/

@@ -154,6 +154,83 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
 }
 
+UKUITaskWidget::UKUITaskWidget(QString iconName, const WId window, UKUITaskBar * taskbar, QWidget *parent) :
+    QWidget(parent),
+    mParentTaskBar(taskbar),
+    mWindow(window)
+{
+    //setMinimumWidth(400);
+    //setMinimumHeight(400);
+    status=NORMAL;
+    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
+
+    //for layout
+    mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
+//    mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    mCloseBtn->setIconSize(QSize(19,19));
+    mCloseBtn->setFixedSize(QSize(19,19));
+    mTitleLabel = new QLabel(this);
+    mTitleLabel->setMargin(0);
+    //    mTitleLabel->setContentsMargins(0,0,0,10);
+    //    mTitleLabel->adjustSize();
+    //    mTitleLabel->setStyleSheet("QLabel{background-color: red;}");
+
+    mThumbnailLabel = new QLabel(this);
+    mAppIcon = new QLabel(this);
+    mVWindowsLayout = new QVBoxLayout(this);
+    mTopBarLayout = new QHBoxLayout(this);
+    mTopBarLayout->setContentsMargins(0,0,0,0);
+    //    mTopBarLayout->setAlignment(Qt::AlignVCenter);
+    //    mTopBarLayout->setDirection(QBoxLayout::LeftToRight);
+
+    mTitleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    mAppIcon->setAlignment(Qt::AlignLeft);
+    mAppIcon->setScaledContents(false);
+
+
+    // 自动缩放图片
+    //	titleLabel->setScaledContents(true);
+   // mThumbnailLabel->setScaledContents(true);
+
+    // 设置控件缩放方式
+    QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    sizePolicy.setHorizontalPolicy(QSizePolicy::Expanding);
+    mTitleLabel->setSizePolicy(sizePolicy);
+    mAppIcon->setSizePolicy(sizePolicy);
+    sizePolicy.setVerticalPolicy(QSizePolicy::Expanding);
+
+    //    mTitleLabel->setAttribute(Qt::WA_TranslucentBackground, true);
+    //    mAppIcon->setAttribute(Qt::WA_TranslucentBackground, true);
+    //    mAppIcon->resize(QSize(32,32));
+
+    // 设置控件最大尺寸
+    //mTitleLabel->setFixedHeight(32);
+    mTitleLabel->setMinimumWidth(1);
+    mThumbnailLabel->setMinimumSize(QSize(1, 1));
+
+    mTitleLabel->setContentsMargins(0, 0, 5, 0);
+    //    mTopBarLayout->setSpacing(5);
+    mTopBarLayout->addWidget(mAppIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    mTopBarLayout->addWidget(mTitleLabel, 10, Qt::AlignLeft);
+    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight);
+    //    mTopBarLayout->addStretch();
+//    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
+    //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
+    mVWindowsLayout->addLayout(mTopBarLayout);
+    mVWindowsLayout->addWidget(mThumbnailLabel, Qt::AlignCenter, Qt::AlignCenter);
+    mVWindowsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    this->setLayout(mVWindowsLayout);
+    updateText();
+    updateIcon();
+    //mDNDTimer->setSingleShot(true);
+    //mDNDTimer->setInterval(700);
+    //connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
+    connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
+    connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskWidget::updateIcon);
+    //connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
+}
+
 /************************************************
 
 ************************************************/
@@ -165,6 +242,19 @@ UKUITaskWidget::~UKUITaskWidget()
 /************************************************
 
  ************************************************/
+
+void UKUITaskWidget::wl_updateIcon(QString iconName){
+    mAppIcon->setPixmap(QIcon::fromTheme(iconName).pixmap(QSize(19,19)));
+}
+
+void UKUITaskWidget::wl_updateTitle(QString caption) {
+    mTitleLabel->setText(caption);
+    printf("\n%s\n", caption.toStdString().data());
+    QPalette pa;
+    pa.setColor(QPalette::WindowText,Qt::white);
+    mTitleLabel->setPalette(pa);
+}
+
 void UKUITaskWidget::updateText()
 {
     KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
@@ -307,6 +397,7 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
         //            minimizeApplication();
         //        else
         raiseApplication();
+        
     }
     status = NORMAL;
     update();
@@ -353,6 +444,8 @@ void UKUITaskWidget::closeGroup() {
 
 void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 {
+    if (!mPlugin)
+        return;
     QMenu * menu = new QMenu(tr("Widget"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
     /* 对应预览图右键功能 关闭 还原 最大化  最小化 置顶 取消置顶*/
@@ -375,6 +468,9 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
         emit closeSigtoPop();
 
     });
+    KWindowInfo info(mWindow, NET::WMState);
+    above->setEnabled(info.state() != NET::KeepAbove);
+    clear->setEnabled(info.state() == NET::KeepAbove);
     menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
     plugin()->willShowWindow(menu);
     menu->show();
