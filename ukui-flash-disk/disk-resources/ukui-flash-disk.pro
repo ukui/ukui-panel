@@ -10,14 +10,16 @@ SOURCES += \
          main.cpp \
          mainwindow.cpp \
          UnionVariable.cpp \
-         qclickwidget.cpp
+         qclickwidget.cpp \
+         fdapplication.cpp
 #        Removablemount.cpp
 
 
 HEADERS += \
          UnionVariable.h \
          mainwindow.h \
-         qclickwidget.h
+         qclickwidget.h \
+         fdapplication.h
 #        Removablemount.h
 
 FORMS   += mainwindow.ui

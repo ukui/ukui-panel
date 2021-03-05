@@ -13,21 +13,24 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QFrame>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_MainWindow
 {
 public:
-    QWidget *centralWidget;
+    QFrame *centralWidget;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(400, 300);
-        centralWidget = new QWidget(MainWindow);
+        centralWidget = new QFrame(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
+        centralWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
+        centralWidget->setAttribute(Qt::WA_AlwaysShowToolTips);
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);

@@ -51,6 +51,8 @@ add_executable(ukui-flash-disk
     gpartedinterface.h
         mainwindow.ui
         mainwindow.h
+    fdapplication.cpp
+    fdapplication.h
 )
 
 add_definitions(-DQT_NO_KEYWORDS)

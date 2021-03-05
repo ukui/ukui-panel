@@ -174,6 +174,7 @@ public Q_SLOTS:
     void on_clickPanelToHideInterface();
     void onRequestSendDesktopNotify(QString message);
     void onInsertAbnormalDiskNotify(QString message);
+    void onNotifyWnd(QObject* obj, QEvent *event);
 Q_SIGNALS:
     void clicked();
     void convertShowWindow();
