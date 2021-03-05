@@ -238,21 +238,21 @@ void MainWindow::getDeviceInfo()
     }
 //about volume
 
-    FILE *fp;
-
+    FILE *fp = NULL;
     int a = 0;
-    char buf[128];
+    char buf[128] = {0};
 
     fp = fopen("/proc/cmdline","r");
-    while(fscanf(fp,"%s",buf) >0 )
-    {
-        if(strcmp(buf,"live") == 0)
+    if (fp) {
+        while(fscanf(fp,"%127s",buf) >0 )
         {
-            a++;
+            if(strcmp(buf,"live") == 0)
+            {
+                a++;
+            }
         }
-        qDebug()<<"a"<<a;
+        fclose(fp);
     }
-    fclose(fp);
     if(a > 0)
     {
         QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload false");
@@ -378,21 +378,21 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
 {
     qDebug()<<"volume add";
 
-    FILE *fp;
-
+    FILE *fp = NULL;
     int a = 0;
-    char buf[128];
+    char buf[128] = {0};
 
     fp = fopen("/proc/cmdline","r");
-    while(fscanf(fp,"%s",buf) >0 )
-    {
-        if(strcmp(buf,"live") == 0)
+    if (fp) {
+        while(fscanf(fp,"%127s",buf) > 0)
         {
-            a++;
+            if(strcmp(buf,"live") == 0)
+            {
+                a++;
+            }
         }
-        qDebug()<<"a"<<a;
+        fclose(fp);
     }
-    fclose(fp);
     if(g_volume_get_drive(volume) == NULL)
     {
         *findTeleGVolumeList() << volume;
