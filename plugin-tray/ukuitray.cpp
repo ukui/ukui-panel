@@ -290,7 +290,7 @@ void UKUITray::realign()
 
     if(mStorageIcons.size()<1) mBtn->setVisible(false);
     mLayout->setEnabled(true);
-
+#if 0
     //设置任务栏
     for(int i=0;i<mTrayIcons.size();i++){
     TrayIcon *trayicon = mTrayIcons[i];
@@ -300,6 +300,7 @@ void UKUITray::realign()
     TrayIcon *trayicon = mStorageIcons[i];
     connect(trayicon,&TrayIcon::iconIsMoving,[this](Window id){moveIconToTray(id);});
     }
+#endif
 }
 
 void UKUITray::trayIconSizeRefresh()
