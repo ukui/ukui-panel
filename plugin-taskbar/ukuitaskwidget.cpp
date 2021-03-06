@@ -375,6 +375,9 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
         emit closeSigtoPop();
 
     });
+    KWindowInfo info(mWindow, NET::WMState);
+    above->setEnabled(info.state() != NET::KeepAbove);
+    clear->setEnabled(info.state() == NET::KeepAbove);
     menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
     plugin()->willShowWindow(menu);
     menu->show();
