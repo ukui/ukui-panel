@@ -1,3 +1,10 @@
+ukui-panel (3.0.1-64hw7) v101; urgency=medium
+
+  * 解决更改主屏后，副屏最大化窗口无法占满整个屏幕的bug
+    更新双屏+4k缩放200% 的情况下任务栏位置显示
+
+ --  <hepuyao@kylinos.cn>  Sat, 06 Mar 2021 10:38:53 +0800
+
 ukui-panel (3.0.1-64hw6) v101; urgency=medium
 
   * 解决任务栏重启的bug #40838

@@ -604,6 +604,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
         qDebug("Start: Primary screen geometry is x=%d, y=%d, windth=%d, height=%d", priX, priY, priWid, priHei);
 //        QRect mRect;
 //        mRect.setRect(priX, priY, priWid, priHei);
+#if 0
         if(priWid > 2500 && scale_flag==2 ){
             currentScreen.setRect(priX, priY, priWid/2, priHei/2);
 //            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width()/2, QApplication::desktop()->screenGeometry(0).height()/2);
@@ -613,6 +614,8 @@ void UKUIPanel::setPanelGeometry(bool animate)
             currentScreen.setRect(priX, priY, priWid, priHei);
 //            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width(), QApplication::desktop()->screenGeometry(0).height());
         }
+#endif
+	currentScreen.setRect(priX, priY, priWid, priHei);
         if(priWid==0){
             qDebug("初始化获取到的dbus信号错误，获取的宽度为0");
             currentScreen = QGuiApplication::screens().at(0)->geometry();
