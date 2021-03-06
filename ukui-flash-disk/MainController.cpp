@@ -33,6 +33,7 @@ MainController::MainController()
 {
     init();
     m_DiskWindow = new MainWindow;         //main process singleton object
+    connect(this, &MainController::notifyWnd, m_DiskWindow, &MainWindow::onNotifyWnd);
 }
 
 MainController::~MainController()

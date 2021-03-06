@@ -22,6 +22,11 @@ private:
     void init();
     void creatDBusService();
     int IsNotRunning();
+
+public:
+Q_SIGNALS:
+    void notifyWnd(QObject* obj, QEvent *event);
+    
 private:
     static MainController *mSelf;
     MainWindow *m_DiskWindow;

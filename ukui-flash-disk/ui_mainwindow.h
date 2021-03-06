@@ -13,22 +13,23 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
+#include "fdframe.h"
 
 QT_BEGIN_NAMESPACE
 
 class Ui_MainWindow
 {
 public:
-    QWidget *centralWidget;
+    FDFrame *centralWidget;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(400, 300);
-        centralWidget = new QWidget(MainWindow);
+        centralWidget = new FDFrame(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        MainWindow->setCentralWidget(centralWidget);
+        MainWindow->layout()->addWidget(centralWidget);
 
         retranslateUi(MainWindow);
 
