@@ -33,6 +33,9 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 #define DISTANCEPADDING 6
 #define DISTANCEMEND 2
 
+#define FLASHDISKITEM_TITLE_HEIGHT  45
+#define FLASHDISKITEM_CONTENT_HEIGHT  45
+
 /**
  * QT主题
  */

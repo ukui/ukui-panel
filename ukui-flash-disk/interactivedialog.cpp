@@ -142,8 +142,6 @@ interactiveDialog::~interactiveDialog()
 
 void interactiveDialog::paintEvent(QPaintEvent *event)
 {
-    qDebug()<<__FUNCTION__<<"---";
-
 //    QStyleOption opt;
 //    opt.init(this);
 //    QPainter p(this);

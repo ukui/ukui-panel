@@ -236,7 +236,6 @@ QClickWidget::QClickWidget(QWidget *parent,
         m_nameDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         QString VolumeName = getElidedText(m_nameDis1_label->font(), m_nameDis1, 120);
         m_nameDis1_label->adjustSize();
-        qDebug()<<m_nameDis1_label->width()<<"-----------------------"<<m_nameDis1_label->height();
         m_nameDis1_label->setText("- "+VolumeName+":");
         m_capacityDis1_label = new QLabel(disWidgetNumOne);
 
@@ -244,9 +243,7 @@ QClickWidget::QClickWidget(QWidget *parent,
 //        QString str_capacityDis1Show = getElidedText(m_capacityDis1_label->font(),str_capacityDis1,200);
         m_capacityDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
         m_capacityDis1_label->setText("("+str_capacityDis1+")");
-        qDebug()<<"size_human"<<str_capacityDis1;
         m_capacityDis1_label->setObjectName("capacityLabel");
-        qDebug()<<m_capacityDis1_label->width()<<"++++++++++++++++++++++++"<<m_capacityDis1_label->height();
         onevolume_h_BoxLayout->setSpacing(0);
         onevolume_h_BoxLayout->addSpacing(50);
         onevolume_h_BoxLayout->setMargin(0);   //使得widget上的label得以居中显示
@@ -260,14 +257,12 @@ QClickWidget::QClickWidget(QWidget *parent,
         disWidgetNumOne->installEventFilter(this);
         disWidgetNumOne->setFixedHeight(30);
         main_V_BoxLayout->addLayout(drivename_H_BoxLayout);
-        if(m_pathDis1 != "")
-        {
-            qDebug() <<"path1"<< m_pathDis1;
-            main_V_BoxLayout->addWidget(disWidgetNumOne);
+        if (m_pathDis1.isEmpty()) {
+            m_capacityDis1_label->setText(tr("Unmounted"));
         }
+        main_V_BoxLayout->addWidget(disWidgetNumOne);
         this->setLayout(main_V_BoxLayout);
         this->setFixedSize(276,68);
-        qDebug()<<"qlcked over";
     }
 //when the drive has two volumes
     if(m_Num == 2)
@@ -628,37 +623,44 @@ void QClickWidget::mouseReleaseEvent(QMouseEvent *ev)
 //click the first area to show the interface
 void QClickWidget::on_volume1_clicked()
 {
-    QString aaa = "peony "+m_pathDis1;
-    QProcess::startDetached(aaa.toUtf8().data());
-    this->topLevelWidget()->hide();
+    if (!m_pathDis1.isEmpty()) {
+        QString aaa = "peony "+m_pathDis1;
+        QProcess::startDetached(aaa.toUtf8().data());
+        this->topLevelWidget()->hide();
+    }
 }
 
 //click the second area to show the interface
 void QClickWidget::on_volume2_clicked()
 {
-    QString aaa = "peony "+m_pathDis2;
-    QProcess::startDetached(aaa.toUtf8().data());
-    this->topLevelWidget()->hide();
+    if (!m_pathDis2.isEmpty()) {
+        QString aaa = "peony "+m_pathDis2;
+        QProcess::startDetached(aaa.toUtf8().data());
+        this->topLevelWidget()->hide();
+    }
 }
 
 //click the third area to show the interface
 void QClickWidget::on_volume3_clicked()
 {
-    QProcess::startDetached("peony "+m_pathDis3);
-    this->topLevelWidget()->hide();
+    if (!m_pathDis3.isEmpty()) {
+        QProcess::startDetached("peony "+m_pathDis3);
+        this->topLevelWidget()->hide();
+    }
 }
 
 //click the forth area to show the interface
 void QClickWidget::on_volume4_clicked()
 {
-    QProcess::startDetached("peony "+m_pathDis4);
-    this->topLevelWidget()->hide();
+    if (!m_pathDis4.isEmpty()) {
+        QProcess::startDetached("peony "+m_pathDis4);
+        this->topLevelWidget()->hide();
+    }
 }
 
 void QClickWidget::switchWidgetClicked()
 {
     Q_EMIT clickedConvert();
-
 }
 
 QPixmap QClickWidget::drawSymbolicColoredPixmap(const QPixmap &source)
@@ -728,7 +730,7 @@ QPixmap QClickWidget::drawSymbolicColoredPixmap(const QPixmap &source)
 QString QClickWidget::size_human(qlonglong capacity)
 {
     //    float capacity = this->size();
-    if(capacity != NULL && capacity != 1)
+    if(capacity != 0 && capacity != 1)
     {
         int conversionNum = 0;
         QStringList list;
