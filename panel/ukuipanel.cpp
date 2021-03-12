@@ -615,7 +615,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
 //            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width(), QApplication::desktop()->screenGeometry(0).height());
         }
 #endif
-	currentScreen.setRect(priX, priY, priWid, priHei);
+        currentScreen.setRect(priX, priY, priWid, priHei);
         if(priWid==0){
             qDebug("初始化获取到的dbus信号错误，获取的宽度为0");
             currentScreen = QGuiApplication::screens().at(0)->geometry();

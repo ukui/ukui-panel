@@ -1699,16 +1699,18 @@ void MainWindow::moveBottomNoBase()
     }
 
     int x=getScreenGeometry("x");
-    int y=QApplication::primaryScreen()->geometry().y();
+    int y=getScreenGeometry("y");
+    int width=getScreenGeometry("width");
+    int height=getScreenGeometry("height");
 
     if(position==0)
-        this->setGeometry(QRect(x + QApplication::primaryScreen()->geometry().width()-this->width() - DISTANCEMEND - DISTANCEPADDING,y+ QApplication::primaryScreen()->geometry().height()-panelSize-this->height() - DISTANCEPADDING,this->width(),this->height()));
+        this->setGeometry(QRect(x + width-this->width() - DISTANCEMEND - DISTANCEPADDING,y+ height-panelSize-this->height() - DISTANCEPADDING,this->width(),this->height()));
     else if(position==1)
-        this->setGeometry(QRect(x + QApplication::primaryScreen()->geometry().width()-this->width() - DISTANCEMEND - DISTANCEPADDING,y+ panelSize + DISTANCEPADDING,this->width(),this->height()));  // Style::minw,Style::minh the width and the height of the interface  which you want to show
+        this->setGeometry(QRect(x + width-this->width() - DISTANCEMEND - DISTANCEPADDING,y+ panelSize + DISTANCEPADDING,this->width(),this->height()));  // Style::minw,Style::minh the width and the height of the interface  which you want to show
     else if(position==2)
-        this->setGeometry(QRect(x+panelSize + DISTANCEPADDING,y + QApplication::primaryScreen()->geometry().height() - this->height() - DISTANCEPADDING,this->width(),this->height()));
+        this->setGeometry(QRect(x+panelSize + DISTANCEPADDING,y + height - this->height() - DISTANCEPADDING,this->width(),this->height()));
     else
-        this->setGeometry(QRect(x+QApplication::primaryScreen()->geometry().width()-panelSize-this->width() - DISTANCEPADDING,y + QApplication::primaryScreen()->geometry().height() - this->height() - DISTANCEPADDING,this->width(),this->height()));
+        this->setGeometry(QRect(x+width-panelSize-this->width() - DISTANCEPADDING,y + height - this->height() - DISTANCEPADDING,this->width(),this->height()));
 }
 
 int MainWindow::getScreenGeometry(QString methodName)
