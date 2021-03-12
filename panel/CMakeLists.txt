@@ -37,6 +37,7 @@ set(PUB_HEADERS
     common/ukuigridlayout.h
     common/ukuiglobals.h
     common_fun/listengsettings.h
+    common_fun/ukuipanel_infomation.h
     ukuicontrolstyle.h
     highlight-effect.cpp
     customstyle.h
@@ -63,6 +64,7 @@ set(SOURCES
 
     common/ukuigridlayout.cpp
     common_fun/listengsettings.cpp
+    common_fun/ukuipanel_infomation.cpp
     ukuicontrolstyle.cpp
     customstyle.cpp
 )
