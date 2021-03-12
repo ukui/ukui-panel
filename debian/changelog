@@ -1,3 +1,9 @@
+ukui-panel (3.0.1-64hw8) v101; urgency=medium
+
+  * 更新u盘位置
+
+ --  <hepuyao@kylinos.cn>  Fri, 12 Mar 2021 10:11:34 +0800
+
 ukui-panel (3.0.1-64hw7) v101; urgency=medium
 
   * 解决更改主屏后，副屏最大化窗口无法占满整个屏幕的bug
