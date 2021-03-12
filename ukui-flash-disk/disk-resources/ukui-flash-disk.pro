@@ -11,7 +11,10 @@ SOURCES += \
          mainwindow.cpp \
          UnionVariable.cpp \
          qclickwidget.cpp \
-         fdapplication.cpp
+         fdapplication.cpp \
+         fdframe.cpp \
+         flashdiskdata.cpp \
+         fdclickwidget.cpp 
 #        Removablemount.cpp
 
 
@@ -19,9 +22,15 @@ HEADERS += \
          UnionVariable.h \
          mainwindow.h \
          qclickwidget.h \
-         fdapplication.h
+         fdapplication.h \
+         fdframe.h \
+         flashdiskdata.h \
+         fdclickwidget.h 
 #        Removablemount.h
 
 FORMS   += mainwindow.ui
 
+TRANSLATIONS += \
+    ukui-flash-disk_tr.ts \
+    ukui-flash-disk_zh_CN.ts
 

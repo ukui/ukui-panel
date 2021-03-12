@@ -208,6 +208,7 @@ void ejectInterface::paintEvent(QPaintEvent *event)
 void ejectInterface::on_interface_hide()
 {
     this->hide();
+    this->deleteLater();
 }
 
 //set the location of the eject interface

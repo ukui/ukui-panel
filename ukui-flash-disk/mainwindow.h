@@ -35,6 +35,8 @@
 #include "ejectInterface.h"
 #include "mainwindow.h"
 #include "MacroFile.h"
+#include "flashdiskdata.h"
+#include "fdclickwidget.h"
 
 
 namespace Ui {
@@ -54,9 +56,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void MainWindowShow();
-    void GpartedStartedWindowShow();
-
+    void MainWindowShow(bool isUpdate = false);
 
 protected:
     void hideEvent(QHideEvent event);
@@ -84,6 +84,15 @@ private:
                  QString pathDis3,
                  QString pathDis4,
                  int linestatus);
+    void newarea(unsigned uDiskNo,
+                 QString strDriveId,
+                 QString strVolumeId,
+                 QString strMountId,
+                 QString driveName,
+                 QString volumeName,
+                 quint64 capacityDis,
+                 QString strMountUri,
+                 int linestatus);
     void moveBottomRight();
     void moveBottomDirect(GDrive *drive);
     void moveBottomNoBase();
@@ -100,6 +109,11 @@ private:
     static void mount_added_callback (GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this);
     static void mount_removed_callback (GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this);
     void ifgetPinitMount();
+    static void frobnitz_force_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_this);
+    static void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_this);
+    static void frobnitz_normal_result_volume_eject(GVolume *source_object,GAsyncResult *res,MainWindow *p_this);
+    static void frobnitz_force_result_unmount(GMount *source_object,GAsyncResult *res,MainWindow *p_this);
+    static void AsyncUnmount(QString strMountRoot,MainWindow *p_this);
 
 private:
     QIcon iconSystray;
@@ -117,6 +131,7 @@ private:
     quint64 totalDis4;
 //    QClickWidget *open_widget;
     QClickWidget *open_widget;
+    FDClickWidget *m_fdClickWidget;
     int hign;
     int VolumeNum;
     QTimer *interfaceHideTime;
@@ -150,11 +165,15 @@ private:
     QMap<GDrive *,QList<GMount *>> deviceMap;
     QMap<GDrive *,QList<GMount *>>::Iterator it;
     int driveVolumeNum;
+    FlashDiskData* m_dataFlashDisk;
+    bool m_bIsMouseInTraIcon = false;
+    bool m_bIsMouseInCentral = false;
     //authority
     //QDBusInterface *systemIface;
 public:
     QSystemTrayIcon *m_systray;
     ejectInterface *m_eject;
+    interactiveDialog *chooseDialog = nullptr;
 
     void initTransparentState();
     void initThemeMode();
@@ -170,14 +189,17 @@ public:
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
     void onConvertShowWindow();
-    void on_Maininterface_hide();
+    void onConvertUpdateWindow(QString strDevName, unsigned uDevType);
+    void onMaininterfacehide();
     void on_clickPanelToHideInterface();
     void onRequestSendDesktopNotify(QString message);
     void onInsertAbnormalDiskNotify(QString message);
     void onNotifyWnd(QObject* obj, QEvent *event);
+    void onClickedEjectItem(FDClickWidget* pThis, QString strDriveId, QString strVolumeId, QString strMountId);
 Q_SIGNALS:
     void clicked();
     void convertShowWindow();
+    void convertUpdateWindow(QString, unsigned);
     void unloadMount();
     void telephoneMount();
 protected:
