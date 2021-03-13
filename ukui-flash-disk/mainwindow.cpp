@@ -109,7 +109,7 @@ void MainWindow::onRequestSendDesktopNotify(QString message)
     <<QStringList()
     <<QVariantMap()
     <<(int)-1;
-    iface.callWithArgumentList(QDBus::AutoDetect,"Notify",args);
+    iface.callWithArgumentList(QDBus::NoBlock,"Notify",args);
 }
 
 void MainWindow::onInsertAbnormalDiskNotify(QString message)
@@ -127,7 +127,7 @@ void MainWindow::onInsertAbnormalDiskNotify(QString message)
     <<QStringList()
     <<QVariantMap()
     <<(int)-1;
-    iface.callWithArgumentList(QDBus::AutoDetect,"Notify",args);
+    iface.callWithArgumentList(QDBus::NoBlock,"Notify",args);
 }
 
 void MainWindow::onNotifyWnd(QObject* obj, QEvent *event)
@@ -227,7 +227,7 @@ void MainWindow::getDeviceInfo()
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
             if(driveInfo.isCanEject || driveInfo.isCanStop) {
                 if(!g_str_has_prefix(devPath,"/dev/sda")) {
-                    if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/sd")) {
+                    if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
                         GList* gdriveVolumes = g_drive_get_volumes(gdrive);
                         if (gdriveVolumes) {
                             for(lVolume = gdriveVolumes; lVolume != NULL; lVolume = lVolume->next){ //遍历驱动器上的所有卷设备
@@ -271,10 +271,14 @@ void MainWindow::getDeviceInfo()
                                         }
                                         // get mount total size
                                         GFile *fileRoot = g_mount_get_root(mount);
-                                        GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                                        volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                                        g_object_unref(info);
-                                        g_object_unref(fileRoot);
+                                        if (fileRoot) {
+                                            GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                                            if (info) {
+                                                volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                                                g_object_unref(info);
+                                            }
+                                            g_object_unref(fileRoot);
+                                        }
                                         // get mount uri
                                         GFile *root = g_mount_get_default_location(mount);
                                         if (root) {
@@ -337,7 +341,7 @@ void MainWindow::getDeviceInfo()
                 bool isValidMount = true;
                 char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
                 if (devPath) {
-                    if (!(g_str_has_prefix(devPath,"/dev/sr") || (g_str_has_prefix(devPath,"/dev/sd") 
+                    if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || (g_str_has_prefix(devPath,"/dev/sd") 
                             && !g_str_has_prefix(devPath,"/dev/sda")))) {
                         g_free(devPath);
                         continue;
@@ -381,10 +385,14 @@ void MainWindow::getDeviceInfo()
                         }
                         // get mount total size
                         GFile *fileRoot = g_mount_get_root(mount);
-                        GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                        volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                        g_object_unref(info);
-                        g_object_unref(fileRoot);
+                        if (fileRoot) {
+                            GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                            if (info) {
+                                volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                                g_object_unref(info);
+                            }
+                            g_object_unref(fileRoot);
+                        }
                         // get mount uri
                         GFile *root = g_mount_get_default_location(mount);
                         if (root) {
@@ -411,7 +419,7 @@ void MainWindow::getDeviceInfo()
                     }
                     g_object_unref(mount);
                 } else {
-                    if (volumeInfo.isCanEject) {
+                    if (volumeInfo.isCanEject || volumeInfo.isCanMount) {
                         if(ifsettings->get(IFAUTOLOAD).toBool()) {
                             g_volume_mount(volume,
                                     G_MOUNT_MOUNT_NONE,
@@ -455,7 +463,7 @@ void MainWindow::getDeviceInfo()
                         driveInfo.isRemovable = g_drive_is_removable(gdrive);
                         if(driveInfo.isCanEject || driveInfo.isCanStop) {
                             if(!g_str_has_prefix(devPath,"/dev/sda")) {
-                                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/sd")) {
+                                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
                                     FDMountInfo mountInfo;
                                     bool isValidMount = true;
                                     mountInfo.isCanEject = g_mount_can_eject(gmount);
@@ -473,10 +481,14 @@ void MainWindow::getDeviceInfo()
                                         }
                                         // get mount total size
                                         GFile *fileRoot = g_mount_get_root(gmount);
-                                        GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                                        mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                                        g_object_unref(info);
-                                        g_object_unref(fileRoot);
+                                        if (fileRoot) {
+                                            GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                                            if (info) {
+                                                mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                                                g_object_unref(info);
+                                            }
+                                            g_object_unref(fileRoot);
+                                        }
                                         // get mount uri
                                         GFile *root = g_mount_get_default_location(gmount);
                                         if (root) {
@@ -530,10 +542,14 @@ void MainWindow::getDeviceInfo()
                         }
                         // get mount total size
                         GFile *fileRoot = g_mount_get_root(gmount);
-                        GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                        mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                        g_object_unref(info);
-                        g_object_unref(fileRoot);
+                        if (fileRoot) {
+                            GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                            if (info) {
+                                mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                                g_object_unref(info);
+                            }
+                            g_object_unref(fileRoot);
+                        }
                         // get mount uri
                         GFile *root = g_mount_get_default_location(gmount);
                         if (root) {
@@ -574,6 +590,7 @@ void MainWindow::getDeviceInfo()
     } else {
         m_systray->hide();
     }
+    m_dataFlashDisk->OutputInfos();
 }
 
 void MainWindow::onConvertShowWindow()
@@ -695,7 +712,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
         bool isValidMount = true;
         char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
         if (devPath) {
-            if (!(g_str_has_prefix(devPath,"/dev/sr") || (g_str_has_prefix(devPath,"/dev/sd")
+            if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || (g_str_has_prefix(devPath,"/dev/sd")
                     && !g_str_has_prefix(devPath,"/dev/sda")))) {
                 g_free(devPath);
                 return;
@@ -740,10 +757,14 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                 isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(volumeInfo.mountInfo));
                 // get mount total size
                 GFile *fileRoot = g_mount_get_root(mount);
-                GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                g_object_unref(info);
-                g_object_unref(fileRoot);
+                if (fileRoot) {
+                    GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                    if (info) {
+                        volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                        g_object_unref(info);
+                    }
+                    g_object_unref(fileRoot);
+                }
                 // get mount uri
                 GFile *root = g_mount_get_default_location(mount);
                 if (root) {
@@ -770,7 +791,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             }
             g_object_unref(mount);
         } else {
-            if (volumeInfo.isCanEject) {
+            if (volumeInfo.isCanEject || volumeInfo.isCanMount) {
                 if(p_this->ifsettings->get(IFAUTOLOAD).toBool()) {
                     g_volume_mount(volume,
                                 G_MOUNT_MOUNT_NONE,
@@ -802,7 +823,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
 
             if(driveInfo.isCanEject || driveInfo.isCanStop) {
                 if(!g_str_has_prefix(devPath,"/dev/sda")) {
-                    if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/sd")) {
+                    if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
                         char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
                         if (volumeId) {
                             volumeInfo.strId = volumeId;
@@ -838,10 +859,14 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                                     isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(volumeInfo.mountInfo));
                                     // get mount total size
                                     GFile *fileRoot = g_mount_get_root(mount);
-                                    GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                                    volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                                    g_object_unref(info);
-                                    g_object_unref(fileRoot);
+                                    if (fileRoot) {
+                                        GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                                        if (info) {
+                                            volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                                            g_object_unref(info);
+                                        }
+                                        g_object_unref(fileRoot);
+                                    }
                                     // get mount uri
                                     GFile *root = g_mount_get_default_location(mount);
                                     if (root) {
@@ -989,10 +1014,22 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     GFile *root = g_mount_get_default_location(mount);
     // get mount total size
     GFile *fileRoot = g_mount_get_root(mount);
-    GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-    mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-    g_object_unref(info);
-    g_object_unref(fileRoot);
+    if (fileRoot) {
+        unsigned uRetryTime = 3;
+        unsigned uDelayTime = 300000;
+        while (uRetryTime > 0) {
+            GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+            if (info) {
+                mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                g_object_unref(info);
+                break;
+            } else {
+                usleep(uDelayTime);
+            }
+            uRetryTime --;
+        }
+        g_object_unref(fileRoot);
+    }
     // get mount uri
     if (root) {
         mountInfo.isNativeDev = g_file_is_native(root);     //判断设备是本地设备or网络设备
@@ -1164,10 +1201,22 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
             mountInfo.isCanUnmount = g_mount_can_unmount(gmount);
             // get mount total size
             GFile *fileRoot = g_mount_get_root(gmount);
-            GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-            mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-            g_object_unref(info);
-            g_object_unref(fileRoot);
+            if (fileRoot) {
+                unsigned uRetryTime = 3;
+                unsigned uDelayTime = 300000;
+                while (uRetryTime > 0) {
+                    GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                    if (info) {
+                        mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                        g_object_unref(info);
+                        break;
+                    } else {
+                        usleep(uDelayTime);
+                    }
+                    uRetryTime --;
+                }
+                g_object_unref(fileRoot);
+            }
             // get mount uri
             GFile *root = g_mount_get_default_location(gmount);
             if (root) {
@@ -1446,7 +1495,6 @@ void MainWindow::MainWindowShow(bool isUpdate)
 #else
 //    QString convertStyle = "#centralWidget{background:rgba(19,19,20," + strTrans + ");}";
 #endif
-
     if(ui->centralWidget != NULL)
     {
         //cancel the connection between the timeout signal and main interface hiding
@@ -1484,7 +1532,6 @@ void MainWindow::MainWindowShow(bool isUpdate)
             listItem->deleteLater();
         }
     }
-
     //Convenient interface layout for all drives
     map<string, FDDriveInfo>& listDriveInfo = m_dataFlashDisk->getDevInfoWithDrive();
     if (!listDriveInfo.empty()) {
@@ -1696,7 +1743,6 @@ void MainWindow::MainWindowShow(bool isUpdate)
             }
         }
     }
-
     if (uDiskCount > 0) {
         uVolumeCount = uVolumeCount < uDiskCount ? uDiskCount : uVolumeCount;
         hign = uDiskCount*FLASHDISKITEM_TITLE_HEIGHT+uVolumeCount*FLASHDISKITEM_CONTENT_HEIGHT;
@@ -1705,7 +1751,6 @@ void MainWindow::MainWindowShow(bool isUpdate)
         hign = 0;
         ui->centralWidget->setFixedSize(0, 0);
     }
-
     moveBottomNoBase();
     ui->centralWidget->show();
 }
