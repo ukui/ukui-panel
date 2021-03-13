@@ -1,3 +1,9 @@
+ukui-panel (3.0.1-64hw9) v101; urgency=medium
+
+  * 任务栏上wayland应用显示图标
+
+ --  <hepuyao@kylinos.cn>  Sat, 13 Mar 2021 15:36:54 +0800
+
 ukui-panel (3.0.1-64hw8) v101; urgency=medium
 
   * 更新u盘位置
