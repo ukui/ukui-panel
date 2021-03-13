@@ -153,11 +153,11 @@ UKUITaskBar::~UKUITaskBar()
 
  ************************************************/
 void UKUITaskBar::wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption) {
-    printf("\nenter in handler\n");
+//    printf("\nenter in handler\n");
     qDebug()<<"UKUITaskBar::wl_kwinSigHandler"<<wl_winId<<opNo<<wl_iconName<<wl_caption;
     if (!opNo) {
         qDebug()<<" ! opNo";
-        addWindow_wl(wl_iconName, wl_caption, wl_winId);
+//        addWindow_wl(wl_iconName, wl_caption, wl_winId);
     }
     switch (opNo) {
     case 1:
@@ -170,6 +170,7 @@ void UKUITaskBar::wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconN
         mKnownWindows.find(wl_winId).value()->setActivateState_wl(true);
         break;
     case 4:
+        addWindow_wl(wl_iconName, wl_caption, wl_winId);
         mKnownWindows.find(wl_winId).value()->wl_widgetUpdateTitle(wl_caption);
         break;
     }
@@ -363,11 +364,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
 {
     // If grouping disabled group behaves like regular button
     const QString group_id = caption;
-    //针对ukui-menu和ukui-sidebar做的特殊处理，及时窗口是普通窗口，也不在任务栏显示
-    if(group_id.compare("ukui-menu")==0 || group_id.compare("ukui-sidebar")==0)
-    {
-        return;
-    }
+    qDebug()<<"*********************************id**************"<<group_id;
     UKUITaskGroup *group = nullptr;
     auto i_group = mKnownWindows.find(window);
     if (mKnownWindows.end() != i_group)
@@ -376,22 +373,6 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
             group = *i_group;
         else
             (*i_group)->onWindowRemoved(window);
-    }
-
-    /*check if window belongs to some existing group
-     * 安卓兼容应用的组名为kydroid-display-window
-     * 需要将安卓兼容目录的分组特性关闭
-    */
-    if (!group && mGroupingEnabled && group_id.compare("kydroid-display-window"))
-    {
-        for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
-        {
-            if ((*i)->groupName() == group_id)
-            {
-                group = *i;
-                break;
-            }
-        }
     }
 
     if (!group)
@@ -404,6 +385,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
             buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
         });
 
+        group->setIcon(QIcon::fromTheme(group_id));
         //group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         //group->setFixedSize(40,40);
         mLayout->addWidget(group) ;
