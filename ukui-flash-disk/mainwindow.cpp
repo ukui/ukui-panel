@@ -226,102 +226,100 @@ void MainWindow::getDeviceInfo()
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
             if(driveInfo.isCanEject || driveInfo.isCanStop) {
-                if(!g_str_has_prefix(devPath,"/dev/sda")) {
-                    if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
-                        GList* gdriveVolumes = g_drive_get_volumes(gdrive);
-                        if (gdriveVolumes) {
-                            for(lVolume = gdriveVolumes; lVolume != NULL; lVolume = lVolume->next){ //遍历驱动器上的所有卷设备
-                                GVolume* volume = (GVolume *)lVolume->data;
-                                FDVolumeInfo volumeInfo;
-                                bool isValidMount = true;
-                                char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
-                                if (volumeId) {
-                                    volumeInfo.strId = volumeId;
-                                    g_free(volumeId);
-                                } else {
-                                    continue ;
-                                }
-                                char *volumeName = g_volume_get_name(volume);
-                                if (volumeName) {
-                                    volumeInfo.strName = volumeName;
-                                    g_free(volumeName);
-                                }
-                                char *strDevName = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
-                                if (strDevName) {
-                                    volumeInfo.strDevName = strDevName;
-                                    g_free(strDevName);
-                                }
-                                volumeInfo.isCanMount = g_volume_can_mount(volume);
-                                volumeInfo.isCanEject = g_volume_can_eject(volume);
-                                volumeInfo.isShouldAutoMount = g_volume_should_automount(volume);
-                                GMount* mount = g_volume_get_mount(volume); //get当前卷设备的挂载信息
-                                if (mount) {                  //该卷设备已挂载
-                                    volumeInfo.mountInfo.isCanEject = g_mount_can_eject(mount);
-                                    volumeInfo.mountInfo.isCanUnmount = g_mount_can_unmount(mount);
-                                    if (volumeInfo.mountInfo.isCanEject || volumeInfo.mountInfo.isCanUnmount) {
-                                        char *mountId = g_mount_get_uuid(mount);
-                                        if (mountId) {
-                                            volumeInfo.mountInfo.strId = mountId;
-                                            g_free(mountId);
+                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
+                    GList* gdriveVolumes = g_drive_get_volumes(gdrive);
+                    if (gdriveVolumes) {
+                        for(lVolume = gdriveVolumes; lVolume != NULL; lVolume = lVolume->next){ //遍历驱动器上的所有卷设备
+                            GVolume* volume = (GVolume *)lVolume->data;
+                            FDVolumeInfo volumeInfo;
+                            bool isValidMount = true;
+                            char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                            if (volumeId) {
+                                volumeInfo.strId = volumeId;
+                                g_free(volumeId);
+                            } else {
+                                continue ;
+                            }
+                            char *volumeName = g_volume_get_name(volume);
+                            if (volumeName) {
+                                volumeInfo.strName = volumeName;
+                                g_free(volumeName);
+                            }
+                            char *strDevName = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                            if (strDevName) {
+                                volumeInfo.strDevName = strDevName;
+                                g_free(strDevName);
+                            }
+                            volumeInfo.isCanMount = g_volume_can_mount(volume);
+                            volumeInfo.isCanEject = g_volume_can_eject(volume);
+                            volumeInfo.isShouldAutoMount = g_volume_should_automount(volume);
+                            GMount* mount = g_volume_get_mount(volume); //get当前卷设备的挂载信息
+                            if (mount) {                  //该卷设备已挂载
+                                volumeInfo.mountInfo.isCanEject = g_mount_can_eject(mount);
+                                volumeInfo.mountInfo.isCanUnmount = g_mount_can_unmount(mount);
+                                if (volumeInfo.mountInfo.isCanEject || volumeInfo.mountInfo.isCanUnmount) {
+                                    char *mountId = g_mount_get_uuid(mount);
+                                    if (mountId) {
+                                        volumeInfo.mountInfo.strId = mountId;
+                                        g_free(mountId);
+                                    }
+                                    char *mountName = g_mount_get_name(mount);
+                                    if (mountName) {
+                                        volumeInfo.mountInfo.strName = mountName;
+                                        g_free(mountName);
+                                    }
+                                    // get mount total size
+                                    GFile *fileRoot = g_mount_get_root(mount);
+                                    if (fileRoot) {
+                                        GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                                        if (info) {
+                                            volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                                            g_object_unref(info);
                                         }
-                                        char *mountName = g_mount_get_name(mount);
-                                        if (mountName) {
-                                            volumeInfo.mountInfo.strName = mountName;
-                                            g_free(mountName);
-                                        }
-                                        // get mount total size
-                                        GFile *fileRoot = g_mount_get_root(mount);
-                                        if (fileRoot) {
-                                            GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                                            if (info) {
-                                                volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                                                g_object_unref(info);
-                                            }
-                                            g_object_unref(fileRoot);
-                                        }
-                                        // get mount uri
-                                        GFile *root = g_mount_get_default_location(mount);
-                                        if (root) {
-                                            volumeInfo.mountInfo.isNativeDev = g_file_is_native(root);     //判断设备是本地设备or网络设备
-                                            char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
-                                            if (mountUri) {
-                                                volumeInfo.mountInfo.strUri = mountUri;
-                                                if (g_str_has_prefix(mountUri,"file:///data")) {
-                                                    isValidMount = false;
-                                                } else {
-                                                    if (volumeInfo.mountInfo.strId.empty()) {
-                                                        volumeInfo.mountInfo.strId = volumeInfo.mountInfo.strUri;
-                                                    }
+                                        g_object_unref(fileRoot);
+                                    }
+                                    // get mount uri
+                                    GFile *root = g_mount_get_default_location(mount);
+                                    if (root) {
+                                        volumeInfo.mountInfo.isNativeDev = g_file_is_native(root);     //判断设备是本地设备or网络设备
+                                        char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
+                                        if (mountUri) {
+                                            volumeInfo.mountInfo.strUri = mountUri;
+                                            if (g_str_has_prefix(mountUri,"file:///data")) {
+                                                isValidMount = false;
+                                            } else {
+                                                if (volumeInfo.mountInfo.strId.empty()) {
+                                                    volumeInfo.mountInfo.strId = volumeInfo.mountInfo.strUri;
                                                 }
-                                                g_free(mountUri);
                                             }
-                                            char *tooltip = g_file_get_parse_name(root);      //提示，即文件的解释
-                                            if (tooltip) {
-                                                volumeInfo.mountInfo.strTooltip =tooltip;
-                                                g_free(tooltip);
-                                            }
-                                            g_object_unref(root);
+                                            g_free(mountUri);
                                         }
-                                    }
-                                    g_object_unref(mount);
-                                } else {
-                                    if(ifsettings->get(IFAUTOLOAD).toBool()) {
-                                        g_volume_mount(volume,
-                                                G_MOUNT_MOUNT_NONE,
-                                                nullptr,
-                                                nullptr,
-                                                nullptr,
-                                                nullptr);
+                                        char *tooltip = g_file_get_parse_name(root);      //提示，即文件的解释
+                                        if (tooltip) {
+                                            volumeInfo.mountInfo.strTooltip =tooltip;
+                                            g_free(tooltip);
+                                        }
+                                        g_object_unref(root);
                                     }
                                 }
-                                if (isValidMount) {
-                                    driveInfo.listVolumes[volumeInfo.strId] = volumeInfo;
+                                g_object_unref(mount);
+                            } else {
+                                if(ifsettings->get(IFAUTOLOAD).toBool()) {
+                                    g_volume_mount(volume,
+                                            G_MOUNT_MOUNT_NONE,
+                                            nullptr,
+                                            nullptr,
+                                            nullptr,
+                                            nullptr);
                                 }
                             }
-                            g_list_free(gdriveVolumes);
+                            if (isValidMount) {
+                                driveInfo.listVolumes[volumeInfo.strId] = volumeInfo;
+                            }
                         }
-                        m_dataFlashDisk->addDriveInfo(driveInfo);
+                        g_list_free(gdriveVolumes);
                     }
+                    m_dataFlashDisk->addDriveInfo(driveInfo);
                 }
             }
             g_free(devPath);
@@ -341,8 +339,7 @@ void MainWindow::getDeviceInfo()
                 bool isValidMount = true;
                 char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
                 if (devPath) {
-                    if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || (g_str_has_prefix(devPath,"/dev/sd") 
-                            && !g_str_has_prefix(devPath,"/dev/sda")))) {
+                    if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd"))) {
                         g_free(devPath);
                         continue;
                     }
@@ -462,61 +459,59 @@ void MainWindow::getDeviceInfo()
                         driveInfo.isCanStart = g_drive_can_start(gdrive);
                         driveInfo.isRemovable = g_drive_is_removable(gdrive);
                         if(driveInfo.isCanEject || driveInfo.isCanStop) {
-                            if(!g_str_has_prefix(devPath,"/dev/sda")) {
-                                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
-                                    FDMountInfo mountInfo;
-                                    bool isValidMount = true;
-                                    mountInfo.isCanEject = g_mount_can_eject(gmount);
-                                    mountInfo.isCanUnmount = g_mount_can_unmount(gmount);
-                                    if (mountInfo.isCanEject || mountInfo.isCanUnmount) {
-                                        char *mountId = g_mount_get_uuid(gmount);
-                                        if (mountId) {
-                                            mountInfo.strId = mountId;
-                                            g_free(mountId);
+                            if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
+                                FDMountInfo mountInfo;
+                                bool isValidMount = true;
+                                mountInfo.isCanEject = g_mount_can_eject(gmount);
+                                mountInfo.isCanUnmount = g_mount_can_unmount(gmount);
+                                if (mountInfo.isCanEject || mountInfo.isCanUnmount) {
+                                    char *mountId = g_mount_get_uuid(gmount);
+                                    if (mountId) {
+                                        mountInfo.strId = mountId;
+                                        g_free(mountId);
+                                    }
+                                    char *mountName = g_mount_get_name(gmount);
+                                    if (mountName) {
+                                        mountInfo.strName = mountName;
+                                        g_free(mountName);
+                                    }
+                                    // get mount total size
+                                    GFile *fileRoot = g_mount_get_root(gmount);
+                                    if (fileRoot) {
+                                        GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                                        if (info) {
+                                            mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                                            g_object_unref(info);
                                         }
-                                        char *mountName = g_mount_get_name(gmount);
-                                        if (mountName) {
-                                            mountInfo.strName = mountName;
-                                            g_free(mountName);
-                                        }
-                                        // get mount total size
-                                        GFile *fileRoot = g_mount_get_root(gmount);
-                                        if (fileRoot) {
-                                            GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                                            if (info) {
-                                                mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                                                g_object_unref(info);
-                                            }
-                                            g_object_unref(fileRoot);
-                                        }
-                                        // get mount uri
-                                        GFile *root = g_mount_get_default_location(gmount);
-                                        if (root) {
-                                            mountInfo.isNativeDev = g_file_is_native(root);     //判断设备是本地设备or网络设备
-                                            char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
-                                            if (mountUri) {
-                                                mountInfo.strUri = mountUri;
-                                                if (g_str_has_prefix(mountUri,"file:///data")) {
-                                                    isValidMount = false;
-                                                } else {
-                                                    if (mountInfo.strId.empty()) {
-                                                        mountInfo.strId = mountInfo.strUri;
-                                                    }
+                                        g_object_unref(fileRoot);
+                                    }
+                                    // get mount uri
+                                    GFile *root = g_mount_get_default_location(gmount);
+                                    if (root) {
+                                        mountInfo.isNativeDev = g_file_is_native(root);     //判断设备是本地设备or网络设备
+                                        char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
+                                        if (mountUri) {
+                                            mountInfo.strUri = mountUri;
+                                            if (g_str_has_prefix(mountUri,"file:///data")) {
+                                                isValidMount = false;
+                                            } else {
+                                                if (mountInfo.strId.empty()) {
+                                                    mountInfo.strId = mountInfo.strUri;
                                                 }
-                                                g_free(mountUri);
                                             }
-                                            char *tooltip = g_file_get_parse_name(root);      //提示，即文件的解释
-                                            if (tooltip) {
-                                                mountInfo.strTooltip =tooltip;
-                                                g_free(tooltip);
-                                            }
-                                            g_object_unref(root);
+                                            g_free(mountUri);
                                         }
-                                        if (isValidMount) {
-                                            FDVolumeInfo volumeInfo;
-                                            volumeInfo.mountInfo = mountInfo;
-                                            m_dataFlashDisk->addMountInfoWithDrive(driveInfo, volumeInfo, mountInfo);
+                                        char *tooltip = g_file_get_parse_name(root);      //提示，即文件的解释
+                                        if (tooltip) {
+                                            mountInfo.strTooltip =tooltip;
+                                            g_free(tooltip);
                                         }
+                                        g_object_unref(root);
+                                    }
+                                    if (isValidMount) {
+                                        FDVolumeInfo volumeInfo;
+                                        volumeInfo.mountInfo = mountInfo;
+                                        m_dataFlashDisk->addMountInfoWithDrive(driveInfo, volumeInfo, mountInfo);
                                     }
                                 }
                             }
@@ -712,8 +707,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
         bool isValidMount = true;
         char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
         if (devPath) {
-            if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || (g_str_has_prefix(devPath,"/dev/sd")
-                    && !g_str_has_prefix(devPath,"/dev/sda")))) {
+            if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd"))) {
                 g_free(devPath);
                 return;
             }
@@ -822,83 +816,81 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
 
             if(driveInfo.isCanEject || driveInfo.isCanStop) {
-                if(!g_str_has_prefix(devPath,"/dev/sda")) {
-                    if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
-                        char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
-                        if (volumeId) {
-                            volumeInfo.strId = volumeId;
-                            g_free(volumeId);
-                            char *volumeName = g_volume_get_name(volume);
-                            if (volumeName) {
-                                volumeInfo.strName = volumeName;
-                                g_free(volumeName);
-                            }
-                            char *strDevName = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
-                            if (strDevName) {
-                                volumeInfo.strDevName = strDevName;
-                                g_free(strDevName);
-                            }
-                            volumeInfo.isCanMount = g_volume_can_mount(volume);
-                            volumeInfo.isCanEject = g_volume_can_eject(volume);
-                            volumeInfo.isShouldAutoMount = g_volume_should_automount(volume);
-                            GMount* mount = g_volume_get_mount(volume); //get当前卷设备的挂载信息
-                            if (mount) {                  //该卷设备已挂载
-                                volumeInfo.mountInfo.isCanEject = g_mount_can_eject(mount);
-                                volumeInfo.mountInfo.isCanUnmount = g_mount_can_unmount(mount);
-                                if (volumeInfo.mountInfo.isCanEject || volumeInfo.mountInfo.isCanUnmount) {
-                                    char *mountId = g_mount_get_uuid(mount);
-                                    if (mountId) {
-                                        volumeInfo.mountInfo.strId = mountId;
-                                        g_free(mountId);
+                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
+                    char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                    if (volumeId) {
+                        volumeInfo.strId = volumeId;
+                        g_free(volumeId);
+                        char *volumeName = g_volume_get_name(volume);
+                        if (volumeName) {
+                            volumeInfo.strName = volumeName;
+                            g_free(volumeName);
+                        }
+                        char *strDevName = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                        if (strDevName) {
+                            volumeInfo.strDevName = strDevName;
+                            g_free(strDevName);
+                        }
+                        volumeInfo.isCanMount = g_volume_can_mount(volume);
+                        volumeInfo.isCanEject = g_volume_can_eject(volume);
+                        volumeInfo.isShouldAutoMount = g_volume_should_automount(volume);
+                        GMount* mount = g_volume_get_mount(volume); //get当前卷设备的挂载信息
+                        if (mount) {                  //该卷设备已挂载
+                            volumeInfo.mountInfo.isCanEject = g_mount_can_eject(mount);
+                            volumeInfo.mountInfo.isCanUnmount = g_mount_can_unmount(mount);
+                            if (volumeInfo.mountInfo.isCanEject || volumeInfo.mountInfo.isCanUnmount) {
+                                char *mountId = g_mount_get_uuid(mount);
+                                if (mountId) {
+                                    volumeInfo.mountInfo.strId = mountId;
+                                    g_free(mountId);
+                                }
+                                char *mountName = g_mount_get_name(mount);
+                                if (mountName) {
+                                    volumeInfo.mountInfo.strName = mountName;
+                                    g_free(mountName);
+                                }
+                                isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(volumeInfo.mountInfo));
+                                // get mount total size
+                                GFile *fileRoot = g_mount_get_root(mount);
+                                if (fileRoot) {
+                                    GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
+                                    if (info) {
+                                        volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
+                                        g_object_unref(info);
                                     }
-                                    char *mountName = g_mount_get_name(mount);
-                                    if (mountName) {
-                                        volumeInfo.mountInfo.strName = mountName;
-                                        g_free(mountName);
-                                    }
-                                    isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(volumeInfo.mountInfo));
-                                    // get mount total size
-                                    GFile *fileRoot = g_mount_get_root(mount);
-                                    if (fileRoot) {
-                                        GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
-                                        if (info) {
-                                            volumeInfo.mountInfo.lluTotalSize = g_file_info_get_attribute_uint64(info,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE);
-                                            g_object_unref(info);
-                                        }
-                                        g_object_unref(fileRoot);
-                                    }
-                                    // get mount uri
-                                    GFile *root = g_mount_get_default_location(mount);
-                                    if (root) {
-                                        volumeInfo.mountInfo.isNativeDev = g_file_is_native(root);     //判断设备是本地设备or网络设备
-                                        char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
-                                        if (mountUri) {
-                                            volumeInfo.mountInfo.strUri = mountUri;
-                                            if (!g_str_has_prefix(mountUri,"file:///data")) {
-                                                if (volumeInfo.mountInfo.strId.empty()) {
-                                                    volumeInfo.mountInfo.strId = volumeInfo.mountInfo.strUri;
-                                                }
+                                    g_object_unref(fileRoot);
+                                }
+                                // get mount uri
+                                GFile *root = g_mount_get_default_location(mount);
+                                if (root) {
+                                    volumeInfo.mountInfo.isNativeDev = g_file_is_native(root);     //判断设备是本地设备or网络设备
+                                    char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
+                                    if (mountUri) {
+                                        volumeInfo.mountInfo.strUri = mountUri;
+                                        if (!g_str_has_prefix(mountUri,"file:///data")) {
+                                            if (volumeInfo.mountInfo.strId.empty()) {
+                                                volumeInfo.mountInfo.strId = volumeInfo.mountInfo.strUri;
                                             }
-                                            g_free(mountUri);
                                         }
-                                        char *tooltip = g_file_get_parse_name(root);      //提示，即文件的解释
-                                        if (tooltip) {
-                                            volumeInfo.mountInfo.strTooltip =tooltip;
-                                            g_free(tooltip);
-                                        }
-                                        g_object_unref(root);
+                                        g_free(mountUri);
                                     }
+                                    char *tooltip = g_file_get_parse_name(root);      //提示，即文件的解释
+                                    if (tooltip) {
+                                        volumeInfo.mountInfo.strTooltip =tooltip;
+                                        g_free(tooltip);
+                                    }
+                                    g_object_unref(root);
                                 }
-                                g_object_unref(mount);
-                            } else {
-                                if(p_this->ifsettings->get(IFAUTOLOAD).toBool()) {
-                                    g_volume_mount(volume,
-                                                G_MOUNT_MOUNT_NONE,
-                                                nullptr,
-                                                nullptr,
-                                                GAsyncReadyCallback(frobnitz_result_func_volume),
-                                                p_this);
-                                }
+                            }
+                            g_object_unref(mount);
+                        } else {
+                            if(p_this->ifsettings->get(IFAUTOLOAD).toBool()) {
+                                g_volume_mount(volume,
+                                            G_MOUNT_MOUNT_NONE,
+                                            nullptr,
+                                            nullptr,
+                                            GAsyncReadyCallback(frobnitz_result_func_volume),
+                                            p_this);
                             }
                         }
                     }
@@ -1057,7 +1049,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
        Q_EMIT p_this->telephoneMount();
     }
     bool isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(mountInfo));
-    if(isValidMount && !g_str_has_prefix(strVolumePath.c_str(),"/dev/sda") && (mountInfo.isCanUnmount || g_str_has_prefix(strVolumePath.c_str(),"/dev/bus")
+    if(isValidMount && (mountInfo.isCanUnmount || g_str_has_prefix(strVolumePath.c_str(),"/dev/bus")
             || g_str_has_prefix(strVolumePath.c_str(),"/dev/sr"))) {
         qDebug() << "real mount loaded";
         if (!driveInfo.strId.empty()) {
