@@ -57,6 +57,10 @@
 #include <QGSettings>
 // Turn on this to show the time required to load each plugin during startup
 // #define DEBUG_PLUGIN_LOADTIME
+
+#include "common_fun/ukuipanel_infomation.h"
+#include "common_fun/dbus-adaptor.h"
+
 #ifdef DEBUG_PLUGIN_LOADTIME
 #include <QElapsedTimer>
 #endif
@@ -353,6 +357,15 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         scale_gsetting = new QGSettings(SCALE_NAME);
         scale_flag=scale_gsetting->get(SCALE_KEY).toInt();
         }
+
+    UKuiPanelInformation* dbus=new UKuiPanelInformation;
+    new PanelAdaptor(dbus);
+    QDBusConnection con=QDBusConnection::sessionBus();
+    if(!con.registerService("org.ukui.panel") ||
+            !con.registerObject("/panel/position",dbus))
+    {
+        qDebug()<<"fail";
+    }
 }
 
 void UKUIPanel::getSize() {
@@ -758,6 +771,16 @@ void UKUIPanel::setPanelGeometry(bool animate)
             qDebug()<<"任务栏最终设置的位置"<<rect;
         }
     }
+    QDBusMessage message =QDBusMessage::createSignal("/panel/position", "org.ukui.panel", "UKuiPanelPosition");
+    QList<QVariant> args;
+    args.append(currentScreen.x());
+    args.append(currentScreen.y());
+    args.append(currentScreen.width());
+    args.append(currentScreen.height());
+    args.append(panelSize());
+    args.append(gsettings->get(PANEL_POSITION_KEY).toInt());
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
 }
 
 /*设置边距*/
