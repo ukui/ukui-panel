@@ -100,6 +100,10 @@
 #define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
 #define TRANSPARENCY_KEY            "transparency"
 
+#define UKUI_SERVICE        "org.gnome.SessionManager"
+#define UKUI_PATH           "/org/gnome/SessionManager"
+#define UKUI_INTERFACE      "org.gnome.SessionManager"
+
 #define DBUS_NAME            "org.ukui.SettingsDaemon"
 #define DBUS_PATH            "/org/ukui/SettingsDaemon/wayland"
 #define DBUS_INTERFACE       "org.ukui.SettingsDaemon.wayland"
@@ -342,6 +346,11 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
+    QDBusInterface interface(UKUI_SERVICE,
+                             UKUI_PATH,
+                             UKUI_INTERFACE,
+                             QDBusConnection::sessionBus());
+    interface.call("startupfinished","panel","finish");
 
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
