@@ -74,7 +74,6 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *
         {
             p_this->chooseDialog = new interactiveDialog(p_this);
         }
-        qDebug()<<__FUNCTION__;
 //        p_this->chooseDialog->raise();
         p_this->chooseDialog->show();
         p_this->chooseDialog->setFocus();

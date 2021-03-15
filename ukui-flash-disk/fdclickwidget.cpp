@@ -265,14 +265,14 @@ QPixmap FDClickWidget::drawSymbolicColoredPixmap(const QPixmap &source)
 QString FDClickWidget::size_human(qlonglong capacity)
 {
     //    float capacity = this->size();
-    if(capacity != 0 && capacity != 1)
+    if(capacity != 1)
     {
         int conversionNum = 0;
         QStringList list;
         list << "KB" << "MB" << "GB" << "TB";
 
         QStringListIterator i(list);
-        QString unit("bytes");
+        QString unit("B");
 
         qlonglong conversion = capacity;
 

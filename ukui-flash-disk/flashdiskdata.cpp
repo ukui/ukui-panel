@@ -74,7 +74,15 @@ int FlashDiskData::addDriveInfo(FDDriveInfo driveInfo)
     if (driveInfo.strId.empty()) {
         return -1;
     }
-
+    map<string, FDVolumeInfo>::iterator itVolumeInfoNew = driveInfo.listVolumes.begin();
+    for (; itVolumeInfoNew != driveInfo.listVolumes.end(); itVolumeInfoNew++) {
+        if (!itVolumeInfoNew->second.strId.empty()) {
+            map<string, FDVolumeInfo>::iterator itVolumeInfo = m_devInfoWithVolume.find(itVolumeInfoNew->second.strId);
+            if (itVolumeInfo != m_devInfoWithVolume.end()) {
+                m_devInfoWithVolume.erase(itVolumeInfo);
+            }
+        }
+    }
     m_devInfoWithDrive[driveInfo.strId] = driveInfo;
     return 0;
 }
@@ -83,6 +91,10 @@ int FlashDiskData::addVolumeInfoWithDrive(FDDriveInfo driveInfo, FDVolumeInfo vo
 {
     if (driveInfo.strId.empty() || volumeInfo.strId.empty()) {
         return -1;
+    }
+    map<string, FDVolumeInfo>::iterator itVolumeInfo = m_devInfoWithVolume.find(volumeInfo.strId);
+    if (itVolumeInfo != m_devInfoWithVolume.end()) {
+        m_devInfoWithVolume.erase(itVolumeInfo);
     }
     map<string, FDDriveInfo>::iterator itDriveInfo = m_devInfoWithDrive.find(driveInfo.strId);
     if (itDriveInfo != m_devInfoWithDrive.end()) {
@@ -129,7 +141,14 @@ int FlashDiskData::addVolumeInfo(FDVolumeInfo volumeInfo)
     map<string, FDDriveInfo>::iterator itDriveInfo = m_devInfoWithDrive.begin();
     for (; itDriveInfo != m_devInfoWithDrive.end(); itDriveInfo++) {
         if (itDriveInfo->second.listVolumes.find(volumeInfo.strId) != itDriveInfo->second.listVolumes.end()) {
+            itDriveInfo->second.listVolumes[volumeInfo.strId] = volumeInfo;
             return 1;
+        }
+    }
+    if (!volumeInfo.mountInfo.strId.empty()) {
+        map<string, FDMountInfo>::iterator itMountInfo = m_devInfoWithMount.find(volumeInfo.mountInfo.strId);
+        if (itMountInfo != m_devInfoWithMount.end()) {
+            m_devInfoWithMount.erase(itMountInfo);
         }
     }
     m_devInfoWithVolume[volumeInfo.strId] = volumeInfo;
