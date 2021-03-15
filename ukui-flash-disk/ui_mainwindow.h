@@ -29,7 +29,7 @@ public:
         MainWindow->resize(400, 300);
         centralWidget = new FDFrame(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        MainWindow->layout()->addWidget(centralWidget);
+        MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
 
