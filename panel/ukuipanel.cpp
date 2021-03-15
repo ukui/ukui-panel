@@ -104,6 +104,10 @@
 #define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
 #define TRANSPARENCY_KEY            "transparency"
 
+#define UKUI_SERVICE        "org.gnome.SessionManager"
+#define UKUI_PATH           "/org/gnome/SessionManager"
+#define UKUI_INTERFACE      "org.gnome.SessionManager"
+
 #define DBUS_NAME            "org.ukui.SettingsDaemon"
 #define DBUS_PATH            "/org/ukui/SettingsDaemon/wayland"
 #define DBUS_INTERFACE       "org.ukui.SettingsDaemon.wayland"
@@ -348,6 +352,12 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
             this->update();
         }
     });
+
+    QDBusInterface interface(UKUI_SERVICE,
+                             UKUI_PATH,
+                             UKUI_INTERFACE,
+                             QDBusConnection::sessionBus());
+    interface.call("startupfinished","panel","finish");
 
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
@@ -640,18 +650,14 @@ void UKUIPanel::setPanelGeometry(bool animate)
         qDebug()<<"currentScreen   :"<<currentScreen;
     }
 
-//    const QRect currentScreen = QApplication::desktop()->screenGeometry(0);   QGuiApplication::screens().at(0)->geometry().width()
+//    const QRect currentScreen = QApplication::desktop()->screenGeometry(0);
 
-    qDebug()<<"rect 1 "<<rect;
     if (isHorizontal())
     {
         // Horiz panel ***************************
         rect.setHeight(qMax(PANEL_MINIMUM_SIZE, mPanelSize));
-        qDebug()<<"mLengthInPercents:"<<mLengthInPercents<<"mlength"<<mLength<<""<<currentScreen.width() * mLength / 100.0;
-        if (mLengthInPercents){
-             qDebug()<<"mLengthInPercents:"<<mLengthInPercents<<"mlength"<<mLength<<""<<currentScreen.width() * mLength / 100.0;
+        if (mLengthInPercents)
             rect.setWidth(currentScreen.width() * mLength / 100.0);
-        }
         else
         {
             if (mLength <= 0)
@@ -659,7 +665,6 @@ void UKUIPanel::setPanelGeometry(bool animate)
             else
                 rect.setWidth(mLength);
         }
-        qDebug()<<"rect 2 "<<rect;
         rect.setWidth(qMax(rect.size().width(), mLayout->minimumSize().width()));
 
         // Horiz ......................
@@ -677,7 +682,6 @@ void UKUIPanel::setPanelGeometry(bool animate)
             rect.moveRight(currentScreen.right());
             break;
         }
-        qDebug()<<"rect 3"<<rect;
 
         // Vert .......................
         if (mPosition == IUKUIPanel::PositionTop)
@@ -768,7 +772,6 @@ void UKUIPanel::setPanelGeometry(bool animate)
         {
             setMargins();
             setGeometry(rect);
-            qDebug()<<"任务栏最终设置的位置"<<rect;
         }
     }
     QDBusMessage message =QDBusMessage::createSignal("/panel/position", "org.ukui.panel", "UKuiPanelPosition");
