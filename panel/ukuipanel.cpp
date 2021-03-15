@@ -112,6 +112,9 @@
 #define DBUS_PATH            "/org/ukui/SettingsDaemon/wayland"
 #define DBUS_INTERFACE       "org.ukui.SettingsDaemon.wayland"
 
+#define SCALE_NAME            "org.ukui.SettingsDaemon.plugins.xsettings"
+#define SCALE_KEY             "scalingFactor"
+
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -359,6 +362,12 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
 
+    const QByteArray scale_id(SCALE_NAME);
+    if(QGSettings::isSchemaInstalled(scale_id)){
+        scale_gsetting = new QGSettings(SCALE_NAME);
+        scale_flag=scale_gsetting->get(SCALE_KEY).toInt();
+        }
+
     UKuiPanelInformation* dbus=new UKuiPanelInformation;
     new PanelAdaptor(dbus);
     QDBusConnection con=QDBusConnection::sessionBus();
@@ -555,6 +564,7 @@ void UKUIPanel::priScreenChanged(int x, int y, int width, int height)
     qDebug("primary screen  changed, geometry is  x=%d, y=%d, windth=%d, height=%d", x, y, width, height);
     mcurrentScreenRect.setRect(x, y, width, height);
     setPanelGeometry();
+    realign();
 }
 
 
