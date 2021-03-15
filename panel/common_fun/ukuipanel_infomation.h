@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGSettings>
 #include <QVariant>
+#include <QtDBus>
 class UKuiPanelInformation : public QObject
 {
     Q_OBJECT
@@ -11,9 +12,19 @@ class UKuiPanelInformation : public QObject
 public:
     explicit UKuiPanelInformation(QObject *parent = 0);
 
+private:
+    int screen_x;
+    int screen_y;
+    int screen_width;
+    int screen_height;
+    int panelposition;
+    int panelsize;
+
 public Q_SLOTS:
     QVariantList GetPrimaryScreenGeometry();
     QString GetPanelPosition();
+
+    void setPanelInformation(int ,int ,int, int, int, int);
 };
 
 #endif // UKUIPANEL_INFORMATION_H

@@ -57,6 +57,10 @@
 #include <QGSettings>
 // Turn on this to show the time required to load each plugin during startup
 // #define DEBUG_PLUGIN_LOADTIME
+
+#include "common_fun/ukuipanel_infomation.h"
+#include "common_fun/dbus-adaptor.h"
+
 #ifdef DEBUG_PLUGIN_LOADTIME
 #include <QElapsedTimer>
 #endif
@@ -354,6 +358,15 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
+
+    UKuiPanelInformation* dbus=new UKuiPanelInformation;
+    new PanelAdaptor(dbus);
+    QDBusConnection con=QDBusConnection::sessionBus();
+    if(!con.registerService("org.ukui.panel") ||
+            !con.registerObject("/panel/position",dbus))
+    {
+        qDebug()<<"fail";
+    }
 }
 
 void UKUIPanel::getSize() {
@@ -592,6 +605,7 @@ int UKUIPanel::getScreenGeometry(QString methodName)
 void UKUIPanel::setPanelGeometry(bool animate)
 {
     QRect currentScreen;
+    QRect rect;
 
     if(flag_hw990=="hw_990"){
         int priX, priY, priWid, priHei;
@@ -601,14 +615,25 @@ void UKUIPanel::setPanelGeometry(bool animate)
         priHei = getScreenGeometry("height");
 
         qDebug("Start: Primary screen geometry is x=%d, y=%d, windth=%d, height=%d", priX, priY, priWid, priHei);
-        QRect mRect;
-        mRect.setRect(priX, priY, priWid, priHei);
-        mcurrentScreenRect.setRect(priX, priY, QGuiApplication::screens().at(0)->geometry().width(), QGuiApplication::screens().at(0)->geometry().height());
+//        QRect mRect;
+//        mRect.setRect(priX, priY, priWid, priHei);
+#if 0
+        if(priWid > 2500 && scale_flag==2 ){
+            currentScreen.setRect(priX, priY, priWid/2, priHei/2);
+//            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width()/2, QApplication::desktop()->screenGeometry(0).height()/2);
+            qDebug()<<"4k 缩放屏"<<QApplication::desktop()->screenGeometry(0)<<scale_flag;
+        }else{
+            qDebug()<<"非 4k 缩放屏"<<QApplication::desktop()->screenGeometry(0)<<scale_flag;
+            currentScreen.setRect(priX, priY, priWid, priHei);
+//            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width(), QApplication::desktop()->screenGeometry(0).height());
+        }
+#endif
+        currentScreen.setRect(priX, priY, priWid, priHei);
         if(priWid==0){
             qDebug("初始化获取到的dbus信号错误，获取的宽度为0");
-            mRect = QGuiApplication::screens().at(0)->geometry();
+            currentScreen = QGuiApplication::screens().at(0)->geometry();
         }
-        currentScreen = mRect;
+//        currentScreen = mRect;
     }else{
         qDebug("非华为990机器");
         currentScreen=QGuiApplication::screens().at(0)->geometry();
@@ -616,7 +641,6 @@ void UKUIPanel::setPanelGeometry(bool animate)
     }
 
 //    const QRect currentScreen = QApplication::desktop()->screenGeometry(0);
-    QRect rect;
 
     if (isHorizontal())
     {
@@ -631,7 +655,6 @@ void UKUIPanel::setPanelGeometry(bool animate)
             else
                 rect.setWidth(mLength);
         }
-
         rect.setWidth(qMax(rect.size().width(), mLayout->minimumSize().width()));
 
         // Horiz ......................
@@ -741,6 +764,16 @@ void UKUIPanel::setPanelGeometry(bool animate)
             setGeometry(rect);
         }
     }
+    QDBusMessage message =QDBusMessage::createSignal("/panel/position", "org.ukui.panel", "UKuiPanelPosition");
+    QList<QVariant> args;
+    args.append(currentScreen.x());
+    args.append(currentScreen.y());
+    args.append(currentScreen.width());
+    args.append(currentScreen.height());
+    args.append(panelSize());
+    args.append(gsettings->get(PANEL_POSITION_KEY).toInt());
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
 }
 
 /*设置边距*/
