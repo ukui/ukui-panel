@@ -1049,6 +1049,16 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
        Q_EMIT p_this->telephoneMount();
     }
     bool isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(mountInfo));
+    if (!driveInfo.strId.empty()) {
+        if (!driveInfo.isCanEject && !driveInfo.isCanStop) {
+            isValidMount = false;
+        }
+    }
+    if (!volumeInfo.strId.empty()) {
+        if (!volumeInfo.isCanEject) {
+            isValidMount = false;
+        }
+    }
     if(isValidMount && (mountInfo.isCanUnmount || g_str_has_prefix(strVolumePath.c_str(),"/dev/bus")
             || g_str_has_prefix(strVolumePath.c_str(),"/dev/sr"))) {
         qDebug() << "real mount loaded";
