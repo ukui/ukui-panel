@@ -1,3 +1,9 @@
+ukui-panel (3.0.1-64hw12) v101; urgency=medium
+
+  * 解决#43340 #42480 #40833 #40940 #41888 #42508   
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 18 Mar 2021 20:49:45 +0800
+
 ukui-panel (3.0.1-64hw9) v101; urgency=medium
 
   * 任务栏上wayland应用显示图标
