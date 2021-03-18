@@ -101,6 +101,9 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mTimer->setTimerType(Qt::VeryCoarseTimer);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     gsettings = new QGSettings(id);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
+            updateTimeText();
+    });
     if(QString::compare(gsettings->get("date").toString(),"cn"))
     {
             hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
@@ -219,42 +222,30 @@ void IndicatorCalendar::updateTimeText()
     QDateTime tzNow = QDateTime::currentDateTime();
 
     QString str;
-    const QByteArray id(HOUR_SYSTEM_CONTROL);
-    if(QGSettings::isSchemaInstalled(id))
-    {
-        gsettings = new QGSettings(id);
-        QStringList keys = gsettings->keys();
-        if(keys.contains("hoursystem"))
-            hourSystemMode=gsettings->get("hoursystem").toString();
-        if(!gsettings)
-            return;
-        if(!QString::compare("24",hourSystemMode))
-        {
-            if(panel()->isHorizontal())
-                str=tzNow.toString(hourSystem_24_horzontal);
-            else
-                str=tzNow.toString(hourSystem_24_vartical);
-        }
-        else
-        {
-            if(panel()->isHorizontal())
-            {
-                str=tzNow.toString(hourSystem_12_horzontal);
-            }
-            else
-            {
-                str = tzNow.toString(hourSystem_12_vartical);
-                str.replace("AM","AM ");
-                str.replace("PM","PM ");
-            }
-        }
-    }
-    else
+    QStringList keys = gsettings->keys();
+    if(keys.contains("hoursystem"))
+        hourSystemMode=gsettings->get("hoursystem").toString();
+    if(!gsettings)
+        return;
+    if(!QString::compare("24",hourSystemMode))
     {
         if(panel()->isHorizontal())
             str=tzNow.toString(hourSystem_24_horzontal);
         else
             str=tzNow.toString(hourSystem_24_vartical);
+    }
+    else
+    {
+        if(panel()->isHorizontal())
+        {
+            str=tzNow.toString(hourSystem_12_horzontal);
+        }
+        else
+        {
+            str = tzNow.toString(hourSystem_12_vartical);
+            str.replace("AM","AM ");
+            str.replace("PM","PM ");
+        }
     }
 
     QString style;
@@ -263,7 +254,7 @@ void IndicatorCalendar::updateTimeText()
                    "QLabel{"
                    "border-width:  0px;"                     //边框宽度像素
                    "border-radius: 6px;"                       //边框圆角半径像素
-                 "font-size:     %dpx;"                      //字体，字体大小
+                   "font-size:     %dpx;"                      //字体，字体大小
                    "color:         rgba(255,255,255,100%%);"    //字体颜色
                    "padding:       0px;"                       //填衬
                    "text-align:center;"                        //文本居中
@@ -386,8 +377,7 @@ void IndicatorCalendar::CalendarWidgetShow()
             if (iScreenHeight >= WEBVIEW_MIN_HEIGHT)
                 mViewHeight = WEBVIEW_MIN_HEIGHT;;
         }
-//        modifyCalendarWidget();
-        mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
+        modifyCalendarWidget();
         mWebViewDiag->show();
         mWebViewDiag->activateWindow();
         if(!mbActived)
@@ -489,7 +479,8 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
 
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
-    Q_EMIT pressTimeText();
+    if (Qt::LeftButton == event->button())
+        Q_EMIT pressTimeText();
 }
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 {
