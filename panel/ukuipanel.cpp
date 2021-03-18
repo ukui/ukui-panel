@@ -336,9 +336,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                                          DBUS_PATH,
                                          DBUS_INTERFACE,
                                          QDBusConnection::sessionBus());
-    if (mDbusXrandInter->isValid()) {
-        flag_hw990="hw_990";
-    }
+//    if (mDbusXrandInter->isValid()) {
+//        flag_hw990="hw_990";
+//    }
+    if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
     connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
 
 
