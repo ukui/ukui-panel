@@ -520,6 +520,7 @@ void MainWindow::getDeviceInfo()
                     }
                     g_object_unref(gdrive);
                 } else {
+                    # if 0
                     FDMountInfo mountInfo;
                     bool isValidMount = true;
                     mountInfo.isCanEject = g_mount_can_eject(gmount);
@@ -572,6 +573,7 @@ void MainWindow::getDeviceInfo()
                             m_dataFlashDisk->addMountInfo(mountInfo);
                         }
                     }
+                    #endif
                 }
             } else {
                 g_object_unref(gvolume);
@@ -1058,6 +1060,9 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
         if (!volumeInfo.isCanEject) {
             isValidMount = false;
         }
+    } else {
+        // 没有卷信息的挂载不处理（ftp等）
+        isValidMount = false;
     }
     if(isValidMount && (mountInfo.isCanUnmount || g_str_has_prefix(strVolumePath.c_str(),"/dev/bus")
             || g_str_has_prefix(strVolumePath.c_str(),"/dev/sr"))) {
