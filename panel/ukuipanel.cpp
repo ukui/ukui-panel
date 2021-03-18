@@ -223,6 +223,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     caculateScreenGeometry();
 
+    system("/usr/share/ukui/ukui-panel/panel-commission.sh");
+
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);
     UKUIPanelWidget->setObjectName("BackgroundWidget");
@@ -334,9 +336,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                                          DBUS_PATH,
                                          DBUS_INTERFACE,
                                          QDBusConnection::sessionBus());
-    if (mDbusXrandInter->isValid()) {
-        flag_hw990="hw_990";
-    }
+//    if (mDbusXrandInter->isValid()) {
+//        flag_hw990="hw_990";
+//    }
+    if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
     connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
 
 
@@ -1499,12 +1502,23 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
-#if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
-    QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
-    shownightmode->setCheckable(true);
-    shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
-    connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
-#endif
+    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("NightMode");
+    QString nightmode_action = m_settings.value("nightmode", "").toString();
+    if (nightmode_action.isEmpty()) {
+        nightmode_action = "show";
+    }
+    m_settings.endGroup();
+
+    if(nightmode_action == "show"){
+        QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
+        shownightmode->setCheckable(true);
+        shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
+        connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
+    }
 
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                     tr("Show Desktop"),
