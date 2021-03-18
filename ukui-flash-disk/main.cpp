@@ -28,6 +28,7 @@
 #include "UnionVariable.h"
 #include "mainwindow.h"
 #include "MainController.h"
+#include "fdapplication.h"
 
 int main(int argc, char *argv[])
 {
@@ -56,7 +57,7 @@ int main(int argc, char *argv[])
     QIcon::setThemeName("ukui-icon-theme-default");
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication a(argc, argv);
+    FDApplication a(argc, argv);
     a.setQuitOnLastWindowClosed(false);        //Process does not exit implicitly
 
 
@@ -93,7 +94,7 @@ int main(int argc, char *argv[])
 
 //    qss.close();
     MainController *ctrl = MainController::self();
-
+    QObject::connect(&a, &FDApplication::notifyWnd, ctrl, &MainController::notifyWnd);
     a.exec();
     delete ctrl;
     return 0;

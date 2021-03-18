@@ -2,34 +2,55 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr" sourcelanguage="tr">
 <context>
-    <name>ejectInterface</name>
-    <message>
-        <location filename="ejectInterface.cpp" line="17"/>
-        <source>usb has been unplugged safely</source>
-        <translation>USB güvenli bir şekilde çıkarıldı</translation>
-    </message>
-
-</context>
-<context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.cpp" line="42"/>
         <source>usb management tool</source>
-        <translation>Usb yönetim aracı</translation>
+        <translation type="vanished">Usb yönetim aracı</translation>
     </message>
 </context>
-
 <context>
     <name>QClickWidget</name>
     <message>
-        <location filename="qclickWidget.cpp" line="74"/>
         <source>eject</source>
-        <translation>Çıkar</translation>
+        <translation type="vanished">Çıkar</translation>
     </message>
     <message>
-        <location filename="qclickWidget.cpp" line="711"/>
         <source>the capacity is empty</source>
-        <translation>Kapasite boş</translation>
+        <translation type="vanished">Kapasite boş</translation>
+    </message>
+</context>
+<context>
+    <name>ejectInterface</name>
+    <message>
+        <source>usb has been unplugged safely</source>
+        <translation type="vanished">USB güvenli bir şekilde çıkarıldı</translation>
+    </message>
+</context>
+<context>
+    <name>FDClickWidget</name>
+    <message>
+        <source>the capacity is empty</source>
+        <translation type="vanished">Kapasite boş</translation>
+    </message>
+    <message>
+        <source>blank CD</source>
+        <translation type="unfinished">blank CD</translation>
+    </message>
+    <message>
+        <source>other user device</source>
+        <translation type="unfinished">other user device</translation>
+    </message>
+    <message>
+        <source>another device</source>
+        <translation type="unfinished">another device</translation>
+    </message>
+    <message>
+        <source>Eject</source>
+        <translation type="vanished">Çıkar</translation>
+    </message>
+     <message>
+        <source>Unmounted</source>
+        <translation type="unfinished">Unmounted</translation>
     </message>
 </context>
 </TS>

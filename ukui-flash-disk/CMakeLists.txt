@@ -51,6 +51,14 @@ add_executable(ukui-flash-disk
     gpartedinterface.h
         mainwindow.ui
         mainwindow.h
+    fdapplication.cpp
+    fdapplication.h
+    fdframe.cpp
+    fdframe.h
+    flashdiskdata.cpp
+    flashdiskdata.h
+    fdclickwidget.cpp
+    fdclickwidget.h
 )
 
 add_definitions(-DQT_NO_KEYWORDS)
