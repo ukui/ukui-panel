@@ -193,3 +193,15 @@ install(FILES
     DESTINATION "/usr/share/glib-2.0/schemas"
     COMPONENT Runtime
 )
+
+install(FILES
+    resources/panel-commission.ini
+    DESTINATION $ENV{HOME}/.config/ukui/
+    COMPONENT Runtime
+)
+
+install(FILES
+    resources/panel-commission.sh
+    DESTINATION "/usr/share/ukui/ukui-panel"
+    COMPONENT Runtime
+)

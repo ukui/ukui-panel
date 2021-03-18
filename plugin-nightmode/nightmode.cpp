@@ -44,6 +44,19 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    //读取配置文件中nightmode 的值
+    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("Hibernate");
+    nightmode_action = m_settings.value("hibernate", "").toString();
+    if (nightmode_action.isEmpty()) {
+        nightmode_action = "show";
+    }
+    m_settings.endGroup();
+
+
     mButton=new NightModeButton(this);
     mButton->setStyle(new CustomStyle());
 
@@ -65,7 +78,7 @@ NightMode::~NightMode(){
 
 void NightMode::realign()
 {
-    if(gsettings->get(SHOW_NIGHTMODE).toBool()){
+    if(gsettings->get(SHOW_NIGHTMODE).toBool() && nightmode_action == "show"){
         mButton->setFixedSize(panel()->panelSize()*0.75,panel()->panelSize()*0.75);
         mButton->setIconSize(QSize(panel()->iconSize()*0.75,panel()->iconSize()*0.75));
     }
@@ -102,7 +115,7 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     QTimer *timer = new QTimer(this);
     connect(timer,&QTimer::timeout,[this] {this->setEnabled(true);});
     timer->start(5000);
-     connect(this,&NightModeButton::clicked,this, [this] { pressBitton();});
+    connect(this,&NightModeButton::clicked,this, [this] { pressBitton();});
 }
 NightModeButton::~NightModeButton(){
     delete mqtstyleGsettings;
@@ -244,7 +257,7 @@ void NightModeButton::getNightModeState()
             colorTemperature=innerMap.toInt();
         if(outer_key=="Active")
             mode=innerMap.toBool();
-//        if(!outer_key.contains("EveningBeginFixed"))
+        //        if(!outer_key.contains("EveningBeginFixed"))
 
     }
 }
