@@ -87,6 +87,7 @@ public:
     unsigned getValidInfoCount();
     void clearAllData();
     bool isMountInfoExist(FDMountInfo mountInfo);
+    void resetAllNewState();
 
     void OutputInfos();
 

@@ -289,6 +289,33 @@ bool FlashDiskData::isMountInfoExist(FDMountInfo mountInfo)
     return false;
 }
 
+void FlashDiskData::resetAllNewState()
+{
+    map<string, FDMountInfo>::iterator itMountInfo = m_devInfoWithMount.begin();
+    for (; itMountInfo != m_devInfoWithMount.end(); itMountInfo++) {
+        if (!itMountInfo->second.strId.empty()) {
+            itMountInfo->second.isNewInsert = false;
+        }
+    }
+    map<string, FDVolumeInfo>::iterator itVolumeInfo = m_devInfoWithVolume.begin();
+    for (; itVolumeInfo != m_devInfoWithVolume.end(); itVolumeInfo++) {
+        itVolumeInfo->second.isNewInsert = false;
+        if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+            itVolumeInfo->second.mountInfo.isNewInsert = false;
+        }
+    }
+    map<string, FDDriveInfo>::iterator itDriveInfo = m_devInfoWithDrive.begin();
+    for (; itDriveInfo != m_devInfoWithDrive.end(); itDriveInfo++) {
+        itVolumeInfo = itDriveInfo->second.listVolumes.begin();
+        for (; itVolumeInfo != itDriveInfo->second.listVolumes.end(); itVolumeInfo++) {
+            itVolumeInfo->second.isNewInsert = false;
+            if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+                itVolumeInfo->second.mountInfo.isNewInsert = false;
+            }
+        }
+    }
+}
+
 unsigned FlashDiskData::getValidInfoCount()
 {
     unsigned uDriveCount = 0;
@@ -329,7 +356,7 @@ void FlashDiskData::OutputInfos()
                 <<QString::fromStdString(itMountInfo->second.strName)<<"|"<<itMountInfo->second.isCanUnmount
                 <<"|"<<itMountInfo->second.isCanEject<<"|"<<QString::fromStdString(itMountInfo->second.strTooltip)<<"|"
                 <<QString::fromStdString(itMountInfo->second.strUri)<<"|"<<itMountInfo->second.isNativeDev
-                <<"|"<<itMountInfo->second.lluTotalSize;
+                <<"|"<<itMountInfo->second.lluTotalSize<<"|"<<itMountInfo->second.isNewInsert;
         }
     }
     qDebug()<<"--------------------------------------------------------";
@@ -338,13 +365,13 @@ void FlashDiskData::OutputInfos()
         qDebug()<<"Volume:"<<QString::fromStdString(itVolumeInfo->second.strId)<<"|"
             <<QString::fromStdString(itVolumeInfo->second.strName)<<"|"<<itVolumeInfo->second.isCanMount
             <<"|"<<itVolumeInfo->second.isShouldAutoMount<<"|"<<itVolumeInfo->second.isCanEject
-            <<"|"<<QString::fromStdString(itVolumeInfo->second.strDevName);
+            <<"|"<<QString::fromStdString(itVolumeInfo->second.strDevName)<<"|"<<itVolumeInfo->second.isNewInsert;
         if (!itVolumeInfo->second.mountInfo.strId.empty()) {
             qDebug()<<"Mount:"<<QString::fromStdString(itVolumeInfo->second.mountInfo.strId)<<"|"
                 <<QString::fromStdString(itVolumeInfo->second.mountInfo.strName)<<"|"<<itVolumeInfo->second.mountInfo.isCanUnmount
                 <<"|"<<itVolumeInfo->second.mountInfo.isCanEject<<"|"<<QString::fromStdString(itVolumeInfo->second.mountInfo.strTooltip)<<"|"
                 <<QString::fromStdString(itVolumeInfo->second.mountInfo.strUri)<<"|"<<itVolumeInfo->second.mountInfo.isNativeDev
-                <<"|"<<itVolumeInfo->second.mountInfo.lluTotalSize;
+                <<"|"<<itVolumeInfo->second.mountInfo.lluTotalSize<<"|"<<itVolumeInfo->second.mountInfo.isNewInsert;
         }
     }
     qDebug()<<"--------------------------------------------------------";
@@ -358,13 +385,13 @@ void FlashDiskData::OutputInfos()
             qDebug()<<"Volume:"<<QString::fromStdString(itVolumeInfo->second.strId)<<"|"
                 <<QString::fromStdString(itVolumeInfo->second.strName)<<"|"<<itVolumeInfo->second.isCanMount
                 <<"|"<<itVolumeInfo->second.isShouldAutoMount<<"|"<<itVolumeInfo->second.isCanEject
-                <<"|"<<QString::fromStdString(itVolumeInfo->second.strDevName);
+                <<"|"<<QString::fromStdString(itVolumeInfo->second.strDevName)<<"|"<<itVolumeInfo->second.isNewInsert;
             if (!itVolumeInfo->second.mountInfo.strId.empty()) {
                 qDebug()<<"Mount:"<<QString::fromStdString(itVolumeInfo->second.mountInfo.strId)<<"|"
                     <<QString::fromStdString(itVolumeInfo->second.mountInfo.strName)<<"|"<<itVolumeInfo->second.mountInfo.isCanUnmount
                     <<"|"<<itVolumeInfo->second.mountInfo.isCanEject<<"|"<<QString::fromStdString(itVolumeInfo->second.mountInfo.strTooltip)<<"|"
                     <<QString::fromStdString(itVolumeInfo->second.mountInfo.strUri)<<"|"<<itVolumeInfo->second.mountInfo.isNativeDev
-                    <<"|"<<itVolumeInfo->second.mountInfo.lluTotalSize;
+                    <<"|"<<itVolumeInfo->second.mountInfo.lluTotalSize<<"|"<<itVolumeInfo->second.mountInfo.isNewInsert;
             }
         }
     }

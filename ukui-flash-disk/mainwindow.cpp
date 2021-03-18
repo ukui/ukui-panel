@@ -899,10 +899,13 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                 }
             }
             g_free(devPath);
-            p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
             if (g_str_has_prefix(volumeInfo.strDevName.c_str(),"/dev/sr") && isNewMount) {
                 //qDebug()<<"cd data disk has mounted!";
+                volumeInfo.isNewInsert = true;
+                p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
                 Q_EMIT p_this->convertShowWindow();
+            } else {
+                p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
             }
         }
         g_object_unref(gdrive);
@@ -1067,6 +1070,9 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     if(isValidMount && (mountInfo.isCanUnmount || g_str_has_prefix(strVolumePath.c_str(),"/dev/bus")
             || g_str_has_prefix(strVolumePath.c_str(),"/dev/sr"))) {
         qDebug() << "real mount loaded";
+        if (isNewMount) {
+            mountInfo.isNewInsert = true;
+        }
         if (!driveInfo.strId.empty()) {
             if (!volumeInfo.strId.empty()) {
                 volumeInfo.mountInfo = mountInfo;
@@ -1250,6 +1256,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
             g_object_unref(gmount);
         }        
         if (bMountSuccess) {
+            mountInfo.isNewInsert = true;
             if (!driveInfo.strId.empty()) {
                 if (!volumeInfo.strId.empty()) {
                     volumeInfo.mountInfo = mountInfo;
@@ -1276,13 +1283,13 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
 //here we begin painting the main interface
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    insertorclick = false;
     triggerType = 1;  //It represents how we open the interface
 
-    if (ui->centralWidget && !ui->centralWidget->isHidden()) {
+    if (ui->centralWidget && !ui->centralWidget->isHidden() && !insertorclick) {
         ui->centralWidget->hide();
         return ;
     }
+    insertorclick = false;
 
     MainWindowShow();
 }
@@ -1539,23 +1546,325 @@ void MainWindow::MainWindowShow(bool isUpdate)
             listItem->deleteLater();
         }
     }
-    //Convenient interface layout for all drives
-    map<string, FDDriveInfo>& listDriveInfo = m_dataFlashDisk->getDevInfoWithDrive();
-    if (!listDriveInfo.empty()) {
-        map<string, FDDriveInfo>::iterator itDriveInfo = listDriveInfo.begin();
-        for ( ;itDriveInfo != listDriveInfo.end(); itDriveInfo++) {
-            unsigned uVolumeNum = 0;
-            bool isCanShow = (itDriveInfo->second.isCanEject || itDriveInfo->second.isCanStop);
-            QString strDriveName = QString::fromStdString(itDriveInfo->second.strName);
-            if (itDriveInfo->second.listVolumes.size() > 0) {
-                uDiskCount++;
+    // only show new insert device
+    if (insertorclick) {
+        //Convenient interface layout for all drives
+        map<string, FDDriveInfo>& listDriveInfo = m_dataFlashDisk->getDevInfoWithDrive();
+        if (!listDriveInfo.empty()) {
+            map<string, FDDriveInfo>::iterator itDriveInfo = listDriveInfo.begin();
+            for ( ;itDriveInfo != listDriveInfo.end(); itDriveInfo++) {
+                unsigned uVolumeNum = 0;
+                bool isCanShow = (itDriveInfo->second.isCanEject || itDriveInfo->second.isCanStop);
+                QString strDriveName = QString::fromStdString(itDriveInfo->second.strName);
+                if (itDriveInfo->second.listVolumes.size() > 0) {
+                    uDiskCount++;
+                }
+                map<string, FDVolumeInfo>::iterator itVolumeInfo = itDriveInfo->second.listVolumes.begin();
+                for ( ;itVolumeInfo != itDriveInfo->second.listVolumes.end(); itVolumeInfo++) {
+                    QString strApiName;
+                    quint64 lluTotalSize = itVolumeInfo->second.mountInfo.lluTotalSize;
+                    QString strMountUri = QString::fromStdString(itVolumeInfo->second.mountInfo.strUri);
+                    QString strDriveId = QString::fromStdString(itDriveInfo->second.strId);
+                    QString strVolumeId = QString::fromStdString(itVolumeInfo->second.strId);
+                    QString strMountId = QString::fromStdString(itVolumeInfo->second.mountInfo.strId);
+                    unsigned uVolumeType = 0;  // 0:normal file volume, 1: cddata, 2:tele dev
+                    if ((itVolumeInfo->second.strId.empty() && itVolumeInfo->second.mountInfo.strId.empty())
+                        || (!itVolumeInfo->second.isNewInsert && !itVolumeInfo->second.mountInfo.isNewInsert)) {
+                        // is not new insert device
+                        continue;
+                    }
+                    if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+                        string strMountUri = itVolumeInfo->second.mountInfo.strUri;
+                        if(g_str_has_prefix(strMountUri.c_str(),"file:///")) {
+                            uVolumeType = 0;
+                        } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
+                            uVolumeType = 2;
+                        } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                            uVolumeType = 1;
+                        }
+                    }
+                    if (uVolumeType == 1 || uVolumeType == 2 || isCanShow) {  // cd module or drive can show
+                        if (!itVolumeInfo->second.strId.empty()) {
+                            uVolumeNum++;
+                            uVolumeCount++;
+                            strApiName = QString::fromStdString(itVolumeInfo->second.strName);
+                        } else if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+                            uVolumeNum++;
+                            uVolumeCount++;
+                            strApiName = QString::fromStdString(itVolumeInfo->second.mountInfo.strName);
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        continue;
+                    }
+                    if (uDiskCount > 0) {
+                        if (uVolumeType == 1) {   // deal with cd info
+                            if(uDiskCount == 1 || uVolumeNum != 1) {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                                        strApiName, 1, "burn:///", 1);
+                            } else {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                                        strApiName, 1, "burn:///", 2);
+                            }
+                        } else if (uVolumeType == 2) {
+                            QString telephoneName = tr("telephone device");
+                            QByteArray strTelePhone = telephoneName.toLocal8Bit();
+                            char *realTele = strTelePhone.data();
+                            if(uDiskCount == 1 || uVolumeNum != 1) {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,realTele,
+                                        strApiName, lluTotalSize, strMountUri,1);
+                            } else {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,realTele,
+                                        strApiName, lluTotalSize, strMountUri,2);
+                            }
+                        } else {
+                            if(uDiskCount == 1 || uVolumeNum != 1) {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                                        strApiName, lluTotalSize,strMountUri,1);
+                            } else {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                                        strApiName,lluTotalSize,strMountUri,2);
+                            }
+                        }
+                    }
+                }
+                if (uVolumeNum == 0 && uDiskCount > 0) {
+                    uDiskCount --;
+                }
             }
-            map<string, FDVolumeInfo>::iterator itVolumeInfo = itDriveInfo->second.listVolumes.begin();
-            for ( ;itVolumeInfo != itDriveInfo->second.listVolumes.end(); itVolumeInfo++) {
+        }
+        // show volume info without drive
+        map<string, FDVolumeInfo>& listVolumeInfo = m_dataFlashDisk->getDevInfoWithVolume();
+        if (!listVolumeInfo.empty()) {
+            map<string, FDVolumeInfo>::iterator itVolumeInfo = listVolumeInfo.begin();
+            for (; itVolumeInfo != listVolumeInfo.end(); itVolumeInfo++) {
                 QString strApiName;
+                QString strMainName;
+                bool isCanShow = itVolumeInfo->second.isCanEject;
                 quint64 lluTotalSize = itVolumeInfo->second.mountInfo.lluTotalSize;
                 QString strMountUri = QString::fromStdString(itVolumeInfo->second.mountInfo.strUri);
-                QString strDriveId = QString::fromStdString(itDriveInfo->second.strId);
+                QString strVolumeId = QString::fromStdString(itVolumeInfo->second.strId);
+                QString strMountId = QString::fromStdString(itVolumeInfo->second.mountInfo.strId);
+                unsigned uVolumeType = 0;  // 0:normal file volume, 1: cddata, 2:tele dev
+                if ((itVolumeInfo->second.strId.empty() && itVolumeInfo->second.mountInfo.strId.empty())
+                    || (!itVolumeInfo->second.isNewInsert && !itVolumeInfo->second.mountInfo.isNewInsert)) {
+                    // is not new insert device
+                    continue;
+                }
+                if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+                    string strMountUri = itVolumeInfo->second.mountInfo.strUri;
+                    if(g_str_has_prefix(strMountUri.c_str(),"file:///")) {
+                        uVolumeType = 0;
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
+                        uVolumeType = 2;
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                        uVolumeType = 1;
+                    }
+                }
+                if (uVolumeType == 1 || uVolumeType == 2 || isCanShow) {  // cd module or drive can show
+                    if (!itVolumeInfo->second.strId.empty()) {
+                        uDiskCount++;
+                        uVolumeCount++;
+                        strMainName = strApiName = QString::fromStdString(itVolumeInfo->second.strName);
+                    } else if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+                        uDiskCount++;
+                        uVolumeCount++;
+                        strMainName = strApiName = QString::fromStdString(itVolumeInfo->second.mountInfo.strName);
+                    } else {
+                        continue;
+                    }
+                } else {
+                    continue;
+                }
+                if (uDiskCount > 0) {
+                    if (uVolumeType == 1) {   // deal with cd info
+                        if(uDiskCount == 1) {
+                            newarea(1, "",strVolumeId,strMountId,strMainName,
+                                    strApiName,1,"burn:///",1);
+                        } else {
+                            newarea(1, "",strVolumeId,strMountId,strMainName,
+                                    strApiName,1,"burn:///",2);
+                        }
+                    } else if (uVolumeType == 2) {
+                        QString telephoneName = tr("telephone device");
+                        QByteArray strTelePhone = telephoneName.toLocal8Bit();
+                        char *realTele = strTelePhone.data();
+                        if(uDiskCount == 1) {
+                            newarea(1, "",strVolumeId,strMountId,realTele,
+                                    strApiName,lluTotalSize,strMountUri,1);
+                        } else {
+                            newarea(1, "",strVolumeId,strMountId,realTele,
+                                    strApiName,lluTotalSize,strMountUri,2);
+                        }
+                    } else {
+                        if(uDiskCount == 1) {
+                            newarea(1, "",strVolumeId,strMountId,strMainName,
+                                    strApiName,lluTotalSize,strMountUri,1);
+                        } else {
+                            newarea(1, "",strVolumeId,strMountId,strMainName,
+                                    strApiName,lluTotalSize,strMountUri,2);
+                        }
+                    }
+                }
+            }
+        }
+        // show mount info without drive & volume
+        map<string, FDMountInfo>& listMountInfo = m_dataFlashDisk->getDevInfoWithMount();
+        if (!listMountInfo.empty()) {
+            map<string, FDMountInfo>::iterator itMountInfo = listMountInfo.begin();
+            for (; itMountInfo != listMountInfo.end(); itMountInfo++) {
+                QString strApiName;
+                QString strMainName;
+                bool isCanShow = (itMountInfo->second.isCanUnmount || itMountInfo->second.isCanEject);
+                quint64 lluTotalSize = itMountInfo->second.lluTotalSize;
+                QString strMountUri = QString::fromStdString(itMountInfo->second.strUri);
+                QString strMountId = QString::fromStdString(itMountInfo->second.strId);
+                unsigned uMountType = 0;  // 0:normal file, 1: cddata, 2:tele dev
+                if (itMountInfo->second.strId.empty() || !itMountInfo->second.isNewInsert) {
+                    // is not new insert device
+                    continue;
+                }
+                if (!itMountInfo->second.strId.empty()) {
+                    string strMountUri = itMountInfo->second.strUri;
+                    if(g_str_has_prefix(strMountUri.c_str(),"file:///")) {
+                        uMountType = 0;
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
+                        uMountType = 2;
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                        uMountType = 1;
+                    }
+                } else {
+                    continue;
+                }
+                if (uMountType == 1 || uMountType == 2 || isCanShow) {  // cd module or drive can show
+                    uDiskCount++;
+                    uVolumeCount++;
+                    strMainName = strApiName = QString::fromStdString(itMountInfo->second.strName);
+                } else {
+                    continue;
+                }
+                if (uDiskCount > 0) {
+                    if (uMountType == 1) {   // deal with cd info
+                        if(uDiskCount == 1) {
+                            newarea(1, "","",strMountId,strMainName,
+                                    strApiName,1, "burn:///", 1);
+                        } else {
+                            newarea(1, "","",strMountId,strMainName,
+                                    strApiName,1, "burn:///", 2);
+                        }
+                    } else if (uMountType == 2) {
+                        QString telephoneName = tr("telephone device");
+                        QByteArray strTelePhone = telephoneName.toLocal8Bit();
+                        char *realTele = strTelePhone.data();
+                        if(uDiskCount == 1) {
+                            newarea(1, "","",strMountId,realTele,
+                                    strApiName,lluTotalSize,strMountUri,1);
+                        } else {
+                            newarea(1, "","",strMountId,realTele,
+                                    strApiName,lluTotalSize,strMountUri,2);
+                        }
+                    } else {
+                        if(uDiskCount == 1) {
+                            newarea(1, "","",strMountId,strMainName,
+                                    strApiName,lluTotalSize,strMountUri,1);
+                        } else {
+                            newarea(1, "","",strMountId,strMainName,
+                                    strApiName,lluTotalSize,strMountUri,2);
+                        }
+                    }
+                }
+            }
+        }
+    } else {  // show all device
+        //Convenient interface layout for all drives
+        map<string, FDDriveInfo>& listDriveInfo = m_dataFlashDisk->getDevInfoWithDrive();
+        if (!listDriveInfo.empty()) {
+            map<string, FDDriveInfo>::iterator itDriveInfo = listDriveInfo.begin();
+            for ( ;itDriveInfo != listDriveInfo.end(); itDriveInfo++) {
+                unsigned uVolumeNum = 0;
+                bool isCanShow = (itDriveInfo->second.isCanEject || itDriveInfo->second.isCanStop);
+                QString strDriveName = QString::fromStdString(itDriveInfo->second.strName);
+                if (itDriveInfo->second.listVolumes.size() > 0) {
+                    uDiskCount++;
+                }
+                map<string, FDVolumeInfo>::iterator itVolumeInfo = itDriveInfo->second.listVolumes.begin();
+                for ( ;itVolumeInfo != itDriveInfo->second.listVolumes.end(); itVolumeInfo++) {
+                    QString strApiName;
+                    quint64 lluTotalSize = itVolumeInfo->second.mountInfo.lluTotalSize;
+                    QString strMountUri = QString::fromStdString(itVolumeInfo->second.mountInfo.strUri);
+                    QString strDriveId = QString::fromStdString(itDriveInfo->second.strId);
+                    QString strVolumeId = QString::fromStdString(itVolumeInfo->second.strId);
+                    QString strMountId = QString::fromStdString(itVolumeInfo->second.mountInfo.strId);
+                    unsigned uVolumeType = 0;  // 0:normal file volume, 1: cddata, 2:tele dev
+                    if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+                        string strMountUri = itVolumeInfo->second.mountInfo.strUri;
+                        if(g_str_has_prefix(strMountUri.c_str(),"file:///")) {
+                            uVolumeType = 0;
+                        } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
+                            uVolumeType = 2;
+                        } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                            uVolumeType = 1;
+                        }
+                    }
+                    if (uVolumeType == 1 || uVolumeType == 2 || isCanShow) {  // cd module or drive can show
+                        if (!itVolumeInfo->second.strId.empty()) {
+                            uVolumeNum++;
+                            uVolumeCount++;
+                            strApiName = QString::fromStdString(itVolumeInfo->second.strName);
+                        } else if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+                            uVolumeNum++;
+                            uVolumeCount++;
+                            strApiName = QString::fromStdString(itVolumeInfo->second.mountInfo.strName);
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        continue;
+                    }
+                    if (uDiskCount > 0) {
+                        if (uVolumeType == 1) {   // deal with cd info
+                            if(uDiskCount == 1 || uVolumeNum != 1) {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                                        strApiName, 1, "burn:///", 1);
+                            } else {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                                        strApiName, 1, "burn:///", 2);
+                            }
+                        } else if (uVolumeType == 2) {
+                            QString telephoneName = tr("telephone device");
+                            QByteArray strTelePhone = telephoneName.toLocal8Bit();
+                            char *realTele = strTelePhone.data();
+                            if(uDiskCount == 1 || uVolumeNum != 1) {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,realTele,
+                                        strApiName, lluTotalSize, strMountUri,1);
+                            } else {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,realTele,
+                                        strApiName, lluTotalSize, strMountUri,2);
+                            }
+                        } else {
+                            if(uDiskCount == 1 || uVolumeNum != 1) {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                                        strApiName, lluTotalSize,strMountUri,1);
+                            } else {
+                                newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                                        strApiName,lluTotalSize,strMountUri,2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // show volume info without drive
+        map<string, FDVolumeInfo>& listVolumeInfo = m_dataFlashDisk->getDevInfoWithVolume();
+        if (!listVolumeInfo.empty()) {
+            map<string, FDVolumeInfo>::iterator itVolumeInfo = listVolumeInfo.begin();
+            for (; itVolumeInfo != listVolumeInfo.end(); itVolumeInfo++) {
+                QString strApiName;
+                QString strMainName;
+                bool isCanShow = itVolumeInfo->second.isCanEject;
+                quint64 lluTotalSize = itVolumeInfo->second.mountInfo.lluTotalSize;
+                QString strMountUri = QString::fromStdString(itVolumeInfo->second.mountInfo.strUri);
                 QString strVolumeId = QString::fromStdString(itVolumeInfo->second.strId);
                 QString strMountId = QString::fromStdString(itVolumeInfo->second.mountInfo.strId);
                 unsigned uVolumeType = 0;  // 0:normal file volume, 1: cddata, 2:tele dev
@@ -1571,13 +1880,13 @@ void MainWindow::MainWindowShow(bool isUpdate)
                 }
                 if (uVolumeType == 1 || uVolumeType == 2 || isCanShow) {  // cd module or drive can show
                     if (!itVolumeInfo->second.strId.empty()) {
-                        uVolumeNum++;
+                        uDiskCount++;
                         uVolumeCount++;
-                        strApiName = QString::fromStdString(itVolumeInfo->second.strName);
+                        strMainName = strApiName = QString::fromStdString(itVolumeInfo->second.strName);
                     } else if (!itVolumeInfo->second.mountInfo.strId.empty()) {
-                        uVolumeNum++;
+                        uDiskCount++;
                         uVolumeCount++;
-                        strApiName = QString::fromStdString(itVolumeInfo->second.mountInfo.strName);
+                        strMainName = strApiName = QString::fromStdString(itVolumeInfo->second.mountInfo.strName);
                     } else {
                         continue;
                     }
@@ -1586,165 +1895,95 @@ void MainWindow::MainWindowShow(bool isUpdate)
                 }
                 if (uDiskCount > 0) {
                     if (uVolumeType == 1) {   // deal with cd info
-                        if(uDiskCount == 1 || uVolumeNum != 1) {
-                            newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
-                                    strApiName, 1, "burn:///", 1);
+                        if(uDiskCount == 1) {
+                            newarea(1, "",strVolumeId,strMountId,strMainName,
+                                    strApiName,1,"burn:///",1);
                         } else {
-                            newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
-                                    strApiName, 1, "burn:///", 2);
+                            newarea(1, "",strVolumeId,strMountId,strMainName,
+                                    strApiName,1,"burn:///",2);
                         }
                     } else if (uVolumeType == 2) {
                         QString telephoneName = tr("telephone device");
                         QByteArray strTelePhone = telephoneName.toLocal8Bit();
                         char *realTele = strTelePhone.data();
-                        if(uDiskCount == 1 || uVolumeNum != 1) {
-                            newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,realTele,
-                                    strApiName, lluTotalSize, strMountUri,1);
+                        if(uDiskCount == 1) {
+                            newarea(1, "",strVolumeId,strMountId,realTele,
+                                    strApiName,lluTotalSize,strMountUri,1);
                         } else {
-                            newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,realTele,
-                                    strApiName, lluTotalSize, strMountUri,2);
+                            newarea(1, "",strVolumeId,strMountId,realTele,
+                                    strApiName,lluTotalSize,strMountUri,2);
                         }
                     } else {
-                        if(uDiskCount == 1 || uVolumeNum != 1) {
-                            newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
-                                    strApiName, lluTotalSize,strMountUri,1);
+                        if(uDiskCount == 1) {
+                            newarea(1, "",strVolumeId,strMountId,strMainName,
+                                    strApiName,lluTotalSize,strMountUri,1);
                         } else {
-                            newarea(uVolumeNum, strDriveId,strVolumeId,strMountId,strDriveName,
+                            newarea(1, "",strVolumeId,strMountId,strMainName,
                                     strApiName,lluTotalSize,strMountUri,2);
                         }
                     }
                 }
             }
         }
-    }
-    // show volume info without drive
-    map<string, FDVolumeInfo>& listVolumeInfo = m_dataFlashDisk->getDevInfoWithVolume();
-    if (!listVolumeInfo.empty()) {
-        map<string, FDVolumeInfo>::iterator itVolumeInfo = listVolumeInfo.begin();
-        for (; itVolumeInfo != listVolumeInfo.end(); itVolumeInfo++) {
-            QString strApiName;
-            QString strMainName;
-            bool isCanShow = itVolumeInfo->second.isCanEject;
-            quint64 lluTotalSize = itVolumeInfo->second.mountInfo.lluTotalSize;
-            QString strMountUri = QString::fromStdString(itVolumeInfo->second.mountInfo.strUri);
-            QString strVolumeId = QString::fromStdString(itVolumeInfo->second.strId);
-            QString strMountId = QString::fromStdString(itVolumeInfo->second.mountInfo.strId);
-            unsigned uVolumeType = 0;  // 0:normal file volume, 1: cddata, 2:tele dev
-            if (!itVolumeInfo->second.mountInfo.strId.empty()) {
-                string strMountUri = itVolumeInfo->second.mountInfo.strUri;
-                if(g_str_has_prefix(strMountUri.c_str(),"file:///")) {
-                    uVolumeType = 0;
-                } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
-                    uVolumeType = 2;
-                } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
-                    uVolumeType = 1;
-                }
-            }
-            if (uVolumeType == 1 || uVolumeType == 2 || isCanShow) {  // cd module or drive can show
-                if (!itVolumeInfo->second.strId.empty()) {
-                    uDiskCount++;
-                    uVolumeCount++;
-                    strMainName = strApiName = QString::fromStdString(itVolumeInfo->second.strName);
-                } else if (!itVolumeInfo->second.mountInfo.strId.empty()) {
-                    uDiskCount++;
-                    uVolumeCount++;
-                    strMainName = strApiName = QString::fromStdString(itVolumeInfo->second.mountInfo.strName);
+        // show mount info without drive & volume
+        map<string, FDMountInfo>& listMountInfo = m_dataFlashDisk->getDevInfoWithMount();
+        if (!listMountInfo.empty()) {
+            map<string, FDMountInfo>::iterator itMountInfo = listMountInfo.begin();
+            for (; itMountInfo != listMountInfo.end(); itMountInfo++) {
+                QString strApiName;
+                QString strMainName;
+                bool isCanShow = (itMountInfo->second.isCanUnmount || itMountInfo->second.isCanEject);
+                quint64 lluTotalSize = itMountInfo->second.lluTotalSize;
+                QString strMountUri = QString::fromStdString(itMountInfo->second.strUri);
+                QString strMountId = QString::fromStdString(itMountInfo->second.strId);
+                unsigned uMountType = 0;  // 0:normal file, 1: cddata, 2:tele dev
+                if (!itMountInfo->second.strId.empty()) {
+                    string strMountUri = itMountInfo->second.strUri;
+                    if(g_str_has_prefix(strMountUri.c_str(),"file:///")) {
+                        uMountType = 0;
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
+                        uMountType = 2;
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                        uMountType = 1;
+                    }
                 } else {
                     continue;
                 }
-            } else {
-                continue;
-            }
-            if (uDiskCount > 0) {
-                if (uVolumeType == 1) {   // deal with cd info
-                    if(uDiskCount == 1) {
-                        newarea(1, "",strVolumeId,strMountId,strMainName,
-                                strApiName,1,"burn:///",1);
-                    } else {
-                        newarea(1, "",strVolumeId,strMountId,strMainName,
-                                strApiName,1,"burn:///",2);
-                    }
-                } else if (uVolumeType == 2) {
-                    QString telephoneName = tr("telephone device");
-                    QByteArray strTelePhone = telephoneName.toLocal8Bit();
-                    char *realTele = strTelePhone.data();
-                    if(uDiskCount == 1) {
-                        newarea(1, "",strVolumeId,strMountId,realTele,
-                                strApiName,lluTotalSize,strMountUri,1);
-                    } else {
-                        newarea(1, "",strVolumeId,strMountId,realTele,
-                                strApiName,lluTotalSize,strMountUri,2);
-                    }
+                if (uMountType == 1 || uMountType == 2 || isCanShow) {  // cd module or drive can show
+                    uDiskCount++;
+                    uVolumeCount++;
+                    strMainName = strApiName = QString::fromStdString(itMountInfo->second.strName);
                 } else {
-                    if(uDiskCount == 1) {
-                        newarea(1, "",strVolumeId,strMountId,strMainName,
-                                strApiName,lluTotalSize,strMountUri,1);
-                    } else {
-                        newarea(1, "",strVolumeId,strMountId,strMainName,
-                                strApiName,lluTotalSize,strMountUri,2);
-                    }
+                    continue;
                 }
-            }
-        }
-    }
-    // show mount info without drive & volume
-    map<string, FDMountInfo>& listMountInfo = m_dataFlashDisk->getDevInfoWithMount();
-    if (!listMountInfo.empty()) {
-        map<string, FDMountInfo>::iterator itMountInfo = listMountInfo.begin();
-        for (; itMountInfo != listMountInfo.end(); itMountInfo++) {
-            QString strApiName;
-            QString strMainName;
-            bool isCanShow = (itMountInfo->second.isCanUnmount || itMountInfo->second.isCanEject);
-            quint64 lluTotalSize = itMountInfo->second.lluTotalSize;
-            QString strMountUri = QString::fromStdString(itMountInfo->second.strUri);
-            QString strMountId = QString::fromStdString(itMountInfo->second.strId);
-            unsigned uMountType = 0;  // 0:normal file, 1: cddata, 2:tele dev
-            if (!itMountInfo->second.strId.empty()) {
-                string strMountUri = itMountInfo->second.strUri;
-                if(g_str_has_prefix(strMountUri.c_str(),"file:///")) {
-                    uMountType = 0;
-                } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
-                    uMountType = 2;
-                } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
-                    uMountType = 1;
-                }
-            } else {
-                continue;
-            }
-            if (uMountType == 1 || uMountType == 2 || isCanShow) {  // cd module or drive can show
-                uDiskCount++;
-                uVolumeCount++;
-                strMainName = strApiName = QString::fromStdString(itMountInfo->second.strName);
-            } else {
-                continue;
-            }
-            if (uDiskCount > 0) {
-                if (uMountType == 1) {   // deal with cd info
-                    if(uDiskCount == 1) {
-                        newarea(1, "","",strMountId,strMainName,
-                                strApiName,1, "burn:///", 1);
+                if (uDiskCount > 0) {
+                    if (uMountType == 1) {   // deal with cd info
+                        if(uDiskCount == 1) {
+                            newarea(1, "","",strMountId,strMainName,
+                                    strApiName,1, "burn:///", 1);
+                        } else {
+                            newarea(1, "","",strMountId,strMainName,
+                                    strApiName,1, "burn:///", 2);
+                        }
+                    } else if (uMountType == 2) {
+                        QString telephoneName = tr("telephone device");
+                        QByteArray strTelePhone = telephoneName.toLocal8Bit();
+                        char *realTele = strTelePhone.data();
+                        if(uDiskCount == 1) {
+                            newarea(1, "","",strMountId,realTele,
+                                    strApiName,lluTotalSize,strMountUri,1);
+                        } else {
+                            newarea(1, "","",strMountId,realTele,
+                                    strApiName,lluTotalSize,strMountUri,2);
+                        }
                     } else {
-                        newarea(1, "","",strMountId,strMainName,
-                                strApiName,1, "burn:///", 2);
-                    }
-                } else if (uMountType == 2) {
-                    QString telephoneName = tr("telephone device");
-                    QByteArray strTelePhone = telephoneName.toLocal8Bit();
-                    char *realTele = strTelePhone.data();
-                    if(uDiskCount == 1) {
-                        newarea(1, "","",strMountId,realTele,
-                                strApiName,lluTotalSize,strMountUri,1);
-                    } else {
-                        newarea(1, "","",strMountId,realTele,
-                                strApiName,lluTotalSize,strMountUri,2);
-                    }
-                } else {
-                    if(uDiskCount == 1) {
-                        newarea(1, "","",strMountId,strMainName,
-                                strApiName,lluTotalSize,strMountUri,1);
-                    } else {
-                        newarea(1, "","",strMountId,strMainName,
-                                strApiName,lluTotalSize,strMountUri,2);
+                        if(uDiskCount == 1) {
+                            newarea(1, "","",strMountId,strMainName,
+                                    strApiName,lluTotalSize,strMountUri,1);
+                        } else {
+                            newarea(1, "","",strMountId,strMainName,
+                                    strApiName,lluTotalSize,strMountUri,2);
+                        }
                     }
                 }
             }
@@ -1788,6 +2027,7 @@ void MainWindow::onMaininterfacehide()
     ui->centralWidget->hide();
     this->driveVolumeNum = 0;
     interfaceHideTime->stop();
+    m_dataFlashDisk->resetAllNewState();
 }
 
 void MainWindow::moveBottomNoBase()
