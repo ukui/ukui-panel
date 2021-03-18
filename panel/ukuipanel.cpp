@@ -1505,8 +1505,8 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 
-    m_settings.beginGroup("Hibernate");
-    QString nightmode_action = m_settings.value("hibernate", "").toString();
+    m_settings.beginGroup("NightMode");
+    QString nightmode_action = m_settings.value("nightmode", "").toString();
     if (nightmode_action.isEmpty()) {
         nightmode_action = "show";
     }
