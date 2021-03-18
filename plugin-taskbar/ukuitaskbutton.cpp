@@ -51,7 +51,6 @@
 #include "ukuitaskgroup.h"
 #include "ukuitaskbar.h"
 #include "../panel/customstyle.h"
-#include "ukuitaskbaricon.h"
 #include <KWindowSystem/KWindowSystem>
 // Necessary for closeApplication()
 #include <KWindowSystem/NETWM>
@@ -163,10 +162,6 @@ void UKUITaskButton::updateIcon()
     if (mParentTaskBar->isIconByClass())
     {
         ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
-    }
-    if(ico.isNull())
-    {
-        ico = QIcon::fromTheme(mParentTaskBar->fetchIcon()->getIconName(mAppName.replace(" ","").toLower()));
     }
     if (ico.isNull())
     {

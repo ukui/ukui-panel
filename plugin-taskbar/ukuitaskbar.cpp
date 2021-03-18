@@ -46,7 +46,6 @@
 
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
-#include "ukuitaskbaricon.h"
 #include "quicklaunchaction.h"
 #include "json.h"
 #define PANEL_SETTINGS "org.ukui.panel.settings"
@@ -86,7 +85,6 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
     savecount = 0;
     //setStyle(mStyle);
-    mpTaskBarIcon = new UKUITaskBarIcon;
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
     mLayout->setMargin(0);

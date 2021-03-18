@@ -8,7 +8,6 @@ set(HEADERS
     ukuigrouppopup.h
     ukuitaskwidget.h
     ukuitaskclosebutton.h
-	ukuitaskbaricon.h
         quicklaunchaction.h
         json.h
 #         quicklaunchbutton.h
@@ -22,7 +21,6 @@ set(SOURCES
     ukuigrouppopup.cpp
     ukuitaskwidget.cpp
     ukuitaskclosebutton.cpp
-    ukuitaskbaricon.cpp
     quicklaunchaction.cpp
     json.cpp
 #    quicklaunchbutton.cpp
