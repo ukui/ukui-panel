@@ -152,6 +152,7 @@ bool UKUITaskBar::acceptWindow(WId window) const
     ignoreList |= NET::MenuMask;
     ignoreList |= NET::PopupMenuMask;
     ignoreList |= NET::NotificationMask;
+    ignoreList |= NET::UtilityMask;
 
     KWindowInfo info(window, NET::WMWindowType | NET::WMState, NET::WM2TransientFor);
     if (!info.valid())
