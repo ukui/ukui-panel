@@ -225,8 +225,9 @@ void MainWindow::getDeviceInfo()
             driveInfo.isCanStop = g_drive_can_stop(gdrive);
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
-            if(driveInfo.isCanEject || driveInfo.isCanStop) {
-                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
+            if(driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable) {
+                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
+                    || g_str_has_prefix(devPath,"/dev/mmcblk")) {
                     GList* gdriveVolumes = g_drive_get_volumes(gdrive);
                     if (gdriveVolumes) {
                         for(lVolume = gdriveVolumes; lVolume != NULL; lVolume = lVolume->next){ //遍历驱动器上的所有卷设备
@@ -339,7 +340,8 @@ void MainWindow::getDeviceInfo()
                 bool isValidMount = true;
                 char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
                 if (devPath) {
-                    if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd"))) {
+                    if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
+                        || g_str_has_prefix(devPath,"/dev/mmcblk"))) {
                         g_free(devPath);
                         continue;
                     }
@@ -416,7 +418,7 @@ void MainWindow::getDeviceInfo()
                     }
                     g_object_unref(mount);
                 } else {
-                    if (volumeInfo.isCanEject || volumeInfo.isCanMount) {
+                    if (volumeInfo.isCanMount) {
                         if(ifsettings->get(IFAUTOLOAD).toBool()) {
                             g_volume_mount(volume,
                                     G_MOUNT_MOUNT_NONE,
@@ -458,8 +460,9 @@ void MainWindow::getDeviceInfo()
                         driveInfo.isCanStop = g_drive_can_stop(gdrive);
                         driveInfo.isCanStart = g_drive_can_start(gdrive);
                         driveInfo.isRemovable = g_drive_is_removable(gdrive);
-                        if(driveInfo.isCanEject || driveInfo.isCanStop) {
-                            if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
+                        if(driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable) {
+                            if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
+                                || g_str_has_prefix(devPath,"/dev/mmcblk")) {
                                 FDMountInfo mountInfo;
                                 bool isValidMount = true;
                                 mountInfo.isCanEject = g_mount_can_eject(gmount);
@@ -709,7 +712,8 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
         bool isValidMount = true;
         char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
         if (devPath) {
-            if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd"))) {
+            if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
+                || g_str_has_prefix(devPath,"/dev/mmcblk"))) {
                 g_free(devPath);
                 return;
             }
@@ -787,7 +791,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             }
             g_object_unref(mount);
         } else {
-            if (volumeInfo.isCanEject || volumeInfo.isCanMount) {
+            if (volumeInfo.isCanMount) {
                 if(p_this->ifsettings->get(IFAUTOLOAD).toBool()) {
                     g_volume_mount(volume,
                                 G_MOUNT_MOUNT_NONE,
@@ -817,8 +821,9 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
 
-            if(driveInfo.isCanEject || driveInfo.isCanStop) {
-                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")) {
+            if(driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable) {
+                if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
+                    || g_str_has_prefix(devPath,"/dev/mmcblk")) {
                     char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
                     if (volumeId) {
                         volumeInfo.strId = volumeId;
@@ -897,16 +902,16 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                         }
                     }
                 }
+                if (isNewMount) {
+                    //qDebug()<<"cd data disk has mounted!";
+                    volumeInfo.isNewInsert = true;
+                    p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
+                    Q_EMIT p_this->convertShowWindow();
+                } else {
+                    p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
+                }
             }
             g_free(devPath);
-            if (g_str_has_prefix(volumeInfo.strDevName.c_str(),"/dev/sr") && isNewMount) {
-                //qDebug()<<"cd data disk has mounted!";
-                volumeInfo.isNewInsert = true;
-                p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
-                Q_EMIT p_this->convertShowWindow();
-            } else {
-                p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
-            }
         }
         g_object_unref(gdrive);
     }
@@ -1055,20 +1060,16 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     }
     bool isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(mountInfo));
     if (!driveInfo.strId.empty()) {
-        if (!driveInfo.isCanEject && !driveInfo.isCanStop) {
+        if (!driveInfo.isCanEject && !driveInfo.isCanStop && !driveInfo.isRemovable) {
             isValidMount = false;
         }
     }
-    if (!volumeInfo.strId.empty()) {
-        if (!volumeInfo.isCanEject) {
-            isValidMount = false;
-        }
-    } else {
+    if (volumeInfo.strId.empty()) {
         // 没有卷信息的挂载不处理（ftp等）
         isValidMount = false;
     }
     if(isValidMount && (mountInfo.isCanUnmount || g_str_has_prefix(strVolumePath.c_str(),"/dev/bus")
-            || g_str_has_prefix(strVolumePath.c_str(),"/dev/sr"))) {
+            || g_str_has_prefix(strVolumePath.c_str(),"/dev/sr") || g_str_has_prefix(strVolumePath.c_str(),"/dev/mmcblk"))) {
         qDebug() << "real mount loaded";
         if (isNewMount) {
             mountInfo.isNewInsert = true;
@@ -1094,7 +1095,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
 
     if(p_this->m_dataFlashDisk->getValidInfoCount() >= 1)
     {
-        if (isValidMount && g_str_has_prefix(strVolumePath.c_str(),"/dev/sr") && isNewMount) {
+        if (isValidMount && isNewMount) {
             //qDebug()<<"cd data disk has mounted!";
             Q_EMIT p_this->convertShowWindow();
         }
@@ -1257,6 +1258,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
         }        
         if (bMountSuccess) {
             mountInfo.isNewInsert = true;
+            bool isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(mountInfo));
             if (!driveInfo.strId.empty()) {
                 if (!volumeInfo.strId.empty()) {
                     volumeInfo.mountInfo = mountInfo;
@@ -1270,8 +1272,10 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
             } else {
                 p_this->m_dataFlashDisk->addMountInfo(mountInfo);
             }
-            qDebug()<<"sig has emited";
-            Q_EMIT p_this->convertShowWindow();     //emit a signal to trigger the MainMainShow slot
+            if (isNewMount) {
+                qDebug()<<"sig has emited";
+                Q_EMIT p_this->convertShowWindow();     //emit a signal to trigger the MainMainShow slot
+            }
         } 
     }
     else
@@ -1554,7 +1558,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
             map<string, FDDriveInfo>::iterator itDriveInfo = listDriveInfo.begin();
             for ( ;itDriveInfo != listDriveInfo.end(); itDriveInfo++) {
                 unsigned uVolumeNum = 0;
-                bool isCanShow = (itDriveInfo->second.isCanEject || itDriveInfo->second.isCanStop);
+                bool isCanShow = (itDriveInfo->second.isCanEject || itDriveInfo->second.isCanStop || itDriveInfo->second.isRemovable);
                 QString strDriveName = QString::fromStdString(itDriveInfo->second.strName);
                 if (itDriveInfo->second.listVolumes.size() > 0) {
                     uDiskCount++;
@@ -1783,7 +1787,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
             map<string, FDDriveInfo>::iterator itDriveInfo = listDriveInfo.begin();
             for ( ;itDriveInfo != listDriveInfo.end(); itDriveInfo++) {
                 unsigned uVolumeNum = 0;
-                bool isCanShow = (itDriveInfo->second.isCanEject || itDriveInfo->second.isCanStop);
+                bool isCanShow = (itDriveInfo->second.isCanEject || itDriveInfo->second.isCanStop || itDriveInfo->second.isRemovable);
                 QString strDriveName = QString::fromStdString(itDriveInfo->second.strName);
                 if (itDriveInfo->second.listVolumes.size() > 0) {
                     uDiskCount++;

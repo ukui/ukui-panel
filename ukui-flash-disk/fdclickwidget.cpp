@@ -77,6 +77,9 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         m_driveName_label->setFont(QFont("Noto Sans CJK SC",fontSize));
         QString DriveName = getElidedText(m_driveName_label->font(), m_driveName, 180);
         m_driveName_label->setText(DriveName);
+        if (DriveName != m_driveName) {
+            m_driveName_label->setToolTip(m_driveName);
+        }
         m_driveName_label->setFixedSize(180,40);
         m_driveName_label->setObjectName("driveNameLabel");
 
@@ -96,8 +99,7 @@ FDClickWidget::FDClickWidget(QWidget *parent,
     }    
 
     QVBoxLayout *main_V_BoxLayout = new QVBoxLayout(this);
-    main_V_BoxLayout->setContentsMargins(0,0,0,0);    
-
+    main_V_BoxLayout->setContentsMargins(0,0,0,0);
     disWidgetNumOne = new QWidget(this);
     QHBoxLayout *onevolume_h_BoxLayout = new QHBoxLayout();
     m_nameDis1_label = new ClickLabel(disWidgetNumOne);
@@ -105,6 +107,9 @@ FDClickWidget::FDClickWidget(QWidget *parent,
     QString VolumeName = getElidedText(m_nameDis1_label->font(), m_volumeName, 120);
     m_nameDis1_label->adjustSize();
     m_nameDis1_label->setText("- "+VolumeName+":");
+    if (m_volumeName != VolumeName) {
+        m_nameDis1_label->setToolTip("- "+m_volumeName+":");
+    }
     m_capacityDis1_label = new QLabel(disWidgetNumOne);
 
     QString str_capacityDis1 = size_human(m_capacityDis);
@@ -135,6 +140,13 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         this->setFixedSize(276,36);
     }
     this->setAttribute(Qt::WA_TranslucentBackground, true);
+    // check capacity lable width
+    str_capacityDis1 = m_capacityDis1_label->text();
+    QString strCapacity = getElidedText(m_capacityDis1_label->font(), str_capacityDis1, m_capacityDis1_label->width()-6);
+    if (strCapacity != str_capacityDis1) {
+        m_capacityDis1_label->setText("("+strCapacity+")");
+        m_capacityDis1_label->setToolTip("("+str_capacityDis1+")");
+    }
 }
 
 void FDClickWidget::initFontSize()
