@@ -60,6 +60,7 @@
 
 #include "common_fun/ukuipanel_infomation.h"
 #include "common_fun/dbus-adaptor.h"
+#include "common_fun/panel_commission.h"
 
 #ifdef DEBUG_PLUGIN_LOADTIME
 #include <QElapsedTimer>
@@ -223,7 +224,9 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     caculateScreenGeometry();
 
-    system("/usr/share/ukui/ukui-panel/panel-commission.sh");
+    //初始化参数调整
+    PanelCommission::panelConfigFileValueInit(true);
+    PanelCommission::panelConfigFileReset(true);
 
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);

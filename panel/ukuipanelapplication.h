@@ -70,7 +70,6 @@ public:
     ~UKUIPanelApplication();
 
     void setIconTheme(const QString &iconTheme);
-    void updateStylesheet(QString themeName);
     /*!
      * \brief Determines the number of UKUIPanel objects
      * \return the current number of UKUIPanel objects
