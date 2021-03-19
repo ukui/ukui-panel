@@ -370,9 +370,7 @@ Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
            2011, Razor team
 License: LGPL-2.1+
 
-Files: plugin-taskbar/ukuitaskbaricon.cpp
-  plugin-taskbar/ukuitaskbaricon.h
-  plugin-taskbar/ukuitaskclosebutton.cpp
+Files: plugin-taskbar/ukuitaskclosebutton.cpp
   plugin-taskbar/ukuitaskclosebutton.h
   plugin-taskbar/ukuitaskwidget.cpp
   plugin-taskbar/ukuitaskwidget.h
