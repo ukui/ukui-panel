@@ -8,7 +8,6 @@ set(HEADERS
     ukuigrouppopup.h
     ukuitaskwidget.h
     ukuitaskclosebutton.h
-	ukuitaskbaricon.h
 )
 
 set(SOURCES
@@ -19,7 +18,6 @@ set(SOURCES
     ukuigrouppopup.cpp
     ukuitaskwidget.cpp
     ukuitaskclosebutton.cpp
-    ukuitaskbaricon.cpp
 )
 
 find_package(X11 REQUIRED)

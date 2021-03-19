@@ -44,7 +44,6 @@
 
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
-#include "ukuitaskbaricon.h"
 using namespace UKUi;
 
 /************************************************
@@ -76,7 +75,6 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
 
     //setStyle(mStyle);
-    mpTaskBarIcon = new UKUITaskBarIcon;
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
     mLayout->setMargin(0);
