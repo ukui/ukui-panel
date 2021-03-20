@@ -36,6 +36,8 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 #define FLASHDISKITEM_TITLE_HEIGHT  45
 #define FLASHDISKITEM_CONTENT_HEIGHT  45
 
+#define NEWINFO_DELAYSHOW_TIME  1500
+
 /**
  * QT主题
  */

@@ -27,6 +27,7 @@
 #include <QColor>
 #include <KWindowEffects>
 #include <QtConcurrent/QtConcurrent>
+#include <QDateTime>
 #include <stdio.h>
 #include <string.h>
 #include "clickLabel.h"
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initThemeMode();
 
     installEventFilter(this);
+    m_nAppStartTimestamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
     m_dataFlashDisk = FlashDiskData::getInstance();
     ui->setupUi(this);
     //框架的样式设置
@@ -595,6 +597,11 @@ void MainWindow::getDeviceInfo()
 
 void MainWindow::onConvertShowWindow()
 {
+    // 进程启动时一定时间内不弹窗提示
+    if (QDateTime::currentDateTime().toMSecsSinceEpoch() - m_nAppStartTimestamp < NEWINFO_DELAYSHOW_TIME) {
+        m_dataFlashDisk->resetAllNewState();
+        return;
+    }
     insertorclick = true;
     MainWindowShow();
     onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"));
@@ -1071,9 +1078,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     if(isValidMount && (mountInfo.isCanUnmount || g_str_has_prefix(strVolumePath.c_str(),"/dev/bus")
             || g_str_has_prefix(strVolumePath.c_str(),"/dev/sr") || g_str_has_prefix(strVolumePath.c_str(),"/dev/mmcblk"))) {
         qDebug() << "real mount loaded";
-        if (isNewMount) {
-            mountInfo.isNewInsert = true;
-        }
+        mountInfo.isNewInsert = true;
         if (!driveInfo.strId.empty()) {
             if (!volumeInfo.strId.empty()) {
                 volumeInfo.mountInfo = mountInfo;
