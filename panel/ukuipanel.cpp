@@ -363,7 +363,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                              UKUI_PATH,
                              UKUI_INTERFACE,
                              QDBusConnection::sessionBus());
-    interface.call("startupfinished","panel","finish");
+    interface.call("startupfinished","ukui-panel","finish");
 
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
@@ -567,7 +567,6 @@ int UKUIPanel::getReserveDimension()
 void UKUIPanel::priScreenChanged(int x, int y, int width, int height)
 {
 
-    qDebug("primary screen  changed, geometry is  x=%d, y=%d, windth=%d, height=%d", x, y, width, height);
     mcurrentScreenRect.setRect(x, y, width, height);
     setPanelGeometry();
     realign();
@@ -583,7 +582,6 @@ void UKUIPanel::caculateScreenGeometry()
     priWid = getScreenGeometry("width");
     priHei = getScreenGeometry("height");
 
-    qDebug("Start: Primary screen geometry is x=%d, y=%d, windth=%d, height=%d", priX, priY, priWid, priHei);
     mcurrentScreenRect.setRect(priX, priY, priWid, priHei);
     if(priWid==0){
     qDebug("初始化获取到的dbus信号错误，获取的宽度为0");
@@ -629,10 +627,6 @@ void UKUIPanel::setPanelGeometry(bool animate)
         priY = getScreenGeometry("y");
         priWid = getScreenGeometry("width");
         priHei = getScreenGeometry("height");
-
-        qDebug("Start: Primary screen geometry is x=%d, y=%d, windth=%d, height=%d", priX, priY, priWid, priHei);
-//        QRect mRect;
-//        mRect.setRect(priX, priY, priWid, priHei);
 #if 0
         if(priWid > 2500 && scale_flag==2 ){
             currentScreen.setRect(priX, priY, priWid/2, priHei/2);
@@ -646,14 +640,11 @@ void UKUIPanel::setPanelGeometry(bool animate)
 #endif
         currentScreen.setRect(priX, priY, priWid, priHei);
         if(priWid==0){
-            qDebug("初始化获取到的dbus信号错误，获取的宽度为0");
             currentScreen = QGuiApplication::screens().at(0)->geometry();
         }
 //        currentScreen = mRect;
     }else{
-        qDebug("非华为990机器");
         currentScreen=QGuiApplication::screens().at(0)->geometry();
-        qDebug()<<"currentScreen   :"<<currentScreen;
     }
 
 //    const QRect currentScreen = QApplication::desktop()->screenGeometry(0);
