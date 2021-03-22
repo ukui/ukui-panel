@@ -5,6 +5,10 @@ PanelCommission::PanelCommission()
 //    system("/usr/share/ukui/ukui-panel/ukui-panel-reset.sh");
 }
 
+PanelCommission::~PanelCommission()
+{
+}
+
 void PanelCommission::panelConfigFileReset(bool reset)
 {
     if(reset)

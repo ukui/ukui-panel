@@ -68,7 +68,7 @@ set(SOURCES
     common_fun/listengsettings.cpp
     common_fun/ukuipanel_infomation.cpp
     common_fun/dbus-adaptor.cpp
-    common_fun/panel_commission.h
+    common_fun/panel_commission.cpp
     ukuicontrolstyle.cpp
     customstyle.cpp
 )
