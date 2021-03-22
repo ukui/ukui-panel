@@ -130,7 +130,20 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     */
 
     //检测CanHibernate接口的返回值，判断是否可以执行挂起操作
-    if(QString::compare(version,"Ubuntu")){
+
+
+    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("Hibernate");
+    QString hibernate_action = m_settings.value("hibernate", "").toString();
+    if (hibernate_action.isEmpty()) {
+        hibernate_action = "show";
+    }
+    m_settings.endGroup();
+
+    if(QString::compare(version,"Ubuntu") && hibernate_action != "hide"){
         pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
                                    tr("Hibernate Mode"),
                                    this, SLOT(SessionHibernate())

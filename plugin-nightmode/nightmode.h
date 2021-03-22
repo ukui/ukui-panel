@@ -98,6 +98,12 @@ public:
 private:
     NightModeButton *mButton;
     QGSettings *gsettings;
+
+    /**
+     * @brief nightmode_action
+     * 读取配置文件中的nightmode 的值
+     */
+    QString nightmode_action;
 };
 
 class NightModeLibrary: public QObject, public IUKUIPanelPluginLibrary

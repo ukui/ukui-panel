@@ -112,6 +112,9 @@
 #define DBUS_PATH            "/org/ukui/SettingsDaemon/wayland"
 #define DBUS_INTERFACE       "org.ukui.SettingsDaemon.wayland"
 
+#define SCALE_NAME            "org.ukui.SettingsDaemon.plugins.xsettings"
+#define SCALE_KEY             "scalingFactor"
+
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -219,6 +222,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     setObjectName(QString("UKUIPanel %1").arg(configGroup));
 
     caculateScreenGeometry();
+
+    system("/usr/share/ukui/ukui-panel/panel-commission.sh");
 
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);
@@ -331,9 +336,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                                          DBUS_PATH,
                                          DBUS_INTERFACE,
                                          QDBusConnection::sessionBus());
-    if (mDbusXrandInter->isValid()) {
-        flag_hw990="hw_990";
-    }
+//    if (mDbusXrandInter->isValid()) {
+//        flag_hw990="hw_990";
+//    }
+    if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
     connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
 
 
@@ -358,6 +364,12 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
+
+    const QByteArray scale_id(SCALE_NAME);
+    if(QGSettings::isSchemaInstalled(scale_id)){
+        scale_gsetting = new QGSettings(SCALE_NAME);
+        scale_flag=scale_gsetting->get(SCALE_KEY).toInt();
+        }
 
     UKuiPanelInformation* dbus=new UKuiPanelInformation;
     new PanelAdaptor(dbus);
@@ -555,6 +567,7 @@ void UKUIPanel::priScreenChanged(int x, int y, int width, int height)
     qDebug("primary screen  changed, geometry is  x=%d, y=%d, windth=%d, height=%d", x, y, width, height);
     mcurrentScreenRect.setRect(x, y, width, height);
     setPanelGeometry();
+    realign();
 }
 
 
@@ -1489,12 +1502,23 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
-#if (QT_VERSION > QT_VERSION_CHECK(5,7,0))
-    QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
-    shownightmode->setCheckable(true);
-    shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
-    connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
-#endif
+    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("NightMode");
+    QString nightmode_action = m_settings.value("nightmode", "").toString();
+    if (nightmode_action.isEmpty()) {
+        nightmode_action = "show";
+    }
+    m_settings.endGroup();
+
+    if(nightmode_action == "show"){
+        QAction * shownightmode = menu->addAction(tr("Show Nightmode"));
+        shownightmode->setCheckable(true);
+        shownightmode->setChecked(gsettings->get(SHOW_NIGHTMODE).toBool());
+        connect(shownightmode, &QAction::triggered, [this] { showNightModeButton(); });
+    }
 
     menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
                     tr("Show Desktop"),

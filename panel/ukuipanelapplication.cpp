@@ -25,6 +25,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
+#include <signal.h>
+
 #include "ukuipanelapplication.h"
 #include "ukuipanelapplication_p.h"
 #include "ukuipanel.h"
@@ -83,6 +85,9 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     d_ptr(new UKUIPanelApplicationPrivate(this))
 
 {
+    // bind to SIGTERM siganl to exit with code 15
+    signal(SIGTERM, sigtermHandler);
+
     Q_D(UKUIPanelApplication);
 
     QCoreApplication::setApplicationName(QLatin1String("ukui-panel"));
@@ -362,4 +367,10 @@ void UKUIPanelApplication::setIconTheme(const QString &iconTheme)
 //            panel->updateConfigDialog();
         }
     }
+}
+
+void UKUIPanelApplication::sigtermHandler(int signo)
+{
+    qDebug() << "Caught SIGTERM signal, exit with SIGTERM";
+    exit(signo);
 }

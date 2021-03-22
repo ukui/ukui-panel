@@ -136,6 +136,12 @@ private:
      * \return The newly created UKUIPanel.
      */
     UKUIPanel* addPanel(const QString &name);
+    /*!
+     * \brief Exit with 15 rather than 0 when killed by SIGTERM signal,
+     * so session manager can restart the panel.
+     * \param caight signal number (15).
+     */
+     static void sigtermHandler(int signo);
 
 private slots:
     /*!
