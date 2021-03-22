@@ -764,7 +764,7 @@ void UKUITray::newAppDetect(int wid)
         newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
 
         QStringList trayIconNameList;
-        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"mktip"<<"explorer.exe";
+        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"mktip"<<"explorer.exe"<<"ukui-power-manager-tray";
         if(trayIconNameList.contains(xfitMan().getApplicationName(wid))){
             newsetting->set(ACTION_KEY,"tray");
             newsetting->set(RECORD_KEY,"tray");

@@ -9,7 +9,6 @@
 
 UKuiPanelInformation::UKuiPanelInformation(QObject *parent) : QObject(parent)
 {
-    qDebug()<<"UKuiPanelInformation&&&&&&&&&&&&&&&&&&&&&&&&&&&&&";
     QDBusConnection::sessionBus().connect(QString(), QString( "/panel/position"),
                                           "org.ukui.panel",
                                           "UKuiPanelPosition",
@@ -20,13 +19,21 @@ UKuiPanelInformation::UKuiPanelInformation(QObject *parent) : QObject(parent)
 
 void UKuiPanelInformation::setPanelInformation(int x, int y, int width, int height, int size, int position)
 {
-    qDebug()<<"UKuiPanelInformation::setPanelInformation  &&&&&&&&&&&&";
     screen_x=x;
     screen_y=y;
     screen_width=width;
     screen_height=height;
     panelsize=size;
     panelposition=position;
+
+    QDBusMessage message = QDBusMessage::createSignal("/panel/position", "org.ukui.panel", "PrimaryScreenAvailiableGeometryChanged");
+    QList<QVariant> args;
+    args.append(screen_x);
+    args.append(screen_y);
+    args.append(screen_width);
+    args.append(screen_height);
+    message.setArguments(args);
+    QDBusConnection::sessionBus().send(message);
 }
 QVariantList UKuiPanelInformation::GetPrimaryScreenGeometry()
 {
@@ -65,19 +72,17 @@ QVariantList UKuiPanelInformation::GetPrimaryScreenGeometry()
         break;
     }
 
-    qDebug()<<"list*************************"<<vlist;
 //    available_primary_screen_x=0;
 //    available_primary_screen_y=0;
 //    available_primary_screen_width=0;
 //    available_primary_screen_height=0;
     vlist<<available_primary_screen_x<<available_primary_screen_y<<available_primary_screen_width<<available_primary_screen_height<<panelposition;
-    qDebug()<<"list*************************"<<vlist;
+//    qDebug()<<"list*************************"<<vlist;
     return vlist;
 }
 
 QString UKuiPanelInformation::GetPanelPosition()
 {
-    qDebug()<<"GetSearchResult";
     QString str="bottom";
     return str;
 }

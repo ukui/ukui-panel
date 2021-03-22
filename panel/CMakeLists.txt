@@ -39,6 +39,7 @@ set(PUB_HEADERS
     common_fun/listengsettings.h
     common_fun/ukuipanel_infomation.h
     common_fun/dbus-adaptor.h
+    common_fun/panel_commission.h
     ukuicontrolstyle.h
     highlight-effect.cpp
     customstyle.h
@@ -67,6 +68,7 @@ set(SOURCES
     common_fun/listengsettings.cpp
     common_fun/ukuipanel_infomation.cpp
     common_fun/dbus-adaptor.cpp
+    common_fun/panel_commission.h
     ukuicontrolstyle.cpp
     customstyle.cpp
 )
@@ -201,7 +203,7 @@ install(FILES
 )
 
 install(FILES
-    resources/panel-commission.sh
+    resources/panel-commission.sh resources/ukui-panel-reset.sh
     DESTINATION "/usr/share/ukui/ukui-panel"
     COMPONENT Runtime
 )

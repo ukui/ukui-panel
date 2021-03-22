@@ -102,11 +102,18 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     parser.addHelpOption();
     parser.addVersionOption();
 
+    //添加其他参数
     QCommandLineOption configFileOption(QStringList()
             << QLatin1String("c") << QLatin1String("config") << QLatin1String("configfile"),
             QCoreApplication::translate("main", "Use alternate configuration file."),
             QCoreApplication::translate("main", "Configuration file"));
     parser.addOption(configFileOption);
+
+    QCommandLineOption panelResetOption(QStringList()
+            << QLatin1String("r") << QLatin1String("reset") << QLatin1String("panel reset"),
+            QCoreApplication::translate("main", "ukui-panel set mode "),
+            QCoreApplication::translate("main", "panel set option"));
+    parser.addOption(panelResetOption);
 
     parser.process(*this);
 
@@ -132,6 +139,12 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
         qDebug()<<"configFile.is not Empty"<<endl;
         d->mSettings = new UKUi::Settings(configFile, QSettings::IniFormat, this);
     }
+
+    const QString panelReset = parser.value(panelResetOption);
+    if(panelReset.isEmpty()){qDebug()<<"ukui-panel --reset";}
+    if(panelReset == "reset"){system("rm $HOME/.config/ukui/panel.conf");}
+    if(panelReset == "replace"){qDebug()<<"ukui-panel --replace";}
+
     // This is a workaround for Qt 5 bug #40681.
     const auto allScreens = screens();
     for(QScreen* screen : allScreens)
@@ -168,18 +181,6 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
 
         addPanel(i);
     }
-//    updateStylesheet("default");
-}
-
-void UKUIPanelApplication::updateStylesheet(QString themeName)
-{
-//    QFile file(QString(PLUGIN_DESKTOPS_DIR)+"/../panel.qss");
-//    file.open(QFile::ReadOnly);
-//    QTextStream filetext(&file);
-//    QString stylesheet = filetext.readAll();
-//    this->setStyleSheet(stylesheet);
-//    file.close();
-//    qDebug()<<"updateStylesheet:"<<themeName;
 }
 
 UKUIPanelApplication::~UKUIPanelApplication()
