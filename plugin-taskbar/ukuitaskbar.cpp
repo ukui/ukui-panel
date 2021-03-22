@@ -360,11 +360,21 @@ void UKUITaskBar::groupBecomeEmptySlot()
     group->deleteLater();
 }
 
+QString UKUITaskBar::captionExchange(QString str)
+{
+    QString temp_group_id=str;
+    QStringList strList = temp_group_id.split(" ");
+    QString group_id = strList[0];
+    if(QString::compare(group_id,"麒麟影音")==0) group_id ="kylin-video";
+    return group_id;
+}
 void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
 {
     // If grouping disabled group behaves like regular button
-    const QString group_id = caption;
-    qDebug()<<"*********************************id**************"<<group_id;
+//    QString temp_group_id=caption;
+//    QStringList strList = temp_group_id.split(" ");
+
+    const QString group_id = captionExchange(caption);
     UKUITaskGroup *group = nullptr;
     auto i_group = mKnownWindows.find(window);
     if (mKnownWindows.end() != i_group)
@@ -373,6 +383,18 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
             group = *i_group;
         else
             (*i_group)->onWindowRemoved(window);
+    }
+
+    if (!group && mGroupingEnabled && group_id.compare("kylin-video"))
+    {
+        for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
+        {
+            if ((*i)->groupName() == group_id)
+            {
+                group = *i;
+                break;
+            }
+        }
     }
 
     if (!group)

@@ -257,6 +257,8 @@ private:
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
 
+    QString captionExchange(QString str);
+
     enum TaskStatus{NORMAL, HOVER, PRESS};
     TaskStatus taskstatus;
 
