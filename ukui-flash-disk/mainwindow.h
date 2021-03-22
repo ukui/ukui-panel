@@ -168,6 +168,7 @@ private:
     FlashDiskData* m_dataFlashDisk;
     bool m_bIsMouseInTraIcon = false;
     bool m_bIsMouseInCentral = false;
+    qint64 m_nAppStartTimestamp = 0; // 进程启动时的时间戳
     //authority
     //QDBusInterface *systemIface;
 public:
