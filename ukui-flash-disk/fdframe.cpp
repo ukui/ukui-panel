@@ -32,6 +32,7 @@ FDFrame::FDFrame(QWidget* parent) : QFrame(parent)
     setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setAttribute(Qt::WA_TranslucentBackground);
+    //setWindowOpacity(0.8);
 }
 
 FDFrame::~FDFrame()
@@ -44,10 +45,12 @@ void FDFrame::paintEvent(QPaintEvent * event)
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect(),6,6);
+    rectPath.addRoundedRect(this->rect(),4,4);
     
     // 绘制底色
     p.save();
-    p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xcc));
+    QStyleOption opt;
+    opt.init(this);
+    p.fillPath(rectPath, opt.palette.color(QPalette::Base));
     p.restore();
 }
