@@ -345,19 +345,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
     connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
 
-
-    const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
-    if(QGSettings::isSchemaInstalled(transparency_id)){
-        transparency_gsettings = new QGSettings(transparency_id);
-        //setPanelBackground(true);
-        }
-    connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==TRANSPARENCY_KEY)
-        {
-            //setPanelBackground(true);
-            this->update();
-        }
-    });
+    styleAdjust();
 
     QDBusInterface interface(UKUI_SERVICE,
                              UKUI_PATH,
@@ -1416,6 +1404,34 @@ void UKUIPanel::showEvent(QShowEvent *event)
     realign();
 }
 
+void UKUIPanel::styleAdjust()
+{
+    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("Transparency");
+    QString transparency_action = m_settings.value("transparency", "").toString();
+    if (transparency_action.isEmpty()) {
+        transparency_action = "open";
+    }
+    m_settings.endGroup();
+
+    const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
+    if(QGSettings::isSchemaInstalled(transparency_id)){
+        transparency_gsettings = new QGSettings(transparency_id);
+        transparency=0.75;
+        }
+
+//    if(transparency_gsettings->keys().contains(TRANSPARENCY_KEY)){
+    connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==TRANSPARENCY_KEY && transparency_action=="open"){
+            transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+        }
+        this->update();
+    });
+}
+
 /* 使用paintEvent 对panel进行绘制的时候有如下问题：
  * 1.绘制速度需要鼠标事件触发，明显的切换不流畅
  * 2.部分区域绘制不能生效，调整任务栏高度之后才能生效
@@ -1427,12 +1443,7 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    double tran;
-    if(transparency_gsettings->keys().contains(TRANSPARENCY_KEY))
-        tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-    else
-        tran=0.75;
-    p.setBrush(QBrush(QColor(19,22,28,tran)));
+    p.setBrush(QBrush(QColor(19,22,28,transparency)));
 
     p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,0,0);
