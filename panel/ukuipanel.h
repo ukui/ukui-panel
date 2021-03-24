@@ -554,6 +554,7 @@ private:
      *
      * \sa panelSize(), setPanelSize().
      */
+    void styleAdjust();
     int mPanelSize;
     /**
      * @brief Stores the edge length of the panel icons in pixels.
@@ -702,6 +703,7 @@ private:
      * @brief Flag for providing the configuration options in panel's context menu
      */
     bool mLockPanel;
+    double transparency;
 
     // settings should be kept private for security
     UKUi::Settings *settings() const { return mSettings; }
