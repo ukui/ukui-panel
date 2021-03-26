@@ -45,7 +45,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     IUKUIPanelPlugin(startupInfo)
 {
     //读取配置文件中nightmode 的值
-    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QString filename = "/usr/share/ukui/panel-commission.ini";
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 

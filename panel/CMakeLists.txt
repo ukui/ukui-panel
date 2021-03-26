@@ -198,7 +198,7 @@ install(FILES
 
 install(FILES
     resources/panel-commission.ini
-    DESTINATION $ENV{HOME}/.config/ukui/
+    DESTINATION "/usr/share/ukui/ukui-panel"
     COMPONENT Runtime
 )
 

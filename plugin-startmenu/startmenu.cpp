@@ -132,7 +132,7 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     //检测CanHibernate接口的返回值，判断是否可以执行挂起操作
 
 
-    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QString filename = "/usr/share/ukui/panel-commission.ini";
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 
