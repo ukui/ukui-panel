@@ -1,3 +1,15 @@
+ukui-panel (3.0.1-64hw16) v101; urgency=medium
+
+  * 解决任务栏发送的位置信号错误的bug
+
+ -- hepuyao <hepuyao@kylinos.cn>  Fri, 26 Mar 2021 10:45:19 +0800
+
+ukui-panel (3.0.1-64hw15) v101; urgency=medium
+
+  * 解决华为990上任务栏不能最小化窗口的问题 #41797
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 25 Mar 2021 20:51:25 +0800
+
 ukui-panel (3.0.1-64hw12) v101; urgency=medium
 
   * 解决#43340 #42480 #40833 #40940 #41888 #42508   

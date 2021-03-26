@@ -781,7 +781,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
     QList<QVariant> args;
     args.append(currentScreen.x());
     args.append(currentScreen.y());
-    args.append(currentScreen.width());
+    args.append(currentScreen.width()-panelSize());
     args.append(currentScreen.height());
     args.append(panelSize());
     args.append(gsettings->get(PANEL_POSITION_KEY).toInt());
