@@ -1406,7 +1406,7 @@ void UKUIPanel::showEvent(QShowEvent *event)
 
 void UKUIPanel::styleAdjust()
 {
-    QString filename ="/usr/share/ukui/panel-commission.ini";
+    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 
@@ -1507,7 +1507,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
-    QString filename ="/usr/share/ukui/panel-commission.ini";
+    QString filename =QDir::homePath() + "/.config/ukui/panel-commission.ini";
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 
