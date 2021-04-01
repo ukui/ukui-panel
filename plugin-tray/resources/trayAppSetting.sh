@@ -6,13 +6,13 @@ do
 	s="org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/";
 	#gsettings get  "$s" name
 	gsettingGetAppName=$(gsettings get  "$s" name);
-	trayAppName=\'explorer.exe\'
+	trayAppName=\'$1\'
 	#echo $gsettingGetAppName
 	#echo $trayAppName
 	if [ $gsettingGetAppName = $trayAppName ] 
 	then
-		gsettings set org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/ record tray
-		gsettings set org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/ action tray
+		gsettings set org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/ record $2
+		gsettings set org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/ action $2
 	fi
 done
 

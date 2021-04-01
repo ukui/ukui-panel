@@ -1427,8 +1427,8 @@ void UKUIPanel::styleAdjust()
     connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==TRANSPARENCY_KEY && transparency_action=="open"){
             transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+            this->update();
         }
-        this->update();
     });
 }
 
