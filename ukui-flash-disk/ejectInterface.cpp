@@ -112,6 +112,7 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     this->setFixedSize(210,86);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    this->setAttribute(Qt::WA_DeleteOnClose); //设置窗口关闭时自动销毁
 
 //    QPainterPath path;
 //    auto rect = this->rect();
@@ -178,7 +179,14 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
 
 ejectInterface::~ejectInterface()
 {
-
+    if (m_transparency_gsettings) {
+        delete m_transparency_gsettings;
+        m_transparency_gsettings = nullptr;
+    }
+    if (fontSettings) {
+        delete fontSettings;
+        fontSettings = nullptr;
+    }
 }
 
 //If the fillet does not take effect

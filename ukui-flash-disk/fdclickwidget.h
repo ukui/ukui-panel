@@ -83,10 +83,10 @@ private:
 
     int fontSize;
     QString currentThemeMode;
+    QString m_strCapacityDis;
 
 public:
     QPushButton *m_eject_button = nullptr;
-    ejectInterface *m_eject = nullptr;
     interactiveDialog *chooseDialog = nullptr;
     gpartedInterface *gpartedface = nullptr;
     bool ifSucess = false;
@@ -94,10 +94,12 @@ Q_SIGNALS:
     void clicked();
     void clickedEjectItem(FDClickWidget* pThis,QString strDriveId, QString strVolumeId, QString strMountId);
     void noDeviceSig();
+    void themeFontChange(qreal lfFontSize);
 
 private Q_SLOTS:
     void on_volume_clicked();
     void switchWidgetClicked();
+    void onThemeFontChange(qreal lfFontSize);
 
 private:
     QString size_human(qlonglong capacity);

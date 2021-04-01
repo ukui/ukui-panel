@@ -29,6 +29,9 @@
 #include <QEvent>
 #include <qgsettings.h>
 #include <QMap>
+#include <vector>
+
+using namespace std;
 
 #include "qclickwidget.h"
 #include "UnionVariable.h"
@@ -139,14 +142,6 @@ private:
     QScreen *screen;
     int triggerType = 0; //detective the type of MainWinow(insert USB disk or click systemtray icon)
 
-    char *mount_uri;
-    GFile *root;
-    char *mount_uriSecond;
-    GFile *rootSecond;
-    GList *listVolumes;
-    GList *vList;
-    GVolume *volume;
-
     double m_transparency;
     QString currentThemeMode;
 
@@ -157,15 +152,12 @@ private:
     bool ifautoload;
     bool insertorclick;
 
-    QGSettings * ifsettings;
+    QGSettings * ifsettings = nullptr;
     int telephoneNum;
     QString tmpPath;
     bool findPointMount;
-    QList<GMount *> volumeDevice;
-    QMap<GDrive *,QList<GMount *>> deviceMap;
-    QMap<GDrive *,QList<GMount *>>::Iterator it;
     int driveVolumeNum;
-    FlashDiskData* m_dataFlashDisk;
+    FlashDiskData* m_dataFlashDisk = nullptr;
     bool m_bIsMouseInTraIcon = false;
     bool m_bIsMouseInCentral = false;
     qint64 m_nAppStartTimestamp = 0; // 进程启动时的时间戳
@@ -173,7 +165,7 @@ private:
     //QDBusInterface *systemIface;
 public:
     QSystemTrayIcon *m_systray;
-    ejectInterface *m_eject;
+    ejectInterface *m_eject = nullptr;
     interactiveDialog *chooseDialog = nullptr;
 
     void initTransparentState();
@@ -186,10 +178,11 @@ public:
     int flagType;
 //    static bool isShow;
     int driveMountNum;
+    vector<string> m_vtDeviveId;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
-    void onConvertShowWindow();
+    void onConvertShowWindow(QString strDriveId);
     void onConvertUpdateWindow(QString strDevName, unsigned uDevType);
     void onMaininterfacehide();
     void on_clickPanelToHideInterface();
@@ -199,7 +192,7 @@ public Q_SLOTS:
     void onClickedEjectItem(FDClickWidget* pThis, QString strDriveId, QString strVolumeId, QString strMountId);
 Q_SIGNALS:
     void clicked();
-    void convertShowWindow();
+    void convertShowWindow(QString strDriveId);
     void convertUpdateWindow(QString, unsigned);
     void unloadMount();
     void telephoneMount();
