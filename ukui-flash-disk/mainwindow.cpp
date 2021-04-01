@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     findPointMount = false;
     telephoneNum = 0;
     driveVolumeNum = 0;
+    m_vtDeviveId.clear();
 
     const QByteArray idd(THEME_QT_SCHEMA);
 
@@ -94,6 +95,18 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    if (m_transparency_gsettings) {
+        delete m_transparency_gsettings;
+        m_transparency_gsettings = nullptr;
+    }
+    if (qtSettings) {
+        delete qtSettings;
+        qtSettings = nullptr;
+    }
+    if (ifsettings) {
+        delete ifsettings;
+        ifsettings = nullptr;
+    }
 }
 
 void MainWindow::onRequestSendDesktopNotify(QString message)
@@ -595,7 +608,7 @@ void MainWindow::getDeviceInfo()
     m_dataFlashDisk->OutputInfos();
 }
 
-void MainWindow::onConvertShowWindow()
+void MainWindow::onConvertShowWindow(QString strDriveId)
 {
     // 进程启动时一定时间内不弹窗提示
     if (QDateTime::currentDateTime().toMSecsSinceEpoch() - m_nAppStartTimestamp < NEWINFO_DELAYSHOW_TIME) {
@@ -604,7 +617,11 @@ void MainWindow::onConvertShowWindow()
     }
     insertorclick = true;
     MainWindowShow();
-    onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"));
+    string strDeviceId = strDriveId.toStdString();
+    if (std::find(m_vtDeviveId.begin(), m_vtDeviveId.end(), strDeviceId) == m_vtDeviveId.end()) {
+        onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"));
+        m_vtDeviveId.push_back(strDeviceId);
+    }
 }
 
 void MainWindow::onConvertUpdateWindow(QString strDevName, unsigned uDevType)
@@ -674,6 +691,14 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
     if (devPath != NULL) {
         driveInfo.strId = devPath;
         g_free(devPath);
+    }
+    vector<string>::iterator itDeviceId = p_this->m_vtDeviveId.begin();
+    for (; itDeviceId != p_this->m_vtDeviveId.end();) {
+        if (driveInfo.strId == *itDeviceId) {
+            itDeviceId = p_this->m_vtDeviveId.erase(itDeviceId);
+        } else {
+            itDeviceId++;
+        }
     }
     p_this->m_dataFlashDisk->removeDriveInfo(driveInfo);
     if(p_this->m_dataFlashDisk->getValidInfoCount() == 0) {
@@ -913,7 +938,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                     //qDebug()<<"cd data disk has mounted!";
                     volumeInfo.isNewInsert = true;
                     p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
-                    Q_EMIT p_this->convertShowWindow();
+                    Q_EMIT p_this->convertShowWindow(driveInfo.strId.c_str());
                 } else {
                     p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
                 }
@@ -1102,7 +1127,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     {
         if (isValidMount && isNewMount) {
             //qDebug()<<"cd data disk has mounted!";
-            Q_EMIT p_this->convertShowWindow();
+            Q_EMIT p_this->convertShowWindow(driveInfo.strId.c_str());
         }
         p_this->m_systray->show();
     }
@@ -1279,7 +1304,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
             }
             if (isNewMount) {
                 qDebug()<<"sig has emited";
-                Q_EMIT p_this->convertShowWindow();     //emit a signal to trigger the MainMainShow slot
+                Q_EMIT p_this->convertShowWindow(driveInfo.strId.c_str());     //emit a signal to trigger the MainMainShow slot
             }
         } 
     }

@@ -20,7 +20,9 @@
  */
 
 #include "fdclickwidget.h"
+#include "MacroFile.h"
 #include <KWindowEffects>
+#include <QFontMetrics>
 
 FDClickWidget::FDClickWidget(QWidget *parent,
                           unsigned diskNo,
@@ -108,7 +110,7 @@ FDClickWidget::FDClickWidget(QWidget *parent,
     m_nameDis1_label->adjustSize();
     m_nameDis1_label->setText("- "+VolumeName+":");
     if (m_volumeName != VolumeName) {
-        m_nameDis1_label->setToolTip("- "+m_volumeName+":");
+        m_nameDis1_label->setToolTip(m_volumeName);
     }
     m_capacityDis1_label = new QLabel(disWidgetNumOne);
 
@@ -141,12 +143,14 @@ FDClickWidget::FDClickWidget(QWidget *parent,
     }
     this->setAttribute(Qt::WA_TranslucentBackground, true);
     // check capacity lable width
-    str_capacityDis1 = m_capacityDis1_label->text();
-    QString strCapacity = getElidedText(m_capacityDis1_label->font(), str_capacityDis1, m_capacityDis1_label->width()-6);
-    if (strCapacity != str_capacityDis1) {
-        m_capacityDis1_label->setText("("+strCapacity+")");
-        m_capacityDis1_label->setToolTip("("+str_capacityDis1+")");
+    m_strCapacityDis = m_capacityDis1_label->text();
+    int nNameWidth = m_nameDis1_label->fontMetrics().boundingRect(m_nameDis1_label->text()).width();
+    QString strCapacity = getElidedText(m_capacityDis1_label->font(), m_strCapacityDis, 210-nNameWidth);
+    if (strCapacity != m_strCapacityDis) {
+        m_capacityDis1_label->setText(strCapacity);
+        m_capacityDis1_label->setToolTip(m_strCapacityDis);
     }
+    connect(this, &FDClickWidget::themeFontChange, this, &FDClickWidget::onThemeFontChange);
 }
 
 void FDClickWidget::initFontSize()
@@ -156,12 +160,24 @@ void FDClickWidget::initFontSize()
        fontSize = 11;
        return;
     }
+    connect(fontSettings,&QGSettings::changed,[=](QString key)
+    {
+        if("systemFont" == key || "systemFontSize" == key)
+        {
+            fontSize = fontSettings->get(FONT_SIZE).toString().toFloat();
+            Q_EMIT themeFontChange(fontSize);
+        }
+    });
 
     QStringList keys = fontSettings->keys();
     if (keys.contains("systemFont") || keys.contains("systemFontSize"))
     {
-        fontSize = fontSettings->get("system-font").toInt();
+        fontSize = fontSettings->get(FONT_SIZE).toInt();
     }
+}
+
+void FDClickWidget::onThemeFontChange(qreal lfFontSize)
+{
 }
 
 void FDClickWidget::initThemeMode()
@@ -183,6 +199,14 @@ FDClickWidget::~FDClickWidget()
         delete chooseDialog;
     if(gpartedface)
         delete gpartedface;
+    if (fontSettings) {
+        delete fontSettings;
+        fontSettings = nullptr;
+    }
+    if (qtSettings) {
+        delete qtSettings;
+        qtSettings = nullptr;
+    }
 }
 
 void FDClickWidget::mousePressEvent(QMouseEvent *ev)
@@ -277,7 +301,7 @@ QPixmap FDClickWidget::drawSymbolicColoredPixmap(const QPixmap &source)
 QString FDClickWidget::size_human(qlonglong capacity)
 {
     //    float capacity = this->size();
-    if(capacity != 1)
+    if(capacity > 1)
     {
         int conversionNum = 0;
         QStringList list;
