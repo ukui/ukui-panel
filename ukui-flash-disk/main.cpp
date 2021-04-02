@@ -51,6 +51,13 @@ int main(int argc, char *argv[])
 
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#endif
+
     QTextCodec *codec = QTextCodec::codecForName("utf8"); //Linux
     QTextCodec::setCodecForLocale(codec);
 
