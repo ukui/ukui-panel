@@ -1442,57 +1442,43 @@ void MainWindow::newarea(unsigned uDiskNo,
 
 void MainWindow::moveBottomRight()
 {
-    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
-    QRect screenGeometry = qApp->primaryScreen()->geometry();
+    //MARGIN 为到任务栏或屏幕边缘的间隔
+    #define MARGIN 4
+    QDBusInterface iface("org.ukui.panel",
+                         "/panel/position",
+                         "org.ukui.panel",
+                         QDBusConnection::sessionBus());
+    QDBusReply<QVariantList> reply=iface.call("GetPrimaryScreenGeometry");
+    //reply获取的参数共5个，分别是 主屏可用区域的起点x坐标，主屏可用区域的起点y坐标，主屏可用区域的宽度，主屏可用区域高度，任务栏位置
+    //    reply.value();
+    qDebug()<<reply.value().at(4).toInt();
+    QVariantList position_list=reply.value();
 
-    QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect deskMainRect = desktopWidget->availableGeometry(0);//获取可用桌面大小
-    QRect screenMainRect = desktopWidget->screenGeometry(0);//获取设备屏幕大小
-    QRect deskDupRect = desktopWidget->availableGeometry(1);//获取可用桌面大小
-    QRect screenDupRect = desktopWidget->screenGeometry(1);//获取设备屏幕大小
-
-    int PanelPosition = getPanelPosition("position");     //n
-    int PanelHeight = getPanelHeight("height");                   //m
-//    int d = 2; //窗口边沿到任务栏距离
-
-    if (screenGeometry.width() == availableGeometry.width() && screenGeometry.height() == availableGeometry.height()) {
-        if (PanelPosition == 0) {
-            //任务栏在下侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - PanelHeight - DistanceToPanel);
-        } else if(PanelPosition == 1) {
-            //任务栏在上侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + PanelHeight + DistanceToPanel);
-        } else if (PanelPosition == 2) {
-            //任务栏在左侧
-            if (screenGeometry.x() == 0) {//主屏在左侧
-                this->move(PanelHeight + DistanceToPanel, screenMainRect.y() + screenMainRect.height() - this->height());
-            } else {//主屏在右侧
-                this->move(screenMainRect.x() + PanelHeight + DistanceToPanel, screenMainRect.y() + screenMainRect.height() - this->height());
-            }
-        } else if (PanelPosition == 3) {
-            //任务栏在右侧
-            if (screenGeometry.x() == 0) {//主屏在左侧
-                this->move(screenMainRect.width() - this->width() - PanelHeight - DistanceToPanel, screenMainRect.y() + screenMainRect.height() - this->height());
-            } else {//主屏在右侧
-                this->move(screenMainRect.x() + screenMainRect.width() - this->width() - PanelHeight - DistanceToPanel, screenMainRect.y() + screenMainRect.height() - this->height());
-            }
-        }
-    } else if(screenGeometry.width() == availableGeometry.width() ) {
-        if (m_systray->geometry().y() > availableGeometry.height()/2) {
-            //任务栏在下侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + availableGeometry.height() - this->height() - DistanceToPanel);
-        } else {
-            //任务栏在上侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width(), screenMainRect.y() + screenGeometry.height() - availableGeometry.height() + DistanceToPanel);
-        }
-    } else if (screenGeometry.height() == availableGeometry.height()) {
-        if (m_systray->geometry().x() > availableGeometry.width()/2) {
-            //任务栏在右侧
-            this->move(availableGeometry.x() + availableGeometry.width() - this->width() - DistanceToPanel, screenMainRect.y() + screenGeometry.height() - this->height());
-        } else {
-            //任务栏在左侧
-            this->move(screenGeometry.width() - availableGeometry.width() + DistanceToPanel, screenMainRect.y() + screenGeometry.height() - this->height());
-        }
+    switch(reply.value().at(4).toInt()){
+    case 1:
+        //任务栏位于上方
+        this->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-this->width()-MARGIN,
+                          position_list.at(1).toInt()+MARGIN,
+                          this->width(),this->height());
+        break;
+        //任务栏位于左边
+    case 2:
+        this->setGeometry(position_list.at(0).toInt()+MARGIN,
+                          position_list.at(1).toInt()+reply.value().at(3).toInt()-this->height()-MARGIN,
+                          this->width(),this->height());
+        break;
+        //任务栏位于右边
+    case 3:
+        this->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-this->width()-MARGIN,
+                          position_list.at(1).toInt()+reply.value().at(3).toInt()-this->height()-MARGIN,
+                          this->width(),this->height());
+        break;
+        //任务栏位于下方
+    default:
+        this->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-this->width()-MARGIN,
+                          position_list.at(1).toInt()+reply.value().at(3).toInt()-this->height()-MARGIN,
+                          this->width(),this->height());
+        break;
     }
 }
 
