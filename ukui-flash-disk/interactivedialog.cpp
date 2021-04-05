@@ -135,9 +135,17 @@ void interactiveDialog::moveChooseDialogRight()
     else
         this->setGeometry(QRect(x+QApplication::primaryScreen()->geometry().width()-panelSize-this->width() - DISTANCEPADDING,y + QApplication::primaryScreen()->geometry().height() - this->height() - DISTANCEPADDING,this->width(),this->height()));
 }
+
 interactiveDialog::~interactiveDialog()
 {
-
+    if (m_transparency_gsettings) {
+        delete m_transparency_gsettings;
+        m_transparency_gsettings = nullptr;
+    }
+    if (gsetting) {
+        delete gsetting;
+        gsetting = nullptr;
+    }
 }
 
 void interactiveDialog::paintEvent(QPaintEvent *event)
