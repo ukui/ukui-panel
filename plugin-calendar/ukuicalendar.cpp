@@ -383,13 +383,13 @@ void IndicatorCalendar::CalendarWidgetShow()
         if(!mbActived)
         {
             mWebViewDiag->setHidden(false);
-            mWebViewDiag->webview()->reload();
+//            mWebViewDiag->webview()->reload();
             mbActived = true;
         }
         else
         {
             mWebViewDiag->setHidden(true);
-            mWebViewDiag->webview()->reload();
+//            mWebViewDiag->webview()->reload();
             mbActived = false;
         }
     }
@@ -453,7 +453,7 @@ void IndicatorCalendar::modifyCalendarWidget()
 
        switch (panel()->position()) {
        case IUKUIPanel::PositionBottom:
-           mWebViewDiag->setGeometry(totalWidth-mViewWidht-4,totalHeight-panel()->panelSize()-mViewHeight-4,mViewWidht,mViewHeight);
+           mWebViewDiag->setGeometry(totalWidth-mViewWidht-10,totalHeight-panel()->panelSize()-mViewHeight-4,mViewWidht,mViewHeight);
            break;
        case IUKUIPanel::PositionTop:
            mWebViewDiag->setGeometry(totalWidth-mViewWidht-4,qApp->primaryScreen()->geometry().y()+panel()->panelSize()+4,mViewWidht,mViewHeight);
