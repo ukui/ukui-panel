@@ -377,7 +377,8 @@ void IndicatorCalendar::CalendarWidgetShow()
             if (iScreenHeight >= WEBVIEW_MIN_HEIGHT)
                 mViewHeight = WEBVIEW_MIN_HEIGHT;;
         }
-        modifyCalendarWidget();
+        if(qgetenv("XDG_SESSION_TYPE")=="wayland") mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
+        else modifyCalendarWidget();
         mWebViewDiag->show();
         mWebViewDiag->activateWindow();
         if(!mbActived)
@@ -453,7 +454,7 @@ void IndicatorCalendar::modifyCalendarWidget()
 
        switch (panel()->position()) {
        case IUKUIPanel::PositionBottom:
-           mWebViewDiag->setGeometry(totalWidth-mViewWidht-10,totalHeight-panel()->panelSize()-mViewHeight-4,mViewWidht,mViewHeight);
+           mWebViewDiag->setGeometry(totalWidth-mViewWidht-4,totalHeight-panel()->panelSize()-mViewHeight-4,mViewWidht,mViewHeight);
            break;
        case IUKUIPanel::PositionTop:
            mWebViewDiag->setGeometry(totalWidth-mViewWidht-4,qApp->primaryScreen()->geometry().y()+panel()->panelSize()+4,mViewWidht,mViewHeight);
