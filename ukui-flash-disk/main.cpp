@@ -32,25 +32,6 @@
 
 int main(int argc, char *argv[])
 {
-    //file lock to complete the single process
-//    QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-//    QString lockPath = homePath.at(0) + "/.config/ukui-flash-disk-lock";
-//    int fd = open(lockPath.toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-//    if (fd < 0)
-//    {
-//        exit(1);
-//    }
-
-//    if (lockf(fd, F_TLOCK, 0))
-//    {
-//        syslog(LOG_ERR, "Can't lock single file, ukui-flash-disk is already running!");
-//        qDebug()<<"Can't lock single file, ukui-flash-disk is already running!";
-//        exit(0);
-//    }
-
-
-//    QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
-//    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
@@ -60,8 +41,6 @@ int main(int argc, char *argv[])
 
     QTextCodec *codec = QTextCodec::codecForName("utf8"); //Linux
     QTextCodec::setCodecForLocale(codec);
-
-    QIcon::setThemeName("ukui-icon-theme-default");
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     FDApplication a(argc, argv);
@@ -84,13 +63,6 @@ int main(int argc, char *argv[])
         }
     }
 
-//    //load qss
-//    QFile qss(":ukui-flash-disk.qss");
-//    bool ok = qss.open(QFile::ReadOnly);
-//    if (!ok)
-//    qDebug() << "加载失败";
-//    qApp->setStyleSheet(qss.readAll());
-
     if (QApplication::desktop()->width() >= 2560)
     {
         #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
@@ -99,7 +71,6 @@ int main(int argc, char *argv[])
         #endif
     }
 
-//    qss.close();
     MainController *ctrl = MainController::self();
     QObject::connect(&a, &FDApplication::notifyWnd, ctrl, &MainController::notifyWnd);
     a.exec();
