@@ -15,6 +15,11 @@
 #include "qtoolbutton.h"
 #include "qcombobox.h"
 #include "qdebug.h"
+#include <QPainter>
+#include <QApplication>
+#include <QPalette>
+#include "picturetowhite.h"
+#include "statelabel.h"
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
@@ -23,6 +28,7 @@
 class QLabel;
 class QComboBox;
 class LunarCalendarItem;
+class m_PartLineWidget;
 
 #ifdef quc
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
@@ -97,14 +103,23 @@ public:
 private:
     QLabel *datelabel;
     QLabel *timelabel;
+    QLabel *lunarlabel;
     QTimer *timer;
     QVBoxLayout *timeShow;
     QWidget *widgetTime;
+    QPushButton *btnYear;
+    QPushButton *btnMonth;
     QPushButton *btnToday;
+    QLabel *labBottom;
+    m_PartLineWidget *lineUp;
+    m_PartLineWidget *lineDown;
+    statelabel *btnPrevYear;
+    statelabel *btnNextYear;
+    void downLabelHandle(const QDate &date);
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
-    QComboBox *cboxYear;                //年份下拉框
-    QComboBox *cboxMonth;               //月份下拉框
+    QComboBox *cboxYearandMonth;        //年份下拉框
+    QLabel *cboxYearandMonthLabel;
     QList<QLabel *> labWeeks;           //顶部星期名称
     QList<LunarCalendarItem *> dayItems;//日期元素
 
@@ -264,6 +279,16 @@ public Q_SLOTS:
 Q_SIGNALS:
     void clicked(const QDate &date);
     void selectionChanged();
+};
+
+
+class m_PartLineWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit m_PartLineWidget(QWidget *parent = nullptr);
+    void paintEvent(QPaintEvent *event);
+
 };
 
 #endif // LUNARCALENDARWIDGET_H

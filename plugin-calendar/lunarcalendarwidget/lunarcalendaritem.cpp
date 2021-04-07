@@ -79,8 +79,9 @@ void LunarCalendarItem::paintEvent(QPaintEvent *)
     //优先绘制选中状态,其次绘制悬停状态
     if (select) {
         drawBgCurrent(&painter, selectBgColor);
-    } else if (hover) {
-        drawBgCurrent(&painter, hoverBgColor);
+    }
+    if (hover) {
+        drawBgHover(&painter, hoverBgColor);
     }
 
     //绘制日期
@@ -120,8 +121,9 @@ void LunarCalendarItem::drawBgCurrent(QPainter *painter, const QColor &color)
 
     //根据设定绘制背景样式
     if (selectType == SelectType_Rect) {
-        painter->drawRect(rect());
-    } else if (selectType == SelectType_Circle) {
+        QRect rect = this->rect();
+        painter->drawRoundedRect(rect,1,1);
+    } /*else if (selectType == SelectType_Circle) {
         int radius = side / 2 - 3;
         painter->drawEllipse(QPointF(width / 2, height / 2), radius, radius);
     } else if (selectType == SelectType_Triangle) {
@@ -140,8 +142,26 @@ void LunarCalendarItem::drawBgCurrent(QPainter *painter, const QColor &color)
             int y = (height - img.height()) / 2;
             painter->drawImage(x, y, img);
         }
-    }
+    }*/
 
+    painter->restore();
+}
+
+void LunarCalendarItem::drawBgHover(QPainter *painter, const QColor &color)
+{
+    int width = this->width();
+    int height = this->height();
+    int side = qMin(width, height);
+
+    painter->save();
+//    painter->setPen(Qt::NoPen);
+//    painter->setBrush(color);
+
+    //根据设定绘制背景样式
+    if (selectType == SelectType_Rect) {
+        painter->setPen(QPen(Qt::blue,2));
+        painter->drawRect(0,0,width,height);
+    }
     painter->restore();
 }
 
@@ -163,9 +183,9 @@ void LunarCalendarItem::drawDay(QPainter *painter)
 
     if (select) {
         color = selectTextColor;
-    } else if (hover) {
+    } /*else if (hover) {
         color = hoverTextColor;
-    }
+    }*/
 
     painter->setPen(color);
 
@@ -214,9 +234,9 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
 
     if (select) {
         color = selectTextColor;
-    } else if (hover) {
+    } /*else if (hover) {
         color = hoverTextColor;
-    } else if (exist) {
+    }*/ else if (exist) {
         color = lunarColor;
     }
 

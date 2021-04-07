@@ -540,7 +540,9 @@ QString LunarCalendarInfo::getLunarYear(int year)
         int temp = year - 1924;
         strYear.append(listTianGan.at(temp % 10));
         strYear.append(listDiZhi.at(temp % 12));
+        strYear.append("年");
         strYear.append(listShuXiang.at(temp % 12));
+        strYear.append("年");
     }
 
     return strYear;

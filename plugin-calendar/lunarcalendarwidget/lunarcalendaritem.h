@@ -75,6 +75,7 @@ protected:
     void paintEvent(QPaintEvent *);
     void drawBg(QPainter *painter);
     void drawBgCurrent(QPainter *painter, const QColor &color);
+    void drawBgHover(QPainter *painter, const QColor &color);
     void drawDay(QPainter *painter);
     void drawLunar(QPainter *painter);
 
