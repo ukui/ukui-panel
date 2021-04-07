@@ -377,19 +377,20 @@ void IndicatorCalendar::CalendarWidgetShow()
             if (iScreenHeight >= WEBVIEW_MIN_HEIGHT)
                 mViewHeight = WEBVIEW_MIN_HEIGHT;;
         }
-        modifyCalendarWidget();
+        if(qgetenv("XDG_SESSION_TYPE")=="wayland") mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
+        else modifyCalendarWidget();
         mWebViewDiag->show();
         mWebViewDiag->activateWindow();
         if(!mbActived)
         {
             mWebViewDiag->setHidden(false);
-            mWebViewDiag->webview()->reload();
+//            mWebViewDiag->webview()->reload();
             mbActived = true;
         }
         else
         {
             mWebViewDiag->setHidden(true);
-            mWebViewDiag->webview()->reload();
+//            mWebViewDiag->webview()->reload();
             mbActived = false;
         }
     }

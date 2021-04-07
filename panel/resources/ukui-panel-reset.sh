@@ -11,3 +11,23 @@ else
 	echo "配置文件正常"
 fi
 
+plugin_conf=""
+plugin_conf_backup=""
+while read line
+do
+  if [[ $line == *plugin* ]];then
+	  echo $line
+	  plugin_conf=$line
+  fi
+done < ${HOME}/.config/ukui/panel.conf
+
+while read line
+do
+  if [[ $line == *plugin* ]];then
+          echo $line
+          plugin_conf_backup=$line
+  fi
+done < /usr/share/ukui/panel.conf
+
+echo $plugin_conf
+echo $plugin_conf_backup
