@@ -1427,8 +1427,8 @@ void UKUIPanel::styleAdjust()
     connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==TRANSPARENCY_KEY && transparency_action=="open"){
             transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+            this->update();
         }
-        this->update();
     });
 }
 
@@ -1507,7 +1507,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
     showtaskview->setChecked(gsettings->get(SHOW_TASKVIEW).toBool());
     connect(showtaskview, &QAction::triggered, [this] { showTaskView(); });
 
-    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QString filename =QDir::homePath() + "/.config/ukui/panel-commission.ini";
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 

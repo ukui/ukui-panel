@@ -138,12 +138,15 @@ void UKUIStartMenuButton::contextMenuEvent(QContextMenuEvent *event)
 
     m_settings.beginGroup("Hibernate");
     QString hibernate_action = m_settings.value("hibernate", "").toString();
+    qDebug()<<"hibernate_action  is "<<hibernate_action;
     if (hibernate_action.isEmpty()) {
+        qDebug()<<"hibernate_action  is "<<hibernate_action;
         hibernate_action = "show";
     }
     m_settings.endGroup();
 
     if(QString::compare(version,"Ubuntu") && hibernate_action != "hide"){
+        qDebug()<<"hibernate_action  is "<<hibernate_action;
         pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
                                    tr("Hibernate Mode"),
                                    this, SLOT(SessionHibernate())
