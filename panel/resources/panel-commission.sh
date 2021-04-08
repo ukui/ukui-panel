@@ -5,7 +5,7 @@
 commissionFile="${HOME}/.config/ukui/panel-commission.ini"
 if [[ ! -f "$commissionFile" ]]; then
   echo "文件不存在"
-  cp /usr/share/ukui/ukui-panel/panel-commission.ini ${HOME}/.config/
+  cp /usr/share/ukui/ukui-panel/panel-commission.ini ${HOME}/.config/ukui
 else
   echo "文件存在"
 fi

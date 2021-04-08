@@ -144,6 +144,8 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     if(panelReset.isEmpty()){qDebug()<<"ukui-panel --reset";}
     if(panelReset == "reset"){system("rm $HOME/.config/ukui/panel.conf");}
     if(panelReset == "replace"){qDebug()<<"ukui-panel --replace";}
+    if(panelReset == "calendar-new"){system("/usr/share/ukui/ukui-panel/ukui-panel-config.sh calendar new && killall ukui-panel");}
+    if(panelReset == "calendar-old"){system("/usr/share/ukui/ukui-panel/ukui-panel-config.sh calendar old && killall ukui-panel");}
 
     // This is a workaround for Qt 5 bug #40681.
     const auto allScreens = screens();

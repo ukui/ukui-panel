@@ -1,18 +1,35 @@
 ﻿
 set(PLUGIN "calendar")
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+    message(STATUS "optional:-std=c++11")
+endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set(HEADERS
     ukuicalendar.h
     ukuiwebviewdialog.h
+    lunarcalendarwidget/frmlunarcalendarwidget.h
+    lunarcalendarwidget/lunarcalendarinfo.h
+    lunarcalendarwidget/lunarcalendaritem.h
+    lunarcalendarwidget/lunarcalendarwidget.h
+    lunarcalendarwidget/picturetowhite.h
+    lunarcalendarwidget/statelabel.h
 )
 
 set(SOURCES
     ukuicalendar.cpp
     ukuiwebviewdialog.cpp
+    lunarcalendarwidget/frmlunarcalendarwidget.cpp
+    lunarcalendarwidget/lunarcalendarinfo.cpp
+    lunarcalendarwidget/lunarcalendaritem.cpp
+    lunarcalendarwidget/lunarcalendarwidget.cpp
+    lunarcalendarwidget/picturetowhite.cpp
+    lunarcalendarwidget/statelabel.cpp
 )
 
 set(UIS
     ukuiwebviewdialog.ui
+    lunarcalendarwidget/frmlunarcalendarwidget.ui
 )
 
 find_package(Qt5WebKit)
