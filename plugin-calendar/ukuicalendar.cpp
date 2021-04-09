@@ -46,6 +46,8 @@
 #include <gio/gio.h>
 #include <QSize>
 #include <QScreen>
+#include <QSettings>
+#include <QDir>
 
 #define CALENDAR_HEIGHT (46)
 #define CALENDAR_WIDTH (104)
@@ -70,6 +72,9 @@
 #define HOUR_SYSTEM_KEY  "hoursystem"
 #define SYSTEM_FONT_SIZE "systemFontSize"
 #define SYSTEM_FONT_SET  "org.ukui.style"
+
+QString calendar_version;
+
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
     IUKUIPanelPlugin(startupInfo),
@@ -196,6 +201,18 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QObject::connect(m_ListenGsettings,&ListenGsettings::panelpositionchanged,[this]{updateTimeText();});
     updateTimeText();
     QTimer::singleShot(10000,[this] { updateTimeText();});
+
+    //读取配置文件中CalendarVersion 的值
+    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("Calendar");
+    calendar_version = m_settings.value("CalendarVersion", "").toString();
+    if (calendar_version.isEmpty()) {
+        calendar_version = "old";
+    }
+    m_settings.endGroup();
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -267,7 +284,7 @@ void IndicatorCalendar::updateTimeText()
                    //鼠标按下样式
                    "QLabel:pressed{"
                    "background-color:rgba(190,216,239,12%%);"
-                   "}", font_size);
+                   "}", 12);
     mContent->setStyleSheet(style);
     mContent->setText(str);
 }
@@ -475,14 +492,22 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
     QLabel(parent),
     mPlugin(plugin)
 {
+    w=new frmLunarCalendarWidget();
     QTimer::singleShot(1000,[this] {setToolTip(tr("Time and Date")); });
 }
 
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
-    if (Qt::LeftButton == event->button())
-        Q_EMIT pressTimeText();
+    if (Qt::LeftButton == event->button()){
+        if(calendar_version == "old"){
+            Q_EMIT pressTimeText();
+        }else{
+            w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->size()));
+            w->show();
+        }
+    }
 }
+
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *menuCalender=new QMenu(this);

@@ -55,13 +55,13 @@ QVariantList UKuiPanelInformation::GetPrimaryScreenGeometry()
     case 2:
         available_primary_screen_x=screen_x + panelsize;
         available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width-panelposition;
+        available_primary_screen_width=screen_width-panelsize;
         available_primary_screen_height=screen_height;
         break;
     case 3:
         available_primary_screen_x=screen_x;
         available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width-panelposition;
+        available_primary_screen_width=screen_width-panelsize;
         available_primary_screen_height=screen_height;
         break;
     default:

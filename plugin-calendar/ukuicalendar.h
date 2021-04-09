@@ -36,6 +36,7 @@
 #include "ukuiwebviewdialog.h"
 #include "../panel/common/ukuigridlayout.h"
 #include "../panel/common_fun/listengsettings.h"
+#include "lunarcalendarwidget/frmlunarcalendarwidget.h"
 class QTimer;
 class CalendarActiveLabel;
 class UkuiCalendarWebView;
@@ -67,6 +68,7 @@ private Q_SLOTS:
 
 private:
     QWidget *mMainWidget;
+    frmLunarCalendarWidget *w;
     UkuiWebviewDialog   *mWebViewDiag;
     bool mbActived;
     bool mbHasCreatedWebView;
@@ -112,6 +114,8 @@ protected:
      */
     virtual void contextMenuEvent(QContextMenuEvent *event);
     void mousePressEvent(QMouseEvent *event);
+private:
+    frmLunarCalendarWidget *w;
 
 Q_SIGNALS:
     void pressTimeText();

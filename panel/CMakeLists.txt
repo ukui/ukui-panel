@@ -197,7 +197,7 @@ install(FILES
 )
 
 install(FILES
-    resources/panel-commission.sh  resources/panel-commission.ini  resources/ukui-panel-reset.sh
+    resources/panel-commission.sh  resources/panel-commission.ini  resources/ukui-panel-reset.sh resources/ukui-panel-config.sh
     DESTINATION "/usr/share/ukui/ukui-panel"
     COMPONENT Runtime
     PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ GROUP_WRITE WORLD_READ WORLD_WRITE WORLD_EXECUTE
