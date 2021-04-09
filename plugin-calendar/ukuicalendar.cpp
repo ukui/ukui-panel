@@ -284,7 +284,7 @@ void IndicatorCalendar::updateTimeText()
                    //鼠标按下样式
                    "QLabel:pressed{"
                    "background-color:rgba(190,216,239,12%%);"
-                   "}", font_size);
+                   "}", 12);
     mContent->setStyleSheet(style);
     mContent->setText(str);
 }
