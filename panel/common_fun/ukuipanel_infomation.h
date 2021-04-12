@@ -22,6 +22,8 @@ private:
 
 public Q_SLOTS:
     QVariantList GetPrimaryScreenGeometry();
+    QVariantList GetPrimaryScreenAvailableGeometry();
+    QVariantList GetPrimaryScreenPhysicalGeometry();
     QString GetPanelPosition();
 
     void setPanelInformation(int ,int ,int, int, int, int);
