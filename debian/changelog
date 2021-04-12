@@ -1,3 +1,9 @@
+ukui-panel (3.0.1-75) v101; urgency=medium
+
+  * 解决任务栏夜间模式调节gsetting错误的问题
+
+ -- hepuyao <hepuyao@kylinos.cn>  Tue, 13 Apr 2021 07:38:13 +0800
+
 ukui-panel (3.0.1-72) v101; urgency=medium
 
   * 解决bug#38710 电源托盘图标位置更新
