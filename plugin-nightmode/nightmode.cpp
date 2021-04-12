@@ -34,6 +34,7 @@
 #define DEFAULT_GTK_STYLE_NAME "gtkTheme"
 #define DEFAULT_STYLE          "ukui-default"
 #define BLACK_STYLE            "ukui-black"
+#define DARK_STYLE             "ukui-dark"
 #define GTK_WHITE_STYLE        "ukui-white"
 
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
@@ -143,7 +144,7 @@ void NightModeButton::pressBitton()
         setUkuiStyle(DEFAULT_STYLE);
 
     }else{
-        setUkuiStyle(BLACK_STYLE);
+        setUkuiStyle(DARK_STYLE);
     }
     setNightMode(!mode);
     this->setEnabled(false);
@@ -278,7 +279,7 @@ void NightModeButton::setUkuiStyle(QString style)
     }
     else{
         if(mqtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || mqtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
-            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,BLACK_STYLE);
+            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,DARK_STYLE);
         if(mgtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || mgtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
             mgtkstyleGsettings->set(GTK_STYLE_NAME,BLACK_STYLE);
     }
