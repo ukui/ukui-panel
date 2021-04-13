@@ -48,4 +48,6 @@ typedef enum {downPosition = 0,upPosition,leftPosition,rightPosition}Suit;
 #define MODE_QT_KEY "style-name"
 #define AUTOLOAD "org.ukui.flash-disk.autoload"
 #define IFAUTOLOAD "ifautoload"
+
+#define IFDISTINCT_DEVICON      1
 #endif //_MACROFILE_H_

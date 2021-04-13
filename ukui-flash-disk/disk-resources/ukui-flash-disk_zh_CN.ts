@@ -24,6 +24,14 @@
         <translation type="unfinished">U盘读写时请不要直接拔出</translation>
     </message>
     <message>
+        <source>Please do not pull out the CDROM when reading or writing</source>
+        <translation type="unfinished">光盘读写时请不要直接拔出</translation>
+    </message>
+    <message>
+        <source>Please do not pull out the SD Card when reading or writing</source>
+        <translation type="unfinished">SD卡读写时请不要直接拔出</translation>
+    </message>
+    <message>
         <source>There is a problem with this device</source>
         <translation type="unfinished">此设备存在问题</translation>
     </message>
@@ -58,6 +66,14 @@
         <translation type="unfinished">U盘已安全拔出</translation>
     </message>
     <message>
+        <source>cdrom has been unplugged safely</source>
+        <translation type="unfinished">光盘已安全拔出</translation>
+    </message>
+    <message>
+        <source>sd has been unplugged safely</source>
+        <translation type="unfinished">SD卡已安全拔出</translation>
+    </message>
+    <message>
         <source>usb is occupying unejectable</source>
         <translation type="unfinished">U盘占用无法弹出</translation>
     </message>
@@ -74,6 +90,14 @@
     <message>
         <source>usb is occupying,do you want to eject it</source>
         <translation type="unfinished">U盘正在占用中，你想弹出它吗</translation>
+    </message>
+    <message>
+        <source>cdrom is occupying,do you want to eject it</source>
+        <translation type="unfinished">光盘正在占用中，你想弹出它吗</translation>
+    </message>
+    <message>
+        <source>sd is occupying,do you want to eject it</source>
+        <translation type="unfinished">SD卡正在占用中，你想弹出它吗</translation>
     </message>
     <message>
         <source>cancle</source>

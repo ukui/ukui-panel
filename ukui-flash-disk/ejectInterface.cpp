@@ -19,7 +19,7 @@
 #include <qgsettings.h>
 #include <KWindowEffects>
 
-ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType) : QWidget(parent),eject_image_label(nullptr),show_text_label(nullptr),
+ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType,QString strDevId) : QWidget(parent),eject_image_label(nullptr),show_text_label(nullptr),
     mount_name_label(nullptr)
 {
     initFontSetting();
@@ -31,8 +31,30 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     eject_image_label = new QLabel(this);
     eject_image_label->setFixedSize(30,30);
     //QPixmap pixmap("kylin-media-removable-symbolic");
-    eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
-
+    QString strNoraml = "";
+    #if IFDISTINCT_DEVICON
+    if (strDevId.startsWith("/dev/sr")) {
+        eject_image_icon = QIcon::fromTheme("media-optical");
+        strNoraml = tr("cdrom has been unplugged safely");
+    } else if (strDevId.startsWith("/dev/mmcblk")) {
+        eject_image_icon = QIcon::fromTheme("media-memory-sd");
+        strNoraml = tr("sd has been unplugged safely");
+    } else {
+        eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
+        strNoraml = tr("usb has been unplugged safely");
+    }
+    #else
+    if (strDevId.startsWith("/dev/sr")) {
+        eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
+        strNoraml = tr("cdrom has been unplugged safely");
+    } else if (strDevId.startsWith("/dev/mmcblk")) {
+        eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
+        strNoraml = tr("sd has been unplugged safely");
+    } else {
+        eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
+        strNoraml = tr("usb has been unplugged safely");
+    }
+    #endif
     QPixmap pixmap = eject_image_icon.pixmap(QSize(25, 25));
     eject_image_label->setPixmap(pixmap);
     //add it to show the eject button
@@ -52,7 +74,6 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
 
     show_text_label = new QLabel(this);
     show_text_label->setFont(QFont("Noto Sans CJK SC",fontSize));
-    QString strNoraml = tr("usb has been unplugged safely");
     QString strOccupy = tr("usb is occupying unejectable");
     QString strDataDevice = tr("data device has been unloaded");
     QString strGParted = tr("gparted has started");

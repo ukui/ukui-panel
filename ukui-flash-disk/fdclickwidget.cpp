@@ -71,10 +71,21 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         image_show_label->setFocusPolicy(Qt::NoFocus);
         image_show_label->installEventFilter(this);
         //to get theme picture for label
+        #if IFDISTINCT_DEVICON
+        QString strDevId = m_driveId.isEmpty()?m_volumeId:m_driveId;
+        if (strDevId.startsWith("/dev/sr")) {
+            imgIcon = QIcon::fromTheme("media-optical");
+        } else if (strDevId.startsWith("/dev/mmcblk")) {
+            imgIcon = QIcon::fromTheme("media-memory-sd");
+        } else {
+            imgIcon = QIcon::fromTheme("drive-removable-media-usb");
+        }
+        #else 
         imgIcon = QIcon::fromTheme("drive-removable-media-usb");
+        #endif
         QPixmap pixmap = imgIcon.pixmap(QSize(25, 25));
         image_show_label->setPixmap(pixmap);
-        image_show_label->setFixedSize(40,40);
+        image_show_label->setFixedSize(48,48);
         m_driveName_label = new QLabel(this);
         m_driveName_label->setFont(QFont("Noto Sans CJK SC",fontSize));
         QString DriveName = getElidedText(m_driveName_label->font(), m_driveName, 180);
