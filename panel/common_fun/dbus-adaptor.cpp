@@ -41,11 +41,33 @@ QString PanelAdaptor::GetPanelPosition()
     return out0;
 }
 
+QVariantList PanelAdaptor::GetPrimaryScreenAvailableGeometry()
+{
+    // handle method call org.ukui.panel.GetPrimaryScreenAvailableGeometry
+    QVariantList out0;
+    QMetaObject::invokeMethod(parent(), "GetPrimaryScreenAvailableGeometry", Q_RETURN_ARG(QVariantList, out0));
+    return out0;
+}
+
 QVariantList PanelAdaptor::GetPrimaryScreenGeometry()
 {
     // handle method call org.ukui.panel.GetPrimaryScreenGeometry
     QVariantList out0;
     QMetaObject::invokeMethod(parent(), "GetPrimaryScreenGeometry", Q_RETURN_ARG(QVariantList, out0));
     return out0;
+}
+
+QVariantList PanelAdaptor::GetPrimaryScreenPhysicalGeometry()
+{
+    // handle method call org.ukui.panel.GetPrimaryScreenPhysicalGeometry
+    QVariantList out0;
+    QMetaObject::invokeMethod(parent(), "GetPrimaryScreenPhysicalGeometry", Q_RETURN_ARG(QVariantList, out0));
+    return out0;
+}
+
+void PanelAdaptor::setPanelInformation(int in0, int in1, int in2, int in3, int in4, int in5)
+{
+    // handle method call org.ukui.panel.setPanelInformation
+    QMetaObject::invokeMethod(parent(), "setPanelInformation", Q_ARG(int, in0), Q_ARG(int, in1), Q_ARG(int, in2), Q_ARG(int, in3), Q_ARG(int, in4), Q_ARG(int, in5));
 }
 

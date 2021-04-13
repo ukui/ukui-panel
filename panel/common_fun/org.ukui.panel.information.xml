@@ -4,8 +4,22 @@
     <method name="GetPrimaryScreenGeometry">
       <arg type="av" direction="out"/>
     </method>
+    <method name="GetPrimaryScreenAvailableGeometry">
+      <arg type="av" direction="out"/>
+    </method>
+    <method name="GetPrimaryScreenPhysicalGeometry">
+      <arg type="av" direction="out"/>
+    </method>
     <method name="GetPanelPosition">
       <arg type="s" direction="out"/>
+    </method>
+    <method name="setPanelInformation">
+      <arg type="i" direction="in"/>
+      <arg type="i" direction="in"/>
+      <arg type="i" direction="in"/>
+      <arg type="i" direction="in"/>
+      <arg type="i" direction="in"/>
+      <arg type="i" direction="in"/>
     </method>
   </interface>
 </node>

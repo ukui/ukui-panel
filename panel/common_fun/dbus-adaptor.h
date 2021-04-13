@@ -36,8 +36,22 @@ class PanelAdaptor: public QDBusAbstractAdaptor
 "    <method name=\"GetPrimaryScreenGeometry\">\n"
 "      <arg direction=\"out\" type=\"av\"/>\n"
 "    </method>\n"
+"    <method name=\"GetPrimaryScreenAvailableGeometry\">\n"
+"      <arg direction=\"out\" type=\"av\"/>\n"
+"    </method>\n"
+"    <method name=\"GetPrimaryScreenPhysicalGeometry\">\n"
+"      <arg direction=\"out\" type=\"av\"/>\n"
+"    </method>\n"
 "    <method name=\"GetPanelPosition\">\n"
 "      <arg direction=\"out\" type=\"s\"/>\n"
+"    </method>\n"
+"    <method name=\"setPanelInformation\">\n"
+"      <arg direction=\"in\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"i\"/>\n"
 "    </method>\n"
 "  </interface>\n"
         "")
@@ -48,7 +62,10 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     QString GetPanelPosition();
+    QVariantList GetPrimaryScreenAvailableGeometry();
     QVariantList GetPrimaryScreenGeometry();
+    QVariantList GetPrimaryScreenPhysicalGeometry();
+    void setPanelInformation(int in0, int in1, int in2, int in3, int in4, int in5);
 Q_SIGNALS: // SIGNALS
 };
 
