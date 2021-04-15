@@ -1229,15 +1229,26 @@ bool UKUITaskGroup::isSetMaxWindow()
 void UKUITaskGroup::showPreview()
 {
     int n = 7;
-    if (plugin()->panel()->isHorizontal()) n = 10;
-    if(mVisibleHash.size() <= n)
-    {
-        showAllWindowByThumbnail();
-    }
-    else
-    {
-        showAllWindowByList();
-    }
+        if (plugin()->panel()->isHorizontal()) n = 10;
+        if(mVisibleHash.size() <= n)
+        {
+    //        showAllWindowByThumbnail();
+            if (mPopup->isHidden()) {
+                qDebug()<<"";
+                showAllWindowByThumbnail();
+
+            } else {
+                imagicFlag = false;
+                mPopup->hide(true);
+                showAllWindowByThumbnail();//
+                imagicFlag = true;
+            }
+        }
+        else
+        {
+            showAllWindowByList();
+        }
+
 }
 
 void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
@@ -1670,10 +1681,12 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     {
 //        mPopup-
     }
-    else
     {
-        mPopup->show();
+//        mPopup->show();
+        if(imagicFlag)
+             mPopup->show();
     }
+
 
 //   emit popupShown(this);
 }
