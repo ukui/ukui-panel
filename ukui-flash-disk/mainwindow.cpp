@@ -109,7 +109,7 @@ MainWindow::~MainWindow()
     }
 }
 
-void MainWindow::onRequestSendDesktopNotify(QString message)
+void MainWindow::onRequestSendDesktopNotify(QString message, QString strIcon)
 {
     QDBusInterface iface("org.freedesktop.Notifications",
                          "/org/freedesktop/Notifications",
@@ -118,7 +118,7 @@ void MainWindow::onRequestSendDesktopNotify(QString message)
     QList<QVariant> args;
     args<<(tr("ukui-flash-disk"))
        <<((unsigned int) 0)
-      <<QString("media-removable-symbolic")
+      <<strIcon
      <<tr("kindly reminder") //显示的是什么类型的信息
     <<message //显示的具体信息
     <<QStringList()
@@ -608,7 +608,7 @@ void MainWindow::getDeviceInfo()
     m_dataFlashDisk->OutputInfos();
 }
 
-void MainWindow::onConvertShowWindow(QString strDriveId)
+void MainWindow::onConvertShowWindow(QString strDriveId, QString strMountUri)
 {
     // 进程启动时一定时间内不弹窗提示
     if (QDateTime::currentDateTime().toMSecsSinceEpoch() - m_nAppStartTimestamp < NEWINFO_DELAYSHOW_TIME) {
@@ -619,7 +619,29 @@ void MainWindow::onConvertShowWindow(QString strDriveId)
     MainWindowShow();
     string strDeviceId = strDriveId.toStdString();
     if (std::find(m_vtDeviveId.begin(), m_vtDeviveId.end(), strDeviceId) == m_vtDeviveId.end()) {
-        onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"));
+        #if IFDISTINCT_DEVICON
+        if (strDriveId.startsWith("/dev/sr")) {
+            onRequestSendDesktopNotify(tr("Please do not pull out the CDROM when reading or writing"), 
+                                        QString("media-optical"));
+        } else if (strDriveId.startsWith("/dev/mmcblk")) {
+            onRequestSendDesktopNotify(tr("Please do not pull out the SD Card when reading or writing"), 
+                                        QString("media-memory-sd"));
+        } else {
+            onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"), 
+                                        QString("media-removable-symbolic"));
+        }
+        #else
+        if (strDriveId.startsWith("/dev/sr")) {
+            onRequestSendDesktopNotify(tr("Please do not pull out the CDROM when reading or writing"), 
+                                        QString("media-removable-symbolic"));
+        } else if (strDriveId.startsWith("/dev/mmcblk")) {
+            onRequestSendDesktopNotify(tr("Please do not pull out the SD Card when reading or writing"), 
+                                        QString("media-removable-symbolic"));
+        } else {
+            onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"), 
+                                        QString("media-removable-symbolic"));
+        }
+        #endif
         m_vtDeviveId.push_back(strDeviceId);
     }
 }
@@ -938,7 +960,8 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                     //qDebug()<<"cd data disk has mounted!";
                     volumeInfo.isNewInsert = true;
                     p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
-                    Q_EMIT p_this->convertShowWindow(driveInfo.strId.c_str());
+                    string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
+                    Q_EMIT p_this->convertShowWindow(strDevId.c_str(), volumeInfo.mountInfo.strUri.c_str());
                 } else {
                     p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
                 }
@@ -968,6 +991,14 @@ void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volum
     if (strName) {
         volumeInfo.strName = strName;
         g_free(strName);
+    }
+    vector<string>::iterator itDeviceId = p_this->m_vtDeviveId.begin();
+    for (; itDeviceId != p_this->m_vtDeviveId.end();) {
+        if (volumeInfo.strId == *itDeviceId) {
+            itDeviceId = p_this->m_vtDeviveId.erase(itDeviceId);
+        } else {
+            itDeviceId++;
+        }
     }
     p_this->m_dataFlashDisk->removeVolumeInfo(volumeInfo);
     if(p_this->m_dataFlashDisk->getValidInfoCount() == 0) {
@@ -1127,7 +1158,8 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     {
         if (isValidMount && isNewMount) {
             //qDebug()<<"cd data disk has mounted!";
-            Q_EMIT p_this->convertShowWindow(driveInfo.strId.c_str());
+            string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
+            Q_EMIT p_this->convertShowWindow(strDevId.c_str(), mountInfo.strUri.c_str());
         }
         p_this->m_systray->show();
     }
@@ -1304,9 +1336,10 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
             }
             if (isNewMount) {
                 qDebug()<<"sig has emited";
-                Q_EMIT p_this->convertShowWindow(driveInfo.strId.c_str());     //emit a signal to trigger the MainMainShow slot
+                string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
+                Q_EMIT p_this->convertShowWindow(strDevId.c_str(), mountInfo.strUri.c_str());     //emit a signal to trigger the MainMainShow slot
             }
-        } 
+        }
     }
     else
     {
@@ -1371,7 +1404,8 @@ void MainWindow::newarea(int No,
     line = new QWidget;
     line->setFixedHeight(1);
     line->setObjectName("lineWidget");
-    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
+    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default"
+        || currentThemeMode == "ukui")
     {
         line->setStyleSheet("background-color:rgba(255,255,255,0.2);");
     }
@@ -1414,7 +1448,8 @@ void MainWindow::newarea(unsigned uDiskNo,
     line = new QWidget;
     line->setFixedHeight(1);
     line->setObjectName("lineWidget");
-    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
+    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default"
+        || currentThemeMode == "ukui")
     {
         line->setStyleSheet("background-color:rgba(255,255,255,0.2);");
     }
@@ -2386,7 +2421,8 @@ void MainWindow::frobnitz_force_result_func(GDrive *source_object,GAsyncResult *
         {
             p_this->m_systray->hide();
         }
-        p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),NORMALDEVICE);
+        p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),
+                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
         p_this->m_eject->show();
     } else {
         GList* listVolume = g_drive_get_volumes(source_object);
@@ -2438,12 +2474,24 @@ void MainWindow::frobnitz_result_func(GDrive *source_object,GAsyncResult *res,Ma
         {
             p_this->m_systray->hide();
         }
-        p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),NORMALDEVICE);
+        p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),
+                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
         p_this->m_eject->show();
     } else /*if(g_drive_can_stop(source_object) == true)*/ {
+        FDDriveInfo driveInfo;
+        char *devPath = g_drive_get_identifier(source_object,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+        if (devPath != NULL) {
+            driveInfo.strId = devPath;
+            g_free(devPath);
+        }
+        char *strName = g_drive_get_name(source_object);
+        if (strName) {
+            driveInfo.strName = strName;
+            g_free(strName);
+        }
         if (p_this->chooseDialog == nullptr)
         {
-            p_this->chooseDialog = new interactiveDialog(p_this->ui->centralWidget);
+            p_this->chooseDialog = new interactiveDialog(QString::fromStdString(driveInfo.strId), p_this->ui->centralWidget);
         }
         p_this->chooseDialog->show();
         p_this->chooseDialog->setFocus();

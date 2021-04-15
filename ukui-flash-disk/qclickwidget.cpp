@@ -29,7 +29,7 @@ void frobnitz_force_result_func(GDrive *source_object,GAsyncResult *res,QClickWi
     if (!err)
     {
       findGDriveList()->removeOne(source_object);
-      p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),NORMALDEVICE);
+      p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),NORMALDEVICE,"");
       p_this->m_eject->show();
     }
     else
@@ -64,7 +64,7 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *
     if (!err)
     {
       findGDriveList()->removeOne(source_object);
-      p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),NORMALDEVICE);
+      p_this->m_eject = new ejectInterface(p_this,g_drive_get_name(source_object),NORMALDEVICE,"");
       p_this->m_eject->show();
     }
 
@@ -72,7 +72,7 @@ void frobnitz_result_func(GDrive *source_object,GAsyncResult *res,QClickWidget *
     {
         if (p_this->chooseDialog == nullptr)
         {
-            p_this->chooseDialog = new interactiveDialog(p_this);
+            p_this->chooseDialog = new interactiveDialog("", p_this);
         }
 //        p_this->chooseDialog->raise();
         p_this->chooseDialog->show();
