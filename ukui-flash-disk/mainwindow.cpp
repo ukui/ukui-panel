@@ -1404,7 +1404,8 @@ void MainWindow::newarea(int No,
     line = new QWidget;
     line->setFixedHeight(1);
     line->setObjectName("lineWidget");
-    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
+    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default"
+        || currentThemeMode == "ukui")
     {
         line->setStyleSheet("background-color:rgba(255,255,255,0.2);");
     }
@@ -1447,7 +1448,8 @@ void MainWindow::newarea(unsigned uDiskNo,
     line = new QWidget;
     line->setFixedHeight(1);
     line->setObjectName("lineWidget");
-    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
+    if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default"
+        || currentThemeMode == "ukui")
     {
         line->setStyleSheet("background-color:rgba(255,255,255,0.2);");
     }

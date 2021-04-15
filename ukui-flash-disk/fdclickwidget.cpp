@@ -97,6 +97,7 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         m_driveName_label->setObjectName("driveNameLabel");
 
         m_eject_button = new QPushButton(this);
+        m_eject_button->setProperty("useIconHighlightEffect", 0x2);
         m_eject_button->setFlat(true);   //this property set that when the mouse is hovering in the icon the icon will move up a litte
         m_eject_button->move(m_eject_button->x()+234,m_eject_button->y()+2);
         m_eject_button->installEventFilter(this);
@@ -380,19 +381,11 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
             {
                 m_eject_button->setIconSize(QSize(14,14));
                 m_eject_button->setFixedSize(38,38);
-                m_eject_button->setStyleSheet(
-                        "background:rgba(255,255,255,0.08);"
-                        "border-radius:4px;"
-                        );
             }
             else
             {
                 m_eject_button->setIconSize(QSize(14,14));
                 m_eject_button->setFixedSize(38,38);
-                m_eject_button->setStyleSheet(
-                        "background:rgba(0,0,0,0.08);"
-                        "border-radius:4px;"
-                        );
             }
 
         }
@@ -403,19 +396,11 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
-                m_eject_button->setStyleSheet(
-                        "background-color:rgba(255,255,255,0.91);"
-                        "background:rgba(255,255,255,0.12);"
-                        "border-radius:4px;");
             }
             else
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
-                m_eject_button->setStyleSheet(
-                        "background-color:rgba(0,0,0,0.91);"
-                        "background:rgba(0,0,0,0.12);"
-                        "border-radius:4px;");
             }
 
         }
@@ -426,21 +411,11 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
-                m_eject_button->setStyleSheet(
-                        "background-color:rgba(255,255,255,0.75);"
-                        "background-color:rgba(255,255,255,0.57);"
-                        "background:rgba(255,255,255,0);"
-                        "border-radius:4px;");
             }
             else
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
-                m_eject_button->setStyleSheet(
-                        "background-color:rgba(0,0,0,0.75);"
-                        "background-color:rgba(0,0,0,0.57);"
-                        "background:rgba(0,0,0,0);"
-                        "border-radius:4px;");
             }
         }
     }
@@ -449,7 +424,8 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
     {
        if(event->type() == QEvent::Enter)
        {
-           if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
+           if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default"
+            || currentThemeMode == "ukui")
            {
                disWidgetNumOne->setStyleSheet(
                            "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
