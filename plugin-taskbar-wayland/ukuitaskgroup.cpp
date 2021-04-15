@@ -1548,7 +1548,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         {
             if (attr.height != max_Height)
             {
-                float tmp = (float)attr.height / (float)max_Height;
+                float tmp = (float)attr.height / (float)max_Height/2;
                 imgHeight =  imgHeight * tmp;
             }
             if ((int)imgWidth > (int)minimumWidth)
