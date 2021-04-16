@@ -1634,7 +1634,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
                             uVolumeType = 0;
                         } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
                             uVolumeType = 2;
-                        } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                        } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///")/* || g_str_has_prefix(strMountUri.c_str(),"cdda://")*/) {
                             uVolumeType = 1;
                         }
                     }
@@ -1713,7 +1713,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
                         uVolumeType = 0;
                     } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
                         uVolumeType = 2;
-                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///")/* || g_str_has_prefix(strMountUri.c_str(),"cdda://")*/) {
                         uVolumeType = 1;
                     }
                 }
@@ -1786,7 +1786,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
                         uMountType = 0;
                     } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
                         uMountType = 2;
-                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///")/* || g_str_has_prefix(strMountUri.c_str(),"cdda://")*/) {
                         uMountType = 1;
                     }
                 } else {
@@ -1858,7 +1858,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
                             uVolumeType = 0;
                         } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
                             uVolumeType = 2;
-                        } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                        } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///")/* || g_str_has_prefix(strMountUri.c_str(),"cdda://")*/) {
                             uVolumeType = 1;
                         }
                     }
@@ -1929,7 +1929,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
                         uVolumeType = 0;
                     } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
                         uVolumeType = 2;
-                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///")/* || g_str_has_prefix(strMountUri.c_str(),"cdda://")*/) {
                         uVolumeType = 1;
                     }
                 }
@@ -1998,7 +1998,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
                         uMountType = 0;
                     } else if (g_str_has_prefix(strMountUri.c_str(),"mtp://") || g_str_has_prefix(strMountUri.c_str(),"gphoto2://")){
                         uMountType = 2;
-                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///") || g_str_has_prefix(strMountUri.c_str(),"cdda://")) {
+                    } else if (g_str_has_prefix(strMountUri.c_str(),"burn:///")/* || g_str_has_prefix(strMountUri.c_str(),"cdda://")*/) {
                         uMountType = 1;
                     }
                 } else {
