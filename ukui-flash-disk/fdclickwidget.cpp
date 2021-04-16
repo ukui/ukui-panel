@@ -324,26 +324,26 @@ QString FDClickWidget::size_human(qlonglong capacity)
 
         qlonglong conversion = capacity;
 
-        while(conversion >= 1000.0 && i.hasNext())
+        while(conversion >= 1024.0 && i.hasNext())
         {
             unit = i.next();
-            conversion /= 1000.0;
+            conversion /= 1024.0;
             conversionNum++;
         }
 
-        qlonglong remain  = capacity - conversion * qPow(1000,conversionNum);
+        qlonglong remain  = capacity - conversion * qPow(1024,conversionNum);
         float showRemain;
         if(conversionNum == 3)
         {
-            showRemain = (float)remain /1000/1000/1000;
+            showRemain = (float)remain /1024/1024/1024;
         }
         if(conversionNum == 2)
         {
-            showRemain = (float)remain /1000/1000;
+            showRemain = (float)remain /1024/1024;
         }
         if(conversionNum == 1)
         {
-            showRemain = (float)remain /1000;
+            showRemain = (float)remain /1024;
         }
 
         double showValue = conversion + showRemain;
