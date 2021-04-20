@@ -427,7 +427,7 @@ void UKUITaskBar::addWindow(WId window)
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
     //针对ukui-menu和ukui-sidebar做的特殊处理，及时窗口是普通窗口，也不在任务栏显示
-    if(group_id.compare("ukui-menu")==0 || group_id.compare("ukui-sidebar")==0)
+    if(group_id.compare("ukui-menu")==0 || group_id.compare("ukui-sidebar")==0 || group_id.compare("ukui-search")==0)
     {
         return;
     }

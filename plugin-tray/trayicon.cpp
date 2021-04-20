@@ -43,6 +43,8 @@
 static bool xError;
 #define MIMETYPE "ukui/UkuiTray"
 
+#define CSETTINGS_SCALING "org.ukui.SettingsDaemon.plugins.xsettings"
+#define SCALING_FACTOR    "scalingFactor"
 
 int windowErrorHandler(Display *d, XErrorEvent *e)
 {
@@ -92,6 +94,12 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel");
     QDBusConnection::sessionBus().registerService("com.ukui.panel");
     QDBusConnection::sessionBus().registerObject("/traybutton/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
+
+    const QByteArray scaling_factor(CSETTINGS_SCALING);
+    if(QGSettings::isSchemaInstalled(scaling_factor)) {
+        scaling_settings = new QGSettings(scaling_factor);
+        qDebug()<<"scaling_settings->get(SCALING_FACTOR).toInt()"<<scaling_settings->get(SCALING_FACTOR).toInt();
+    }
 }
 
 
@@ -243,10 +251,10 @@ void TrayIcon::setIconSize(QSize iconSize)
 
     const QSize req_size{mIconSize * metric(PdmDevicePixelRatio)};
     if (mWindowId)
-        xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
+        xfitMan().resizeWindow(mWindowId, req_size.width()*scaling_settings->get(SCALING_FACTOR).toInt(), req_size.height()*scaling_settings->get(SCALING_FACTOR).toInt());
 
     if (mIconId)
-        xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
+        xfitMan().resizeWindow(mIconId, req_size.width()*scaling_settings->get(SCALING_FACTOR).toInt(), req_size.height()*scaling_settings->get(SCALING_FACTOR).toInt());
 }
 
 /*处理　TrayIcon　绘图，点击等事件*/

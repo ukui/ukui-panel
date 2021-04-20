@@ -28,6 +28,7 @@
 #include <QMimeData>
 #include <QToolButton>
 #include <QMenu>
+#include <QGSettings>
 //X11
 #include <X11/X.h>
 #include <X11/extensions/Xdamage.h>
@@ -132,6 +133,8 @@ private:
 
     enum TrayAppStatus{NORMAL, HOVER, PRESS};
     TrayAppStatus traystatus;
+
+    QGSettings *scaling_settings;
 };
 
 /**
