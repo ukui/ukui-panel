@@ -99,13 +99,6 @@ void dbgMessageOutput(QtMsgType type, const QMessageLogContext &ctx, const QStri
 Application::Application(int &argc, char** argv)
     : QApplication(argc, argv)
 {
-#ifdef DEBUG
-    qInstallMessageHandler(dbgMessageOutput);
-#else
-    if (!qEnvironmentVariableIsSet("UKUI_DEBUG"))
-        qInstallMessageHandler(dbgMessageOutput);
-#endif
-
     setWindowIcon(QIcon(QFile::decodeName(UKUI_GRAPHICS_DIR) + QL1S("/ukui_logo.png")));
     connect(Settings::globalSettings(), &GlobalSettings::ukuiThemeChanged, this, &Application::updateTheme);
     updateTheme();
