@@ -84,6 +84,7 @@ add_definitions(
 set(PACKAGE_DATA_DIR "/usr/share/ukui-panel")
 add_definitions(
     -DPACKAGE_DATA_DIR=\"${PACKAGE_DATA_DIR}\"
+    -DQT_MESSAGELOGCONTEXT
 )
 
 message(STATUS "CMAKE Module linker flags: ${CMAKE_MODULE_LINKER_FLAGS}")
