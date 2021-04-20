@@ -103,7 +103,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mContent->setObjectName(QLatin1String("WorldClockContent"));
     mContent->setAlignment(Qt::AlignCenter);
 
-    mTimer->setTimerType(Qt::VeryCoarseTimer);
+    mTimer->setTimerType(Qt::PreciseTimer);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
     gsettings = new QGSettings(id);
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
@@ -126,11 +126,11 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
             current_date=CURRENT_DATE;
         }
 
-    QString delaytime=QTime::currentTime().toString();
-    QList<QString> pathresult=delaytime.split(":");
-    int second=pathresult.at(2).toInt();
-    connect(mTimer, &QTimer::timeout, [this]{updateTimeText(); mTimer->stop(); mTimer->start(60*1000);});
-    mTimer->start((60 +1 -second)*1000);
+//    QString delaytime=QTime::currentTime().toString();
+//    QList<QString> pathresult=delaytime.split(":");
+//    int second=pathresult.at(2).toInt();
+    connect(mTimer, &QTimer::timeout, [this]{updateTimeText(); mTimer->stop(); mTimer->start(1000);});
+    mTimer->start(1000);
 
     const QByteArray _id(SYSTEM_FONT_SET);
     fgsettings = new QGSettings(_id);

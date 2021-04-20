@@ -51,6 +51,7 @@ pkg_check_modules(Gsetting REQUIRED gsettings-qt)
 include_directories(${Gsetting_INCLUDE_DIRS})
 set(LIBRARIES
     ${Gsetting_LIBRARIES}
+    -lukui-log4qt
 )
 
 # Patch Version
@@ -83,6 +84,7 @@ add_definitions(
 set(PACKAGE_DATA_DIR "/usr/share/ukui-panel")
 add_definitions(
     -DPACKAGE_DATA_DIR=\"${PACKAGE_DATA_DIR}\"
+    -DQT_MESSAGELOGCONTEXT
 )
 
 message(STATUS "CMAKE Module linker flags: ${CMAKE_MODULE_LINKER_FLAGS}")
