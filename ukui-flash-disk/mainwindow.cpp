@@ -2096,10 +2096,9 @@ void MainWindow::moveBottomNoBase()
     QDBusReply<QVariantList> reply=iface.call("GetPrimaryScreenGeometry");
     if (!iface.isValid() || !iface.isValid() || reply.value().size()<5) {
         qCritical() << QDBusConnection::sessionBus().lastError().message();
+        ui->centralWidget->setGeometry(0,0,ui->centralWidget->width(),ui->centralWidget->height());
     }else{
-
         //reply获取的参数共5个，分别是 主屏可用区域的起点x坐标，主屏可用区域的起点y坐标，主屏可用区域的宽度，主屏可用区域高度，任务栏位置
-        qDebug()<<reply.value().at(4).toInt();
         QVariantList position_list=reply.value();
 
         switch(reply.value().at(4).toInt()){
