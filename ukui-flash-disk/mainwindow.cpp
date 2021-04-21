@@ -2052,6 +2052,7 @@ void MainWindow::onMaininterfacehide()
 
 void MainWindow::moveBottomNoBase()
 {
+#if 0
     int position=0;
     int panelSize=0;
     if(QGSettings::isSchemaInstalled(QString("org.ukui.panel.settings").toLocal8Bit()))
@@ -2084,6 +2085,50 @@ void MainWindow::moveBottomNoBase()
     else
         ui->centralWidget->setGeometry(QRect(x+QApplication::primaryScreen()->geometry().width()-panelSize-ui->centralWidget->width() - DISTANCEPADDING,y + QApplication::primaryScreen()->geometry().height() - ui->centralWidget->height() - DISTANCEPADDING,ui->centralWidget->width(),ui->centralWidget->height()));
     ui->centralWidget->repaint();
+
+#endif
+    //MARGIN 为到任务栏或屏幕边缘的间隔
+#define MARGIN 4
+    QDBusInterface iface("org.ukui.panel",
+                         "/panel/position",
+                         "org.ukui.panel",
+                         QDBusConnection::sessionBus());
+    QDBusReply<QVariantList> reply=iface.call("GetPrimaryScreenGeometry");
+    if (!iface.isValid() || !iface.isValid() || reply.value().size()<5) {
+        qCritical() << QDBusConnection::sessionBus().lastError().message();
+    }else{
+
+        //reply获取的参数共5个，分别是 主屏可用区域的起点x坐标，主屏可用区域的起点y坐标，主屏可用区域的宽度，主屏可用区域高度，任务栏位置
+        qDebug()<<reply.value().at(4).toInt();
+        QVariantList position_list=reply.value();
+
+        switch(reply.value().at(4).toInt()){
+        case 1:
+            //任务栏位于上方
+            ui->centralWidget->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-ui->centralWidget->width()-MARGIN,
+                                           position_list.at(1).toInt()+MARGIN,
+                                           ui->centralWidget->width(),ui->centralWidget->height());
+            break;
+            //任务栏位于左边
+        case 2:
+            ui->centralWidget->setGeometry(position_list.at(0).toInt()+MARGIN,
+                                           position_list.at(1).toInt()+reply.value().at(3).toInt()-ui->centralWidget->height()-MARGIN,
+                                           ui->centralWidget->width(),this->height());
+            break;
+            //任务栏位于右边
+        case 3:
+            ui->centralWidget->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-ui->centralWidget->width()-MARGIN,
+                                           position_list.at(1).toInt()+reply.value().at(3).toInt()-ui->centralWidget->height()-MARGIN,
+                                           ui->centralWidget->width(),ui->centralWidget->height());
+            break;
+            //任务栏位于下方
+        default:
+            ui->centralWidget->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-ui->centralWidget->width()-MARGIN,
+                                           position_list.at(1).toInt()+reply.value().at(3).toInt()-ui->centralWidget->height()-MARGIN,
+                                           ui->centralWidget->width(),ui->centralWidget->height());
+            break;
+        }
+    }
 }
 
 /*

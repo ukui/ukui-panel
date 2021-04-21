@@ -235,7 +235,6 @@ IndicatorCalendar::~IndicatorCalendar()
 
 void IndicatorCalendar::updateTimeText()
 {
-    qDebug()<<"IndicatorCalendar::updateTimeText"<<QDateTime::currentDateTime().toString();
     QDateTime tzNow = QDateTime::currentDateTime();
 
     QString str;
