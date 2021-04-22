@@ -74,6 +74,7 @@
 #define SYSTEM_FONT_SET  "org.ukui.style"
 
 QString calendar_version;
+extern UkuiWebviewDialogStatus status;
 
 IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupInfo):
     QWidget(),
@@ -395,6 +396,7 @@ void IndicatorCalendar::CalendarWidgetShow()
         }
         if(qgetenv("XDG_SESSION_TYPE")=="wayland") mWebViewDiag->setGeometry(calculatePopupWindowPos(QSize(mViewWidht+POPUP_BORDER_SPACING,mViewHeight+POPUP_BORDER_SPACING)));
         else modifyCalendarWidget();
+#if 0
         mWebViewDiag->show();
         mWebViewDiag->activateWindow();
         if(!mbActived)
@@ -408,6 +410,17 @@ void IndicatorCalendar::CalendarWidgetShow()
             mWebViewDiag->setHidden(true);
 //            mWebViewDiag->webview()->reload();
             mbActived = false;
+        }
+#endif
+        if(status==ST_HIDE)
+        {
+            status = ST_SHOW;
+            mWebViewDiag->setHidden(false);
+        }
+        else
+        {
+            status = ST_HIDE;
+            mWebViewDiag->setHidden(true);
         }
     }
 }

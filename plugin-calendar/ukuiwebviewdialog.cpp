@@ -35,6 +35,7 @@
 #define CALENDAR_MIN_HEIGHT 600
 
 #define CALENDAR_MAX_WIDTH 454
+UkuiWebviewDialogStatus status;
 
 UkuiWebviewDialog::UkuiWebviewDialog(QWidget *parent) :
     QDialog(parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint),
@@ -42,6 +43,7 @@ UkuiWebviewDialog::UkuiWebviewDialog(QWidget *parent) :
     ui(new Ui::UkuiWebviewDialog)
 {
     ui->setupUi(this);
+    installEventFilter(this);
 }
 
 UkuiWebviewDialog::~UkuiWebviewDialog()
@@ -144,6 +146,8 @@ void UkuiWebviewDialog::creatwebview(int _mode, int _panelSize)
     }
 }
 
+#if 0
+//event 与 nativeEvent  是用来处理界面的隐藏与显示相关的问题
 bool UkuiWebviewDialog::event(QEvent *event)
 {
     if (event->type() == QEvent::Close)
@@ -167,6 +171,48 @@ bool UkuiWebviewDialog::nativeEvent(const QByteArray &eventType, void *message, 
     case XCB_FOCUS_OUT:
         this->hide();
         break;
+    }
+    return false;
+}
+#endif
+/*
+ * 事件过滤，检测鼠标点击外部活动区域则收回收纳栏
+*/
+bool UkuiWebviewDialog::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == this)
+    {
+        if (event->type() == QEvent::MouseButtonPress)
+           {
+               QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+               if (mouseEvent->button() == Qt::LeftButton)
+               {
+                   this->hide();
+                   status=ST_HIDE;
+                   return true;
+               }
+               else if(mouseEvent->button() == Qt::RightButton)
+               {
+                   return true;
+               }
+           }
+        else if(event->type() == QEvent::ContextMenu)
+        {
+            return false;
+        }
+        else if (event->type() == QEvent::WindowDeactivate &&status==ST_SHOW)
+        {
+//            qDebug()<<"激活外部窗口";
+            this->hide();
+            status=ST_HIDE;
+            return true;
+        } else if (event->type() == QEvent::StyleChange) {
+        }
+    }
+
+    if (!isActiveWindow())
+    {
+        activateWindow();
     }
     return false;
 }

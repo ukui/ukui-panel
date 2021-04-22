@@ -1,6 +1,19 @@
-ukui-panel (3.0.1-75) v101; urgency=medium
+ukui-panel (3.0.1-78) v101; urgency=medium
 
-  * 解决任务栏夜间模式调节gsetting错误的问题
+  * 解决华为冒烟测试问题：4358441 时间和日期刷新不及时的问题
+  * 解决华为冒烟测试问题：4358216 日历需要点击两次的问题
+  * 其他改动说明  ：增加了一个任务栏变化的时候的dbus信号
+
+  *影响域：影响时间与日期的显示
+           影响日历的弹出功能
+           影响开始菜单位置的显示
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 22 Apr 2021 19:34:18 +0800
+
+ukui-panel (3.0.1-77) v101; urgency=medium
+
+  * 解决u盘弹出位置错误的问题 bug#45607
+    影响域：影响u盘弹出位置，包括单屏和双屏
 
  -- hepuyao <hepuyao@kylinos.cn>  Tue, 13 Apr 2021 07:38:13 +0800
 

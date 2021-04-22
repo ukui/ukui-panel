@@ -22,12 +22,14 @@
 #define UKUIWEBVIEWDIALOG_H
 
 #include <QDialog>
+#include <QMouseEvent>
 #include <QtWebKitWidgets/QWebView>
 #include <QtWebKitWidgets/QWebFrame>
 #include "../panel/iukuipanelplugin.h"
 namespace Ui {
 class UkuiWebviewDialog;
 }
+enum UkuiWebviewDialogStatus{ST_HIDE,ST_SHOW};
 
 enum CalendarShowMode
 {
@@ -56,8 +58,9 @@ private:
     QWebView   *mWebView;
     QSize      mQsize;
 protected:
-    virtual bool event(QEvent *event);
-    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+//    virtual bool event(QEvent *event);
+//    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+    bool eventFilter(QObject *, QEvent *);
 };
 
 #endif // UKUIWEBVIEWDIALOG_H
