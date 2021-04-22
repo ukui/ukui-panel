@@ -52,6 +52,9 @@ void UKuiPanelInformation::setPanelInformation(int x, int y, int width, int heig
     args.append(screen_height);
     message.setArguments(args);
     QDBusConnection::sessionBus().send(message);
+
+    QDBusMessage message_refresh = QDBusMessage::createSignal("/panel/position", "org.ukui.panel", "PanelGeometryRefresh");
+    QDBusConnection::sessionBus().send(message_refresh);
 }
 QVariantList UKuiPanelInformation::GetPrimaryScreenGeometry()
 {
