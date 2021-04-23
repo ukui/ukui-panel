@@ -71,10 +71,21 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         image_show_label->setFocusPolicy(Qt::NoFocus);
         image_show_label->installEventFilter(this);
         //to get theme picture for label
+        #if IFDISTINCT_DEVICON
+        QString strDevId = m_driveId.isEmpty()?m_volumeId:m_driveId;
+        if (strDevId.startsWith("/dev/sr")) {
+            imgIcon = QIcon::fromTheme("media-optical");
+        } else if (strDevId.startsWith("/dev/mmcblk")) {
+            imgIcon = QIcon::fromTheme("media-memory-sd");
+        } else {
+            imgIcon = QIcon::fromTheme("drive-removable-media-usb");
+        }
+        #else 
         imgIcon = QIcon::fromTheme("drive-removable-media-usb");
+        #endif
         QPixmap pixmap = imgIcon.pixmap(QSize(25, 25));
         image_show_label->setPixmap(pixmap);
-        image_show_label->setFixedSize(40,40);
+        image_show_label->setFixedSize(48,48);
         m_driveName_label = new QLabel(this);
         m_driveName_label->setFont(QFont("Noto Sans CJK SC",fontSize));
         QString DriveName = getElidedText(m_driveName_label->font(), m_driveName, 180);
@@ -86,6 +97,7 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         m_driveName_label->setObjectName("driveNameLabel");
 
         m_eject_button = new QPushButton(this);
+        m_eject_button->setProperty("useIconHighlightEffect", 0x2);
         m_eject_button->setFlat(true);   //this property set that when the mouse is hovering in the icon the icon will move up a litte
         m_eject_button->move(m_eject_button->x()+234,m_eject_button->y()+2);
         m_eject_button->installEventFilter(this);
@@ -312,26 +324,26 @@ QString FDClickWidget::size_human(qlonglong capacity)
 
         qlonglong conversion = capacity;
 
-        while(conversion >= 1000.0 && i.hasNext())
+        while(conversion >= 1024.0 && i.hasNext())
         {
             unit = i.next();
-            conversion /= 1000.0;
+            conversion /= 1024.0;
             conversionNum++;
         }
 
-        qlonglong remain  = capacity - conversion * qPow(1000,conversionNum);
+        qlonglong remain  = capacity - conversion * qPow(1024,conversionNum);
         float showRemain;
         if(conversionNum == 3)
         {
-            showRemain = (float)remain /1000/1000/1000;
+            showRemain = (float)remain /1024/1024/1024;
         }
         if(conversionNum == 2)
         {
-            showRemain = (float)remain /1000/1000;
+            showRemain = (float)remain /1024/1024;
         }
         if(conversionNum == 1)
         {
-            showRemain = (float)remain /1000;
+            showRemain = (float)remain /1024;
         }
 
         double showValue = conversion + showRemain;
@@ -369,19 +381,11 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
             {
                 m_eject_button->setIconSize(QSize(14,14));
                 m_eject_button->setFixedSize(38,38);
-                m_eject_button->setStyleSheet(
-                        "background:rgba(255,255,255,0.08);"
-                        "border-radius:4px;"
-                        );
             }
             else
             {
                 m_eject_button->setIconSize(QSize(14,14));
                 m_eject_button->setFixedSize(38,38);
-                m_eject_button->setStyleSheet(
-                        "background:rgba(0,0,0,0.08);"
-                        "border-radius:4px;"
-                        );
             }
 
         }
@@ -392,19 +396,11 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
-                m_eject_button->setStyleSheet(
-                        "background-color:rgba(255,255,255,0.91);"
-                        "background:rgba(255,255,255,0.12);"
-                        "border-radius:4px;");
             }
             else
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
-                m_eject_button->setStyleSheet(
-                        "background-color:rgba(0,0,0,0.91);"
-                        "background:rgba(0,0,0,0.12);"
-                        "border-radius:4px;");
             }
 
         }
@@ -415,21 +411,11 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
-                m_eject_button->setStyleSheet(
-                        "background-color:rgba(255,255,255,0.75);"
-                        "background-color:rgba(255,255,255,0.57);"
-                        "background:rgba(255,255,255,0);"
-                        "border-radius:4px;");
             }
             else
             {
                 m_eject_button->setIconSize(QSize(16,16));
                 m_eject_button->setFixedSize(40,40);
-                m_eject_button->setStyleSheet(
-                        "background-color:rgba(0,0,0,0.75);"
-                        "background-color:rgba(0,0,0,0.57);"
-                        "background:rgba(0,0,0,0);"
-                        "border-radius:4px;");
             }
         }
     }
@@ -438,7 +424,8 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
     {
        if(event->type() == QEvent::Enter)
        {
-           if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default")
+           if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default"
+            || currentThemeMode == "ukui")
            {
                disWidgetNumOne->setStyleSheet(
                            "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");

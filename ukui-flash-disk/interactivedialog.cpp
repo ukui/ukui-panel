@@ -19,10 +19,12 @@
 #include "interactivedialog.h"
 #include <KWindowEffects>
 
-interactiveDialog::interactiveDialog(QWidget *parent):QWidget(parent)
+interactiveDialog::interactiveDialog(QString strDevId, QWidget *parent):QWidget(parent)
 {
     this->setFixedSize(300,86);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+
+    m_strDevId = strDevId;
 
     QPainterPath path;
     auto rect = this->rect();
@@ -69,7 +71,13 @@ void interactiveDialog::getTransparentData()
 void interactiveDialog::initWidgets()
 {
     contentLable = new QLabel(this);
-    contentLable->setText(tr("usb is occupying,do you want to eject it"));
+    if (m_strDevId.startsWith("/dev/sr")) {
+        contentLable->setText(tr("cdrom is occupying,do you want to eject it"));
+    } else if (m_strDevId.startsWith("/dev/mmcblk")) {
+        contentLable->setText(tr("sd is occupying,do you want to eject it"));
+    } else {
+        contentLable->setText(tr("usb is occupying,do you want to eject it"));
+    }
     content_H_BoxLayout = new QHBoxLayout();
     content_H_BoxLayout->addWidget(contentLable);
 

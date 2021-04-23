@@ -46,7 +46,7 @@ class interactiveDialog: public QWidget
 {
     Q_OBJECT
 public:
-    interactiveDialog(QWidget *parent);
+    interactiveDialog(QString strDevId, QWidget *parent);
     ~interactiveDialog();
 private:
     QPushButton *chooseBtnContinue = nullptr;
@@ -73,6 +73,9 @@ public Q_SLOTS:
     void convert();
 Q_SIGNALS:
     void FORCESIG();
+
+private:
+    QString m_strDevId;
 };
 
 #endif

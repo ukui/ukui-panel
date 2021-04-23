@@ -182,17 +182,17 @@ public:
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
-    void onConvertShowWindow(QString strDriveId);
+    void onConvertShowWindow(QString strDriveId, QString strMountUri);
     void onConvertUpdateWindow(QString strDevName, unsigned uDevType);
     void onMaininterfacehide();
     void on_clickPanelToHideInterface();
-    void onRequestSendDesktopNotify(QString message);
+    void onRequestSendDesktopNotify(QString message, QString strIcon);
     void onInsertAbnormalDiskNotify(QString message);
     void onNotifyWnd(QObject* obj, QEvent *event);
     void onClickedEjectItem(FDClickWidget* pThis, QString strDriveId, QString strVolumeId, QString strMountId);
 Q_SIGNALS:
     void clicked();
-    void convertShowWindow(QString strDriveId);
+    void convertShowWindow(QString strDriveId, QString strMountUri);
     void convertUpdateWindow(QString, unsigned);
     void unloadMount();
     void telephoneMount();
