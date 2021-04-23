@@ -108,7 +108,7 @@
     <message>
         <location filename="../../plugin-nightmode/nightmode.cpp" line="200"/>
         <source>night mode open</source>
-        <translation>夜间模式打开</translation>
+        <translation>夜间模式开启</translation>
     </message>
     <message>
         <location filename="../../plugin-nightmode/nightmode.cpp" line="206"/>
