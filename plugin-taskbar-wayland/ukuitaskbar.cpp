@@ -153,10 +153,8 @@ UKUITaskBar::~UKUITaskBar()
 
  ************************************************/
 void UKUITaskBar::wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption) {
-//    printf("\nenter in handler\n");
     qDebug()<<"UKUITaskBar::wl_kwinSigHandler"<<wl_winId<<opNo<<wl_iconName<<wl_caption;
     if (!opNo) {
-        qDebug()<<" ! opNo";
 //        addWindow_wl(wl_iconName, wl_caption, wl_winId);
     }
     switch (opNo) {
@@ -365,7 +363,9 @@ QString UKUITaskBar::captionExchange(QString str)
     QString temp_group_id=str;
     QStringList strList = temp_group_id.split(" ");
     QString group_id = strList[0];
-    if(QString::compare(group_id,"麒麟影音")==0) group_id ="kylin-video";
+    QStringList video_list;
+    video_list<<"影音"<<"Video";
+    if(video_list.contains(group_id)) group_id ="kylin-video";
     return group_id;
 }
 void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
