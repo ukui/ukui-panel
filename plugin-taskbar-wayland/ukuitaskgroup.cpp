@@ -1549,17 +1549,17 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         float imgWidth = 0;
         float imgHeight = 0;
         if (plugin()->panel()->isHorizontal()) {
-            imgWidth = (float)attr.width / (float)attr.height * THUMBNAIL_HEIGHT;
+            imgWidth = (float)attr.width / (float)attr.height * THUMBNAIL_HEIGHT /2;
             imgHeight = THUMBNAIL_HEIGHT;
         } else {
             imgWidth = THUMBNAIL_WIDTH;
-            imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH;
+            imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH ;
         }
         if (plugin()->panel()->isHorizontal())
         {
             if (attr.height != max_Height)
             {
-                float tmp = (float)attr.height / (float)max_Height/2;
+                float tmp = (float)attr.height / (float)max_Height;
                 imgHeight =  imgHeight * tmp;
             }
             if ((int)imgWidth > (int)minimumWidth)
@@ -1682,9 +1682,9 @@ void UKUITaskGroup::showAllWindowByThumbnail()
 //        mPopup-
     }
     {
-//        mPopup->show();
-        if(imagicFlag)
-             mPopup->show();
+        mPopup->show();
+//        if(imagicFlag)
+//             mPopup->show();
     }
 
 

@@ -1397,7 +1397,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         float imgWidth = 0;
         float imgHeight = 0;
         if (plugin()->panel()->isHorizontal()) {
-            imgWidth = (float)attr.width / (float)attr.height * THUMBNAIL_HEIGHT;
+            imgWidth = (float)attr.width / (float)attr.height * THUMBNAIL_HEIGHT /2;
             imgHeight = THUMBNAIL_HEIGHT;
         } else {
             imgWidth = THUMBNAIL_WIDTH;
