@@ -1683,8 +1683,8 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     }
     {
         mPopup->show();
-//        if(imagicFlag)
-//             mPopup->show();
+        if(imagicFlag)
+             mPopup->show();
     }
 
 
