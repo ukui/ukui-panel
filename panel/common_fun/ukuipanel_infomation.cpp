@@ -141,20 +141,14 @@ QVariantList UKuiPanelInformation::GetPrimaryScreenPhysicalGeometry()
     int available_primary_screen_x;int available_primary_screen_y ; int available_primary_screen_width; int available_primary_screen_height;int available_panel_position;
     QVariantList vlist;
     switch(panelposition){
-    case 0:
+    case 1:
         available_primary_screen_x=screen_x;
         available_primary_screen_y=screen_y;
         available_primary_screen_width=screen_width;
         available_primary_screen_height=screen_height;
         break;
-    case 1:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y+panelsize;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height;
-        break;
     case 2:
-        available_primary_screen_x=screen_x + panelsize;
+        available_primary_screen_x=screen_x;
         available_primary_screen_y=screen_y;
         available_primary_screen_width=screen_width;
         available_primary_screen_height=screen_height;

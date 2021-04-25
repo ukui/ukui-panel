@@ -108,7 +108,7 @@
     <message>
         <location filename="../../plugin-nightmode/nightmode.cpp" line="200"/>
         <source>night mode open</source>
-        <translation>夜间模式打开</translation>
+        <translation>夜间模式开启</translation>
     </message>
     <message>
         <location filename="../../plugin-nightmode/nightmode.cpp" line="206"/>
@@ -334,7 +334,7 @@
     <message>
         <location filename="../../plugin-taskview/taskview.cpp" line="48"/>
         <source>Show Taskview</source>
-        <translation>显示预览窗口</translation>
+        <translation>显示任务视图</translation>
     </message>
 </context>
 <context>
