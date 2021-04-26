@@ -118,6 +118,9 @@ private:
     static void frobnitz_force_result_unmount(GMount *source_object,GAsyncResult *res,MainWindow *p_this);
     static void AsyncUnmount(QString strMountRoot,MainWindow *p_this);
 
+    void getSystemRootDev();
+    bool isSystemRootDev(QString strDev);
+
 private:
     QIcon iconSystray;
 //    QString UDiskPathDis1;
@@ -161,6 +164,7 @@ private:
     bool m_bIsMouseInTraIcon = false;
     bool m_bIsMouseInCentral = false;
     qint64 m_nAppStartTimestamp = 0; // 进程启动时的时间戳
+    QString m_strSysRootDev;
     //authority
     //QDBusInterface *systemIface;
 public:
