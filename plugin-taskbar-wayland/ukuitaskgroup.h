@@ -181,8 +181,6 @@ private:
 
     void winClickActivate_wl(bool _getActive);
     void closeGroup_wl();
-    bool imagicFlag;
-
 };
 
 #endif // UKUITASKGROUP_H

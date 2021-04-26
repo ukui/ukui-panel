@@ -1414,7 +1414,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             {
                 imgWidth = minimumWidth;
             }
-            if (btn->isVisibleTo(mPopup)) {
+            if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgWidth;
                 imgWidth_sum += (int)imgWidth;
             }
@@ -1431,7 +1431,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             {
                 imgHeight = minimumHeight;
             }
-            if (btn->isVisibleTo(mPopup)) {
+            if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgHeight;
             }
             if (mVisibleHash.size() == 1 ) changed = (int)imgHeight;

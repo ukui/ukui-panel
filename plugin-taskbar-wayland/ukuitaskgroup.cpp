@@ -1232,17 +1232,7 @@ void UKUITaskGroup::showPreview()
         if (plugin()->panel()->isHorizontal()) n = 10;
         if(mVisibleHash.size() <= n)
         {
-    //        showAllWindowByThumbnail();
-            if (mPopup->isHidden()) {
-                qDebug()<<"";
-                showAllWindowByThumbnail();
-
-            } else {
-                imagicFlag = false;
-                mPopup->hide(true);
-                showAllWindowByThumbnail();//
-                imagicFlag = true;
-            }
+            showAllWindowByThumbnail();
         }
         else
         {
@@ -1566,7 +1556,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             {
                 imgWidth = minimumWidth;
             }
-            if (btn->isVisibleTo(mPopup)) {
+            if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgWidth;
                 imgWidth_sum += (int)imgWidth;
             }
@@ -1583,7 +1573,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             {
                 imgHeight = minimumHeight;
             }
-            if (btn->isVisibleTo(mPopup)) {
+            if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgHeight;
             }
             if (mVisibleHash.size() == 1 ) changed = (int)imgHeight;
@@ -1683,8 +1673,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     }
     {
         mPopup->show();
-        if(imagicFlag)
-             mPopup->show();
     }
 
 
