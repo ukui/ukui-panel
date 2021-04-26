@@ -251,10 +251,10 @@ void TrayIcon::setIconSize(QSize iconSize)
 
     const QSize req_size{mIconSize * metric(PdmDevicePixelRatio)};
     if (mWindowId)
-        xfitMan().resizeWindow(mWindowId, req_size.width()*2, req_size.height()*2);
+        xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
 
     if (mIconId)
-        xfitMan().resizeWindow(mIconId, req_size.width()*2, req_size.height()*2);
+        xfitMan().resizeWindow(mIconId, req_size.width(), req_size.height());
 }
 
 /*处理　TrayIcon　绘图，点击等事件*/
