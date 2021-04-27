@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     telephoneNum = 0;
     driveVolumeNum = 0;
     m_vtDeviveId.clear();
+    m_strSysRootDev = "";
 
     const QByteArray idd(THEME_QT_SCHEMA);
 
@@ -82,6 +83,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_systray->setToolTip(tr("usb management tool"));
     //init the screen
     screen = qApp->primaryScreen();
+    //get system root device
+    getSystemRootDev();
     //underlying code to get the information of the usb device
     getDeviceInfo();
     connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
@@ -190,6 +193,31 @@ void MainWindow::on_clickPanelToHideInterface()
         ui->centralWidget->hide();
 }
 
+void MainWindow::getSystemRootDev()
+{
+    QString cmd = "df -l";
+    QProcess *p = new QProcess();
+    p->start(cmd);
+    p->waitForFinished();
+    while(p->canReadLine()){
+        QString str = p->readLine();
+        QStringList infoList = str.split(QRegExp("\\s+"));
+        if (infoList.size() >= 6) {
+            if (infoList[5] == "/") {
+                m_strSysRootDev = infoList[0];
+                break;
+            }
+        }
+    }
+    delete p;
+    p = nullptr;
+}
+
+bool MainWindow::isSystemRootDev(QString strDev)
+{
+    return m_strSysRootDev.startsWith(strDev);
+}
+
 void MainWindow::getDeviceInfo()
 {
     // setting
@@ -240,7 +268,7 @@ void MainWindow::getDeviceInfo()
             driveInfo.isCanStop = g_drive_can_stop(gdrive);
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
-            if(driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable) {
+            if(!isSystemRootDev(driveInfo.strId.c_str()) && (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
                 if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
                     || g_str_has_prefix(devPath,"/dev/mmcblk")) {
                     GList* gdriveVolumes = g_drive_get_volumes(gdrive);
@@ -475,7 +503,7 @@ void MainWindow::getDeviceInfo()
                         driveInfo.isCanStop = g_drive_can_stop(gdrive);
                         driveInfo.isCanStart = g_drive_can_start(gdrive);
                         driveInfo.isRemovable = g_drive_is_removable(gdrive);
-                        if(driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable) {
+                        if(!isSystemRootDev(driveInfo.strId.c_str()) && (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
                             if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
                                 || g_str_has_prefix(devPath,"/dev/mmcblk")) {
                                 FDMountInfo mountInfo;
@@ -875,7 +903,8 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
 
-            if(driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable) {
+            if(!p_this->isSystemRootDev(driveInfo.strId.c_str()) && 
+                (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
                 if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
                     || g_str_has_prefix(devPath,"/dev/mmcblk")) {
                     char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
@@ -1123,7 +1152,8 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     }
     bool isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(mountInfo));
     if (!driveInfo.strId.empty()) {
-        if (!driveInfo.isCanEject && !driveInfo.isCanStop && !driveInfo.isRemovable) {
+        if (p_this->isSystemRootDev(driveInfo.strId.c_str()) || 
+            (!driveInfo.isCanEject && !driveInfo.isCanStop && !driveInfo.isRemovable)) {
             isValidMount = false;
         }
     }
