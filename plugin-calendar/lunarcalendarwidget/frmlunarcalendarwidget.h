@@ -26,10 +26,10 @@ private:
 
 private Q_SLOTS:
     void initForm();
-    void on_cboxCalendarStyle_currentIndexChanged(int index);
-    void on_cboxSelectType_currentIndexChanged(int index);
-    void on_cboxWeekNameFormat_currentIndexChanged(bool FirstDayisSun);
-    void on_ckShowLunar_stateChanged(bool arg1);
+    void cboxCalendarStyle_currentIndexChanged(int index);
+    void cboxSelectType_currentIndexChanged(int index);
+    void cboxWeekNameFormat_currentIndexChanged(bool FirstDayisSun);
+    void ckShowLunar_stateChanged(bool arg1);
 };
 
 #endif // FRMLUNARCALENDARWIDGET_H
