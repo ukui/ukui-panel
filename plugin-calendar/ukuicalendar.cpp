@@ -462,13 +462,15 @@ void IndicatorCalendar::realign()
 void IndicatorCalendar::setTimeShowStyle()
 {
     int size = panel()->panelSize() - 3;
-    if(panel()->isHorizontal())
-    {
-       mContent->setFixedSize(CALENDAR_WIDTH, size);
-    }
-    else
-    {
-        mContent->setFixedSize(size, CALENDAR_WIDTH);
+    if (size > 0) {
+        if(panel()->isHorizontal())
+        {
+           mContent->setFixedSize(CALENDAR_WIDTH, size);
+        }
+        else
+        {
+           mContent->setFixedSize(size, CALENDAR_WIDTH);
+        }
     }
 }
 

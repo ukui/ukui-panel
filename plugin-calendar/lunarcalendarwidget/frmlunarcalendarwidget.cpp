@@ -37,10 +37,10 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
     }
     connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key == LUNAR_KEY){
-            on_ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
+            ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
         }
         if (key == FIRST_DAY_KEY) {
-            on_cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
+            cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
         }
       //  if (key == )
     });
@@ -57,22 +57,22 @@ void frmLunarCalendarWidget::initForm()
     //ui->cboxWeekNameFormat->setCurrentIndex(0);
 }
 
-void frmLunarCalendarWidget::on_cboxCalendarStyle_currentIndexChanged(int index)
+void frmLunarCalendarWidget::cboxCalendarStyle_currentIndexChanged(int index)
 {
     ui->lunarCalendarWidget->setCalendarStyle((LunarCalendarWidget::CalendarStyle)index);
 }
 
-void frmLunarCalendarWidget::on_cboxSelectType_currentIndexChanged(int index)
+void frmLunarCalendarWidget::cboxSelectType_currentIndexChanged(int index)
 {
     ui->lunarCalendarWidget->setSelectType((LunarCalendarWidget::SelectType)index);
 }
 
-void frmLunarCalendarWidget::on_cboxWeekNameFormat_currentIndexChanged(bool FirstDayisSun)
+void frmLunarCalendarWidget::cboxWeekNameFormat_currentIndexChanged(bool FirstDayisSun)
 {
     ui->lunarCalendarWidget->setWeekNameFormat(FirstDayisSun);
 }
 
-void frmLunarCalendarWidget::on_ckShowLunar_stateChanged(bool arg1)
+void frmLunarCalendarWidget::ckShowLunar_stateChanged(bool arg1)
 {
     ui->lunarCalendarWidget->setShowLunar(arg1);
 }
