@@ -403,7 +403,7 @@ void LunarCalendarWidget::initStyle()
 
     //星期名称样式
     //qss.append(QString("QLabel{background:%1;color:%2;}").arg(weekBgColor.name()).arg(weekTextColor.name()));
-    qss.append(QString("color:%2;}").arg(weekBgColor.name()).arg(weekTextColor.name()));
+//    qss.append(QString("color:%1;").arg(weekTextColor.name()));
 
     //边框
   //  qss.append(QString("QWidget#widgetBody{border:1px solid %1;}").arg(borderColor.name()));
