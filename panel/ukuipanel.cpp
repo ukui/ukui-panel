@@ -616,7 +616,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
 
         if(priWid==0){
             //华为990上获取到settings-daemo发送的屏幕信息有误（目前认为priWid为0 则为有误）
-            qWarning<<"get ScreenGeometry Info From Settings-Daemo Error";
+            qWarning()<<"get ScreenGeometry Info From Settings-Daemo Error";
             currentScreen = QGuiApplication::screens().at(0)->geometry();
         }
         currentScreen.setRect(priX, priY, priWid, priHei);
