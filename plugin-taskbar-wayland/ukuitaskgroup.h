@@ -109,6 +109,7 @@ public:
     void VisibleWndRemoved(WId window);
     void setActivateState_wl(bool _state);
     void wl_widgetUpdateTitle(QString caption);
+    bool CheckifWaylandGroup() {return isWaylandGroup;}
 
 public slots:
     void onWindowRemoved(WId window);

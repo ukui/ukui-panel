@@ -172,7 +172,7 @@ void UKUIGroupPopup::closeWindowDelay()
 }
 
 void UKUIGroupPopup::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::RightButton)
+    if (event->button() == Qt::RightButton && !mGroup->CheckifWaylandGroup())
         rightclick = true;
     else rightclick = false;
 }

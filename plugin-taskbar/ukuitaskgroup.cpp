@@ -1003,8 +1003,11 @@ bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
 
         // XXX: we are setting window icon geometry -> don't need to handle NET::WMIconGeometry
         // Icon of the button can be based on windowClass
-//        if (prop.testFlag(NET::WMIcon) || prop2.testFlag(NET::WM2WindowClass))
-//            std::for_each(buttons.begin(), buttons.end(), std::mem_fn(&UKUITaskButton::updateIcon));
+        if (prop.testFlag(NET::WMIcon) || prop2.testFlag(NET::WM2WindowClass)){
+            updateIcon();
+            for(UKUITaskButtonHash::const_iterator i=mVisibleHash.begin();i!= mVisibleHash.end();i++)
+                i.value()->updateIcon();
+        }
 
         if (prop.testFlag(NET::WMState))
         {
@@ -1414,7 +1417,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             {
                 imgWidth = minimumWidth;
             }
-            if (btn->isVisibleTo(mPopup)) {
+            if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgWidth;
                 imgWidth_sum += (int)imgWidth;
             }
@@ -1431,7 +1434,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             {
                 imgHeight = minimumHeight;
             }
-            if (btn->isVisibleTo(mPopup)) {
+            if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgHeight;
             }
             if (mVisibleHash.size() == 1 ) changed = (int)imgHeight;
