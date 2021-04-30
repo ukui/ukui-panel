@@ -402,7 +402,7 @@ QWidget * UKUITaskGroup::wl_addWindow(WId id)
         return mButtonHash.value(id);
     UKUITaskWidget *btn;
     if (isWaylandGroup) {
-        btn = new UKUITaskWidget(QString("asdfaewf"), id, parentTaskBar(), mPopup);
+        btn = new UKUITaskWidget(QString("kyiln-video"), id, parentTaskBar(), mPopup);
         mButtonHash.insert(id, btn);
         return btn;
     }
@@ -679,7 +679,6 @@ void UKUITaskGroup::winClickActivate_wl(bool _getActive) {
 void UKUITaskGroup::onClicked(bool)
 {
     if (isWaylandGroup) {
-        printf("asdfadsaf\n");
         winClickActivate_wl(!isWinActivate);
         return;
     }
@@ -718,7 +717,7 @@ void UKUITaskGroup::singleWindowClick()
     UKUITaskWidget *btn = mVisibleHash.value(windowId());
     if(btn)
     {
-        if(btn->isMinimized())
+        if(btn->isMinimized() || KWindowSystem::showingDesktop())
         {
             if(mPopup->isVisible())
             {
@@ -1566,7 +1565,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             {
                 imgWidth = minimumWidth;
             }
-            if (btn->isVisibleTo(mPopup)) {
+            if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgWidth;
                 imgWidth_sum += (int)imgWidth;
             }
@@ -1583,7 +1582,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             {
                 imgHeight = minimumHeight;
             }
-            if (btn->isVisibleTo(mPopup)) {
+            if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgHeight;
             }
             if (mVisibleHash.size() == 1 ) changed = (int)imgHeight;

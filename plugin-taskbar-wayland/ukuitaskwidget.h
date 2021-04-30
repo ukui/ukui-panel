@@ -146,6 +146,7 @@ private:
     UKUITaskCloseButton *mCloseBtn;
     QVBoxLayout *mVWindowsLayout;
     QHBoxLayout *mTopBarLayout;
+    bool isWaylandWidget = false;
 
 
     // Timer for when draggind something into a button (the button's window

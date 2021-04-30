@@ -152,13 +152,17 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
     connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskWidget::updateIcon);
     connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
+    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged)
+            , this, &UKUITaskWidget::updateIcon);
 }
 
 UKUITaskWidget::UKUITaskWidget(QString iconName, const WId window, UKUITaskBar * taskbar, QWidget *parent) :
     QWidget(parent),
     mParentTaskBar(taskbar),
-    mWindow(window)
+    mWindow(window),
+    mDNDTimer(new QTimer(this))
 {
+    isWaylandWidget = true;
     //setMinimumWidth(400);
     //setMinimumHeight(400);
     status=NORMAL;
@@ -223,12 +227,12 @@ UKUITaskWidget::UKUITaskWidget(QString iconName, const WId window, UKUITaskBar *
     this->setLayout(mVWindowsLayout);
     updateText();
     updateIcon();
-    //mDNDTimer->setSingleShot(true);
-    //mDNDTimer->setInterval(700);
-    //connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
+    mDNDTimer->setSingleShot(true);
+    mDNDTimer->setInterval(700);
+    connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
     connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskWidget::updateIcon);
-    //connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
+    connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
 }
 
 /************************************************
@@ -396,6 +400,14 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
         //        if (isChecked())
         //            minimizeApplication();
         //        else
+		QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
+    	QList<QVariant> args;
+    	quint32 m_wid=windowId();
+    	args.append(m_wid);
+   	 	args.append(WAYLAND_GROUP_HIDE);
+    	repaint();
+    	message.setArguments(args);
+    	QDBusConnection::sessionBus().send(message);
         raiseApplication();
         
     }
@@ -438,13 +450,12 @@ void UKUITaskWidget::mouseMoveEvent(QMouseEvent* event)
 }
 
 void UKUITaskWidget::closeGroup() {
-    printf("\n....\n");
     emit closeSigtoGroup();
 }
 
 void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    if (!mPlugin)
+    if (!mPlugin || isWaylandWidget)
         return;
     QMenu * menu = new QMenu(tr("Widget"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
@@ -473,7 +484,8 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
     clear->setEnabled(info.state() == NET::KeepAbove);
     menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
     plugin()->willShowWindow(menu);
-    menu->show();
+    if (isWaylandWidget)
+        menu->show();
 }
 /************************************************
 
@@ -509,6 +521,22 @@ void UKUITaskWidget::activateWithDraggable()
  ************************************************/
 void UKUITaskWidget::raiseApplication()
 {
+    KWindowSystem::clearState(mWindow, NET::Hidden);
+    if (isWaylandWidget) {
+        QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
+        QList<QVariant> args;
+        quint32 m_wid=windowId();
+        args.append(m_wid);
+        args.append(WAYLAND_GROUP_ACTIVATE);
+        repaint();
+        message.setArguments(args);
+        QDBusConnection::sessionBus().send(message);
+        emit windowMaximize();
+
+        setUrgencyHint(false);
+        return;
+    }
+
     KWindowInfo info(mWindow, NET::WMDesktop | NET::WMState | NET::XAWMState);
     if (parentTaskBar()->raiseOnCurrentDesktop() && info.isMinimized())
     {
@@ -569,7 +597,6 @@ void UKUITaskWidget::maximizeApplication()
 void UKUITaskWidget::deMaximizeApplication()
 {
     KWindowSystem::clearState(mWindow, NET::Max);
-
     if (!isApplicationActive())
         raiseApplication();
 }
@@ -610,6 +637,15 @@ void UKUITaskWidget::unShadeApplication()
 void UKUITaskWidget::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
+    if (isWaylandWidget) {
+        QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
+        QList<QVariant> args;
+        quint32 m_wid=windowId();
+        args.append(m_wid);
+        args.append(WAYLAND_GROUP_CLOSE);
+        message.setArguments(args);
+        QDBusConnection::sessionBus().send(message);
+    }
     NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(mWindow);
 }
 
