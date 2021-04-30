@@ -416,6 +416,7 @@ void IndicatorCalendar::CalendarWidgetShow()
         {
             status = ST_SHOW;
             mWebViewDiag->setHidden(false);
+            mWebViewDiag->webview()->reload();
         }
         else
         {
