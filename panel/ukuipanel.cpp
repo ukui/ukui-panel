@@ -339,14 +339,12 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                                          DBUS_PATH,
                                          DBUS_INTERFACE,
                                          QDBusConnection::sessionBus());
-//    if (mDbusXrandInter->isValid()) {
-//        flag_hw990="hw_990";
-//    }
     if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
     connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
 
     styleAdjust();
 
+    //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
     QDBusInterface interface(UKUI_SERVICE,
                              UKUI_PATH,
                              UKUI_INTERFACE,
@@ -615,36 +613,22 @@ void UKUIPanel::setPanelGeometry(bool animate)
         priY = getScreenGeometry("y");
         priWid = getScreenGeometry("width");
         priHei = getScreenGeometry("height");
-#if 0
-        if(priWid > 2500 && scale_flag==2 ){
-            currentScreen.setRect(priX, priY, priWid/2, priHei/2);
-//            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width()/2, QApplication::desktop()->screenGeometry(0).height()/2);
-            qDebug()<<"4k 缩放屏"<<QApplication::desktop()->screenGeometry(0)<<scale_flag;
-        }else{
-            qDebug()<<"非 4k 缩放屏"<<QApplication::desktop()->screenGeometry(0)<<scale_flag;
-            currentScreen.setRect(priX, priY, priWid, priHei);
-//            rect.setRect(priX, priY, QApplication::desktop()->screenGeometry(0).width(), QApplication::desktop()->screenGeometry(0).height());
-        }
-#endif
-        currentScreen.setRect(priX, priY, priWid, priHei);
+
         if(priWid==0){
+            //华为990上获取到settings-daemo发送的屏幕信息有误（目前认为priWid为0 则为有误）
+            qWarning<<"get ScreenGeometry Info From Settings-Daemo Error";
             currentScreen = QGuiApplication::screens().at(0)->geometry();
         }
-//        currentScreen = mRect;
+        currentScreen.setRect(priX, priY, priWid, priHei);
     }else{
         currentScreen=QGuiApplication::screens().at(0)->geometry();
     }
 
-//    const QRect currentScreen = QApplication::desktop()->screenGeometry(0);
-
-    if (isHorizontal())
-    {
-        // Horiz panel ***************************
+    if (isHorizontal()){
         rect.setHeight(qMax(PANEL_MINIMUM_SIZE, mPanelSize));
         if (mLengthInPercents)
             rect.setWidth(currentScreen.width() * mLength / 100.0);
-        else
-        {
+        else{
             if (mLength <= 0)
                 rect.setWidth(currentScreen.width() + mLength);
             else
