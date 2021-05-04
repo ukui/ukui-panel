@@ -1353,7 +1353,7 @@ void UKUITaskGroup::showAllWindowByList()
     int winWidth = 246;
     int winheight = 46;
     int iPreviewPosition = 0;
-    int popWindowheight =( winheight - 2) * mVisibleHash.size() + 3;
+    int popWindowheight = (winheight + 3) * (mVisibleHash.size() + 1);
     int screenAvailabelHeight = QApplication::screens().at(0)->size().height() - plugin()->panel()->panelSize();
     if(!plugin()->panel()->isHorizontal())
     {
@@ -1369,34 +1369,25 @@ void UKUITaskGroup::showAllWindowByList()
 
     mpScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mpScrollArea->setWidgetResizable(true);
-    mpScrollArea->setFixedWidth(winWidth-10);
     mpScrollArea->setFrameStyle(QFrame::NoFrame);
 
     mPopup->layout()->addWidget(mpScrollArea);
+    mPopup->setFixedSize(winWidth,  popWindowheight < screenAvailabelHeight? popWindowheight : screenAvailabelHeight);
     mpWidget = new QWidget(this);
-    mpWidget->setFixedWidth(mpScrollArea->width());
     mpScrollArea->setWidget(mpWidget);
-    //mpWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//    mpWidget->setAttribute(Qt::WA_TranslucentBackground);
     setLayOutForPostion();
+
     /*begin catch preview picture*/
-    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
-        btn->removeThumbNail();
-        btn->updateTitle();
-        btn->setTitleFixedWidth(winWidth - 80);
-//        btn->setFixedSize(mpScrollArea->width(),winheight);
-        btn->adjustSize();
-        mpWidget->layout()->setContentsMargins(0,0,0,0);
+        btn->setThumbFixedSize(0);
         mpWidget->layout()->addWidget(btn);
     }
     /*end*/
     plugin()->willShowWindow(mPopup);
-    mPopup->setFixedSize(winWidth,  popWindowheight < screenAvailabelHeight? popWindowheight : screenAvailabelHeight);
-    mPopup->adjustSize();
     if(plugin()->panel()->isHorizontal())
     {
         iPreviewPosition =  plugin()->panel()->panelSize()/2 - winWidth/2;
@@ -1408,7 +1399,6 @@ void UKUITaskGroup::showAllWindowByList()
         mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,iPreviewPosition)), mPopup->size()));
     }
     mPopup->show();
-
 //   emit popupShown(this);
 }
 
