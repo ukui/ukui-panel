@@ -307,8 +307,9 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
         //            minimizeApplication();
         //        else
         raiseApplication();
+        setStatus(HOVER);
     }
-    status = NORMAL;
+    //status = NORMAL;
     update();
     QWidget::mouseReleaseEvent(event);
 
@@ -317,16 +318,19 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 /************************************************
 
  ************************************************/
-
+bool skipped = false;
 void UKUITaskWidget::enterEvent(QEvent *)
 {
+    if (status == HOVER)
+        skipped = true;
     status = HOVER;
     repaint();
 }
 
 void UKUITaskWidget::leaveEvent(QEvent *)
 {
-    status = NORMAL;
+    if (!skipped)
+        status = NORMAL;
     repaint();
 }
 QMimeData * UKUITaskWidget::mimeData()
@@ -773,24 +777,33 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
 
     // 绘制底色
     p.save();
-    switch(status)
-    {
-    case NORMAL:
-    {
-        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
-        break;
-    }
-    case HOVER:
-    {
-        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
-        break;
-    }
-    case PRESS:
-    {
-        p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
 
-        break;
-    }
+    if (this->isFocusState()) {
+        switch(status)
+        {
+            case NORMAL:
+                p.fillPath(rectPath, QColor(0x303033));
+                break;
+            case HOVER:
+                p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
+                break;
+            case PRESS:
+                p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+                break;
+        }
+    } else {
+        switch(status)
+        {
+            case NORMAL:
+                p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
+                break;
+            case HOVER:
+                p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
+                break;
+            case PRESS:
+                p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+                break;
+        }
     }
     p.restore();
 #endif
