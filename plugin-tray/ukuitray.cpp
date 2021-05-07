@@ -146,7 +146,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     //针对ukui桌面环境特殊应用的处理，保证稳定性
     QTimer::singleShot(3000,[this] { panelStartupFcitx();});
     QTimer::singleShot(30000,[this] {
-        QProcess::execute("sh /usr/share/ukui/ukui-panel/plugin-tray/trayAppSetting.sh");
+        //QProcess::execute("sh /usr/share/ukui/ukui-panel/plugin-tray/trayAppSetting.sh");
     });
 }
 
