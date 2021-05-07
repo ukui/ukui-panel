@@ -1191,7 +1191,6 @@ void UKUITaskGroup::v_adjustPopWindowSize(int winWidth, int winHeight, int v_all
 
 void UKUITaskGroup::timeout()
 {
-
     if(mTaskGroupEvent == ENTEREVENT)
     {
         if(mTimer->isActive())
@@ -1325,7 +1324,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     {
         if(0 == iAverageWidth)
         {
-
             winHeight = PREVIEW_WIDGET_MAX_HEIGHT < iAverageHeight?PREVIEW_WIDGET_MAX_HEIGHT:iAverageHeight;
             winWidth = winHeight*PREVIEW_WIDGET_MAX_WIDTH/PREVIEW_WIDGET_MAX_HEIGHT;
         }
@@ -1526,6 +1524,5 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     {
         mPopup->show();
     }
-
 //   emit popupShown(this);
 }
