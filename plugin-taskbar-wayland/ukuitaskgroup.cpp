@@ -1231,17 +1231,7 @@ void UKUITaskGroup::showPreview()
         if (plugin()->panel()->isHorizontal()) n = 10;
         if(mVisibleHash.size() <= n)
         {
-    //        showAllWindowByThumbnail();
-            if (mPopup->isHidden()) {
-                qDebug()<<"";
-                showAllWindowByThumbnail();
-
-            } else {
-                imagicFlag = false;
-                mPopup->hide(true);
-                showAllWindowByThumbnail();//
-                imagicFlag = true;
-            }
+            showAllWindowByThumbnail();
         }
         else
         {
@@ -1672,8 +1662,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     }
     {
         mPopup->show();
-        if(imagicFlag)
-             mPopup->show();
     }
 
 

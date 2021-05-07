@@ -192,7 +192,7 @@
     </message>
     <message>
         <source>File/URL cannot be opened cause invalid path.</source>
-        <translation type="vanished">非法文件路径无法被打开.</translation>
+        <translation>非法文件路径无法被打开.</translation>
     </message>
 </context>
 <context>
