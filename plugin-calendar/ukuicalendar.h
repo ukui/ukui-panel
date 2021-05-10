@@ -62,6 +62,7 @@ Q_SIGNALS:
     void deactivated();
 
 private Q_SLOTS:
+    void checkUpdateTime();
     void updateTimeText();
     void hidewebview();
     void CalendarWidgetShow();
@@ -75,7 +76,7 @@ private:
     int font_size;
     CalendarActiveLabel *mContent;
     UKUi::GridLayout *mLayout;
-
+    QString timeState;
     QTimer *mTimer;
     int mUpdateInterval;
 
