@@ -23,6 +23,7 @@
 #define __FDFRAME_H__
 
 #include <QFrame>
+#include <QPainterPath>
 
 class FDFrame : public QFrame 
 {
