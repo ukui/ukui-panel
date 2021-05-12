@@ -472,14 +472,16 @@ void UKUITaskGroup::onWindowRemoved(WId window)
     {
         UKUITaskWidget *button = mButtonHash.value(window);
         mButtonHash.remove(window);
-        if (mVisibleHash.contains(window))
+        if (mVisibleHash.contains(window)) {
+            mShowInTurn.removeOne(mVisibleHash.value(window));
             mVisibleHash.remove(window);
+        }
         mPopup->removeWidget(button);
         button->deleteLater();
         if (!parentTaskBar()->getCpuInfoFlg())
             system(QString("rm -f /tmp/%1.png").arg(window).toLatin1());
         if (isLeaderWindow(window))
-            setLeaderWindow(mButtonHash.begin().key());
+            setLeaderWindow(mButtonHash.key(mShowInTurn.at(0)));
         if (mButtonHash.count())
         {
             if(mPopup->isVisible())
@@ -735,13 +737,17 @@ void UKUITaskGroup::refreshVisibility()
         visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
         visible &= taskbar->isShowOnlyMinimizedTasks() ? btn->isMinimized() : true;
         btn->setVisible(visible);
-        if (btn->isVisibleTo(mPopup) && !mVisibleHash.contains(i.key()))
+        if (btn->isVisibleTo(mPopup) && !mVisibleHash.contains(i.key())) {
             mVisibleHash.insert(i.key(), i.value());
-        else if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key()))
+            mShowInTurn.push_back(i.value());
+        }
+        else if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key())) {
             mVisibleHash.remove(i.key());
+            mShowInTurn.removeOne(i.value());
+        }
         will |= visible;
     }
-    setLeaderWindow(mVisibleHash.begin().key());
+    setLeaderWindow(mVisibleHash.key(mShowInTurn.at(0)));
     bool is = isVisible();
     setVisible(will);
     if(!mPopup->isVisible())
@@ -1256,7 +1262,7 @@ void UKUITaskGroup::showAllWindowByList()
     int winWidth = 246;
     int winheight = 46;
     int iPreviewPosition = 0;
-    int popWindowheight =( winheight - 2) * mVisibleHash.size() + 3;
+    int popWindowheight = (winheight + 3) * (mVisibleHash.size() + 1);
     int screenAvailabelHeight = QApplication::screens().at(0)->size().height() - plugin()->panel()->panelSize();
     if(!plugin()->panel()->isHorizontal())
     {
@@ -1272,34 +1278,25 @@ void UKUITaskGroup::showAllWindowByList()
 
     mpScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mpScrollArea->setWidgetResizable(true);
-    mpScrollArea->setFixedWidth(winWidth-10);
     mpScrollArea->setFrameStyle(QFrame::NoFrame);
 
     mPopup->layout()->addWidget(mpScrollArea);
+    mPopup->setFixedSize(winWidth,  popWindowheight < screenAvailabelHeight? popWindowheight : screenAvailabelHeight);
     mpWidget = new QWidget(this);
-    mpWidget->setFixedWidth(mpScrollArea->width());
     mpScrollArea->setWidget(mpWidget);
-    //mpWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//    mpWidget->setAttribute(Qt::WA_TranslucentBackground);
     setLayOutForPostion();
+
     /*begin catch preview picture*/
-    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    for (QVector<UKUITaskWidget*>::iterator it = mShowInTurn.begin();it != mShowInTurn.end();it++)
     {
-        UKUITaskWidget *btn = it.value();
+        UKUITaskWidget *btn = *it;
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
-        btn->removeThumbNail();
-        btn->updateTitle();
-        btn->setTitleFixedWidth(winWidth - 80);
-//        btn->setFixedSize(mpScrollArea->width(),winheight);
-        btn->adjustSize();
-        mpWidget->layout()->setContentsMargins(0,0,0,0);
+        btn->setThumbFixedSize(0);
         mpWidget->layout()->addWidget(btn);
     }
     /*end*/
     plugin()->willShowWindow(mPopup);
-    mPopup->setFixedSize(winWidth,  popWindowheight < screenAvailabelHeight? popWindowheight : screenAvailabelHeight);
-    mPopup->adjustSize();
     if(plugin()->panel()->isHorizontal())
     {
         iPreviewPosition =  plugin()->panel()->panelSize()/2 - winWidth/2;
@@ -1311,7 +1308,6 @@ void UKUITaskGroup::showAllWindowByList()
         mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,iPreviewPosition)), mPopup->size()));
     }
     mPopup->show();
-
 //   emit popupShown(this);
 }
 
@@ -1378,25 +1374,25 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int iScreenWidth = QApplication::screens().at(0)->size().width();
     float minimumWidth = THUMBNAIL_WIDTH;
     float minimumHeight = THUMBNAIL_HEIGHT;
-    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    for (QVector<UKUITaskWidget*>::iterator it = mShowInTurn.begin();it != mShowInTurn.end();it++)
     {
-        it.value()->removeThumbNail();
+        (*it)->removeThumbNail();
         display = XOpenDisplay(nullptr);
-        XGetWindowAttributes(display, it.key(), &attr);
+        XGetWindowAttributes(display, mVisibleHash.key(*it), &attr);
         max_Height = attr.height > max_Height ? attr.height : max_Height;
         max_Width = attr.width > max_Width ? attr.width : max_Width;
         if(display)
             XCloseDisplay(display);
     }
-    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    for (QVector<UKUITaskWidget*>::iterator it = mShowInTurn.begin();it != mShowInTurn.end();it++)
     {
-        UKUITaskWidget *btn = it.value();
+        UKUITaskWidget *btn = *it;
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
         btn->addThumbNail();
         display = XOpenDisplay(nullptr);
-        XGetWindowAttributes(display, it.key(), &attr);
-        img = XGetImage(display, it.key(), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
+        XGetWindowAttributes(display, mVisibleHash.key(*it), &attr);
+        img = XGetImage(display, mVisibleHash.key(*it), 0, 0, attr.width, attr.height, 0xffffffff,ZPixmap);
         float imgWidth = 0;
         float imgHeight = 0;
         if (plugin()->panel()->isHorizontal()) {
@@ -1450,13 +1446,13 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         if(img)
         {
             thumbnail = qimageFromXImage(img).scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
-            if (!parentTaskBar()->getCpuInfoFlg()) thumbnail.save(QString("/tmp/%1.png").arg(it.key()));
+            if (!parentTaskBar()->getCpuInfoFlg()) thumbnail.save(QString("/tmp/%1.png").arg(mVisibleHash.key(*it)));
         }
         else
         {
             qDebug()<<"can not catch picture";
             QPixmap pxmp;
-            if (pxmp.load(QString("/tmp/%1.png").arg(it.key())))
+            if (pxmp.load(QString("/tmp/%1.png").arg(mVisibleHash.key(*it))))
                 thumbnail = pxmp.scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
             else {
                 thumbnail = QPixmap((int)imgWidth, (int)imgHeight);
@@ -1478,9 +1474,9 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         }
     }
     /*end*/
-        for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+        for (QVector<UKUITaskWidget*>::iterator it = mShowInTurn.begin();it != mShowInTurn.end();it++)
         {
-            UKUITaskWidget *btn = it.value();
+            UKUITaskWidget *btn = *it;
             if (plugin()->panel()->isHorizontal())  {
                 if (imgWidth_sum > iScreenWidth)
                     title_width = (int)(btn->width()  * iScreenWidth / imgWidth_sum - 80);

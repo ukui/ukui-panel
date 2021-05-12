@@ -154,6 +154,7 @@ private:
     QWidget *mpWidget;
     QScrollArea *mpScrollArea;
     QEvent * mEvent;
+    QVector<UKUITaskWidget*> mShowInTurn;
     QTimer *mTimer;
     QSize recalculateFrameSize();
     QPoint recalculateFramePosition();
