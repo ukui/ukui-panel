@@ -121,6 +121,10 @@ private:
     void getSystemRootDev();
     bool isSystemRootDev(QString strDev);
 
+    bool doRealEject(EjectDeviceInfo* peDeviceInfo, GMountUnmountFlags flag);
+    static GAsyncReadyCallback fileEjectMountableCB(GFile *file, GAsyncResult *res, EjectDeviceInfo *peDeviceInfo);
+    static void driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo *peDeviceInfo);
+
 private:
     QIcon iconSystray;
 //    QString UDiskPathDis1;
@@ -183,6 +187,7 @@ public:
 //    static bool isShow;
     int driveMountNum;
     vector<string> m_vtDeviveId;
+    EjectDeviceInfo m_curEjectDeviceInfo;
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
@@ -193,7 +198,8 @@ public Q_SLOTS:
     void onRequestSendDesktopNotify(QString message, QString strIcon);
     void onInsertAbnormalDiskNotify(QString message);
     void onNotifyWnd(QObject* obj, QEvent *event);
-    void onClickedEjectItem(FDClickWidget* pThis, QString strDriveId, QString strVolumeId, QString strMountId);
+    void onClickedEject(EjectDeviceInfo eDeviceInfo);
+
 Q_SIGNALS:
     void clicked();
     void convertShowWindow(QString strDriveId, QString strMountUri);

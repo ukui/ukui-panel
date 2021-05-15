@@ -243,7 +243,14 @@ void FDClickWidget::on_volume_clicked()
 
 void FDClickWidget::switchWidgetClicked()
 {
-    Q_EMIT clickedEjectItem(this, m_driveId, m_volumeId, m_mountId);
+    EjectDeviceInfo eDeviceInfo;
+    eDeviceInfo.strDriveId = m_driveId;
+    eDeviceInfo.strDriveName = m_driveName;
+    eDeviceInfo.strVolumeId = m_volumeId;
+    eDeviceInfo.strVolumeName = m_volumeName;
+    eDeviceInfo.strMountId = m_mountId;
+    eDeviceInfo.strMountUri = m_mountUri;
+    Q_EMIT clickedEject(eDeviceInfo);
 }
 
 QPixmap FDClickWidget::drawSymbolicColoredPixmap(const QPixmap &source)
