@@ -366,6 +366,7 @@ QString UKUITaskBar::captionExchange(QString str)
     QStringList video_list;
     video_list<<"影音"<<"Video";
     if(video_list.contains(group_id)) group_id ="kylin-video";
+    else group_id="application-x-desktop";
     return group_id;
 }
 void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
