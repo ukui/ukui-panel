@@ -130,7 +130,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 //    QString delaytime=QTime::currentTime().toString();
 //    QList<QString> pathresult=delaytime.split(":");
 //    int second=pathresult.at(2).toInt();
-    connect(mTimer, &QTimer::timeout, [this]{updateTimeText(); mTimer->stop(); mTimer->start(1000);});
+    connect(mTimer, &QTimer::timeout, [this]{checkUpdateTime(); mTimer->stop(); mTimer->start(1000);});
     mTimer->start(1000);
 
     const QByteArray _id(SYSTEM_FONT_SET);
@@ -233,6 +233,20 @@ IndicatorCalendar::~IndicatorCalendar()
     gsettings->deleteLater();
     fgsettings->deleteLater();
 }
+
+void IndicatorCalendar::checkUpdateTime()
+{
+     QDateTime tzNow = QDateTime::currentDateTime();
+    if(QString::compare(tzNow.toString("hh:mm ddd  yyyy-MM-dd"),timeState) == 0) {
+        return;
+    }
+    timeState = tzNow.toString("hh:mm ddd  yyyy-MM-dd");
+    qDebug()<<"jixuyunxing  ***************************************************** ::: :::"<<tzNow.toString("m");
+    updateTimeText();
+}
+
+
+
 
 void IndicatorCalendar::updateTimeText()
 {
