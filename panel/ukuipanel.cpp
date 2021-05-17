@@ -838,7 +838,7 @@ void UKUIPanel::updateWmStrut()
             KWindowSystem::setExtendedStrut(wid,
                                             /* Left   */  0, 0, 0,
                                             /* Right  */  0, 0, 0,
-                                            /* Top    */  rect.top() + getReserveDimension(), rect.left(), rect.right(),
+                                            /* Top    */  getReserveDimension(), rect.left(), rect.right(),
                                             /* Bottom */  0, 0, 0
                                             );
             break;
@@ -848,13 +848,13 @@ void UKUIPanel::updateWmStrut()
                                             /* Left   */  0, 0, 0,
                                             /* Right  */  0, 0, 0,
                                             /* Top    */  0, 0, 0,
-                                            /* Bottom */  wholeScreen.bottom() - rect.bottom() + getReserveDimension(), rect.left(), rect.right()
+                                            /* Bottom */  getReserveDimension(), rect.left(), rect.right()
                                             );
             break;
 
         case UKUIPanel::PositionLeft:
             KWindowSystem::setExtendedStrut(wid,
-                                            /* Left   */  rect.left() + getReserveDimension(), rect.top(), rect.bottom(),
+                                            /* Left   */  getReserveDimension(), rect.top(), rect.bottom(),
                                             /* Right  */  0, 0, 0,
                                             /* Top    */  0, 0, 0,
                                             /* Bottom */  0, 0, 0
@@ -865,7 +865,7 @@ void UKUIPanel::updateWmStrut()
         case UKUIPanel::PositionRight:
             KWindowSystem::setExtendedStrut(wid,
                                             /* Left   */  0, 0, 0,
-                                            /* Right  */  wholeScreen.right() - rect.right() + getReserveDimension(), rect.top(), rect.bottom(),
+                                            /* Right  */  getReserveDimension(), rect.top(), rect.bottom(),
                                             /* Top    */  0, 0, 0,
                                             /* Bottom */  0, 0, 0
                                             );
