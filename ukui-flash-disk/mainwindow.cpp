@@ -1473,7 +1473,7 @@ void MainWindow::newarea(unsigned uDiskNo,
 {
     m_fdClickWidget = new FDClickWidget(ui->centralWidget,uDiskNo,strDriveId,strVolumeId,strMountId,
                                                 driveName,volumeName,capacityDis,strMountUri);
-    connect(m_fdClickWidget, &FDClickWidget::clickedEjectItem,this,&MainWindow::onClickedEjectItem);
+    connect(m_fdClickWidget, &FDClickWidget::clickedEject,this,&MainWindow::onClickedEject);
 
     line = new QWidget;
     line->setFixedHeight(1);
@@ -2285,181 +2285,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
     KWindowEffects::enableBlurBehind(this->winId(), true, QRegion(path.toFillPolygon().toPolygon()));
 }
 
-void MainWindow::onClickedEjectItem(FDClickWidget* pThis, QString strDriveId, QString strVolumeId, QString strMountId)
-{
-    // find the device's drive & volume & mount
-    GList *lDrive = NULL;
-    GList *lVolume = NULL;
-    GList *lMount = NULL;
-    GList *current_drive_list = NULL;
-    GList *current_volume_list = NULL;
-    GList *current_mount_list = NULL;
-    GDrive* devDrive = NULL;
-    GVolume* devVolume = NULL;
-    GMount* devMount = NULL;
-    unsigned uVolumeSize = 0;
-    bool isDone = false;
-    //about drive
-    GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
-    if (!strDriveId.isEmpty()) {
-        current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
-        for (lDrive = current_drive_list; lDrive != NULL; lDrive = lDrive->next) {
-            GDrive *gdrive = (GDrive *)lDrive->data;
-            char *devPath = g_drive_get_identifier(gdrive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
-            if (devPath != NULL) {
-                if(strDriveId == devPath) {
-                    devDrive = gdrive;
-                    current_volume_list = g_drive_get_volumes(gdrive);
-                    if (current_volume_list) {
-                        uVolumeSize = g_list_length(current_volume_list);
-                        for(lVolume = current_volume_list; lVolume != NULL; lVolume = lVolume->next){ //遍历驱动器上的所有卷设备
-                            GVolume* volume = (GVolume *)lVolume->data;
-                            char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
-                            if (volumeId) {
-                                if (strVolumeId != volumeId) {
-                                    g_free(volumeId);
-                                    continue;
-                                }
-                                g_free(volumeId);
-                            } else {
-                                continue ;
-                            }
-                            devVolume = volume;
-                            break;
-                        }
-                    }
-                }
-                g_free(devPath);
-            }
-        }
-        if (devDrive != NULL) {
-            if (devDrive != NULL) {
-                g_drive_eject_with_operation(devDrive,
-                        G_MOUNT_UNMOUNT_NONE,
-                        NULL,
-                        NULL,
-                        GAsyncReadyCallback(&MainWindow::frobnitz_result_func),
-                        this);
-                isDone = true;
-            }
-        }
-        if (current_volume_list) {
-            g_list_free(current_volume_list);
-            current_volume_list = NULL;
-        }
-        if (current_drive_list) {
-            g_list_free(current_drive_list);
-            current_drive_list = NULL;
-        }
-    }
-    //about volume not associated with a drive
-    if (!isDone && !strVolumeId.isEmpty()) {
-        current_volume_list = g_volume_monitor_get_volumes(g_volume_monitor);
-        if (current_volume_list) {
-            for (lVolume = current_volume_list; lVolume != NULL; lVolume = lVolume->next) {
-                GVolume *volume = (GVolume *)lVolume->data;
-                GDrive *gdrive = g_volume_get_drive(volume);
-                if (!gdrive) {
-                    char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
-                    if (volumeId) {
-                        if (strVolumeId != volumeId) {
-                            g_free(volumeId);
-                            continue;
-                        }
-                        g_free(volumeId);
-                    } else {
-                        continue ;
-                    }
-                    devVolume = volume;
-                    break;
-                } else {
-                    g_object_unref(gdrive);
-                }
-            }
-        }
-        if (devVolume != NULL) {
-            GMount* pCurMount = g_volume_get_mount(devVolume);
-            if (pCurMount) {
-                g_mount_unmount_with_operation(pCurMount,
-                        G_MOUNT_UNMOUNT_NONE,
-                        NULL,
-                        NULL,
-                        GAsyncReadyCallback(&MainWindow::frobnitz_force_result_unmount),
-                        this);
-                g_object_unref(pCurMount);
-                isDone = true;
-            }
-        }
-        if (current_volume_list) {
-            g_list_free(current_volume_list);
-            current_volume_list = NULL;
-        }
-    }
-    //about mount not associated with a volume
-    if (!isDone && !strMountId.isEmpty()) {
-        current_mount_list = g_volume_monitor_get_mounts(g_volume_monitor);
-        if (current_mount_list) {
-            for (lMount = current_mount_list; lMount != NULL; lMount = lMount->next) {
-                GMount *gmount = (GMount *)lMount->data;
-                GVolume *gvolume = g_mount_get_volume(gmount);
-                if (!gvolume) {
-                    QString strId = "";
-                    char *mountId = g_mount_get_uuid(gmount);
-                    if (mountId) {
-                        strId = mountId;
-                        g_free(mountId);
-                    }
-                    // get mount uri
-                    GFile *root = g_mount_get_default_location(gmount);
-                    if (root) {
-                        char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
-                        if (mountUri) {
-                            if (strId.isEmpty()) {
-                                strId = mountUri;
-                            }
-                            g_free(mountUri);
-                        }
-                        g_object_unref(root);
-                    }
-                    if (strMountId == strId) {
-                        devMount = gmount;
-                        break;
-                    }
-                } else {
-                    g_object_unref(gvolume);
-                }
-            }
-            if (devMount != NULL) {
-                g_mount_unmount_with_operation(devMount,
-                        G_MOUNT_UNMOUNT_NONE,
-                        NULL,
-                        NULL,
-                        GAsyncReadyCallback(&MainWindow::frobnitz_force_result_unmount),
-                        this);
-                isDone = true;
-            }
-            g_list_free(current_mount_list);
-            current_mount_list = NULL;
-        }
-    }
-    if (!isDone) {
-        FDMountInfo mountInfo;
-        FDVolumeInfo volumeInfo;
-        FDDriveInfo driveInfo;
-        mountInfo.strId = strMountId.toStdString();
-        m_dataFlashDisk->removeMountInfo(mountInfo);
-        volumeInfo.strId = strVolumeId.toStdString();
-        m_dataFlashDisk->removeVolumeInfo(volumeInfo);
-        driveInfo.strId = strDriveId.toStdString();
-        m_dataFlashDisk->removeDriveInfo(driveInfo);
-        if(m_dataFlashDisk->getValidInfoCount() == 0)
-        {
-            m_systray->hide();
-        }
-    }
-    ui->centralWidget->hide();
-}
-
 void MainWindow::AsyncUnmount(QString strMountRoot,MainWindow *p_this) 
 {
     qDebug()<<"dataPath:"<<strMountRoot;
@@ -2634,6 +2459,304 @@ void MainWindow::frobnitz_force_result_unmount(GMount *source_object,GAsyncResul
         if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
         {
             p_this->m_systray->hide();
+        }
+    }
+}
+
+void MainWindow::onClickedEject(EjectDeviceInfo eDeviceInfo)
+{
+    m_curEjectDeviceInfo = eDeviceInfo;
+    m_curEjectDeviceInfo.pVoid = this;
+    m_curEjectDeviceInfo.uFlag = G_MOUNT_UNMOUNT_NONE;
+    doRealEject(&m_curEjectDeviceInfo, G_MOUNT_UNMOUNT_NONE);
+}
+
+bool MainWindow::doRealEject(EjectDeviceInfo* peDeviceInfo, GMountUnmountFlags flag)
+{
+    // find the device's drive & volume & mount
+    if (!peDeviceInfo || !peDeviceInfo->pVoid)
+        return false;
+    GList *lDrive = NULL;
+    GList *lVolume = NULL;
+    GList *lMount = NULL;
+    GList *current_drive_list = NULL;
+    GList *current_volume_list = NULL;
+    GList *current_mount_list = NULL;
+    GDrive* devDrive = NULL;
+    GVolume* devVolume = NULL;
+    GMount* devMount = NULL;
+    unsigned uVolumeSize = 0;
+    bool isDone = false;
+    //about drive
+    GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
+    if (!peDeviceInfo->strDriveId.isEmpty()) {
+        current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
+        for (lDrive = current_drive_list; lDrive != NULL; lDrive = lDrive->next) {
+            GDrive *gdrive = (GDrive *)lDrive->data;
+            char *devPath = g_drive_get_identifier(gdrive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+            if (devPath != NULL) {
+                if(peDeviceInfo->strDriveId == devPath) {
+                    devDrive = gdrive;
+                    current_volume_list = g_drive_get_volumes(gdrive);
+                    if (current_volume_list) {
+                        uVolumeSize = g_list_length(current_volume_list);
+                        for(lVolume = current_volume_list; lVolume != NULL; lVolume = lVolume->next){ //遍历驱动器上的所有卷设备
+                            GVolume* volume = (GVolume *)lVolume->data;
+                            char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                            if (volumeId) {
+                                if (peDeviceInfo->strVolumeId != volumeId) {
+                                    g_free(volumeId);
+                                    continue;
+                                }
+                                g_free(volumeId);
+                            } else {
+                                continue ;
+                            }
+                            devVolume = volume;
+                            break;
+                        }
+                    }
+                }
+                g_free(devPath);
+            }
+        }
+        if (devDrive != NULL) {
+            if (devDrive != NULL) {
+                if (peDeviceInfo->strMountUri.isEmpty()) {
+                    g_drive_eject_with_operation(devDrive,
+                            flag,
+                            NULL,
+                            NULL,
+                            GAsyncReadyCallback(&MainWindow::frobnitz_result_func),
+                            peDeviceInfo->pVoid);
+                    isDone = true;
+                } else {
+                    if (g_drive_can_eject(devDrive)){//for udisk or DVD.
+                        g_drive_eject_with_operation(devDrive,
+                                flag,
+                                NULL,
+                                NULL,
+                                GAsyncReadyCallback(&MainWindow::frobnitz_result_func),
+                                peDeviceInfo->pVoid);
+                        isDone = true;
+                        #if 0
+                        GFile *file = g_file_new_for_uri(peDeviceInfo->strMountUri.toUtf8().constData());
+                        if (file) {
+                            g_file_eject_mountable_with_operation(file,
+                                                            flag,
+                                                            nullptr,
+                                                            nullptr,
+                                                            GAsyncReadyCallback(fileEjectMountableCB),
+                                                            peDeviceInfo);
+                            g_object_unref(file);
+                            isDone = true;
+                        }
+                        #endif
+                    } else if(g_drive_can_stop(devDrive) || g_drive_is_removable(devDrive)){//for mobile harddisk.
+                        g_drive_stop(devDrive, flag, NULL, NULL,
+                                    GAsyncReadyCallback(driveStopCb),
+                                    peDeviceInfo);
+                        isDone = true;
+                    }
+                }
+            }
+        }
+        if (current_volume_list) {
+            g_list_free(current_volume_list);
+            current_volume_list = NULL;
+        }
+        if (current_drive_list) {
+            g_list_free(current_drive_list);
+            current_drive_list = NULL;
+        }
+    }
+    //about volume not associated with a drive
+    if (!isDone && !peDeviceInfo->strVolumeId.isEmpty()) {
+        current_volume_list = g_volume_monitor_get_volumes(g_volume_monitor);
+        if (current_volume_list) {
+            for (lVolume = current_volume_list; lVolume != NULL; lVolume = lVolume->next) {
+                GVolume *volume = (GVolume *)lVolume->data;
+                GDrive *gdrive = g_volume_get_drive(volume);
+                if (!gdrive) {
+                    char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                    if (volumeId) {
+                        if (peDeviceInfo->strVolumeId != volumeId) {
+                            g_free(volumeId);
+                            continue;
+                        }
+                        g_free(volumeId);
+                    } else {
+                        continue ;
+                    }
+                    devVolume = volume;
+                    break;
+                } else {
+                    g_object_unref(gdrive);
+                }
+            }
+        }
+        if (devVolume != NULL) {
+            GMount* pCurMount = g_volume_get_mount(devVolume);
+            if (pCurMount) {
+                g_mount_unmount_with_operation(pCurMount,
+                        flag,
+                        NULL,
+                        NULL,
+                        GAsyncReadyCallback(&MainWindow::frobnitz_force_result_unmount),
+                        peDeviceInfo->pVoid);
+                g_object_unref(pCurMount);
+                isDone = true;
+            }
+        }
+        if (current_volume_list) {
+            g_list_free(current_volume_list);
+            current_volume_list = NULL;
+        }
+    }
+    //about mount not associated with a volume
+    if (!isDone && !peDeviceInfo->strMountId.isEmpty()) {
+        current_mount_list = g_volume_monitor_get_mounts(g_volume_monitor);
+        if (current_mount_list) {
+            for (lMount = current_mount_list; lMount != NULL; lMount = lMount->next) {
+                GMount *gmount = (GMount *)lMount->data;
+                GVolume *gvolume = g_mount_get_volume(gmount);
+                if (!gvolume) {
+                    QString strId = "";
+                    char *mountId = g_mount_get_uuid(gmount);
+                    if (mountId) {
+                        strId = mountId;
+                        g_free(mountId);
+                    }
+                    // get mount uri
+                    GFile *root = g_mount_get_default_location(gmount);
+                    if (root) {
+                        char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
+                        if (mountUri) {
+                            if (strId.isEmpty()) {
+                                strId = mountUri;
+                            }
+                            g_free(mountUri);
+                        }
+                        g_object_unref(root);
+                    }
+                    if (peDeviceInfo->strMountId == strId) {
+                        devMount = gmount;
+                        break;
+                    }
+                } else {
+                    g_object_unref(gvolume);
+                }
+            }
+            if (devMount != NULL) {
+                g_mount_unmount_with_operation(devMount,
+                        flag,
+                        NULL,
+                        NULL,
+                        GAsyncReadyCallback(&MainWindow::frobnitz_force_result_unmount),
+                        peDeviceInfo->pVoid);
+                isDone = true;
+            }
+            g_list_free(current_mount_list);
+            current_mount_list = NULL;
+        }
+    }
+    if (!isDone) {
+        FDMountInfo mountInfo;
+        FDVolumeInfo volumeInfo;
+        FDDriveInfo driveInfo;
+        mountInfo.strId = peDeviceInfo->strMountId.toStdString();
+        m_dataFlashDisk->removeMountInfo(mountInfo);
+        volumeInfo.strId = peDeviceInfo->strVolumeId.toStdString();
+        m_dataFlashDisk->removeVolumeInfo(volumeInfo);
+        driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
+        m_dataFlashDisk->removeDriveInfo(driveInfo);
+        if(m_dataFlashDisk->getValidInfoCount() == 0)
+        {
+            m_systray->hide();
+        }
+    }
+    ui->centralWidget->hide();
+    return true;
+}
+
+GAsyncReadyCallback MainWindow::fileEjectMountableCB(GFile *file, GAsyncResult *res, EjectDeviceInfo *peDeviceInfo)
+{
+    gboolean success =  FALSE;
+    GError *err = nullptr;
+    success = g_file_eject_mountable_with_operation_finish(file, res, &err);
+    if (!err) {
+        FDDriveInfo driveInfo;
+        driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
+        driveInfo.strName = peDeviceInfo->strDriveName.toStdString();
+        FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
+        MainWindow* pThis = (MainWindow*)(peDeviceInfo->pVoid);
+        if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
+        {
+            pThis->m_systray->hide();
+        }
+        pThis->m_eject = new ejectInterface(pThis->ui->centralWidget,QString::fromStdString(driveInfo.strName),
+                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
+        pThis->m_eject->show();
+    } else /*if(g_drive_can_stop(source_object) == true)*/ {
+        if (peDeviceInfo->uFlag != G_MOUNT_UNMOUNT_FORCE) {
+            FDDriveInfo driveInfo;
+            driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
+            driveInfo.strName = peDeviceInfo->strDriveName.toStdString();
+            MainWindow* pThis = (MainWindow*)(peDeviceInfo->pVoid);
+            if (pThis->chooseDialog == nullptr)
+            {
+                pThis->chooseDialog = new interactiveDialog(QString::fromStdString(driveInfo.strId), pThis->ui->centralWidget);
+            }
+            pThis->chooseDialog->show();
+            pThis->chooseDialog->setFocus();
+            pThis->connect(pThis->chooseDialog,&interactiveDialog::FORCESIG,pThis,[=]()
+            {
+                pThis->chooseDialog->close();
+                peDeviceInfo->uFlag = G_MOUNT_UNMOUNT_FORCE;
+                pThis->doRealEject(peDeviceInfo, G_MOUNT_UNMOUNT_FORCE);
+            });
+        }
+    }
+    return nullptr;
+}
+
+void MainWindow::driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo *peDeviceInfo)
+{
+    gboolean success =  FALSE;
+    GError *err = nullptr;
+    success = g_drive_stop_finish(G_DRIVE(object), res, &err);
+    qDebug()<<"driveStopCb:"<<success;
+    if (success || !err || (G_IO_ERROR_FAILED_HANDLED == err->code)) {
+        FDDriveInfo driveInfo;
+        driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
+        driveInfo.strName = peDeviceInfo->strDriveName.toStdString();
+        MainWindow* pThis = (MainWindow*)(peDeviceInfo->pVoid);
+        FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
+        if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
+        {
+            pThis->m_systray->hide();
+        }
+        pThis->m_eject = new ejectInterface(pThis->ui->centralWidget,QString::fromStdString(driveInfo.strName),
+                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
+        pThis->m_eject->show();
+    } else {
+        if (peDeviceInfo->uFlag != G_MOUNT_UNMOUNT_FORCE) {
+            FDDriveInfo driveInfo;
+            driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
+            driveInfo.strName = peDeviceInfo->strDriveName.toStdString();
+            MainWindow* pThis = (MainWindow*)(peDeviceInfo->pVoid);
+            if (pThis->chooseDialog == nullptr)
+            {
+                pThis->chooseDialog = new interactiveDialog(QString::fromStdString(driveInfo.strId), pThis->ui->centralWidget);
+            }
+            pThis->chooseDialog->show();
+            pThis->chooseDialog->setFocus();
+            pThis->connect(pThis->chooseDialog,&interactiveDialog::FORCESIG,pThis,[=]()
+            {
+                pThis->chooseDialog->close();
+                peDeviceInfo->uFlag = G_MOUNT_UNMOUNT_FORCE;
+                pThis->doRealEject(peDeviceInfo, G_MOUNT_UNMOUNT_FORCE);
+            });
         }
     }
 }

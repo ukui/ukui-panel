@@ -322,10 +322,20 @@ unsigned FlashDiskData::getValidInfoCount()
     unsigned uVolumeCount = 0;
     unsigned uMountCount = 0;
     uMountCount = m_devInfoWithMount.size();
-    uVolumeCount = m_devInfoWithVolume.size();
+    map<string, FDVolumeInfo>::iterator itVolumeInfo = m_devInfoWithVolume.begin();
+    for (; itVolumeInfo != m_devInfoWithVolume.end(); itVolumeInfo++) {
+        if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+            uVolumeCount ++;
+        }
+    }
     map<string, FDDriveInfo>::iterator itDriveInfo = m_devInfoWithDrive.begin();
     for (; itDriveInfo != m_devInfoWithDrive.end(); itDriveInfo++) {
-        uDriveCount += itDriveInfo->second.listVolumes.size();
+        itVolumeInfo = itDriveInfo->second.listVolumes.begin();
+        for (; itVolumeInfo != itDriveInfo->second.listVolumes.end(); itVolumeInfo++) {
+            if (!itVolumeInfo->second.mountInfo.strId.empty()) {
+                uDriveCount ++;
+            }
+        }
     }
     return uDriveCount + uVolumeCount + uMountCount;
 }
