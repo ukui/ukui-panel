@@ -46,7 +46,9 @@ bool WindowNotifier::eventFilter(QObject * watched, QEvent * event)
             //no break
         case QEvent::Hide:
             Q_ASSERT(mShownWindows.end() != it);
-            mShownWindows.erase(it);
+            // there perhaps cause coredump
+            if (mShownWindows.end() != it)
+                mShownWindows.erase(it);
             if (mShownWindows.isEmpty())
                 emit lastHidden();
             break;

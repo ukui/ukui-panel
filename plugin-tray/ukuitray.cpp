@@ -135,6 +135,8 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mBtn =new StorageArrow(this);
     mLayout->addWidget(mBtn);
     storageFrame=new UKUIStorageFrame;
+    // fix 任务栏可隐藏时，鼠标放到traystorage时任务栏也会隐藏问题
+    mPlugin->willShowWindow(storageFrame);
     mStorageLayout = new UKUi::GridLayout(storageFrame);
     storageFrame->setLayout(mStorageLayout);
     handleStorageUi();
