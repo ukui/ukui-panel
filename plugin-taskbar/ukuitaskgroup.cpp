@@ -1255,7 +1255,7 @@ void UKUITaskGroup::showAllWindowByList()
     int winWidth = 246;
     int winheight = 46;
     int iPreviewPosition = 0;
-    int popWindowheight = (winheight + 3) * (mVisibleHash.size() + 1);
+    int popWindowheight = (winheight) * (mVisibleHash.size());
     int screenAvailabelHeight = QApplication::screens().at(0)->size().height() - plugin()->panel()->panelSize();
     if(!plugin()->panel()->isHorizontal())
     {
@@ -1269,7 +1269,7 @@ void UKUITaskGroup::showAllWindowByList()
     mpScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-    mpScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //mpScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mpScrollArea->setWidgetResizable(true);
     mpScrollArea->setFrameStyle(QFrame::NoFrame);
 
@@ -1283,9 +1283,16 @@ void UKUITaskGroup::showAllWindowByList()
     for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
+        btn->clearMask();
+        btn->setTitleFixedWidth(mpWidget->width() - 25);
+        btn->setParent(mpScrollArea);
+        btn->removeThumbNail();
+        btn->addThumbNail();
+        btn->adjustSize();
+        btn->setFixedHeight(winheight);
+
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
-        btn->setThumbFixedSize(0);
         mpWidget->layout()->addWidget(btn);
     }
     /*end*/
@@ -1300,6 +1307,7 @@ void UKUITaskGroup::showAllWindowByList()
         iPreviewPosition = plugin()->panel()->panelSize()/2 - winWidth/2;
         mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,iPreviewPosition)), mPopup->size()));
     }
+    mpScrollArea->show();
     mPopup->show();
 //   emit popupShown(this);
 }
@@ -1379,6 +1387,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
+        btn->setParent(mPopup);
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { mPopup->pubcloseWindowDelay(); });
         connect(btn, &UKUITaskWidget::closeSigtoGroup, [this] { closeGroup(); });
         btn->addThumbNail();
