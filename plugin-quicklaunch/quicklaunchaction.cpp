@@ -89,7 +89,7 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
         }
     }
     if (icon.isNull())
-	    ifcon = xdg->icon();
+	    icon = xdg->icon();
     setText(title);
 
     setIcon(icon);
