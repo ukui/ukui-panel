@@ -1461,6 +1461,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int previewPosition = 0;
     int winWidth = 0;
     int winHeight = 0;
+	int truewidth = 0;
    // initVisibleHash();
     refreshVisibility();
     int iAverageWidth = calcAverageWidth();
@@ -1512,9 +1513,9 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int title_width = 0;
     int v_all = 0;
     int iScreenWidth = QApplication::screens().at(0)->size().width();
-    float minimumWidth = THUMBNAIL_WIDTH;
     float minimumHeight = THUMBNAIL_HEIGHT;
-    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+	int allwidth = winWidth * mVisibleHash.size();
+    for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
     {
         it.value()->removeThumbNail();
         display = XOpenDisplay(nullptr);
@@ -1524,7 +1525,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         if(display)
             XCloseDisplay(display);
     }
-    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
+    for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
         btn->setParent(mPopup);
@@ -1537,7 +1538,10 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         float imgWidth = 0;
         float imgHeight = 0;
         if (plugin()->panel()->isHorizontal()) {
-            imgWidth = (float)attr.width / (float)attr.height * THUMBNAIL_HEIGHT /2;
+			if (mVisibleHash.size() == 1)
+                 imgWidth = THUMBNAIL_WIDTH;
+            else
+                 imgWidth = allwidth * (float)attr.width/(float)truewidth ;
             imgHeight = THUMBNAIL_HEIGHT;
         } else {
             imgWidth = THUMBNAIL_WIDTH;
@@ -1545,15 +1549,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         }
         if (plugin()->panel()->isHorizontal())
         {
-            if (attr.height != max_Height)
-            {
-                float tmp = (float)attr.height / (float)max_Height;
-                imgHeight =  imgHeight * tmp;
-            }
-            if ((int)imgWidth > (int)minimumWidth)
-            {
-                imgWidth = minimumWidth;
-            }
             if (mVisibleHash.contains(btn->windowId())) {
                 v_all += (int)imgWidth;
                 imgWidth_sum += (int)imgWidth;
