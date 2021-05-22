@@ -46,7 +46,6 @@ public:
     explicit UKUITaskWidget(const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
     virtual ~UKUITaskWidget();
 
-    enum TaskWidgetStatus{NORMAL, HOVER, PRESS};
     bool isApplicationHidden() const;
     bool isApplicationActive() const;
     WId windowId() const { return mWindow; }
@@ -109,8 +108,6 @@ public slots:
 
     void updateIcon();
 
-    void setStatus(TaskWidgetStatus stat) {status = stat;}
-
 protected:
     virtual void dragEnterEvent(QDragEnterEvent *event);
     virtual void dragMoveEvent(QDragMoveEvent * event);
@@ -151,6 +148,7 @@ private:
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
     QTimer * mDNDTimer;
+    enum TaskWidgetStatus{NORMAL, HOVER, PRESS};
     TaskWidgetStatus status;
     bool taskWidgetPress; //按钮左键是否按下
 
