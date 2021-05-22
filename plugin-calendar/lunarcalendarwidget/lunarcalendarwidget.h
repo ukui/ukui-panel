@@ -20,6 +20,9 @@
 #include <QPalette>
 #include "picturetowhite.h"
 #include "statelabel.h"
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QRadioButton>
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
@@ -115,6 +118,11 @@ private:
     m_PartLineWidget *lineDown;
     statelabel *btnPrevYear;
     statelabel *btnNextYear;
+    QRadioButton *yijichoose;
+    QLabel *yiLabel;
+    QLabel *jiLabel;
+    QHBoxLayout *yijiLayout;
+    QWidget *yijiWidget;
     void downLabelHandle(const QDate &date);
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
@@ -158,6 +166,7 @@ private:
 
     void setColor(bool mdark_style);
     void _timeUpdate();
+    void yijihandle(const QDate &date);
     QGSettings *style_settings;
     bool dark_style;
 
@@ -174,6 +183,7 @@ private Q_SLOTS:
     void dayChanged(const QDate &date);
     void dateChanged(int year, int month, int day);
     void timerUpdate();
+    void customButtonsClicked(int x);
 
 public:
     CalendarStyle getCalendarStyle()    const;

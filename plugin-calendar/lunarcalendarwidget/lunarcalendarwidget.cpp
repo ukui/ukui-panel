@@ -366,6 +366,25 @@ void LunarCalendarWidget::initWidget()
         dayItems.append(lab);
     }
 
+    yiLabel = new QLabel();
+    jiLabel = new QLabel();
+
+    yiLabel->setVisible(false);
+    jiLabel->setVisible(false);
+
+    yijichoose = new QRadioButton();
+    yijichoose->setText("宜忌");
+
+    connect(yijichoose,&QRadioButton::clicked,this,&LunarCalendarWidget::customButtonsClicked);
+
+    yijiLayout = new QHBoxLayout();
+    yijiLayout->addWidget(yiLabel);
+    yijiLayout->addItem(new QSpacerItem(100,5,QSizePolicy::Expanding,QSizePolicy::Minimum));
+    yijiLayout->addWidget(yijichoose);
+
+    yijiWidget = new QWidget();
+    yijiWidget->setLayout(yijiLayout);
+
     //主布局
     lineUp = new m_PartLineWidget();
     lineDown = new m_PartLineWidget();
@@ -384,6 +403,8 @@ void LunarCalendarWidget::initWidget()
     verLayoutCalendar->addWidget(widgetBody, 1);
     verLayoutCalendar->addWidget(lineDown);
     verLayoutCalendar->addWidget(labBottom);
+    verLayoutCalendar->addWidget(yijiWidget);
+    verLayoutCalendar->addWidget(jiLabel);
 
 
     //绑定按钮和下拉框信号
@@ -456,6 +477,7 @@ void LunarCalendarWidget::initDate()
     int year = date.year();
     int month = date.month();
     int day = date.day();
+    yijihandle(date);
 
     //设置为今天,设置变量防止重复触发
     btnClick = true;
@@ -560,6 +582,17 @@ void LunarCalendarWidget::initDate()
     dayChanged(this->date);
 }
 
+void LunarCalendarWidget::customButtonsClicked(int x)
+{
+    if (x) {
+        yiLabel->setVisible(true);
+        jiLabel->setVisible(true);
+    } else {
+        yiLabel->setVisible(false);
+        jiLabel->setVisible(false);
+    }
+}
+
 void LunarCalendarWidget::downLabelHandle(const QDate &date)
 {
 
@@ -581,11 +614,39 @@ void LunarCalendarWidget::downLabelHandle(const QDate &date)
                                                         strLunarDay);
 
     QString labBottomarg =  "    " + strLunarYear + "  " + strLunarMonth + strLunarDay;
-
     labBottom->setText(labBottomarg);
+
+    yijihandle(date);
+
 }
 
+void LunarCalendarWidget::yijihandle(const QDate &date)
+{
+    /*解析json文件*/
+    QFile file(QString("/usr/share/ukui-panel/plugin-calendar/html/hlnew/hl%1.js").arg(date.year()));
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString value = file.readAll();
+    file.close();
 
+    QJsonParseError parseJsonErr;
+    QJsonDocument document = QJsonDocument::fromJson(value.toUtf8(),&parseJsonErr);
+    if(!(parseJsonErr.error == QJsonParseError::NoError))
+    {
+        qDebug()<<tr("解析json文件错误！");
+        return;
+    }
+    QJsonObject jsonObject = document.object();
+
+    if(jsonObject.contains(QString("d%1").arg(date.toString("MMdd"))))
+    {
+        QJsonValue jsonValueList = jsonObject.value(QString("d%1").arg(date.toString("MMdd")));
+        QJsonObject item = jsonValueList.toObject();
+        QString yiString = "  宜：" + item["y"].toString();
+        QString jiString = "    忌：" + item["j"].toString();
+        yiLabel->setText(yiString);
+        jiLabel->setText(jiString);
+    }
+}
 
 void LunarCalendarWidget::yearChanged(const QString &arg1)
 {

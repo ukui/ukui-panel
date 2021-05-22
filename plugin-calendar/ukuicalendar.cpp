@@ -241,7 +241,6 @@ void IndicatorCalendar::checkUpdateTime()
         return;
     }
     timeState = tzNow.toString("hh:mm ddd  yyyy-MM-dd");
-    qDebug()<<"jixuyunxing  ***************************************************** ::: :::"<<tzNow.toString("m");
     updateTimeText();
 }
 
