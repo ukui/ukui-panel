@@ -50,11 +50,6 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     btnToday = new QPushButton;
     btnClick = false;
 
-    labBottom = new QLabel();
-    QFont font;
-    font.setPointSize(12);
-    labBottom->setFont(font);
-
     calendarStyle = CalendarStyle_Red;
     date = QDate::currentDate();
 
@@ -133,7 +128,7 @@ LunarCalendarWidget::~LunarCalendarWidget()
 void LunarCalendarWidget::setColor(bool mdark_style)
 {
     if(mdark_style){
-        datelabel->setStyleSheet("color:white");
+//        datelabel->setStyleSheet("color:white");
 //        timelabel->setStyleSheet("color:white");
         weekTextColor = QColor(0, 0, 0);
         weekBgColor = QColor(180, 180, 180);
@@ -162,7 +157,7 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }else{
-        datelabel->setStyleSheet("color:black");
+//        datelabel->setStyleSheet("color:black");
 //        timelabel->setStyleSheet("color:black");
         weekTextColor = QColor(255, 255, 255);
         weekBgColor = QColor(0, 0, 0);
@@ -366,24 +361,29 @@ void LunarCalendarWidget::initWidget()
         dayItems.append(lab);
     }
 
+    //
+    labWidget = new QWidget();
+    labBottom = new QLabel();
+    QFont font;
+    font.setPointSize(12);
+    labBottom->setFont(font);
+    yijichoose = new QRadioButton();
+    yijichoose->setText("宜忌");
+    labLayout = new QHBoxLayout();
+    labLayout->addWidget(labBottom);
+    labLayout->addItem(new QSpacerItem(100,5,QSizePolicy::Expanding,QSizePolicy::Minimum));
+    labLayout->addWidget(yijichoose);
+    labWidget->setLayout(labLayout);
+
     yiLabel = new QLabel();
     jiLabel = new QLabel();
 
     yiLabel->setVisible(false);
     jiLabel->setVisible(false);
 
-    yijichoose = new QRadioButton();
-    yijichoose->setText("宜忌");
+
 
     connect(yijichoose,&QRadioButton::clicked,this,&LunarCalendarWidget::customButtonsClicked);
-
-    yijiLayout = new QHBoxLayout();
-    yijiLayout->addWidget(yiLabel);
-    yijiLayout->addItem(new QSpacerItem(100,5,QSizePolicy::Expanding,QSizePolicy::Minimum));
-    yijiLayout->addWidget(yijichoose);
-
-    yijiWidget = new QWidget();
-    yijiWidget->setLayout(yijiLayout);
 
     //主布局
     lineUp = new m_PartLineWidget();
@@ -402,8 +402,8 @@ void LunarCalendarWidget::initWidget()
     verLayoutCalendar->addWidget(widgetWeek);
     verLayoutCalendar->addWidget(widgetBody, 1);
     verLayoutCalendar->addWidget(lineDown);
-    verLayoutCalendar->addWidget(labBottom);
-    verLayoutCalendar->addWidget(yijiWidget);
+    verLayoutCalendar->addWidget(labWidget);
+    verLayoutCalendar->addWidget(yiLabel);
     verLayoutCalendar->addWidget(jiLabel);
 
 
@@ -448,6 +448,7 @@ void LunarCalendarWidget::initStyle()
         strSelectType = "SelectType_Image";
     }
 
+    //计划去掉qss
     qss.append(QString("LunarCalendarItem{qproperty-showLunar:%1;}").arg(showLunar));
     qss.append(QString("LunarCalendarItem{qproperty-bgImage:%1;}").arg(bgImage));
     qss.append(QString("LunarCalendarItem{qproperty-selectType:%1;}").arg(strSelectType));
@@ -468,7 +469,7 @@ void LunarCalendarWidget::initStyle()
     qss.append(QString("LunarCalendarItem{qproperty-selectBgColor:%1;}").arg(selectBgColor.name()));
     qss.append(QString("LunarCalendarItem{qproperty-hoverBgColor:%1;}").arg(hoverBgColor.name()));
 
-    this->setStyleSheet(qss.join(""));
+//    this->setStyleSheet(qss.join(""));
 }
 
 //初始化日期面板
@@ -484,7 +485,7 @@ void LunarCalendarWidget::initDate()
     cboxYearandMonth->setCurrentIndex(cboxYearandMonth->findText(QString("%1.%2").arg(year).arg(month)));
     btnClick = false;
 
-    cboxYearandMonthLabel->setText(QString("%1.%2").arg(year).arg(month));
+    cboxYearandMonthLabel->setText(QString("   %1.%2").arg(year).arg(month));
 
     //首先判断当前月的第一天是星期几
     int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month, FirstdayisSun);
@@ -641,8 +642,8 @@ void LunarCalendarWidget::yijihandle(const QDate &date)
     {
         QJsonValue jsonValueList = jsonObject.value(QString("d%1").arg(date.toString("MMdd")));
         QJsonObject item = jsonValueList.toObject();
-        QString yiString = "  宜：" + item["y"].toString();
-        QString jiString = "    忌：" + item["j"].toString();
+        QString yiString = "     宜：" + item["y"].toString();
+        QString jiString = "     忌：" + item["j"].toString();
         yiLabel->setText(yiString);
         jiLabel->setText(jiString);
     }
@@ -1161,3 +1162,20 @@ void m_PartLineWidget::paintEvent(QPaintEvent *event)
 
     QWidget::paintEvent(event);
 }
+
+statelabel::statelabel() : QLabel()
+{
+
+
+}
+
+//鼠标点击事件
+void statelabel::mousePressEvent(QMouseEvent *event)
+{
+    if (event->buttons() == Qt::LeftButton){
+        Q_EMIT labelclick();
+
+    }
+    return;
+}
+

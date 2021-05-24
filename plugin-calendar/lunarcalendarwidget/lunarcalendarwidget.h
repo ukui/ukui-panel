@@ -19,16 +19,19 @@
 #include <QApplication>
 #include <QPalette>
 #include "picturetowhite.h"
-#include "statelabel.h"
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QRadioButton>
+#include <QLabel>
+#include <QObject>
+#include <QMouseEvent>
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
 
 
 class QLabel;
+class statelabel;
 class QComboBox;
 class LunarCalendarItem;
 class m_PartLineWidget;
@@ -113,7 +116,9 @@ private:
     QPushButton *btnYear;
     QPushButton *btnMonth;
     QPushButton *btnToday;
+    QWidget *labWidget;
     QLabel *labBottom;
+    QHBoxLayout *labLayout;
     m_PartLineWidget *lineUp;
     m_PartLineWidget *lineDown;
     statelabel *btnPrevYear;
@@ -121,8 +126,6 @@ private:
     QRadioButton *yijichoose;
     QLabel *yiLabel;
     QLabel *jiLabel;
-    QHBoxLayout *yijiLayout;
-    QWidget *yijiWidget;
     void downLabelHandle(const QDate &date);
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
@@ -300,5 +303,18 @@ public:
     void paintEvent(QPaintEvent *event);
 
 };
+
+class statelabel : public QLabel
+{
+    Q_OBJECT
+public:
+    statelabel();
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
+Q_SIGNALS :
+    void labelclick();
+};
+
 
 #endif // LUNARCALENDARWIDGET_H
