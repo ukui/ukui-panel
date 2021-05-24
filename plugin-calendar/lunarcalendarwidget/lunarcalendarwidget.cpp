@@ -109,8 +109,16 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     });
 
 
+    //监听12/24小时制
+    const QByteArray id1("org.ukui.control-center.panel.plugins");
+    gsettings = new QGSettings(id1);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
+            timemodel = gsettings->get("hoursystem").toString();
+            _timeUpdate();
+    });
+    timemodel = gsettings->get("hoursystem").toString();
 
-    //initDate();
+
     setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
     setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
 }
@@ -128,8 +136,6 @@ LunarCalendarWidget::~LunarCalendarWidget()
 void LunarCalendarWidget::setColor(bool mdark_style)
 {
     if(mdark_style){
-//        datelabel->setStyleSheet("color:white");
-//        timelabel->setStyleSheet("color:white");
         weekTextColor = QColor(0, 0, 0);
         weekBgColor = QColor(180, 180, 180);
 
@@ -157,8 +163,6 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }else{
-//        datelabel->setStyleSheet("color:black");
-//        timelabel->setStyleSheet("color:black");
         weekTextColor = QColor(255, 255, 255);
         weekBgColor = QColor(0, 0, 0);
 
@@ -186,19 +190,21 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }
-//        initWidget();
        initStyle();
-//        initDate();
 }
 
 void LunarCalendarWidget::_timeUpdate() {
     QDateTime time = QDateTime::currentDateTime();
     QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
-    QString _time = locale.toString(time,"hh:mm:ss");
+    QString _time;
+    if(timemodel == "12") {
+        _time = locale.toString(time,"Ahh:mm:ss");
+    } else {
+        _time = locale.toString(time,"hh:mm:ss");
+    }
     QString _date = locale.toString(time,"yyyy-MM-dd    dddd");
     QFont font;
 
-    //datelabel->setFixedSize(452,40);
     datelabel->setText(_time);
     font.setPointSize(22);
     datelabel->setFont(font);
