@@ -19,14 +19,6 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
 
     this->setFixedSize(440, 600);
 
-//    ui->labCalendarStyle->setHidden(true);
-//    ui->cboxCalendarStyle->setHidden(true);
-//    ui->labSelectType->setHidden(true);
-//    ui->cboxSelectType->setHidden(true);
-//    ui->labWeekNameFormat->setHidden(true);
-//    ui->cboxWeekNameFormat->setHidden(true);
-//    ui->ckShowLunar->setHidden(true);
-
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
@@ -35,6 +27,8 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
     if(QGSettings::isSchemaInstalled(calendar_id)){
         calendar_gsettings = new QGSettings(calendar_id);
     }
+
+    //公历/农历切换
     connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key == LUNAR_KEY){
             ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
@@ -42,7 +36,6 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
         if (key == FIRST_DAY_KEY) {
             cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
         }
-      //  if (key == )
     });
 
 }

@@ -13,7 +13,6 @@ set(HEADERS
     lunarcalendarwidget/lunarcalendaritem.h
     lunarcalendarwidget/lunarcalendarwidget.h
     lunarcalendarwidget/picturetowhite.h
-    lunarcalendarwidget/statelabel.h
 )
 
 set(SOURCES
@@ -24,7 +23,6 @@ set(SOURCES
     lunarcalendarwidget/lunarcalendaritem.cpp
     lunarcalendarwidget/lunarcalendarwidget.cpp
     lunarcalendarwidget/picturetowhite.cpp
-    lunarcalendarwidget/statelabel.cpp
 )
 
 set(UIS

@@ -5,6 +5,7 @@
 #include "qevent.h"
 #include "qdatetime.h"
 #include "qdebug.h"
+#include <QGSettings>
 
 LunarCalendarItem::LunarCalendarItem(QWidget *parent) : QWidget(parent)
 {
@@ -20,24 +21,58 @@ LunarCalendarItem::LunarCalendarItem(QWidget *parent) : QWidget(parent)
     lunar = "初一";
     dayType = DayType_MonthCurrent;
 
-    borderColor = QColor(180, 180, 180);
-    weekColor = QColor(255, 0, 0);
-    superColor = QColor(255, 129, 6);
-    lunarColor = QColor(55, 156, 238);
+    //实时监听系统字体的改变
+    const QByteArray id("org.ukui.style");
+    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
+    connect(fontSetting, &QGSettings::changed,[=](QString key) {
+        if(fontSetting->get("style-name").toString() == "ukui-default") {
+            weekColor = QColor(255, 255, 255);
+            currentTextColor = QColor(255, 255, 255);
+            otherTextColor = QColor(255, 255, 255,40);
+            otherLunarColor = QColor(255, 255, 255,40);
+            currentLunarColor = QColor(255, 255, 255,90);
+        } else if(fontSetting->get("style-name").toString() == "ukui-light") {
+            weekColor = QColor(0, 0, 0);
+            currentTextColor = QColor(0, 0, 0);
+            otherTextColor = QColor(0,0,0,40);
+            otherLunarColor = QColor(0,0,0,40);
+            currentLunarColor = QColor(0,0,0,90);
+        } else if(fontSetting->get("style-name").toString() == "ukui-dark") {
+            weekColor = QColor(255, 255, 255);
+            currentTextColor = QColor(255, 255, 255);
+            otherTextColor = QColor(255, 255, 255,40);
+            otherLunarColor = QColor(255, 255, 255,40);
+            currentLunarColor = QColor(255, 255, 255,90);
+        }
+    });
 
-    currentTextColor = QColor(0, 0, 0);
-    otherTextColor = QColor(200, 200, 200);
+    if(fontSetting->get("style-name").toString() == "ukui-light") {
+        weekColor = QColor(0, 0, 0);
+        currentTextColor = QColor(0, 0, 0);
+        otherTextColor = QColor(0,0,0,40);
+        otherLunarColor = QColor(0,0,0,40);
+        currentLunarColor = QColor(0,0,0,90);
+    } else {
+        weekColor = QColor(255, 255, 255);
+        currentTextColor = QColor(255, 255, 255);
+        otherTextColor = QColor(255, 255, 255,40);
+        otherLunarColor = QColor(255, 255, 255,40);
+        currentLunarColor = QColor(255, 255, 255,90);
+    }
+
+    borderColor = QColor(180, 180, 180);
+    superColor = QColor(255, 129, 6);
+    lunarColor = QColor(255,0,0);
+
     selectTextColor = QColor(255, 255, 255);
     hoverTextColor = QColor(250, 250, 250);
 
-    currentLunarColor = QColor(150, 150, 150);
-    otherLunarColor = QColor(200, 200, 200);
     selectLunarColor = QColor(255, 255, 255);
     hoverLunarColor = QColor(250, 250, 250);
 
     currentBgColor = QColor(255, 255, 255);
     otherBgColor = QColor(240, 240, 240);
-    selectBgColor = QColor(208, 47, 18);
+    selectBgColor = QColor(65,105,225);
     hoverBgColor = QColor(204, 183, 180);
 }
 
