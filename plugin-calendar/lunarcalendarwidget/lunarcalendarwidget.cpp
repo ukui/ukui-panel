@@ -119,6 +119,50 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     timemodel = gsettings->get("hoursystem").toString();
 
 
+    //农历切换监听
+    connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key == LUNAR_KEY){
+            qDebug()<<"农历切换";
+            qDebug()<<calendar_gsettings->get("calendar").toString();
+            if(calendar_gsettings->get("calendar").toString() == "lunar") {
+                //农历
+                labWidget->setVisible(true);
+                if(yijistate) {
+                    yiLabel->setVisible(true);
+                    jiLabel->setVisible(true);
+                } else {
+                    yiLabel->setVisible(false);
+                    jiLabel->setVisible(false);
+                }
+            } else {
+                //公历
+                labWidget->setVisible(false);
+                yiLabel->setVisible(false);
+                jiLabel->setVisible(false);
+            }
+         }
+    });
+
+    //初始化农历/公历显示方式
+    if(calendar_gsettings->get("calendar").toString() == "lunar") {
+        //农历
+        labWidget->setVisible(true);
+        if(yijistate) {
+            yiLabel->setVisible(true);
+            jiLabel->setVisible(true);
+        } else {
+            yiLabel->setVisible(false);
+            jiLabel->setVisible(false);
+        }
+    } else {
+        //公历
+        labWidget->setVisible(false);
+        yiLabel->setVisible(false);
+        jiLabel->setVisible(false);
+    }
+
+
+
     setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
     setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
 }
@@ -454,28 +498,28 @@ void LunarCalendarWidget::initStyle()
         strSelectType = "SelectType_Image";
     }
 
-    //计划去掉qss
+    //计划去掉qss,保留农历切换的设置
     qss.append(QString("LunarCalendarItem{qproperty-showLunar:%1;}").arg(showLunar));
-    qss.append(QString("LunarCalendarItem{qproperty-bgImage:%1;}").arg(bgImage));
-    qss.append(QString("LunarCalendarItem{qproperty-selectType:%1;}").arg(strSelectType));
-    qss.append(QString("LunarCalendarItem{qproperty-borderColor:%1;}").arg(borderColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-weekColor:%1;}").arg(weekColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-superColor:%1;}").arg(superColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-lunarColor:%1;}").arg(lunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-currentTextColor:%1;}").arg(currentTextColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-otherTextColor:%1;}").arg(otherTextColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-selectTextColor:%1;}").arg(selectTextColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-hoverTextColor:%1;}").arg(hoverTextColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-currentLunarColor:%1;}").arg(currentLunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-otherLunarColor:%1;}").arg(otherLunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-selectLunarColor:%1;}").arg(selectLunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-hoverLunarColor:%1;}").arg(hoverLunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-currentBgColor:%1;}").arg(currentBgColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-otherBgColor:%1;}").arg(otherBgColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-selectBgColor:%1;}").arg(selectBgColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-hoverBgColor:%1;}").arg(hoverBgColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-bgImage:%1;}").arg(bgImage));
+//    qss.append(QString("LunarCalendarItem{qproperty-selectType:%1;}").arg(strSelectType));
+//    qss.append(QString("LunarCalendarItem{qproperty-borderColor:%1;}").arg(borderColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-weekColor:%1;}").arg(weekColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-superColor:%1;}").arg(superColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-lunarColor:%1;}").arg(lunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-currentTextColor:%1;}").arg(currentTextColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-otherTextColor:%1;}").arg(otherTextColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-selectTextColor:%1;}").arg(selectTextColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-hoverTextColor:%1;}").arg(hoverTextColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-currentLunarColor:%1;}").arg(currentLunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-otherLunarColor:%1;}").arg(otherLunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-selectLunarColor:%1;}").arg(selectLunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-hoverLunarColor:%1;}").arg(hoverLunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-currentBgColor:%1;}").arg(currentBgColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-otherBgColor:%1;}").arg(otherBgColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-selectBgColor:%1;}").arg(selectBgColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-hoverBgColor:%1;}").arg(hoverBgColor.name()));
 
-//    this->setStyleSheet(qss.join(""));
+    this->setStyleSheet(qss.join(""));
 }
 
 //初始化日期面板
@@ -594,9 +638,11 @@ void LunarCalendarWidget::customButtonsClicked(int x)
     if (x) {
         yiLabel->setVisible(true);
         jiLabel->setVisible(true);
+        yijistate = true;
     } else {
         yiLabel->setVisible(false);
         jiLabel->setVisible(false);
+        yijistate = false;
     }
 }
 
