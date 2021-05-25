@@ -1374,7 +1374,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int v_all = 0;
     int iScreenWidth = QApplication::screens().at(0)->size().width();
     float minimumHeight = THUMBNAIL_HEIGHT;
-    int allwidth = winWidth * mVisibleHash.size();
     for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
     {
         it.value()->removeThumbNail();
@@ -1386,7 +1385,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         if(display)
             XCloseDisplay(display);
     }
-    for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
+    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
         btn->setParent(mPopup);
