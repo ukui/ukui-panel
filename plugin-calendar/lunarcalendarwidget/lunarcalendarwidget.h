@@ -19,13 +19,19 @@
 #include <QApplication>
 #include <QPalette>
 #include "picturetowhite.h"
-#include "statelabel.h"
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QRadioButton>
+#include <QLabel>
+#include <QObject>
+#include <QMouseEvent>
 
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
 
 
 class QLabel;
+class statelabel;
 class QComboBox;
 class LunarCalendarItem;
 class m_PartLineWidget;
@@ -110,11 +116,20 @@ private:
     QPushButton *btnYear;
     QPushButton *btnMonth;
     QPushButton *btnToday;
+    QWidget *labWidget;
     QLabel *labBottom;
+    QHBoxLayout *labLayout;
     m_PartLineWidget *lineUp;
     m_PartLineWidget *lineDown;
     statelabel *btnPrevYear;
     statelabel *btnNextYear;
+    QRadioButton *yijichoose;
+    QLabel *yiLabel;
+    QLabel *jiLabel;
+    QGSettings *gsettings;
+    QString timemodel;
+    bool yijistate = false;
+    QString dateShowMode;
     void downLabelHandle(const QDate &date);
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
@@ -158,6 +173,7 @@ private:
 
     void setColor(bool mdark_style);
     void _timeUpdate();
+    void yijihandle(const QDate &date);
     QGSettings *style_settings;
     bool dark_style;
 
@@ -174,6 +190,7 @@ private Q_SLOTS:
     void dayChanged(const QDate &date);
     void dateChanged(int year, int month, int day);
     void timerUpdate();
+    void customButtonsClicked(int x);
 
 public:
     CalendarStyle getCalendarStyle()    const;
@@ -290,5 +307,18 @@ public:
     void paintEvent(QPaintEvent *event);
 
 };
+
+class statelabel : public QLabel
+{
+    Q_OBJECT
+public:
+    statelabel();
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
+Q_SIGNALS :
+    void labelclick();
+};
+
 
 #endif // LUNARCALENDARWIDGET_H

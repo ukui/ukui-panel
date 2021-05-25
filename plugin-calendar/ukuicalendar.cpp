@@ -127,9 +127,6 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
             current_date=CURRENT_DATE;
         }
 
-//    QString delaytime=QTime::currentTime().toString();
-//    QList<QString> pathresult=delaytime.split(":");
-//    int second=pathresult.at(2).toInt();
     connect(mTimer, &QTimer::timeout, [this]{checkUpdateTime(); mTimer->stop(); mTimer->start(1000);});
     mTimer->start(1000);
 
@@ -241,7 +238,6 @@ void IndicatorCalendar::checkUpdateTime()
         return;
     }
     timeState = tzNow.toString("hh:mm ddd  yyyy-MM-dd");
-    qDebug()<<"jixuyunxing  ***************************************************** ::: :::"<<tzNow.toString("m");
     updateTimeText();
 }
 

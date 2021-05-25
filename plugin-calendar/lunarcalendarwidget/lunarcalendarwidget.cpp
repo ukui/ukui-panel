@@ -50,22 +50,15 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     btnToday = new QPushButton;
     btnClick = false;
 
-    labBottom = new QLabel();
-    QFont font;
-    font.setPointSize(12);
-    labBottom->setFont(font);
-
     calendarStyle = CalendarStyle_Red;
     date = QDate::currentDate();
 
     widgetTime = new QWidget;
     timeShow = new QVBoxLayout(widgetTime);
-    timer = new QTimer();
+
     datelabel =new QLabel(this);
     timelabel = new QLabel(this);
     lunarlabel = new QLabel(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
-    timer->start(1000);
 
     widgetTime->setObjectName("widgetTime");
     timeShow->setContentsMargins(0, 0, 0, 0);
@@ -114,8 +107,76 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     });
 
 
+    //监听12/24小时制
+    const QByteArray id1("org.ukui.control-center.panel.plugins");
+    gsettings = new QGSettings(id1);
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
+            timemodel = gsettings->get("hoursystem").toString();
+            _timeUpdate();
+    });
+    timemodel = gsettings->get("hoursystem").toString();
 
-    //initDate();
+
+    //农历切换监听与日期显示格式
+    connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key == LUNAR_KEY){
+            qDebug()<<"农历切换";
+            qDebug()<<calendar_gsettings->get("calendar").toString();
+            if(calendar_gsettings->get("calendar").toString() == "lunar") {
+                //农历
+                labWidget->setVisible(true);
+                if(yijistate) {
+                    yiLabel->setVisible(true);
+                    jiLabel->setVisible(true);
+                } else {
+                    yiLabel->setVisible(false);
+                    jiLabel->setVisible(false);
+                }
+            } else {
+                //公历
+                labWidget->setVisible(false);
+                yiLabel->setVisible(false);
+                jiLabel->setVisible(false);
+            }
+         }
+        if(key == "date") {
+            if(calendar_gsettings->get("date").toString() == "cn"){
+                dateShowMode = "yyyy/MM/dd    dddd";
+            } else {
+                dateShowMode = "yyyy-MM-dd    dddd";
+            }
+        }
+    });
+
+    if(calendar_gsettings->get("date").toString() == "cn"){
+        dateShowMode = "yyyy/MM/dd    dddd";
+    } else {
+        dateShowMode = "yyyy-MM-dd    dddd";
+    }
+
+    //初始化农历/公历显示方式
+    if(calendar_gsettings->get("calendar").toString() == "lunar") {
+        //农历
+        labWidget->setVisible(true);
+        if(yijistate) {
+            yiLabel->setVisible(true);
+            jiLabel->setVisible(true);
+        } else {
+            yiLabel->setVisible(false);
+            jiLabel->setVisible(false);
+        }
+    } else {
+        //公历
+        labWidget->setVisible(false);
+        yiLabel->setVisible(false);
+        jiLabel->setVisible(false);
+    }
+
+
+    timer = new QTimer();
+    connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
+    timer->start(1000);
+
     setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
     setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
 }
@@ -133,8 +194,6 @@ LunarCalendarWidget::~LunarCalendarWidget()
 void LunarCalendarWidget::setColor(bool mdark_style)
 {
     if(mdark_style){
-        datelabel->setStyleSheet("color:white");
-//        timelabel->setStyleSheet("color:white");
         weekTextColor = QColor(0, 0, 0);
         weekBgColor = QColor(180, 180, 180);
 
@@ -162,8 +221,6 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }else{
-        datelabel->setStyleSheet("color:black");
-//        timelabel->setStyleSheet("color:black");
         weekTextColor = QColor(255, 255, 255);
         weekBgColor = QColor(0, 0, 0);
 
@@ -191,19 +248,20 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         selectBgColor = QColor(80, 100, 220);
         hoverBgColor = QColor(80, 190, 220);
     }
-//        initWidget();
        initStyle();
-//        initDate();
 }
 
 void LunarCalendarWidget::_timeUpdate() {
     QDateTime time = QDateTime::currentDateTime();
     QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
-    QString _time = locale.toString(time,"hh:mm:ss");
-    QString _date = locale.toString(time,"yyyy-MM-dd    dddd");
-    QFont font;
+    QString _time;
+    if(timemodel == "12") {
+        _time = locale.toString(time,"Ahh:mm:ss");
+    } else {
+        _time = locale.toString(time,"hh:mm:ss");
+    }
 
-    //datelabel->setFixedSize(452,40);
+    QFont font;
     datelabel->setText(_time);
     font.setPointSize(22);
     datelabel->setFont(font);
@@ -226,7 +284,7 @@ void LunarCalendarWidget::_timeUpdate() {
                                                         strLunarMonth,
                                                         strLunarDay);
 
-
+    QString _date = locale.toString(time,dateShowMode);
     _date = _date + "    "+strLunarMonth + strLunarDay;
     timelabel->setText(_date);
     font.setPointSize(12);
@@ -366,6 +424,30 @@ void LunarCalendarWidget::initWidget()
         dayItems.append(lab);
     }
 
+    //
+    labWidget = new QWidget();
+    labBottom = new QLabel();
+    QFont font;
+    font.setPointSize(12);
+    labBottom->setFont(font);
+    yijichoose = new QRadioButton();
+    yijichoose->setText("宜忌");
+    labLayout = new QHBoxLayout();
+    labLayout->addWidget(labBottom);
+    labLayout->addItem(new QSpacerItem(100,5,QSizePolicy::Expanding,QSizePolicy::Minimum));
+    labLayout->addWidget(yijichoose);
+    labWidget->setLayout(labLayout);
+
+    yiLabel = new QLabel();
+    jiLabel = new QLabel();
+
+    yiLabel->setVisible(false);
+    jiLabel->setVisible(false);
+
+
+
+    connect(yijichoose,&QRadioButton::clicked,this,&LunarCalendarWidget::customButtonsClicked);
+
     //主布局
     lineUp = new m_PartLineWidget();
     lineDown = new m_PartLineWidget();
@@ -383,7 +465,9 @@ void LunarCalendarWidget::initWidget()
     verLayoutCalendar->addWidget(widgetWeek);
     verLayoutCalendar->addWidget(widgetBody, 1);
     verLayoutCalendar->addWidget(lineDown);
-    verLayoutCalendar->addWidget(labBottom);
+    verLayoutCalendar->addWidget(labWidget);
+    verLayoutCalendar->addWidget(yiLabel);
+    verLayoutCalendar->addWidget(jiLabel);
 
 
     //绑定按钮和下拉框信号
@@ -427,25 +511,26 @@ void LunarCalendarWidget::initStyle()
         strSelectType = "SelectType_Image";
     }
 
+    //计划去掉qss,保留农历切换的设置
     qss.append(QString("LunarCalendarItem{qproperty-showLunar:%1;}").arg(showLunar));
-    qss.append(QString("LunarCalendarItem{qproperty-bgImage:%1;}").arg(bgImage));
-    qss.append(QString("LunarCalendarItem{qproperty-selectType:%1;}").arg(strSelectType));
-    qss.append(QString("LunarCalendarItem{qproperty-borderColor:%1;}").arg(borderColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-weekColor:%1;}").arg(weekColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-superColor:%1;}").arg(superColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-lunarColor:%1;}").arg(lunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-currentTextColor:%1;}").arg(currentTextColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-otherTextColor:%1;}").arg(otherTextColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-selectTextColor:%1;}").arg(selectTextColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-hoverTextColor:%1;}").arg(hoverTextColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-currentLunarColor:%1;}").arg(currentLunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-otherLunarColor:%1;}").arg(otherLunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-selectLunarColor:%1;}").arg(selectLunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-hoverLunarColor:%1;}").arg(hoverLunarColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-currentBgColor:%1;}").arg(currentBgColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-otherBgColor:%1;}").arg(otherBgColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-selectBgColor:%1;}").arg(selectBgColor.name()));
-    qss.append(QString("LunarCalendarItem{qproperty-hoverBgColor:%1;}").arg(hoverBgColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-bgImage:%1;}").arg(bgImage));
+//    qss.append(QString("LunarCalendarItem{qproperty-selectType:%1;}").arg(strSelectType));
+//    qss.append(QString("LunarCalendarItem{qproperty-borderColor:%1;}").arg(borderColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-weekColor:%1;}").arg(weekColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-superColor:%1;}").arg(superColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-lunarColor:%1;}").arg(lunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-currentTextColor:%1;}").arg(currentTextColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-otherTextColor:%1;}").arg(otherTextColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-selectTextColor:%1;}").arg(selectTextColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-hoverTextColor:%1;}").arg(hoverTextColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-currentLunarColor:%1;}").arg(currentLunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-otherLunarColor:%1;}").arg(otherLunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-selectLunarColor:%1;}").arg(selectLunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-hoverLunarColor:%1;}").arg(hoverLunarColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-currentBgColor:%1;}").arg(currentBgColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-otherBgColor:%1;}").arg(otherBgColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-selectBgColor:%1;}").arg(selectBgColor.name()));
+//    qss.append(QString("LunarCalendarItem{qproperty-hoverBgColor:%1;}").arg(hoverBgColor.name()));
 
     this->setStyleSheet(qss.join(""));
 }
@@ -456,13 +541,14 @@ void LunarCalendarWidget::initDate()
     int year = date.year();
     int month = date.month();
     int day = date.day();
+    yijihandle(date);
 
     //设置为今天,设置变量防止重复触发
     btnClick = true;
     cboxYearandMonth->setCurrentIndex(cboxYearandMonth->findText(QString("%1.%2").arg(year).arg(month)));
     btnClick = false;
 
-    cboxYearandMonthLabel->setText(QString("%1.%2").arg(year).arg(month));
+    cboxYearandMonthLabel->setText(QString("   %1.%2").arg(year).arg(month));
 
     //首先判断当前月的第一天是星期几
     int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month, FirstdayisSun);
@@ -560,6 +646,19 @@ void LunarCalendarWidget::initDate()
     dayChanged(this->date);
 }
 
+void LunarCalendarWidget::customButtonsClicked(int x)
+{
+    if (x) {
+        yiLabel->setVisible(true);
+        jiLabel->setVisible(true);
+        yijistate = true;
+    } else {
+        yiLabel->setVisible(false);
+        jiLabel->setVisible(false);
+        yijistate = false;
+    }
+}
+
 void LunarCalendarWidget::downLabelHandle(const QDate &date)
 {
 
@@ -581,11 +680,39 @@ void LunarCalendarWidget::downLabelHandle(const QDate &date)
                                                         strLunarDay);
 
     QString labBottomarg =  "    " + strLunarYear + "  " + strLunarMonth + strLunarDay;
-
     labBottom->setText(labBottomarg);
+
+    yijihandle(date);
+
 }
 
+void LunarCalendarWidget::yijihandle(const QDate &date)
+{
+    /*解析json文件*/
+    QFile file(QString("/usr/share/ukui-panel/plugin-calendar/html/hlnew/hl%1.js").arg(date.year()));
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString value = file.readAll();
+    file.close();
 
+    QJsonParseError parseJsonErr;
+    QJsonDocument document = QJsonDocument::fromJson(value.toUtf8(),&parseJsonErr);
+    if(!(parseJsonErr.error == QJsonParseError::NoError))
+    {
+        qDebug()<<tr("解析json文件错误！");
+        return;
+    }
+    QJsonObject jsonObject = document.object();
+
+    if(jsonObject.contains(QString("d%1").arg(date.toString("MMdd"))))
+    {
+        QJsonValue jsonValueList = jsonObject.value(QString("d%1").arg(date.toString("MMdd")));
+        QJsonObject item = jsonValueList.toObject();
+        QString yiString = "     宜：" + item["y"].toString();
+        QString jiString = "     忌：" + item["j"].toString();
+        yiLabel->setText(yiString);
+        jiLabel->setText(jiString);
+    }
+}
 
 void LunarCalendarWidget::yearChanged(const QString &arg1)
 {
@@ -1100,3 +1227,20 @@ void m_PartLineWidget::paintEvent(QPaintEvent *event)
 
     QWidget::paintEvent(event);
 }
+
+statelabel::statelabel() : QLabel()
+{
+
+
+}
+
+//鼠标点击事件
+void statelabel::mousePressEvent(QMouseEvent *event)
+{
+    if (event->buttons() == Qt::LeftButton){
+        Q_EMIT labelclick();
+
+    }
+    return;
+}
+
