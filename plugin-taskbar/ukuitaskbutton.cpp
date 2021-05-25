@@ -152,6 +152,7 @@ void UKUITaskButton::updateText()
 */
 void UKUITaskButton::setLeaderWindow(WId leaderWindow) {
     mWindow = leaderWindow;
+    updateIcon();
 }
 
 void UKUITaskButton::updateIcon()

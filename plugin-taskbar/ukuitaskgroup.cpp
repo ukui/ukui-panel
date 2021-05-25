@@ -1361,7 +1361,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     {
         removeWidget();
     }
-    mpWidget = new QWidget;
+    mpWidget = new QWidget(this);
     mpWidget->setAttribute(Qt::WA_TranslucentBackground);
     setLayOutForPostion();
     /*begin catch preview picture*/
@@ -1386,7 +1386,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         if(display)
             XCloseDisplay(display);
     }
-
     for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
@@ -1400,11 +1399,11 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         float imgWidth = 0;
         float imgHeight = 0;
         if (plugin()->panel()->isHorizontal()) {
-            if (mVisibleHash.size() == 1)
-                imgWidth = THUMBNAIL_WIDTH;
-            else
-                imgWidth = allwidth * (float)attr.width/(float)truewidth ;
-            imgHeight = THUMBNAIL_HEIGHT;
+            float thmbwidth = (float)attr.width / (float)attr.height;
+                imgWidth = thmbwidth * winHeight;
+                imgHeight = winHeight;
+                if (imgWidth > THUMBNAIL_WIDTH)
+                    imgWidth = THUMBNAIL_WIDTH;
         } else {
             imgWidth = THUMBNAIL_WIDTH;
             imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH;
