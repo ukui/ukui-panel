@@ -102,7 +102,7 @@ include(./cmake/ukui-build-tools/modules/UKUiTranslationLoader.cmake)
 set(ENABLED_PLUGINS) # list of enabled plugins
 set(STATIC_PLUGINS) # list of statically linked plugins
 
-setByDefault(QUICKLAUNCH_PLUGIN Yes)
+setByDefault(QUICKLAUNCH_PLUGIN No)
 if(QUICKLAUNCH_PLUGIN)
     list(APPEND STATIC_PLUGINS "quicklaunch")
     add_definitions(-DWITH_QUICKLAUNCH_PLUGIN)

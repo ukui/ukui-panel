@@ -8,6 +8,9 @@ set(HEADERS
     ukuigrouppopup.h
     ukuitaskwidget.h
     ukuitaskclosebutton.h
+        quicklaunchaction.h
+        json.h
+#         quicklaunchbutton.h
 )
 
 set(SOURCES
@@ -18,6 +21,9 @@ set(SOURCES
     ukuigrouppopup.cpp
     ukuitaskwidget.cpp
     ukuitaskclosebutton.cpp
+    quicklaunchaction.cpp
+    json.cpp
+#    quicklaunchbutton.cpp
 )
 
 find_package(X11 REQUIRED)
@@ -26,7 +32,6 @@ set(LIBRARIES
     ${X11_LIBRARIES}
     Qt5X11Extras
 )
-
 find_package(PkgConfig)
 pkg_check_modules(GIOUNIX2 REQUIRED gio-unix-2.0)
 pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)

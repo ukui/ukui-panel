@@ -47,7 +47,31 @@
 #include <QStyleOption>
 #include <QPainter>
 #include <QtDBus/QtDBus>
+#include <QHash>
+#include <QString>
+#include <QVector>
+#include "qlayout.h"
+#include "qlayoutitem.h"
+#include "qlayoutitem.h"
+#include "qgridlayout.h"
+#include <QFileSystemWatcher>
+#include <QtCore/QObject>
+#include <QPushButton>
+#include <QToolButton>
 
+QT_BEGIN_NAMESPACE
+class QByteArray;
+template<class T> class QList;
+template<class Key, class Value> class QMap;
+class QString;
+class QStringList;
+class QVariant;
+QT_END_NAMESPACE
+
+class XdgDesktopFile;
+class QuickLaunchAction;
+class QSettings;
+class QLabel;
 class QSignalMapper;
 class UKUITaskButton;
 class ElidedButtonStyle;
@@ -72,151 +96,45 @@ public:
     explicit UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget* parent = 0);
     virtual ~UKUITaskBar();
 
-    /**
-     * @brief realign
-     *
-     * it's use to realign the position of taskbar, the size and the position of taskgroup buttons and refresh the style of
-     *
-     * the icon in buttons.
-     *
-     */
     void realign();
 
-    /**
-     * @brief buttonStyle
-     *
-     * To get the style of the group buttons, the parameter in this class called mButtonStyle.
-     *
-     * @return Qt::ToolButtonStyle
-     */
     Qt::ToolButtonStyle buttonStyle() const { return mButtonStyle; }
-
-    /**
-     * @brief buttonWidth
-     *
-     * To get the width of the buttons, the parameter in this class called mButtonWidth.
-     *
-     * @return int
-     */
     int buttonWidth() const { return mButtonWidth; }
-
-    /**
-     * @brief closeOnMiddleClick
-     *
-     * To get the press of the mid-button on mouse, the parameter in this class called mCloseOnMiddleClick.
-     *
-     * @return bool
-     */
     bool closeOnMiddleClick() const { return mCloseOnMiddleClick; }
-
-    /**
-     * @brief raiseOnCurrentDesktop
-     *
-     * To get the window is on current desktop or not, to judge wether show the button.
-     *
-     * The parameter in this class called mRaiseOnCurrentDesktop.
-     *
-     * @return bool
-     */
     bool raiseOnCurrentDesktop() const { return mRaiseOnCurrentDesktop; }
-
-    /**
-     * @brief isShowOnlyOneDesktopTasks
-     *
-     * To get the group button contains just one window or more on one desktop.
-     *
-     * The parameter in this class called mShowOnlyOneDesktopTasks.
-     *
-     * @return bool
-     */
     bool isShowOnlyOneDesktopTasks() const { return mShowOnlyOneDesktopTasks; }
-
-    /**
-     * @brief showDesktopNum
-     *
-     * To get the number of the desktop which group buttons are showed.
-     *
-     * The parameter in this class called mshowDesktopNum.
-     *
-     * @return int
-     */
     int showDesktopNum() const { return mShowDesktopNum; }
-
-    /**
-     * @brief getCpuInfoFlg
-     *
-     * To get wether the type of the cpu is Loonson.
-     *
-     * @return
-     */
     bool getCpuInfoFlg() const { return CpuInfoFlg; }
-
-    /**
-     * @brief isShowOnlyCurrentScreenTasks
-     *
-     * To get wether the task window is only show on current screen.
-     *
-     * @return
-     */
     bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
-
-    /**
-     * @brief isShowOnlyMinimizedTasks
-     *
-     * To get wether the task window is only show in minimaized.
-     *
-     * @return
-     */
+    bool ignoreSymbolCMP(QString filename,QString groupname);
     bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
-
-    /**
-     * @brief isAutoRotate
-     *
-     * To get wether the auto rotation is on.
-     *
-     * @return
-     */
     bool isAutoRotate() const { return mAutoRotate; }
-
-    /**
-     * @brief isGroupingEnabled
-     *
-     * To get wether the window grouping is enable or not.
-     *
-     * @return
-     */
     bool isGroupingEnabled() const { return mGroupingEnabled; }
-
-    /**
-     * @brief isShowGroupOnHover
-     *
-     * To get wether the button is on hover by mouse or others.
-     *
-     * @return
-     */
     bool isShowGroupOnHover() const { return mShowGroupOnHover; }
-
-    /**
-     * @brief isIconByClass
-     *
-     * To get wether the group icon is in same class of the window or not.
-     *
-     * @return
-     */
     bool isIconByClass() const { return mIconByClass; }
-
-    /**
-     * @brief setShowGroupOnHover
-     *
-     * To set the flag of group button on hover.
-     *
-     * @param bFlag
-     */
     void setShowGroupOnHover(bool bFlag);
     inline IUKUIPanel * panel() const { return mPlugin->panel(); }
     inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
-    bool ignoreSymbolCMP(QString filename,QString groupname);
+    void pubAddButton(QuickLaunchAction* action) { addButton(action); }
+    void pubSaveSettings() { saveSettings(); }
+    QString isComputerOrTrash(QString urlName);
+    bool pubCheckIfExist(QString name);
+
+
+    ////////////////////////////////////////////////
+    /// \brief quicklaunch func
+    ///
+
+    int indexOfButton(UKUITaskGroup *button) const;
+    int countOfButtons() const;
+    //virtual QLayoutItem *takeAt(int index) = 0;
+    void saveSettings();
+    void showPlaceHolder();
+    void refreshQuickLaunch();
+    bool isDesktopFile(QString urlName);
+    friend class FilectrlAdaptor;
+
 
 signals:
     void buttonRotationRefreshed(bool autoRotate, IUKUIPanel::Position position);
@@ -226,6 +144,8 @@ signals:
     void iconByClassChanged();
     void popupShown(UKUITaskGroup* sender);
     void sendToUkuiDEApp(void);
+//quicklaunch
+    void setsizeoftaskbarbutton(int _size);
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent * event);
@@ -234,32 +154,89 @@ protected:
     void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *e);
+    void dropEvent(QDropEvent *e);
 
 private slots:
+
     void refreshTaskList();
     void refreshButtonRotation();
     void refreshPlaceholderVisibility();
     void groupBecomeEmptySlot();
+    void saveSettingsSlot();
+   // void groupHiddenSlot();
+   // void groupVisibleSlot(QString name, bool will);
     void onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2);
     void onWindowAdded(WId window);
     void onWindowRemoved(WId window);
     void registerShortcuts();
     void shortcutRegistered();
     void activateTask(int pos);
+    void DosaveSettings() { saveSettings(); }
+
+    ////////////////////////////
+    /// quicklaunch slots
+    ///
+    bool checkButton(QuickLaunchAction* action);
+    void removeButton(QuickLaunchAction* action);
+    void removeButton(QString exec);
+    void buttonDeleted();
+    void switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button);
+    void PageUp();
+    void PageDown();
+
+    QString readFile(const QString &filename);
+    /**
+     * @brief loadJsonfile
+     * 加载json文件
+     */
+    void loadJsonfile();
 
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
 
 private:
     void addWindow(WId window);
+    void addButton(QuickLaunchAction* action);
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
+    void _AddToTaskbar(QString arg);
+    void doInitGroupButton(QString sname);
+    void initRelationship();
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
     TaskStatus taskstatus;
 
+    ////////////////////////////////////
+    /// quicklaunch parameter
+
+    QVector<UKUITaskGroup*> mVBtn;
+    QGSettings *settings;
+    QFileSystemWatcher *fsWatcher;
+    QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
+    QString desktopFilePath ="/usr/share/applications/";
+    QString androidDesktopFilePath =QDir::homePath()+"/.local/share/applications/";
+
+    QToolButton *pageup;
+    QToolButton *pagedown;
+    QWidget *tmpwidget;
+    QVector <UKUITaskGroup*> mBtnAll;
+    QVector <int> mBtncvd;
+    int show_num = 0;
+    int page_num = 1;
+    int max_page;
+    int old_page;
+    void ShowPage();
+    void GetMaxPage();
+    ///////////////////////////////////
+    /// quicklaunch function
+
+    void directoryUpdated(const QString &path);
+    int savecount;
+
 private:
     QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
+    QList <WId> swid;
     UKUi::GridLayout *mLayout;
 //    QList<GlobalKeyShortcut::Action*> mKeys;
     QSignalMapper *mSignalMapper;
@@ -268,6 +245,7 @@ private:
     Qt::ToolButtonStyle mButtonStyle;
     int mButtonWidth;
     int mButtonHeight;
+
     bool CpuInfoFlg = true;
     bool mCloseOnMiddleClick;
     bool mRaiseOnCurrentDesktop;
@@ -280,6 +258,7 @@ private:
     bool mShowGroupOnHover;
     bool mIconByClass;
     bool mCycleOnWheelScroll; //!< flag for processing the wheelEvent
+    bool hasPlaceHolder;
 
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
@@ -293,6 +272,82 @@ private:
     QWidget *mPlaceHolder;
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
+
+    QList<QString> blacklist;
+    QList<QString> whitelist;
+    QString mModel;
+    QString SecurityConfigPath;
+
+public slots:
+    bool AddToTaskbar(QString arg);
+    bool RemoveFromTaskbar(QString arg);
+    void FileDeleteFromTaskbar(QString arg);
+    bool CheckIfExist(QString arg);
+    int GetPanelPosition(QString arg);
+    int GetPanelSize(QString arg);
+    void WindowAddtoTaskBar(QString arg);
+    void WindowRemovefromTaskBar(QString arg);
+    void ReloadSecurityConfig();
+    QString GetSecurityConfigPath();
+
+};
+
+class FilectrlAdaptor: public QDBusAbstractAdaptor
+{
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "com.ukui.panel.desktop")
+    Q_CLASSINFO("D-Bus Introspection", ""
+"  <interface name=\"com.ukui.panel.desktop\">\n"
+"    <method name=\"AddToTaskbar\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"RemoveFromTaskbar\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"FileDeleteFromTaskbar\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"CheckIfExist\">\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"GetPanelPosition\">\n"
+"      <arg direction=\"out\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"GetPanelSize\">\n"
+"      <arg direction=\"out\" type=\"i\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
+"    </method>\n"
+"    <method name=\"ReloadSecurityConfig\">\n"
+"    </method>\n"
+"    <method name=\"GetSecurityConfigPath\">\n"
+"      <arg direction=\"out\" type=\"s\"/>\n"
+"    </method>\n"
+"  </interface>\n"
+        "")
+public:
+    FilectrlAdaptor(QObject *parent);
+    virtual ~FilectrlAdaptor();
+
+public: // PROPERTIES
+public Q_SLOTS: // METHODS
+    bool AddToTaskbar(const QString &arg);
+    bool CheckIfExist(const QString &arg);
+    bool RemoveFromTaskbar(const QString &arg);
+    bool FileDeleteFromTaskbar(const QString &arg);
+    int GetPanelPosition(const QString &arg);
+    int GetPanelSize(const QString &arg);
+    void ReloadSecurityConfig();
+    QString GetSecurityConfigPath();
+
+Q_SIGNALS: // SIGNALS
+
+signals:
+    void addtak(int);
 };
 
 #endif // UKUITASKBAR_H
