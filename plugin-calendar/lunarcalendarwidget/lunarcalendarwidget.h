@@ -129,6 +129,7 @@ private:
     QGSettings *gsettings;
     QString timemodel;
     bool yijistate = false;
+    QString dateShowMode;
     void downLabelHandle(const QDate &date);
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发

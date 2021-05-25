@@ -55,12 +55,10 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 
     widgetTime = new QWidget;
     timeShow = new QVBoxLayout(widgetTime);
-    timer = new QTimer();
+
     datelabel =new QLabel(this);
     timelabel = new QLabel(this);
     lunarlabel = new QLabel(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
-    timer->start(1000);
 
     widgetTime->setObjectName("widgetTime");
     timeShow->setContentsMargins(0, 0, 0, 0);
@@ -119,7 +117,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     timemodel = gsettings->get("hoursystem").toString();
 
 
-    //农历切换监听
+    //农历切换监听与日期显示格式
     connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key == LUNAR_KEY){
             qDebug()<<"农历切换";
@@ -141,7 +139,20 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
                 jiLabel->setVisible(false);
             }
          }
+        if(key == "date") {
+            if(calendar_gsettings->get("date").toString() == "cn"){
+                dateShowMode = "yyyy/MM/dd    dddd";
+            } else {
+                dateShowMode = "yyyy-MM-dd    dddd";
+            }
+        }
     });
+
+    if(calendar_gsettings->get("date").toString() == "cn"){
+        dateShowMode = "yyyy/MM/dd    dddd";
+    } else {
+        dateShowMode = "yyyy-MM-dd    dddd";
+    }
 
     //初始化农历/公历显示方式
     if(calendar_gsettings->get("calendar").toString() == "lunar") {
@@ -162,6 +173,9 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     }
 
 
+    timer = new QTimer();
+    connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
+    timer->start(1000);
 
     setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
     setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
@@ -246,9 +260,8 @@ void LunarCalendarWidget::_timeUpdate() {
     } else {
         _time = locale.toString(time,"hh:mm:ss");
     }
-    QString _date = locale.toString(time,"yyyy-MM-dd    dddd");
-    QFont font;
 
+    QFont font;
     datelabel->setText(_time);
     font.setPointSize(22);
     datelabel->setFont(font);
@@ -271,7 +284,7 @@ void LunarCalendarWidget::_timeUpdate() {
                                                         strLunarMonth,
                                                         strLunarDay);
 
-
+    QString _date = locale.toString(time,dateShowMode);
     _date = _date + "    "+strLunarMonth + strLunarDay;
     timelabel->setText(_date);
     font.setPointSize(12);
