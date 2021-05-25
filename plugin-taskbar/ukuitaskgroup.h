@@ -106,6 +106,7 @@ public:
     int buttonsCount() const;
     int visibleButtonsCount() const;
     void initVisibleHash();
+    UKUITaskGroup* getOwnQckBtn() { return this->mpQckLchBtn; }
 
     QWidget * addWindow(WId id);
     QWidget * checkedButton() const;
@@ -138,6 +139,7 @@ public slots:
     void onWindowRemoved(WId window);
     void timeout();
     void toDothis_customContextMenuRequested(const QPoint &pos);
+    void onDesktopChanged();
 
 protected:
     QMimeData * mimeData();
@@ -161,7 +163,6 @@ private slots:
     void onClicked(bool checked);
     void onChildButtonClicked();
     void onActiveWindowChanged(WId window);
-    void onDesktopChanged();
 
     void closeGroup();
     void refreshIconsGeometry();

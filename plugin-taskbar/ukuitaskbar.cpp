@@ -144,6 +144,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
             , this, &UKUITaskBar::onWindowChanged);
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &UKUITaskBar::onWindowAdded);
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
+    connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged()));
 //    QGSettings *changeTheme;
 //        const QByteArray id_Theme("org.ukui.style");
 //        if(QGSettings::isSchemaInstalled(id_Theme)){
@@ -244,6 +245,18 @@ QString UKUITaskBar::readFile(const QString &filename) {
     } else {
         QTextStream in(&f);
         return in.readAll();
+    }
+}
+
+void UKUITaskBar::onDesktopChanged() {
+    for (auto i = mKnownWindows.begin(); mKnownWindows.end() != i; ++i)
+    {
+        (*i)->onDesktopChanged();
+        if ((*i)->existSameQckBtn) {
+            UKUITaskGroup* btn = (*i)->getOwnQckBtn();
+            if (mVBtn.contains(btn))
+                btn->setVisible((*i)->isHidden());
+        }
     }
 }
 
@@ -1273,7 +1286,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
     {
         UKUITaskGroup *group = *it;
         if(btn->file_name == group->file_name
-           &&(layout()->indexOf(group) >= 0 ))
+           &&(layout()->indexOf(group) >= 0))
         {
             mLayout->addWidget(btn);
             mLayout->moveItem(mLayout->indexOf(btn), mLayout->indexOf(group));
@@ -1282,7 +1295,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
             btn->existSameQckBtn = true;
             mVBtn.push_back(btn);
             group->setQckLchBtn(btn);
-            btn->setHidden(true);
+            btn->setHidden(group->isVisible());
             break;
         }
     }
