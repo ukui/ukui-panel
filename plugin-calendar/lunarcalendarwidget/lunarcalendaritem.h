@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDate>
+#include <QMap>
 
 #ifdef quc
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
@@ -66,6 +67,8 @@ public:
     };
 
     explicit LunarCalendarItem(QWidget *parent = 0);
+    QMap<QString,QMap<QString,QString>> worktime;
+    QString handleJsMap(QString year,QString month2day);              //处理js解析出的数据
 
 protected:
     void enterEvent(QEvent *);
@@ -111,6 +114,8 @@ private:
     QColor otherBgColor;            //其他月背景颜色
     QColor selectBgColor;           //选中日期背景颜色
     QColor hoverBgColor;            //悬停日期背景颜色
+
+
 
 public:
     bool getSelect()                const;

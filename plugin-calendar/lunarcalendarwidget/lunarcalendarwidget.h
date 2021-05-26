@@ -25,7 +25,8 @@
 #include <QLabel>
 #include <QObject>
 #include <QMouseEvent>
-
+#include "../../panel/pluginsettings.h"
+#include "../../panel/iukuipanelplugin.h"
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
 
@@ -123,13 +124,19 @@ private:
     m_PartLineWidget *lineDown;
     statelabel *btnPrevYear;
     statelabel *btnNextYear;
+    QLabel *yijichooseLabel;
     QRadioButton *yijichoose;
     QLabel *yiLabel;
     QLabel *jiLabel;
     QGSettings *gsettings;
     QString timemodel;
     bool yijistate = false;
+    bool lunarstate =false;
+//    IUKUIPanelPlugin *mPlugin;
     QString dateShowMode;
+    QMap<QString,QString> worktimeinside;
+    QMap<QString,QMap<QString,QString>> worktime;
+    void analysisWorktimeJs();       //解析js文件
     void downLabelHandle(const QDate &date);
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
@@ -174,6 +181,8 @@ private:
     void setColor(bool mdark_style);
     void _timeUpdate();
     void yijihandle(const QDate &date);
+    QString getSettings();
+    void setSettings(QString arg);
     QGSettings *style_settings;
     bool dark_style;
 

@@ -102,6 +102,29 @@ void LunarCalendarItem::mouseReleaseEvent(QMouseEvent *)
     this->update();
 }
 
+QString LunarCalendarItem::handleJsMap(QString year,QString month2day)
+{
+    QString oneNUmber = "worktime.y" + year;
+    QString twoNumber = "d" + month2day;
+
+    QMap<QString,QMap<QString,QString>>::Iterator it = worktime.begin();
+
+    while(it!=worktime.end()) {
+         if(it.key() == oneNUmber) {
+            QMap<QString,QString>::Iterator it1 = it.value().begin();
+            while(it1!=it.value().end()) {
+                if(it1.key() == twoNumber) {
+                    return it1.value();
+                }
+                it1++;
+            }
+         }
+         it++;
+    }
+    return "-1";
+}
+
+
 void LunarCalendarItem::paintEvent(QPaintEvent *)
 {
     //绘制准备工作,启用反锯齿
@@ -228,14 +251,52 @@ void LunarCalendarItem::drawDay(QPainter *painter)
     font.setPixelSize(side / 2.7);
     painter->setFont(font);
 
-
+    //代码复用率待优化
     if (showLunar) {
         QRect dayRect = QRect(0, 0, width, height / 1.7);
         painter->drawText(dayRect, Qt::AlignHCenter | Qt::AlignBottom, QString::number(date.day()));
+        if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "2") {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(255,0,0));
+            QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
+            painter->drawRoundedRect(dayRect1,1,1);
+            font.setPixelSize(side / 5);
+            painter->setFont(font);
+            painter->setPen(Qt::white);
+            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"休");
+        } else if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "1") {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(251,170,42));
+            QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
+            painter->drawRoundedRect(dayRect1,1,1);
+            font.setPixelSize(side / 5);
+            painter->setFont(font);
+            painter->setPen(Qt::white);
+            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"班");
+        }
     }
     else {
         QRect dayRect = QRect(0, 0, width, height);
         painter->drawText(dayRect, Qt::AlignCenter, QString::number(date.day()));
+        if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "2") {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(255,0,0));
+            QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
+            painter->drawRoundedRect(dayRect1,1,1);
+            font.setPixelSize(side / 5);
+            painter->setFont(font);
+            painter->setPen(Qt::white);
+            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"休");
+        } else if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "1") {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(251,170,42));
+            QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
+            painter->drawRoundedRect(dayRect1,1,1);
+            font.setPixelSize(side / 5);
+            painter->setFont(font);
+            painter->setPen(Qt::white);
+            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"班");
+        }
     }
 
     painter->restore();

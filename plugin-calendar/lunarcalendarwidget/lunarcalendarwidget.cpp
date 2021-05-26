@@ -2,6 +2,10 @@
 
 #include "lunarcalendarwidget.h"
 
+
+#include <QJsonParseError>
+#include <QJsonObject>
+
 #define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
 #define LUNAR_KEY                 "calendar"
 #define FIRST_DAY_KEY "firstday"
@@ -21,6 +25,7 @@
 
 LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 {
+    analysisWorktimeJs();
     const QByteArray calendar_id(PANEL_CONTROL_IN_CALENDAR);
     if(QGSettings::isSchemaInstalled(calendar_id)){
         calendar_gsettings = new QGSettings(calendar_id);
@@ -124,6 +129,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
             qDebug()<<calendar_gsettings->get("calendar").toString();
             if(calendar_gsettings->get("calendar").toString() == "lunar") {
                 //农历
+                lunarstate = true;
                 labWidget->setVisible(true);
                 if(yijistate) {
                     yiLabel->setVisible(true);
@@ -134,10 +140,13 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
                 }
             } else {
                 //公历
+                lunarstate = false;
                 labWidget->setVisible(false);
                 yiLabel->setVisible(false);
                 jiLabel->setVisible(false);
             }
+
+            _timeUpdate();
          }
         if(key == "date") {
             if(calendar_gsettings->get("date").toString() == "cn"){
@@ -157,6 +166,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     //初始化农历/公历显示方式
     if(calendar_gsettings->get("calendar").toString() == "lunar") {
         //农历
+        lunarstate = true;
         labWidget->setVisible(true);
         if(yijistate) {
             yiLabel->setVisible(true);
@@ -167,6 +177,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
         }
     } else {
         //公历
+        lunarstate = false;
         labWidget->setVisible(false);
         yiLabel->setVisible(false);
         jiLabel->setVisible(false);
@@ -285,7 +296,9 @@ void LunarCalendarWidget::_timeUpdate() {
                                                         strLunarDay);
 
     QString _date = locale.toString(time,dateShowMode);
-    _date = _date + "    "+strLunarMonth + strLunarDay;
+    if (lunarstate) {
+        _date = _date + "    "+strLunarMonth + strLunarDay;
+    }
     timelabel->setText(_date);
     font.setPointSize(12);
     timelabel->setFont(font);
@@ -419,6 +432,7 @@ void LunarCalendarWidget::initWidget()
     //逐个添加日标签
     for (int i = 0; i < 42; i++) {
         LunarCalendarItem *lab = new LunarCalendarItem;
+        lab->worktime = worktime;
         connect(lab, SIGNAL(clicked(QDate, LunarCalendarItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarItem::DayType)));
         layoutBody->addWidget(lab, i / 7, i % 7);
         dayItems.append(lab);
@@ -427,14 +441,16 @@ void LunarCalendarWidget::initWidget()
     //
     labWidget = new QWidget();
     labBottom = new QLabel();
+    yijichooseLabel = new QLabel();
+    yijichooseLabel->setText("宜忌");
     QFont font;
     font.setPointSize(12);
     labBottom->setFont(font);
     yijichoose = new QRadioButton();
-    yijichoose->setText("宜忌");
     labLayout = new QHBoxLayout();
     labLayout->addWidget(labBottom);
     labLayout->addItem(new QSpacerItem(100,5,QSizePolicy::Expanding,QSizePolicy::Minimum));
+    labLayout->addWidget(yijichooseLabel);
     labLayout->addWidget(yijichoose);
     labWidget->setLayout(labLayout);
 
@@ -534,6 +550,40 @@ void LunarCalendarWidget::initStyle()
 
     this->setStyleSheet(qss.join(""));
 }
+
+void LunarCalendarWidget::analysisWorktimeJs()
+{
+    /*解析json文件*/
+    QFile file("/usr/share/ukui-panel/plugin-calendar/html/jiejiari.js");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString value = file.readAll();
+    file.close();
+
+    QJsonParseError parseJsonErr;
+    QJsonDocument document = QJsonDocument::fromJson(value.toUtf8(),&parseJsonErr);
+    if(!(parseJsonErr.error == QJsonParseError::NoError))
+    {
+        qDebug()<<tr("解析json文件错误！");
+        return;
+    }
+    QJsonObject jsonObject = document.object();
+    QStringList args = jsonObject.keys();
+
+    for (int i=0;i<args.count();i++) {
+        if(jsonObject.contains(args.at(i)))
+        {
+            QJsonValue jsonValueList = jsonObject.value(args.at(i));
+            QJsonObject item = jsonValueList.toObject();
+            QStringList arg2 = item.keys();
+            for (int j=0;j<arg2.count();j++) {
+                worktimeinside.insert(arg2.at(j),item[arg2.at(j)].toString());
+            }
+        }
+        worktime.insert(args.at(i),worktimeinside);
+        worktimeinside.clear();
+    }
+}
+
 
 //初始化日期面板
 void LunarCalendarWidget::initDate()
@@ -648,6 +698,7 @@ void LunarCalendarWidget::initDate()
 
 void LunarCalendarWidget::customButtonsClicked(int x)
 {
+    qDebug()<<getSettings();
     if (x) {
         yiLabel->setVisible(true);
         jiLabel->setVisible(true);
@@ -657,6 +708,18 @@ void LunarCalendarWidget::customButtonsClicked(int x)
         jiLabel->setVisible(false);
         yijistate = false;
     }
+}
+
+QString LunarCalendarWidget::getSettings()
+{
+    QString arg = "配置文件";
+    return  arg;
+
+}
+
+void LunarCalendarWidget::setSettings(QString arg)
+{
+
 }
 
 void LunarCalendarWidget::downLabelHandle(const QDate &date)
