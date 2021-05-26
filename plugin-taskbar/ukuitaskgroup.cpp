@@ -177,7 +177,6 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     initActionsInRightButtonMenu();
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
-    connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged()));
     connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(onActiveWindowChanged(WId)));
     connect(parent, &UKUITaskBar::refreshIconGeometry, this, &UKUITaskGroup::refreshIconsGeometry);
     connect(parent, &UKUITaskBar::buttonStyleRefreshed, this, &UKUITaskGroup::setToolButtonsStyle);
@@ -849,6 +848,8 @@ void UKUITaskGroup::refreshVisibility()
    // else setVisible(will);
   //  will &= this->isVisible();
     setVisible(will);
+    if (this->existSameQckBtn)
+        mpQckLchBtn->setHidden(will);
     if(!mPopup->isVisible())
     {
         regroup();
@@ -1551,7 +1552,6 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int v_all = 0;
     int iScreenWidth = QApplication::screens().at(0)->size().width();
     float minimumHeight = THUMBNAIL_HEIGHT;
-    int allwidth = winWidth * mVisibleHash.size();
     for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
     {
         it.value()->removeThumbNail();
@@ -1563,7 +1563,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         if(display)
             XCloseDisplay(display);
     }
-    for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
+    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
         btn->setParent(mPopup);
@@ -1576,11 +1576,11 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         float imgWidth = 0;
         float imgHeight = 0;
         if (plugin()->panel()->isHorizontal()) {
-            if (mVisibleHash.size() == 1)
+            float thmbwidth = (float)attr.width / (float)attr.height;
+            imgWidth = thmbwidth * winHeight;
+            imgHeight = winHeight;
+            if (imgWidth > THUMBNAIL_WIDTH)
                 imgWidth = THUMBNAIL_WIDTH;
-            else
-                imgWidth = allwidth * (float)attr.width/(float)truewidth ;
-            imgHeight = THUMBNAIL_HEIGHT;
         } else {
             imgWidth = THUMBNAIL_WIDTH;
             imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH;

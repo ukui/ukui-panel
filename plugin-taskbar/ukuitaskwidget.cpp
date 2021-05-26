@@ -347,7 +347,6 @@ void UKUITaskWidget::mouseMoveEvent(QMouseEvent* event)
 }
 
 void UKUITaskWidget::closeGroup() {
-    printf("\n....\n");
     emit closeSigtoGroup();
 }
 
@@ -376,8 +375,8 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 
     });
     KWindowInfo info(mWindow, NET::WMState);
-    above->setEnabled(info.state() != NET::KeepAbove);
-    clear->setEnabled(info.state() == NET::KeepAbove);
+    above->setEnabled(!(info.state() & NET::KeepAbove));
+    clear->setEnabled(info.state() & NET::KeepAbove);
     menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
     plugin()->willShowWindow(menu);
     menu->show();
@@ -484,6 +483,8 @@ void UKUITaskWidget::deMaximizeApplication()
 
 void UKUITaskWidget::setWindowKeepAbove()
 {
+    if (!isApplicationActive())
+        raiseApplication();
     KWindowSystem::setState(mWindow, NET::KeepAbove);
 }
 

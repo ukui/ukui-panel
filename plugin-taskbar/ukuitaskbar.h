@@ -173,6 +173,7 @@ private slots:
     void shortcutRegistered();
     void activateTask(int pos);
     void DosaveSettings() { saveSettings(); }
+    void onDesktopChanged();
 
     ////////////////////////////
     /// quicklaunch slots
