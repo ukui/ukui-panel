@@ -848,6 +848,8 @@ void UKUITaskGroup::refreshVisibility()
    // else setVisible(will);
   //  will &= this->isVisible();
     setVisible(will);
+    if (this->existSameQckBtn)
+        mpQckLchBtn->setHidden(will);
     if(!mPopup->isVisible())
     {
         regroup();
