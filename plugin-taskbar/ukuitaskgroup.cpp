@@ -246,6 +246,7 @@ void UKUITaskGroup::badBackFunctionToFindDesktop() {
 }
 
 void UKUITaskGroup::initDesktopFileName(WId window) {
+
     KWindowInfo info(window, 0, NET::WM2DesktopFileName);
     QString cmd;
     cmd.sprintf(GET_PROCESS_EXEC_NAME_MAIN, info.pid());
@@ -262,6 +263,8 @@ void UKUITaskGroup::initDesktopFileName(WId window) {
             continue;
         _cmd.sprintf(GET_DESKTOP_EXEC_NAME_MAIN, fileInfo.filePath().toStdString().data());
         QString desktopFileExeName = getDesktopFileName(_cmd);
+        if (desktopFileExeName.at(desktopFileExeName.size() - 1) == '\n')
+            desktopFileExeName.truncate(desktopFileExeName.size() - 1);
         flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
         if (flag && !desktopFileExeName.isEmpty()) {
             file_name = fileInfo.filePath();
