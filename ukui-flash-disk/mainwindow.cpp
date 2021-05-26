@@ -785,7 +785,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
     }
     else
     {
-        QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload true");
+        //QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload true");
     }
     bool isNewMount = false;
     GDrive* gdrive = g_volume_get_drive(volume);
@@ -1714,7 +1714,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
                         }
                     }
                 }
-                if (uVolumeNum == 0 && uDiskCount > 0) {
+                if (itDriveInfo->second.listVolumes.size() > 0 && uVolumeNum == 0 && uDiskCount > 0) {
                     uDiskCount --;
                 }
             }
