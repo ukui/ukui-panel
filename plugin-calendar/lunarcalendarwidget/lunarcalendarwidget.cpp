@@ -383,8 +383,8 @@ void LunarCalendarWidget::initWidget()
     QHBoxLayout *layoutTop = new QHBoxLayout(widgetTop);
     layoutTop->setContentsMargins(0, 0, 0, 9);
     layoutTop->addItem(new QSpacerItem(10,1));
-//    layoutTop->addWidget(cboxYearandMonth);
-    layoutTop->addWidget(cboxYearandMonthLabel);
+    layoutTop->addWidget(cboxYearandMonth);
+//    layoutTop->addWidget(cboxYearandMonthLabel);
     layoutTop->addWidget(btnNextYear);
     layoutTop->addWidget(btnPrevYear);
 
