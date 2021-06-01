@@ -29,6 +29,8 @@
 #include "../../panel/iukuipanelplugin.h"
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
+#include "customstylePushbutton2.h"
+#include <QCheckBox>
 
 
 class QLabel;
@@ -125,13 +127,14 @@ private:
     statelabel *btnPrevYear;
     statelabel *btnNextYear;
     QLabel *yijichooseLabel;
-    QRadioButton *yijichoose;
+    QCheckBox *yijichoose;
     QLabel *yiLabel;
     QLabel *jiLabel;
     QGSettings *gsettings;
     QString timemodel;
     bool yijistate = false;
     bool lunarstate =false;
+    bool oneRun = true;
 //    IUKUIPanelPlugin *mPlugin;
     QString dateShowMode;
     QMap<QString,QString> worktimeinside;
