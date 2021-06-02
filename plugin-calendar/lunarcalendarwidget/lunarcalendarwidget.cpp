@@ -380,7 +380,7 @@ void LunarCalendarWidget::initWidget()
     //顶部横向布局
     QHBoxLayout *layoutTop = new QHBoxLayout(widgetTop);
     layoutTop->setContentsMargins(0, 0, 0, 9);
-    layoutTop->addItem(new QSpacerItem(10,1));
+    layoutTop->addItem(new QSpacerItem(5,1));
 //    layoutTop->addWidget(cboxYearandMonth);
     layoutTop->addWidget(cboxYearandMonthLabel);
     layoutTop->addWidget(btnNextYear);
@@ -692,7 +692,7 @@ void LunarCalendarWidget::downLabelHandle(const QDate &date)
                                                         strLunarMonth,
                                                         strLunarDay);
 
-    QString labBottomarg =  "    " + strLunarYear + "  " + strLunarMonth + strLunarDay;
+    QString labBottomarg =  "  " + strLunarYear + "  " + strLunarMonth + strLunarDay;
     labBottom->setText(labBottomarg);
 
 }
