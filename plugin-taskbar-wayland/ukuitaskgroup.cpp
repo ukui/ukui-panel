@@ -825,11 +825,14 @@ void UKUITaskGroup::refreshVisibility()
         btn->setVisible(visible);
         if (btn->isVisibleTo(mPopup) && !mVisibleHash.contains(i.key()))
             mVisibleHash.insert(i.key(), i.value());
-        else if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key()))
+        else if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key())) {
             mVisibleHash.remove(i.key());
+            if (isLeaderWindow(btn->windowId()) && !will) {
+                setLeaderWindow(mVisibleHash.begin().key());
+            }
+        }
         will |= visible;
     }
-    setLeaderWindow(mVisibleHash.begin().key());
     bool is = isVisible();
     setVisible(will);
     if(!mPopup->isVisible())
@@ -1522,10 +1525,11 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         XGetWindowAttributes(display, it.key(), &attr);
         max_Height = attr.height > max_Height ? attr.height : max_Height;
         max_Width = attr.width > max_Width ? attr.width : max_Width;
+        truewidth += attr.width;
         if(display)
             XCloseDisplay(display);
     }
-    for (UKUITaskButtonHash::const_iterator it = mVisibleHash.begin();it != mVisibleHash.end();it++)
+    for (UKUITaskButtonHash::const_iterator it = mButtonHash.begin();it != mButtonHash.end();it++)
     {
         UKUITaskWidget *btn = it.value();
         btn->setParent(mPopup);
@@ -1538,11 +1542,11 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         float imgWidth = 0;
         float imgHeight = 0;
         if (plugin()->panel()->isHorizontal()) {
-			if (mVisibleHash.size() == 1)
-                 imgWidth = THUMBNAIL_WIDTH;
-            else
-                 imgWidth = allwidth * (float)attr.width/(float)truewidth ;
-            imgHeight = THUMBNAIL_HEIGHT;
+            float thmbwidth = (float)attr.width / (float)attr.height;
+                imgWidth = thmbwidth * winHeight;
+                imgHeight = winHeight;
+                if (imgWidth > THUMBNAIL_WIDTH)
+                    imgWidth = THUMBNAIL_WIDTH;
         } else {
             imgWidth = THUMBNAIL_WIDTH;
             imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH ;

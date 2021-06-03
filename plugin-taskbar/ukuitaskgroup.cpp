@@ -737,11 +737,14 @@ void UKUITaskGroup::refreshVisibility()
         btn->setVisible(visible);
         if (btn->isVisibleTo(mPopup) && !mVisibleHash.contains(i.key()))
             mVisibleHash.insert(i.key(), i.value());
-        else if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key()))
+        else if (!btn->isVisibleTo(mPopup) && mVisibleHash.contains(i.key())) {
             mVisibleHash.remove(i.key());
+            if (isLeaderWindow(btn->windowId()) && !will) {
+                setLeaderWindow(mVisibleHash.begin().key());
+            }
+        }
         will |= visible;
     }
-    setLeaderWindow(mVisibleHash.begin().key());
     bool is = isVisible();
     setVisible(will);
     if(!mPopup->isVisible())
