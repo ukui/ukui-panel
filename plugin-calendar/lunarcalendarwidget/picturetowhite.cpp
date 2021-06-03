@@ -49,7 +49,6 @@ QPixmap PictureToWhite::drawSymbolicColoredPixmap(const QPixmap &source)
     QColor gray(128,128,128);
     QColor standard (31,32,34);
     QImage img = source.toImage();
-    qDebug() << "tray_icon_color-->" << tray_icon_color;
     for (int x = 0; x < img.width(); x++) {
         for (int y = 0; y < img.height(); y++) {
             auto color = img.pixelColor(x, y);

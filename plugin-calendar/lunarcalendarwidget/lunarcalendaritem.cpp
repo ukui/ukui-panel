@@ -31,18 +31,21 @@ LunarCalendarItem::LunarCalendarItem(QWidget *parent) : QWidget(parent)
             otherTextColor = QColor(255, 255, 255,40);
             otherLunarColor = QColor(255, 255, 255,40);
             currentLunarColor = QColor(255, 255, 255,90);
+            lunarColor = QColor(255, 255, 255,90);
         } else if(fontSetting->get("style-name").toString() == "ukui-light") {
             weekColor = QColor(0, 0, 0);
             currentTextColor = QColor(0, 0, 0);
             otherTextColor = QColor(0,0,0,40);
             otherLunarColor = QColor(0,0,0,40);
             currentLunarColor = QColor(0,0,0,90);
+            lunarColor = QColor(0,0,0,90);
         } else if(fontSetting->get("style-name").toString() == "ukui-dark") {
             weekColor = QColor(255, 255, 255);
             currentTextColor = QColor(255, 255, 255);
             otherTextColor = QColor(255, 255, 255,40);
             otherLunarColor = QColor(255, 255, 255,40);
             currentLunarColor = QColor(255, 255, 255,90);
+            lunarColor = QColor(255, 255, 255,90);
         }
     });
 
@@ -52,17 +55,18 @@ LunarCalendarItem::LunarCalendarItem(QWidget *parent) : QWidget(parent)
         otherTextColor = QColor(0,0,0,40);
         otherLunarColor = QColor(0,0,0,40);
         currentLunarColor = QColor(0,0,0,90);
+        lunarColor = QColor(0,0,0,90);
     } else {
         weekColor = QColor(255, 255, 255);
         currentTextColor = QColor(255, 255, 255);
         otherTextColor = QColor(255, 255, 255,40);
         otherLunarColor = QColor(255, 255, 255,40);
         currentLunarColor = QColor(255, 255, 255,90);
+        lunarColor = QColor(255, 255, 255,90);
     }
 
     borderColor = QColor(180, 180, 180);
     superColor = QColor(255, 129, 6);
-    lunarColor = QColor(255,0,0);
 
     selectTextColor = QColor(255, 255, 255);
     hoverTextColor = QColor(250, 250, 250);
@@ -72,7 +76,7 @@ LunarCalendarItem::LunarCalendarItem(QWidget *parent) : QWidget(parent)
 
     currentBgColor = QColor(255, 255, 255);
     otherBgColor = QColor(240, 240, 240);
-    selectBgColor = QColor(65,105,225);
+    selectBgColor = QColor(55,143,250);
     hoverBgColor = QColor(204, 183, 180);
 }
 
@@ -92,7 +96,6 @@ void LunarCalendarItem::mousePressEvent(QMouseEvent *)
 {
     pressed = true;
     this->update();
-
     Q_EMIT clicked(date, dayType);
 }
 
@@ -102,8 +105,34 @@ void LunarCalendarItem::mouseReleaseEvent(QMouseEvent *)
     this->update();
 }
 
+QString LunarCalendarItem::handleJsMap(QString year,QString month2day)
+{
+    QString oneNUmber = "worktime.y" + year;
+    QString twoNumber = "d" + month2day;
+
+    QMap<QString,QMap<QString,QString>>::Iterator it = worktime.begin();
+
+    while(it!=worktime.end()) {
+         if(it.key() == oneNUmber) {
+            QMap<QString,QString>::Iterator it1 = it.value().begin();
+            while(it1!=it.value().end()) {
+                if(it1.key() == twoNumber) {
+                    return it1.value();
+                }
+                it1++;
+            }
+         }
+         it++;
+    }
+    return "-1";
+}
+
+
 void LunarCalendarItem::paintEvent(QPaintEvent *)
 {
+
+    QDate dateNow = QDate::currentDate();
+
     //绘制准备工作,启用反锯齿
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
@@ -111,11 +140,18 @@ void LunarCalendarItem::paintEvent(QPaintEvent *)
     //绘制背景和边框
     drawBg(&painter);
 
-    //优先绘制选中状态,其次绘制悬停状态
-    if (select) {
-        drawBgCurrent(&painter, selectBgColor);
+    //对比当前的时间，画选中状态
+    if(dateNow == date) {
+         drawBgCurrent(&painter, selectBgColor);
     }
+
+    //绘制悬停状态
     if (hover) {
+        drawBgHover(&painter, hoverBgColor);
+    }
+
+    //绘制选中状态
+    if (select) {
         drawBgHover(&painter, hoverBgColor);
     }
 
@@ -145,58 +181,29 @@ void LunarCalendarItem::drawBg(QPainter *painter)
 
 void LunarCalendarItem::drawBgCurrent(QPainter *painter, const QColor &color)
 {
-    int width = this->width();
-    int height = this->height();
-    int side = qMin(width, height);
-
     painter->save();
-
     painter->setPen(Qt::NoPen);
     painter->setBrush(color);
 
-    //根据设定绘制背景样式
-    if (selectType == SelectType_Rect) {
-        QRect rect = this->rect();
-        painter->drawRoundedRect(rect,1,1);
-    } /*else if (selectType == SelectType_Circle) {
-        int radius = side / 2 - 3;
-        painter->drawEllipse(QPointF(width / 2, height / 2), radius, radius);
-    } else if (selectType == SelectType_Triangle) {
-        int radius = side / 3;
-        QPolygon pts;
-        pts.setPoints(3, 1, 1, radius, 1, 1, radius);
-        painter->drawRect(rect());
-        painter->setBrush(superColor);
-        painter->drawConvexPolygon(pts);
-    } else if (selectType == SelectType_Image) {
-        //等比例缩放居中绘制
-        QImage img(bgImage);
-        if (!img.isNull()) {
-            img = img.scaled(this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            int x = (width - img.width()) / 2;
-            int y = (height - img.height()) / 2;
-            painter->drawImage(x, y, img);
-        }
-    }*/
+    QRect rect = this->rect();
+    painter->drawRoundedRect(rect,4,4);
+//    //根据设定绘制背景样式
+//    if (selectType == SelectType_Rect) {
 
+//    }
     painter->restore();
 }
 
 void LunarCalendarItem::drawBgHover(QPainter *painter, const QColor &color)
 {
-    int width = this->width();
-    int height = this->height();
-    int side = qMin(width, height);
-
     painter->save();
-//    painter->setPen(Qt::NoPen);
-//    painter->setBrush(color);
+    QRect rect = this->rect();
+    painter->setPen(QPen(QColor(55,143,250),2));
+    painter->drawRoundedRect(rect,4,4);
+//    //根据设定绘制背景样式
+//    if (selectType == SelectType_Rect) {
 
-    //根据设定绘制背景样式
-    if (selectType == SelectType_Rect) {
-        painter->setPen(QPen(Qt::blue,2));
-        painter->drawRect(0,0,width,height);
-    }
+//    }
     painter->restore();
 }
 
@@ -225,17 +232,57 @@ void LunarCalendarItem::drawDay(QPainter *painter)
     painter->setPen(color);
 
     QFont font;
-    font.setPixelSize(side / 2.7);
+    font.setPixelSize(side * 0.28);
+    //设置文字粗细
+    font.setBold(true);
     painter->setFont(font);
 
-
+    //代码复用率待优化
     if (showLunar) {
         QRect dayRect = QRect(0, 0, width, height / 1.7);
         painter->drawText(dayRect, Qt::AlignHCenter | Qt::AlignBottom, QString::number(date.day()));
+        if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "2") {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(244,78,80));
+            QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
+            painter->drawRoundedRect(dayRect1,1,1);
+            font.setPixelSize(side / 5);
+            painter->setFont(font);
+            painter->setPen(Qt::white);
+            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"休");
+        } else if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "1") {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(251,170,42));
+            QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
+            painter->drawRoundedRect(dayRect1,1,1);
+            font.setPixelSize(side / 5);
+            painter->setFont(font);
+            painter->setPen(Qt::white);
+            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"班");
+        }
     }
     else {
         QRect dayRect = QRect(0, 0, width, height);
         painter->drawText(dayRect, Qt::AlignCenter, QString::number(date.day()));
+        if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "2") {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(255,0,0));
+            QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
+            painter->drawRoundedRect(dayRect1,1,1);
+            font.setPixelSize(side / 5);
+            painter->setFont(font);
+            painter->setPen(Qt::white);
+            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"休");
+        } else if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "1") {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(251,170,42));
+            QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
+            painter->drawRoundedRect(dayRect1,1,1);
+            font.setPixelSize(side / 5);
+            painter->setFont(font);
+            painter->setPen(Qt::white);
+            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"班");
+        }
     }
 
     painter->restore();
@@ -278,12 +325,11 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
     painter->setPen(color);
 
     QFont font;
-    font.setPixelSize(side / 5);
-    painter->setFont(font);    
+    font.setPixelSize(side * 0.20);
+    painter->setFont(font);
 
     QRect lunarRect(0, height / 2, width, height / 2);
     painter->drawText(lunarRect, Qt::AlignCenter, lunar);
-
     painter->restore();
 }
 
