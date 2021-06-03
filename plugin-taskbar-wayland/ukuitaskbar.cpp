@@ -447,8 +447,8 @@ void UKUITaskBar::addWindow(WId window)
      * 需要将安卓兼容目录的分组特性关闭
     */
     QStringList andriod_window_list;
-    list<<"kydroid-display-window"<<"kylin-kmre-window";
-     if (!group && mGroupingEnabled && andriod_window_list.contains(group_id))
+    andriod_window_list<<"kydroid-display-window"<<"kylin-kmre-window";
+     if (!group && mGroupingEnabled && !andriod_window_list.contains(group_id))
     {
         for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
         {
