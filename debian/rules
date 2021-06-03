@@ -18,7 +18,7 @@ endif
 	dh ${@} --buildsystem cmake
 
 override_dh_auto_configure:
-	dh_auto_configure --\
+	 dh_auto_configure -- -D_FORTIFY_SOURCE=2\
 		-DPULL_TRANSLATIONS=OFF \
 		-DUPDATE_TRANSLATIONS=OFF \
 		-DDOM_PLUGIN=OFF \
