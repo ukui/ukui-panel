@@ -77,7 +77,12 @@ void frmLunarCalendarWidget::paintEvent(QPaintEvent *)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::gray);
-    double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    double tran =1;
+    const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
+    if(QGSettings::isSchemaInstalled(transparency_id)){
+       tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    }
+
     QColor color = palette().color(QPalette::Base);
     color.setAlpha(tran);
     QBrush brush =QBrush(color);
