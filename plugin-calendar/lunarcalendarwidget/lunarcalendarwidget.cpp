@@ -29,6 +29,55 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     const QByteArray calendar_id(PANEL_CONTROL_IN_CALENDAR);
     if(QGSettings::isSchemaInstalled(calendar_id)){
         calendar_gsettings = new QGSettings(calendar_id);
+        //农历切换监听与日期显示格式
+        connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+            if(key == LUNAR_KEY){
+                if(calendar_gsettings->get("calendar").toString() == "lunar") {
+                    //农历
+                    lunarstate = true;
+                    labWidget->setVisible(true);
+                    if(yijistate) {
+                        yiLabel->setVisible(true);
+                        jiLabel->setVisible(true);
+                    } else {
+                        yiLabel->setVisible(false);
+                        jiLabel->setVisible(false);
+                    }
+                } else {
+                    //公历
+                    lunarstate = false;
+                    labWidget->setVisible(false);
+                    yiLabel->setVisible(false);
+                    jiLabel->setVisible(false);
+                }
+                _timeUpdate();
+             }
+            if(key == "date") {
+                if(calendar_gsettings->get("date").toString() == "cn"){
+                    dateShowMode = "yyyy/MM/dd    dddd";
+                } else {
+                    dateShowMode = "yyyy-MM-dd    dddd";
+                }
+            }
+        });
+
+        if(calendar_gsettings->get("date").toString() == "cn"){
+            dateShowMode = "yyyy/MM/dd    dddd";
+        } else {
+            dateShowMode = "yyyy-MM-dd    dddd";
+        }
+
+        //监听12/24小时制
+        connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &keys){
+                timemodel = calendar_gsettings->get("hoursystem").toString();
+                _timeUpdate();
+        });
+        timemodel = calendar_gsettings->get("hoursystem").toString();
+
+    } else {
+        dateShowMode = "yyyy/MM/dd    dddd";
+        //无设置默认公历
+        lunarstate = true;
     }
     setWindowOpacity(0.7);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
@@ -68,6 +117,30 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     widgetTime->setObjectName("widgetTime");
     timeShow->setContentsMargins(0, 0, 0, 0);
     initWidget();
+
+     if(QGSettings::isSchemaInstalled(calendar_id)){
+         //初始化农历/公历显示方式
+         if(calendar_gsettings->get("calendar").toString() == "lunar") {
+             //农历
+             lunarstate = true;
+             labWidget->setVisible(true);
+             if(yijistate) {
+                 yiLabel->setVisible(true);
+                 jiLabel->setVisible(true);
+             } else {
+                 yiLabel->setVisible(false);
+                 jiLabel->setVisible(false);
+             }
+         } else {
+             //公历
+             lunarstate = false;
+             labWidget->setVisible(false);
+             yiLabel->setVisible(false);
+             jiLabel->setVisible(false);
+         }
+     }
+
+
     //切换主题
     const QByteArray style_id(ORG_UKUI_STYLE);
     QStringList stylelist;
@@ -111,83 +184,14 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
         }
     });
 
-
-    //监听12/24小时制
-    const QByteArray id1("org.ukui.control-center.panel.plugins");
-    gsettings = new QGSettings(id1);
-    connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
-            timemodel = gsettings->get("hoursystem").toString();
-            _timeUpdate();
-    });
-    timemodel = gsettings->get("hoursystem").toString();
-
-
-    //农历切换监听与日期显示格式
-    connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key == LUNAR_KEY){
-            if(calendar_gsettings->get("calendar").toString() == "lunar") {
-                //农历
-                lunarstate = true;
-                labWidget->setVisible(true);
-                if(yijistate) {
-                    yiLabel->setVisible(true);
-                    jiLabel->setVisible(true);
-                } else {
-                    yiLabel->setVisible(false);
-                    jiLabel->setVisible(false);
-                }
-            } else {
-                //公历
-                lunarstate = false;
-                labWidget->setVisible(false);
-                yiLabel->setVisible(false);
-                jiLabel->setVisible(false);
-            }
-
-            _timeUpdate();
-         }
-        if(key == "date") {
-            if(calendar_gsettings->get("date").toString() == "cn"){
-                dateShowMode = "yyyy/MM/dd    dddd";
-            } else {
-                dateShowMode = "yyyy-MM-dd    dddd";
-            }
-        }
-    });
-
-    if(calendar_gsettings->get("date").toString() == "cn"){
-        dateShowMode = "yyyy/MM/dd    dddd";
-    } else {
-        dateShowMode = "yyyy-MM-dd    dddd";
-    }
-
-    //初始化农历/公历显示方式
-    if(calendar_gsettings->get("calendar").toString() == "lunar") {
-        //农历
-        lunarstate = true;
-        labWidget->setVisible(true);
-        if(yijistate) {
-            yiLabel->setVisible(true);
-            jiLabel->setVisible(true);
-        } else {
-            yiLabel->setVisible(false);
-            jiLabel->setVisible(false);
-        }
-    } else {
-        //公历
-        lunarstate = false;
-        labWidget->setVisible(false);
-        yiLabel->setVisible(false);
-        jiLabel->setVisible(false);
-    }
-
-
     timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
     timer->start(1000);
 
-    setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
-    setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
+    if(QGSettings::isSchemaInstalled(calendar_id)){
+        setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
+        setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
+    }
 }
 
 LunarCalendarWidget::~LunarCalendarWidget()
@@ -202,11 +206,15 @@ LunarCalendarWidget::~LunarCalendarWidget()
 
 void LunarCalendarWidget::setColor(bool mdark_style)
 {
+    const QByteArray calendar_id(PANEL_CONTROL_IN_CALENDAR);
     if(mdark_style){
         weekTextColor = QColor(0, 0, 0);
         weekBgColor = QColor(180, 180, 180);
 
-        showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
+        if(QGSettings::isSchemaInstalled(calendar_id)){
+            showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
+        }
+
         bgImage = ":/image/bg_calendar.png";
         selectType = SelectType_Rect;
 
@@ -233,7 +241,10 @@ void LunarCalendarWidget::setColor(bool mdark_style)
         weekTextColor = QColor(255, 255, 255);
         weekBgColor = QColor(0, 0, 0);
 
-        showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
+        if(QGSettings::isSchemaInstalled(calendar_id)){
+            showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
+        }
+
         bgImage = ":/image/bg_calendar.png";
         selectType = SelectType_Rect;
 
@@ -352,7 +363,7 @@ void LunarCalendarWidget::initWidget()
     //转到今天
     btnToday->setObjectName("btnToday");
     btnToday->setFixedWidth(40);
-    btnToday->setStyle(new CustomStyle_pushbutton_2("ukui-default"));
+    btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnToday->setText(tr("今天"));
 
