@@ -15,15 +15,15 @@
 * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
 *
 */
-#ifndef CUSTOMSTYLE_PUSHBUTTON_2_H
-#define CUSTOMSTYLE_PUSHBUTTON_2_H
+#ifndef CUSTOMSTYLE_PUSHBUTTON_H
+#define CUSTOMSTYLE_PUSHBUTTON_H
 #include <QProxyStyle>
 
-class CustomStyle_pushbutton_2 : public QProxyStyle
+class CustomStyle_pushbutton : public QProxyStyle
 {
     Q_OBJECT
 public:
-    explicit CustomStyle_pushbutton_2(const QString &proxyStyleName = "windows", QObject *parent = nullptr);
+    explicit CustomStyle_pushbutton(const QString &proxyStyleName = "windows", QObject *parent = nullptr);
     virtual void drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget = nullptr) const;
     virtual void drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = nullptr) const;
     virtual void drawItemPixmap(QPainter *painter, const QRect &rectangle, int alignment, const QPixmap &pixmap) const;
@@ -64,4 +64,4 @@ public:
 
 };
 
-#endif // CUSTOMSTYLE_PUSHBUTTON_2_H
+#endif // CUSTOMSTYLE_PUSHBUTTON_H

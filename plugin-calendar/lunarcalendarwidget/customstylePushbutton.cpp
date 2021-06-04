@@ -15,7 +15,7 @@
 * along with this program; if not, see <http://www.gnu.org/licenses/&gt;.
 *
 */
-#include "customstylePushbutton2.h"
+#include "customstylePushbutton.h"
 #include <QWidget>
 
 #include <QStyleOption>
@@ -23,17 +23,17 @@
 
 #include <QDebug>
 
-CustomStyle_pushbutton_2::CustomStyle_pushbutton_2(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
+CustomStyle_pushbutton::CustomStyle_pushbutton(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
 {
     Q_UNUSED(parent);
 }
 
-void CustomStyle_pushbutton_2::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
+void CustomStyle_pushbutton::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
     return QProxyStyle::drawComplexControl(control, option, painter, widget);
 }
 
-void CustomStyle_pushbutton_2::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+void CustomStyle_pushbutton::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     switch (element) {
     case QStyle::CE_PushButton: {
@@ -48,12 +48,12 @@ void CustomStyle_pushbutton_2::drawControl(QStyle::ControlElement element, const
     return QProxyStyle::drawControl(element, option, painter, widget);
 }
 
-void CustomStyle_pushbutton_2::drawItemPixmap(QPainter *painter, const QRect &rectangle, int alignment, const QPixmap &pixmap) const
+void CustomStyle_pushbutton::drawItemPixmap(QPainter *painter, const QRect &rectangle, int alignment, const QPixmap &pixmap) const
 {
     return QProxyStyle::drawItemPixmap(painter, rectangle, alignment, pixmap);
 }
 
-void CustomStyle_pushbutton_2::drawItemText(QPainter *painter, const QRect &rectangle, int alignment, const QPalette &palette, bool enabled, const QString &text, QPalette::ColorRole textRole) const
+void CustomStyle_pushbutton::drawItemText(QPainter *painter, const QRect &rectangle, int alignment, const QPalette &palette, bool enabled, const QString &text, QPalette::ColorRole textRole) const
 {
     return QProxyStyle::drawItemText(painter, rectangle, alignment, palette, enabled, text, textRole);
 }
@@ -66,7 +66,7 @@ void CustomStyle_pushbutton_2::drawItemText(QPainter *painter, const QRect &rect
 ///
 /// 需要注意绘制背景的流程会因主题不同而产生差异，所以这一部分代码在一些主题中未必正常，
 /// 如果你需要自己实现一个主题，这同样是你需要注意和考虑的点
-void CustomStyle_pushbutton_2::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+void CustomStyle_pushbutton::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
 //    if (element == PE_PanelButtonCommand) {
 //        qDebug()<<"draw pe button";
@@ -134,27 +134,27 @@ void CustomStyle_pushbutton_2::drawPrimitive(QStyle::PrimitiveElement element, c
     return QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 
-QPixmap CustomStyle_pushbutton_2::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option) const
+QPixmap CustomStyle_pushbutton::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option) const
 {
     return QProxyStyle::generatedIconPixmap(iconMode, pixmap, option);
 }
 
-QStyle::SubControl CustomStyle_pushbutton_2::hitTestComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, const QPoint &position, const QWidget *widget) const
+QStyle::SubControl CustomStyle_pushbutton::hitTestComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, const QPoint &position, const QWidget *widget) const
 {
     return QProxyStyle::hitTestComplexControl(control, option, position, widget);
 }
 
-QRect CustomStyle_pushbutton_2::itemPixmapRect(const QRect &rectangle, int alignment, const QPixmap &pixmap) const
+QRect CustomStyle_pushbutton::itemPixmapRect(const QRect &rectangle, int alignment, const QPixmap &pixmap) const
 {
     return QProxyStyle::itemPixmapRect(rectangle, alignment, pixmap);
 }
 
-QRect CustomStyle_pushbutton_2::itemTextRect(const QFontMetrics &metrics, const QRect &rectangle, int alignment, bool enabled, const QString &text) const
+QRect CustomStyle_pushbutton::itemTextRect(const QFontMetrics &metrics, const QRect &rectangle, int alignment, bool enabled, const QString &text) const
 {
     return QProxyStyle::itemTextRect(metrics, rectangle, alignment, enabled, text);
 }
 
-int CustomStyle_pushbutton_2::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
+int CustomStyle_pushbutton::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
     return QProxyStyle::pixelMetric(metric, option, widget);
 }
@@ -162,57 +162,57 @@ int CustomStyle_pushbutton_2::pixelMetric(QStyle::PixelMetric metric, const QSty
 /// 我们需要将动画与widget一一对应起来，
 /// 在一个style的生命周期里，widget只会进行polish和unpolish各一次，
 /// 所以我们可以在polish时将widget与一个新的动画绑定，并且对应的在unpolish中解绑定
-void CustomStyle_pushbutton_2::polish(QWidget *widget)
+void CustomStyle_pushbutton::polish(QWidget *widget)
 {
     return QProxyStyle::polish(widget);
 }
 
-void CustomStyle_pushbutton_2::polish(QApplication *application)
+void CustomStyle_pushbutton::polish(QApplication *application)
 {
     return QProxyStyle::polish(application);
 }
 
-void CustomStyle_pushbutton_2::polish(QPalette &palette)
+void CustomStyle_pushbutton::polish(QPalette &palette)
 {
     return QProxyStyle::polish(palette);
 }
 
-void CustomStyle_pushbutton_2::unpolish(QWidget *widget)
+void CustomStyle_pushbutton::unpolish(QWidget *widget)
 {
     return QProxyStyle::unpolish(widget);
 }
 
-void CustomStyle_pushbutton_2::unpolish(QApplication *application)
+void CustomStyle_pushbutton::unpolish(QApplication *application)
 {
     return QProxyStyle::unpolish(application);
 }
 
-QSize CustomStyle_pushbutton_2::sizeFromContents(QStyle::ContentsType type, const QStyleOption *option, const QSize &contentsSize, const QWidget *widget) const
+QSize CustomStyle_pushbutton::sizeFromContents(QStyle::ContentsType type, const QStyleOption *option, const QSize &contentsSize, const QWidget *widget) const
 {
     return QProxyStyle::sizeFromContents(type, option, contentsSize, widget);
 }
 
-QIcon CustomStyle_pushbutton_2::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const
+QIcon CustomStyle_pushbutton::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const
 {
     return QProxyStyle::standardIcon(standardIcon, option, widget);
 }
 
-QPalette CustomStyle_pushbutton_2::standardPalette() const
+QPalette CustomStyle_pushbutton::standardPalette() const
 {
     return QProxyStyle::standardPalette();
 }
 
-int CustomStyle_pushbutton_2::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
+int CustomStyle_pushbutton::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
 {
     return QProxyStyle::styleHint(hint, option, widget, returnData);
 }
 
-QRect CustomStyle_pushbutton_2::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex *option, QStyle::SubControl subControl, const QWidget *widget) const
+QRect CustomStyle_pushbutton::subControlRect(QStyle::ComplexControl control, const QStyleOptionComplex *option, QStyle::SubControl subControl, const QWidget *widget) const
 {
     return QProxyStyle::subControlRect(control, option, subControl, widget);
 }
 
-QRect CustomStyle_pushbutton_2::subElementRect(QStyle::SubElement element, const QStyleOption *option, const QWidget *widget) const
+QRect CustomStyle_pushbutton::subElementRect(QStyle::SubElement element, const QStyleOption *option, const QWidget *widget) const
 {
     return QProxyStyle::subElementRect(element, option, widget);
 }

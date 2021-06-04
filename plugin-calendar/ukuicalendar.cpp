@@ -106,26 +106,34 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
     mTimer->setTimerType(Qt::PreciseTimer);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
-    gsettings = new QGSettings(id);
-    connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
-            updateTimeText();
-    });
-    if(QString::compare(gsettings->get("date").toString(),"cn"))
-    {
-            hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
-            hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
-            hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
-            hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
-            current_date=CURRENT_DATE_CN;
-        }
-        else
+    if(QGSettings::isSchemaInstalled(id)){
+        gsettings = new QGSettings(id);
+        connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
+                updateTimeText();
+        });
+        if(QString::compare(gsettings->get("date").toString(),"cn"))
         {
-            hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
-            hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
-            hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
-            hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
-            current_date=CURRENT_DATE;
-        }
+                hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
+                hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
+                hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
+                hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
+                current_date=CURRENT_DATE_CN;
+            }
+            else
+            {
+                hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
+                hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
+                hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
+                hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
+                current_date=CURRENT_DATE;
+            }
+    } else {
+        hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
+        hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
+        hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
+        hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
+        current_date=CURRENT_DATE_CN;
+    }
 
     connect(mTimer, &QTimer::timeout, [this]{checkUpdateTime(); mTimer->stop(); mTimer->start(1000);});
     mTimer->start(1000);
@@ -246,14 +254,21 @@ void IndicatorCalendar::checkUpdateTime()
 
 void IndicatorCalendar::updateTimeText()
 {
+
+
     QDateTime tzNow = QDateTime::currentDateTime();
 
     QString str;
-    QStringList keys = gsettings->keys();
-    if(keys.contains("hoursystem"))
-        hourSystemMode=gsettings->get("hoursystem").toString();
-    if(!gsettings)
-        return;
+    QByteArray id(HOUR_SYSTEM_CONTROL);
+    if(QGSettings::isSchemaInstalled(id))
+    {
+        QStringList keys = gsettings->keys();
+        if(keys.contains("hoursystem"))
+            hourSystemMode=gsettings->get("hoursystem").toString();
+    } else {
+        hourSystemMode = 24;
+    }
+
     if(!QString::compare("24",hourSystemMode))
     {
         if(panel()->isHorizontal())
@@ -394,8 +409,11 @@ void IndicatorCalendar::CalendarWidgetShow()
     if(mWebViewDiag != NULL )
     {
         mViewHeight = WEBVIEW_MAX_HEIGHT;
-        if(gsettings->get("calendar").toString() == "solarlunar")
-            mViewHeight = WEBVIEW_MIN_HEIGHT;
+        QByteArray id(HOUR_SYSTEM_CONTROL);
+        if(QGSettings::isSchemaInstalled(id)) {
+            if(gsettings->get("calendar").toString() == "solarlunar")
+             mViewHeight = WEBVIEW_MIN_HEIGHT;
+        }
         if (QLocale::system().name() != "zh_CN")
             mViewHeight = WEBVIEW_MIN_HEIGHT;
         int iScreenHeight = QApplication::screens().at(0)->size().height() - panel()->panelSize();

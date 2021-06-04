@@ -26,18 +26,19 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
     const QByteArray calendar_id(PANEL_CONTROL_IN_CALENDAR);
     if(QGSettings::isSchemaInstalled(calendar_id)){
         calendar_gsettings = new QGSettings(calendar_id);
+        //公历/农历切换
+        connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+            if(key == LUNAR_KEY){
+                ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
+            }
+            if (key == FIRST_DAY_KEY) {
+                cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
+            }
+        });
+    } else {
+        ckShowLunar_stateChanged(false);
+        cboxWeekNameFormat_currentIndexChanged(false);
     }
-
-    //公历/农历切换
-    connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key == LUNAR_KEY){
-            ckShowLunar_stateChanged(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
-        }
-        if (key == FIRST_DAY_KEY) {
-            cboxWeekNameFormat_currentIndexChanged(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
-        }
-    });
-
 }
 
 frmLunarCalendarWidget::~frmLunarCalendarWidget()
