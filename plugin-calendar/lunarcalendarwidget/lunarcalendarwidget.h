@@ -29,7 +29,7 @@
 #include "../../panel/iukuipanelplugin.h"
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
-#include "customstylePushbutton2.h"
+#include "customstylePushbutton.h"
 #include <QCheckBox>
 
 
@@ -130,8 +130,7 @@ private:
     QCheckBox *yijichoose;
     QLabel *yiLabel;
     QLabel *jiLabel;
-    QGSettings *gsettings;
-    QString timemodel;
+    QString timemodel = 0;
     bool yijistate = false;
     bool lunarstate =false;
     bool oneRun = true;
