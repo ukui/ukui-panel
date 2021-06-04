@@ -703,7 +703,7 @@ private:
      * @brief Flag for providing the configuration options in panel's context menu
      */
     bool mLockPanel;
-    double transparency =1;
+    double transparency;
 
     // settings should be kept private for security
     UKUi::Settings *settings() const { return mSettings; }

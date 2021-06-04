@@ -1405,17 +1405,17 @@ void UKUIPanel::styleAdjust()
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
         transparency=0.75;
-        transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-        connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-            if(key==TRANSPARENCY_KEY && transparency_action=="open"){
-                transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
-                this->update();
-            }
-        });
         }
 
-
+//    if(transparency_gsettings->keys().contains(TRANSPARENCY_KEY)){
+    transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
     this->update();
+    connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==TRANSPARENCY_KEY && transparency_action=="open"){
+            transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+            this->update();
+        }
+    });
 }
 
 /* 使用paintEvent 对panel进行绘制的时候有如下问题：
