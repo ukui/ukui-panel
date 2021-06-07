@@ -113,7 +113,7 @@ public:
         horizontalLayout->addItem(horizontalSpacer);
 
 
-        verticalLayout->addWidget(widgetBottom);
+//        verticalLayout->addWidget(widgetBottom);
 
 
         retranslateUi(frmLunarCalendarWidget);

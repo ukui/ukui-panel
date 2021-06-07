@@ -128,6 +128,8 @@ private:
     statelabel *btnNextYear;
     QLabel *yijichooseLabel;
     QCheckBox *yijichoose;
+    QVBoxLayout *yijiLayout;
+    QWidget *yijiWidget;
     QLabel *yiLabel;
     QLabel *jiLabel;
     QString timemodel = 0;

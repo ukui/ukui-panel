@@ -36,19 +36,12 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
                     //农历
                     lunarstate = true;
                     labWidget->setVisible(true);
-                    if(yijistate) {
-                        yiLabel->setVisible(true);
-                        jiLabel->setVisible(true);
-                    } else {
-                        yiLabel->setVisible(false);
-                        jiLabel->setVisible(false);
-                    }
+                    yijiWidget->setVisible(true);
                 } else {
                     //公历
                     lunarstate = false;
                     labWidget->setVisible(false);
-                    yiLabel->setVisible(false);
-                    jiLabel->setVisible(false);
+                    yijiWidget->setVisible(false);
                 }
                 _timeUpdate();
              }
@@ -124,19 +117,12 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
              //农历
              lunarstate = true;
              labWidget->setVisible(true);
-             if(yijistate) {
-                 yiLabel->setVisible(true);
-                 jiLabel->setVisible(true);
-             } else {
-                 yiLabel->setVisible(false);
-                 jiLabel->setVisible(false);
-             }
+             yijiWidget->setVisible(true);
          } else {
              //公历
              lunarstate = false;
              labWidget->setVisible(false);
-             yiLabel->setVisible(false);
-             jiLabel->setVisible(false);
+             yijiWidget->setVisible(false);
          }
      }
 
@@ -465,8 +451,16 @@ void LunarCalendarWidget::initWidget()
     labLayout->addWidget(yijichoose);
     labWidget->setLayout(labLayout);
 
+    yijiLayout = new QVBoxLayout;
+    yijiWidget = new QWidget;
+    yijiWidget->setFixedHeight(60);
+
     yiLabel = new QLabel();
     jiLabel = new QLabel();
+
+    yijiLayout->addWidget(yiLabel);
+    yijiLayout->addWidget(jiLabel);
+    yijiWidget->setLayout(yijiLayout);
     yiLabel->setVisible(false);
     jiLabel->setVisible(false);
 
@@ -490,8 +484,7 @@ void LunarCalendarWidget::initWidget()
     verLayoutCalendar->addWidget(widgetBody, 1);
     verLayoutCalendar->addWidget(lineDown);
     verLayoutCalendar->addWidget(labWidget);
-    verLayoutCalendar->addWidget(yiLabel);
-    verLayoutCalendar->addWidget(jiLabel);
+    verLayoutCalendar->addWidget(yijiWidget);
 
 
     //绑定按钮和下拉框信号
@@ -703,7 +696,7 @@ void LunarCalendarWidget::downLabelHandle(const QDate &date)
                                                         strLunarMonth,
                                                         strLunarDay);
 
-    QString labBottomarg =  "  " + strLunarYear + "  " + strLunarMonth + strLunarDay;
+    QString labBottomarg =  "     " + strLunarYear + "  " + strLunarMonth + strLunarDay;
     labBottom->setText(labBottomarg);
 
 }
