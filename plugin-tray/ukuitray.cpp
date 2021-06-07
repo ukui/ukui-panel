@@ -32,6 +32,7 @@
 #include <QTimer>
 #include <QtX11Extras/QX11Info>
 #include <QPainter>
+#include <QtDBus/QtDBus>
 #include "trayicon.h"
 #include "../panel/iukuipanel.h"
 #include "../panel/common/ukuigridlayout.h"
@@ -131,7 +132,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
-    QTimer::singleShot(3000, this, SLOT(startTray()));
+    QTimer::singleShot(3, this, SLOT(startTray()));
     mBtn =new StorageArrow(this);
     mLayout->addWidget(mBtn);
     storageFrame=new UKUIStorageFrame;
@@ -150,6 +151,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     QTimer::singleShot(30000,[this] {
         //QProcess::execute("sh /usr/share/ukui/ukui-panel/plugin-tray/trayAppSetting.sh");
     });
+    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(hideStorageWidget()));
 }
 
 UKUITray::~UKUITray()
@@ -183,6 +185,12 @@ void UKUITray::storageBar()
         showAndHideStorage(true);
     }
     realign();
+}
+
+void UKUITray::hideStorageWidget()
+{
+    status = ST_HIDE;
+    showAndHideStorage(true);
 }
 
 void UKUITray::showAndHideStorage(bool storageStatus)
@@ -766,7 +774,7 @@ void UKUITray::newAppDetect(int wid)
         newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
 
         QStringList trayIconNameList;
-        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"mktip"<<"explorer.exe"<<"ukui-power-manager-tray";
+        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"explorer.exe"<<"ukui-power-manager-tray";
         if(trayIconNameList.contains(xfitMan().getApplicationName(wid))){
             newsetting->set(ACTION_KEY,"tray");
             newsetting->set(RECORD_KEY,"tray");

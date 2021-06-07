@@ -110,6 +110,7 @@ public slots:
      * 点击收纳按钮的时候的槽函数
      */
     void storageBar();
+    void hideStorageWidget();
     /**
      * @brief realign
      * 关于设置托盘栏图标大小的方法
