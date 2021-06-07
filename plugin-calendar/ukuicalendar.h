@@ -78,6 +78,7 @@ private:
     UKUi::GridLayout *mLayout;
     QString timeState;
     QTimer *mTimer;
+    QTimer *mCheckTimer;
     int mUpdateInterval;
 
     int16_t mViewWidht;

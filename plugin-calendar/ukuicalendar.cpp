@@ -80,6 +80,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QWidget(),
     IUKUIPanelPlugin(startupInfo),
     mTimer(new QTimer(this)),
+    mCheckTimer(new QTimer(this)),
     mUpdateInterval(1),
     mbActived(false),
     mbHasCreatedWebView(false),
@@ -134,6 +135,11 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
         hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
         current_date=CURRENT_DATE_CN;
     }
+
+    //六小时会默认刷新时间
+    mCheckTimer->setInterval(60*60*1000);
+    connect(mCheckTimer, &QTimer::timeout, [this]{checkUpdateTime();});
+    mCheckTimer->start();
 
     connect(mTimer, &QTimer::timeout, [this]{checkUpdateTime(); mTimer->stop(); mTimer->start(1000);});
     mTimer->start(1000);
@@ -245,6 +251,17 @@ void IndicatorCalendar::checkUpdateTime()
     if(QString::compare(tzNow.toString("hh:mm ddd  yyyy-MM-dd"),timeState) == 0) {
         return;
     }
+
+    //任务栏第一次启动与系统时间进行比较校正，确定第一次刷新时间
+    QString delaytime=QTime::currentTime().toString();
+    QList<QString> pathresult=delaytime.split(":");
+    int second=pathresult.at(2).toInt();
+    if(second==0){
+        mTimer->setInterval(60*1000);
+    }else{
+        mTimer->setInterval((60+1-second)*1000);
+    }
+
     timeState = tzNow.toString("hh:mm ddd  yyyy-MM-dd");
     updateTimeText();
 }
