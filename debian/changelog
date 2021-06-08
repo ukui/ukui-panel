@@ -1,6 +1,7 @@
 ukui-panel (3.0.1-81) v101; urgency=medium
 
   * 完成需求#6326 #6323 #6196 #6211
+    解决bug#55507 #51265 #50475
 
  --  <hepuyao@kylinos.cn>  Tue, 08 Jun 2021 11:30:12 +0800
 

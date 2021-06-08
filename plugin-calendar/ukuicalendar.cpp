@@ -308,7 +308,9 @@ void IndicatorCalendar::updateTimeText()
     }
 
     QString style;
-    int font_size = fgsettings->get(SYSTEM_FONT_SIZE).toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
+    int font_size = fgsettings->get(SYSTEM_FONT_SIZE).toInt();
+    if(font_size>14) font_size=14;
+    if(font_size<12) font_size=12;
     style.sprintf( //正常状态样式
                    "QLabel{"
                    "border-width:  0px;"                     //边框宽度像素
@@ -326,7 +328,7 @@ void IndicatorCalendar::updateTimeText()
                    //鼠标按下样式
                    "QLabel:pressed{"
                    "background-color:rgba(190,216,239,12%%);"
-                   "}", 12);
+                   "}", font_size);
     mContent->setStyleSheet(style);
     mContent->setText(str);
 }
