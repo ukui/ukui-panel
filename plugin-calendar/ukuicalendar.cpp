@@ -141,7 +141,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     connect(mCheckTimer, &QTimer::timeout, [this]{checkUpdateTime();});
     mCheckTimer->start();
 
-    connect(mTimer, &QTimer::timeout, [this]{checkUpdateTime(); mTimer->stop(); mTimer->start(1000);});
+    connect(mTimer, &QTimer::timeout, [this]{checkUpdateTime();});
     mTimer->start(1000);
 
     const QByteArray _id(SYSTEM_FONT_SET);
@@ -204,7 +204,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     }
     connect(mContent,&CalendarActiveLabel::pressTimeText,[=]{CalendarWidgetShow();});
 
-    initializeCalendar();
+//    initializeCalendar();
     setTimeShowStyle();
     mContent->setWordWrap(true);
 
