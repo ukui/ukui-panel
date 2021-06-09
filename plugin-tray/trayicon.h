@@ -118,6 +118,7 @@ private:
      * @return 返回值是QRect，可直接使用，无需转换
      */
     QRect caculateMenuWindowPos(QPoint const & absolutePos, QSize const & windowSize);
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QPoint mDragStart;
 
     IUKUIPanelPlugin *mPlugin;
@@ -135,6 +136,9 @@ private:
     TrayAppStatus traystatus;
 
     QGSettings *scaling_settings;
+    QGSettings *gsettings;
+//    int tray_icon_color;
+    bool dark_style;
 };
 
 /**

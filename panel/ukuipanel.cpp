@@ -1430,7 +1430,11 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    p.setBrush(QBrush(QColor(19,22,28,transparency)));
+//    p.setBrush(QBrush(QColor(19,22,28,transparency)));
+    QColor color= palette().color(QPalette::Base);
+    color.setAlpha(transparency);
+    QBrush brush = QBrush(color);
+    p.setBrush(brush);
 
     p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,0,0);
@@ -1567,7 +1571,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         menu->addAction(about);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
-            process->startDetached("/usr/bin/ukui-about");
+            process->startDetached("ukui-control-center -a");
         });
 
     }
