@@ -26,6 +26,7 @@
 #include <QStyle>
 #include <QScreen>
 #include <QDrag>
+#include <QImage>
 
 #include "../panel/ukuipanel.h"
 #include "trayicon.h"
@@ -45,6 +46,14 @@ static bool xError;
 
 #define CSETTINGS_SCALING "org.ukui.SettingsDaemon.plugins.xsettings"
 #define SCALING_FACTOR    "scalingFactor"
+
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
 
 int windowErrorHandler(Display *d, XErrorEvent *e)
 {
@@ -100,6 +109,26 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
         scaling_settings = new QGSettings(scaling_factor);
         qDebug()<<"scaling_settings->get(SCALING_FACTOR).toInt()"<<scaling_settings->get(SCALING_FACTOR).toInt();
     }
+
+    const QByteArray id(ORG_UKUI_STYLE);
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    if(QGSettings::isSchemaInstalled(id)){
+        gsettings = new QGSettings(id);
+        if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
+            dark_style=true;
+        else
+            dark_style=false;
+        }
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==STYLE_NAME){
+            if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
+                dark_style=true;
+            else
+                dark_style=false;
+            repaint();
+        }
+    });
 }
 
 
@@ -384,7 +413,8 @@ void TrayIcon::draw(QPaintEvent* /*event*/)
     }
 
     if(needReDraw())
-        image=HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
+//        image=HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
+        image = drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
     painter.drawImage(iconRect, image);
 
     if(ximage)
@@ -466,6 +496,30 @@ void TrayIcon::paintEvent(QPaintEvent *)
     xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
     p.drawRoundedRect(opt.rect.x(),opt.rect.y(),opt.rect.width(), req_size.height(),0,0);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+QPixmap TrayIcon::drawSymbolicColoredPixmap(const QPixmap &source)
+{
+    QColor standard (31,32,34);
+    QImage img = source.toImage();
+    for (int x = 0; x < img.width(); x++) {
+        for (int y = 0; y < img.height(); y++) {
+            auto color = img.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if(dark_style && qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20){
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+//                    color.setRgb(255,255,255);
+                    img.setPixelColor(x, y, color);
+                }
+                else{
+                    img.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return QPixmap::fromImage(img);
 }
 
 void TrayIcon::moveMenu()
