@@ -41,6 +41,7 @@
 #include <QTimer>
 
 #include "../panel/common/ukuigridlayout.h"
+#include "../panel/customstyle.h"
 
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
@@ -93,6 +94,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     settingsChanged();
 //    setButtonStyle(Qt::ToolButtonIconOnly);
     setAcceptDrops(true);
+    mAndroidIconHash=matchAndroidIcon();
     QGSettings *changeTheme;
     const QByteArray id_Theme("org.ukui.style");
     if(QGSettings::isSchemaInstalled(id_Theme)){
@@ -364,9 +366,13 @@ QString UKUITaskBar::captionExchange(QString str)
     QStringList strList = temp_group_id.split(" ");
     QString group_id = strList[0];
     QStringList video_list;
-    video_list<<"影音"<<"Video";
-    if(video_list.contains(group_id)) group_id ="kylin-video";
-    else group_id="application-x-desktop";
+    if(mAndroidIconHash.keys().contains(temp_group_id)){
+        group_id=mAndroidIconHash.value(temp_group_id);
+    }else{
+        video_list<<"影音"<<"Video";
+        if(video_list.contains(group_id)) group_id ="kylin-video";
+        else group_id="application-x-desktop";
+    }
     return group_id;
 }
 void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
@@ -407,18 +413,45 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
         connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
             buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
         });
-
-        group->setIcon(QIcon::fromTheme(group_id));
+        group->setIcon(QIcon::fromTheme(QDir::homePath()+"/.local/share/icons/"+group_id+".png"));
         //group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         //group->setFixedSize(40,40);
         mLayout->addWidget(group) ;
         group->wl_widgetUpdateTitle(caption);
+        group->setStyle(new CustomStyle("taskbutton"));
         group->setToolButtonsStyle(mButtonStyle);
     }
 
     mKnownWindows[window] = group;
     group->wl_addWindow(window);
 }
+
+
+QHash<QString,QString> UKUITaskBar::matchAndroidIcon()
+{
+    QHash<QString,QString> hash;
+    printf("*************\n");
+    QFile file("/usr/share/ukui/ukui-panel/plugin-taskbar/name-icon.match");
+    if(!file.open(QIODevice::ReadOnly))  qDebug()<<"Read FIle failed";
+    while (!file.atEnd()){
+        QByteArray line= file.readLine();
+        QString str=file.readLine();
+        str.section('picture',1,1).trimmed().toStdString();
+        str.simplified();
+        QString str_name = str.section(QRegExp("[;]"),0,0);
+        str_name = str_name.simplified();
+        str_name = str_name.remove("name=");
+
+        QString str_icon = str.section(QRegExp("[;]"),1,1);
+        str_icon = str_icon.simplified();
+        str_icon = str_icon.remove("icon=");
+
+        hash.insert(str_name,str_icon);
+    }
+
+    return hash;
+}
+
 
 /************************************************
 
