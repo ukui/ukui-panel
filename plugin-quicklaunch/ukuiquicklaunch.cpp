@@ -139,6 +139,8 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     fsWatcher=new QFileSystemWatcher(this);
     fsWatcher->addPath(desktopFilePath);
     fsWatcher->addPath(androidDesktopFilePath);
+    directoryUpdated(desktopFilePath);
+    directoryUpdated(androidDesktopFilePath);
     connect(fsWatcher,&QFileSystemWatcher::directoryChanged,[this](){
                directoryUpdated(desktopFilePath);
                directoryUpdated(androidDesktopFilePath);

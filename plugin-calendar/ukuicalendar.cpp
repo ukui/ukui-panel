@@ -215,7 +215,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QTimer::singleShot(10000,[this] { updateTimeText();});
 
     //读取配置文件中CalendarVersion 的值
-    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QString filename ="/usr/share/ukui/ukui-panel/panel-commission.ini";
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 
