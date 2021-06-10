@@ -299,6 +299,8 @@ private:
     QWidget *mPlaceHolder;
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
+
+    QGSettings *changeTheme;
 };
 
 #endif // UKUITASKBAR_H
