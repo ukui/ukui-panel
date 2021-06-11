@@ -559,11 +559,36 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
 
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
+
     if (Qt::LeftButton == event->button()){
         if(calendar_version == "old"){
             Q_EMIT pressTimeText();
         }else{
-            w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->size()));
+            int totalHeight = qApp->primaryScreen()->size().height() + qApp->primaryScreen()->geometry().y();
+            int totalWidth = qApp->primaryScreen()->size().width() + qApp->primaryScreen()->geometry().x();
+            switch (mPlugin->panel()->position()) {
+            case IUKUIPanel::PositionBottom:
+                w->setGeometry(totalWidth-mViewWidht-4,totalHeight-mPlugin->panel()->panelSize()-mViewHeight-4,mViewWidht,mViewHeight);
+                qDebug()<<totalWidth-mViewWidht-4;
+                qDebug()<<totalHeight-mPlugin->panel()->panelSize()-mViewHeight-4;
+                qDebug()<<mViewWidht;
+                qDebug()<<mViewHeight;
+                break;
+            case IUKUIPanel::PositionTop:
+                w->setGeometry(totalWidth-mViewWidht-4,qApp->primaryScreen()->geometry().y()+mPlugin->panel()->panelSize()+4,mViewWidht,mViewHeight);
+                break;
+            case IUKUIPanel::PositionLeft:
+                w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+4,totalHeight-mViewHeight-4,mViewWidht,mViewHeight);
+                break;
+            case IUKUIPanel::PositionRight:
+                w->setGeometry(totalWidth-mPlugin->panel()->panelSize()-mViewWidht-4,totalHeight-mViewHeight-4,mViewWidht,mViewHeight);
+                break;
+            default:
+                w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+4,totalHeight-mViewHeight,mViewWidht,mViewHeight);
+                break;
+            }
+
+//            w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->size()));
             w->show();
         }
     }
