@@ -254,6 +254,7 @@ private:
 private:
     void addWindow(WId window);
     void addWindow_wl(QString iconName, QString caption, WId window);
+    QHash<QString,QString> matchAndroidIcon();
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
 
@@ -264,6 +265,7 @@ private:
 
 private:
     QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
+    QHash<QString,QString> mAndroidIconHash;
     UKUi::GridLayout *mLayout;
 //    QList<GlobalKeyShortcut::Action*> mKeys;
     QSignalMapper *mSignalMapper;
@@ -297,6 +299,8 @@ private:
     QWidget *mPlaceHolder;
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
+
+    QGSettings *changeTheme;
 };
 
 #endif // UKUITASKBAR_H

@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setAttribute(Qt::WA_TranslucentBackground);
     m_systray = new QSystemTrayIcon;
     m_systray->setIcon(iconSystray);
-    m_systray->setVisible(true);
+    //m_systray->setVisible(true);
     m_systray->setToolTip(tr("usb management tool"));
     //init the screen
     screen = qApp->primaryScreen();

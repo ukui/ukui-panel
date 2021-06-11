@@ -559,11 +559,32 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
 
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
+
     if (Qt::LeftButton == event->button()){
         if(calendar_version == "old"){
             Q_EMIT pressTimeText();
         }else{
-            w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->size()));
+            int totalHeight = qApp->primaryScreen()->size().height() + qApp->primaryScreen()->geometry().y();
+            int totalWidth = qApp->primaryScreen()->size().width() + qApp->primaryScreen()->geometry().x();
+            switch (mPlugin->panel()->position()) {
+            case IUKUIPanel::PositionBottom:
+                w->setGeometry(totalWidth-mViewWidht-8,totalHeight-mPlugin->panel()->panelSize()-mViewHeight-8,mViewWidht,mViewHeight);
+                break;
+            case IUKUIPanel::PositionTop:
+                w->setGeometry(totalWidth-mViewWidht-8,qApp->primaryScreen()->geometry().y()+mPlugin->panel()->panelSize()+8,mViewWidht,mViewHeight);
+                break;
+            case IUKUIPanel::PositionLeft:
+                w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+8,totalHeight-mViewHeight-8,mViewWidht,mViewHeight);
+                break;
+            case IUKUIPanel::PositionRight:
+                w->setGeometry(totalWidth-mPlugin->panel()->panelSize()-mViewWidht-8,totalHeight-mViewHeight-8,mViewWidht,mViewHeight);
+                break;
+            default:
+                w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+4,totalHeight-mViewHeight,mViewWidht,mViewHeight);
+                break;
+            }
+
+//            w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->size()));
             w->show();
         }
     }

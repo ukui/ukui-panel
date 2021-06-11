@@ -108,6 +108,8 @@ public:
     explicit CalendarActiveLabel(IUKUIPanelPlugin *plugin,QWidget * = NULL);
 
     IUKUIPanelPlugin * mPlugin;
+    int16_t mViewWidht = 440;
+    int16_t mViewHeight = 600 ;
 
 protected:
     /**
@@ -118,6 +120,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
 private:
     frmLunarCalendarWidget *w;
+
 
 Q_SIGNALS:
     void pressTimeText();
