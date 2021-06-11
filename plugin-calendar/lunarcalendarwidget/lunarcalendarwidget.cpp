@@ -141,11 +141,11 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
             dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
             _timeUpdate();
             setColor(dark_style);
-            QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-up-symbolic")).pixmap(QSize(24, 24));
+            QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("ukui-up-symbolic")).pixmap(QSize(24, 24));
             PictureToWhite pictToWhite1;
             btnPrevYear->setPixmap(pictToWhite1.drawSymbolicColoredPixmap(pixmap1));
 
-            QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-down-symbolic")).pixmap(QSize(24, 24));
+            QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("ukui-down-symbolic")).pixmap(QSize(24, 24));
             PictureToWhite pictToWhite2;
             btnNextYear->setPixmap(pictToWhite2.drawSymbolicColoredPixmap(pixmap2));
         }
@@ -321,7 +321,7 @@ void LunarCalendarWidget::initWidget()
     btnPrevYear->setObjectName("btnPrevYear");
     btnPrevYear->setFixedWidth(35);
     btnPrevYear->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-up-symbolic")).pixmap(QSize(24, 24));
+    QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("ukui-up-symbolic")).pixmap(QSize(24, 24));
     PictureToWhite pictToWhite1;
     btnPrevYear->setPixmap(pictToWhite1.drawSymbolicColoredPixmap(pixmap1));
 
@@ -331,7 +331,7 @@ void LunarCalendarWidget::initWidget()
     btnNextYear->setObjectName("btnNextYear");
     btnNextYear->setFixedWidth(35);
     btnNextYear->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-down-symbolic")).pixmap(QSize(24, 24));
+    QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("ukui-down-symbolic")).pixmap(QSize(24, 24));
     PictureToWhite pictToWhite2;
     btnNextYear->setPixmap(pictToWhite2.drawSymbolicColoredPixmap(pixmap2));
 

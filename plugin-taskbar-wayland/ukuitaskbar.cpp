@@ -95,7 +95,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
 //    setButtonStyle(Qt::ToolButtonIconOnly);
     setAcceptDrops(true);
     mAndroidIconHash=matchAndroidIcon();
-    QGSettings *changeTheme;
+
     const QByteArray id_Theme("org.ukui.style");
     if(QGSettings::isSchemaInstalled(id_Theme)){
         changeTheme = new QGSettings(id_Theme);
@@ -418,7 +418,27 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
         connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
             buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
         });
-        group->setIcon(QIcon::fromTheme(QDir::homePath()+"/.local/share/icons/"+group_id+".png"));
+
+        //wayland临时图标适配主题代码处理
+        /*********************************************/
+        if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
+            group->setIcon(QIcon::fromTheme(group_id));
+        }else{
+            group->setIcon(QIcon::fromTheme(QDir::homePath()+"/.local/share/icons/"+group_id+".png"));
+        }
+
+        connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+            if(key=="iconThemeName"){
+                sleep(1);
+                if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
+                    group->setIcon(QIcon::fromTheme(group_id));
+                }else{
+                    group->setIcon(QIcon::fromTheme(QDir::homePath()+"/.local/share/icons/"+group_id+".png"));
+                }
+            }
+        });
+        /*********************************************/
+
         //group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         //group->setFixedSize(40,40);
         mLayout->addWidget(group) ;

@@ -223,9 +223,9 @@ void LunarCalendarItem::drawDay(QPainter *painter)
         color = weekColor;
     }
 
-    if (select) {
+/*    if (select) {
         color = selectTextColor;
-    } /*else if (hover) {
+    } *//*else if (hover) {
         color = hoverTextColor;
     }*/
 
@@ -314,12 +314,16 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
         color = otherLunarColor;
     }
 
-    if (select) {
-        color = selectTextColor;
-    } /*else if (hover) {
-        color = hoverTextColor;
-    }*/ else if (exist) {
-        color = lunarColor;
+//    if (select) {
+//        color = selectTextColor;
+//    } /*else if (hover) {
+//        color = hoverTextColor;
+//    }*/ else if (exist) {
+//        color = lunarColor;
+//    }
+
+    if (exist) {
+           color = lunarColor;
     }
 
     painter->setPen(color);
