@@ -142,12 +142,12 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     storageFrame->setLayout(mStorageLayout);
     handleStorageUi();
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
-    mBtn->setVisible(false);
+    mBtn->setVisible(true);
     realign();
     //进入桌面后可能存在的托盘区域未刷新问题
-    QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
+    QTimer::singleShot(100,[this] { realign(); trayIconSizeRefresh(); });
     //针对ukui桌面环境特殊应用的处理，保证稳定性
-    QTimer::singleShot(3000,[this] { panelStartupFcitx();});
+    //QTimer::singleShot(3000,[this] { panelStartupFcitx();});
     QTimer::singleShot(30000,[this] {
         //QProcess::execute("sh /usr/share/ukui/ukui-panel/plugin-tray/trayAppSetting.sh");
     });
@@ -298,7 +298,7 @@ void UKUITray::realign()
         }
     }
 
-    if(mStorageIcons.size()<1) mBtn->setVisible(false);
+    if(mStorageIcons.size()<1) mBtn->setVisible(true);
     mLayout->setEnabled(true);
 #if 0
     //设置任务栏
