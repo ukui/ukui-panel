@@ -176,6 +176,7 @@ UKUITaskGroup::UKUITaskGroup(const QString & iconName, const QString & caption, 
     //setObjectName(caption);
     //setText(caption);
     Q_ASSERT(parent);
+    mIconName=iconName;
     taskgroupStatus = NORMAL;
     isWinActivate = true;
     setIcon(QIcon::fromTheme(iconName));
