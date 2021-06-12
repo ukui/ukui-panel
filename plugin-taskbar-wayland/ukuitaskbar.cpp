@@ -412,6 +412,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
     if (!group)
     {
         group = new UKUITaskGroup(iconName, caption, window, this);
+        mPlaceHolder->hide();
         connect(group, SIGNAL(groupBecomeEmpty(QString)), this, SLOT(groupBecomeEmptySlot()));
         connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
         connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
