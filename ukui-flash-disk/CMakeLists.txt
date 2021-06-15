@@ -17,7 +17,7 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(KF5WindowSystem REQUIRED)
@@ -59,12 +59,16 @@ add_executable(ukui-flash-disk
     flashdiskdata.h
     fdclickwidget.cpp
     fdclickwidget.h
+    QtSingleApplication/qtsingleapplication.h
+    QtSingleApplication/qtsingleapplication.cpp
+    QtSingleApplication/qtlocalpeer.h
+    QtSingleApplication/qtlocalpeer.cpp
 )
 
 add_definitions(-DQT_NO_KEYWORDS)
 add_definitions(-DQT_MESSAGELOGCONTEXT)
 
-target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} ${QGS_LIBRARIES} KF5::WindowSystem -lukui-log4qt)
+target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus Qt5::Network ${GLIB2_LIBRARIES} ${QGS_LIBRARIES} KF5::WindowSystem -lukui-log4qt)
 
 install(TARGETS ukui-flash-disk DESTINATION bin)
 

@@ -45,9 +45,13 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    FDApplication a(argc, argv);
+    QString id = QString("ukui-flash-disk_%1_%2").arg(getuid()).arg(QLatin1String(getenv("DISPLAY")));
+    FDApplication a(id, argc, argv);
     a.setQuitOnLastWindowClosed(false);        //Process does not exit implicitly
-
+    if (a.isRunning()) {
+        qInfo()<<"ukui-flash-disk is runnning, now exit!";
+        return 1;
+    }
 
     //load translation file
     QString locale = QLocale::system().name();
@@ -74,6 +78,8 @@ int main(int argc, char *argv[])
     }
 
     MainController *ctrl = MainController::self();
+    if (ctrl->init() != 0)  // single instance is running
+        return 0;
     QObject::connect(&a, &FDApplication::notifyWnd, ctrl, &MainController::notifyWnd);
     a.exec();
     delete ctrl;

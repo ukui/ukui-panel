@@ -22,14 +22,17 @@
 #ifndef __FDAPPLICATION_H__
 #define __FDAPPLICATION_H__
 
+#include "QtSingleApplication/qtsingleapplication.h"
+
 #include <QApplication>
 #include <QDebug>
 
-class FDApplication : public QApplication
+class FDApplication : public QtSingleApplication
 {
     Q_OBJECT
 public:
     FDApplication(int &argc, char **argv);
+    FDApplication(const QString &id, int &argc, char **argv);
     virtual ~FDApplication();
 
     bool notify(QObject* obj, QEvent *event);

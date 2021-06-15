@@ -22,9 +22,15 @@
 #include "fdapplication.h"
 
 FDApplication::FDApplication(int &argc, char **argv) 
-    : QApplication(argc, argv) 
+    : QtSingleApplication(argc, argv) 
 {
     
+}
+
+FDApplication::FDApplication(const QString &id, int &argc, char **argv)
+    : QtSingleApplication(id, argc, argv)
+{
+
 }
 
 FDApplication::~FDApplication() 
@@ -35,5 +41,5 @@ FDApplication::~FDApplication()
 bool FDApplication::notify(QObject* obj, QEvent *event)
 {
     Q_EMIT notifyWnd(obj, event);
-    return QApplication::notify(obj, event);
+    return QtSingleApplication::notify(obj, event);
 }

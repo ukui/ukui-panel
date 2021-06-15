@@ -17,11 +17,9 @@ class MainController : public QObject
 public:
     static MainController* self();
     virtual ~MainController();
+    int init();
 private:
     explicit MainController();
-    void init();
-    void creatDBusService();
-    int IsNotRunning();
 
 public:
 Q_SIGNALS:
