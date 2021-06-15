@@ -382,6 +382,11 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
 //    QStringList strList = temp_group_id.split(" ");
 
     const QString group_id = captionExchange(caption);
+    if(QIcon::fromTheme(group_id).isNull()){
+        iconName=QDir::homePath()+"/.local/share/icons/"+group_id+".png";
+    }else{
+        iconName=group_id;
+    }
     UKUITaskGroup *group = nullptr;
     auto i_group = mKnownWindows.find(window);
     if (mKnownWindows.end() != i_group)
@@ -407,6 +412,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
     if (!group)
     {
         group = new UKUITaskGroup(iconName, caption, window, this);
+        mPlaceHolder->hide();
         connect(group, SIGNAL(groupBecomeEmpty(QString)), this, SLOT(groupBecomeEmptySlot()));
         connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
         connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
@@ -434,7 +440,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
         });
         /*********************************************/
 
-        //group->setFixedSize(panel()->panelSize(),panel()->panelSize());
+//        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         //group->setFixedSize(40,40);
         mLayout->addWidget(group) ;
         group->wl_widgetUpdateTitle(caption);

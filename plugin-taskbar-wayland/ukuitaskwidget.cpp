@@ -195,7 +195,7 @@ UKUITaskWidget::UKUITaskWidget(QString iconName, const WId window, UKUITaskBar *
 
     // 自动缩放图片
     //	titleLabel->setScaledContents(true);
-   // mThumbnailLabel->setScaledContents(true);
+    mThumbnailLabel->setScaledContents(true);
 
     // 设置控件缩放方式
     QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -212,6 +212,7 @@ UKUITaskWidget::UKUITaskWidget(QString iconName, const WId window, UKUITaskBar *
     //mTitleLabel->setFixedHeight(32);
     mTitleLabel->setMinimumWidth(1);
     mThumbnailLabel->setMinimumSize(QSize(1, 1));
+    mThumbnailLabel->setMaximumSize(QSize(this->width()*2,this->height()*8));
 
     mTitleLabel->setContentsMargins(0, 0, 5, 0);
     //    mTopBarLayout->setSpacing(5);
