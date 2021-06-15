@@ -425,6 +425,7 @@ void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 void UKUITaskWidget::enterEvent(QEvent *)
 {
     status = HOVER;
+    mTitleLabel->setToolTip(mTitleLabel->text());
     repaint();
 }
 
