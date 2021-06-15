@@ -440,7 +440,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
         });
         /*********************************************/
 
-        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
+//        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         //group->setFixedSize(40,40);
         mLayout->addWidget(group) ;
         group->wl_widgetUpdateTitle(caption);

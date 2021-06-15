@@ -136,6 +136,7 @@ UKUITaskButton::UKUITaskButton(QString iconName,QString caption, const WId windo
     mParentTaskBar(taskbar),
     mPlugin(mParentTaskBar->plugin())
 {
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     isWinActivate = true;
     mIcon = QIcon::fromTheme("application-x-desktop");
 }
