@@ -656,7 +656,7 @@ void MainWindow::onConvertShowWindow(QString strDriveId, QString strMountUri)
                                         QString("media-memory-sd"));
         } else {
             onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"), 
-                                        QString("media-removable-symbolic"));
+                                        QString("drive-removable-media-usb"));
         }
         #else
         if (strDriveId.startsWith("/dev/sr")) {
@@ -667,7 +667,7 @@ void MainWindow::onConvertShowWindow(QString strDriveId, QString strMountUri)
                                         QString("media-removable-symbolic"));
         } else {
             onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"), 
-                                        QString("media-removable-symbolic"));
+                                        QString("drive-removable-media-usb"));
         }
         #endif
         m_vtDeviveId.push_back(strDeviceId);
