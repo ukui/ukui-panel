@@ -199,6 +199,7 @@ public Q_SLOTS:
     void onInsertAbnormalDiskNotify(QString message);
     void onNotifyWnd(QObject* obj, QEvent *event);
     void onClickedEject(EjectDeviceInfo eDeviceInfo);
+    void onRemountVolume(FDVolumeInfo volumeInfo);
 
 Q_SIGNALS:
     void clicked();
@@ -206,6 +207,8 @@ Q_SIGNALS:
     void convertUpdateWindow(QString, unsigned);
     void unloadMount();
     void telephoneMount();
+    void remountVolume(FDVolumeInfo volumeInfo);
+
 protected:
     void resizeEvent(QResizeEvent *event);
     bool eventFilter(QObject *obj, QEvent *event);
