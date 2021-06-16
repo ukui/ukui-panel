@@ -31,71 +31,15 @@ MainController* MainController::self()      //static function    //complete the 
 
 MainController::MainController()
 {
-    init();
-    m_DiskWindow = new MainWindow;         //main process singleton object
-    connect(this, &MainController::notifyWnd, m_DiskWindow, &MainWindow::onNotifyWnd);
 }
 
 MainController::~MainController()
 {
 }
 
-void MainController::init()                   //init select
+int MainController::init()                   //init select
 {
-    if(IsNotRunning())
-    {
-        creatDBusService();                 //create connect
-        qDebug()<<"--------------creatDBusService";
-    }
-    else
-    {
-        qDebug()<<"ukui-flash-disk is running";  //or finish the process
-        exit(0);
-    }
-}
-
-int MainController::IsNotRunning()
-{
-    //determine the session bus that if it has been connected
-    char service_name[SERVICE_NAME_SIZE];
-    memset(service_name, 0, SERVICE_NAME_SIZE);
-//    char *appName;
-//    std::string strAppName = "ukui-flash-disk";
-//    appName = strAppName.c_str();  此方法返回的是一个可读不可改的const char *类型
-    char *appName;
-    QString strAppName;
-    QByteArray ba = strAppName.toLatin1();
-    appName = ba.data();
-    snprintf(service_name, SERVICE_NAME_SIZE, "%s_%d_%s",UKUI_FLASH_DISK_SERVICE,getuid(),strcat(appName,getenv("DISPLAY")));
-    qDebug()<<"getenv(display)"<<getenv("DISPLAY");
-    qDebug()<<"service_name"<<service_name;
-    QDBusConnection conn = QDBusConnection::sessionBus();
-    if (!conn.isConnected())
-        return 0;
-
-    QDBusReply<QString> reply = conn.interface()->call("GetNameOwner", service_name);
-    return reply.value() == "";
-}
-
-void MainController::creatDBusService()
-{
-    // 用于建立到session bus的连接
-    //to be used for creating the session bus connection
-    QDBusConnection bus = QDBusConnection::sessionBus();
-    // 在session bus上注册名为"com.kylin_user_guide.hotel"的service
-    // register the service in session bus that named by "com.kylin_user_guide.hotel"
-
-    char service_name[SERVICE_NAME_SIZE];
-    memset(service_name, 0, SERVICE_NAME_SIZE);
-    snprintf(service_name, SERVICE_NAME_SIZE, "%s_%d",UKUI_FLASH_DISK_SERVICE,getuid());
-
-    if (!bus.registerService(service_name))
-    {  //注意命名规则-和_
-       //Note the naming convention.
-            qDebug() << bus.lastError().message();
-            exit(1);
-    }
-    // "QDBusConnection::ExportAllSlots"表示把类Hotel的所有Slot都导出为这个Object的method
-    // "QDBusConnection::ExportAllSlots" stands for that it makes all the slot in class hotel export to the method of this object
-    bus.registerObject("/", this ,QDBusConnection::ExportAllSlots);
+    m_DiskWindow = new MainWindow;         //main process singleton object
+    connect(this, &MainController::notifyWnd, m_DiskWindow, &MainWindow::onNotifyWnd);
+    return 0;
 }
