@@ -90,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
     connect(this,&MainWindow::convertShowWindow,this,&MainWindow::onConvertShowWindow);
     connect(this,&MainWindow::convertUpdateWindow,this,&MainWindow::onConvertUpdateWindow);
+    connect(this,&MainWindow::remountVolume,this,&MainWindow::onRemountVolume);
     ui->centralWidget->setLayout(vboxlayout);
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
                                                   "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
@@ -686,7 +687,7 @@ void MainWindow::onConvertUpdateWindow(QString strDevName, unsigned uDevType)
 //the drive-connected callback function the is triggered when the usb device is inseted
 void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this)
 {
-    qDebug()<<"drive add";
+    qInfo()<<"drive add";
     if(p_this->ifsettings->get(IFAUTOLOAD).toBool())
     {
         GList *lVolume = NULL;
@@ -718,7 +719,7 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
         }
         // perhaps uSubVolumeSize is 0 and is ok ?
         // else {
-        //     qDebug()<<"wrong disk has intered";
+        //     qInfo()<<"wrong disk has intered";
         //     p_this->onInsertAbnormalDiskNotify(tr("There is a problem with this device"));
         // }
     }
@@ -734,7 +735,7 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
 //the drive-disconnected callback function the is triggered when the usb device is pull out
 void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this)
 {
-    qDebug()<<"drive disconnect";
+    qInfo()<<"drive disconnect";
 
     FDDriveInfo driveInfo;
     char *devPath = g_drive_get_identifier(drive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
@@ -761,7 +762,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
 //when the usb device is identified,we should mount every partition
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
-    qDebug()<<"volume add";
+    qInfo()<<"volume add";
 
     FILE *fp = NULL;
     int a = 0;
@@ -986,7 +987,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                     }
                 }
                 if (isNewMount) {
-                    //qDebug()<<"cd data disk has mounted!";
+                    //qInfo()<<"cd data disk has mounted!";
                     volumeInfo.isNewInsert = true;
                     p_this->m_dataFlashDisk->addVolumeInfoWithDrive(driveInfo, volumeInfo);
                     string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
@@ -1009,7 +1010,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
 //when the U disk is pull out we should reduce all its partitions
 void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
-    qDebug()<<"volume removed";
+    qInfo()<<"volume removed";
     FDVolumeInfo volumeInfo;
     char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
     if (volumeId) {
@@ -1040,7 +1041,7 @@ void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volum
 //when the volumes were mounted we add its mounts number
 void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this)
 {
-    qDebug()<<"mount add";
+    qInfo()<<"mount add";
 
     GDrive* gdrive = g_mount_get_drive(mount);
     GVolume* gvolume = g_mount_get_volume(mount);
@@ -1109,8 +1110,8 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     // get mount total size
     GFile *fileRoot = g_mount_get_root(mount);
     if (fileRoot) {
-        unsigned uRetryTime = 3;
-        unsigned uDelayTime = 300000;
+        unsigned uRetryTime = 5;
+        unsigned uDelayTime = 200000;
         while (uRetryTime > 0) {
             GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
             if (info) {
@@ -1163,7 +1164,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     }
     if(isValidMount && (mountInfo.isCanUnmount || g_str_has_prefix(strVolumePath.c_str(),"/dev/bus")
             || g_str_has_prefix(strVolumePath.c_str(),"/dev/sr") || g_str_has_prefix(strVolumePath.c_str(),"/dev/mmcblk"))) {
-        qDebug() << "real mount loaded";
+        qInfo() << "real mount loaded";
         mountInfo.isNewInsert = true;
         if (!driveInfo.strId.empty()) {
             if (!volumeInfo.strId.empty()) {
@@ -1181,13 +1182,13 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     }
     else
     {
-        qDebug()<<"不符合过滤条件的设备已被挂载";
+        qInfo()<<"不符合过滤条件的设备已被挂载";
     }
 
     if(p_this->m_dataFlashDisk->getValidInfoCount() >= 1)
     {
         if (isValidMount && isNewMount) {
-            //qDebug()<<"cd data disk has mounted!";
+            //qInfo()<<"cd data disk has mounted!";
             string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
             Q_EMIT p_this->convertShowWindow(strDevId.c_str(), mountInfo.strUri.c_str());
         }
@@ -1199,7 +1200,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
 //when the mountes were uninstalled we reduce mounts number
 void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this)
 {
-    qDebug()<<mount<<"mount remove";
+    qInfo()<<mount<<"mount remove";
     FDMountInfo mountInfo;
     mountInfo.isCanEject = g_mount_can_eject(mount);
     char *mountId = g_mount_get_uuid(mount);
@@ -1231,6 +1232,11 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
         }
         g_object_unref(root);
     }
+    // check mount's volume had removed?
+    FDVolumeInfo volumeInfo;
+    p_this->m_dataFlashDisk->getVolumeInfoByMount(mountInfo, volumeInfo);
+    quint64 mountTickDiff = p_this->m_dataFlashDisk->getMountTickDiff(mountInfo);
+
     p_this->m_dataFlashDisk->removeMountInfo(mountInfo);
 
     if(p_this->m_dataFlashDisk->getValidInfoCount() == 0)
@@ -1239,6 +1245,10 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
     }
     p_this->m_dataFlashDisk->OutputInfos();
     Q_EMIT p_this->convertUpdateWindow(QString::fromStdString(mountInfo.strName), 2);     //emit a signal to update the MainMainShow slot
+    qInfo()<<"ID:"<<mountInfo.strId.c_str()<<",volume is:"<<volumeInfo.strId.c_str()<<",mount tickdiff:"<<mountTickDiff;
+    if (mountTickDiff > 0 && mountTickDiff < 500 && !volumeInfo.strId.empty()) {
+        QTimer::singleShot(1000, p_this, [&,volumeInfo,p_this]() { p_this->onRemountVolume(volumeInfo); });
+    }
 }
 
 //it stands that when you insert a usb device when all the  U disk partitions
@@ -1308,8 +1318,8 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
             // get mount total size
             GFile *fileRoot = g_mount_get_root(gmount);
             if (fileRoot) {
-                unsigned uRetryTime = 3;
-                unsigned uDelayTime = 300000;
+                unsigned uRetryTime = 5;
+                unsigned uDelayTime = 200000;
                 while (uRetryTime > 0) {
                     GFileInfo *info = g_file_query_filesystem_info(fileRoot,G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,nullptr,nullptr);
                     if (info) {
@@ -1365,7 +1375,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 p_this->m_dataFlashDisk->addMountInfo(mountInfo);
             }
             if (isNewMount) {
-                qDebug()<<"sig has emited";
+                qInfo()<<"sig has emited";
                 string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
                 Q_EMIT p_this->convertShowWindow(strDevId.c_str(), mountInfo.strUri.c_str());     //emit a signal to trigger the MainMainShow slot
             }
@@ -1373,7 +1383,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
     }
     else
     {
-        qDebug()<<"sorry mount failed";
+        qInfo()<<"sorry mount failed:"<<err->code<<","<<err->message;
     }
 }
 
@@ -1516,7 +1526,7 @@ void MainWindow::moveBottomRight()
     QDBusReply<QVariantList> reply=iface.call("GetPrimaryScreenGeometry");
     //reply获取的参数共5个，分别是 主屏可用区域的起点x坐标，主屏可用区域的起点y坐标，主屏可用区域的宽度，主屏可用区域高度，任务栏位置
     //    reply.value();
-    qDebug()<<reply.value().at(4).toInt();
+    qInfo()<<reply.value().at(4).toInt();
     QVariantList position_list=reply.value();
 
     switch(reply.value().at(4).toInt()){
@@ -2287,7 +2297,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 void MainWindow::AsyncUnmount(QString strMountRoot,MainWindow *p_this) 
 {
-    qDebug()<<"dataPath:"<<strMountRoot;
+    qInfo()<<"dataPath:"<<strMountRoot;
     QProcess p;
     p.setProgram("pkexec");
     p.setArguments(QStringList()<<"eject"<<strMountRoot);
@@ -2725,7 +2735,7 @@ void MainWindow::driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo
     gboolean success =  FALSE;
     GError *err = nullptr;
     success = g_drive_stop_finish(G_DRIVE(object), res, &err);
-    qDebug()<<"driveStopCb:"<<success;
+    qInfo()<<"driveStopCb:"<<success;
     if (success || !err || (G_IO_ERROR_FAILED_HANDLED == err->code)) {
         FDDriveInfo driveInfo;
         driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
@@ -2757,6 +2767,126 @@ void MainWindow::driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo
                 peDeviceInfo->uFlag = G_MOUNT_UNMOUNT_FORCE;
                 pThis->doRealEject(peDeviceInfo, G_MOUNT_UNMOUNT_FORCE);
             });
+        }
+    }
+}
+
+void MainWindow::onRemountVolume(FDVolumeInfo volumeInfo)
+{
+    if (volumeInfo.strId.empty())
+        return;
+    if (!(g_str_has_prefix(volumeInfo.strId.c_str(),"/dev/bus") || g_str_has_prefix(volumeInfo.strId.c_str(),"/dev/sd"))) {
+        return;
+    }
+    qInfo()<<"volumeInfo.strId:"<<volumeInfo.strId.c_str();
+    GList *lDrive = NULL;
+    GList *lVolume = NULL;
+    GList *current_drive_list = NULL;
+    GList *current_volume_list = NULL;
+    GDrive* devDrive = NULL;
+    GVolume* devVolume = NULL;
+    bool isDone = false;
+    //about drive
+    GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
+    current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
+    for (lDrive = current_drive_list; lDrive != NULL; lDrive = lDrive->next) {
+        GDrive *gdrive = (GDrive *)lDrive->data;
+        char *devPath = g_drive_get_identifier(gdrive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+        if (devPath != NULL) {
+            devDrive = gdrive;
+            current_volume_list = g_drive_get_volumes(gdrive);
+            if (current_volume_list) {
+                for(lVolume = current_volume_list; lVolume != NULL; lVolume = lVolume->next){ //遍历驱动器上的所有卷设备
+                    GVolume* volume = (GVolume *)lVolume->data;
+                    char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                    if (volumeId) {
+                        if (volumeInfo.strId != volumeId) {
+                            g_free(volumeId);
+                            continue;
+                        }
+                        g_free(volumeId);
+                    } else {
+                        continue ;
+                    }
+                    devVolume = volume;
+                    break;
+                }
+            }
+            g_free(devPath);
+        }
+    }
+    if (devVolume != NULL) {
+        isDone = true;
+        GMount* pCurMount = g_volume_get_mount(devVolume);
+        if (pCurMount) {
+            g_object_unref(pCurMount);
+        } else {
+            volumeInfo.isCanMount = g_volume_can_mount(devVolume);
+            qInfo()<<"Volume canmount:"<<volumeInfo.isCanMount<<"|"<<ifsettings->get(IFAUTOLOAD).toBool();
+            if(ifsettings->get(IFAUTOLOAD).toBool()) {
+                g_volume_mount(devVolume,
+                            G_MOUNT_MOUNT_NONE,
+                            nullptr,
+                            nullptr,
+                            GAsyncReadyCallback(frobnitz_result_func_volume),
+                            this);
+            }
+        }
+    }
+    if (current_volume_list) {
+        g_list_free(current_volume_list);
+        current_volume_list = NULL;
+    }
+    if (current_drive_list) {
+        g_list_free(current_drive_list);
+        current_drive_list = NULL;
+    }
+    //about volume not associated with a drive
+    if (!isDone) {
+        current_volume_list = g_volume_monitor_get_volumes(g_volume_monitor);
+        if (current_volume_list) {
+            for (lVolume = current_volume_list; lVolume != NULL; lVolume = lVolume->next) {
+                GVolume *volume = (GVolume *)lVolume->data;
+                GDrive *gdrive = g_volume_get_drive(volume);
+                if (!gdrive) {
+                    char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+                    if (volumeId) {
+                        if (volumeInfo.strId != volumeId) {
+                            g_free(volumeId);
+                            continue;
+                        }
+                        g_free(volumeId);
+                    } else {
+                        continue ;
+                    }
+                    devVolume = volume;
+                    break;
+                } else {
+                    g_object_unref(gdrive);
+                }
+            }
+        }
+        if (devVolume != NULL) {
+            isDone = true;
+            GMount* pCurMount = g_volume_get_mount(devVolume);
+            if (pCurMount) {
+                g_object_unref(pCurMount);
+            } else {
+                volumeInfo.isCanMount = g_volume_can_mount(devVolume);
+                qInfo()<<"Volume canmount:"<<volumeInfo.isCanMount<<"|"<<ifsettings->get(IFAUTOLOAD).toBool();
+                if(ifsettings->get(IFAUTOLOAD).toBool()) {
+                    g_volume_mount(devVolume,
+                                G_MOUNT_MOUNT_NONE,
+                                nullptr,
+                                nullptr,
+                                GAsyncReadyCallback(frobnitz_result_func_volume),
+                                this);
+                }
+            }
+        }
+        if (current_volume_list) {
+            g_list_free(current_volume_list);
+            current_volume_list = NULL;
         }
     }
 }
