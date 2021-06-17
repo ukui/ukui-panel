@@ -51,6 +51,7 @@ static bool xError;
 #define STYLE_NAME                "styleName"
 #define STYLE_NAME_KEY_DARK       "ukui-dark"
 #define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_UKUI       "ukui"
 #define STYLE_NAME_KEY_BLACK       "ukui-black"
 #define STYLE_NAME_KEY_LIGHT       "ukui-light"
 #define STYLE_NAME_KEY_WHITE       "ukui-white"
@@ -112,7 +113,7 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
 
     const QByteArray id(ORG_UKUI_STYLE);
     QStringList stylelist;
-    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT<<STYLE_NAME_KEY_UKUI;
     if(QGSettings::isSchemaInstalled(id)){
         gsettings = new QGSettings(id);
         if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
