@@ -171,6 +171,7 @@ UKUITaskGroup::UKUITaskGroup(const QString & iconName, const QString & caption, 
     mPopup(new UKUIGroupPopup(this)),
     mPreventPopup(false),
     mpWidget(NULL),
+    mSingleButton(false),
     isWaylandGroup(true)
 {
     //setObjectName(caption);
