@@ -232,7 +232,7 @@ void LunarCalendarItem::drawDay(QPainter *painter)
     painter->setPen(color);
 
     QFont font;
-    font.setPixelSize(side * 0.28);
+    font.setPixelSize(side * 0.3);
     //设置文字粗细
     font.setBold(true);
     painter->setFont(font);
@@ -329,7 +329,7 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
     painter->setPen(color);
 
     QFont font;
-    font.setPixelSize(side * 0.20);
+    font.setPixelSize(side * 0.27);
     painter->setFont(font);
 
     QRect lunarRect(0, height / 2, width, height / 2);
