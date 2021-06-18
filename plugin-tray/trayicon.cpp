@@ -338,7 +338,7 @@ bool TrayIcon::event(QEvent *event)
         case QEvent::MouseButtonPress:
             //            trayButtonPress(static_cast<QMouseEvent*>(event));
             //            break;
-            trayButtonCoordinateMapping(x_panel,y_panel);
+            //trayButtonCoordinateMapping(x_panel,y_panel);
 //            break;
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonDblClick:
