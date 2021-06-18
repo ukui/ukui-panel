@@ -41,6 +41,17 @@
 #include <QToolButton>
 #define XEMBED_EMBEDDED_NOTIFY 0
 
+
+//适配高分屏
+#include<X11/Xlib.h>
+#include<X11/keysym.h>
+#include<X11/Xutil.h>
+#include<X11/extensions/XTest.h>
+
+#define FONT_RENDERING_DPI               "org.ukui.SettingsDaemon.plugins.xsettings"
+#define SCALE_KEY                        "scaling-factor"
+
+
 static bool xError;
 #define MIMETYPE "ukui/UkuiTray"
 
@@ -120,7 +131,7 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
             dark_style=true;
         else
             dark_style=false;
-        }
+    }
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==STYLE_NAME){
             if(stylelist.contains(gsettings->get(STYLE_NAME).toString()))
@@ -130,6 +141,23 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
             repaint();
         }
     });
+
+    const QByteArray System_Palette_id(FONT_RENDERING_DPI);
+    if(QGSettings::isSchemaInstalled(System_Palette_id)){
+        //this->update();
+        System_scale_gsettings = new QGSettings(System_Palette_id);
+        scale = System_scale_gsettings->get(SCALE_KEY).toInt();
+        qDebug()<<"scale is "<<scale;
+    }
+    connect(System_scale_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key == "styleName")
+        {
+            scale = System_scale_gsettings->get(SCALE_KEY).toInt();
+            qDebug()<<"scale is "<<scale;
+            this->update();
+        }
+    });
+
 }
 
 
@@ -148,11 +176,11 @@ void TrayIcon::init()
         return;
     }
 
-//        qDebug() << "New tray icon ***********************************";
-//        qDebug() << "  * window id:  " << hex << mIconId;
-//        qDebug() << "  * window name:" << xfitMan().getApplicationName(mIconId);
-//        qDebug() << "  * size (WxH): " << attr.width << "x" << attr.height;
-//        qDebug() << "  * color depth:" << attr.depth;
+    //        qDebug() << "New tray icon ***********************************";
+    //        qDebug() << "  * window id:  " << hex << mIconId;
+    //        qDebug() << "  * window name:" << xfitMan().getApplicationName(mIconId);
+    //        qDebug() << "  * size (WxH): " << attr.width << "x" << attr.height;
+    //        qDebug() << "  * color depth:" << attr.depth;
 
     unsigned long mask = 0;
     XSetWindowAttributes set_attr;
@@ -268,7 +296,7 @@ QSize TrayIcon::sizeHint() const
     QMargins margins = contentsMargins();
     return QSize(margins.left() + mIconSize.width() + margins.right(),
                  margins.top() + mIconSize.height() + margins.bottom()
-                );
+                 );
 }
 
 
@@ -308,17 +336,19 @@ bool TrayIcon::event(QEvent *event)
             break;
 
         case QEvent::MouseButtonPress:
-//            trayButtonPress(static_cast<QMouseEvent*>(event));
+            //            trayButtonPress(static_cast<QMouseEvent*>(event));
+            //            break;
+            //trayButtonCoordinateMapping(x_panel,y_panel);
 //            break;
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonDblClick:
             event->accept();
             break;
         case QEvent::ContextMenu:
-//            moveMenu();
+            //            moveMenu();
             break;
         case QEvent::Enter:
-//            this->setToolTip("右键可选择移入任务栏/收纳");
+            //            this->setToolTip("右键可选择移入任务栏/收纳");
             break;
         default:
             break;
@@ -414,8 +444,11 @@ void TrayIcon::draw(QPaintEvent* /*event*/)
     }
 
     if(needReDraw())
-//        image=HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
+        //        image=HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
         image = drawSymbolicColoredPixmap(QPixmap::fromImage(image)).toImage();
+    painter.setRenderHints(QPainter::SmoothPixmapTransform);
+    painter.setRenderHints(QPainter::Antialiasing, true);
+
     painter.drawImage(iconRect, image);
 
     if(ximage)
@@ -433,6 +466,108 @@ void TrayIcon::trayButtonPress(QMouseEvent* /*event*/)
     QDBusMessage message =QDBusMessage::createSignal("/traybutton/click", "com.ukui.panel.plugins.tray", "ClickTrayApp");
     message<<xfitMan().getApplicationName(mIconId);
     QDBusConnection::sessionBus().send(message);
+}
+
+/*关于点击托盘应用的非图标区域实现打开托盘应用*/
+void TrayIcon::trayButtonCoordinateMapping(int x_click,int y_click)//QMouseEvent* /*event*/,
+{
+     XEvent event;
+     Display *dpy = XOpenDisplay(NULL);
+     if(dpy == NULL){
+       return ;
+     }
+     /* get info about current pointer position */
+     XQueryPointer(dpy, RootWindow(dpy, DefaultScreen(dpy)),
+         &event.xbutton.root, &event.xbutton.window,
+         &event.xbutton.x_root, &event.xbutton.y_root,
+         &event.xbutton.x, &event.xbutton.y,
+         &event.xbutton.state);
+      qDebug()<<"x send click ";
+
+      QPoint x_desktop=QCursor::pos();
+      qDebug()<<"Tset"<<x_desktop;
+
+      if (scale!=2)//scale 100
+      {
+          int mid_icon_click_w=width()/2;// tray icon position
+          int mid_icon_click_h=height()/2;
+           qDebug()<<"100  icon position"<<mid_icon_click_w<<mid_icon_click_h;
+          if (x_click<=width()/2&&y_click<height()/2)
+          {
+              x=x_desktop.x()+qAbs(x_click-mid_icon_click_w);
+              y=x_desktop.y()+qAbs(y_click-mid_icon_click_h);
+              qDebug()<<"positon left_up x y "<<x<<y;
+          }
+          else if(x_click>width()/2&&y_click<height()/2)
+          {
+              x=x_desktop.x()-qAbs(x_click-mid_icon_click_w);
+              y=x_desktop.y()+qAbs(y_click-mid_icon_click_h);
+              qDebug()<<"position right_up x y "<<x<<y;
+          }
+          else if(x_click<width()/2&&y_click>height()/2)
+          {
+              x=x_desktop.x()+qAbs(x_click-mid_icon_click_w);
+              y=x_desktop.y()-qAbs(y_click-mid_icon_click_h);
+              qDebug()<<"position left_down x y "<<x<<y;
+          }
+          else if (x_click>width()/2&&y_click>=height()/2)
+          {
+              x=x_desktop.x()-qAbs(x_click-mid_icon_click_w);
+              y=x_desktop.y()-qAbs(y_click-mid_icon_click_h);
+              qDebug()<<"position right_down x y "<<x<<y;
+          }
+          else
+          {
+              qDebug()<<"no change click position";
+          }
+      }
+      else
+      {
+          int mid_icon_click_w=width()/2;// tray icon position
+          int mid_icon_click_h=height()/3;
+           qDebug()<<"200  icon position"<<mid_icon_click_w<<mid_icon_click_h;
+          if (x_click<=width()/2&&y_click<height()/3)
+          {
+              x=x_desktop.x()*2+qAbs(x_click*2-mid_icon_click_w);
+              y=x_desktop.y()*2+qAbs(y_click*2-mid_icon_click_h);
+              qDebug()<<"positon left_up x y "<<x<<y;
+          }
+          else if(x_click>width()/2&&y_click<height()/3)
+          {
+              x=x_desktop.x()*2-qAbs(x_click*2-mid_icon_click_w);
+              y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
+              qDebug()<<"position right_up x y "<<x<<y;
+          }
+          else if(x_click<width()/2&&y_click>height()/3)
+          {
+              x=x_desktop.x()*2+qAbs(x_click*2-mid_icon_click_w);
+              y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
+              qDebug()<<"position left_down x y "<<x<<y;
+          }
+          else if (x_click>width()/2&&y_click>=height()/3)
+          {
+              x=x_desktop.x()*2-qAbs(x_click*2-mid_icon_click_w);
+              y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
+              qDebug()<<"position right_down x y "<<x<<y;
+          }
+          else
+          {
+              qDebug()<<"no change click position";
+          }
+      }
+
+      XTestFakeMotionEvent(dpy, -1, x, y, 0);
+      XTestFakeButtonEvent(dpy, 1, 1, 0);
+      XTestFakeButtonEvent(dpy, 1, 0, 0);
+      QElapsedTimer t;
+      t.start();
+      while(t.elapsed()<200);
+      XSetInputFocus(mDisplay, mWindowId,RevertToPointerRoot,CurrentTime);
+      /* place the mouse where it was */
+      XTestFakeMotionEvent(dpy, -1, event.xbutton.x, event.xbutton.y, 0);
+       qDebug()<<"event.xbutton.x, event.xbutton.y"<<event.xbutton.x<< event.xbutton.y;
+      XCloseDisplay(dpy);
+
 }
 
 void TrayIcon::windowDestroyed(Window w)
@@ -475,19 +610,19 @@ void TrayIcon::paintEvent(QPaintEvent *)
     {
     case NORMAL:
     {
-//                          p.setBrush(QBrush(QColor(0x00,0xFF,0x00,0x19)));
+        //                          p.setBrush(QBrush(QColor(0x00,0xFF,0x00,0x19)));
         p.setPen(Qt::NoPen);
         break;
     }
     case HOVER:
     {
-//                          p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x1f)));
+        p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x1f)));
         p.setPen(Qt::NoPen);
         break;
     }
     case PRESS:
     {
-//                          p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
+        p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
         p.setPen(Qt::NoPen);
         break;
     }
@@ -495,7 +630,7 @@ void TrayIcon::paintEvent(QPaintEvent *)
     p.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
     const QSize req_size{mIconSize * metric(PdmDevicePixelRatio)};
     xfitMan().resizeWindow(mWindowId, req_size.width(), req_size.height());
-    p.drawRoundedRect(opt.rect.x(),opt.rect.y(),opt.rect.width(), req_size.height(),0,0);
+    p.drawRoundedRect(opt.rect.x(),opt.rect.y(),width(),height(),8,8);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
@@ -511,7 +646,7 @@ QPixmap TrayIcon::drawSymbolicColoredPixmap(const QPixmap &source)
                     color.setRed(255);
                     color.setGreen(255);
                     color.setBlue(255);
-//                    color.setRgb(255,255,255);
+                    //                    color.setRgb(255,255,255);
                     img.setPixelColor(x, y, color);
                 }
                 else{
@@ -593,7 +728,7 @@ void TrayIcon::mouseMoveEvent(QMouseEvent *e)
     drag->setMimeData(mimeData());
     drag->setPixmap(img);
 
-            drag->setHotSpot(img.rect().bottomRight());
+    drag->setHotSpot(img.rect().bottomRight());
 
 
     drag->exec();
@@ -616,15 +751,15 @@ void TrayIcon::dragEnterEvent(QDragEnterEvent *e)
     e->acceptProposedAction();
     const TrayButtonMimeData *mimeData = qobject_cast<const TrayButtonMimeData*>(e->mimeData());
     if (mimeData && mimeData->button())
-          emit switchButtons(mimeData->button(), this);
+        emit switchButtons(mimeData->button(), this);
     QToolButton::dragEnterEvent(e);
 }
 
 QMimeData * TrayIcon::mimeData()
 {
     TrayButtonMimeData *mimeData = new TrayButtonMimeData();
-//    QByteArray ba;
-//    mimeData->setData(mimeDataFormat(), ba);
+    //    QByteArray ba;
+    //    mimeData->setData(mimeDataFormat(), ba);
     mimeData->setButton(this);
     return mimeData;
 }
@@ -636,6 +771,11 @@ void TrayIcon::mousePressEvent(QMouseEvent *e)
         mDragStart = e->pos();
         return;
     }
+
+    QPoint panel_click= e->pos();
+    x_panel=panel_click.x();
+    y_panel=panel_click.y();
+    trayButtonCoordinateMapping(x_panel,y_panel);
 
     QToolButton::mousePressEvent(e);
 }

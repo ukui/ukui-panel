@@ -49,6 +49,8 @@ set(LIBRARIES
     ${XDAMAGE_LIBRARIES}
     ${XRENDER_LIBRARIES}
     ${XCB_LIBRARIES}
+    ${XTEST_LIBRARIES}
+    libXtst.so
     Qt5X11Extras
     ${Gsetting_LIBRARIES}
     ${GIO2_LIBRARIES}
