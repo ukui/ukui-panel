@@ -31,9 +31,13 @@
 
 #include <QDir>
 #include <QGSettings/QGSettings>
+#include <QTimer>
+#include <QEvent>
 
 #include "../panel/common/ukuigridlayout.h"
 #include "../panel/iukuipanelplugin.h"
+#include "../panel/common/ukuisettings.h"
+#include "../panel/pluginsettings.h"
 
 #include "statusnotifierbutton.h"
 #include "statusnotifierwatcher.h"
@@ -55,25 +59,48 @@ public slots:
     void realign();
 
 private:
+    UKUi::GridLayout *mLayout;
     IUKUIPanelPlugin *mPlugin;
     StatusNotifierWatcher *mWatcher;
 
     QHash<QString, StatusNotifierButton*> mServices;
+    QMap<QString,StatusNotifierButton*> m_ShowButtons;
+    QMap<QString,StatusNotifierButton*> m_HideButtons;
+    QMap<QString,StatusNotifierButton*> m_AllButtons;
 
     QList<StatusNotifierButton*> mStatusNotifierButtons;
     QToolButton *mBtn;
     QGSettings *gsettings;
+    QTimer *time;
+    int timecount;
+    bool mRealign;
+
+private:
+    void saveSettings(QString button1,QString button2);
+    QList<QStringList> readSettings();
+
+
+private slots:
+    void switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2);
+    void btnAddButton(QString button);
 };
 
 class StatusNotifierPopUpButton : public QToolButton
 {
+    Q_OBJECT
 public:
-    StatusNotifierPopUpButton();
+    StatusNotifierPopUpButton(StatusNotifierWidget *parent = nullptr);
     ~StatusNotifierPopUpButton();
 protected:
     void mousePressEvent(QMouseEvent *);
+    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
 private:
     QGSettings *gsettings;
+
+signals:
+    void addButton(QString button);
+
 };
 
 #endif // STATUSNOTIFIERWIDGET_H
