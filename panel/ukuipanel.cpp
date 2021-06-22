@@ -1889,3 +1889,72 @@ void UKUIPanel::keyChangedSlot(const QString &key) {
             m_lockAction->setChecked(mLockPanel);
     }
 }
+
+/////////////////////////////////////////////////////////////////////////////////
+/// \brief UKUIPanel::areaDivid
+/// \param globalpos
+/// \return
+/// 以下所有函数均为任务栏拖拽相关（位置、大小）
+/////////////////////////////////////////////////////////////////////////////////
+
+IUKUIPanel::Position UKUIPanel::areaDivid(QPoint globalpos) {
+    int x = globalpos.rx();
+    int y = globalpos.ry();
+    float W = QApplication::screens().at(0)->size().width();
+    float H = QApplication::screens().at(0)->size().height();
+    float slope = H / W;
+    if ((x < 100 || x > W - 100) && (y > H - 100 || y < 100)) return mPosition;
+    if (y > (int)(x * slope) && y > (int)(H - x * slope)) return PositionBottom;
+    if (y > (int)(x * slope) && y < (int)(H - x * slope)) return PositionLeft;
+    if (y < (int)(x * slope) && y < (int)(H - x * slope)) return PositionTop;
+    if (y < (int)(x * slope) && y > (int)(H - x * slope)) return PositionRight;
+}
+
+
+void UKUIPanel::mousePressEvent(QMouseEvent *event) {
+    setCursor(Qt::DragMoveCursor);
+}
+
+void UKUIPanel::enterEvent(QEvent *event) {
+       // setCursor(Qt::SizeVerCursor);
+}
+
+void UKUIPanel::leaveEvent(QEvent *event) {
+    setCursor(Qt::ArrowCursor);
+}
+
+void UKUIPanel::mouseMoveEvent(QMouseEvent* event)
+{
+    if (mLockPanel) return;
+    if (movelock == -1) {
+        if (event->pos().ry() < 10) movelock = 0;
+        else movelock = 1;
+    }
+    if (!movelock) {
+        int panel_h = QApplication::screens().at(0)->size().height() - event->globalPos().ry();
+        int icon_size = panel_h*0.695652174;
+        setCursor(Qt::SizeVerCursor);
+        if (panel_h <= PANEL_SIZE_LARGE && panel_h >= PANEL_SIZE_SMALL) {
+            setPanelSize(panel_h, true);
+            setIconSize(icon_size, true);
+            gsettings->set(PANEL_SIZE_KEY, panel_h);
+            gsettings->set(ICON_SIZE_KEY, icon_size);
+        }
+        return;
+    }
+    setCursor(Qt::SizeAllCursor);
+    IUKUIPanel::Position currentpos = areaDivid(event->globalPos());
+    if (oldpos != currentpos)
+    {
+        setPosition(0,currentpos,true);
+        oldpos = currentpos;
+    }
+}
+
+void UKUIPanel::mouseReleaseEvent(QMouseEvent* event)
+{
+    setCursor(Qt::ArrowCursor);
+    realign();
+    emit realigned();
+    movelock = -1;
+}
