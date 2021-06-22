@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=UKUIPanel/Plugin
+Name=Startbar
+Comment=startbar
+Icon=start-menu

@@ -188,6 +188,12 @@ if(SEGMENTATION_PLUGIN)
     add_subdirectory(plugin-segmentation)
 endif(SEGMENTATION_PLUGIN)
 
+setByDefault(STARTBAR_PLUGIN Yes)
+if(STARTBAR_PLUGIN)
+    list(APPEND ENABLED_PLUGINS "startbar")
+    add_subdirectory(plugin-startbar)
+endif(STARTBAR_PLUGIN)
+
 #########################################################################
 
 message(STATUS  "**************** The following plugins will be built ****************")
