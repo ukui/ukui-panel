@@ -398,6 +398,12 @@ protected:
     void showEvent(QShowEvent *event) override;
     void paintEvent(QPaintEvent *);
 
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+
 public slots:
     /**
      * @brief Shows the ConfigPanelDialog and shows the "Config Panel"
@@ -710,6 +716,8 @@ private:
 
     QDBusInterface *m_cloudInterface;
 
+    IUKUIPanel::Position oldpos;
+
     QMenu * menu;
     QAction * m_lockAction;
     /**
@@ -719,6 +727,9 @@ private:
     QDBusInterface  *mDbusXrandInter;
     QRect mcurrentScreenRect;
     QString flag_hw990;
+
+    IUKUIPanel::Position areaDivid(QPoint globalpos);
+    int movelock = -1;
 
     int MAX_SIZE_PANEL_IN_CALC;
     int MID_SIZE_PANEL_IN_CALC;
