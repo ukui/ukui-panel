@@ -149,10 +149,12 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     setObjectName(groupName);
     setText(groupName);
 
-    QTimer::singleShot(5000,[=] {
-        initDesktopFileName(window);
-        initActionsInRightButtonMenu();
-    });
+//    QTimer::singleShot(5000,[=] {
+//        if(window){
+//            initDesktopFileName(window);
+//            initActionsInRightButtonMenu();
+//        }
+//    });
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged(int)));
