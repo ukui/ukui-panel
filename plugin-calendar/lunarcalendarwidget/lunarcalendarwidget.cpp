@@ -298,8 +298,6 @@ void LunarCalendarWidget::_timeUpdate() {
     font.setPointSize(12);
     timelabel->setFont(font);
     timelabel->setAlignment(Qt::AlignHCenter);
-
-
 }
 
 void LunarCalendarWidget::timerUpdate()
@@ -336,15 +334,19 @@ void LunarCalendarWidget::initWidget()
     btnNextYear->setPixmap(pictToWhite2.drawSymbolicColoredPixmap(pixmap2));
 
 
-    //转到年显示 暂不用此
+    //转到年显示
     btnYear->setObjectName("btnYear");
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnYear->setText(tr("Year"));
+    btnYear->setText(tr("年"));
+    btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
+    connect(btnYear,&QPushButton::clicked,this,&LunarCalendarWidget::yearWidgetChange);
 
-    //转到月显示 暂不用此
+    //转到月显示
     btnMonth->setObjectName("btnMonth");
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnMonth->setText(tr("Month"));
+    btnMonth->setText(tr("月"));
+    btnMonth->setStyle(new CustomStyle_pushbutton("ukui-default"));
+    connect(btnMonth,&QPushButton::clicked,this,&LunarCalendarWidget::monthWidgetChange);
 
     //转到今天
     btnToday->setObjectName("btnToday");
@@ -386,8 +388,8 @@ void LunarCalendarWidget::initWidget()
 
     layoutTop->addWidget(widgetBlank1);
     layoutTop->addWidget(widgetBlank2);
-//    layoutTop->addWidget(btnYear);
-//    layoutTop->addWidget(btnMonth);
+    layoutTop->addWidget(btnYear);
+    layoutTop->addWidget(btnMonth);
     layoutTop->addWidget(btnToday);
     layoutTop->addItem(new QSpacerItem(10,1));
 
@@ -398,7 +400,7 @@ void LunarCalendarWidget::initWidget()
 
 
     //星期widget
-    QWidget *widgetWeek = new QWidget;
+    widgetWeek = new QWidget;
     widgetWeek->setObjectName("widgetWeek");
     widgetWeek->setMinimumHeight(30);
 
@@ -415,25 +417,62 @@ void LunarCalendarWidget::initWidget()
     }
 
     //日期标签widget
-    QWidget *widgetBody = new QWidget;
-    widgetBody->setObjectName("widgetBody");
+    widgetDayBody = new QWidget;
+    widgetDayBody->setObjectName("widgetDayBody");
 
     //日期标签布局
-    QGridLayout *layoutBody = new QGridLayout(widgetBody);
-    layoutBody->setMargin(1);
-    layoutBody->setHorizontalSpacing(0);
-    layoutBody->setVerticalSpacing(0);
+    QGridLayout *layoutBodyDay = new QGridLayout(widgetDayBody);
+    layoutBodyDay->setMargin(1);
+    layoutBodyDay->setHorizontalSpacing(0);
+    layoutBodyDay->setVerticalSpacing(0);
 
     //逐个添加日标签
     for (int i = 0; i < 42; i++) {
         LunarCalendarItem *lab = new LunarCalendarItem;
         lab->worktime = worktime;
         connect(lab, SIGNAL(clicked(QDate, LunarCalendarItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarItem::DayType)));
-        layoutBody->addWidget(lab, i / 7, i % 7);
+        layoutBodyDay->addWidget(lab, i / 7, i % 7);
         dayItems.append(lab);
     }
 
-    //
+    //年份标签widget
+    widgetYearBody = new QWidget;
+    widgetYearBody->setObjectName("widgetYearBody");
+
+    //年份标签布局
+    QGridLayout *layoutBodyYear = new QGridLayout(widgetYearBody);
+    layoutBodyYear->setMargin(1);
+    layoutBodyYear->setHorizontalSpacing(0);
+    layoutBodyYear->setVerticalSpacing(0);
+
+    //逐个添加年标签
+    for (int i = 0; i < 12; i++) {
+        LunarCalendarYearItem *labYear = new LunarCalendarYearItem;
+        connect(labYear, SIGNAL(clicked(QDate, LunarCalendarYearItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarYearItem::DayType)));
+        layoutBodyYear->addWidget(labYear, i / 3, i % 3);
+        yearItems.append(labYear);
+    }
+    widgetYearBody->hide();
+
+    //月份标签widget
+    widgetmonthBody = new QWidget;
+    widgetmonthBody->setObjectName("widgetmonthBody");
+
+    //月份标签布局
+    QGridLayout *layoutBodyMonth = new QGridLayout(widgetmonthBody);
+    layoutBodyMonth->setMargin(1);
+    layoutBodyMonth->setHorizontalSpacing(0);
+    layoutBodyMonth->setVerticalSpacing(0);
+
+    //逐个添加月标签
+    for (int i = 0; i < 12; i++) {
+        LunarCalendarMonthItem *labMonth = new LunarCalendarMonthItem;
+        connect(labMonth, SIGNAL(clicked(QDate, LunarCalendarMonthItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarMonthItem::DayType)));
+        layoutBodyMonth->addWidget(labMonth, i / 3, i % 3);
+        monthItems.append(labMonth);
+    }
+    widgetmonthBody->hide();
+
     labWidget = new QWidget();
     labBottom = new QLabel();
     yijichooseLabel = new QLabel();
@@ -481,7 +520,9 @@ void LunarCalendarWidget::initWidget()
     verLayoutCalendar->addItem(new QSpacerItem(10,10));
     verLayoutCalendar->addWidget(widgetTop);
     verLayoutCalendar->addWidget(widgetWeek);
-    verLayoutCalendar->addWidget(widgetBody, 1);
+    verLayoutCalendar->addWidget(widgetDayBody, 1);
+    verLayoutCalendar->addWidget(widgetYearBody, 1);
+    verLayoutCalendar->addWidget(widgetmonthBody, 1);
     verLayoutCalendar->addWidget(lineDown);
     verLayoutCalendar->addWidget(labWidget);
     verLayoutCalendar->addWidget(yijiWidget);
@@ -553,7 +594,21 @@ void LunarCalendarWidget::analysisWorktimeJs()
     }
 }
 
+void LunarCalendarWidget::yearWidgetChange()
+{
+    widgetYearBody->show();
+    widgetWeek->hide();
+    widgetDayBody->hide();
+    widgetmonthBody->hide();
+}
 
+void LunarCalendarWidget::monthWidgetChange()
+{
+    widgetYearBody->hide();
+    widgetWeek->hide();
+    widgetDayBody->hide();
+    widgetmonthBody->show();
+}
 //初始化日期面板
 void LunarCalendarWidget::initDate()
 {
@@ -649,6 +704,10 @@ void LunarCalendarWidget::initDate()
         }
     }
 
+    for (int i=0;i<12;i++){
+        yearItems.at(i)->setDate(date.addYears(i));
+        monthItems.at(i)->setDate(date.addMonths(i));
+    }
 }
 
 void LunarCalendarWidget::customButtonsClicked(int x)
@@ -1002,6 +1061,10 @@ void LunarCalendarWidget::showNextMonth(bool date_clicked)
 //转到今天
 void LunarCalendarWidget::showToday()
 {
+    widgetYearBody->hide();
+    widgetmonthBody->hide();
+    widgetDayBody->show();
+    widgetWeek->show();
     date = QDate::currentDate();
     initDate();
     dayChanged(date);
