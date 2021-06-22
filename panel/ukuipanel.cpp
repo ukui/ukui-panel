@@ -268,6 +268,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 　　　*/
     connect(QApplication::desktop(), &QDesktopWidget::resized, this, &UKUIPanel::ensureVisible);
     connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &UKUIPanel::ensureVisible);
+    connect(qApp,&QApplication::primaryScreenChanged,this,&UKUIPanel::ensureVisible);
 
     // connecting to QDesktopWidget::workAreaResized shouldn't be necessary,
     // as we've already connceted to QDesktopWidget::resized, but it actually
