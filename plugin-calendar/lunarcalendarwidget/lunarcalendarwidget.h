@@ -29,6 +29,8 @@
 #include "../../panel/iukuipanelplugin.h"
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
+#include "lunarcalendaryearitem.h"
+#include "lunarcalendarmonthitem.h"
 #include "customstylePushbutton.h"
 #include <QCheckBox>
 
@@ -36,7 +38,10 @@
 class QLabel;
 class statelabel;
 class QComboBox;
+class LunarCalendarYearItem;
+class LunarCalendarMonthItem;
 class LunarCalendarItem;
+
 class m_PartLineWidget;
 
 #ifdef quc
@@ -132,6 +137,11 @@ private:
     QWidget *yijiWidget;
     QLabel *yiLabel;
     QLabel *jiLabel;
+    QWidget *widgetWeek;
+    QWidget *widgetDayBody;
+    QWidget *widgetYearBody;
+    QWidget *widgetmonthBody;
+
     QString timemodel = 0;
     bool yijistate = false;
     bool lunarstate =false;
@@ -148,6 +158,8 @@ private:
     QLabel *cboxYearandMonthLabel;
     QList<QLabel *> labWeeks;           //顶部星期名称
     QList<LunarCalendarItem *> dayItems;//日期元素
+    QList<LunarCalendarYearItem *> yearItems;//年份元素
+    QList<LunarCalendarMonthItem *> monthItems;//年份元素
 
     CalendarStyle calendarStyle;        //整体样式
     bool FirstdayisSun;                 //首日期为周日
@@ -204,6 +216,8 @@ private Q_SLOTS:
     void dateChanged(int year, int month, int day);
     void timerUpdate();
     void customButtonsClicked(int x);
+    void yearWidgetChange();
+    void monthWidgetChange();
 
 public:
     CalendarStyle getCalendarStyle()    const;
@@ -309,6 +323,8 @@ public Q_SLOTS:
 Q_SIGNALS:
     void clicked(const QDate &date);
     void selectionChanged();
+    void yijiChangeUp();
+    void yijiChangeDown();
 };
 
 

@@ -30,6 +30,12 @@ private Q_SLOTS:
     void cboxSelectType_currentIndexChanged(int index);
     void cboxWeekNameFormat_currentIndexChanged(bool FirstDayisSun);
     void ckShowLunar_stateChanged(bool arg1);
+    void changeUpSize();
+    void changeDownSize();
+
+Q_SIGNALS:
+    void yijiChangeUp();
+    void yijiChangeDown();
 };
 
 #endif // FRMLUNARCALENDARWIDGET_H
