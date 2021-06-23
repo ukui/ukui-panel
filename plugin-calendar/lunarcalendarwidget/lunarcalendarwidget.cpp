@@ -20,9 +20,6 @@
 #define ICON_COLOR_LOGHT      255
 #define ICON_COLOR_DRAK       0
 
-
-
-
 LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 {
     analysisWorktimeJs();
@@ -492,7 +489,7 @@ void LunarCalendarWidget::initWidget()
 
     yijiLayout = new QVBoxLayout;
     yijiWidget = new QWidget;
-    yijiWidget->setFixedHeight(60);
+//    yijiWidget->setFixedHeight(60);
 
     yiLabel = new QLabel();
     jiLabel = new QLabel();
@@ -716,9 +713,11 @@ void LunarCalendarWidget::customButtonsClicked(int x)
         yiLabel->setVisible(true);
         jiLabel->setVisible(true);
         yijistate = true;
+        Q_EMIT yijiChangeUp();
     } else {
         yiLabel->setVisible(false);
         jiLabel->setVisible(false);
+        Q_EMIT yijiChangeDown();
         yijistate = false;
     }
 }

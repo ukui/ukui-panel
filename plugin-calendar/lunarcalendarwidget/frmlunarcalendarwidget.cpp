@@ -11,6 +11,9 @@
 frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmLunarCalendarWidget)
 {
     ui->setupUi(this);
+//    ui->lunarCalendarWidget->testLabel
+    connect(ui->lunarCalendarWidget,&LunarCalendarWidget::yijiChangeUp,this,&frmLunarCalendarWidget::changeUpSize);
+    connect(ui->lunarCalendarWidget,&LunarCalendarWidget::yijiChangeDown,this,&frmLunarCalendarWidget::changeDownSize);
     this->initForm();
     this->setWindowFlags(Qt::FramelessWindowHint);//去掉标题栏
     this->setWindowFlags(Qt::Popup);
@@ -44,6 +47,18 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
 frmLunarCalendarWidget::~frmLunarCalendarWidget()
 {
     delete ui;
+}
+
+void frmLunarCalendarWidget::changeUpSize()
+{
+    this->setFixedSize(440, 652);
+    Q_EMIT yijiChangeUp();
+}
+
+void frmLunarCalendarWidget::changeDownSize()
+{
+    this->setFixedSize(440, 600);
+    Q_EMIT yijiChangeDown();
 }
 
 void frmLunarCalendarWidget::initForm()

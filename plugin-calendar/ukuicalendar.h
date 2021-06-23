@@ -111,6 +111,9 @@ public:
     int16_t mViewWidht = 440;
     int16_t mViewHeight = 600 ;
 
+    int changeHight = 0;
+    void changeWidowpos();
+
 protected:
     /**
      * @brief contextMenuEvent 右键菜单设置项

@@ -141,6 +141,7 @@ private:
     QWidget *widgetDayBody;
     QWidget *widgetYearBody;
     QWidget *widgetmonthBody;
+
     QString timemodel = 0;
     bool yijistate = false;
     bool lunarstate =false;
@@ -322,6 +323,8 @@ public Q_SLOTS:
 Q_SIGNALS:
     void clicked(const QDate &date);
     void selectionChanged();
+    void yijiChangeUp();
+    void yijiChangeDown();
 };
 
 
