@@ -11,7 +11,6 @@
 frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmLunarCalendarWidget)
 {
     ui->setupUi(this);
-//    ui->lunarCalendarWidget->testLabel
     connect(ui->lunarCalendarWidget,&LunarCalendarWidget::yijiChangeUp,this,&frmLunarCalendarWidget::changeUpSize);
     connect(ui->lunarCalendarWidget,&LunarCalendarWidget::yijiChangeDown,this,&frmLunarCalendarWidget::changeDownSize);
     this->initForm();
@@ -90,8 +89,8 @@ void frmLunarCalendarWidget::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
     opt.init(this);
+    QRect rect = this->rect();
     QPainter p(this);
-    p.setPen(Qt::gray);
     double tran =1;
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
@@ -102,8 +101,8 @@ void frmLunarCalendarWidget::paintEvent(QPaintEvent *)
     color.setAlpha(tran);
     QBrush brush =QBrush(color);
     p.setBrush(brush);
-
+    p.setPen(Qt::NoPen);
     p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,6,6);
+    p.drawRoundedRect(rect,6,6);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
