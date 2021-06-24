@@ -19,9 +19,10 @@ StatusNotifierStorageArrow::StatusNotifierStorageArrow(StatusNotifierWidget *par
             }
         });
     }
-    QTimer::singleShot(1000,this,[=](){
+    QTimer::singleShot(10,this,[=](){
        setArrowIcon();
     });
+    this->setProperty("useIconHighlightEffect", 0x2);
 }
 
 StatusNotifierStorageArrow::~StatusNotifierStorageArrow()
