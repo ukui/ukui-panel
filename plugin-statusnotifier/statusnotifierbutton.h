@@ -110,6 +110,7 @@ protected:
     void mousePressEvent(QMouseEvent *e);
     bool event(QEvent *e);
     virtual QMimeData * mimeData();
+    void resizeEvent(QResizeEvent *event);
 
     void refetchIcon(Status status);
     void resetIcon();

@@ -41,7 +41,8 @@
 
 #include "statusnotifierbutton.h"
 #include "statusnotifierwatcher.h"
-class StatusNotifierPopUpButton;
+#include "statusnotifier_storagearrow.h"
+class StatusNotifierStorageArrow;
 class StatusNotifierWidget : public QWidget
 {
     Q_OBJECT
@@ -49,6 +50,9 @@ class StatusNotifierWidget : public QWidget
 public:
     StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *parent = 0);
     ~StatusNotifierWidget();
+
+public:
+    bool Direction;
 
 signals:
 
@@ -69,38 +73,22 @@ private:
     QMap<QString,StatusNotifierButton*> m_AllButtons;
 
     QList<StatusNotifierButton*> mStatusNotifierButtons;
-    QToolButton *mBtn;
+    StatusNotifierStorageArrow *mBtn;
     QGSettings *gsettings;
     QTimer *time;
+
     int timecount;
     bool mRealign;
 
 private:
     void saveSettings(QString button1,QString button2);
     QList<QStringList> readSettings();
+    void resetLayout();
 
 
 private slots:
     void switchButtons(StatusNotifierButton *button1, StatusNotifierButton *button2);
     void btnAddButton(QString button);
-};
-
-class StatusNotifierPopUpButton : public QToolButton
-{
-    Q_OBJECT
-public:
-    StatusNotifierPopUpButton(StatusNotifierWidget *parent = nullptr);
-    ~StatusNotifierPopUpButton();
-protected:
-    void mousePressEvent(QMouseEvent *);
-    void dropEvent(QDropEvent *event);
-    void dragEnterEvent(QDragEnterEvent *event);
-private:
-    QGSettings *gsettings;
-
-signals:
-    void addButton(QString button);
-
 };
 
 #endif // STATUSNOTIFIERWIDGET_H
