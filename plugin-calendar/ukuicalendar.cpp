@@ -590,10 +590,10 @@ void CalendarActiveLabel::changeWidowpos()
         w->setGeometry(totalWidth-mViewWidht-8,qApp->primaryScreen()->geometry().y()+mPlugin->panel()->panelSize()+8,mViewWidht,mViewHeight);
         break;
     case IUKUIPanel::PositionLeft:
-        w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+8,totalHeight-mViewHeight-8,mViewWidht,mViewHeight);
+        w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+8,totalHeight-mViewHeight-8-changeHight,mViewWidht,mViewHeight);
         break;
     case IUKUIPanel::PositionRight:
-        w->setGeometry(totalWidth-mPlugin->panel()->panelSize()-mViewWidht-8,totalHeight-mViewHeight-8,mViewWidht,mViewHeight);
+        w->setGeometry(totalWidth-mPlugin->panel()->panelSize()-mViewWidht-8,totalHeight-mViewHeight-8-changeHight,mViewWidht,mViewHeight);
         break;
     default:
         w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+4,totalHeight-mViewHeight,mViewWidht,mViewHeight);
