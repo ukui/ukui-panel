@@ -225,6 +225,9 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
         calendar_version = "old";
     }
     m_settings.endGroup();
+
+    //监听手动更改时间,后期找到接口进行替换
+    QTimer::singleShot(1000*10,this,[=](){ListenForManualSettingTime();});
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -547,6 +550,18 @@ void IndicatorCalendar::modifyCalendarWidget()
            mWebViewDiag->setGeometry(qApp->primaryScreen()->geometry().x()+panel()->panelSize()+4,totalHeight-mViewHeight,mViewWidht,mViewHeight);
            break;
        }
+}
+
+void IndicatorCalendar::ListenForManualSettingTime(){
+    mProcess=new QProcess(this);
+    QString command="journalctl -u systemd-timedated.service -f";
+    mProcess->setReadChannel(QProcess::StandardOutput);
+    mProcess->start(command);
+    mProcess->startDetached(command);
+
+    connect(mProcess,&QProcess::readyReadStandardOutput,this,[=](){
+        updateTimeText();
+    });
 }
 
 CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *parent) :
