@@ -11,6 +11,7 @@ set(HEADERS
     statusnotifierwatcher.h
     statusnotifierwidget.h
     sniasync.h
+    statusnotifier_storagearrow.h
 )
 
 set(SOURCES
@@ -21,6 +22,7 @@ set(SOURCES
     statusnotifierwatcher.cpp
     statusnotifierwidget.cpp
     sniasync.cpp
+    statusnotifier_storagearrow.cpp
 )
 
 qt5_add_dbus_adaptor(DBUS_SOURCES

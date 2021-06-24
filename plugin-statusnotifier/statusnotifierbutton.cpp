@@ -97,6 +97,7 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         refetchIcon(Passive);
         refetchIcon(NeedsAttention);
     });
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     newToolTip();
 }
@@ -351,7 +352,6 @@ void StatusNotifierButton::resetIcon()
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
 {
-
     if (e->mimeData()->hasFormat(MIMETYPE))
         e->acceptProposedAction();
     else
@@ -392,7 +392,6 @@ void StatusNotifierButton::mousePressEvent(QMouseEvent *e)
 
 bool StatusNotifierButton::event(QEvent *e)
 {
-
 //    if(e->type() != QEvent::ToolTipChange && e->type()!=QEvent::HoverMove && e->type()!=QEvent::Paint &&
 //            e->type() != QEvent::HoverLeave && e->type()!=QEvent::Paint &&e->type() != QEvent::DragMove &&
 //            e->type() != QEvent::Leave && e->type()!=QEvent::Enter &&e->type() != QEvent::DragMove &&
@@ -405,6 +404,21 @@ bool StatusNotifierButton::event(QEvent *e)
         emit cleansignal();
     }
     return QToolButton::event(e);
+}
+
+void StatusNotifierButton::resizeEvent(QResizeEvent *event){
+    IUKUIPanel *panel = mPlugin->panel();
+
+    if (panel->isHorizontal())
+    {
+        this->setIconSize(QSize(this->width()*0.5,this->width()*0.5));
+    }
+    else
+    {
+        this->setIconSize(QSize(this->height()*0.5,this->height()*0.5));
+    }
+
+     QToolButton::resizeEvent(event);
 }
 
 QString StatusNotifierButton::hideAbleStatusNotifierButton()
