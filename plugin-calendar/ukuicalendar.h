@@ -32,6 +32,8 @@
 #include <QtWebKitWidgets/QWebView>
 #include <QGSettings>
 #include <QMenu>
+#include <QProcess>
+
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
 #include "../panel/common/ukuigridlayout.h"
@@ -66,6 +68,7 @@ private Q_SLOTS:
     void updateTimeText();
     void hidewebview();
     void CalendarWidgetShow();
+    void ListenForManualSettingTime();
 
 private:
     QWidget *mMainWidget;
@@ -96,6 +99,8 @@ private:
     QString hourSystem_12_vartical;
     QString current_date;
     IUKUIPanelPlugin * mPlugin;
+
+    QProcess *mProcess;
 
 };
 
