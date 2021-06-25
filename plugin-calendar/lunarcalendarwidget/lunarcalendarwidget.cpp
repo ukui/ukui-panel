@@ -333,6 +333,7 @@ void LunarCalendarWidget::initWidget()
 
     //转到年显示
     btnYear->setObjectName("btnYear");
+    btnYear->setFocusPolicy(Qt::NoFocus);
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnYear->setText(tr("年"));
     btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
@@ -340,6 +341,7 @@ void LunarCalendarWidget::initWidget()
 
     //转到月显示
     btnMonth->setObjectName("btnMonth");
+    btnMonth->setFocusPolicy(Qt::NoFocus);
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnMonth->setText(tr("月"));
     btnMonth->setStyle(new CustomStyle_pushbutton("ukui-default"));
@@ -347,6 +349,7 @@ void LunarCalendarWidget::initWidget()
 
     //转到今天
     btnToday->setObjectName("btnToday");
+    btnToday->setFocusPolicy(Qt::NoFocus);
     btnToday->setFixedWidth(40);
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
