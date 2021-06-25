@@ -821,14 +821,15 @@ void LunarCalendarWidget::monthChanged(const QString &arg1)
 void LunarCalendarWidget::clicked(const QDate &date, const LunarCalendarItem::DayType &dayType)
 {
     this->date = date;
-    dayChanged(this->date);
+    clickDate = date;
+    dayChanged(this->date,clickDate);
     if (LunarCalendarItem::DayType_MonthPre == dayType)
         showPreviousMonth(false);
     else if (LunarCalendarItem::DayType_MonthNext == dayType)
         showNextMonth(false);
 }
 
-void LunarCalendarWidget::dayChanged(const QDate &date)
+void LunarCalendarWidget::dayChanged(const QDate &date,const QDate &m_date)
 {
     //计算星期几,当前天对应标签索引=日期+星期几-1
     int year = date.year();
@@ -842,7 +843,10 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
         if (week == 0) {
             index = day + 6;
         }
-        dayItems.at(i)->setSelect(i == index);
+         dayItems.at(i)->setSelect(false);
+        if(dayItems.at(i)->getDate() == m_date) {
+           dayItems.at(i)->setSelect(i == index);
+        }
         if (i == index) {
             downLabelHandle(dayItems.at(i)->getDate());
             yijihandle(dayItems.at(i)->getDate());
@@ -1035,6 +1039,7 @@ void LunarCalendarWidget::showPreviousMonth(bool date_clicked)
     }
 
     dateChanged(year, month, day);
+    dayChanged(this->date,clickDate);
 }
 
 //显示下月日期
@@ -1055,6 +1060,7 @@ void LunarCalendarWidget::showNextMonth(bool date_clicked)
     }
 
     dateChanged(year, month, day);
+    dayChanged(this->date,clickDate);
 }
 
 //转到今天
@@ -1066,7 +1072,7 @@ void LunarCalendarWidget::showToday()
     widgetWeek->show();
     date = QDate::currentDate();
     initDate();
-    dayChanged(date);
+    dayChanged(this->date,clickDate);
 }
 
 void LunarCalendarWidget::setCalendarStyle(const LunarCalendarWidget::CalendarStyle &calendarStyle)
