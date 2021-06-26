@@ -148,24 +148,24 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
         }
     });
 
-    //实时监听系统字体的改变
-    const QByteArray id("org.ukui.style");
-    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
-    connect(fontSetting, &QGSettings::changed,[=](QString key) {
-        if ("systemFont" == key || "systemFontSize" ==key) {
-            QFont font = this->font();
-            btnToday->setFont(font);
-            cboxYearandMonth->setFont(font);
-            for (int i = 0; i < 42; i++) {
-                dayItems.value(i)->setFont(font);
-                dayItems.value(i)->repaint();
-            }
-            for (int i = 0; i < 7; i++) {
-                labWeeks.value(i)->setFont(font);
-                labWeeks.value(i)->repaint();
-            }
-        }
-    });
+//    //实时监听系统字体的改变
+//    const QByteArray id("org.ukui.style");
+//    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
+//    connect(fontSetting, &QGSettings::changed,[=](QString key) {
+//        if ("systemFont" == key || "systemFontSize" ==key) {
+//            QFont font = this->font();
+//            btnToday->setFont(font);
+//            cboxYearandMonth->setFont(font);
+//            for (int i = 0; i < 42; i++) {
+//                dayItems.value(i)->setFont(font);
+//                dayItems.value(i)->repaint();
+//            }
+//            for (int i = 0; i < 7; i++) {
+//                labWeeks.value(i)->setFont(font);
+//                labWeeks.value(i)->repaint();
+//            }
+//        }
+//    });
 
     timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
@@ -333,6 +333,7 @@ void LunarCalendarWidget::initWidget()
 
     //转到年显示
     btnYear->setObjectName("btnYear");
+    btnYear->setFocusPolicy(Qt::NoFocus);
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnYear->setText(tr("年"));
     btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
@@ -340,6 +341,7 @@ void LunarCalendarWidget::initWidget()
 
     //转到月显示
     btnMonth->setObjectName("btnMonth");
+    btnMonth->setFocusPolicy(Qt::NoFocus);
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnMonth->setText(tr("月"));
     btnMonth->setStyle(new CustomStyle_pushbutton("ukui-default"));
@@ -347,6 +349,7 @@ void LunarCalendarWidget::initWidget()
 
     //转到今天
     btnToday->setObjectName("btnToday");
+    btnToday->setFocusPolicy(Qt::NoFocus);
     btnToday->setFixedWidth(40);
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -821,14 +824,15 @@ void LunarCalendarWidget::monthChanged(const QString &arg1)
 void LunarCalendarWidget::clicked(const QDate &date, const LunarCalendarItem::DayType &dayType)
 {
     this->date = date;
-    dayChanged(this->date);
+    clickDate = date;
+    dayChanged(this->date,clickDate);
     if (LunarCalendarItem::DayType_MonthPre == dayType)
         showPreviousMonth(false);
     else if (LunarCalendarItem::DayType_MonthNext == dayType)
         showNextMonth(false);
 }
 
-void LunarCalendarWidget::dayChanged(const QDate &date)
+void LunarCalendarWidget::dayChanged(const QDate &date,const QDate &m_date)
 {
     //计算星期几,当前天对应标签索引=日期+星期几-1
     int year = date.year();
@@ -842,7 +846,10 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
         if (week == 0) {
             index = day + 6;
         }
-        dayItems.at(i)->setSelect(i == index);
+         dayItems.at(i)->setSelect(false);
+        if(dayItems.at(i)->getDate() == m_date) {
+           dayItems.at(i)->setSelect(i == index);
+        }
         if (i == index) {
             downLabelHandle(dayItems.at(i)->getDate());
             yijihandle(dayItems.at(i)->getDate());
@@ -1035,6 +1042,7 @@ void LunarCalendarWidget::showPreviousMonth(bool date_clicked)
     }
 
     dateChanged(year, month, day);
+    dayChanged(this->date,clickDate);
 }
 
 //显示下月日期
@@ -1055,6 +1063,7 @@ void LunarCalendarWidget::showNextMonth(bool date_clicked)
     }
 
     dateChanged(year, month, day);
+    dayChanged(this->date,clickDate);
 }
 
 //转到今天
@@ -1066,7 +1075,7 @@ void LunarCalendarWidget::showToday()
     widgetWeek->show();
     date = QDate::currentDate();
     initDate();
-    dayChanged(date);
+    dayChanged(this->date,clickDate);
 }
 
 void LunarCalendarWidget::setCalendarStyle(const LunarCalendarWidget::CalendarStyle &calendarStyle)

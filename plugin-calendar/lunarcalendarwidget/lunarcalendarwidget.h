@@ -164,6 +164,7 @@ private:
     CalendarStyle calendarStyle;        //整体样式
     bool FirstdayisSun;                 //首日期为周日
     QDate date;                         //当前日期
+    QDate clickDate;                  //保存点击日期
 
     QColor weekTextColor;               //星期名称文字颜色
     QColor weekBgColor;                 //星期名称背景色
@@ -212,7 +213,7 @@ private Q_SLOTS:
     void yearChanged(const QString &arg1);
     void monthChanged(const QString &arg1);
     void clicked(const QDate &date, const LunarCalendarItem::DayType &dayType);
-    void dayChanged(const QDate &date);
+    void dayChanged(const QDate &date,const QDate &m_date);
     void dateChanged(int year, int month, int day);
     void timerUpdate();
     void customButtonsClicked(int x);

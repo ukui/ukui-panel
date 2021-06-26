@@ -21,7 +21,7 @@ LunarCalendarMonthItem::LunarCalendarMonthItem(QWidget *parent) : QWidget(parent
     lunar = "初一";
     dayType = DayType_MonthCurrent;
 
-    //实时监听系统字体的改变
+    //实时监听主题变化
     const QByteArray id("org.ukui.style");
     QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
     connect(fontSetting, &QGSettings::changed,[=](QString key) {
