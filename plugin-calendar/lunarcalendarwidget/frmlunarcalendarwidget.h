@@ -16,6 +16,8 @@ public:
     explicit frmLunarCalendarWidget(QWidget *parent = 0);
     ~frmLunarCalendarWidget();
 
+    bool status;
+
 protected:
     void paintEvent(QPaintEvent *);
 
@@ -23,6 +25,7 @@ private:
     Ui::frmLunarCalendarWidget *ui;
     QGSettings *transparency_gsettings;
     QGSettings *calendar_gsettings;
+    bool eventFilter(QObject *, QEvent *);
 
 private Q_SLOTS:
     void initForm();
