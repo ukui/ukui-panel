@@ -148,24 +148,24 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
         }
     });
 
-    //实时监听系统字体的改变
-    const QByteArray id("org.ukui.style");
-    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
-    connect(fontSetting, &QGSettings::changed,[=](QString key) {
-        if ("systemFont" == key || "systemFontSize" ==key) {
-            QFont font = this->font();
-            btnToday->setFont(font);
-            cboxYearandMonth->setFont(font);
-            for (int i = 0; i < 42; i++) {
-                dayItems.value(i)->setFont(font);
-                dayItems.value(i)->repaint();
-            }
-            for (int i = 0; i < 7; i++) {
-                labWeeks.value(i)->setFont(font);
-                labWeeks.value(i)->repaint();
-            }
-        }
-    });
+//    //实时监听系统字体的改变
+//    const QByteArray id("org.ukui.style");
+//    QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
+//    connect(fontSetting, &QGSettings::changed,[=](QString key) {
+//        if ("systemFont" == key || "systemFontSize" ==key) {
+//            QFont font = this->font();
+//            btnToday->setFont(font);
+//            cboxYearandMonth->setFont(font);
+//            for (int i = 0; i < 42; i++) {
+//                dayItems.value(i)->setFont(font);
+//                dayItems.value(i)->repaint();
+//            }
+//            for (int i = 0; i < 7; i++) {
+//                labWeeks.value(i)->setFont(font);
+//                labWeeks.value(i)->repaint();
+//            }
+//        }
+//    });
 
     timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
