@@ -1462,8 +1462,10 @@ void MainWindow::newarea(int No,
         this->vboxlayout->addWidget(line);
     }
 
+    vboxlayout->setContentsMargins(2,4,2,4);
+    vboxlayout->setSpacing(0);
+    vboxlayout->setMargin(0);
     this->vboxlayout->addWidget(open_widget);
-    vboxlayout->setContentsMargins(2,8,2,8);
 
     if (linestatus == 0)
     {
@@ -1506,8 +1508,10 @@ void MainWindow::newarea(unsigned uDiskNo,
         this->vboxlayout->addWidget(line);
     }
 
-    this->vboxlayout->addWidget(m_fdClickWidget);
     vboxlayout->setContentsMargins(2,4,2,4);
+    vboxlayout->setSpacing(0);
+    vboxlayout->setMargin(0);
+    this->vboxlayout->addWidget(m_fdClickWidget);
 
     if (linestatus == 0)
     {
