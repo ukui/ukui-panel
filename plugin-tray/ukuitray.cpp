@@ -112,6 +112,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mPlugin(plugin),
     mDisplay(QX11Info::display())
 {
+    qDebug()<<"Plugin-Tray :: UKUITray start";
     m_pwidget = NULL;
     status=ST_HIDE;
 
@@ -152,6 +153,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
         //QProcess::execute("sh /usr/share/ukui/ukui-panel/plugin-tray/trayAppSetting.sh");
     });
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(hideStorageWidget()));
+    qDebug()<<"Plugin-Tray :: UKUITray end";
 }
 
 UKUITray::~UKUITray()

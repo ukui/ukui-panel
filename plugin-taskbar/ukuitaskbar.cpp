@@ -70,6 +70,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mPlaceHolder(new QWidget(this)),
     mStyle(new LeftAlignedTextStyle())
 {
+    qDebug()<<"Plugin-Taskbar :: UKUITaskBar start";
     taskstatus=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
@@ -129,6 +130,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel.plugins.service");
     QDBusConnection::sessionBus().registerService("com.ukui.panel.plugins.service");
     QDBusConnection::sessionBus().registerObject("/taskbar/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
+    qDebug()<<"Plugin-Taskbar :: UKUITaskBar end";
 }
 
 /************************************************

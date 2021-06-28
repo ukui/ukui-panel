@@ -42,6 +42,7 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    qDebug()<<"Plugin-Taskview :: TaskView start";
     mButton =new TaskViewButton();
     mButton->setStyle(new CustomStyle());
     mButton->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
@@ -59,6 +60,7 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     });
 
     realign();
+    qDebug()<<"Plugin-Taskview :: TaskView end";
 }
 
 

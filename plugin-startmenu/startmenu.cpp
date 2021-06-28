@@ -56,6 +56,7 @@ UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* par
     QToolButton(parent),
     mPlugin(plugin)
 {
+    qDebug()<<"Plugin-StartMenu :: UKUIStartMenuButton start";
     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     this->setStyle(new CustomStyle());
     setStyleSheet("QToolButton { margin-left: 4px; } ");
@@ -64,6 +65,7 @@ UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* par
     //setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
     //setAttribute(Qt::WA_ShowWithoutActivating,true);
     //setFocusPolicy(Qt::NoFocus);
+    qDebug()<<"Plugin-StartMenu :: UKUIStartMenuButton end";
 }
 
 UKUIStartMenuButton::~UKUIStartMenuButton()
