@@ -761,6 +761,19 @@ void UKUITray::regulateIcon(Window *mid)
     }
 }
 
+QStringList UKUITray::getShowInTrayApp()
+{
+    QString filename = "/usr/share/ukui/ukui-panel/panel-commission.ini";
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("ShowInTray");
+    QStringList trayAppList = m_settings.value("trayname", "").toStringList();
+    qDebug()<<"trayAppList  :"<<trayAppList;
+    m_settings.endGroup();
+    return trayAppList;
+}
+
 void UKUITray::newAppDetect(int wid)
 {
     QString availablepath = findFreePath();
@@ -775,8 +788,8 @@ void UKUITray::newAppDetect(int wid)
         newsetting->set(BINDING_KEY,wid);
         newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
 
-        QStringList trayIconNameList;
-        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"explorer.exe"<<"ukui-power-manager-tray"<<"baidu-qimpanel"<<"iflyime-qim";
+        QStringList trayIconNameList = getShowInTrayApp();
+        //trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"explorer.exe"<<"ukui-power-manager-tray"<<"baidu-qimpanel"<<"iflyime-qim";
         if(trayIconNameList.contains(xfitMan().getApplicationName(wid))){
             newsetting->set(ACTION_KEY,"tray");
             newsetting->set(RECORD_KEY,"tray");
