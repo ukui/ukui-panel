@@ -23,6 +23,8 @@
 #define __FDFRAME_H__
 
 #include <QFrame>
+#include <QPainterPath>
+#include <QGSettings>
 
 class FDFrame : public QFrame 
 {
@@ -31,8 +33,15 @@ public:
     explicit FDFrame(QWidget* parent);
     virtual ~FDFrame();
 
+    void initOpacityGSettings();
+
 protected:
     void paintEvent(QPaintEvent * event);
+
+private:
+    // QGSettings
+    QGSettings *m_gsTransOpacity = nullptr;
+    qreal m_curTransOpacity = 1;
 };
 
 #endif

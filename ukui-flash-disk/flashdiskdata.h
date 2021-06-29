@@ -44,6 +44,7 @@ typedef struct FDMountInfo_s {
     bool   isNativeDev = false;
     bool   isNewInsert = false;
     quint64 lluTotalSize = 0;
+    quint64 lluMountTick = 0;
 }FDMountInfo;
 
 typedef struct FDVolumeInfo_s {
@@ -56,6 +57,7 @@ typedef struct FDVolumeInfo_s {
     bool   isNewInsert = false;
     FDMountInfo mountInfo;
 }FDVolumeInfo;
+Q_DECLARE_METATYPE(FDVolumeInfo);
 
 typedef struct FDDriveInfo_s {
     string strId = "";
@@ -88,6 +90,8 @@ public:
     void clearAllData();
     bool isMountInfoExist(FDMountInfo mountInfo);
     void resetAllNewState();
+    quint64 getMountTickDiff(FDMountInfo mountInfo);
+    bool getVolumeInfoByMount(FDMountInfo mountInfo, FDVolumeInfo& volumeInfo);
 
     void OutputInfos();
 

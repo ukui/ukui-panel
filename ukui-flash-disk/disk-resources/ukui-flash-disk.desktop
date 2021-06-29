@@ -9,4 +9,4 @@ Type=Application
 Icon=panel
 X-UKUI-AutoRestart=true
 OnlyShowIn=UKUI
-NoDisPlay=true
+NoDisplay=true

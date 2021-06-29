@@ -65,7 +65,6 @@ FDClickWidget::FDClickWidget(QWidget *parent,
     initThemeMode();
 
     QHBoxLayout *drivename_H_BoxLayout = new QHBoxLayout();
-    drivename_H_BoxLayout = new QHBoxLayout();
     if (m_uDiskNo <= 1) {
         image_show_label = new QLabel(this);
         image_show_label->setFocusPolicy(Qt::NoFocus);
@@ -83,9 +82,9 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         #else 
         imgIcon = QIcon::fromTheme("drive-removable-media-usb");
         #endif
-        QPixmap pixmap = imgIcon.pixmap(QSize(25, 25));
+        QPixmap pixmap = imgIcon.pixmap(QSize(24, 24));
         image_show_label->setPixmap(pixmap);
-        image_show_label->setFixedSize(48,48);
+        image_show_label->setFixedSize(30,30);
         m_driveName_label = new QLabel(this);
         m_driveName_label->setFont(QFont("Noto Sans CJK SC",fontSize));
         QString DriveName = getElidedText(m_driveName_label->font(), m_driveName, 180);
@@ -93,19 +92,20 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         if (DriveName != m_driveName) {
             m_driveName_label->setToolTip(m_driveName);
         }
-        m_driveName_label->setFixedSize(180,40);
+        m_driveName_label->setFixedWidth(180);
         m_driveName_label->setObjectName("driveNameLabel");
 
         m_eject_button = new QPushButton(this);
         m_eject_button->setProperty("useIconHighlightEffect", 0x2);
         m_eject_button->setFlat(true);   //this property set that when the mouse is hovering in the icon the icon will move up a litte
-        m_eject_button->move(m_eject_button->x()+234,m_eject_button->y()+2);
+        m_eject_button->move(m_eject_button->x()+234,m_eject_button->y());
         m_eject_button->installEventFilter(this);
-        m_eject_button->setIcon(drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("media-eject-symbolic").pixmap(24,24).toImage())));
-        m_eject_button->setFixedSize(40,40);
+        m_eject_button->setIcon(QIcon::fromTheme("media-eject-symbolic"));
+        m_eject_button->setFixedSize(36,36);
         m_eject_button->setToolTip(tr("Eject"));
         connect(m_eject_button,SIGNAL(clicked()),SLOT(switchWidgetClicked()));  // this signal-slot function is to emit a signal which
                                                                             //is to trigger a slot in mainwindow
+        drivename_H_BoxLayout->setContentsMargins(0,0,0,0);
         drivename_H_BoxLayout->addSpacing(8);
         drivename_H_BoxLayout->addWidget(image_show_label);
         drivename_H_BoxLayout->addWidget(m_driveName_label);
@@ -114,6 +114,7 @@ FDClickWidget::FDClickWidget(QWidget *parent,
 
     QVBoxLayout *main_V_BoxLayout = new QVBoxLayout(this);
     main_V_BoxLayout->setContentsMargins(0,0,0,0);
+    main_V_BoxLayout->setMargin(0);
     disWidgetNumOne = new QWidget(this);
     QHBoxLayout *onevolume_h_BoxLayout = new QHBoxLayout();
     m_nameDis1_label = new ClickLabel(disWidgetNumOne);
@@ -243,7 +244,14 @@ void FDClickWidget::on_volume_clicked()
 
 void FDClickWidget::switchWidgetClicked()
 {
-    Q_EMIT clickedEjectItem(this, m_driveId, m_volumeId, m_mountId);
+    EjectDeviceInfo eDeviceInfo;
+    eDeviceInfo.strDriveId = m_driveId;
+    eDeviceInfo.strDriveName = m_driveName;
+    eDeviceInfo.strVolumeId = m_volumeId;
+    eDeviceInfo.strVolumeName = m_volumeName;
+    eDeviceInfo.strMountId = m_mountId;
+    eDeviceInfo.strMountUri = m_mountUri;
+    Q_EMIT clickedEject(eDeviceInfo);
 }
 
 QPixmap FDClickWidget::drawSymbolicColoredPixmap(const QPixmap &source)

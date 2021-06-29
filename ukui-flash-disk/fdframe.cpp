@@ -24,8 +24,12 @@
 #include <QDebug>
 #include <QApplication>
 #include <QScreen>
+#include <QPainterPath>
+#include <KWindowEffects>
 
 #include "fdframe.h"
+
+#define THEME_UKFD_TRANS "org.ukui.control-center.personalise"
 
 FDFrame::FDFrame(QWidget* parent) : QFrame(parent)
 {
@@ -33,24 +37,61 @@ FDFrame::FDFrame(QWidget* parent) : QFrame(parent)
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setAttribute(Qt::WA_TranslucentBackground);
     //setWindowOpacity(0.8);
+    initOpacityGSettings();
+    KWindowEffects::enableBlurBehind(winId(), true);
 }
 
 FDFrame::~FDFrame()
 {
+    if (m_gsTransOpacity) {
+        delete m_gsTransOpacity;
+        m_gsTransOpacity = nullptr;
+    }
+}
 
+void FDFrame::initOpacityGSettings()
+{
+    const QByteArray idtrans(THEME_UKFD_TRANS);
+    if(QGSettings::isSchemaInstalled(idtrans)) {
+        m_gsTransOpacity = new QGSettings(idtrans);
+    }
+
+    if (!m_gsTransOpacity) {
+        m_curTransOpacity = 1;
+        return;
+    }
+
+    connect(m_gsTransOpacity, &QGSettings::changed, this, [=](const QString &key) {
+        if (key == "transparency") {
+            QStringList keys = m_gsTransOpacity->keys();
+            if (keys.contains("transparency")) {
+                m_curTransOpacity = m_gsTransOpacity->get("transparency").toString().toDouble();
+                repaint();
+            }
+        }
+    });
+
+    QStringList keys = m_gsTransOpacity->keys();
+    if(keys.contains("transparency")) {
+        m_curTransOpacity = m_gsTransOpacity->get("transparency").toString().toDouble();
+    }
 }
 
 void FDFrame::paintEvent(QPaintEvent * event)
 {
-    QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing);
-    QPainterPath rectPath;
-    rectPath.addRoundedRect(this->rect(),4,4);
-    
-    // 绘制底色
-    p.save();
-    QStyleOption opt;
-    opt.init(this);
-    p.fillPath(rectPath, opt.palette.color(QPalette::Base));
-    p.restore();
+    QPainterPath path;
+
+    QPainter painter(this);
+    painter.setOpacity(m_curTransOpacity);
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setClipping(true);
+    painter.setPen(Qt::transparent);
+
+    path.addRoundedRect(this->rect(), 6, 6);
+    path.setFillRule(Qt::WindingFill);
+    painter.setBrush(this->palette().base());
+    painter.setPen(Qt::transparent);
+
+    painter.drawPath(path);
+    QFrame::paintEvent(event);
 }

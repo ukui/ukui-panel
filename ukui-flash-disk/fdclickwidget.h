@@ -40,6 +40,18 @@
 #include "interactivedialog.h"
 #include "gpartedinterface.h"
 
+typedef struct _EjectDeviceInfo_s
+{
+    void* pVoid = nullptr;
+    QString strDriveId = "";
+    QString strDriveName = "";
+    QString strVolumeId = "";
+    QString strVolumeName = "";
+    QString strMountId = "";
+    QString strMountUri = "";
+    unsigned uFlag = 0;
+}EjectDeviceInfo;
+
 class MainWindow;
 class FDClickWidget : public QWidget
 {
@@ -92,7 +104,7 @@ public:
     bool ifSucess = false;
 Q_SIGNALS:
     void clicked();
-    void clickedEjectItem(FDClickWidget* pThis,QString strDriveId, QString strVolumeId, QString strMountId);
+    void clickedEject(EjectDeviceInfo eDeviceInfo);
     void noDeviceSig();
     void themeFontChange(qreal lfFontSize);
 
