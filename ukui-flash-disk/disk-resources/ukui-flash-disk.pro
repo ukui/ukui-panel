@@ -7,25 +7,35 @@ PKGCONFIG +=gio-2.0 peony
 CONFIG += c++11 link_pkgconfig no_keywords debug
 DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
-         main.cpp \
-         mainwindow.cpp \
-         UnionVariable.cpp \
-         qclickwidget.cpp \
-         fdapplication.cpp \
-         fdframe.cpp \
-         flashdiskdata.cpp \
-         fdclickwidget.cpp 
+         $$PWD/../main.cpp \
+         $$PWD/../mainwindow.cpp \
+         $$PWD/../device-manager.cpp \
+         $$PWD/../device-operation.cpp \
+         $$PWD/../repair-dialog-box.cpp \
+         $$PWD/../UnionVariable.cpp \
+         $$PWD/../qclickwidget.cpp \
+         $$PWD/../fdapplication.cpp \
+         $$PWD/../fdframe.cpp \
+         $$PWD/../flashdiskdata.cpp \
+         $$PWD/../fdclickwidget.cpp \
+         $$PWD/../interactivedialog.cpp \
+         $$PWD/../ejectInterface.cpp 
 #        Removablemount.cpp
 
 
 HEADERS += \
-         UnionVariable.h \
-         mainwindow.h \
-         qclickwidget.h \
-         fdapplication.h \
-         fdframe.h \
-         flashdiskdata.h \
-         fdclickwidget.h 
+         $$PWD/../device-manager.h \
+         $$PWD/../device-operation.h \
+         $$PWD/../repair-dialog-box.h \
+         $$PWD/../UnionVariable.h \
+         $$PWD/../mainwindow.h \
+         $$PWD/../qclickwidget.h \
+         $$PWD/../fdapplication.h \
+         $$PWD/../fdframe.h \
+         $$PWD/../flashdiskdata.h \
+         $$PWD/../fdclickwidget.h \
+         $$PWD/../interactivedialog.h \
+         $$PWD/../ejectInterface.h 
 #        Removablemount.h
 
 FORMS   += mainwindow.ui
