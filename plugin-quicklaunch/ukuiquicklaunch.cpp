@@ -79,7 +79,7 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     mPlugin(plugin),
     mPlaceHolder(0)
 {
-
+    qDebug()<<"Plugin-Quicklaunch :: UKUIQuickLaunch start";
     struct passwd *pwd;
     pwd=getpwuid(getuid());
     pwd->pw_name;
@@ -145,7 +145,7 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
                directoryUpdated(desktopFilePath);
                directoryUpdated(androidDesktopFilePath);
             });
-
+    qDebug()<<"Plugin-Quicklaunch :: UKUIQuickLaunch end";
 }
 
 

@@ -142,6 +142,7 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     mTimer(new QTimer(this)),
     mpWidget(NULL)
 {
+    qDebug()<<"Plugin-Taskbar :: UKUITaskGroup start";
     Q_ASSERT(parent);
     mpScrollArea = NULL;
     taskgroupStatus = NORMAL;
@@ -165,6 +166,7 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
     connect(parent, &UKUITaskBar::popupShown, this, &UKUITaskGroup::groupPopupShown);
     mTimer->setTimerType(Qt::PreciseTimer);
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
+    qDebug()<<"Plugin-Taskbar :: UKUITaskGroup end";
 }
 
 UKUITaskGroup::~UKUITaskGroup()

@@ -185,6 +185,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mAnimation(nullptr),
     mLockPanel(false)
 {
+    qDebug()<<"Panel :: Constructor start";
     //You can find information about the flags and widget attributes in your
     //Qt documentation or at https://doc.qt.io/qt-5/qt.html
     //Qt::FramelessWindowHint = Produces a borderless window. The user cannot
@@ -221,12 +222,15 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     setWindowTitle("UKUI Panel");
     setObjectName(QString("UKUIPanel %1").arg(configGroup));
+    qDebug()<<"Panel :: UKuiPanel setAttribute finished";
 
     caculateScreenGeometry();
 
     //初始化参数调整
     PanelCommission::panelConfigFileValueInit(true);
     PanelCommission::panelConfigFileReset(true);
+    qDebug()<<"Panel :: PanelCommission config finished";
+
 
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);
@@ -303,6 +307,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         hidePanel();
         time->stop();
     });
+    qDebug()<<"Panel :: setGeometry finished";
+
 //    int height = QApplication::screens().at(0)->size().height();
 //    int width = QApplication::screens().at(0)->size().width();
     MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE;//0.0851852 * height;
@@ -321,7 +327,9 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     ensureVisible();
 
+    qDebug()<<"Panel :: loadPlugins start";
     loadPlugins();
+    qDebug()<<"Panel :: loadPlugins finished";
 
     show();
     // show it the first time, despite setting
@@ -344,6 +352,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
 
     styleAdjust();
+
+    qDebug()<<"Panel :: UKuiPanel  finished";
 
     //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
     QDBusInterface interface(UKUI_SERVICE,
