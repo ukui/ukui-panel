@@ -45,6 +45,7 @@
 #include <X11/Xutil.h>
 
 #include <QLabel>
+#include <QScrollBar>
 
 #include <qmainwindow.h>
 #include <QWidget>
@@ -1431,7 +1432,6 @@ int UKUITaskGroup::calcAverageWidth()
     }
 }
 
-
 void UKUITaskGroup::showAllWindowByList()
 {
     int winWidth = 246;
@@ -1448,11 +1448,8 @@ void UKUITaskGroup::showAllWindowByList()
         removeSrollWidget();
     }
     mpScrollArea = new QScrollArea(this);
-    mpScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    mpScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     mpScrollArea->setWidgetResizable(true);
-    mpScrollArea->setFrameStyle(QFrame::NoFrame);
 
     mPopup->layout()->addWidget(mpScrollArea);
     mPopup->setFixedSize(winWidth,  popWindowheight < screenAvailabelHeight? popWindowheight : screenAvailabelHeight);
@@ -1464,7 +1461,7 @@ void UKUITaskGroup::showAllWindowByList()
     {
         UKUITaskWidget *btn = *it;
         btn->clearMask();
-        btn->setTitleFixedWidth(mpWidget->width() - 25);
+        btn->setTitleFixedWidth(mpWidget->width());
         btn->setParent(mpScrollArea);
         btn->removeThumbNail();
         btn->addThumbNail();
@@ -1487,6 +1484,11 @@ void UKUITaskGroup::showAllWindowByList()
         iPreviewPosition = plugin()->panel()->panelSize()/2 - winWidth/2;
         mPopup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,iPreviewPosition)), mPopup->size()));
     }
+
+    mPopup->setStyle(new CustomStyle());
+    mpScrollArea->setAttribute(Qt::WA_TranslucentBackground);
+    mpScrollArea->setProperty("drawScrollBarGroove",false);
+    mpScrollArea->verticalScrollBar()->setProperty("drawScrollBarGroove",false);
     mpScrollArea->show();
     mPopup->show();
 
