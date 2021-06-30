@@ -71,6 +71,8 @@ void interactiveDialog::getTransparentData()
 void interactiveDialog::initWidgets()
 {
     contentLable = new QLabel(this);
+    contentLable->setWordWrap(true);
+    #ifdef UDISK_SUPPORT_FORCEEJECT
     if (m_strDevId.startsWith("/dev/sr")) {
         contentLable->setText(tr("cdrom is occupying,do you want to eject it"));
     } else if (m_strDevId.startsWith("/dev/mmcblk")) {
@@ -78,9 +80,19 @@ void interactiveDialog::initWidgets()
     } else {
         contentLable->setText(tr("usb is occupying,do you want to eject it"));
     }
+    #else 
+    if (m_strDevId.startsWith("/dev/sr")) {
+        contentLable->setText(tr("cdrom is occupying"));
+    } else if (m_strDevId.startsWith("/dev/mmcblk")) {
+        contentLable->setText(tr("sd is occupying"));
+    } else {
+        contentLable->setText(tr("usb is occupying"));
+    }
+    #endif
     content_H_BoxLayout = new QHBoxLayout();
-    content_H_BoxLayout->addWidget(contentLable);
+    content_H_BoxLayout->addWidget(contentLable, 1, Qt::AlignCenter);
 
+    #ifdef UDISK_SUPPORT_FORCEEJECT
     chooseBtnCancle = new QPushButton();
     chooseBtnCancle->setText(tr("cancle"));
     chooseBtnCancle->setFlat(true);
@@ -95,6 +107,20 @@ void interactiveDialog::initWidgets()
     chooseBtn_H_BoxLayout->addWidget(chooseBtnCancle);
     chooseBtn_H_BoxLayout->addWidget(chooseBtnContinue);
     chooseBtn_H_BoxLayout->setSpacing(0);
+    #else 
+    chooseBtnCancle = new QPushButton();
+    chooseBtnCancle->setText(tr("yes"));
+    chooseBtnCancle->setFlat(true);
+
+    chooseBtnContinue = new QPushButton();
+    chooseBtnContinue->hide();
+
+    chooseBtn_H_BoxLayout = new QHBoxLayout();
+
+    chooseBtn_H_BoxLayout->addWidget(chooseBtnCancle, 1, Qt::AlignCenter);
+    chooseBtn_H_BoxLayout->addWidget(chooseBtnContinue);
+    chooseBtn_H_BoxLayout->setSpacing(0);
+    #endif
 
     main_V_BoxLayout = new QVBoxLayout();
     main_V_BoxLayout->addLayout(content_H_BoxLayout);

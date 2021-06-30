@@ -40,6 +40,7 @@ using namespace std;
 #include "MacroFile.h"
 #include "flashdiskdata.h"
 #include "fdclickwidget.h"
+#include "repair-dialog-box.h"
 
 
 namespace Ui {
@@ -201,18 +202,30 @@ public Q_SLOTS:
     void onClickedEject(EjectDeviceInfo eDeviceInfo);
     void onRemountVolume(FDVolumeInfo volumeInfo);
 
+    bool onDeviceErrored(GDrive* drive);
+    void onMountVolume(GVolume*);
+    void onEjectVolumeForce(GVolume* v);             // A fix pops up if the mount fails
+
 Q_SIGNALS:
     void clicked();
     void convertShowWindow(QString strDriveId, QString strMountUri);
     void convertUpdateWindow(QString, unsigned);
     void unloadMount();
     void telephoneMount();
+
+    bool deviceError(GDrive*);
+    void mountVolume(GVolume*);
+    void ejectVolumeForce(GVolume*);
     void remountVolume(FDVolumeInfo volumeInfo);
 
 protected:
     void resizeEvent(QResizeEvent *event);
     bool eventFilter(QObject *obj, QEvent *event);
     void paintEvent(QPaintEvent *event);
+
+private:
+    bool                                mIsrunning = false;
+    QMap<QString, RepairDialogBox*>     mRepairDialog;
 };
 
 #endif
