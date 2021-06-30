@@ -96,6 +96,7 @@ public:
      * 检测到新的应用（第一次添加应用）
      */
     void newAppDetect(int wid);
+    QStringList getShowInTrayApp();
     /**
      * @brief showAndHideStorage
      * 在取消了panel的WindowDoesNotAcceptFocus属性之后，托盘栏会有点击之后的隐藏并再次弹出的操作
@@ -110,6 +111,7 @@ public slots:
      * 点击收纳按钮的时候的槽函数
      */
     void storageBar();
+    void hideStorageWidget();
     /**
      * @brief realign
      * 关于设置托盘栏图标大小的方法

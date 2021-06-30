@@ -53,7 +53,7 @@ class TrayIcon: public QToolButton
      * 负责与ukui桌面环境托盘应用通信的dbus
      * 在点击托盘图标外部托盘按钮内部的区域时发给其他托盘应用 点击信号
      * 托盘应用收到此信号应实现　show/hide 主界面的操作
-　　　*/
+*/
     Q_CLASSINFO("D-Bus Interface", "com.ukui.panel.plugins.tray")
 
     enum EffectMode {
@@ -118,6 +118,7 @@ private:
      * @return 返回值是QRect，可直接使用，无需转换
      */
     QRect caculateMenuWindowPos(QPoint const & absolutePos, QSize const & windowSize);
+    QPixmap drawSymbolicColoredPixmap(const QPixmap &source);
     QPoint mDragStart;
 
     IUKUIPanelPlugin *mPlugin;
@@ -135,6 +136,19 @@ private:
     TrayAppStatus traystatus;
 
     QGSettings *scaling_settings;
+    QGSettings *gsettings;
+    //    int tray_icon_color;
+    bool dark_style;
+
+    //适配高分屏
+    int x_panel;
+    int y_panel;
+    int x;
+    int y;
+    QGSettings *System_scale_gsettings;
+    int  scale;
+    void  trayButtonCoordinateMapping(int x,int y);
+
 };
 
 /**

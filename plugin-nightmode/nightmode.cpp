@@ -45,6 +45,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    qDebug()<<"Plugin-NightMode :: plugin-nightmode start";
     //读取配置文件中nightmode 的值
     QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
     QSettings m_settings(filename, QSettings::IniFormat);
@@ -68,7 +69,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
             realign();
     });
     realign();
-
+    qDebug()<<"Plugin-NightMode :: plugin-nightmode end";
 }
 
 

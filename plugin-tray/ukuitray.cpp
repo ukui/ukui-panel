@@ -32,6 +32,7 @@
 #include <QTimer>
 #include <QtX11Extras/QX11Info>
 #include <QPainter>
+#include <QtDBus/QtDBus>
 #include "trayicon.h"
 #include "../panel/iukuipanel.h"
 #include "../panel/common/ukuigridlayout.h"
@@ -111,6 +112,7 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     mPlugin(plugin),
     mDisplay(QX11Info::display())
 {
+    qDebug()<<"Plugin-Tray :: UKUITray start";
     m_pwidget = NULL;
     status=ST_HIDE;
 
@@ -131,23 +133,27 @@ UKUITray::UKUITray(UKUITrayPlugin *plugin, QWidget *parent):
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
-    QTimer::singleShot(3000, this, SLOT(startTray()));
+    QTimer::singleShot(3, this, SLOT(startTray()));
     mBtn =new StorageArrow(this);
     mLayout->addWidget(mBtn);
     storageFrame=new UKUIStorageFrame;
+    // fix 任务栏可隐藏时，鼠标放到traystorage时任务栏也会隐藏问题
+    mPlugin->willShowWindow(storageFrame);
     mStorageLayout = new UKUi::GridLayout(storageFrame);
     storageFrame->setLayout(mStorageLayout);
     handleStorageUi();
     connect(mBtn,SIGNAL(clicked()),this,SLOT(storageBar()));
-    mBtn->setVisible(false);
+    mBtn->setVisible(true);
     realign();
     //进入桌面后可能存在的托盘区域未刷新问题
-    QTimer::singleShot(1000,[this] { realign(); trayIconSizeRefresh(); });
+    QTimer::singleShot(100,[this] { realign(); trayIconSizeRefresh(); });
     //针对ukui桌面环境特殊应用的处理，保证稳定性
-    QTimer::singleShot(3000,[this] { panelStartupFcitx();});
+    //QTimer::singleShot(3000,[this] { panelStartupFcitx();});
     QTimer::singleShot(30000,[this] {
-        QProcess::execute("sh /usr/share/ukui/ukui-panel/plugin-tray/trayAppSetting.sh");
+        //QProcess::execute("sh /usr/share/ukui/ukui-panel/plugin-tray/trayAppSetting.sh");
     });
+    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(hideStorageWidget()));
+    qDebug()<<"Plugin-Tray :: UKUITray end";
 }
 
 UKUITray::~UKUITray()
@@ -181,6 +187,12 @@ void UKUITray::storageBar()
         showAndHideStorage(true);
     }
     realign();
+}
+
+void UKUITray::hideStorageWidget()
+{
+    status = ST_HIDE;
+    showAndHideStorage(true);
 }
 
 void UKUITray::showAndHideStorage(bool storageStatus)
@@ -288,7 +300,7 @@ void UKUITray::realign()
         }
     }
 
-    if(mStorageIcons.size()<1) mBtn->setVisible(false);
+    if(mStorageIcons.size()<1) mBtn->setVisible(true);
     mLayout->setEnabled(true);
 #if 0
     //设置任务栏
@@ -749,6 +761,19 @@ void UKUITray::regulateIcon(Window *mid)
     }
 }
 
+QStringList UKUITray::getShowInTrayApp()
+{
+    QString filename = "/usr/share/ukui/ukui-panel/panel-commission.ini";
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("ShowInTray");
+    QStringList trayAppList = m_settings.value("trayname", "").toStringList();
+    qDebug()<<"trayAppList  :"<<trayAppList;
+    m_settings.endGroup();
+    return trayAppList;
+}
+
 void UKUITray::newAppDetect(int wid)
 {
     QString availablepath = findFreePath();
@@ -763,8 +788,8 @@ void UKUITray::newAppDetect(int wid)
         newsetting->set(BINDING_KEY,wid);
         newsetting->set(NAME_KEY,xfitMan().getApplicationName(wid));
 
-        QStringList trayIconNameList;
-        trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"mktip"<<"explorer.exe"<<"ukui-power-manager-tray";
+        QStringList trayIconNameList = getShowInTrayApp();
+        //trayIconNameList<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"<<"indicator-china-weather"<<"ukui-flash-disk"<<"fcitx"<<"sogouimebs-qimpanel"<<"fcitx-qimpanel"<<"explorer.exe"<<"ukui-power-manager-tray"<<"baidu-qimpanel"<<"iflyime-qim";
         if(trayIconNameList.contains(xfitMan().getApplicationName(wid))){
             newsetting->set(ACTION_KEY,"tray");
             newsetting->set(RECORD_KEY,"tray");
