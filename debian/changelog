@@ -1,3 +1,9 @@
+ukui-panel (3.1.0-1.1) v101; urgency=medium
+
+  * 0710 新需求
+
+ -- hepuyao <hepuyao@kylinos.cn>  Wed, 30 Jun 2021 21:25:21 +0800
+
 ukui-panel (3.0.1-80) v101; urgency=medium
 
   * 解决bug#45664 quicklaunch插件部分翻译未生效的问题
