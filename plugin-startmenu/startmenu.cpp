@@ -32,9 +32,10 @@
 
 UKUIStartMenuPlugin::UKUIStartMenuPlugin(const IUKUIPanelPluginStartupInfo &startupInfo):
     QObject(),
-    IUKUIPanelPlugin(startupInfo),
-    mWidget(new UKUIStartMenuButton(this))
+    IUKUIPanelPlugin(startupInfo)
 {
+    translator();
+    mWidget = new UKUIStartMenuButton(this);
 }
 
 UKUIStartMenuPlugin::~UKUIStartMenuPlugin()
@@ -52,6 +53,18 @@ void UKUIStartMenuPlugin::realign()
     mWidget->realign();
 }
 
+void UKUIStartMenuPlugin::translator(){
+    m_translator = new QTranslator(this);
+     QString locale = QLocale::system().name();
+     if (locale == "zh_CN"){
+         if (m_translator->load(QM_INSTALL))
+             qApp->installTranslator(m_translator);
+         else
+             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+     }
+}
+
+
 UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* parent ):
     QToolButton(parent),
     mPlugin(plugin)
@@ -60,7 +73,7 @@ UKUIStartMenuButton::UKUIStartMenuButton( IUKUIPanelPlugin *plugin, QWidget* par
     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     this->setStyle(new CustomStyle());
     setStyleSheet("QToolButton { margin-left: 4px; } ");
-    QTimer::singleShot(5000,[this] {this->setToolTip(tr("UKui Menu")); });
+    this->setToolTip(tr("UKui Menu"));
     //    this->setWindowFlags(Qt::NoFocus);
     //setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
     //setAttribute(Qt::WA_ShowWithoutActivating,true);

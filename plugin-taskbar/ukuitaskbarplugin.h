@@ -53,6 +53,9 @@ public:
     bool isExpandable() const { return true; }
 private:
     UKUITaskBar *mTaskBar;
+    QTranslator *m_translator;
+private:
+    void translator();
 };
 
 class UKUITaskBarPluginLibrary: public QObject, public IUKUIPanelPluginLibrary

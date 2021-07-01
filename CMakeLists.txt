@@ -206,24 +206,24 @@ add_subdirectory(panel)
 
 file(GLOB_RECURSE QRC_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.qrc)
 
-# translation
-set(UKUI_TRANSLATIONS_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/ukui/)
-add_definitions(
-    -DUKUI_TRANSLATIONS_DIR="${UKUI_TRANSLATIONS_DIR}"
-)
-if (NOT DEFINED UPDATE_TRANSLATIONS)
-    set(UPDATE_TRANSLATIONS "No")
-endif()
+## translation
+#set(UKUI_TRANSLATIONS_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/ukui/)
+#add_definitions(
+#    -DUKUI_TRANSLATIONS_DIR="${UKUI_TRANSLATIONS_DIR}"
+#)
+#if (NOT DEFINED UPDATE_TRANSLATIONS)
+#    set(UPDATE_TRANSLATIONS "No")
+#endif()
 
-# To create a new ts file: lupdate -recursive . -target-language zh_CN -ts panel/resources/ukui-panel_zh_CN.ts
-file(GLOB TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/panel/resources/*.ts")
+## To create a new ts file: lupdate -recursive . -target-language zh_CN -ts panel/resources/ukui-panel_zh_CN.ts
+#file(GLOB TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/panel/resources/*.ts")
 
-# cmake -DUPDATE_TRANSLATIONS=yes
-if (UPDATE_TRANSLATIONS)
-    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-else()
-    qt5_add_translation(QM_FILES ${TS_FILES})
-endif()
-add_custom_target(translations ALL DEPENDS ${QM_FILES})
-install(FILES ${QM_FILES} DESTINATION ${UKUI_TRANSLATIONS_DIR})
+## cmake -DUPDATE_TRANSLATIONS=yes
+#if (UPDATE_TRANSLATIONS)
+#    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+#else()
+#    qt5_add_translation(QM_FILES ${TS_FILES})
+#endif()
+#add_custom_target(translations ALL DEPENDS ${QM_FILES})
+#install(FILES ${QM_FILES} DESTINATION ${UKUI_TRANSLATIONS_DIR})
 

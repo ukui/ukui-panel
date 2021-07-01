@@ -49,4 +49,7 @@ set(LIBRARIES
     ${GIOUNIX2_LIBRARIES}
 )
 
+include(../cmake/UkuiPluginTranslationTs.cmake)
+ukui_plugin_translate_ts(${PLUGIN})
+
 BUILD_UKUI_PLUGIN(${PLUGIN})
