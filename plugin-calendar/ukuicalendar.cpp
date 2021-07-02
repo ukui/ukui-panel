@@ -588,7 +588,12 @@ void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
         if(calendar_version == "old"){
             Q_EMIT pressTimeText();
         } else {
-            changeWidowpos();
+            //点击时间标签日历隐藏，特殊处理
+            if(w->isHidden()){
+                changeWidowpos();
+            }else{
+                w->hide();
+            }
         }
     }
 }
