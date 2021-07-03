@@ -585,15 +585,11 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
     if (Qt::LeftButton == event->button()){
-        if(calendar_version == "old"){
-            Q_EMIT pressTimeText();
-        } else {
-            //点击时间标签日历隐藏，特殊处理
-            if(w->isHidden()){
-                changeWidowpos();
-            }else{
-                w->hide();
-            }
+        //点击时间标签日历隐藏，特殊处理
+        if(w->isHidden()){
+            changeWidowpos();
+        }else{
+            w->hide();
         }
     }
 }
