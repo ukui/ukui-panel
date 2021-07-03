@@ -116,7 +116,7 @@
     <message>
         <location filename="../ukuitaskbutton.cpp" line="936"/>
         <source>delete from quicklaunch</source>
-        <translation type="unfinished"></translation>
+        <translation>从快速启动栏删除</translation>
     </message>
 </context>
 <context>
@@ -129,7 +129,7 @@
     <message>
         <location filename="../ukuitaskgroup.cpp" line="385"/>
         <source>delete from taskbar</source>
-        <translation type="unfinished"></translation>
+        <translation>从任务栏取消固定</translation>
     </message>
     <message>
         <location filename="../ukuitaskgroup.cpp" line="387"/>
