@@ -80,6 +80,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QWidget(),
     IUKUIPanelPlugin(startupInfo),
     mTimer(new QTimer(this)),
+    mCheckTimer(new QTimer(this)),
     mUpdateInterval(1),
     mbActived(false),
     mbHasCreatedWebView(false),
@@ -106,31 +107,41 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
 
     mTimer->setTimerType(Qt::PreciseTimer);
     const QByteArray id(HOUR_SYSTEM_CONTROL);
-    gsettings = new QGSettings(id);
-    connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
-            updateTimeText();
-    });
-    if(QString::compare(gsettings->get("date").toString(),"cn"))
-    {
-            hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
-            hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
-            hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
-            hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
-            current_date=CURRENT_DATE_CN;
-        }
-        else
+    if(QGSettings::isSchemaInstalled(id)){
+        gsettings = new QGSettings(id);
+        connect(gsettings, &QGSettings::changed, this, [=] (const QString &keys){
+                updateTimeText();
+        });
+        if(QString::compare(gsettings->get("date").toString(),"cn"))
         {
-            hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
-            hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
-            hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
-            hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
-            current_date=CURRENT_DATE;
-        }
+                hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
+                hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
+                hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
+                hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
+                current_date=CURRENT_DATE_CN;
+            }
+            else
+            {
+                hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
+                hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
+                hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
+                hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
+                current_date=CURRENT_DATE;
+            }
+    } else {
+        hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
+        hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
+        hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
+        hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
+        current_date=CURRENT_DATE_CN;
+    }
 
-//    QString delaytime=QTime::currentTime().toString();
-//    QList<QString> pathresult=delaytime.split(":");
-//    int second=pathresult.at(2).toInt();
-    connect(mTimer, &QTimer::timeout, [this]{updateTimeText(); mTimer->stop(); mTimer->start(1000);});
+    //六小时会默认刷新时间
+    mCheckTimer->setInterval(60*60*1000);
+    connect(mCheckTimer, &QTimer::timeout, [this]{checkUpdateTime();});
+    mCheckTimer->start();
+
+    connect(mTimer, &QTimer::timeout, [this]{checkUpdateTime();});
     mTimer->start(1000);
 
     const QByteArray _id(SYSTEM_FONT_SET);
@@ -193,7 +204,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     }
     connect(mContent,&CalendarActiveLabel::pressTimeText,[=]{CalendarWidgetShow();});
 
-    initializeCalendar();
+//    initializeCalendar();
     setTimeShowStyle();
     mContent->setWordWrap(true);
 
@@ -204,7 +215,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     QTimer::singleShot(10000,[this] { updateTimeText();});
 
     //读取配置文件中CalendarVersion 的值
-    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
+    QString filename ="/usr/share/ukui/ukui-panel/panel-commission.ini";
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 
@@ -214,6 +225,9 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
         calendar_version = "old";
     }
     m_settings.endGroup();
+
+    //监听手动更改时间,后期找到接口进行替换
+    QTimer::singleShot(1000*10,this,[=](){ListenForManualSettingTime();});
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -234,16 +248,47 @@ IndicatorCalendar::~IndicatorCalendar()
     fgsettings->deleteLater();
 }
 
+void IndicatorCalendar::checkUpdateTime()
+{
+     QDateTime tzNow = QDateTime::currentDateTime();
+    if(QString::compare(tzNow.toString("hh:mm ddd  yyyy-MM-dd"),timeState) == 0) {
+        return;
+    }
+
+    //任务栏第一次启动与系统时间进行比较校正，确定第一次刷新时间
+    QString delaytime=QTime::currentTime().toString();
+    QList<QString> pathresult=delaytime.split(":");
+    int second=pathresult.at(2).toInt();
+    if(second==0){
+        mTimer->setInterval(60*1000);
+    }else{
+        mTimer->setInterval((60+1-second)*1000);
+    }
+
+    timeState = tzNow.toString("hh:mm ddd  yyyy-MM-dd");
+    updateTimeText();
+}
+
+
+
+
 void IndicatorCalendar::updateTimeText()
 {
+
+
     QDateTime tzNow = QDateTime::currentDateTime();
 
     QString str;
-    QStringList keys = gsettings->keys();
-    if(keys.contains("hoursystem"))
-        hourSystemMode=gsettings->get("hoursystem").toString();
-    if(!gsettings)
-        return;
+    QByteArray id(HOUR_SYSTEM_CONTROL);
+    if(QGSettings::isSchemaInstalled(id))
+    {
+        QStringList keys = gsettings->keys();
+        if(keys.contains("hoursystem"))
+            hourSystemMode=gsettings->get("hoursystem").toString();
+    } else {
+        hourSystemMode = 24;
+    }
+
     if(!QString::compare("24",hourSystemMode))
     {
         if(panel()->isHorizontal())
@@ -266,13 +311,14 @@ void IndicatorCalendar::updateTimeText()
     }
 
     QString style;
-    int font_size = fgsettings->get(SYSTEM_FONT_SIZE).toInt() + mContent->mPlugin->panel()->panelSize() / 23 - 1;
+    int font_size = fgsettings->get(SYSTEM_FONT_SIZE).toInt();
+    if(font_size>14) font_size=14;
+    if(font_size<12) font_size=12;
     style.sprintf( //正常状态样式
                    "QLabel{"
                    "border-width:  0px;"                     //边框宽度像素
                    "border-radius: 6px;"                       //边框圆角半径像素
                    "font-size:     %dpx;"                      //字体，字体大小
-                   "color:         rgba(255,255,255,100%%);"    //字体颜色
                    "padding:       0px;"                       //填衬
                    "text-align:center;"                        //文本居中
                    "}"
@@ -284,7 +330,7 @@ void IndicatorCalendar::updateTimeText()
                    //鼠标按下样式
                    "QLabel:pressed{"
                    "background-color:rgba(190,216,239,12%%);"
-                   "}", 12);
+                   "}", font_size);
     mContent->setStyleSheet(style);
     mContent->setText(str);
 }
@@ -384,8 +430,11 @@ void IndicatorCalendar::CalendarWidgetShow()
     if(mWebViewDiag != NULL )
     {
         mViewHeight = WEBVIEW_MAX_HEIGHT;
-        if(gsettings->get("calendar").toString() == "solarlunar")
-            mViewHeight = WEBVIEW_MIN_HEIGHT;
+        QByteArray id(HOUR_SYSTEM_CONTROL);
+        if(QGSettings::isSchemaInstalled(id)) {
+            if(gsettings->get("calendar").toString() == "solarlunar")
+             mViewHeight = WEBVIEW_MIN_HEIGHT;
+        }
         if (QLocale::system().name() != "zh_CN")
             mViewHeight = WEBVIEW_MIN_HEIGHT;
         int iScreenHeight = QApplication::screens().at(0)->size().height() - panel()->panelSize();
@@ -503,11 +552,33 @@ void IndicatorCalendar::modifyCalendarWidget()
        }
 }
 
+void IndicatorCalendar::ListenForManualSettingTime(){
+    mProcess=new QProcess(this);
+    QString command="journalctl -u systemd-timedated.service -f";
+    mProcess->setReadChannel(QProcess::StandardOutput);
+    mProcess->start(command);
+    mProcess->startDetached(command);
+
+    connect(mProcess,&QProcess::readyReadStandardOutput,this,[=](){
+        updateTimeText();
+    });
+}
+
 CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QLabel(parent),
     mPlugin(plugin)
 {
-    w=new frmLunarCalendarWidget();
+    w = new frmLunarCalendarWidget();
+    connect(w,&frmLunarCalendarWidget::yijiChangeDown, this, [=] (){
+        changeHight = 0;
+        changeWidowpos();
+
+    });
+    connect(w,&frmLunarCalendarWidget::yijiChangeUp, this, [=] (){
+        changeHight = 52;
+        changeWidowpos();
+    });
+
     QTimer::singleShot(1000,[this] {setToolTip(tr("Time and Date")); });
 }
 
@@ -516,11 +587,39 @@ void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
     if (Qt::LeftButton == event->button()){
         if(calendar_version == "old"){
             Q_EMIT pressTimeText();
-        }else{
-            w->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), w->size()));
-            w->show();
+        } else {
+            //点击时间标签日历隐藏，特殊处理
+            if(w->isHidden()){
+                changeWidowpos();
+            }else{
+                w->hide();
+            }
         }
     }
+}
+
+void CalendarActiveLabel::changeWidowpos()
+{
+    int totalHeight = qApp->primaryScreen()->size().height() + qApp->primaryScreen()->geometry().y();
+    int totalWidth = qApp->primaryScreen()->size().width() + qApp->primaryScreen()->geometry().x();
+    switch (mPlugin->panel()->position()) {
+    case IUKUIPanel::PositionBottom:
+        w->setGeometry(totalWidth-mViewWidht-8,totalHeight-mPlugin->panel()->panelSize()-mViewHeight-8-changeHight,mViewWidht,mViewHeight);
+        break;
+    case IUKUIPanel::PositionTop:
+        w->setGeometry(totalWidth-mViewWidht-8,qApp->primaryScreen()->geometry().y()+mPlugin->panel()->panelSize()+8,mViewWidht,mViewHeight);
+        break;
+    case IUKUIPanel::PositionLeft:
+        w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+8,totalHeight-mViewHeight-8-changeHight,mViewWidht,mViewHeight);
+        break;
+    case IUKUIPanel::PositionRight:
+        w->setGeometry(totalWidth-mPlugin->panel()->panelSize()-mViewWidht-8,totalHeight-mViewHeight-8-changeHight,mViewWidht,mViewHeight);
+        break;
+    default:
+        w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+4,totalHeight-mViewHeight,mViewWidht,mViewHeight);
+        break;
+    }
+    w->show();
 }
 
 void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)

@@ -32,6 +32,8 @@
 #include <QtWebKitWidgets/QWebView>
 #include <QGSettings>
 #include <QMenu>
+#include <QProcess>
+
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
 #include "../panel/common/ukuigridlayout.h"
@@ -62,9 +64,11 @@ Q_SIGNALS:
     void deactivated();
 
 private Q_SLOTS:
+    void checkUpdateTime();
     void updateTimeText();
     void hidewebview();
     void CalendarWidgetShow();
+    void ListenForManualSettingTime();
 
 private:
     QWidget *mMainWidget;
@@ -75,8 +79,9 @@ private:
     int font_size;
     CalendarActiveLabel *mContent;
     UKUi::GridLayout *mLayout;
-
+    QString timeState;
     QTimer *mTimer;
+    QTimer *mCheckTimer;
     int mUpdateInterval;
 
     int16_t mViewWidht;
@@ -95,6 +100,8 @@ private:
     QString current_date;
     IUKUIPanelPlugin * mPlugin;
 
+    QProcess *mProcess;
+
 };
 
 
@@ -106,6 +113,11 @@ public:
     explicit CalendarActiveLabel(IUKUIPanelPlugin *plugin,QWidget * = NULL);
 
     IUKUIPanelPlugin * mPlugin;
+    int16_t mViewWidht = 440;
+    int16_t mViewHeight = 600 ;
+
+    int changeHight = 0;
+    void changeWidowpos();
 
 protected:
     /**
@@ -116,6 +128,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
 private:
     frmLunarCalendarWidget *w;
+
 
 Q_SIGNALS:
     void pressTimeText();

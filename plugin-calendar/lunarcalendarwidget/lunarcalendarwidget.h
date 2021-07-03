@@ -19,15 +19,29 @@
 #include <QApplication>
 #include <QPalette>
 #include "picturetowhite.h"
-#include "statelabel.h"
-
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QRadioButton>
+#include <QLabel>
+#include <QObject>
+#include <QMouseEvent>
+#include "../../panel/pluginsettings.h"
+#include "../../panel/iukuipanelplugin.h"
 #include "lunarcalendarinfo.h"
 #include "lunarcalendaritem.h"
+#include "lunarcalendaryearitem.h"
+#include "lunarcalendarmonthitem.h"
+#include "customstylePushbutton.h"
+#include <QCheckBox>
 
 
 class QLabel;
+class statelabel;
 class QComboBox;
+class LunarCalendarYearItem;
+class LunarCalendarMonthItem;
 class LunarCalendarItem;
+
 class m_PartLineWidget;
 
 #ifdef quc
@@ -110,22 +124,47 @@ private:
     QPushButton *btnYear;
     QPushButton *btnMonth;
     QPushButton *btnToday;
+    QWidget *labWidget;
     QLabel *labBottom;
+    QHBoxLayout *labLayout;
     m_PartLineWidget *lineUp;
     m_PartLineWidget *lineDown;
     statelabel *btnPrevYear;
     statelabel *btnNextYear;
+    QLabel *yijichooseLabel;
+    QCheckBox *yijichoose;
+    QVBoxLayout *yijiLayout;
+    QWidget *yijiWidget;
+    QLabel *yiLabel;
+    QLabel *jiLabel;
+    QWidget *widgetWeek;
+    QWidget *widgetDayBody;
+    QWidget *widgetYearBody;
+    QWidget *widgetmonthBody;
+
+    QString timemodel = 0;
+    bool yijistate = false;
+    bool lunarstate =false;
+    bool oneRun = true;
+//    IUKUIPanelPlugin *mPlugin;
+    QString dateShowMode;
+    QMap<QString,QString> worktimeinside;
+    QMap<QString,QMap<QString,QString>> worktime;
+    void analysisWorktimeJs();       //解析js文件
     void downLabelHandle(const QDate &date);
     QFont iconFont;                     //图形字体
     bool btnClick;                      //按钮单击,避开下拉选择重复触发
     QComboBox *cboxYearandMonth;        //年份下拉框
     QLabel *cboxYearandMonthLabel;
     QList<QLabel *> labWeeks;           //顶部星期名称
-    QList<LunarCalendarItem *> dayItems;//日期元素
+    QList<LunarCalendarItem *> dayItems;            //日期元素
+    QList<LunarCalendarYearItem *> yearItems;       //年份元素
+    QList<LunarCalendarMonthItem *> monthItems;     //月份元素
 
     CalendarStyle calendarStyle;        //整体样式
     bool FirstdayisSun;                 //首日期为周日
     QDate date;                         //当前日期
+    QDate clickDate;                    //保存点击日期
 
     QColor weekTextColor;               //星期名称文字颜色
     QColor weekBgColor;                 //星期名称背景色
@@ -158,6 +197,9 @@ private:
 
     void setColor(bool mdark_style);
     void _timeUpdate();
+    void yijihandle(const QDate &date);
+    QString getSettings();
+    void setSettings(QString arg);
     QGSettings *style_settings;
     bool dark_style;
 
@@ -168,12 +210,16 @@ private Q_SLOTS:
     void initWidget();
     void initStyle();
     void initDate();
+    void changeDate(const QDate &date);
     void yearChanged(const QString &arg1);
     void monthChanged(const QString &arg1);
     void clicked(const QDate &date, const LunarCalendarItem::DayType &dayType);
-    void dayChanged(const QDate &date);
+    void dayChanged(const QDate &date,const QDate &m_date);
     void dateChanged(int year, int month, int day);
     void timerUpdate();
+    void customButtonsClicked(int x);
+    void yearWidgetChange();
+    void monthWidgetChange();
 
 public:
     CalendarStyle getCalendarStyle()    const;
@@ -210,6 +256,9 @@ public:
     QSize minimumSizeHint()             const;
 
 public Q_SLOTS:
+
+    void updateYearClicked(const QDate &date, const LunarCalendarYearItem::DayType &dayType);
+    void updateMonthClicked(const QDate &date, const LunarCalendarMonthItem::DayType &dayType);
     //上一年,下一年
     void showPreviousYear();
     void showNextYear();
@@ -279,6 +328,8 @@ public Q_SLOTS:
 Q_SIGNALS:
     void clicked(const QDate &date);
     void selectionChanged();
+    void yijiChangeUp();
+    void yijiChangeDown();
 };
 
 
@@ -290,5 +341,18 @@ public:
     void paintEvent(QPaintEvent *event);
 
 };
+
+class statelabel : public QLabel
+{
+    Q_OBJECT
+public:
+    statelabel();
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
+Q_SIGNALS :
+    void labelclick();
+};
+
 
 #endif // LUNARCALENDARWIDGET_H

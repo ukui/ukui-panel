@@ -11,9 +11,11 @@ set(HEADERS
     lunarcalendarwidget/frmlunarcalendarwidget.h
     lunarcalendarwidget/lunarcalendarinfo.h
     lunarcalendarwidget/lunarcalendaritem.h
+    lunarcalendarwidget/lunarcalendaryearitem.h
+    lunarcalendarwidget/lunarcalendarmonthitem.h
     lunarcalendarwidget/lunarcalendarwidget.h
     lunarcalendarwidget/picturetowhite.h
-    lunarcalendarwidget/statelabel.h
+    lunarcalendarwidget/customstylePushbutton.h
 )
 
 set(SOURCES
@@ -22,9 +24,11 @@ set(SOURCES
     lunarcalendarwidget/frmlunarcalendarwidget.cpp
     lunarcalendarwidget/lunarcalendarinfo.cpp
     lunarcalendarwidget/lunarcalendaritem.cpp
+    lunarcalendarwidget/lunarcalendaryearitem.cpp
+    lunarcalendarwidget/lunarcalendarmonthitem.cpp
     lunarcalendarwidget/lunarcalendarwidget.cpp
     lunarcalendarwidget/picturetowhite.cpp
-    lunarcalendarwidget/statelabel.cpp
+    lunarcalendarwidget/customstylePushbutton.cpp
 )
 
 set(UIS

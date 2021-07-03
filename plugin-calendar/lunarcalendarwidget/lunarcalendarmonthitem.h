@@ -1,5 +1,5 @@
-﻿#ifndef LUNARCALENDARITEM_H
-#define LUNARCALENDARITEM_H
+﻿#ifndef LUNARCALENDARMONTHITEM_H
+#define LUNARCALENDARMONTHITEM_H
 
 #include <QWidget>
 #include <QDate>
@@ -14,7 +14,7 @@
 
 class QDESIGNER_WIDGET_EXPORT LunarCalendarItem : public QWidget
 #else
-class LunarCalendarItem : public QWidget
+class LunarCalendarMonthItem : public QWidget
 #endif
 
 {
@@ -43,13 +43,7 @@ class LunarCalendarItem : public QWidget
 
     Q_PROPERTY(QColor currentLunarColor READ getCurrentLunarColor WRITE setCurrentLunarColor)
     Q_PROPERTY(QColor otherLunarColor READ getOtherLunarColor WRITE setOtherLunarColor)
-    Q_PROPERTY(QColor selectLunarColor READ getSelectLunarColor WRITE setSelectLunarColor)
-    Q_PROPERTY(QColor hoverLunarColor READ getHoverLunarColor WRITE setHoverLunarColor)
 
-    Q_PROPERTY(QColor currentBgColor READ getCurrentBgColor WRITE setCurrentBgColor)
-    Q_PROPERTY(QColor otherBgColor READ getOtherBgColor WRITE setOtherBgColor)
-    Q_PROPERTY(QColor selectBgColor READ getSelectBgColor WRITE setSelectBgColor)
-    Q_PROPERTY(QColor hoverBgColor READ getHoverBgColor WRITE setHoverBgColor)
 
 public:
     enum DayType {
@@ -66,9 +60,8 @@ public:
         SelectType_Image = 3        //图片背景
     };
 
-    explicit LunarCalendarItem(QWidget *parent = 0);
+    explicit LunarCalendarMonthItem(QWidget *parent = 0);
     QMap<QString,QMap<QString,QString>> worktime;
-    QString handleJsMap(QString year,QString month2day);              //处理js解析出的数据
 
 protected:
     void enterEvent(QEvent *);
@@ -79,8 +72,7 @@ protected:
     void drawBg(QPainter *painter);
     void drawBgCurrent(QPainter *painter, const QColor &color);
     void drawBgHover(QPainter *painter, const QColor &color);
-    void drawDay(QPainter *painter);
-    void drawLunar(QPainter *painter);
+    void drawMonth(QPainter *painter);
 
 private:
     bool hover;                     //鼠标是否悬停
@@ -191,22 +183,10 @@ public Q_SLOTS:
     void setCurrentLunarColor(const QColor &currentLunarColor);
     //设置其他月农历文字颜色
     void setOtherLunarColor(const QColor &otherLunarColor);
-    //设置选中日期农历文字颜色
-    void setSelectLunarColor(const QColor &selectLunarColor);
-    //设置悬停日期农历文字颜色
-    void setHoverLunarColor(const QColor &hoverLunarColor);
-
-    //设置当前月背景颜色
-    void setCurrentBgColor(const QColor &currentBgColor);
-    //设置其他月背景颜色
-    void setOtherBgColor(const QColor &otherBgColor);
-    //设置选中日期背景颜色
-    void setSelectBgColor(const QColor &selectBgColor);
-    //设置悬停日期背景颜色
-    void setHoverBgColor(const QColor &hoverBgColor);
 
 Q_SIGNALS:
-    void clicked(const QDate &date, const LunarCalendarItem::DayType &dayType);
+    void clicked(const QDate &date, const LunarCalendarMonthItem::DayType &dayType);
+    void monthMessage(const QDate &date, const LunarCalendarMonthItem::DayType &dayType);
 };
 
-#endif // LUNARCALENDARITEM_H
+#endif // LUNARCALENDARMONTHITEM_H
