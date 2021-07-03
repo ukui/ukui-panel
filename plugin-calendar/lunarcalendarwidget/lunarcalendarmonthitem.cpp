@@ -96,7 +96,8 @@ void LunarCalendarMonthItem::mousePressEvent(QMouseEvent *)
 {
     pressed = true;
     this->update();
-    Q_EMIT clicked(date, dayType);
+//    Q_EMIT clicked(date, dayType);
+    Q_EMIT monthMessage(date, dayType);
 }
 
 void LunarCalendarMonthItem::mouseReleaseEvent(QMouseEvent *)
@@ -192,7 +193,7 @@ void LunarCalendarMonthItem::drawMonth(QPainter *painter)
     painter->setPen(color);
 
     QFont font;
-    font.setPixelSize(side * 0.3);
+    font.setPixelSize(side * 0.2);
     //设置文字粗细
     font.setBold(true);
     painter->setFont(font);

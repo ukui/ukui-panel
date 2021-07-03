@@ -448,7 +448,7 @@ void LunarCalendarWidget::initWidget()
     //逐个添加年标签
     for (int i = 0; i < 12; i++) {
         LunarCalendarYearItem *labYear = new LunarCalendarYearItem;
-        connect(labYear, SIGNAL(clicked(QDate, LunarCalendarYearItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarYearItem::DayType)));
+        connect(labYear, SIGNAL(yearMessage(QDate, LunarCalendarYearItem::DayType)), this, SLOT(updateYearClicked(QDate, LunarCalendarYearItem::DayType)));
         layoutBodyYear->addWidget(labYear, i / 3, i % 3);
         yearItems.append(labYear);
     }
@@ -467,7 +467,7 @@ void LunarCalendarWidget::initWidget()
     //逐个添加月标签
     for (int i = 0; i < 12; i++) {
         LunarCalendarMonthItem *labMonth = new LunarCalendarMonthItem;
-        connect(labMonth, SIGNAL(clicked(QDate, LunarCalendarMonthItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarMonthItem::DayType)));
+        connect(labMonth, SIGNAL(monthMessage(QDate, LunarCalendarMonthItem::DayType)), this, SLOT(updateMonthClicked(QDate, LunarCalendarMonthItem::DayType)));
         layoutBodyMonth->addWidget(labMonth, i / 3, i % 3);
         monthItems.append(labMonth);
     }
@@ -609,6 +609,7 @@ void LunarCalendarWidget::monthWidgetChange()
     widgetDayBody->hide();
     widgetmonthBody->show();
 }
+
 //初始化日期面板
 void LunarCalendarWidget::initDate()
 {
@@ -832,6 +833,132 @@ void LunarCalendarWidget::clicked(const QDate &date, const LunarCalendarItem::Da
         showNextMonth(false);
 }
 
+void LunarCalendarWidget::updateYearClicked(const QDate &date, const LunarCalendarYearItem::DayType &dayType)
+{
+    //通过传来的日期，设置当前年月份
+    widgetYearBody->hide();
+    widgetWeek->show();
+    widgetDayBody->show();
+    widgetmonthBody->hide();
+    qDebug()<<date;
+    clickDate = date;
+    changeDate(date);
+    dayChanged(date,clickDate);
+}
+
+void LunarCalendarWidget::updateMonthClicked(const QDate &date, const LunarCalendarMonthItem::DayType &dayType)
+{
+    //通过传来的日期，设置当前年月份
+    widgetYearBody->hide();
+    widgetWeek->show();
+    widgetDayBody->show();
+    widgetmonthBody->hide();
+    qDebug()<<date;
+    clickDate = date;
+    changeDate(date);
+    dayChanged(date,clickDate);
+}
+
+void LunarCalendarWidget::changeDate(const QDate &date)
+{
+    int year = date.year();
+    int month = date.month();
+    int day = date.day();
+    if(oneRun) {
+        downLabelHandle(date);
+        yijihandle(date);
+        oneRun = false;
+    }
+
+
+    //设置为今天,设置变量防止重复触发
+    btnClick = true;
+    cboxYearandMonth->setCurrentIndex(cboxYearandMonth->findText(QString("%1.%2").arg(year).arg(month)));
+    btnClick = false;
+
+    cboxYearandMonthLabel->setText(QString("   %1.%2").arg(year).arg(month));
+
+    //首先判断当前月的第一天是星期几
+    int week = LunarCalendarInfo::Instance()->getFirstDayOfWeek(year, month, FirstdayisSun);
+    //当前月天数
+    int countDay = LunarCalendarInfo::Instance()->getMonthDays(year, month);
+    //上月天数
+    int countDayPre = LunarCalendarInfo::Instance()->getMonthDays(1 == month ? year - 1 : year, 1 == month ? 12 : month - 1);
+
+    //如果上月天数上月刚好一周则另外处理
+    int startPre, endPre, startNext, endNext, index, tempYear, tempMonth, tempDay;
+    if (0 == week) {
+        startPre = 0;
+        endPre = 7;
+        startNext = 0;
+        endNext = 42 - (countDay + 7);
+    } else {
+        startPre = 0;
+        endPre = week;
+        startNext = week + countDay;
+        endNext = 42;
+    }
+
+    //纠正1月份前面部分偏差,1月份前面部分是上一年12月份
+    tempYear = year;
+    tempMonth = month - 1;
+    if (tempMonth < 1) {
+        tempYear--;
+        tempMonth = 12;
+    }
+
+    //显示上月天数
+    for (int i = startPre; i < endPre; i++) {
+        index = i;
+        tempDay = countDayPre - endPre + i + 1;
+
+        QDate date(tempYear, tempMonth, tempDay);
+        QString lunar = LunarCalendarInfo::Instance()->getLunarDay(tempYear, tempMonth, tempDay);
+        dayItems.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthPre);
+    }
+
+    //纠正12月份后面部分偏差,12月份后面部分是下一年1月份
+    tempYear = year;
+    tempMonth = month + 1;
+    if (tempMonth > 12) {
+        tempYear++;
+        tempMonth = 1;
+    }
+
+    //显示下月天数
+    for (int i = startNext; i < endNext; i++) {
+        index = 42 - endNext + i;
+        tempDay = i - startNext + 1;
+
+        QDate date(tempYear, tempMonth, tempDay);
+        QString lunar = LunarCalendarInfo::Instance()->getLunarDay(tempYear, tempMonth, tempDay);
+        dayItems.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthNext);
+    }
+
+    //重新置为当前年月
+    tempYear = year;
+    tempMonth = month;
+
+    //显示当前月
+    for (int i = week; i < (countDay + week); i++) {
+        index = (0 == week ? (i + 7) : i);
+        tempDay = i - week + 1;
+
+        QDate date(tempYear, tempMonth, tempDay);
+        QString lunar = LunarCalendarInfo::Instance()->getLunarDay(tempYear, tempMonth, tempDay);
+        if (0 == (i % 7) || 6 == (i % 7)) {
+            dayItems.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_WeekEnd);
+        } else {
+            dayItems.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthCurrent);
+        }
+    }
+
+    for (int i=0;i<12;i++){
+        yearItems.at(i)->setDate(date.addYears(i));
+        monthItems.at(i)->setDate(date.addMonths(i));
+    }
+}
+
 void LunarCalendarWidget::dayChanged(const QDate &date,const QDate &m_date)
 {
     //计算星期几,当前天对应标签索引=日期+星期几-1
@@ -856,7 +983,6 @@ void LunarCalendarWidget::dayChanged(const QDate &date,const QDate &m_date)
         }
 
     }
-
 
     //发送日期单击信号
     Q_EMIT clicked(date);
