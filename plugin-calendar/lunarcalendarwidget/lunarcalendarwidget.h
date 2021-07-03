@@ -157,14 +157,14 @@ private:
     QComboBox *cboxYearandMonth;        //年份下拉框
     QLabel *cboxYearandMonthLabel;
     QList<QLabel *> labWeeks;           //顶部星期名称
-    QList<LunarCalendarItem *> dayItems;//日期元素
-    QList<LunarCalendarYearItem *> yearItems;//年份元素
-    QList<LunarCalendarMonthItem *> monthItems;//年份元素
+    QList<LunarCalendarItem *> dayItems;            //日期元素
+    QList<LunarCalendarYearItem *> yearItems;       //年份元素
+    QList<LunarCalendarMonthItem *> monthItems;     //月份元素
 
     CalendarStyle calendarStyle;        //整体样式
     bool FirstdayisSun;                 //首日期为周日
     QDate date;                         //当前日期
-    QDate clickDate;                  //保存点击日期
+    QDate clickDate;                    //保存点击日期
 
     QColor weekTextColor;               //星期名称文字颜色
     QColor weekBgColor;                 //星期名称背景色
@@ -210,6 +210,7 @@ private Q_SLOTS:
     void initWidget();
     void initStyle();
     void initDate();
+    void changeDate(const QDate &date);
     void yearChanged(const QString &arg1);
     void monthChanged(const QString &arg1);
     void clicked(const QDate &date, const LunarCalendarItem::DayType &dayType);
@@ -255,6 +256,9 @@ public:
     QSize minimumSizeHint()             const;
 
 public Q_SLOTS:
+
+    void updateYearClicked(const QDate &date, const LunarCalendarYearItem::DayType &dayType);
+    void updateMonthClicked(const QDate &date, const LunarCalendarMonthItem::DayType &dayType);
     //上一年,下一年
     void showPreviousYear();
     void showNextYear();

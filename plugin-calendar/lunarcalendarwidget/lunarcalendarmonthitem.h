@@ -186,6 +186,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void clicked(const QDate &date, const LunarCalendarMonthItem::DayType &dayType);
+    void monthMessage(const QDate &date, const LunarCalendarMonthItem::DayType &dayType);
 };
 
 #endif // LUNARCALENDARMONTHITEM_H
