@@ -42,11 +42,12 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    translator();
     qDebug()<<"Plugin-Taskview :: TaskView start";
     mButton =new TaskViewButton();
     mButton->setStyle(new CustomStyle());
     mButton->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
-    QTimer::singleShot(5000,[this] {mButton->setToolTip(tr("Show Taskview")); });
+    mButton->setToolTip(tr("Show Taskview"));
 
     /* hide/show taskview
      * Monitor gsettings to set TaskViewButton size
@@ -66,6 +67,17 @@ TaskView::TaskView(const IUKUIPanelPluginStartupInfo &startupInfo) :
 
 TaskView::~TaskView()
 {
+}
+
+void TaskView::translator(){
+    m_translator = new QTranslator(this);
+     QString locale = QLocale::system().name();
+     if (locale == "zh_CN"){
+         if (m_translator->load(QM_INSTALL))
+             qApp->installTranslator(m_translator);
+         else
+             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+     }
 }
 
 /* 隐藏任务视图按钮的逻辑是将buttton的大小设置为０*/

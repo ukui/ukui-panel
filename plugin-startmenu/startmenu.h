@@ -56,6 +56,9 @@ public:
 
 private:
     UKUIStartMenuButton *mWidget;
+    QTranslator *m_translator;
+private:
+    void translator();
 };
 
 

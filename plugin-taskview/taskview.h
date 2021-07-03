@@ -66,6 +66,9 @@ public:
 private:
     TaskViewButton *mButton;
     QGSettings *gsettings;
+    QTranslator *m_translator;
+private:
+    void translator();
 };
 
 class TaskViewLibrary: public QObject, public IUKUIPanelPluginLibrary

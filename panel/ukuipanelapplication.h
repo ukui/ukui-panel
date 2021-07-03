@@ -140,7 +140,9 @@ private:
      * so session manager can restart the panel.
      * \param caight signal number (15).
      */
+    QTranslator *m_translator;
      static void sigtermHandler(int signo);
+     void translator();
 
 private slots:
     /*!

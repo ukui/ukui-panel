@@ -85,6 +85,7 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     d_ptr(new UKUIPanelApplicationPrivate(this))
 
 {
+    translator();
     // bind to SIGTERM siganl to exit with code 15
     signal(SIGTERM, sigtermHandler);
 
@@ -377,3 +378,15 @@ void UKUIPanelApplication::sigtermHandler(int signo)
     qDebug() << "Caught SIGTERM signal, exit with SIGTERM";
     exit(signo);
 }
+
+void UKUIPanelApplication::translator(){
+    m_translator = new QTranslator(this);
+     QString locale = QLocale::system().name();
+     if (locale == "zh_CN"){
+         if (m_translator->load(QM_INSTALL))
+             qApp->installTranslator(m_translator);
+         else
+             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+     }
+}
+
