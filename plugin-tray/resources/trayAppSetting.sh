@@ -14,12 +14,12 @@ do
 		gsettings set org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/ record $2
 		gsettings set org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/ action $2
 	fi
-	#if [ $trayAppName = "all" ]
-	#then
+	if [ $trayAppName = "'all'" ]
+	then
 		echo $trayAppName
 		gsettings set org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/ record $2
                 gsettings set org.ukui.panel.tray:/org/ukui/tray/keybindings/custom${i}/ action $2
 
-#	fi
+	fi
 done
 

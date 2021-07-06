@@ -178,7 +178,7 @@ void TrayIcon::init()
 
     //        qDebug() << "New tray icon ***********************************";
     //        qDebug() << "  * window id:  " << hex << mIconId;
-    //        qDebug() << "  * window name:" << xfitMan().getApplicationName(mIconId);
+            qDebug() << "Plugin-Tray Get Tray App Name :: " << xfitMan().getApplicationName(mIconId);
     //        qDebug() << "  * size (WxH): " << attr.width << "x" << attr.height;
     //        qDebug() << "  * color depth:" << attr.depth;
 
