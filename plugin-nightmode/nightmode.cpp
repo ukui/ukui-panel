@@ -115,7 +115,7 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     this->setEnabled(false);
     QTimer *timer = new QTimer(this);
     connect(timer,&QTimer::timeout,[this] {this->setEnabled(true);});
-    timer->start(5000);
+    timer->start(50);
     connect(this,&NightModeButton::clicked,this, [this] { pressBitton();});
 }
 NightModeButton::~NightModeButton(){

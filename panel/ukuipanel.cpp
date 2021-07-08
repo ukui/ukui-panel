@@ -222,9 +222,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     setWindowTitle("UKUI Panel");
     setObjectName(QString("UKUIPanel %1").arg(configGroup));
+    if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
     qDebug()<<"Panel :: UKuiPanel setAttribute finished";
-
-    caculateScreenGeometry();
 
     //初始化参数调整
     PanelCommission::panelConfigFileValueInit(true);
@@ -266,18 +265,34 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                                           this,
                                           SLOT(getSize()));
 */
-    /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
-     * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
-     * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
-　　　*/
-    connect(QApplication::desktop(), &QDesktopWidget::resized, this, &UKUIPanel::ensureVisible);
-    connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &UKUIPanel::ensureVisible);
-    connect(qApp,&QApplication::primaryScreenChanged,this,&UKUIPanel::ensureVisible);
+    if(flag_hw990=="hw_990"){
+        caculateScreenGeometry();
+        mDbusXrandInter = new QDBusInterface(DBUS_NAME,
+                                             DBUS_PATH,
+                                             DBUS_INTERFACE,
+                                             QDBusConnection::sessionBus());
 
-    // connecting to QDesktopWidget::workAreaResized shouldn't be necessary,
-    // as we've already connceted to QDesktopWidget::resized, but it actually
-    connect(QApplication::desktop(), &QDesktopWidget::workAreaResized,
-            this, &UKUIPanel::ensureVisible);
+        connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
+
+    }else{
+        /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
+         * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
+         * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
+         */
+        connect(QApplication::desktop(), &QDesktopWidget::resized, this, &UKUIPanel::ensureVisible);
+        connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &UKUIPanel::ensureVisible);
+        connect(qApp,&QApplication::primaryScreenChanged,this,&UKUIPanel::ensureVisible);
+
+        // connecting to QDesktopWidget::workAreaResized shouldn't be necessary,
+        // as we've already connceted to QDesktopWidget::resized, but it actually
+        connect(QApplication::desktop(), &QDesktopWidget::workAreaResized,
+                this, &UKUIPanel::ensureVisible);
+        UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
+        connect(a, &UKUIPanelApplication::primaryScreenChanged, [=]{
+            setPanelGeometry();
+        });
+
+    }
 
     connect(UKUi::Settings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
     connect(ukuiApp, SIGNAL(themeChanged()), this, SLOT(realign()));
@@ -308,6 +323,14 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         time->stop();
     });
     qDebug()<<"Panel :: setGeometry finished";
+#if 0
+    //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
+    QDBusInterface interface(UKUI_SERVICE,
+                             UKUI_PATH,
+                             UKUI_INTERFACE,
+                             QDBusConnection::sessionBus());
+    interface.call("startupfinished","ukui-panel","finish");
+#endif
 
 //    int height = QApplication::screens().at(0)->size().height();
 //    int width = QApplication::screens().at(0)->size().width();
@@ -332,35 +355,24 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     qDebug()<<"Panel :: loadPlugins finished";
 
     show();
-    // show it the first time, despite setting
-    if (mHidable)
-    {
-        showPanel(false);
-        QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
-    }
-    UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
-    connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
-    connect(a, &UKUIPanelApplication::primaryScreenChanged, [=]{
-        gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt()+1);
-    });
-
-    mDbusXrandInter = new QDBusInterface(DBUS_NAME,
-                                         DBUS_PATH,
-                                         DBUS_INTERFACE,
-                                         QDBusConnection::sessionBus());
-    if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
-    connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
-
-    styleAdjust();
-
-    qDebug()<<"Panel :: UKuiPanel  finished";
-
+    qDebug()<<"Panel :: show UKuiPanel finished";	
+#if 1
     //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
     QDBusInterface interface(UKUI_SERVICE,
                              UKUI_PATH,
                              UKUI_INTERFACE,
                              QDBusConnection::sessionBus());
     interface.call("startupfinished","ukui-panel","finish");
+#endif
+    // show it the first time, despite setting
+    if (mHidable)
+    {
+        showPanel(false);
+        QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
+    }
+
+    styleAdjust();
+    qDebug()<<"Panel :: UKuiPanel  finished";
 
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
@@ -1901,7 +1913,7 @@ void UKUIPanel::keyChangedSlot(const QString &key) {
         mSettings->sync();
         mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL).toBool();
         mSettings->endGroup();
-        if(m_lockAction!=nullptr)
-            m_lockAction->setChecked(mLockPanel);
+//        if(m_lockAction!=nullptr)
+//            m_lockAction->setChecked(mLockPanel);
     }
 }
