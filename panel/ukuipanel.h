@@ -740,8 +740,6 @@ private slots:
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
-    QGSettings *scale_gsetting;
-    int scale_flag;
     QTimer *time;
 
 };

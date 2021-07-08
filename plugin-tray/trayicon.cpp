@@ -48,7 +48,7 @@
 #include<X11/Xutil.h>
 #include<X11/extensions/XTest.h>
 
-#define FONT_RENDERING_DPI               "org.ukui.SettingsDaemon.plugins.xsettings"
+#define FONT_RENDERING_DPI               "org.ukui.SettingsDaemon-Error.plugins.xsettings"
 #define SCALE_KEY                        "scaling-factor"
 
 
@@ -146,18 +146,18 @@ TrayIcon::TrayIcon(Window iconId, QSize const & iconSize, QWidget* parent):
     if(QGSettings::isSchemaInstalled(System_Palette_id)){
         //this->update();
         System_scale_gsettings = new QGSettings(System_Palette_id);
-        scale = System_scale_gsettings->get(SCALE_KEY).toInt();
+        scale = System_scale_gsettings->get(SCALE_KEY).toFloat();
         qDebug()<<"scale is "<<scale;
-    }
-    connect(System_scale_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key == "styleName")
-        {
-            scale = System_scale_gsettings->get(SCALE_KEY).toInt();
-            qDebug()<<"scale is "<<scale;
-            this->update();
-        }
-    });
 
+        connect(System_scale_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+            if(key == "styleName")
+            {
+                scale = System_scale_gsettings->get(SCALE_KEY).toFloat();
+                qDebug()<<"scale is "<<scale;
+                this->update();
+            }
+        });
+    }
 }
 
 
