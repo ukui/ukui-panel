@@ -48,7 +48,8 @@
 #include<X11/Xutil.h>
 #include<X11/extensions/XTest.h>
 
-#define FONT_RENDERING_DPI               "org.ukui.SettingsDaemon-Error.plugins.xsettings"
+
+#define FONT_RENDERING_DPI               "org.ukui.SettingsDaemon.plugins.xsettings"
 #define SCALE_KEY                        "scaling-factor"
 
 
@@ -471,102 +472,109 @@ void TrayIcon::trayButtonPress(QMouseEvent* /*event*/)
 /*关于点击托盘应用的非图标区域实现打开托盘应用*/
 void TrayIcon::trayButtonCoordinateMapping(int x_click,int y_click)//QMouseEvent* /*event*/,
 {
-     XEvent event;
-     Display *dpy = XOpenDisplay(NULL);
-     if(dpy == NULL){
-       return ;
-     }
-     /* get info about current pointer position */
-     XQueryPointer(dpy, RootWindow(dpy, DefaultScreen(dpy)),
-         &event.xbutton.root, &event.xbutton.window,
-         &event.xbutton.x_root, &event.xbutton.y_root,
-         &event.xbutton.x, &event.xbutton.y,
-         &event.xbutton.state);
-      qDebug()<<"x send click ";
+    XEvent event;
+    Display *dpy = XOpenDisplay(NULL);
+    if(dpy == NULL){
+        return ;
+    }
+    /* get info about current pointer position */
+    XQueryPointer(dpy, RootWindow(dpy, DefaultScreen(dpy)),
+                  &event.xbutton.root, &event.xbutton.window,
+                  &event.xbutton.x_root, &event.xbutton.y_root,
+                  &event.xbutton.x, &event.xbutton.y,
+                  &event.xbutton.state);
 
-      QPoint x_desktop=QCursor::pos();
-      qDebug()<<"Tset"<<x_desktop;
+    QPoint x_desktop=QCursor::pos();
+    qDebug()<<"实际点击的位置"<<x_desktop;
 
-      if (scale!=2)//scale 100
-      {
-          int mid_icon_click_w=width()/2;// tray icon position
-          int mid_icon_click_h=height()/2;
-           qDebug()<<"100  icon position"<<mid_icon_click_w<<mid_icon_click_h;
-          if (x_click<=width()/2&&y_click<height()/2)
-          {
-              x=x_desktop.x()+qAbs(x_click-mid_icon_click_w);
-              y=x_desktop.y()+qAbs(y_click-mid_icon_click_h);
-              qDebug()<<"positon left_up x y "<<x<<y;
-          }
-          else if(x_click>width()/2&&y_click<height()/2)
-          {
-              x=x_desktop.x()-qAbs(x_click-mid_icon_click_w);
-              y=x_desktop.y()+qAbs(y_click-mid_icon_click_h);
-              qDebug()<<"position right_up x y "<<x<<y;
-          }
-          else if(x_click<width()/2&&y_click>height()/2)
-          {
-              x=x_desktop.x()+qAbs(x_click-mid_icon_click_w);
-              y=x_desktop.y()-qAbs(y_click-mid_icon_click_h);
-              qDebug()<<"position left_down x y "<<x<<y;
-          }
-          else if (x_click>width()/2&&y_click>=height()/2)
-          {
-              x=x_desktop.x()-qAbs(x_click-mid_icon_click_w);
-              y=x_desktop.y()-qAbs(y_click-mid_icon_click_h);
-              qDebug()<<"position right_down x y "<<x<<y;
-          }
-          else
-          {
-              qDebug()<<"no change click position";
-          }
-      }
-      else
-      {
-          int mid_icon_click_w=width()/2;// tray icon position
-          int mid_icon_click_h=height()/3;
-           qDebug()<<"200  icon position"<<mid_icon_click_w<<mid_icon_click_h;
-          if (x_click<=width()/2&&y_click<height()/3)
-          {
-              x=x_desktop.x()*2+qAbs(x_click*2-mid_icon_click_w);
-              y=x_desktop.y()*2+qAbs(y_click*2-mid_icon_click_h);
-              qDebug()<<"positon left_up x y "<<x<<y;
-          }
-          else if(x_click>width()/2&&y_click<height()/3)
-          {
-              x=x_desktop.x()*2-qAbs(x_click*2-mid_icon_click_w);
-              y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
-              qDebug()<<"position right_up x y "<<x<<y;
-          }
-          else if(x_click<width()/2&&y_click>height()/3)
-          {
-              x=x_desktop.x()*2+qAbs(x_click*2-mid_icon_click_w);
-              y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
-              qDebug()<<"position left_down x y "<<x<<y;
-          }
-          else if (x_click>width()/2&&y_click>=height()/3)
-          {
-              x=x_desktop.x()*2-qAbs(x_click*2-mid_icon_click_w);
-              y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
-              qDebug()<<"position right_down x y "<<x<<y;
-          }
-          else
-          {
-              qDebug()<<"no change click position";
-          }
-      }
+    //现阶段需要根据不同的分辨率进行分析，后期合并
+    if (scale == 1){
+        int mid_icon_click_w=width()/2;// tray icon position
+        int mid_icon_click_h=height()/2;
 
-      XTestFakeMotionEvent(dpy, -1, x, y, 0);
-      XTestFakeButtonEvent(dpy, 1, 1, 0);
-      XTestFakeButtonEvent(dpy, 1, 0, 0);
-      QElapsedTimer t;
-      t.start();
-      while(t.elapsed()<200);
-      XSetInputFocus(mDisplay, mWindowId,RevertToPointerRoot,CurrentTime);
-      /* place the mouse where it was */
-      XTestFakeMotionEvent(dpy, -1, event.xbutton.x, event.xbutton.y, 0);
-       qDebug()<<"event.xbutton.x, event.xbutton.y"<<event.xbutton.x<< event.xbutton.y;
-      XCloseDisplay(dpy);
+        qDebug()<<"*************************************";
+        qDebug()<<"200  icon position"<<mid_icon_click_w<<mid_icon_click_h;
+        qDebug()<<"x_click :   x_click  :"<<x_click<<y_click;
+        qDebug()<<"width  :    height  :"<<width()<<height();
+
+        if (x_click<=width()/2&&y_click<height()/2){
+            x=x_desktop.x()+qAbs(x_click-mid_icon_click_w);
+            y=x_desktop.y()+qAbs(y_click-mid_icon_click_h);
+        }else if(x_click>width()/2&&y_click<height()/2){
+            x=x_desktop.x()-qAbs(x_click-mid_icon_click_w);
+            y=x_desktop.y()+qAbs(y_click-mid_icon_click_h);
+        }else if(x_click<width()/2&&y_click>height()/2){
+            x=x_desktop.x()+qAbs(x_click-mid_icon_click_w);
+            y=x_desktop.y()-qAbs(y_click-mid_icon_click_h);
+        }else if (x_click>width()/2&&y_click>=height()/2){
+            x=x_desktop.x()-qAbs(x_click-mid_icon_click_w);
+            y=x_desktop.y()-qAbs(y_click-mid_icon_click_h);
+        }else{
+            qDebug()<<"no change click position";
+        }
+        qDebug()<<"position right_down x  "<<x_desktop.x()<<x_click<<mid_icon_click_w<<x;
+        qDebug()<<"position right_down y  "<<x_desktop.y()<<y_click<<mid_icon_click_h<<y;
+
+    }else if(scale == 2){
+        int mid_icon_click_w=width()/2;// tray icon position
+        int mid_icon_click_h=height()/2;
+        qDebug()<<"*************************************";
+        qDebug()<<"scale == 1"<<mid_icon_click_w<<mid_icon_click_h;
+        qDebug()<<"x_click :   x_click  :"<<x_click<<y_click;
+        qDebug()<<"width  :    height  :"<<width()<<height();
+        if (x_click<=width()/2&&y_click<height()/2){
+            x=x_desktop.x()*2+qAbs(x_click*2-mid_icon_click_w);
+            y=x_desktop.y()*2+qAbs(y_click*2-mid_icon_click_h);
+        }else if(x_click>width()/2&&y_click<height()/3){
+            x=x_desktop.x()*2-qAbs(x_click*2-mid_icon_click_w);
+            y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
+        }else if(x_click<width()/2&&y_click>height()/2){
+            x=x_desktop.x()*2+qAbs(x_click*2-mid_icon_click_w);
+            y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
+        }else if (x_click>width()/2&&y_click>=height()/2){
+            x=x_desktop.x()*2-qAbs(x_click*2-mid_icon_click_w);
+            y=x_desktop.y()*2-qAbs(y_click*2-mid_icon_click_h);
+        }else{
+            qDebug()<<"no change click position";
+        }
+        qDebug()<<"position right_down x  "<<x_desktop.x()<<x_click<<mid_icon_click_w<<x;
+        qDebug()<<"position right_down y  "<<x_desktop.y()<<y_click<<mid_icon_click_h<<y;
+    }else if( 1< scale < 2){
+        int mid_icon_click_w=width()/scale;// tray icon position
+        int mid_icon_click_h=height()/scale;
+        qDebug()<<"*************************************";
+        qDebug()<<"  1< scale < 2"<<mid_icon_click_w<<mid_icon_click_h;
+        qDebug()<<"x_click :   x_click  scale  ::"<<x_click<<y_click<<scale;
+        qDebug()<<"width  :    height  :"<<width()<<height();
+        if (x_click<=width()/2&&y_click<height()/2){
+            x=x_desktop.x()*scale+qAbs(x_click*scale-mid_icon_click_w);
+            y=x_desktop.y()*scale+qAbs(y_click*scale-mid_icon_click_h);
+        }else if(x_click>width()/2&&y_click<height()/2){
+            x=x_desktop.x()*scale-qAbs(x_click*scale-mid_icon_click_w);
+            y=x_desktop.y()*scale-qAbs(y_click*scale-mid_icon_click_h);
+        }else if(x_click<width()/2&&y_click>height()/2){
+            x=x_desktop.x()*scale+qAbs(x_click*scale-mid_icon_click_w);
+            y=x_desktop.y()*scale-qAbs(y_click*scale-mid_icon_click_h);
+        }else if (x_click>width()/2&&y_click>=height()/2){
+            x=x_desktop.x()*scale-qAbs(x_click*scale-mid_icon_click_w);
+            y=x_desktop.y()*scale-qAbs(y_click*scale-mid_icon_click_h);
+        }else{
+            qDebug()<<"no change click position";
+        }
+        qDebug()<<"position right_down x  "<<x_desktop.x()<<x_click<<mid_icon_click_w<<x;
+        qDebug()<<"position right_down y  "<<x_desktop.y()<<y_click<<mid_icon_click_h<<y;
+    }
+
+    XTestFakeMotionEvent(dpy, -1, x, y, 0);
+    XTestFakeButtonEvent(dpy, 1, 1, 0);
+    XTestFakeButtonEvent(dpy, 1, 0, 0);
+    QElapsedTimer t;
+    t.start();
+    while(t.elapsed()<200);
+    XSetInputFocus(mDisplay, mWindowId,RevertToPointerRoot,CurrentTime);
+    /* place the mouse where it was */
+    XTestFakeMotionEvent(dpy, -1, event.xbutton.x, event.xbutton.y, 0);
+    XCloseDisplay(dpy);
 
 }
 
