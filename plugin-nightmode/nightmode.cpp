@@ -109,8 +109,11 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
                                           "nightColorConfigChanged",
                                           this,
                                           SLOT(nightChangedSlot(QHash<QString,QVariant>)));
-    getNightModeState();
-    controlCenterSetNightMode(mode);
+//    getNightModeState();
+    //    controlCenterSetNightMode(mode);
+    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/nightmode-light.svg"));
+    QTimer::singleShot(5000,[this] { this->setToolTip(tr("night mode close")); });
+
 
     this->setEnabled(false);
     QTimer *timer = new QTimer(this);
@@ -148,7 +151,7 @@ void NightModeButton::pressBitton()
         setUkuiStyle(DARK_STYLE);
     }
     setNightMode(!mode);
-    this->setEnabled(false);
+    this->setEnabled(true);
 }
 /*夜间模式右键菜单*/
 void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
