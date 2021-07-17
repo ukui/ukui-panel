@@ -91,6 +91,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this,&MainWindow::convertShowWindow,this,&MainWindow::onConvertShowWindow);
     connect(this,&MainWindow::convertUpdateWindow,this,&MainWindow::onConvertUpdateWindow);
     connect(this,&MainWindow::remountVolume,this,&MainWindow::onRemountVolume);
+    connect(this,&MainWindow::checkDriveValid,this,&MainWindow::onCheckDriveValid);
     ui->centralWidget->setLayout(vboxlayout);
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
                                                   "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
@@ -714,7 +715,7 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
         }
 
         if (!g_drive_has_volumes(gdrive)) {
-            Q_EMIT p_this->deviceError(gdrive);
+            QTimer::singleShot(1000, p_this, [&,driveInfo,p_this]() { p_this->onCheckDriveValid(driveInfo); });
         }
 
         lVolume = g_drive_get_volumes(gdrive);
@@ -2961,6 +2962,47 @@ void MainWindow::onRemountVolume(FDVolumeInfo volumeInfo)
         if (current_volume_list) {
             g_list_free(current_volume_list);
             current_volume_list = NULL;
+        }
+    }
+}
+
+void MainWindow::onCheckDriveValid(FDDriveInfo driveInfo)
+{
+    if (driveInfo.strId.empty())
+        return;
+    qInfo()<<"driveInfo.strId:"<<driveInfo.strId.c_str();
+    if(!this->isSystemRootDev(driveInfo.strId.c_str()) && 
+        (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
+        if(g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sr") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/bus") 
+            || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sd") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/mmcblk")) {
+            GList *lDrive = NULL;
+            GList *current_drive_list = NULL;
+            GDrive* devDrive = NULL;
+            //about drive
+            GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
+            current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
+            for (lDrive = current_drive_list; lDrive != NULL; lDrive = lDrive->next) {
+                GDrive *gdrive = (GDrive *)lDrive->data;
+                char *devPath = g_drive_get_identifier(gdrive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+                if (devPath != NULL) {
+                    string strId = devPath;
+                    if (strId == driveInfo.strId) {
+                        devDrive = gdrive;
+                        g_free(devPath);
+                        break;
+                    }
+                    g_free(devPath);
+                }
+            }
+            if (devDrive != NULL) {
+                if (!g_drive_has_volumes(devDrive)) {
+                    Q_EMIT this->deviceError(devDrive);
+                }
+            }
+            if (current_drive_list) {
+                g_list_free(current_drive_list);
+                current_drive_list = NULL;
+            }
         }
     }
 }

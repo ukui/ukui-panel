@@ -201,6 +201,7 @@ public Q_SLOTS:
     void onNotifyWnd(QObject* obj, QEvent *event);
     void onClickedEject(EjectDeviceInfo eDeviceInfo);
     void onRemountVolume(FDVolumeInfo volumeInfo);
+    void onCheckDriveValid(FDDriveInfo driveInfo);
 
     bool onDeviceErrored(GDrive* drive);
     void onMountVolume(GVolume*);
@@ -217,6 +218,7 @@ Q_SIGNALS:
     void mountVolume(GVolume*);
     void ejectVolumeForce(GVolume*);
     void remountVolume(FDVolumeInfo volumeInfo);
+    void checkDriveValid(FDDriveInfo driveInfo);
 
 protected:
     void resizeEvent(QResizeEvent *event);
