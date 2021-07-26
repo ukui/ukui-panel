@@ -33,6 +33,7 @@
 #include <QGSettings>
 #include <QMenu>
 #include <QProcess>
+#include <QTranslator>
 
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
@@ -101,6 +102,9 @@ private:
     IUKUIPanelPlugin * mPlugin;
 
     QProcess *mProcess;
+    QTranslator *m_translator;
+private:
+    void translator();
 
 };
 
