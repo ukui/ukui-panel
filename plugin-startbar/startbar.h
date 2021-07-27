@@ -91,6 +91,9 @@ private:
     StartMenuButton *mStartMenuButton;
     TaskViewButton *mTaskViewButton;
     UKUi::GridLayout *mLayout;
+    QTranslator *m_translator;
+private:
+    void translator();
 
 };
 #endif
