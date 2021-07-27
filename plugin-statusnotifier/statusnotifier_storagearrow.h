@@ -3,7 +3,7 @@
 
 #include <QToolButton>
 #include <QGSettings>
-
+#include <QDrag>
 #include "statusnotifierwidget.h"
 
 #define UKUI_PANEL_SETTINGS              "org.ukui.panel.settings"
@@ -20,6 +20,7 @@ public:
     ~StatusNotifierStorageArrow();
 protected:
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *e);
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
     void resizeEvent(QResizeEvent *event);
