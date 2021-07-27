@@ -68,8 +68,8 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     mPlugin(plugin)
 {
 //    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    setAutoRaise(true);
-    setAcceptDrops(true);
+//    setAutoRaise(true);
+    this->setAcceptDrops(true);
     interface = new SniAsync(service, objectPath, QDBusConnection::sessionBus(), this);
 
     connect(interface, &SniAsync::NewIcon, this, &StatusNotifierButton::newIcon);
@@ -352,10 +352,10 @@ void StatusNotifierButton::resetIcon()
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
 {
-    if (e->mimeData()->hasFormat(MIMETYPE))
-        e->acceptProposedAction();
-    else
-        e->ignore();
+//    if (e->mimeData()->hasFormat(MIMETYPE))
+//        e->acceptProposedAction();
+//    else
+//        e->ignore();
 
 }
 

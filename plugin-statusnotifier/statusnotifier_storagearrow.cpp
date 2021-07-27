@@ -101,3 +101,10 @@ void StatusNotifierStorageArrow::resizeEvent(QResizeEvent *event){
 
      QToolButton::resizeEvent(event);
 }
+
+void StatusNotifierStorageArrow::mouseMoveEvent(QMouseEvent *e)
+{
+    QDrag *drag = new QDrag(this);
+    drag->exec();
+    drag->deleteLater();
+}
