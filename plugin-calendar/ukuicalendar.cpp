@@ -88,7 +88,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mViewHeight(0),
     mWebViewDiag(NULL)
 {
-
+    translator();
     mMainWidget = new QWidget();
     mContent = new CalendarActiveLabel(this);
     mWebViewDiag = new UkuiWebviewDialog(this);
@@ -246,6 +246,17 @@ IndicatorCalendar::~IndicatorCalendar()
     }
     gsettings->deleteLater();
     fgsettings->deleteLater();
+}
+
+void IndicatorCalendar::translator(){
+    m_translator = new QTranslator(this);
+     QString locale = QLocale::system().name();
+     if (locale == "zh_CN"){
+         if (m_translator->load(QM_INSTALL))
+             qApp->installTranslator(m_translator);
+         else
+             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+     }
 }
 
 void IndicatorCalendar::checkUpdateTime()

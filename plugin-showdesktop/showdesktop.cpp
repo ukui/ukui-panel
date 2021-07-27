@@ -32,6 +32,7 @@
 //Kf5
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/NETWM>
+#include <QApplication>
 //panel
 #include "showdesktop.h"
 #include "../panel/pluginsettings.h"
@@ -45,10 +46,22 @@ ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QWidget(),
     IUKUIPanelPlugin(startupInfo)
 {
+    translator();
     state=NORMAL;
-    QTimer::singleShot(5000,[this] {this->setToolTip(tr("Show Desktop"));});
+    this->setToolTip(tr("Show Desktop"));
     realign();
 
+}
+
+void ShowDesktop::translator(){
+    m_translator = new QTranslator(this);
+     QString locale = QLocale::system().name();
+     if (locale == "zh_CN"){
+         if (m_translator->load(QM_INSTALL))
+             qApp->installTranslator(m_translator);
+         else
+             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+     }
 }
 
 void ShowDesktop::realign()

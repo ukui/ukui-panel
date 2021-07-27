@@ -31,6 +31,7 @@
 #include "../panel/iukuipanelplugin.h"
 #include <QToolButton>
 #include <QWidget>
+#include <QTranslator>
 
 
 class ShowDesktop :  public QWidget, public IUKUIPanelPlugin
@@ -55,6 +56,9 @@ private:
 
     int xEndPoint;
     int yEndPoint;
+    QTranslator *m_translator;
+private:
+    void translator();
 };
 
 class ShowDesktopLibrary: public QObject, public IUKUIPanelPluginLibrary

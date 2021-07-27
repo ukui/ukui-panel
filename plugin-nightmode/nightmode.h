@@ -98,6 +98,9 @@ public:
 private:
     NightModeButton *mButton;
     QGSettings *gsettings;
+    QTranslator *m_translator;
+private:
+    void translator();
 
     /**
      * @brief nightmode_action

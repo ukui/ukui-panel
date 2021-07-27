@@ -53,4 +53,7 @@ install(DIRECTORY html/
 install(DIRECTORY style/
         DESTINATION ${PACKAGE_DATA_DIR}/plugin-calendar/style)
 
+include(../cmake/UkuiPluginTranslationTs.cmake)
+ukui_plugin_translate_ts(${PLUGIN})
+
 BUILD_UKUI_PLUGIN(${PLUGIN})
