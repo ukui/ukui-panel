@@ -23,4 +23,7 @@ install(FILES
     DESTINATION "${PACKAGE_DATA_DIR}/plugin-assistant/img"
     COMPONENT Runtime
 )
+
+ukui_plugin_translate_ts(${PLUGIN})
+
 BUILD_UKUI_PLUGIN(${PLUGIN})

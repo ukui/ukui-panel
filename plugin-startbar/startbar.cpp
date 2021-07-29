@@ -55,12 +55,24 @@ void UKUIStartbarPlugin::realign()
 UKUIStartBarWidget::UKUIStartBarWidget( IUKUIPanelPlugin *plugin, QWidget* parent ):
     mPlugin(plugin)
 {
+    translator();
     mStartMenuButton=new StartMenuButton(plugin,this);
     mTaskViewButton=new TaskViewButton(plugin,this);
     mLayout=new UKUi::GridLayout(this);
     mLayout->addWidget(mStartMenuButton);
     mLayout->addWidget(mTaskViewButton);
 
+}
+
+void UKUIStartBarWidget::translator(){
+    m_translator = new QTranslator(this);
+     QString locale = QLocale::system().name();
+     if (locale == "zh_CN"){
+         if (m_translator->load(QM_INSTALL))
+             qApp->installTranslator(m_translator);
+         else
+             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+     }
 }
 
 UKUIStartBarWidget::~UKUIStartBarWidget()
