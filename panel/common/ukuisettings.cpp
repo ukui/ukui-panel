@@ -34,6 +34,7 @@
 #include <QFileSystemWatcher>
 #include <QSharedData>
 #include <QTimerEvent>
+#include <QTextCodec>
 
 #include <XdgDirs>
 #if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
@@ -147,6 +148,7 @@ Settings::Settings(const QString& module, QObject* parent) :
     QSettings(QL1S("ukui"), module, parent),
     d_ptr(new SettingsPrivate(this, true))
 {
+    this->setIniCodec(QTextCodec::codecForName("UTF-8"));
 }
 
 
