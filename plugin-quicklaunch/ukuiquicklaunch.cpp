@@ -79,7 +79,7 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     mPlugin(plugin),
     mPlaceHolder(0)
 {
-
+    qDebug()<<"Plugin-Quicklaunch :: UKUIQuickLaunch start";
     struct passwd *pwd;
     pwd=getpwuid(getuid());
     pwd->pw_name;
@@ -139,11 +139,13 @@ UKUIQuickLaunch::UKUIQuickLaunch(IUKUIPanelPlugin *plugin, QWidget* parent) :
     fsWatcher=new QFileSystemWatcher(this);
     fsWatcher->addPath(desktopFilePath);
     fsWatcher->addPath(androidDesktopFilePath);
+    directoryUpdated(desktopFilePath);
+    directoryUpdated(androidDesktopFilePath);
     connect(fsWatcher,&QFileSystemWatcher::directoryChanged,[this](){
                directoryUpdated(desktopFilePath);
                directoryUpdated(androidDesktopFilePath);
             });
-
+    qDebug()<<"Plugin-Quicklaunch :: UKUIQuickLaunch end";
 }
 
 

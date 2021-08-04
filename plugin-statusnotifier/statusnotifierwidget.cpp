@@ -168,8 +168,8 @@ void StatusNotifierWidget::resetLayout(){
                 if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()==""){
                     continue;
                 }
-                show.append(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton());
-                saveSettings(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton(),"");
+                hide.append(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton());
+                saveSettings("",mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton());
                 continue;
             }
         }
@@ -228,36 +228,36 @@ void StatusNotifierWidget::saveSettings(QString button1,QString button2){
     QStringList hideApp=settings->value("hideApp").toStringList();
 
     if(button2==NULL){
-        if(button1!=NULL){
-            qDebug()<<button1;
-        showApp.append(button1);
-        settings->setValue("showApp",showApp);
-        return;
+        if(m_HideButtons.keys().contains(button1)){
+            m_HideButtons.remove(button1);
         }
-    }
-
-    if(button1==NULL){
-        if(m_HideButtons.keys().contains(button2)){
-            m_HideButtons.remove(button2);
-        }
-        if(m_ShowButtons.keys().contains(button2)){
-            m_ShowButtons.remove(button2);
+        if(m_ShowButtons.keys().contains(button1)){
+            m_ShowButtons.remove(button1);
         }
         if(m_HideButtons.keys().isEmpty()){
-            hideApp.append(button2);
-            if(showApp.contains(button2)){
-                showApp.removeAll(button2);
+            hideApp.append(button1);
+            if(showApp.contains(button1)){
+                showApp.removeAll(button1);
             }
         }
         if(m_ShowButtons.keys().isEmpty()){
-            showApp.append(button2);
-            if(hideApp.contains(button2)){
-                hideApp.removeAll(button2);
+            showApp.append(button1);
+            if(hideApp.contains(button1)){
+                hideApp.removeAll(button1);
             }
         }
         settings->setValue("showApp",showApp);
         settings->setValue("hideApp",hideApp);
         return;
+    }
+
+    if(button1==NULL){
+        if(!button2.isNull()){
+        hideApp.append(button2);
+        hideApp.removeAll("");
+        settings->setValue("hideApp",hideApp);
+        return;
+        }
     }
 
     if(showApp.contains(button1)&&showApp.contains(button2)){
@@ -300,6 +300,6 @@ QList<QStringList> StatusNotifierWidget::readSettings(){
 }
 
 void StatusNotifierWidget::btnAddButton(QString button){
-    saveSettings("",button);
+    saveSettings(button,"");
     resetLayout();
 }

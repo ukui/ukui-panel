@@ -90,18 +90,19 @@ void messageOutput(QtMsgType type, const QMessageLogContext &context, const QStr
 int main(int argc, char *argv[])
 {
     initUkuiLog4qt("ukui-panel");
+    qDebug()<<"Main :: ukui-panel start"<<QDateTime::currentDateTime();
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
-
     UKUIPanelApplication app(argc, argv);
-
+    qDebug()<<"Main :: UKUIPanelApplication finished"<<QDateTime::currentDateTime();
+    /*旧版任务栏打印相关的函数*/
 //    qInstallMessageHandler(messageOutput);
 
-    //Singleton
+    /*单例+vnc模式*/
     QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
     int fd = open(QString(homePath.at(0) + "/.config/ukui-panel%1.lock").arg(getenv("DISPLAY")).toUtf8().data(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     if (fd < 0) { exit(1); }

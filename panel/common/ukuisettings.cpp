@@ -36,7 +36,6 @@
 #include <QTimerEvent>
 #include <QTextCodec>
 
-
 #include <XdgDirs>
 #if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
 #include <algorithm>
@@ -150,7 +149,6 @@ Settings::Settings(const QString& module, QObject* parent) :
     d_ptr(new SettingsPrivate(this, true))
 {
     this->setIniCodec(QTextCodec::codecForName("UTF-8"));
-
 }
 
 

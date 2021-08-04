@@ -113,9 +113,6 @@
 #define DBUS_PATH            "/org/ukui/SettingsDaemon/wayland"
 #define DBUS_INTERFACE       "org.ukui.SettingsDaemon.wayland"
 
-#define SCALE_NAME            "org.ukui.SettingsDaemon.plugins.xsettings"
-#define SCALE_KEY             "scalingFactor"
-
 /************************************************
  Returns the Position by the string.
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -185,6 +182,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mAnimation(nullptr),
     mLockPanel(false)
 {
+    qDebug()<<"Panel :: Constructor start";
     //You can find information about the flags and widget attributes in your
     //Qt documentation or at https://doc.qt.io/qt-5/qt.html
     //Qt::FramelessWindowHint = Produces a borderless window. The user cannot
@@ -221,12 +219,14 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     setWindowTitle("UKUI Panel");
     setObjectName(QString("UKUIPanel %1").arg(configGroup));
-
-    caculateScreenGeometry();
+    if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
+    qDebug()<<"Panel :: UKuiPanel setAttribute finished";
 
     //初始化参数调整
     PanelCommission::panelConfigFileValueInit(true);
     PanelCommission::panelConfigFileReset(true);
+    qDebug()<<"Panel :: PanelCommission config finished";
+
 
     //UKUIPanel (inherits QFrame) -> lav (QGridLayout) -> UKUIPanelWidget (QFrame) -> UKUIPanelLayout
     UKUIPanelWidget = new QFrame(this);
@@ -262,20 +262,34 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                                           this,
                                           SLOT(getSize()));
 */
-    /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
-     * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
-     * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
-　　　*/
-    connect(QApplication::desktop(), &QDesktopWidget::resized, this, &UKUIPanel::ensureVisible);
-    connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &UKUIPanel::ensureVisible);
+    if(flag_hw990=="hw_990"){
+        caculateScreenGeometry();
+        mDbusXrandInter = new QDBusInterface(DBUS_NAME,
+                                             DBUS_PATH,
+                                             DBUS_INTERFACE,
+                                             QDBusConnection::sessionBus());
 
-    connect(qApp,&QApplication::primaryScreenChanged,this,&UKUIPanel::ensureVisible);
+        connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
 
+    }else{
+        /* 监听屏幕分辨路改变resized　和屏幕数量改变screenCountChanged
+         * 或许存在无法监听到分辨率改变的情况（qt5.6），若出现则可换成
+         * connect(QApplication::primaryScreen(),&QScreen::geometryChanged, this,&UKUIPanel::ensureVisible);
+         */
+        connect(QApplication::desktop(), &QDesktopWidget::resized, this, &UKUIPanel::ensureVisible);
+        connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &UKUIPanel::ensureVisible);
+        connect(qApp,&QApplication::primaryScreenChanged,this,&UKUIPanel::ensureVisible);
 
-    // connecting to QDesktopWidget::workAreaResized shouldn't be necessary,
-    // as we've already connceted to QDesktopWidget::resized, but it actually
-    connect(QApplication::desktop(), &QDesktopWidget::workAreaResized,
-            this, &UKUIPanel::ensureVisible);
+        // connecting to QDesktopWidget::workAreaResized shouldn't be necessary,
+        // as we've already connceted to QDesktopWidget::resized, but it actually
+        connect(QApplication::desktop(), &QDesktopWidget::workAreaResized,
+                this, &UKUIPanel::ensureVisible);
+        UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
+        connect(a, &UKUIPanelApplication::primaryScreenChanged, [=]{
+            setPanelGeometry();
+        });
+
+    }
 
     connect(UKUi::Settings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
     connect(ukuiApp, SIGNAL(themeChanged()), this, SLOT(realign()));
@@ -305,6 +319,16 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         hidePanel();
         time->stop();
     });
+    qDebug()<<"Panel :: setGeometry finished";
+#if 0
+    //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
+    QDBusInterface interface(UKUI_SERVICE,
+                             UKUI_PATH,
+                             UKUI_INTERFACE,
+                             QDBusConnection::sessionBus());
+    interface.call("startupfinished","ukui-panel","finish");
+#endif
+
 //    int height = QApplication::screens().at(0)->size().height();
 //    int width = QApplication::screens().at(0)->size().width();
     MAX_SIZE_PANEL_IN_CALC = PANEL_SIZE_LARGE;//0.0851852 * height;
@@ -323,45 +347,32 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     ensureVisible();
 
+    qDebug()<<"Panel :: loadPlugins start";
     loadPlugins();
+    qDebug()<<"Panel :: loadPlugins finished";
 
     show();
-    // show it the first time, despite setting
-    if (mHidable)
-    {
-        showPanel(false);
-        QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
-    }
-    UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
-    connect(a, &UKUIPanelApplication::primaryScreenChanged, this, &UKUIPanel::setPanelGeometry);
-    connect(a, &UKUIPanelApplication::primaryScreenChanged, [=]{
-        gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt()+1);
-    });
-
-    mDbusXrandInter = new QDBusInterface(DBUS_NAME,
-                                         DBUS_PATH,
-                                         DBUS_INTERFACE,
-                                         QDBusConnection::sessionBus());
-    if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
-    connect(mDbusXrandInter, SIGNAL(screenPrimaryChanged(int,int,int,int)),this, SLOT(priScreenChanged(int,int,int,int)));
-
-    styleAdjust();
-
+    qDebug()<<"Panel :: show UKuiPanel finished";	
+#if 1
     //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
     QDBusInterface interface(UKUI_SERVICE,
                              UKUI_PATH,
                              UKUI_INTERFACE,
                              QDBusConnection::sessionBus());
     interface.call("startupfinished","ukui-panel","finish");
+#endif
+    // show it the first time, despite setting
+    if (mHidable)
+    {
+        showPanel(false);
+        QTimer::singleShot(PANEL_HIDE_FIRST_TIME, this, SLOT(hidePanel()));
+    }
+
+    styleAdjust();
+    qDebug()<<"Panel :: UKuiPanel  finished";
 
     gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
     gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
-
-    const QByteArray scale_id(SCALE_NAME);
-    if(QGSettings::isSchemaInstalled(scale_id)){
-        scale_gsetting = new QGSettings(SCALE_NAME);
-        scale_flag=scale_gsetting->get(SCALE_KEY).toInt();
-        }
 
     UKuiPanelInformation* dbus=new UKuiPanelInformation;
     new PanelAdaptor(dbus);
@@ -841,7 +852,7 @@ void UKUIPanel::updateWmStrut()
             KWindowSystem::setExtendedStrut(wid,
                                             /* Left   */  0, 0, 0,
                                             /* Right  */  0, 0, 0,
-                                            /* Top    */  rect.top() + getReserveDimension(), rect.left(), rect.right(),
+                                            /* Top    */  getReserveDimension(), rect.left(), rect.right(),
                                             /* Bottom */  0, 0, 0
                                             );
             break;
@@ -851,13 +862,13 @@ void UKUIPanel::updateWmStrut()
                                             /* Left   */  0, 0, 0,
                                             /* Right  */  0, 0, 0,
                                             /* Top    */  0, 0, 0,
-                                            /* Bottom */  wholeScreen.bottom() - rect.bottom() + getReserveDimension(), rect.left(), rect.right()
+                                            /* Bottom */  getReserveDimension(), rect.left(), rect.right()
                                             );
             break;
 
         case UKUIPanel::PositionLeft:
             KWindowSystem::setExtendedStrut(wid,
-                                            /* Left   */  rect.left() + getReserveDimension(), rect.top(), rect.bottom(),
+                                            /* Left   */  getReserveDimension(), rect.top(), rect.bottom(),
                                             /* Right  */  0, 0, 0,
                                             /* Top    */  0, 0, 0,
                                             /* Bottom */  0, 0, 0
@@ -868,7 +879,7 @@ void UKUIPanel::updateWmStrut()
         case UKUIPanel::PositionRight:
             KWindowSystem::setExtendedStrut(wid,
                                             /* Left   */  0, 0, 0,
-                                            /* Right  */  wholeScreen.right() - rect.right() + getReserveDimension(), rect.top(), rect.bottom(),
+                                            /* Right  */  getReserveDimension(), rect.top(), rect.bottom(),
                                             /* Top    */  0, 0, 0,
                                             /* Bottom */  0, 0, 0
                                             );
@@ -1407,8 +1418,6 @@ void UKUIPanel::styleAdjust()
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
-        transparency=0.75;
-        }
 
 //    if(transparency_gsettings->keys().contains(TRANSPARENCY_KEY)){
     transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
@@ -1418,7 +1427,10 @@ void UKUIPanel::styleAdjust()
             transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
             this->update();
         }
-    });
+     });
+    }else{
+        transparency=0.75;
+    }
 }
 
 /* 使用paintEvent 对panel进行绘制的时候有如下问题：
@@ -1432,7 +1444,11 @@ void UKUIPanel::paintEvent(QPaintEvent *)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    p.setBrush(QBrush(QColor(19,22,28,transparency)));
+//    p.setBrush(QBrush(QColor(19,22,28,transparency)));
+    QColor color= palette().color(QPalette::Base);
+    color.setAlpha(transparency);
+    QBrush brush = QBrush(color);
+    p.setBrush(brush);
 
     p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(opt.rect,0,0);
@@ -1569,7 +1585,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         menu->addAction(about);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
-            process->startDetached("/usr/bin/ukui-about");
+            process->startDetached("ukui-control-center -a");
         });
 
     }
@@ -1888,8 +1904,8 @@ void UKUIPanel::keyChangedSlot(const QString &key) {
         mSettings->sync();
         mLockPanel = mSettings->value(CFG_KEY_LOCKPANEL).toBool();
         mSettings->endGroup();
-        if(m_lockAction)
-            m_lockAction->setChecked(mLockPanel);
+//        if(m_lockAction!=nullptr)
+//            m_lockAction->setChecked(mLockPanel);
     }
 }
 

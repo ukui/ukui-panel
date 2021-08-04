@@ -91,9 +91,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this,&MainWindow::convertShowWindow,this,&MainWindow::onConvertShowWindow);
     connect(this,&MainWindow::convertUpdateWindow,this,&MainWindow::onConvertUpdateWindow);
     connect(this,&MainWindow::remountVolume,this,&MainWindow::onRemountVolume);
+    connect(this,&MainWindow::checkDriveValid,this,&MainWindow::onCheckDriveValid);
     ui->centralWidget->setLayout(vboxlayout);
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
                                                   "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
+
+    connect(this, SIGNAL(deviceError(GDrive*)), this, SLOT(onDeviceErrored(GDrive*)), (Qt::UniqueConnection));
+    connect(this, SIGNAL(mountVolume(GVolume*)), this, SLOT(onMountVolume(GVolume*)));
+    connect(this, SIGNAL(ejectVolumeForce(GVolume*)), this, SLOT(onEjectVolumeForce(GVolume*)));
 }
 
 MainWindow::~MainWindow()
@@ -708,6 +713,11 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
             g_free(devPath);
         }
+
+        if (!g_drive_has_volumes(gdrive)) {
+            QTimer::singleShot(1000, p_this, [&,driveInfo,p_this]() { p_this->onCheckDriveValid(driveInfo); });
+        }
+
         lVolume = g_drive_get_volumes(gdrive);
         if (lVolume) {
             uSubVolumeSize = g_list_length(lVolume);
@@ -762,7 +772,8 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
 //when the usb device is identified,we should mount every partition
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
-    qInfo()<<"volume add";
+    qDebug()<<"volume add";
+    GDrive* gdrive = g_volume_get_drive(volume);
 
     FILE *fp = NULL;
     int a = 0;
@@ -789,14 +800,13 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
         //QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload true");
     }
     bool isNewMount = false;
-    GDrive* gdrive = g_volume_get_drive(volume);
     if(!gdrive) {
         FDVolumeInfo volumeInfo;
         bool isValidMount = true;
         char *devPath = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
         if (devPath) {
             if (!(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
-                || g_str_has_prefix(devPath,"/dev/mmcblk"))) {
+                  || g_str_has_prefix(devPath,"/dev/mmcblk"))) {
                 g_free(devPath);
                 return;
             }
@@ -1258,8 +1268,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
     GError *err = nullptr;
     bool bMountSuccess = false;
     success = g_volume_mount_finish (source_object, res, &err);
-    if(!err)
-    {
+    if(!err) {
         GMount* gmount = g_volume_get_mount(source_object);
         GDrive* gdrive = g_volume_get_drive(source_object);
         FDDriveInfo driveInfo;
@@ -1380,10 +1389,15 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 Q_EMIT p_this->convertShowWindow(strDevId.c_str(), mountInfo.strUri.c_str());     //emit a signal to trigger the MainMainShow slot
             }
         }
-    }
-    else
-    {
-        qInfo()<<"sorry mount failed:"<<err->code<<","<<err->message;
+    } else if (G_IO_ERROR_ALREADY_MOUNTED == err->code) {
+    } else if (G_IO_ERROR_UNKNOWN == err->code) {
+    } else {
+        qInfo()<<"sorry mount failed"<<err->code<<","<<err->message;
+        GDrive* gdrive = g_volume_get_drive(source_object);
+        Q_EMIT p_this->deviceError(gdrive);
+        if (nullptr != gdrive) {
+            g_object_unref(gdrive);
+        }
     }
 }
 
@@ -1635,6 +1649,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
     QList<FDClickWidget *> listMainWindow = ui->centralWidget->findChildren<FDClickWidget *>();
     for(FDClickWidget *listItem:listMainWindow)
     {
+        listItem->hide();
         listItem->deleteLater();
     }
 
@@ -1642,6 +1657,7 @@ void MainWindow::MainWindowShow(bool isUpdate)
     for(QWidget *listItem:listLine)
     {
         if(listItem->objectName() == "lineWidget") {
+            listItem->hide();
             listItem->deleteLater();
         }
     }
@@ -2299,6 +2315,11 @@ void MainWindow::paintEvent(QPaintEvent *event)
     KWindowEffects::enableBlurBehind(this->winId(), true, QRegion(path.toFillPolygon().toPolygon()));
 }
 
+void MainWindow::onEjectVolumeForce(GVolume *v)
+{
+    g_volume_eject_with_operation(v, G_MOUNT_UNMOUNT_FORCE, nullptr, nullptr, GAsyncReadyCallback(&MainWindow::frobnitz_force_result_func), this);
+}
+
 void MainWindow::AsyncUnmount(QString strMountRoot,MainWindow *p_this) 
 {
     qInfo()<<"dataPath:"<<strMountRoot;
@@ -2311,7 +2332,7 @@ void MainWindow::AsyncUnmount(QString strMountRoot,MainWindow *p_this)
         p_this->ifSucess = bSuccess;
 }
 
-void MainWindow::frobnitz_force_result_func(GDrive *source_object,GAsyncResult *res,MainWindow *p_this)
+void MainWindow::frobnitz_force_result_func(GDrive *source_object,GAsyncResult *res, MainWindow *p_this)
 {
     auto env = qgetenv("QT_QPA_PLATFORMTHEME");
     gboolean success =  FALSE;
@@ -2483,6 +2504,56 @@ void MainWindow::onClickedEject(EjectDeviceInfo eDeviceInfo)
     m_curEjectDeviceInfo.pVoid = this;
     m_curEjectDeviceInfo.uFlag = G_MOUNT_UNMOUNT_NONE;
     doRealEject(&m_curEjectDeviceInfo, G_MOUNT_UNMOUNT_NONE);
+}
+
+bool MainWindow::onDeviceErrored(GDrive* drive)
+{
+    g_return_val_if_fail(G_IS_DRIVE(drive), false);
+
+    g_autofree char* device = g_drive_get_identifier (drive, G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+
+    g_return_val_if_fail(device && strstr(device, "/dev/sd"), false);
+
+    GList* volumes = g_drive_get_volumes(drive);
+    if (!volumes && !mRepairDialog.contains(device)) {
+        RepairDialogBox* b = new RepairDialogBox(drive);
+        b->connect(b, &RepairDialogBox::repairOK, this, [=] (RepairDialogBox* d) {
+            if (mRepairDialog.contains(d->getDeviceName())) {
+                mRepairDialog.remove(d->getDeviceName());
+            }
+        });
+        mRepairDialog[device] = b;
+        b->show();
+    } else {
+        for (auto v = volumes; nullptr != v; v = v->next) {
+            GVolume* vv = G_VOLUME(v->data);
+            g_autofree char* volumeName = g_volume_get_identifier (vv, G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+            GMount* m = g_volume_get_mount(vv);
+            if (!m) {
+                if (volumeName && !mRepairDialog.contains(volumeName)) {
+                    RepairDialogBox* b = new RepairDialogBox(vv);
+                    b->connect(b, &RepairDialogBox::remountDevice, this, &MainWindow::remountVolume);
+                    b->connect(b, &RepairDialogBox::repairOK, this, [=] (RepairDialogBox* d) {
+                        if (mRepairDialog.contains(d->getDeviceName())) {
+                            mRepairDialog.remove(d->getDeviceName());
+                        }
+                    });
+                    mRepairDialog[volumeName] = b;
+                    b->show();
+                }
+            } else {
+                g_object_unref(m);
+            }
+        }
+        g_list_free_full(volumes, g_object_unref);
+    }
+
+    return true;
+}
+
+void MainWindow::onMountVolume(GVolume* v)
+{
+    g_volume_mount(v, G_MOUNT_MOUNT_NONE, nullptr, nullptr, GAsyncReadyCallback(frobnitz_result_func_volume), this);
 }
 
 bool MainWindow::doRealEject(EjectDeviceInfo* peDeviceInfo, GMountUnmountFlags flag)
@@ -2891,6 +2962,47 @@ void MainWindow::onRemountVolume(FDVolumeInfo volumeInfo)
         if (current_volume_list) {
             g_list_free(current_volume_list);
             current_volume_list = NULL;
+        }
+    }
+}
+
+void MainWindow::onCheckDriveValid(FDDriveInfo driveInfo)
+{
+    if (driveInfo.strId.empty())
+        return;
+    qInfo()<<"driveInfo.strId:"<<driveInfo.strId.c_str();
+    if(!this->isSystemRootDev(driveInfo.strId.c_str()) && 
+        (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
+        if(g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sr") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/bus") 
+            || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sd") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/mmcblk")) {
+            GList *lDrive = NULL;
+            GList *current_drive_list = NULL;
+            GDrive* devDrive = NULL;
+            //about drive
+            GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
+            current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
+            for (lDrive = current_drive_list; lDrive != NULL; lDrive = lDrive->next) {
+                GDrive *gdrive = (GDrive *)lDrive->data;
+                char *devPath = g_drive_get_identifier(gdrive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+                if (devPath != NULL) {
+                    string strId = devPath;
+                    if (strId == driveInfo.strId) {
+                        devDrive = gdrive;
+                        g_free(devPath);
+                        break;
+                    }
+                    g_free(devPath);
+                }
+            }
+            if (devDrive != NULL) {
+                if (!g_drive_has_volumes(devDrive)) {
+                    Q_EMIT this->deviceError(devDrive);
+                }
+            }
+            if (current_drive_list) {
+                g_list_free(current_drive_list);
+                current_drive_list = NULL;
+            }
         }
     }
 }

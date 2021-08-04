@@ -146,7 +146,7 @@ private:
     int x;
     int y;
     QGSettings *System_scale_gsettings;
-    int  scale;
+    float  scale=1;
     void  trayButtonCoordinateMapping(int x,int y);
 
 };

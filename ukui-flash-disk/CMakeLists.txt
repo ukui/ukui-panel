@@ -22,7 +22,7 @@ find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(KF5WindowSystem REQUIRED)
 
-pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
+pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0 udisks2)
 pkg_check_modules(QGS REQUIRED gsettings-qt)
 
 
@@ -41,7 +41,13 @@ add_executable(ukui-flash-disk
     ejectInterface.cpp
     ejectInterface.h
     clickLabel.h
+    device-operation.h
+    device-operation.cpp
     clickLabel.cpp
+    device-manager.h
+    device-manager.cpp
+    repair-dialog-box.h
+    repair-dialog-box.cpp
     MainController.h
     MainController.cpp
     MacroFile.h
@@ -64,6 +70,17 @@ add_executable(ukui-flash-disk
     QtSingleApplication/qtlocalpeer.h
     QtSingleApplication/qtlocalpeer.cpp
 )
+
+add_executable(test-repair-dialog
+    device-manager.h
+    device-manager.cpp
+    repair-dialog-box.h
+    repair-dialog-box.cpp
+    device-operation.h
+    device-operation.cpp
+    test-repair-dialog.cpp
+)
+target_link_libraries(test-repair-dialog  Qt5::Widgets Qt5::DBus ${GLIB2_LIBRARIES} ${QGS_LIBRARIES} KF5::WindowSystem)
 
 add_definitions(-DQT_NO_KEYWORDS)
 add_definitions(-DQT_MESSAGELOGCONTEXT)
