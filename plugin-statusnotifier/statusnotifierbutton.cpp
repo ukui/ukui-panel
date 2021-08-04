@@ -98,7 +98,7 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         refetchIcon(NeedsAttention);
     });
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
+    this->setProperty("useIconHighlightEffect", 0x2);
     newToolTip();
 }
 
