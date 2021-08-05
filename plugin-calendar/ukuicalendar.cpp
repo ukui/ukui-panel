@@ -600,16 +600,16 @@ void CalendarActiveLabel::changeWidowpos()
     int totalWidth = qApp->primaryScreen()->size().width() + qApp->primaryScreen()->geometry().x();
     switch (mPlugin->panel()->position()) {
     case IUKUIPanel::PositionBottom:
-        w->setGeometry(totalWidth-mViewWidht-8,totalHeight-mPlugin->panel()->panelSize()-mViewHeight-8-changeHight,mViewWidht,mViewHeight);
+        w->setGeometry(totalWidth-mViewWidht-4,totalHeight-mPlugin->panel()->panelSize()-mViewHeight-4-changeHight,mViewWidht,mViewHeight);
         break;
     case IUKUIPanel::PositionTop:
-        w->setGeometry(totalWidth-mViewWidht-8,qApp->primaryScreen()->geometry().y()+mPlugin->panel()->panelSize()+8,mViewWidht,mViewHeight);
+        w->setGeometry(totalWidth-mViewWidht-4,qApp->primaryScreen()->geometry().y()+mPlugin->panel()->panelSize()+4,mViewWidht,mViewHeight);
         break;
     case IUKUIPanel::PositionLeft:
-        w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+8,totalHeight-mViewHeight-8-changeHight,mViewWidht,mViewHeight);
+        w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+4,totalHeight-mViewHeight-4-changeHight,mViewWidht,mViewHeight);
         break;
     case IUKUIPanel::PositionRight:
-        w->setGeometry(totalWidth-mPlugin->panel()->panelSize()-mViewWidht-8,totalHeight-mViewHeight-8-changeHight,mViewWidht,mViewHeight);
+        w->setGeometry(totalWidth-mPlugin->panel()->panelSize()-mViewWidht-4,totalHeight-mViewHeight-4-changeHight,mViewWidht,mViewHeight);
         break;
     default:
         w->setGeometry(qApp->primaryScreen()->geometry().x()+mPlugin->panel()->panelSize()+4,totalHeight-mViewHeight,mViewWidht,mViewHeight);

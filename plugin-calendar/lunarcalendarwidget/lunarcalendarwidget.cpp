@@ -350,7 +350,8 @@ void LunarCalendarWidget::initWidget()
     //转到今天
     btnToday->setObjectName("btnToday");
     btnToday->setFocusPolicy(Qt::NoFocus);
-    btnToday->setFixedWidth(40);
+    //btnToday->setFixedWidth(40);
+    btnMonth->setText(tr("月"));
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnToday->setText(tr("今天"));
