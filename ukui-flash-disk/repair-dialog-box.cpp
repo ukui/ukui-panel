@@ -347,7 +347,7 @@ void RepairProgressBar::onStopRepair(bool success)
         Q_EMIT remountDevice();
         accept();
     } else {
-        MessageBox msg(tr("Disk repair"), tr("The repair failed. Please try formatting the device!"), QMessageBox::Ok, this);
+        MessageBox msg(tr("Disk repair"), tr("The repair completed. If the USB flash disk is not mounted, please try formatting the device!"), QMessageBox::Ok, this);
         msg.setPalette(getPalette());
         msg.exec();
         reject();
