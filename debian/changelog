@@ -1,8 +1,26 @@
-ukui-panel (3.0.2-1~0802) unstable; urgency=medium
+ukui-panel (3.0.4-1~0803) unstable; urgency=medium
 
   * New upstream release.
 
- -- handsome-feng <jianfengli@ubuntukylin.com>  Mon, 02 Aug 2021 21:23:06 +0800
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 05 Aug 2021 14:32:40 +0800
+
+ukui-panel (3.0.3.1-1) unstable; urgency=medium
+
+  * Fix the error caused by ukuitaskbaricon.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Fri, 19 Mar 2021 08:52:41 +0000
+
+ukui-panel (3.0.3-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 28 Sep 2020 10:31:19 +0800
+
+ukui-panel (3.0.2-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Sun, 27 Sep 2020 18:50:43 +0800
 
 ukui-panel (3.0.1-1) unstable; urgency=medium
 
