@@ -71,11 +71,13 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     setLayout(mLayout);
     mLayout->addWidget(mBtn);
     const QByteArray id(UKUI_PANEL_SETTINGS);
-    if(QGSettings::isSchemaInstalled(id))
+    if(QGSettings::isSchemaInstalled(id)){
         gsettings = new QGSettings(id);
+        gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
+    }
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==SHOW_STATUSNOTIFIER_BUTTON){
-            resetLayout();
+            exchangeHideAndShow();
         }
     });
 
@@ -95,7 +97,7 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     StatusNotifierButton *button = new StatusNotifierButton(serv, path, mPlugin, this);
     mServices.insert(serviceAndPath, button);
     mStatusNotifierButtons.append(button);
-    button->setStyle(new CustomStyle);
+    button->setStyle(new CustomStyle());
     connect(button, SIGNAL(switchButtons(StatusNotifierButton*,StatusNotifierButton*)), this, SLOT(switchButtons(StatusNotifierButton*,StatusNotifierButton*)));
 
     //dbus异步调用，同步执行获取不到托盘名字，通过定时器进行异步刷新，后期可进行优化
@@ -219,6 +221,8 @@ void StatusNotifierWidget::switchButtons(StatusNotifierButton *button1, StatusNo
     }
     saveSettings(button1->hideAbleStatusNotifierButton(),button2->hideAbleStatusNotifierButton());
     resetLayout();
+    button1->repaint();
+    button2->repaint();
 }
 
 void StatusNotifierWidget::saveSettings(QString button1,QString button2){
@@ -297,6 +301,13 @@ QList<QStringList> StatusNotifierWidget::readSettings(){
     list.append(showApp);
     list.append(hideApp);
     return list;
+}
+
+void StatusNotifierWidget::exchangeHideAndShow(){
+    QMap<QString, StatusNotifierButton*>::const_iterator i;
+    for(i=m_HideButtons.constBegin();i!=m_HideButtons.constEnd();++i){
+        i.value()->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
+    }
 }
 
 void StatusNotifierWidget::btnAddButton(QString button){
