@@ -2,7 +2,7 @@
 
 #include "lunarcalendarwidget.h"
 
-
+#include<QDebug>
 #include <QJsonParseError>
 #include <QJsonObject>
 
@@ -138,13 +138,15 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
             dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
             _timeUpdate();
             setColor(dark_style);
-            QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("ukui-up-symbolic")).pixmap(QSize(24, 24));
+            QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-up-symbolic")).pixmap(QSize(24, 24));
             PictureToWhite pictToWhite1;
             btnPrevYear->setPixmap(pictToWhite1.drawSymbolicColoredPixmap(pixmap1));
+            btnPrevYear->setProperty("useIconHighlightEffect", 0x2);
 
-            QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("ukui-down-symbolic")).pixmap(QSize(24, 24));
+            QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-down-symbolic")).pixmap(QSize(24, 24));
             PictureToWhite pictToWhite2;
             btnNextYear->setPixmap(pictToWhite2.drawSymbolicColoredPixmap(pixmap2));
+            btnNextYear->setProperty("useIconHighlightEffect", 0x2);
         }
     });
 
@@ -316,9 +318,10 @@ void LunarCalendarWidget::initWidget()
     btnPrevYear->setObjectName("btnPrevYear");
     btnPrevYear->setFixedWidth(35);
     btnPrevYear->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("ukui-up-symbolic")).pixmap(QSize(24, 24));
+    QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-up-symbolic")).pixmap(QSize(24, 24));
     PictureToWhite pictToWhite1;
     btnPrevYear->setPixmap(pictToWhite1.drawSymbolicColoredPixmap(pixmap1));
+    btnPrevYear->setProperty("useIconHighlightEffect", 0x2);
 
 
     //下个月按钮
@@ -326,9 +329,10 @@ void LunarCalendarWidget::initWidget()
     btnNextYear->setObjectName("btnNextYear");
     btnNextYear->setFixedWidth(35);
     btnNextYear->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("ukui-down-symbolic")).pixmap(QSize(24, 24));
+    QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-down-symbolic")).pixmap(QSize(24, 24));
     PictureToWhite pictToWhite2;
     btnNextYear->setPixmap(pictToWhite2.drawSymbolicColoredPixmap(pixmap2));
+    btnNextYear->setProperty("useIconHighlightEffect", 0x2);
 
 
     //转到年显示
@@ -376,6 +380,8 @@ void LunarCalendarWidget::initWidget()
     widgetBlank1->setFixedWidth(180);
     QWidget *widgetBlank2 = new QWidget;
     widgetBlank2->setFixedWidth(5);
+    QWidget *widgetBlank3 = new QWidget;
+    widgetBlank3->setFixedWidth(40);
 
     //顶部横向布局
     QHBoxLayout *layoutTop = new QHBoxLayout(widgetTop);
@@ -383,12 +389,13 @@ void LunarCalendarWidget::initWidget()
     layoutTop->addItem(new QSpacerItem(5,1));
 //    layoutTop->addWidget(cboxYearandMonth);
     layoutTop->addWidget(cboxYearandMonthLabel);
+    layoutTop->addWidget(widgetBlank3);
     layoutTop->addWidget(btnNextYear);
     layoutTop->addWidget(btnPrevYear);
 
 
     layoutTop->addWidget(widgetBlank1);
-    layoutTop->addWidget(widgetBlank2);
+//    layoutTop->addWidget(widgetBlank2);
     layoutTop->addWidget(btnYear);
     layoutTop->addWidget(btnMonth);
     layoutTop->addWidget(btnToday);

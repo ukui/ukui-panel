@@ -204,6 +204,8 @@ public Q_SLOTS:
     void setSelectBgColor(const QColor &selectBgColor);
     //设置悬停日期背景颜色
     void setHoverBgColor(const QColor &hoverBgColor);
+    //五个字以上节日名称显示tooltip
+    bool event(QEvent *event);
 
 Q_SIGNALS:
     void clicked(const QDate &date, const LunarCalendarItem::DayType &dayType);
