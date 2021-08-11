@@ -96,7 +96,6 @@ void LunarCalendarYearItem::mousePressEvent(QMouseEvent *)
 {
     pressed = true;
     this->update();
-//    Q_EMIT clicked(date, dayType);
     Q_EMIT yearMessage(date, dayType);
 }
 

@@ -355,7 +355,6 @@ void LunarCalendarWidget::initWidget()
     btnToday->setObjectName("btnToday");
     btnToday->setFocusPolicy(Qt::NoFocus);
     //btnToday->setFixedWidth(40);
-    btnMonth->setText(tr("月"));
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnToday->setText(tr("今天"));
@@ -460,6 +459,7 @@ void LunarCalendarWidget::initWidget()
         layoutBodyYear->addWidget(labYear, i / 3, i % 3);
         yearItems.append(labYear);
     }
+
     widgetYearBody->hide();
 
     //月份标签widget
@@ -604,19 +604,37 @@ void LunarCalendarWidget::analysisWorktimeJs()
 
 void LunarCalendarWidget::yearWidgetChange()
 {
-    widgetYearBody->show();
-    widgetWeek->hide();
-    widgetDayBody->hide();
-    widgetmonthBody->hide();
+    if (widgetYearBody->isHidden()){
+        widgetYearBody->show();
+        widgetWeek->hide();
+        widgetDayBody->hide();
+        widgetmonthBody->hide();
+    }
+    else{
+        widgetYearBody->hide();
+        widgetWeek->show();
+        widgetDayBody->show();
+        widgetmonthBody->hide();
+    }
+
 }
 
 void LunarCalendarWidget::monthWidgetChange()
 {
-    widgetYearBody->hide();
-    widgetWeek->hide();
-    widgetDayBody->hide();
-    widgetmonthBody->show();
+    if(widgetmonthBody->isHidden()){
+        widgetYearBody->hide();
+        widgetWeek->hide();
+        widgetDayBody->hide();
+        widgetmonthBody->show();
+    }
+    else{
+        widgetYearBody->hide();
+        widgetWeek->show();
+        widgetDayBody->show();
+        widgetmonthBody->hide();
+    }
 }
+
 
 //初始化日期面板
 void LunarCalendarWidget::initDate()
@@ -715,7 +733,9 @@ void LunarCalendarWidget::initDate()
 
     for (int i=0;i<12;i++){
         yearItems.at(i)->setDate(date.addYears(i));
+//        qDebug()<<"================="<<i<<"--"<<"传入的年份值："<<date.addYears(i);
         monthItems.at(i)->setDate(date.addMonths(i));
+//        qDebug()<<"~~~~~~~~~~~~~~~~~"<<i<<"--"<<"传入的月份值："<<date.addMonths(i);
     }
 }
 
@@ -848,10 +868,13 @@ void LunarCalendarWidget::updateYearClicked(const QDate &date, const LunarCalend
     widgetWeek->show();
     widgetDayBody->show();
     widgetmonthBody->hide();
-    qDebug()<<date;
+//    qDebug()<<"year:::::::::::::::::::::"<<date;
     clickDate = date;
     changeDate(date);
     dayChanged(date,clickDate);
+    for (int i = 0; i < 12; i++) {
+        qDebug()<<"*******************"<<"循环位："<<i<<yearItems.at(i)->date;
+    }
 }
 
 void LunarCalendarWidget::updateMonthClicked(const QDate &date, const LunarCalendarMonthItem::DayType &dayType)
@@ -877,13 +900,10 @@ void LunarCalendarWidget::changeDate(const QDate &date)
         yijihandle(date);
         oneRun = false;
     }
-
-
     //设置为今天,设置变量防止重复触发
     btnClick = true;
     cboxYearandMonth->setCurrentIndex(cboxYearandMonth->findText(QString("%1.%2").arg(year).arg(month)));
     btnClick = false;
-
     cboxYearandMonthLabel->setText(QString("   %1.%2").arg(year).arg(month));
 
     //首先判断当前月的第一天是星期几
@@ -909,6 +929,7 @@ void LunarCalendarWidget::changeDate(const QDate &date)
 
     //纠正1月份前面部分偏差,1月份前面部分是上一年12月份
     tempYear = year;
+//    qDebug()<<"++++++++++++++++++临时年"<<tempYear;
     tempMonth = month - 1;
     if (tempMonth < 1) {
         tempYear--;
@@ -916,9 +937,11 @@ void LunarCalendarWidget::changeDate(const QDate &date)
     }
 
     //显示上月天数
-    for (int i = startPre; i < endPre; i++) {
+    for (int i = startPre; i <= endPre; i++) {
+        qDebug()<<"++++++++++++++++++循环位"<<i;
         index = i;
         tempDay = countDayPre - endPre + i + 1;
+        qDebug()<<"临时天++++++++++++++++++"<<tempDay;
 
         QDate date(tempYear, tempMonth, tempDay);
         QString lunar = LunarCalendarInfo::Instance()->getLunarDay(tempYear, tempMonth, tempDay);
@@ -963,7 +986,9 @@ void LunarCalendarWidget::changeDate(const QDate &date)
 
     for (int i=0;i<12;i++){
         yearItems.at(i)->setDate(date.addYears(i));
+//        qDebug()<<"================="<<i<<"--"<<"传入的年份值："<<date;
         monthItems.at(i)->setDate(date.addMonths(i));
+//        qDebug()<<"~~~~~~~~~~~~~~~~~"<<i<<"--"<<"传入的月份值："<<date.addMonths(i);
     }
 }
 

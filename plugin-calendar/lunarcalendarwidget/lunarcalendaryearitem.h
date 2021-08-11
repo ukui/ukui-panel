@@ -60,6 +60,8 @@ public:
         SelectType_Image = 3        //图片背景
     };
 
+    QDate date;                     //当前日期
+
     explicit LunarCalendarYearItem(QWidget *parent = 0);
     QMap<QString,QMap<QString,QString>> worktime;
 
@@ -83,7 +85,7 @@ private:
     QString bgImage;                //背景图片
     SelectType selectType;          //选中模式
 
-    QDate date;                     //当前日期
+
     QString lunar;                  //农历信息
     DayType dayType;                //当前日类型
 
