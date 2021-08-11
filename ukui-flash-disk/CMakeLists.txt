@@ -69,6 +69,8 @@ add_executable(ukui-flash-disk
     QtSingleApplication/qtsingleapplication.cpp
     QtSingleApplication/qtlocalpeer.h
     QtSingleApplication/qtlocalpeer.cpp
+    datacdrom.h
+    datacdrom.cpp
 )
 
 add_executable(test-repair-dialog
