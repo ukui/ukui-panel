@@ -19,7 +19,8 @@ SOURCES += \
          $$PWD/../flashdiskdata.cpp \
          $$PWD/../fdclickwidget.cpp \
          $$PWD/../interactivedialog.cpp \
-         $$PWD/../ejectInterface.cpp 
+         $$PWD/../ejectInterface.cpp \
+         $$PWD/../datacdrom.cpp 
 #        Removablemount.cpp
 
 
@@ -35,7 +36,8 @@ HEADERS += \
          $$PWD/../flashdiskdata.h \
          $$PWD/../fdclickwidget.h \
          $$PWD/../interactivedialog.h \
-         $$PWD/../ejectInterface.h 
+         $$PWD/../ejectInterface.h \
+         $$PWD/../datacdrom.h 
 #        Removablemount.h
 
 FORMS   += mainwindow.ui

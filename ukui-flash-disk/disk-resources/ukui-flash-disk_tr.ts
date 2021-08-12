@@ -200,7 +200,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The repair failed. Please try formatting the device!</source>
+        <source>The repair completed. If the USB flash disk is not mounted, please try formatting the device!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
