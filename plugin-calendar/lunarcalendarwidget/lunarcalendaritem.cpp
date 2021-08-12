@@ -1,6 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 
 #include "lunarcalendaritem.h"
+#include "lunarcalendarwidget.h"
 #include "qpainter.h"
 #include "qevent.h"
 #include "qdatetime.h"
@@ -650,4 +651,28 @@ void LunarCalendarItem::setHoverBgColor(const QColor &hoverBgColor)
         this->hoverBgColor = hoverBgColor;
         this->update();
     }
+}
+
+bool LunarCalendarItem::event(QEvent *event)
+{
+    event->type();
+    if(event->type()==QEvent::ToolTip){
+
+//        qDebug()<<"选中日期的月份"<<date.month();
+//        qDebug()<<"选中日期的天数"<<date.day();
+
+        if(date.month()==11 && date.day()==9 ){
+            setToolTip(tr("消防宣传日"));
+        }
+        if(date.month()==3 && date.day()==5 ){
+            setToolTip(tr("志愿者服务日"));
+        }
+        if(date.month()==6 && date.day()==6 ){
+            setToolTip(tr("全国爱眼日"));
+        }
+        if(date.month()==7 && date.day()==7 ){
+            setToolTip(tr("抗战纪念日"));
+        }
+    }
+    QWidget::event(event);
 }

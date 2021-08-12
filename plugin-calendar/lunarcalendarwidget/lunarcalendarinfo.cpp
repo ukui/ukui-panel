@@ -3,6 +3,9 @@
 #include "lunarcalendarinfo.h"
 #include "qmutex.h"
 #include "qdebug.h"
+#include <QTimer>
+#include <QSettings>
+#include <QToolButton>
 
 #define year_2099
 
@@ -355,17 +358,11 @@ QString LunarCalendarInfo::getHoliday(int month, int day)
     case 0x020E:
         strHoliday = "情人节";
         break;
-    case 0x0303:
-        strHoliday = "爱耳日";
-        break;
     case 0x0305:
-        strHoliday = "志愿者服务日";
+        strHoliday = "志愿者";
         break;
     case 0x0308:
         strHoliday = "妇女节";
-        break;
-    case 0x0309:
-        strHoliday = "保护母亲河";
         break;
     case 0x030C:
         strHoliday = "植树节";
@@ -383,13 +380,13 @@ QString LunarCalendarInfo::getHoliday(int month, int day)
         strHoliday = "儿童节";
         break;
     case 0x0606:
-        strHoliday = "全国爱眼日";
+        strHoliday = "爱眼日";
         break;
     case 0x0701:
         strHoliday = "建党节";
         break;
     case 0x0707:
-        strHoliday = "抗战纪念日";
+        strHoliday = "抗战日";
         break;
     case 0x0801:
         strHoliday = "建军节";
@@ -397,29 +394,14 @@ QString LunarCalendarInfo::getHoliday(int month, int day)
     case 0x090A:
         strHoliday = "教师节";
         break;
-    case 0x0910:
-        strHoliday = "脑健康日";
-        break;
-    case 0x0914:
-        strHoliday = "爱牙日";
-        break;
     case 0x0A01:
         strHoliday = "国庆节";
-        break;
-    case 0x0A0A:
-        strHoliday = "高血压日";
-        break;
-    case 0x0A1C:
-        strHoliday = "男性健康日";
         break;
     case 0x0B08:
         strHoliday = "记者节";
         break;
     case 0x0B09:
-        strHoliday = "消防宣传日";
-        break;
-    case 0x0C04:
-        strHoliday = "法制宣传日";
+        strHoliday = "消防日";
         break;
     case 0x0C18:
         strHoliday = "平安夜";
