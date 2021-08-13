@@ -22,22 +22,22 @@
 <context>
     <name>LunarCalendarItem</name>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="665"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="661"/>
         <source>消防宣传日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="668"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="664"/>
         <source>志愿者服务日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="671"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="667"/>
         <source>全国爱眼日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="674"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="670"/>
         <source>抗战纪念日</source>
         <translation type="unfinished"></translation>
     </message>
