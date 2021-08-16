@@ -126,6 +126,8 @@ private:
     static GAsyncReadyCallback fileEjectMountableCB(GFile *file, GAsyncResult *res, EjectDeviceInfo *peDeviceInfo);
     static void driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo *peDeviceInfo);
 
+    bool getDataCDRomCapacity(QString strDevId, quint64 &totalCapacity);
+
 private:
     QIcon iconSystray;
 //    QString UDiskPathDis1;

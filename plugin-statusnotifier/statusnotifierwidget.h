@@ -84,6 +84,7 @@ private:
     void saveSettings(QString button1,QString button2);
     QList<QStringList> readSettings();
     void resetLayout();
+    void exchangeHideAndShow();
 
 
 private slots:

@@ -11,6 +11,7 @@ LunarCalendarMonthItem::LunarCalendarMonthItem(QWidget *parent) : QWidget(parent
 {
     hover = false;
     pressed = false;
+    select = false; 
 
     select = false;
     showLunar = true;
