@@ -7,91 +7,101 @@ Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
 Files: AUTHORS
-Copyright: Copyright 2010-2012, Razor team
-           2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012-2017, iLXQT team
+Copyright: 2010-2012, Razor team
+  2019, Tianjin KYLIN Information Technology Co., Ltd.
+  2012-2017, iLXQT team
 License: LGPL-2.1+
 
 Files: cmake/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012-2019, LXQt team
-           2010-2012, Razor team
+  2012-2019, LXQt team
+  2010-2012, Razor team
 License: BSD-3-Clause
 
 Files: panel/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2011, Razor team
+  2010-2011, Razor team
 License: LGPL-2.1+
 
 Files: panel/comm_func.cpp
-       panel/comm_func.h
-       panel/iukuipanel.h
-       panel/iukuipanelplugin.h
-       panel/pluginmoveprocessor.h
-       panel/ukuipanellimits.h
+  panel/comm_func.h
+  panel/iukuipanel.h
+  panel/iukuipanelplugin.h
+  panel/pluginmoveprocessor.h
+  panel/ukuipanellimits.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012, Razor team
+  2012, Razor team
 License: LGPL-2.1+
 
 Files: panel/common/cmake/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
+  2010-2012, Razor team
 License: LGPL-2.1+
 
 Files: panel/common/dbus/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
-License: LGPL-2.1+
-
-Files: panel/common/resources/*
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
+  2010-2012, Razor team
 License: LGPL-2.1+
 
 Files: panel/common/ukuiapplication.cpp
-       panel/common/ukuiapplication.h
+  panel/common/ukuiapplication.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012-2013, Razor team
+  2012-2013, Razor team
+License: LGPL-2.1+
+
+Files: panel/common/ukuiglobals.h
+Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
+  2013, - LXQt team
 License: LGPL-2.1+
 
 Files: panel/common/ukuigridlayout.cpp
-       panel/common/ukuigridlayout.h
+  panel/common/ukuigridlayout.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012, Razor team
+  2012, Razor team
 License: LGPL-2.1+
 
 Files: panel/common/ukuisingleapplication.cpp
-       panel/common/ukuisingleapplication.h
+  panel/common/ukuisingleapplication.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2014, LXQt team
+  2014, LXQt team
 License: LGPL-2.1+
 
 Files: panel/common/ukuitranslator.cpp
-       panel/common/ukuitranslator.h
+  panel/common/ukuitranslator.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2013, LXQt team
+  2013, LXQt team
 License: LGPL-2.1+
 
-Files: panel/highlight-effect.cpp
-       panel/highlight-effect.h
-       panel/ukuicontrolstyle.cpp
-       panel/ukuicontrolstyle.h
+Files: panel/common_fun/*
+Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
+  2010, 2011, Razor team
+License: LGPL-2.1+
+
+Files: panel/common_fun/dbus-adaptor.cpp
+  panel/common_fun/dbus-adaptor.h
+Copyright: 2020, The Qt Company Ltd.
+License: LGPL-2.1+
+
+Files: panel/customstyle.cpp
+  panel/customstyle.h
+  panel/highlight-effect.cpp
+  panel/highlight-effect.h
+  panel/ukuicontrolstyle.cpp
+  panel/ukuicontrolstyle.h
 Copyright: 2019, 2020, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
 Files: panel/img/*
-       panel/customstyle.cpp
-       panel/customstyle.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
 Files: panel/pluginsettings.cpp
-       panel/pluginsettings.h
-       panel/pluginsettings_p.h
-       panel/windownotifier.cpp
-       panel/windownotifier.h
+  panel/pluginsettings.h
+  panel/pluginsettings_p.h
+  panel/windownotifier.cpp
+  panel/windownotifier.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2015, LXQt team
+  2015, LXQt team
 License: LGPL-2.1+
 
 Files: panel/resources/*
@@ -100,27 +110,33 @@ License: LGPL-2.1+
 
 Files: panel/ukuipanelapplication_p.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2016, 2018, Luís Pereira <luis.artur.pereira@gmail.com>
+  2016, Luís Pereira <luis.artur.pereira@gmail.com>
 License: LGPL-2.1+
 
 Files: panel/ukuipanelglobals.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2013, LXQt team
+  2013, LXQt team
 License: LGPL-2.1+
 
 Files: plugin-calendar/*
 Copyright: 2019, 2020, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
+Files: plugin-calendar/lunarcalendarwidget/customstylePushbutton.cpp
+  plugin-calendar/lunarcalendarwidget/customstylePushbutton.h
+  plugin-calendar/lunarcalendarwidget/picturetowhite.cpp
+  plugin-calendar/lunarcalendarwidget/picturetowhite.h
+Copyright: 2019, 2020, Tianjin KYLIN Information Technology Co., Ltd.
+License: GPL-3+
+
 Files: plugin-calendar/resources/*
-       plugin-calendar/ukuiwebviewdialog.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
 Files: plugin-calendar/ukuicalendar.cpp
-       plugin-calendar/ukuicalendar.h
+  plugin-calendar/ukuicalendar.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012-2013, Razor team
+  2012-2013, Razor team
 License: LGPL-2.1+
 
 Files: plugin-nightmode/*
@@ -133,25 +149,30 @@ License: LGPL-2.1+
 
 Files: plugin-quicklaunch/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
+  2010-2012, Razor team
 License: LGPL-2.1+
 
+Files: plugin-quicklaunch/json.cpp
+  plugin-quicklaunch/json.h
+Copyright: 2011, Eeli Reilin
+License: GPL-3+
+
 Files: plugin-quicklaunch/quicklaunchaction.cpp
-       plugin-quicklaunch/quicklaunchaction.h
-       plugin-quicklaunch/quicklaunchbutton.cpp
+  plugin-quicklaunch/quicklaunchaction.h
+  plugin-quicklaunch/quicklaunchbutton.cpp
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2011, Razor team
+  2010-2011, Razor team
 License: LGPL-2.1+
 
 Files: plugin-quicklaunch/resources/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
+  2010-2012, Razor team
 License: LGPL-2.1+
 
 Files: plugin-quicklaunch/ukuiquicklaunchplugin.cpp
-       plugin-quicklaunch/ukuiquicklaunchplugin.h
+  plugin-quicklaunch/ukuiquicklaunchplugin.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2013, Razor team
+  2013, Razor team
 License: LGPL-2.1+
 
 Files: plugin-segmentation/*
@@ -164,22 +185,22 @@ License: LGPL-2.1+
 
 Files: plugin-showdesktop/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2011, Razor team
+  2010-2011, Razor team
 License: LGPL-2.1+
 
 Files: plugin-showdesktop/resources/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2010-2012, Razor team
+  2010-2012, Razor team
 License: LGPL-2.1+
 
 Files: plugin-spacer/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2015, LXQt team
+  2015, LXQt team
 License: LGPL-2.1+
 
 Files: plugin-spacer/resources/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012-2018, LXQt team
+  2012-2018, LXQt team
 License: LGPL-2.1+
 
 Files: plugin-startmenu/*
@@ -190,6 +211,42 @@ Files: plugin-startmenu/resources/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
+Files: plugin-statusnotifier/*
+Copyright: 2015, LXQt team
+License: LGPL-2.1+
+
+Files: plugin-statusnotifier/resources/*
+Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
+License: LGPL-2.1+
+
+Files: plugin-statusnotifier/statusnotifier_storagearrow.cpp
+  plugin-statusnotifier/statusnotifier_storagearrow.h
+Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
+License: LGPL-2.1+
+
+Files: plugin-taskbar-wayland/*
+Copyright: 2011, Razor team
+License: LGPL-2.1+
+
+Files: plugin-taskbar-wayland/resources/*
+Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
+License: LGPL-2.1+
+
+Files: plugin-taskbar-wayland/ukuitaskbaricon.cpp
+  plugin-taskbar-wayland/ukuitaskbaricon.h
+  plugin-taskbar-wayland/ukuitaskclosebutton.cpp
+  plugin-taskbar-wayland/ukuitaskclosebutton.h
+  plugin-taskbar-wayland/ukuitaskwidget.cpp
+  plugin-taskbar-wayland/ukuitaskwidget.h
+Copyright: 2019, 2020, Tianjin KYLIN Information Technology Co., Ltd.
+License: LGPL-2.1+
+
+Files: plugin-taskbar-wayland/ukuitaskbarplugin.cpp
+  plugin-taskbar-wayland/ukuitaskbarplugin.h
+Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
+  2012, Razor team
+License: LGPL-2.1+
+
 Files: plugin-taskbar/*
 Copyright: 2011, Razor team
 License: LGPL-2.1+
@@ -198,19 +255,17 @@ Files: plugin-taskbar/resources/*
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
-Files: plugin-taskbar/ukuitaskbaricon.cpp
-  plugin-taskbar/ukuitaskbaricon.h
-  plugin-taskbar/ukuitaskclosebutton.cpp
+Files: plugin-taskbar/ukuitaskbarplugin.cpp
+  plugin-taskbar/ukuitaskbarplugin.h
+Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
+  2012, Razor team
+License: LGPL-2.1+
+
+Files: plugin-taskbar/ukuitaskclosebutton.cpp
   plugin-taskbar/ukuitaskclosebutton.h
   plugin-taskbar/ukuitaskwidget.cpp
   plugin-taskbar/ukuitaskwidget.h
 Copyright: 2019, 2020, Tianjin KYLIN Information Technology Co., Ltd.
-License: LGPL-2.1+
-
-Files: plugin-taskbar/ukuitaskbarplugin.cpp
-       plugin-taskbar/ukuitaskbarplugin.h
-Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
-           2012, Razor team
 License: LGPL-2.1+
 
 Files: plugin-taskview/*
@@ -234,9 +289,39 @@ Copyright: 2019, 2020, Tianjin KYLIN Information Technology Co., Ltd.
 License: LGPL-2.1+
 
 Files: ukui-flash-disk/MainController.h
-       ukui-flash-disk/ui_mainwindow.h
-       ukui-flash-disk/qclickwidget.h
+  ukui-flash-disk/ui_mainwindow.h
 Copyright: 2019, Tianjin KYLIN Information Technology Co., Ltd.
+License: LGPL-2.1+
+
+Files: ukui-flash-disk/QtSingleApplication/*
+Copyright: 2013, Digia Plc and/or its subsidiary(-ies).
+License: BSD-3-clause
+
+Files: ukui-flash-disk/QtSingleApplication/QtLockedFile
+  ukui-flash-disk/QtSingleApplication/QtSingleApplication
+Copyright: 2019, 2020, Tianjin KYLIN Information Technology Co., Ltd.
+License: LGPL-2.1+
+
+Files: ukui-flash-disk/datacdrom.cpp
+  ukui-flash-disk/datacdrom.h
+Copyright: 2020, KylinSoft Co., Ltd.
+License: LGPL-3+
+
+Files: ukui-flash-disk/device-manager.cpp
+  ukui-flash-disk/device-manager.h
+  ukui-flash-disk/device-operation.cpp
+  ukui-flash-disk/device-operation.h
+  ukui-flash-disk/fdapplication.cpp
+  ukui-flash-disk/fdapplication.h
+  ukui-flash-disk/fdclickwidget.cpp
+  ukui-flash-disk/fdclickwidget.h
+  ukui-flash-disk/fdframe.cpp
+  ukui-flash-disk/fdframe.h
+  ukui-flash-disk/flashdiskdata.cpp
+  ukui-flash-disk/flashdiskdata.h
+  ukui-flash-disk/repair-dialog-box.cpp
+  ukui-flash-disk/repair-dialog-box.h
+Copyright: 2021, KylinSoft Co., Ltd.
 License: LGPL-2.1+
 
 License: BSD-3-Clause
@@ -264,33 +349,55 @@ License: BSD-3-Clause
  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-License: GPL-2+
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
- . 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- .
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-License: LGPL-2.1
- This software is Copyright (c) 2020 by X. Ample.
+License: BSD-3-clause
+ This software is Copyright (c) 2021 by X. Ample.
  .
  This is free software, licensed under:
  .
-   The GNU Lesser General Public License, Version 2.1, February 1999
+   The (three-clause) BSD License
  .
- This program is free software; you can redistribute it and/or modify it
- under the terms of the GNU Lesser General Public License as published by the
- Free Software Foundation; version 2.1 of the License.
- On Debian systems, the complete text of version 2.1 of the GNU Lesser
- General Public License can be found in '/usr/share/common-licenses/LGPL-2.1'.
+ The BSD License
+ .
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+ .
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+ .
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution. 
+ .
+   * Neither the name of X. Ample nor the names of its
+     contributors may be used to endorse or promote products derived from
+     this software without specific prior written permission. 
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+ IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: GPL-3+
+ This software is Copyright (c) 2021 by X. Ample.
+ .
+ This is free software, licensed under:
+ .
+   The GNU General Public License, Version 3, June 2007
+ .
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; version 3 dated June, 2007, or (at
+ your option) any later version.
+ On Debian systems, the complete text of version 3 of the GNU General
+ Public License can be found in '/usr/share/common-licenses/GPL-3'.
 
 License: LGPL-2.1+
  This program or library is free software; you can redistribute it
@@ -306,19 +413,16 @@ License: LGPL-2.1+
  On Debian systems, the complete text of the GNU Lesser General
  Public License version 2.1 can be found in "/usr/share/common-licenses/LGPL-2.1".
 
-License: LGPL-3
- This library is free software; you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation; either
- version 3 of the License, or (at your option) any later version.
+License: LGPL-3+
+ This software is Copyright (c) 2021 by X. Ample.
  .
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
+ This is free software, licensed under:
  .
- You should have received a copy of the GNU General Public License
- along with this library.  If not, see <https://www.gnu.org/licenses/>.
+   The GNU Lesser General Public License, Version 3, June 2007
  .
- On Debian systems, the complete text of the GNU Lesser General Public License
- Version 3 can be found in `/usr/share/common-licenses/LGPL-3'.
+ This program is free software; you can redistribute it and/or modify it
+ under the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; version 3 of the License, or (at
+ your option) any later version.
+ On Debian systems, the complete text of version 3 of the GNU Lesser
+ General Public License can be found in '/usr/share/common-licenses/LGPL-3'.

@@ -11,7 +11,7 @@
 <context>
     <name>DeviceOperation</name>
     <message>
-        <source>unknow</source>
+        <source>unknown</source>
         <translation>未知</translation>
     </message>
 </context>

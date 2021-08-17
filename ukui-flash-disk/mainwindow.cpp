@@ -1395,7 +1395,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 p_this->m_dataFlashDisk->addMountInfo(mountInfo);
             }
             if (isNewMount) {
-                qInfo()<<"sig has emited";
+                qInfo()<<"sig has emitted";
                 string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
                 Q_EMIT p_this->convertShowWindow(strDevId.c_str(), mountInfo.strUri.c_str());     //emit a signal to trigger the MainMainShow slot
             }

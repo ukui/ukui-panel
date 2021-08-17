@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     FDApplication a(id, argc, argv);
     a.setQuitOnLastWindowClosed(false);        //Process does not exit implicitly
     if (a.isRunning()) {
-        qInfo()<<"ukui-flash-disk is runnning, now exit!";
+        qInfo()<<"ukui-flash-disk is running, now exit!";
         return 1;
     }
 

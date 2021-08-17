@@ -34,7 +34,6 @@ Build-Depends: debhelper-compat (= 12),
                qtbase5-dev-tools,
                qttools5-dev-tools,
                qtbase5-private-dev,
-               libx11-dev,
                libxtst-dev,
                libudisks2-dev
 Standards-Version: 4.5.0

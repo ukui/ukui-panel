@@ -127,7 +127,7 @@ void DeviceOperation::udiskRepairCancel()
 
 QString DeviceOperation::udiskSize()
 {
-    g_return_val_if_fail(mDiskBlock, tr("unknow"));
+    g_return_val_if_fail(mDiskBlock, tr("unknown"));
 
     guint64 size = udisks_block_get_size(mDiskBlock);
     g_autofree char* str = g_format_size_full(size, G_FORMAT_SIZE_IEC_UNITS);
@@ -137,7 +137,7 @@ QString DeviceOperation::udiskSize()
 
 QString DeviceOperation::udiskUUID()
 {
-    g_return_val_if_fail(mDiskBlock, tr("unknow"));
+    g_return_val_if_fail(mDiskBlock, tr("unknown"));
 
     const char* str = udisks_block_get_id_uuid(mDiskBlock);
 
@@ -146,7 +146,7 @@ QString DeviceOperation::udiskUUID()
 
 QString DeviceOperation::udiskLabel()
 {
-    g_return_val_if_fail(mDiskBlock, tr("unknow"));
+    g_return_val_if_fail(mDiskBlock, tr("unknown"));
 
     const char* str = udisks_block_get_id_label(mDiskBlock);
 
