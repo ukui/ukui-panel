@@ -51,7 +51,7 @@ pkg_check_modules(Gsetting REQUIRED gsettings-qt)
 include_directories(${Gsetting_INCLUDE_DIRS})
 set(LIBRARIES
     ${Gsetting_LIBRARIES}
-    -lukui-log4qt
+    #    -lukui-log4qt
 )
 
 # Patch Version

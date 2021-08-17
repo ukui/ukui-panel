@@ -30,14 +30,13 @@ Build-Depends: debhelper-compat (= 12),
                qttools5-dev,
                libgsettings-qt-dev,
                libdconf-dev,
-               libukui-log4qt-dev,
                qtbase5-dev,
                qtbase5-dev-tools,
                qttools5-dev-tools,
                qtbase5-private-dev,
                libx11-dev,
-	       libxtst-dev,
-	       libudisks2-dev
+               libxtst-dev,
+               libudisks2-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/ukui/ukui-panel
