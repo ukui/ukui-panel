@@ -32,6 +32,7 @@
 #include <string.h>
 #include "clickLabel.h"
 #include "MacroFile.h"
+#include "datacdrom.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -328,6 +329,7 @@ void MainWindow::getDeviceInfo()
                                         }
                                         g_object_unref(fileRoot);
                                     }
+                                    getDataCDRomCapacity(volumeInfo.strId.c_str(),volumeInfo.mountInfo.lluTotalSize);
                                     // get mount uri
                                     GFile *root = g_mount_get_default_location(mount);
                                     if (root) {
@@ -441,6 +443,7 @@ void MainWindow::getDeviceInfo()
                             }
                             g_object_unref(fileRoot);
                         }
+                        getDataCDRomCapacity(volumeInfo.strId.c_str(),volumeInfo.mountInfo.lluTotalSize);
                         // get mount uri
                         GFile *root = g_mount_get_default_location(mount);
                         if (root) {
@@ -537,6 +540,7 @@ void MainWindow::getDeviceInfo()
                                         }
                                         g_object_unref(fileRoot);
                                     }
+                                    getDataCDRomCapacity(driveInfo.strId.c_str(),mountInfo.lluTotalSize);
                                     // get mount uri
                                     GFile *root = g_mount_get_default_location(gmount);
                                     if (root) {
@@ -598,6 +602,7 @@ void MainWindow::getDeviceInfo()
                             }
                             g_object_unref(fileRoot);
                         }
+                        getDataCDRomCapacity(mountInfo.strId.c_str(),mountInfo.lluTotalSize);
                         // get mount uri
                         GFile *root = g_mount_get_default_location(gmount);
                         if (root) {
@@ -858,6 +863,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                     }
                     g_object_unref(fileRoot);
                 }
+                p_this->getDataCDRomCapacity(volumeInfo.strId.c_str(), volumeInfo.mountInfo.lluTotalSize);
                 // get mount uri
                 GFile *root = g_mount_get_default_location(mount);
                 if (root) {
@@ -961,6 +967,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                                     }
                                     g_object_unref(fileRoot);
                                 }
+                                p_this->getDataCDRomCapacity(volumeInfo.strId.c_str(), volumeInfo.mountInfo.lluTotalSize);
                                 // get mount uri
                                 GFile *root = g_mount_get_default_location(mount);
                                 if (root) {
@@ -1135,6 +1142,8 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
         }
         g_object_unref(fileRoot);
     }
+    p_this->getDataCDRomCapacity(driveInfo.strId.empty()?volumeInfo.strId.c_str():driveInfo.strId.c_str(), 
+            mountInfo.lluTotalSize);
     // get mount uri
     if (root) {
         mountInfo.isNativeDev = g_file_is_native(root);     //判断设备是本地设备or网络设备
@@ -1342,6 +1351,8 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 }
                 g_object_unref(fileRoot);
             }
+            p_this->getDataCDRomCapacity(driveInfo.strId.empty()?volumeInfo.strId.c_str():driveInfo.strId.c_str(), 
+                mountInfo.lluTotalSize);
             // get mount uri
             GFile *root = g_mount_get_default_location(gmount);
             if (root) {
@@ -3004,5 +3015,25 @@ void MainWindow::onCheckDriveValid(FDDriveInfo driveInfo)
                 current_drive_list = NULL;
             }
         }
+    }
+}
+
+bool MainWindow::getDataCDRomCapacity(QString strDevId, quint64 &totalCapacity)
+{
+    if (!strDevId.startsWith("/dev/sr"))
+        return false;
+    quint64 uTotalCapacity = 0;
+    DataCDROM *cdrom = new DataCDROM(strDevId);
+    if (cdrom) {
+        cdrom->getCDROMInfo();
+        uTotalCapacity = cdrom->getCDROMCapacity();
+        delete cdrom;
+        cdrom = nullptr;
+    }
+    if (uTotalCapacity > 0) {
+        totalCapacity = uTotalCapacity;
+        return true;
+    } else {
+        return false;
     }
 }

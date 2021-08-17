@@ -656,7 +656,6 @@ void LunarCalendarItem::setHoverBgColor(const QColor &hoverBgColor)
 bool LunarCalendarItem::event(QEvent *event)
 {
     if(event->type()==QEvent::ToolTip){
-
         if(date.month()==11 && date.day()==9 ){
             setToolTip(tr("消防宣传日"));
         }

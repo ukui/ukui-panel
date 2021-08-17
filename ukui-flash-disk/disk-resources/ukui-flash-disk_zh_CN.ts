@@ -208,8 +208,8 @@
         <translation>修复成功！</translation>
     </message>
     <message>
-        <source>The repair failed. Please try formatting the device!</source>
-        <translation>修复失败。请尝试格式化设备！</translation>
+        <source>The repair completed. If the USB flash disk is not mounted, please try formatting the device!</source>
+        <translation>修复完成，如果U盘没有成功挂载，建议格式化!</translation>
     </message>
     <message>
         <source>Disk test</source>
