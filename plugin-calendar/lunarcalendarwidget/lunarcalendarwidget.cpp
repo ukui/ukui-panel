@@ -982,8 +982,9 @@ void LunarCalendarWidget::changeDate(const QDate &date)
     }
 
     for (int i=0;i<12;i++){
-        yearItems.at(i)->setDate(date.addYears(i));
-        monthItems.at(i)->setDate(date.addMonths(i));
+        yearItems.at(i)->setDate(clickDate.addYears(i));
+        qDebug()<<"*******************"<<"循环位："<<i<<yearItems.at(i);
+        monthItems.at(i)->setDate(clickDate.addMonths(i));
     }
 }
 
@@ -1035,49 +1036,15 @@ QDate LunarCalendarWidget::getDate() const
     return this->date;
 }
 
-QColor LunarCalendarWidget::getWeekTextColor() const
-{
-    return this->weekTextColor;
-}
-
-QColor LunarCalendarWidget::getWeekBgColor() const
-{
-    return this->weekBgColor;
-}
-
 bool LunarCalendarWidget::getShowLunar() const
 {
     return this->showLunar;
 }
 
-QString LunarCalendarWidget::getBgImage() const
-{
-    return this->bgImage;
-}
-
-LunarCalendarWidget::SelectType LunarCalendarWidget::getSelectType() const
-{
-    return this->selectType;
-}
 
 QColor LunarCalendarWidget::getBorderColor() const
 {
     return this->borderColor;
-}
-
-QColor LunarCalendarWidget::getWeekColor() const
-{
-    return this->weekColor;
-}
-
-QColor LunarCalendarWidget::getSuperColor() const
-{
-    return this->superColor;
-}
-
-QColor LunarCalendarWidget::getLunarColor() const
-{
-    return this->lunarColor;
 }
 
 QColor LunarCalendarWidget::getCurrentTextColor() const
@@ -1090,55 +1057,6 @@ QColor LunarCalendarWidget::getOtherTextColor() const
     return this->otherTextColor;
 }
 
-QColor LunarCalendarWidget::getSelectTextColor() const
-{
-    return this->selectTextColor;
-}
-
-QColor LunarCalendarWidget::getHoverTextColor() const
-{
-    return this->hoverTextColor;
-}
-
-QColor LunarCalendarWidget::getCurrentLunarColor() const
-{
-    return this->currentLunarColor;
-}
-
-QColor LunarCalendarWidget::getOtherLunarColor() const
-{
-    return this->otherLunarColor;
-}
-
-QColor LunarCalendarWidget::getSelectLunarColor() const
-{
-    return this->selectLunarColor;
-}
-
-QColor LunarCalendarWidget::getHoverLunarColor() const
-{
-    return this->hoverLunarColor;
-}
-
-QColor LunarCalendarWidget::getCurrentBgColor() const
-{
-    return this->currentBgColor;
-}
-
-QColor LunarCalendarWidget::getOtherBgColor() const
-{
-    return this->otherBgColor;
-}
-
-QColor LunarCalendarWidget::getSelectBgColor() const
-{
-    return this->selectBgColor;
-}
-
-QColor LunarCalendarWidget::getHoverBgColor() const
-{
-    return this->hoverBgColor;
-}
 
 QSize LunarCalendarWidget::sizeHint() const
 {
