@@ -1,4 +1,4 @@
-﻿
+
 #pragma execution_character_set("utf-8")
 
 #include "lunarcalendaritem.h"
@@ -656,12 +656,7 @@ void LunarCalendarItem::setHoverBgColor(const QColor &hoverBgColor)
 
 bool LunarCalendarItem::event(QEvent *event)
 {
-    event->type();
     if(event->type()==QEvent::ToolTip){
-
-//        qDebug()<<"选中日期的月份"<<date.month();
-//        qDebug()<<"选中日期的天数"<<date.day();
-
         if(date.month()==11 && date.day()==9 ){
             setToolTip(tr("消防宣传日"));
         }
@@ -675,5 +670,5 @@ bool LunarCalendarItem::event(QEvent *event)
             setToolTip(tr("抗战纪念日"));
         }
     }
-    QWidget::event(event);
+    return QWidget::event(event);
 }
