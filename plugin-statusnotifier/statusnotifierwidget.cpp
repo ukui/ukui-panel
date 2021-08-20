@@ -99,18 +99,32 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     connect(button, SIGNAL(switchButtons(StatusNotifierButton*,StatusNotifierButton*)), this, SLOT(switchButtons(StatusNotifierButton*,StatusNotifierButton*)));
 
     //dbus异步调用，同步执行获取不到托盘名字，通过定时器进行异步刷新，后期可进行优化
-    QTimer *timer=new QTimer(this);
-    connect(timer,&QTimer::timeout,this,[=](){
-        if(button){
-            if(button->hideAbleStatusNotifierButton()==NULL){
-                timer->start(100);
-            }else{
-                timer->stop();
-                resetLayout();
+//    QTimer *timer=new QTimer(this);
+//    connect(timer,&QTimer::timeout,this,[=](){
+//        if(button){
+//            if(button->hideAbleStatusNotifierButton()==NULL){
+//                timer->start(100);
+//            }else{
+//                timer->stop();
+//                resetLayout();
+//            }
+//        }
+//    });
+//    timer->start(100);
+
+    for(int i=0;i<mStatusNotifierButtons.size();i++){
+        if(mStatusNotifierButtons.at(i))
+        {
+            if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()==""){
+                continue;
             }
         }
-    });
-    timer->start(100);
+        else{
+            qDebug()<<"mStatusNotifierButtons add error   :  "<<mStatusNotifierButtons.at(i);
+        }
+    }
+
+    QTimer::singleShot(200,this,[=](){resetLayout();});
 }
 
 void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
