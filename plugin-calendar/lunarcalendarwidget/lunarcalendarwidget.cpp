@@ -339,7 +339,7 @@ void LunarCalendarWidget::initWidget()
     btnYear->setObjectName("btnYear");
     btnYear->setFocusPolicy(Qt::NoFocus);
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnYear->setText(tr("年"));
+    btnYear->setText(tr("Year"));
     btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
     connect(btnYear,&QPushButton::clicked,this,&LunarCalendarWidget::yearWidgetChange);
 
@@ -347,7 +347,7 @@ void LunarCalendarWidget::initWidget()
     btnMonth->setObjectName("btnMonth");
     btnMonth->setFocusPolicy(Qt::NoFocus);
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnMonth->setText(tr("月"));
+    btnMonth->setText(tr("Month"));
     btnMonth->setStyle(new CustomStyle_pushbutton("ukui-default"));
     connect(btnMonth,&QPushButton::clicked,this,&LunarCalendarWidget::monthWidgetChange);
 
@@ -357,7 +357,7 @@ void LunarCalendarWidget::initWidget()
     //btnToday->setFixedWidth(40);
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnToday->setText(tr("今天"));
+    btnToday->setText(tr("Today"));
 
     //年份与月份下拉框 暂不用此
     cboxYearandMonth = new QComboBox;
@@ -1165,21 +1165,21 @@ void LunarCalendarWidget::setWeekNameFormat(bool FirstDayisSun)
 //        listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
 //        listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
 //          listWeek << "Sun" << "Mon" << "Tue" << "Wed" << "Thur" << "Fri" << "Sat";
-          labWeeks.at(0)->setText((tr("周日")));
-          labWeeks.at(1)->setText((tr("周一")));
-          labWeeks.at(2)->setText((tr("周二")));
-          labWeeks.at(3)->setText((tr("周三")));
-          labWeeks.at(4)->setText((tr("周四")));
-          labWeeks.at(5)->setText((tr("周五")));
-          labWeeks.at(6)->setText((tr("周六")));
+          labWeeks.at(0)->setText((tr("Sunday")));
+          labWeeks.at(1)->setText((tr("Monday")));
+          labWeeks.at(2)->setText((tr("Tuesday")));
+          labWeeks.at(3)->setText((tr("Wednesday")));
+          labWeeks.at(4)->setText((tr("Thursday")));
+          labWeeks.at(5)->setText((tr("Friday")));
+          labWeeks.at(6)->setText((tr("Saturday")));
     } else {
-        labWeeks.at(0)->setText((tr("周一")));
-        labWeeks.at(1)->setText((tr("周二")));
-        labWeeks.at(2)->setText((tr("周三")));
-        labWeeks.at(3)->setText((tr("周四")));
-        labWeeks.at(4)->setText((tr("周五")));
-        labWeeks.at(5)->setText((tr("周六")));
-        labWeeks.at(6)->setText((tr("周日")));
+        labWeeks.at(0)->setText((tr("Monday")));
+        labWeeks.at(1)->setText((tr("Tuesday")));
+        labWeeks.at(2)->setText((tr("Wednesday")));
+        labWeeks.at(3)->setText((tr("Thursday")));
+        labWeeks.at(4)->setText((tr("Friday")));
+        labWeeks.at(5)->setText((tr("Saturday")));
+        labWeeks.at(6)->setText((tr("Sunday")));
     }
         initDate();
 }
