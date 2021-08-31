@@ -809,8 +809,19 @@ void LunarCalendarWidget::yijihandle(const QDate &date)
     {
         QJsonValue jsonValueList = jsonObject.value(QString("d%1").arg(date.toString("MMdd")));
         QJsonObject item = jsonValueList.toObject();
-        QString yiString = "     宜：" + item["y"].toString();
-        QString jiString = "     忌：" + item["j"].toString();
+        QString yiString;
+        QString jiString;
+        if (item["y"].toString() == "."){
+            yiString = "     宜：";
+        }else {
+            yiString = "     宜：" + item["y"].toString();
+        }
+        if (item["j"].toString() == "."){
+            jiString = "     忌：";
+        }else {
+            jiString = "     忌：" + item["j"].toString();
+        }
+
 
 
         yiLabel->setText(yiString);
