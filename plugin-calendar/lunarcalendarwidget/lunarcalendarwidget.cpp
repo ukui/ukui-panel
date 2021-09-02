@@ -5,6 +5,8 @@
 #include<QDebug>
 #include <QJsonParseError>
 #include <QJsonObject>
+#include <QProcess>
+
 
 #define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
 #define LUNAR_KEY                 "calendar"
@@ -173,10 +175,14 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
     timer->start(1000);
 
+    locale = QLocale::system().name();
+
     if(QGSettings::isSchemaInstalled(calendar_id)){
         setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
         setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
     }
+    //监听手动更改时间,后期找到接口进行替换
+//    QTimer::singleShot(1000,this,[=](){ListenForManualSetTime();});
 }
 
 LunarCalendarWidget::~LunarCalendarWidget()
@@ -534,7 +540,6 @@ void LunarCalendarWidget::initWidget()
     verLayoutCalendar->addWidget(labWidget);
     verLayoutCalendar->addWidget(yijiWidget);
 
-
     //绑定按钮和下拉框信号
 //    connect(btnPrevYear, SIGNAL(clicked(bool)), this, SLOT(showPreviousYear()));
 //    connect(btnNextYear, SIGNAL(clicked(bool)), this, SLOT(showNextYear()));
@@ -809,8 +814,19 @@ void LunarCalendarWidget::yijihandle(const QDate &date)
     {
         QJsonValue jsonValueList = jsonObject.value(QString("d%1").arg(date.toString("MMdd")));
         QJsonObject item = jsonValueList.toObject();
-        QString yiString = "     宜：" + item["y"].toString();
-        QString jiString = "     忌：" + item["j"].toString();
+        QString yiString;
+        QString jiString;
+        if (item["y"].toString() == "."){
+            yiString = "     宜：";
+        }else {
+            yiString = "     宜：" + item["y"].toString();
+        }
+        if (item["j"].toString() == "."){
+            jiString = "     忌：";
+        }else {
+            jiString = "     忌：" + item["j"].toString();
+        }
+
 
 
         yiLabel->setText(yiString);
@@ -1246,21 +1262,21 @@ void LunarCalendarWidget::setWeekNameFormat(bool FirstDayisSun)
 //        listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
 //        listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
 //          listWeek << "Sun" << "Mon" << "Tue" << "Wed" << "Thur" << "Fri" << "Sat";
-          labWeeks.at(0)->setText((tr("Sunday")));
-          labWeeks.at(1)->setText((tr("Monday")));
-          labWeeks.at(2)->setText((tr("Tuesday")));
-          labWeeks.at(3)->setText((tr("Wednesday")));
-          labWeeks.at(4)->setText((tr("Thursday")));
-          labWeeks.at(5)->setText((tr("Friday")));
-          labWeeks.at(6)->setText((tr("Saturday")));
+          labWeeks.at(0)->setText((tr("Sun")));
+          labWeeks.at(1)->setText((tr("Mon")));
+          labWeeks.at(2)->setText((tr("Tue")));
+          labWeeks.at(3)->setText((tr("Wed")));
+          labWeeks.at(4)->setText((tr("Thur")));
+          labWeeks.at(5)->setText((tr("Fri")));
+          labWeeks.at(6)->setText((tr("Sat")));
     } else {
-        labWeeks.at(0)->setText((tr("Monday")));
-        labWeeks.at(1)->setText((tr("Tuesday")));
-        labWeeks.at(2)->setText((tr("Wednesday")));
-        labWeeks.at(3)->setText((tr("Thursday")));
-        labWeeks.at(4)->setText((tr("Friday")));
-        labWeeks.at(5)->setText((tr("Saturday")));
-        labWeeks.at(6)->setText((tr("Sunday")));
+        labWeeks.at(0)->setText((tr("Mon")));
+        labWeeks.at(1)->setText((tr("Tue")));
+        labWeeks.at(2)->setText((tr("Wed")));
+        labWeeks.at(3)->setText((tr("Thur")));
+        labWeeks.at(4)->setText((tr("Fri")));
+        labWeeks.at(5)->setText((tr("Sat")));
+        labWeeks.at(6)->setText((tr("Sun")));
     }
         initDate();
 }
@@ -1291,6 +1307,11 @@ void LunarCalendarWidget::setWeekBgColor(const QColor &weekBgColor)
 
 void LunarCalendarWidget::setShowLunar(bool showLunar)
 {
+    if (locale == "zh_CN"){
+        showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
+    }else if (locale == "en_US"){
+        showLunar = false;
+    }
         this->showLunar = showLunar;
         initStyle();
 }
@@ -1489,3 +1510,20 @@ void statelabel::mousePressEvent(QMouseEvent *event)
     return;
 }
 
+//void LunarCalendarWidget::ListenForManualSetTime(){
+//    myProcess = new QProcess(this);
+//    QString command="journalctl -u systemd-timedated.service -f";
+//    myProcess->setReadChannel(QProcess::StandardOutput);
+//    myProcess->start(command);
+//    myProcess->startDetached(command);
+
+//    connect(myProcess,&QProcess::readyReadStandardOutput,this,[=](){
+//        widgetYearBody->hide();
+//        widgetmonthBody->hide();
+//        widgetDayBody->show();
+//        widgetWeek->show();
+//        date = QDate::currentDate();
+//        initDate();
+//        dayChanged(this->date,clickDate);
+//    });
+//}

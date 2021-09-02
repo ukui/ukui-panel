@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDate>
 #include <QMap>
+#include <lunarcalendarwidget/lunarcalendarinfo.h>
 
 #ifdef quc
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
@@ -118,6 +119,7 @@ private:
 
 
 public:
+//    QString getHoliday(int month,int day);
     bool getSelect()                const;
     bool getShowLunar()             const;
     QString getBgImage()            const;
