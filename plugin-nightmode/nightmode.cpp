@@ -92,7 +92,7 @@ void NightMode::translator(){
 void NightMode::realign()
 {
     if(gsettings->get(SHOW_NIGHTMODE).toBool() && nightmode_action == "show"){
-        mButton->setFixedSize(panel()->panelSize()*0.75,panel()->panelSize()*0.75);
+        mButton->setFixedSize(panel()->panelSize()*0.75,panel()->panelSize());
         mButton->setIconSize(QSize(panel()->iconSize()*0.75,panel()->iconSize()*0.75));
     }
     else{
