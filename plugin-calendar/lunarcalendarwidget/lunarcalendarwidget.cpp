@@ -1510,20 +1510,3 @@ void statelabel::mousePressEvent(QMouseEvent *event)
     return;
 }
 
-//void LunarCalendarWidget::ListenForManualSetTime(){
-//    myProcess = new QProcess(this);
-//    QString command="journalctl -u systemd-timedated.service -f";
-//    myProcess->setReadChannel(QProcess::StandardOutput);
-//    myProcess->start(command);
-//    myProcess->startDetached(command);
-
-//    connect(myProcess,&QProcess::readyReadStandardOutput,this,[=](){
-//        widgetYearBody->hide();
-//        widgetmonthBody->hide();
-//        widgetDayBody->show();
-//        widgetWeek->show();
-//        date = QDate::currentDate();
-//        initDate();
-//        dayChanged(this->date,clickDate);
-//    });
-//}

@@ -329,8 +329,6 @@ public Q_SLOTS:
     //设置悬停日期背景颜色
     void setHoverBgColor(const QColor &hoverBgColor);
 
-    void ListenForManualSetTime();
-
 Q_SIGNALS:
     void clicked(const QDate &date);
     void selectionChanged();
