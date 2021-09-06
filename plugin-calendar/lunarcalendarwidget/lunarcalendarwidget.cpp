@@ -877,6 +877,7 @@ void LunarCalendarWidget::clicked(const QDate &date, const LunarCalendarItem::Da
 void LunarCalendarWidget::updateYearClicked(const QDate &date, const LunarCalendarYearItem::DayType &dayType)
 {
     //通过传来的日期，设置当前年月份
+    this->date = date;
     widgetYearBody->hide();
     widgetWeek->show();
     widgetDayBody->show();
@@ -893,6 +894,7 @@ void LunarCalendarWidget::updateYearClicked(const QDate &date, const LunarCalend
 void LunarCalendarWidget::updateMonthClicked(const QDate &date, const LunarCalendarMonthItem::DayType &dayType)
 {
     //通过传来的日期，设置当前年月份
+    this->date = date;
     widgetYearBody->hide();
     widgetWeek->show();
     widgetDayBody->show();

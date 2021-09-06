@@ -4,17 +4,17 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../ukuicalendar.cpp" line="593"/>
+        <location filename="../ukuicalendar.cpp" line="601"/>
         <source>Time and Date</source>
         <translation>时间与日期</translation>
     </message>
     <message>
-        <location filename="../ukuicalendar.cpp" line="642"/>
+        <location filename="../ukuicalendar.cpp" line="650"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../ukuicalendar.cpp" line="646"/>
+        <location filename="../ukuicalendar.cpp" line="654"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>
@@ -22,22 +22,22 @@
 <context>
     <name>LunarCalendarItem</name>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="754"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="685"/>
         <source>消防宣传日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="757"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="688"/>
         <source>志愿者服务日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="760"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="691"/>
         <source>全国爱眼日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="763"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="694"/>
         <source>抗战纪念日</source>
         <translation type="unfinished"></translation>
     </message>
@@ -66,44 +66,44 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1265"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1279"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1267"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1281"/>
         <source>Sun</source>
         <translation type="unfinished">周日</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1266"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1273"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1268"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1275"/>
         <source>Mon</source>
         <translation type="unfinished">周一</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1267"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1274"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1269"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1276"/>
         <source>Tue</source>
         <translation type="unfinished">周二</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1268"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1275"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1270"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1277"/>
         <source>Wed</source>
         <translation type="unfinished">周三</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1269"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1276"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1271"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1278"/>
         <source>Thur</source>
         <translation type="unfinished">周四</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1270"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1277"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1272"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1279"/>
         <source>Fri</source>
         <translation type="unfinished">周五</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1271"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1278"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1273"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1280"/>
         <source>Sat</source>
         <translation type="unfinished">周六</translation>
     </message>
