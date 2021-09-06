@@ -155,37 +155,37 @@
 <context>
     <name>UKUITaskWidget</name>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="355"/>
+        <location filename="../ukuitaskwidget.cpp" line="363"/>
         <source>Widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="358"/>
+        <location filename="../ukuitaskwidget.cpp" line="366"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="359"/>
+        <location filename="../ukuitaskwidget.cpp" line="367"/>
         <source>restore</source>
         <translation>恢复</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="361"/>
+        <location filename="../ukuitaskwidget.cpp" line="369"/>
         <source>maximaze</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="363"/>
+        <location filename="../ukuitaskwidget.cpp" line="371"/>
         <source>minimize</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="364"/>
+        <location filename="../ukuitaskwidget.cpp" line="372"/>
         <source>above</source>
         <translation>置顶</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="365"/>
+        <location filename="../ukuitaskwidget.cpp" line="373"/>
         <source>clear</source>
         <translation>取消置顶</translation>
     </message>
