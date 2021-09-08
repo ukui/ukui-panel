@@ -39,7 +39,7 @@ add_executable(ukui-calendar
     lunarcalendarwidget/lunarcalendaryearitem.cpp
     lunarcalendarwidget/main.cpp
     lunarcalendarwidget/picturetowhite.cpp
-    lunarcalendarwidget/statelabel.cpp
+#    lunarcalendarwidget/statelabel.cpp
     lunarcalendarwidget/customstylePushbutton.h
     lunarcalendarwidget/frmlunarcalendarwidget.h
     lunarcalendarwidget/lunarcalendarinfo.h
@@ -47,7 +47,7 @@ add_executable(ukui-calendar
     lunarcalendarwidget/lunarcalendarmonthitem.h
     lunarcalendarwidget/lunarcalendarwidget.h
     lunarcalendarwidget/lunarcalendaryearitem.h
-    lunarcalendarwidget/statelabel.h
+#    lunarcalendarwidget/statelabel.h
     lunarcalendarwidget/picturetowhite.h
 )
 
