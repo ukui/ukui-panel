@@ -146,16 +146,27 @@ void RepairDialogBox::initUI()
     mainLayout->setContentsMargins(0,0,0,0);
     QHBoxLayout* btnGroup = new QHBoxLayout;
 
+    g_autofree gchar* devName = mDrive ? DeviceOperation::getDriveLabel (mDrive) : DeviceOperation::getDriveLabel (mVolume);
+
     QLabel* label = new QLabel;
     label->setBackgroundRole(QPalette::Base);
     label->setWordWrap(true);
     label->setTextFormat(Qt::RichText);
-    label->setText(tr(""
-                      "<h4>The system could not recognize the disk contents</h4>"
-                      "<p>Check that the disk and drive are properly connected, "
-                      "make sure the disk is not a read-only disk, and try again. "
-                      "For more information, search for help on read-only files and"
-                      " how to change read-only files.</p>"));
+    if (devName) {
+        label->setText(tr(""
+                          "<h4>The system could not recognize the disk contents</h4>"
+                          "<p>Check that the disk/drive '%1' is properly connected,"
+                          "make sure the disk is not a read-only disk, and try again."
+                          "For more information, search for help on read-only files and"
+                          "how to change read-only files.</p>").arg (devName));
+    } else {
+        label->setText(tr(""
+                          "<h4>The system could not recognize the disk contents</h4>"
+                          "<p>Check that the disk/drive is properly connected,"
+                          "make sure the disk is not a read-only disk, and try again."
+                          "For more information, search for help on read-only files and"
+                          "how to change read-only files.</p>"));
+    }
 //    QScrollArea* scrollArea = new QScrollArea;
 //    scrollArea->setContentsMargins(0, 0, 0, 0);
 //    scrollArea->setBackgroundRole(QPalette::Base);
@@ -447,8 +458,9 @@ void FormateDialog::initUI()
     fsLabel->setText(tr("Filesystem:"));
     mFSCombox = new QComboBox;
     mFSCombox->addItem("ntfs");
-    mFSCombox->addItem("vfat");
     mFSCombox->addItem("ext4");
+    mFSCombox->addItem("exfat");
+    mFSCombox->addItem("vfat/fat32");
     mainLayout->addWidget(fsLabel, 2, 1, 1, 2);
     mainLayout->addWidget(mFSCombox, 2, 3, 1, 6);
 
@@ -509,6 +521,7 @@ void FormateDialog::initUI()
         mThread->start();
         QString ctype = mFSCombox->currentText();
         QString type = ctype.isEmpty() ? "vfat" : ctype;
+        type = ("vfat/fat32" == type) ? "vfat" : type;
         QString dlabel = mNameEdit->text();
         QString label = dlabel.isEmpty() ? mDeviceOperation->udiskLabel() : dlabel;
 
