@@ -16,6 +16,8 @@ public:
     explicit frmLunarCalendarWidget(QWidget *parent = 0);
     ~frmLunarCalendarWidget();
 
+    void set_window_position();
+
     bool status;
 
 protected:

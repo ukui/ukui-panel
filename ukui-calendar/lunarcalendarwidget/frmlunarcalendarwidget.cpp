@@ -1,6 +1,8 @@
 ﻿#include "frmlunarcalendarwidget.h"
 #include "ui_frmlunarcalendarwidget.h"
 #include <QPainter>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 #define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
 #define TRANSPARENCY_KEY            "transparency"
@@ -12,15 +14,21 @@ frmLunarCalendarWidget::frmLunarCalendarWidget(QWidget *parent) : QWidget(parent
 {
     installEventFilter(this);
     ui->setupUi(this);
+    this->hide();
     connect(ui->lunarCalendarWidget,&LunarCalendarWidget::yijiChangeUp,this,&frmLunarCalendarWidget::changeUpSize);
     connect(ui->lunarCalendarWidget,&LunarCalendarWidget::yijiChangeDown,this,&frmLunarCalendarWidget::changeDownSize);
+    connect(ui->lunarCalendarWidget,&LunarCalendarWidget::yijiChangeUp,this,&frmLunarCalendarWidget::set_window_position);
+    connect(ui->lunarCalendarWidget,&LunarCalendarWidget::yijiChangeDown,this,&frmLunarCalendarWidget::set_window_position);
+
     this->initForm();
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);//去掉标题栏
-//    this->setWindowFlags(Qt::Popup);
+//    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);//去掉标题栏
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setProperty("useSystemStyleBlur", true);
 
     this->setFixedSize(440, 600);
+    set_window_position();
+    
 
     const QByteArray transparency_id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(transparency_id)){
@@ -120,7 +128,7 @@ bool frmLunarCalendarWidget::eventFilter(QObject *obj, QEvent *event)
                QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
                if (mouseEvent->button() == Qt::LeftButton)
                {
-//                   this->hide();
+                   this->hide();
 //                   status=ST_HIDE;
                    return true;
                }
@@ -148,3 +156,45 @@ bool frmLunarCalendarWidget::eventFilter(QObject *obj, QEvent *event)
     }
     return false;
 }
+
+void frmLunarCalendarWidget::set_window_position(){
+    QDBusInterface iface("org.ukui.panel",
+                         "/panel/position",
+                         "org.ukui.panel", QDBusConnection::sessionBus());
+    QDBusReply < QVariantList > reply =iface.call("GetPrimaryScreenGeometry");
+    qDebug() << reply.value().at(2).toInt();
+    qDebug() << reply.value().at(3).toInt();
+    qDebug() <<this->width();
+    qDebug() <<this->height();
+
+    switch (reply.value().at(4).toInt()) {
+    case 1:
+        this->setGeometry(reply.value().at(0).toInt() +
+                          reply.value().at(2).toInt() - this->width() -
+                          4, reply.value().at(1).toInt() + 4,
+                          this->width(), this->height());
+        break;
+    case 2:
+        this->setGeometry(reply.value().at(0).toInt() + 4,
+                          //position_list.at(1).toInt()+reply.value().at(3).toInt()-this->height()-MARGIN,
+                          reply.value().at(3).toInt()- this->height() - 4,
+                          this->width(), this->height());
+        break;
+    case 3:
+        this->setGeometry(reply.value().at(2).toInt() - this->width() - 4,
+                          reply.value().at(3).toInt()-this->height()- 4,
+                          this->width(), this->height());
+        break;
+    default:
+        this->setGeometry(reply.value().at(0).toInt() +
+                          reply.value().at(2).toInt() - this->width() -
+                          4,
+                          reply.value().at(1).toInt() +
+                          reply.value().at(3).toInt() - this->height() -
+                          4, this->width(), this->height());
+
+        break;
+    }
+
+}
+

@@ -6,6 +6,7 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 
+
 #define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
 #define LUNAR_KEY                 "calendar"
 #define FIRST_DAY_KEY "firstday"
@@ -339,7 +340,9 @@ void LunarCalendarWidget::initWidget()
     btnYear->setObjectName("btnYear");
     btnYear->setFocusPolicy(Qt::NoFocus);
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnYear->setText(tr("Year"));
+    QTimer::singleShot(0,this,[=]{
+        btnYear->setText(tr("Year"));
+    });
     btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
     connect(btnYear,&QPushButton::clicked,this,&LunarCalendarWidget::yearWidgetChange);
 
@@ -347,7 +350,9 @@ void LunarCalendarWidget::initWidget()
     btnMonth->setObjectName("btnMonth");
     btnMonth->setFocusPolicy(Qt::NoFocus);
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnMonth->setText(tr("Month"));
+    QTimer::singleShot(0,this,[=]{
+        btnMonth->setText(tr("Month"));
+    });
     btnMonth->setStyle(new CustomStyle_pushbutton("ukui-default"));
     connect(btnMonth,&QPushButton::clicked,this,&LunarCalendarWidget::monthWidgetChange);
 
@@ -357,7 +362,9 @@ void LunarCalendarWidget::initWidget()
     //btnToday->setFixedWidth(40);
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnToday->setText(tr("Today"));
+    QTimer::singleShot(0,this,[=]{
+        btnToday->setText(tr("Today"));
+    });
 
     //年份与月份下拉框 暂不用此
     cboxYearandMonth = new QComboBox;
@@ -522,6 +529,9 @@ void LunarCalendarWidget::initWidget()
     verLayoutCalendar->setMargin(0);
     verLayoutCalendar->setSpacing(0);
     verLayoutCalendar->addWidget(widgetTime);
+//    QTimer::singleShot(0,this,[=](){
+
+//    });
     verLayoutCalendar->addItem(new QSpacerItem(10,10));
     verLayoutCalendar->addWidget(lineUp);
     verLayoutCalendar->addItem(new QSpacerItem(10,10));
@@ -809,9 +819,18 @@ void LunarCalendarWidget::yijihandle(const QDate &date)
     {
         QJsonValue jsonValueList = jsonObject.value(QString("d%1").arg(date.toString("MMdd")));
         QJsonObject item = jsonValueList.toObject();
-        QString yiString = "     宜：" + item["y"].toString();
-        QString jiString = "     忌：" + item["j"].toString();
-
+        QString yiString;
+        QString jiString;
+        if (item["y"].toString() == "."){
+            yiString = "     宜：";
+        }else {
+            yiString = "     宜：" + item["y"].toString();
+        }
+        if (item["j"].toString() == "."){
+            jiString = "     忌：";
+        }else {
+            jiString = "     忌：" + item["j"].toString();
+        }
 
         yiLabel->setText(yiString);
         jiLabel->setText(jiString);
@@ -1246,6 +1265,7 @@ void LunarCalendarWidget::setWeekNameFormat(bool FirstDayisSun)
 //        listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
 //        listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
 //          listWeek << "Sun" << "Mon" << "Tue" << "Wed" << "Thur" << "Fri" << "Sat";
+        QTimer::singleShot(0,this,[=]{
           labWeeks.at(0)->setText((tr("Sunday")));
           labWeeks.at(1)->setText((tr("Monday")));
           labWeeks.at(2)->setText((tr("Tuesday")));
@@ -1253,7 +1273,9 @@ void LunarCalendarWidget::setWeekNameFormat(bool FirstDayisSun)
           labWeeks.at(4)->setText((tr("Thursday")));
           labWeeks.at(5)->setText((tr("Friday")));
           labWeeks.at(6)->setText((tr("Saturday")));
+        });
     } else {
+        QTimer::singleShot(0,this,[=]{
         labWeeks.at(0)->setText((tr("Monday")));
         labWeeks.at(1)->setText((tr("Tuesday")));
         labWeeks.at(2)->setText((tr("Wednesday")));
@@ -1261,6 +1283,7 @@ void LunarCalendarWidget::setWeekNameFormat(bool FirstDayisSun)
         labWeeks.at(4)->setText((tr("Friday")));
         labWeeks.at(5)->setText((tr("Saturday")));
         labWeeks.at(6)->setText((tr("Sunday")));
+        });
     }
         initDate();
 }
@@ -1488,4 +1511,3 @@ void statelabel::mousePressEvent(QMouseEvent *event)
     }
     return;
 }
-
