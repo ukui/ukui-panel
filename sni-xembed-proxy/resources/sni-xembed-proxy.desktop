@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=sni-xembed-proxy
+Name[zh_CN]=x转sni服务
+Comment=sni-xembed-proxy
+Comment[zh_CN]=x转sni服务
+Exec=sni-xembed-proxy
+Terminal=false
+Type=Application
+OnlyShowIn=UKUI
+NoDisplay=true
+X-UKUI-AutoRestart=true
+X-UKUI-Autostart-Phase=Initialization
+

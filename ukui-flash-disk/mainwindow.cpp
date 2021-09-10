@@ -660,24 +660,24 @@ void MainWindow::onConvertShowWindow(QString strDriveId, QString strMountUri)
     if (std::find(m_vtDeviveId.begin(), m_vtDeviveId.end(), strDeviceId) == m_vtDeviveId.end()) {
         #if IFDISTINCT_DEVICON
         if (strDriveId.startsWith("/dev/sr")) {
-            onRequestSendDesktopNotify(tr("Please do not pull out the CDROM when reading or writing"), 
+            onRequestSendDesktopNotify(tr("Please do not pull out the CDROM when reading or writing"),
                                         QString("media-optical"));
         } else if (strDriveId.startsWith("/dev/mmcblk")) {
-            onRequestSendDesktopNotify(tr("Please do not pull out the SD Card when reading or writing"), 
+            onRequestSendDesktopNotify(tr("Please do not pull out the SD Card when reading or writing"),
                                         QString("media-memory-sd"));
         } else {
-            onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"), 
+            onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"),
                                         QString("drive-removable-media-usb"));
         }
         #else
         if (strDriveId.startsWith("/dev/sr")) {
-            onRequestSendDesktopNotify(tr("Please do not pull out the CDROM when reading or writing"), 
+            onRequestSendDesktopNotify(tr("Please do not pull out the CDROM when reading or writing"),
                                         QString("media-removable-symbolic"));
         } else if (strDriveId.startsWith("/dev/mmcblk")) {
-            onRequestSendDesktopNotify(tr("Please do not pull out the SD Card when reading or writing"), 
+            onRequestSendDesktopNotify(tr("Please do not pull out the SD Card when reading or writing"),
                                         QString("media-removable-symbolic"));
         } else {
-            onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"), 
+            onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"),
                                         QString("drive-removable-media-usb"));
         }
         #endif
@@ -920,7 +920,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
 
-            if(!p_this->isSystemRootDev(driveInfo.strId.c_str()) && 
+            if(!p_this->isSystemRootDev(driveInfo.strId.c_str()) &&
                 (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
                 if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
                     || g_str_has_prefix(devPath,"/dev/mmcblk")) {
@@ -1142,7 +1142,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
         }
         g_object_unref(fileRoot);
     }
-    p_this->getDataCDRomCapacity(driveInfo.strId.empty()?volumeInfo.strId.c_str():driveInfo.strId.c_str(), 
+    p_this->getDataCDRomCapacity(driveInfo.strId.empty()?volumeInfo.strId.c_str():driveInfo.strId.c_str(),
             mountInfo.lluTotalSize);
     // get mount uri
     if (root) {
@@ -1172,7 +1172,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     }
     bool isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(mountInfo));
     if (!driveInfo.strId.empty()) {
-        if (p_this->isSystemRootDev(driveInfo.strId.c_str()) || 
+        if (p_this->isSystemRootDev(driveInfo.strId.c_str()) ||
             (!driveInfo.isCanEject && !driveInfo.isCanStop && !driveInfo.isRemovable)) {
             isValidMount = false;
         }
@@ -1351,7 +1351,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 }
                 g_object_unref(fileRoot);
             }
-            p_this->getDataCDRomCapacity(driveInfo.strId.empty()?volumeInfo.strId.c_str():driveInfo.strId.c_str(), 
+            p_this->getDataCDRomCapacity(driveInfo.strId.empty()?volumeInfo.strId.c_str():driveInfo.strId.c_str(),
                 mountInfo.lluTotalSize);
             // get mount uri
             GFile *root = g_mount_get_default_location(gmount);
@@ -1377,7 +1377,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 g_object_unref(root);
             }
             g_object_unref(gmount);
-        }        
+        }
         if (bMountSuccess) {
             mountInfo.isNewInsert = true;
             bool isNewMount = !(p_this->m_dataFlashDisk->isMountInfoExist(mountInfo));
@@ -1395,7 +1395,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 p_this->m_dataFlashDisk->addMountInfo(mountInfo);
             }
             if (isNewMount) {
-                qInfo()<<"sig has emited";
+                qInfo()<<"sig has emitted";
                 string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
                 Q_EMIT p_this->convertShowWindow(strDevId.c_str(), mountInfo.strUri.c_str());     //emit a signal to trigger the MainMainShow slot
             }
@@ -2298,7 +2298,7 @@ void MainWindow::getTransparentData()
 
     QStringList keys = m_transparency_gsettings->keys();
     if (keys.contains("transparency"))
-    { 
+    {
         m_transparency = m_transparency_gsettings->get("transparency").toDouble();
     }
 }
@@ -2331,7 +2331,7 @@ void MainWindow::onEjectVolumeForce(GVolume *v)
     g_volume_eject_with_operation(v, G_MOUNT_UNMOUNT_FORCE, nullptr, nullptr, GAsyncReadyCallback(&MainWindow::frobnitz_force_result_func), this);
 }
 
-void MainWindow::AsyncUnmount(QString strMountRoot,MainWindow *p_this) 
+void MainWindow::AsyncUnmount(QString strMountRoot,MainWindow *p_this)
 {
     qInfo()<<"dataPath:"<<strMountRoot;
     QProcess p;
@@ -2525,6 +2525,8 @@ bool MainWindow::onDeviceErrored(GDrive* drive)
 
     g_return_val_if_fail(device && strstr(device, "/dev/sd"), false);
 
+    g_return_val_if_fail (DeviceOperation::getDriveSize(drive) > 0, false);
+
     GList* volumes = g_drive_get_volumes(drive);
     if (!volumes && !mRepairDialog.contains(device)) {
         RepairDialogBox* b = new RepairDialogBox(drive);
@@ -2539,7 +2541,7 @@ bool MainWindow::onDeviceErrored(GDrive* drive)
         for (auto v = volumes; nullptr != v; v = v->next) {
             GVolume* vv = G_VOLUME(v->data);
             g_autofree char* volumeName = g_volume_get_identifier (vv, G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
-            GMount* m = g_volume_get_mount(vv);
+            g_autoptr(GMount) m = g_volume_get_mount(vv);
             if (!m) {
                 if (volumeName && !mRepairDialog.contains(volumeName)) {
                     RepairDialogBox* b = new RepairDialogBox(vv);
@@ -2552,8 +2554,6 @@ bool MainWindow::onDeviceErrored(GDrive* drive)
                     mRepairDialog[volumeName] = b;
                     b->show();
                 }
-            } else {
-                g_object_unref(m);
             }
         }
         g_list_free_full(volumes, g_object_unref);
@@ -2982,9 +2982,9 @@ void MainWindow::onCheckDriveValid(FDDriveInfo driveInfo)
     if (driveInfo.strId.empty())
         return;
     qInfo()<<"driveInfo.strId:"<<driveInfo.strId.c_str();
-    if(!this->isSystemRootDev(driveInfo.strId.c_str()) && 
+    if(!this->isSystemRootDev(driveInfo.strId.c_str()) &&
         (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
-        if(g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sr") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/bus") 
+        if(g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sr") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/bus")
             || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sd") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/mmcblk")) {
             GList *lDrive = NULL;
             GList *current_drive_list = NULL;

@@ -679,7 +679,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
             if (mHidden)
                 rect.moveTop(currentScreen.bottom() - PANEL_HIDE_SIZE + 1);
             else
-                rect.moveBottom(currentScreen.bottom());
+                rect.moveBottom(currentScreen.bottom() +1 );
         }
         qDebug()<<"ukui-panel Rect is :"<<rect;
     }
