@@ -7,10 +7,6 @@ Server::Server(QObject *parent) :
 {
 }
 
-Server::~Server()
-{
-
-}
 
 QString Server::WIDToDesktop(int id)
 {

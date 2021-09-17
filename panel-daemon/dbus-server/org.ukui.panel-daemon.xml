@@ -1,6 +1,6 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-  <interface name="org.ukui.panel">
+  <interface name="org.ukui.panel.deamon">
     <method name="DesktopToWID">
       <arg type="i" direction="out"/>
       <arg name="desktop" type="s" direction="in"/>
