@@ -1,7 +1,7 @@
 #include "watchermanager.h"
 #include <QtDBus>
-#include "convert-desktop-windowid/dbus-server/server.h"
-#include "convert-desktop-windowid/dbus-server/dbus-adaptor.h"
+#include "dbus-server/server.h"
+#include "dbus-server/dbus-adaptor.h"
 
 WatcherManager::WatcherManager(QObject *parent) : QObject(parent)
 {

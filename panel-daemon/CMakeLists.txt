@@ -35,10 +35,10 @@ add_executable(panel-daemon
     filewatcher/filewatcher.h
     convert-desktop-windowid/convertdesktoptowinid.cpp
     convert-desktop-windowid/convertdesktoptowinid.h
-    convert-desktop-windowid/dbus-server/server.cpp
-    convert-desktop-windowid/dbus-server/server.h
-    convert-desktop-windowid/dbus-server/dbus-adaptor.cpp
-    convert-desktop-windowid/dbus-server/dbus-adaptor.h
+    dbus-server/server.cpp
+    dbus-server/server.h
+    dbus-server/dbus-adaptor.cpp
+    dbus-server/dbus-adaptor.h
     datewather/datewatcher.cpp
     datewather/datewatcher.h
     watchermanager.cpp
