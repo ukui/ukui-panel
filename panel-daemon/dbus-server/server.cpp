@@ -17,3 +17,13 @@ int Server::DesktopToWID(QString desktop)
 {
 
 }
+
+//QString Server::DesktopFileDelete()
+//{
+
+//}
+
+//QString Server::TimeChanged()
+//{
+
+//}
