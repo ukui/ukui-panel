@@ -8,10 +8,10 @@
 class Server : public QObject
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface","org.ukui.panel")
+    Q_CLASSINFO("D-Bus Interface","org.ukui.panel-deamon")
 public:
     explicit Server(QObject *parent = 0);
-
+    ~Server();
 
 public Q_SLOTS:
 	int DesktopToWID(QString desktop);
