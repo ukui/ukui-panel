@@ -5,13 +5,13 @@
     <name>BaseDialog</name>
     <message>
         <source>Disk test</source>
-        <translation type="unfinished">U盘检测</translation>
+        <translation>U盘检测</translation>
     </message>
 </context>
 <context>
     <name>DeviceOperation</name>
     <message>
-        <source>unknow</source>
+        <source>unknown</source>
         <translation>未知</translation>
     </message>
 </context>
@@ -178,7 +178,7 @@
     </message>
     <message>
         <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk and drive are properly connected, make sure the disk is not a read-only disk, and try again. For more information, search for help on read-only files and how to change read-only files.&lt;/p&gt;</source>
-        <translation>&lt;h4&gt;系统无法识别U盘内容&lt;/h4&gt;&lt;p&gt;检查磁盘和驱动器是否正确连接，确保磁盘不是只读磁盘，然后重试。有关更多信息，请搜索有关只读文件和如何更改只读文件的帮助。&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;h4&gt;系统无法识别U盘内容&lt;/h4&gt;&lt;p&gt;检查磁盘和驱动器是否正确连接，确保磁盘不是只读磁盘，然后重试。有关更多信息，请搜索有关只读文件和如何更改只读文件的帮助。&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Format disk</source>
@@ -187,6 +187,14 @@
     <message>
         <source>Repair</source>
         <translation>修复</translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk/drive is properly connected,make sure the disk is not a read-only disk, and try again.For more information, search for help on read-only files andhow to change read-only files.&lt;/p&gt;</source>
+        <translation>&lt;h4&gt;系统无法识别移动设备内容&lt;/h4&gt;&lt;p&gt;检查磁盘/驱动器是否正确连接，确保磁盘不是只读磁盘，然后重试。有关更多信息，请搜索有关只读文件和如何更改只读文件的帮助。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk/drive &apos;%1&apos; is properly connected,make sure the disk is not a read-only disk, and try again.For more information, search for help on read-only files andhow to change read-only files.&lt;/p&gt;</source>
+        <translation>&lt;h4&gt;系统无法识别移动设备内容&lt;/h4&gt;&lt;p&gt;检查磁盘/驱动器 &quot;%1&quot; 是否正确连接，确保磁盘不是只读磁盘，然后重试。有关更多信息，请搜索有关只读文件和如何更改只读文件的帮助。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -217,7 +225,7 @@
     </message>
     <message>
         <source>Disk repair</source>
-        <translation type="unfinished">U盘修复</translation>
+        <translation>U盘修复</translation>
     </message>
 </context>
 <context>

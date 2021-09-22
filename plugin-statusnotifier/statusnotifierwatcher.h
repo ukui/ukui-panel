@@ -36,6 +36,7 @@
 #include <QDBusServiceWatcher>
 
 #include "dbustypes.h"
+#include "statusnotifierwatcher_interface.h"
 
 class StatusNotifierWatcher : public QObject, protected QDBusContext
 {
@@ -52,6 +53,7 @@ public:
     bool isStatusNotifierHostRegistered() { return mHosts.count() > 0; }
     int protocolVersion() const { return 0; }
     QStringList RegisteredStatusNotifierItems() const { return mServices; }
+    void newItem(const QString &service);
 
 signals:
     Q_SCRIPTABLE void StatusNotifierItemRegistered(const QString &service);
@@ -59,15 +61,31 @@ signals:
     Q_SCRIPTABLE void StatusNotifierHostRegistered();
 
 public slots:
-    Q_SCRIPTABLE void RegisterStatusNotifierItem(const QString &serviceOrPath);
-    Q_SCRIPTABLE void RegisterStatusNotifierHost(const QString &service);
+//    Q_SCRIPTABLE void RegisterStatusNotifierItem(const QString &serviceOrPath);
+//    Q_SCRIPTABLE void RegisterStatusNotifierHost(const QString &service);
 
     void serviceUnregistered(const QString &service);
+
+private:
+    void init();
 
 private:
     QStringList mServices;
     QStringList mHosts;
     QDBusServiceWatcher *mWatcher;
+
+    QString m_serviceName;
+    org::kde::StatusNotifierWatcher *m_statusNotifierWatcher;
+
+protected Q_SLOTS:
+    void serviceChange(const QString& name,
+                       const QString& oldOwner,
+                       const QString& newOwner);
+    void registerWatcher(const QString& service);
+    void unregisterWatcher(const QString& service);
+    void serviceRegistered(const QString &service);
+//    void serviceUnregistered(const QString &service);
+
 };
 
 #endif // STATUSNOTIFIERWATCHER_H

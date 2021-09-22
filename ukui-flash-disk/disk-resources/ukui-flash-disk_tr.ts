@@ -11,7 +11,7 @@
 <context>
     <name>DeviceOperation</name>
     <message>
-        <source>unknow</source>
+        <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -169,15 +169,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk and drive are properly connected, make sure the disk is not a read-only disk, and try again. For more information, search for help on read-only files and how to change read-only files.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Format disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Repair</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk/drive is properly connected,make sure the disk is not a read-only disk, and try again.For more information, search for help on read-only files andhow to change read-only files.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk/drive &apos;%1&apos; is properly connected,make sure the disk is not a read-only disk, and try again.For more information, search for help on read-only files andhow to change read-only files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
