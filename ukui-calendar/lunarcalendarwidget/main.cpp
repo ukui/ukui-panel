@@ -6,7 +6,9 @@
 #include <QTranslator>
 #include <QDebug>
 #include <QTimer>
+#include <KWindowEffects>
 
+#include "xatom-helper.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -28,7 +30,19 @@ int main(int argc, char *argv[])
 
     frmLunarCalendarWidget w;
     w.setWindowTitle("自定义农历控件");
-    w.show();
+
+
+
+    KWindowEffects::enableBlurBehind(w.winId(),true);
+
+    // 添加窗管协议
+    MotifWmHints hints;
+    hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
+    hints.functions = MWM_FUNC_ALL;
+    hints.decorations = MWM_DECOR_BORDER;
+    XAtomHelper::getInstance()->setWindowMotifHint(w.winId(), hints);
+
+
     QApplication app(argc, argv);
     QString locale = QLocale::system().name();
         QTranslator translator;

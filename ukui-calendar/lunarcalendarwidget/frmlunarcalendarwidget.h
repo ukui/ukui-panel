@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QGSettings>
-
+#include "calendardbus.h"
 namespace Ui {
 class frmLunarCalendarWidget;
 }
@@ -22,11 +22,13 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *event);
 
 private:
     Ui::frmLunarCalendarWidget *ui;
     QGSettings *transparency_gsettings;
     QGSettings *calendar_gsettings;
+    CalendarDBus *mCalendarDBus;
     bool eventFilter(QObject *, QEvent *);
 
 private Q_SLOTS:

@@ -34,6 +34,7 @@
 #include <QMenu>
 #include <QProcess>
 #include <QTranslator>
+#include <QtDBus/QtDBus>
 
 #include "../panel/iukuipanelplugin.h"
 #include "ukuiwebviewdialog.h"
@@ -103,12 +104,17 @@ private:
 
     QProcess *mProcess;
     QTranslator *m_translator;
+
 private:
     void translator();
 
 };
 
 
+
+#define SERVICE "org.ukui.panel.calendar"
+#define PATH "/calendarWidget"
+#define INTERFACE "org.ukui.panel.calendar"
 class CalendarActiveLabel : public QLabel
 {
 Q_OBJECT
@@ -132,6 +138,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
 private:
     frmLunarCalendarWidget *w;
+    QDBusInterface *mInterface;
 
 
 Q_SIGNALS:

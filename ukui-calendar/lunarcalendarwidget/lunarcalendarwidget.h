@@ -205,6 +205,7 @@ private:
 
 protected :
     void wheelEvent(QWheelEvent *event);
+    bool eventFilter(QObject *, QEvent *);
 
 private Q_SLOTS:
     void initWidget();

@@ -183,7 +183,19 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
 LunarCalendarWidget::~LunarCalendarWidget()
 {
 }
-
+bool LunarCalendarWidget::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::ActivationChange)
+        {
+            qDebug()<<"event->type() == QEvent::ActivationChange";
+            if(QApplication::activeWindow() != this)
+            {
+                qDebug()<<"this->hide()";
+                this->hide();
+            }
+        }
+        return QWidget::event(event);
+}
 /*
  * @brief 设置日历的背景及文字颜色
  * 参数：

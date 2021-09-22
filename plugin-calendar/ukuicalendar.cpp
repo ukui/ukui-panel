@@ -585,7 +585,8 @@ void IndicatorCalendar::ListenForManualSettingTime(){
 
 CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QLabel(parent),
-    mPlugin(plugin)
+    mPlugin(plugin),
+    mInterface(new QDBusInterface(SERVICE,PATH,INTERFACE,QDBusConnection::sessionBus(),this))
 {
     w = new frmLunarCalendarWidget();
     connect(w,&frmLunarCalendarWidget::yijiChangeDown, this, [=] (){
@@ -603,18 +604,19 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
 
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
-    if (Qt::LeftButton == event->button()){
-        if(calendar_version == "old"){
-            Q_EMIT pressTimeText();
-        } else {
-            //点击时间标签日历隐藏，特殊处理
-            if(w->isHidden()){
-                changeWidowpos();
-            }else{
-                w->hide();
-            }
-        }
-    }
+//    if (Qt::LeftButton == event->button()){
+//        if(calendar_version == "old"){
+//            Q_EMIT pressTimeText();
+//        } else {
+//            //点击时间标签日历隐藏，特殊处理
+//            if(w->isHidden()){
+//                changeWidowpos();
+//            }else{
+//                w->hide();
+//            }
+//        }
+        mInterface->call("ShowCalendar");
+//    }
 }
 
 void CalendarActiveLabel::changeWidowpos()
