@@ -17,11 +17,16 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
+find_package(Qt5DBus ${REQUIRED_QT_VERSION} REQUIRED)
 find_package(Qt5LinguistTools ${REQUIRED_QT_VERSION} REQUIRED)
-find_package(Qt5DBus REQUIRED)
-find_package(PkgConfig REQUIRED)
-find_package(KF5WindowSystem REQUIRED)
+find_package(Qt5Widgets ${REQUIRED_QT_VERSION} REQUIRED)
+find_package(Qt5X11Extras ${REQUIRED_QT_VERSION} REQUIRED)
+find_package(Qt5Xml ${REQUIRED_QT_VERSION} REQUIRED)
+find_package(KF5WindowSystem ${KF5_MINIMUM_VERSION} REQUIRED)
+find_package(Qt5 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Widgets DBus X11Extras LinguistTools)
+find_package(Qt5Xdg ${QTXDG_MINIMUM_VERSION} REQUIRED)
+find_package(X11 REQUIRED)
+find_package(Qt5LinguistTools)
 
 pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0 udisks2)
 pkg_check_modules(QGS REQUIRED gsettings-qt)
@@ -48,13 +53,17 @@ add_executable(ukui-calendar
     lunarcalendarwidget/lunarcalendarwidget.h
     lunarcalendarwidget/lunarcalendaryearitem.h
     lunarcalendarwidget/picturetowhite.h
+    calendardbus.h
+    calendardbus.cpp
+    xatom-helper.cpp
+    xatom-helper.h
 )
 
 
 add_definitions(-DQT_NO_KEYWORDS)
 add_definitions(-DQT_MESSAGELOGCONTEXT)
 
-target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus Qt5::Network ${GLIB2_LIBRARIES} ${QGS_LIBRARIES} KF5::WindowSystem -lukui-log4qt)
+target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus Qt5::X11Extras  ${GLIB2_LIBRARIES} ${QGS_LIBRARIES} KF5::WindowSystem  -lX11 -lukui-log4qt)
 
 install(TARGETS ukui-calendar DESTINATION bin)
 

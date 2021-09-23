@@ -585,7 +585,8 @@ void IndicatorCalendar::ListenForManualSettingTime(){
 
 CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QLabel(parent),
-    mPlugin(plugin)
+    mPlugin(plugin),
+    mInterface(new QDBusInterface(SERVICE,PATH,INTERFACE,QDBusConnection::sessionBus(),this))
 {
     w = new frmLunarCalendarWidget();
     connect(w,&frmLunarCalendarWidget::yijiChangeDown, this, [=] (){
@@ -614,6 +615,8 @@ void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
                 w->hide();
             }
         }
+//        mInterface->call("ShowCalendar");
+        
     }
 }
 
