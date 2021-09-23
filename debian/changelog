@@ -1,3 +1,9 @@
+ukui-panel (3.1.0-7.1) v101; urgency=medium
+
+  * 解决bug#77699
+
+ -- buxiaoqing <buxiaoqing@kylinos.cn>  Fri, 17 Sep 2021 09:37:28 +0800
+
 ukui-panel (3.1.0-1.1) v101; urgency=medium
 
   * 0710 新需求

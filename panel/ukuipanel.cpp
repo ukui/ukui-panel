@@ -80,6 +80,8 @@
 #define CFG_KEY_ANIMATION          "animation-duration"
 #define CFG_KEY_SHOW_DELAY         "show-delay"
 #define CFG_KEY_LOCKPANEL          "lockPanel"
+#define CFG_KEY_PLUGINS_PC         "plugins-pc"
+#define CFG_KEY_PLUGINS_PAD         "plugins-pad"
 
 #define GSETTINGS_SCHEMA_SCREENSAVER "org.mate.interface"
 #define KEY_MODE "gtk-theme"
@@ -554,6 +556,56 @@ void UKUIPanel::loadPlugins()
     {
         mLayout->addPlugin(plugin);
         connect(plugin, &Plugin::dragLeft, [this] { mShowDelayTimer.stop(); hidePanel();});
+    }
+}
+
+void UKUIPanel::reloadPlugins(QString model){
+
+    QStringList list=readConfig(model);
+    checkPlugins(list);
+    movePlugins(list);
+}
+
+QStringList UKUIPanel::readConfig(QString model){
+
+    QStringList list;
+    mSettings->beginGroup(mConfigGroup);
+    if(model=="pc"){
+        list = mSettings->value(CFG_KEY_PLUGINS_PC).toStringList();
+    }else{
+        list = mSettings->value(CFG_KEY_PLUGINS_PAD).toStringList();
+    }
+    mSettings->endGroup();
+    return list;
+}
+
+void UKUIPanel::checkPlugins(QStringList list){
+
+    const auto plugins = mPlugins->plugins();
+    for (auto const & plugin : plugins)
+    {
+        plugin->hide();
+    }
+
+    for(int i=0;i<list.size();i++){
+        if(mPlugins->pluginNames().contains(list[i])){
+            if(mPlugins->pluginByName(list[i])){
+                mPlugins->pluginByName(list[i])->show();
+            }
+        }
+    }
+}
+
+void UKUIPanel::movePlugins(QStringList list){
+    for(int i=0;i<mLayout->count();i++){
+        mLayout->removeItem(mLayout->itemAt(i));
+    }
+    const auto plugins = mPlugins->plugins();
+    for (auto const & plugin : plugins)
+    {
+        if(!plugin->isHidden()){
+            mLayout->addWidget(plugin);
+        }
     }
 }
 
@@ -1376,10 +1428,12 @@ bool UKUIPanel::event(QEvent *event)
         event->accept();
         //no break intentionally
     case QEvent::Enter:
+//        reloadPlugins("pc");
         mShowDelayTimer.start();
         break;
 
     case QEvent::Leave:
+//        reloadPlugins("pad");
     case QEvent::DragLeave:
         mShowDelayTimer.stop();
         hidePanel();

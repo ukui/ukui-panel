@@ -531,6 +531,10 @@ private:
      * layout.
      */
     void loadPlugins();
+    void reloadPlugins(QString model);
+    QStringList readConfig(QString model);
+    void checkPlugins(QStringList list);
+    void movePlugins(QStringList list);
 
     /**
      * @brief Calculates and sets the geometry (i.e. the position and the size

@@ -3,12 +3,12 @@
 #include "dbus-server/server.h"
 #include "dbus-server/dbus-adaptor.h"
 
-#include "filewatcher/filewatcher.h"
+
 
 WatcherManager::WatcherManager(QObject *parent) : QObject(parent)
 {
    register_dbus();
-   FileWatcher mFileWatcher;
+
 }
 
 WatcherManager::~WatcherManager()
@@ -19,6 +19,9 @@ WatcherManager::~WatcherManager()
 void WatcherManager::register_dbus()
 {
     Server* dbus=new Server;
+    connect(dbus,&Server::DesktopFileDelete, this,[=](){
+        qDebug()<<"signal send success!";
+    });
     new DeamonAdaptor(dbus);
     QDBusConnection con=QDBusConnection::sessionBus();
 

@@ -41,6 +41,10 @@ class DeamonAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"out\" type=\"s\"/>\n"
 "      <arg direction=\"in\" type=\"i\" name=\"id\"/>\n"
 "    </method>\n"
+"    <method name=\"DesktopFileDeleteSlot\">\n"
+"      <arg direction=\"in\" type=\"s\" name=\"path\"/>\n"
+"      <arg direction=\"in\" type=\"as\" name=\"deleteFile\"/>\n"
+"    </method>\n"
 "  </interface>\n"
         "")
 public:
@@ -49,6 +53,7 @@ public:
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
+    void DesktopFileDeleteSlot(const QString &path, const QStringList &deleteFile);
     int DesktopToWID(const QString &desktop);
     QString WIDToDesktop(int id);
 Q_SIGNALS: // SIGNALS

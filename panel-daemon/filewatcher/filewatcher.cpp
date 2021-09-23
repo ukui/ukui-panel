@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QStringList>
 #include <QDir>
+#include <QDBusMessage>
+#include <QDBusConnection>
 
 #define APPLICATION_PATH "/usr/share/applications/"
 
@@ -25,7 +27,7 @@ void FileWatcher::initDirMonitor(QString path) {
 //只要任何监控的目录更新（添加、删除、重命名），就会调用。
 void FileWatcher::directoryUpdated(const QString &path)
 {
-        qDebug()<<"22222UKUIQuickLaunch::directoryUpdated "<<path;
+        qDebug()<<"********************** "<<path;
 
     // 比较最新的内容和保存的内容找出区别(变化)
     QStringList currEntryList = m_currentContentsMap[path];
@@ -66,7 +68,17 @@ void FileWatcher::directoryUpdated(const QString &path)
         // 从Dir中删除文件/目录
         if (!deleteFile.isEmpty())
         {
-            qDebug()<<"***************"<<deleteFile;
+//            qDebug()<<"***************"<<deleteFile;
+
+
+            QDBusMessage msg = QDBusMessage::createSignal("/convert/desktopwid","org.ukui.panel.daemon","DesktopFileDelete");
+            QList<QVariant> args;
+            args.append(path+deleteFile.at(0));
+            qDebug()<<path+deleteFile.at(0);
+            msg.setArguments(args);
+            QDBusConnection::sessionBus().send(msg);
+
+//            emit DesktopDeleteFile(path,deleteFile);
 //            foreach(QString file, deleteFile)
 //            {
 //                // 处理操作每个被删除的文件....
