@@ -371,8 +371,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     styleAdjust();
     qDebug()<<"Panel :: UKuiPanel  finished";
 
-    gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
-    gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
+    gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt()+1);
+    gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt()+1);
+    gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt()-1);
+    gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt()-1);
 
     UKuiPanelInformation* dbus=new UKuiPanelInformation;
     new PanelAdaptor(dbus);
