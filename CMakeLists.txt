@@ -129,7 +129,7 @@ if(TASKBAR_PLUGIN)
 endif()
 
 add_subdirectory(ukui-flash-disk)
-add_subdirectory(ukui-calendar)
+#add_subdirectory(ukui-calendar)
 add_subdirectory(panel-daemon)
 add_subdirectory(sni-daemo)
 add_subdirectory(sni-xembed-proxy)
