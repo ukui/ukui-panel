@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Panel Daemon
+Comment=ukui panel daemon
+Exec=panel-daemon
+Type=Application
+OnlyShowIn=UKUI;
+X-UKUI-AutoRestart=true

@@ -5,6 +5,10 @@
 #include <QGSettings>
 #include <QVariant>
 #include <QtDBus>
+
+//file
+#include "filewatcher/filewatcher.h"
+
 class Server : public QObject
 {
     Q_OBJECT
@@ -17,13 +21,17 @@ public Q_SLOTS:
 	int DesktopToWID(QString desktop);
 	//window Id 转化为desktop文件
 	QString WIDToDesktop(int id);
+    void DesktopFileDeleteSlot(QString path,QStringList deleteFile);
 
 Q_SIGNALS:
-//	//desktop文件被删除
-//    QString DesktopFileDelete();
+    //desktop文件被删除
+    QString DesktopFileDelete(QString);
 
 //	//时间改变
 //    QString TimeChanged();
+
+private:
+    FileWatcher *mFileWatcher;
 
 };
 

@@ -47,10 +47,14 @@ add_executable(panel-daemon
 )
 
 
-add_definitions(-DQT_NO_KEYWORDS)
 add_definitions(-DQT_MESSAGELOGCONTEXT)
 
 target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus Qt5::Network ${GLIB2_LIBRARIES} ${QGS_LIBRARIES} KF5::WindowSystem)
 
 install(TARGETS panel-daemon DESTINATION bin)
 
+install(FILES
+    resources/ukui-panel-daemon.desktop
+    DESTINATION "/etc/xdg/autostart/"
+    COMPONENT Runtime
+)

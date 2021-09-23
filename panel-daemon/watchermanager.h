@@ -2,6 +2,7 @@
 #define WATCHERMANAGER_H
 
 #include <QObject>
+#include "filewatcher/filewatcher.h"
 
 class WatcherManager : public QObject
 {
@@ -11,6 +12,8 @@ public:
     ~WatcherManager();
 private:
     void register_dbus();
+
+
 };
 
 #endif // WATCHERMANAGER_H

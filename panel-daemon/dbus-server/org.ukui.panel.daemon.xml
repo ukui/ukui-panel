@@ -9,5 +9,9 @@
       <arg type="s" direction="out"/>
       <arg name="id" type="i" direction="in"/>
     </method>
+    <method name="DesktopFileDeleteSlot">
+      <arg name="path" type="s" direction="in"/>
+      <arg name="deleteFile" type="as" direction="in"/>
+    </method>
   </interface>
 </node>

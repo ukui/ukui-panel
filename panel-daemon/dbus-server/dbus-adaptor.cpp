@@ -33,6 +33,12 @@ DeamonAdaptor::~DeamonAdaptor()
     // destructor
 }
 
+void DeamonAdaptor::DesktopFileDeleteSlot(const QString &path, const QStringList &deleteFile)
+{
+    // handle method call org.ukui.panel.deamon.DesktopFileDeleteSlot
+    QMetaObject::invokeMethod(parent(), "DesktopFileDeleteSlot", Q_ARG(QString, path), Q_ARG(QStringList, deleteFile));
+}
+
 int DeamonAdaptor::DesktopToWID(const QString &desktop)
 {
     // handle method call org.ukui.panel.deamon.DesktopToWID
