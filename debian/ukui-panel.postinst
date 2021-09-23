@@ -4,4 +4,8 @@ set -e
 
 glib-compile-schemas /usr/share/glib-2.0/schemas/ 
 
+#env| grep SUDO_USER | sed -e 's/SUDO_USER=//g'
+path="/home/${SUDO_USER}/.config/ukui/"
+cp "/usr/share/ukui/panel.conf"	$path
+
 #DEBHELPER#
