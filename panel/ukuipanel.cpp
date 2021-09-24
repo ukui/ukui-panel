@@ -166,8 +166,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     mConfigGroup(configGroup),
     mPlugins{nullptr},
     mStandaloneWindows{new WindowNotifier},
-    mPanelSize(0),
-    mIconSize(0),
     mLineCount(0),
     mLength(0),
     mAlignment(AlignmentLeft),
@@ -221,6 +219,13 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     setObjectName(QString("UKUIPanel %1").arg(configGroup));
     if(qgetenv("XDG_SESSION_TYPE")=="wayland") flag_hw990="hw_990";
     qDebug()<<"Panel :: UKuiPanel setAttribute finished";
+
+
+    const QByteArray id(PANEL_SETTINGS);
+    gsettings = new QGSettings(id);
+
+    mPanelSize=gsettings->get(PANEL_SIZE_KEY).toInt();
+    mIconSize=gsettings->get(ICON_SIZE_KEY).toInt();
 
     //初始化参数调整
     PanelCommission::panelConfigFileValueInit(true);
@@ -297,8 +302,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(mStandaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
 
-    const QByteArray id(PANEL_SETTINGS);
-    gsettings = new QGSettings(id);
+
     setPosition(0,intToPosition(gsettings->get(PANEL_POSITION_KEY).toInt(),PositionBottom),true);
 
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
@@ -370,11 +374,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     styleAdjust();
     qDebug()<<"Panel :: UKuiPanel  finished";
-
-    gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt()+1);
-    gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt()+1);
-    gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt()-1);
-    gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt()-1);
 
     UKuiPanelInformation* dbus=new UKuiPanelInformation;
     new PanelAdaptor(dbus);
