@@ -111,9 +111,6 @@
 #define UKUI_PATH           "/org/gnome/SessionManager"
 #define UKUI_INTERFACE      "org.gnome.SessionManager"
 
-#define DBUS_NAME            "org.ukui.SettingsDaemon"
-#define DBUS_PATH            "/org/ukui/SettingsDaemon/wayland"
-#define DBUS_INTERFACE       "org.ukui.SettingsDaemon.wayland"
 
 /************************************************
  Returns the Position by the string.
@@ -302,33 +299,23 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         time->stop();
     });
     qDebug()<<"Panel :: setGeometry finished";
-#if 0
-    //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
-    QDBusInterface interface(UKUI_SERVICE,
-                             UKUI_PATH,
-                             UKUI_INTERFACE,
-                             QDBusConnection::sessionBus());
-    interface.call("startupfinished","ukui-panel","finish");
-#endif
 
     readSettings();
 
     ensureVisible();
-
+	
     qDebug()<<"Panel :: loadPlugins start";
     loadPlugins();
     qDebug()<<"Panel :: loadPlugins finished";
 
     show();
     qDebug()<<"Panel :: show UKuiPanel finished";	
-#if 1
     //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
     QDBusInterface interface(UKUI_SERVICE,
                              UKUI_PATH,
                              UKUI_INTERFACE,
                              QDBusConnection::sessionBus());
     interface.call("startupfinished","ukui-panel","finish");
-#endif
     // show it the first time, despite setting
     if (mHidable)
     {
@@ -338,9 +325,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     styleAdjust();
     qDebug()<<"Panel :: UKuiPanel  finished";
-
-    gsettings->set(PANEL_SIZE_KEY, gsettings->get(PANEL_SIZE_KEY).toInt());
-    gsettings->set(ICON_SIZE_KEY, gsettings->get(ICON_SIZE_KEY).toInt());
 
     UKuiPanelInformation* dbus=new UKuiPanelInformation;
     new PanelAdaptor(dbus);
@@ -549,44 +533,6 @@ void UKUIPanel::priScreenChanged(int x, int y, int width, int height)
     realign();
 }
 
-
-
-void UKUIPanel::caculateScreenGeometry()
-{
-    int priX, priY, priWid, priHei;
-    priX = getScreenGeometry("x");
-    priY = getScreenGeometry("y");
-    priWid = getScreenGeometry("width");
-    priHei = getScreenGeometry("height");
-
-    mcurrentScreenRect.setRect(priX, priY, priWid, priHei);
-    if(priWid==0){
-    qDebug("初始化获取到的dbus信号错误，获取的宽度为0");
-        mcurrentScreenRect = QApplication::desktop()->screenGeometry(0);
-    }
-}
-
-int UKUIPanel::getScreenGeometry(QString methodName)
-{
-    int res = 0;
-    QDBusMessage message = QDBusMessage::createMethodCall(DBUS_NAME,
-                               DBUS_PATH,
-                               DBUS_INTERFACE,
-                               methodName);
-    QDBusMessage response = QDBusConnection::sessionBus().call(message);
-    if (response.type() == QDBusMessage::ReplyMessage)
-    {
-        if(response.arguments().isEmpty() == false) {
-            int value = response.arguments().takeFirst().toInt();
-            res = value;
-            qDebug() << value;
-        }
-    } else {
-        qDebug()<<methodName<<"called failed";
-    }
-    return res;
-}
-
 /*
  The setting frame of the old panel does not follow the main screen
  but can be displayed on any screen
@@ -598,22 +544,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
     QRect currentScreen;
     QRect rect;
 
-    if(flag_hw990=="hw_990"){
-        int priX, priY, priWid, priHei;
-        priX = getScreenGeometry("x");
-        priY = getScreenGeometry("y");
-        priWid = getScreenGeometry("width");
-        priHei = getScreenGeometry("height");
-
-        if(priWid==0){
-            //华为990上获取到settings-daemo发送的屏幕信息有误（目前认为priWid为0 则为有误）
-            qWarning()<<"get ScreenGeometry Info From Settings-Daemo Error";
-            currentScreen = QGuiApplication::screens().at(0)->geometry();
-        }
-        currentScreen.setRect(priX, priY, priWid, priHei);
-    }else{
-        currentScreen=QGuiApplication::screens().at(0)->geometry();
-    }
+    currentScreen=QGuiApplication::screens().at(0)->geometry();
 
     if (isHorizontal()){
         rect.setHeight(qMax(PANEL_MINIMUM_SIZE, mPanelSize));
@@ -933,9 +864,6 @@ int UKUIPanel::findAvailableScreen(UKUIPanel::Position position)
 }
 
 
-///************************************************
-
-// ************************************************/
 //void UKUIPanel::showConfigDialog()
 //{
 //        if (mConfigDialog.isNull())
@@ -1242,12 +1170,6 @@ void UKUIPanel::setPosition(int screen, IUKUIPanel::Position position, bool save
 
     realign();
 
-    //dbus 发任务栏位置的信号，开始菜单等监听
-    QDBusMessage message=QDBusMessage::createSignal("/panel/settings", "com.ukui.panel.settings", "SendPanelSetings");
-    gsettings->set(PANEL_POSITION_KEY,position);
-    message<<position;
-    QDBusConnection::sessionBus().send(message);
-
     setPanelGeometry(true);
 }
 
@@ -1398,7 +1320,6 @@ void UKUIPanel::styleAdjust()
     if(QGSettings::isSchemaInstalled(transparency_id)){
         transparency_gsettings = new QGSettings(transparency_id);
 
-//    if(transparency_gsettings->keys().contains(TRANSPARENCY_KEY)){
     transparency=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
     this->update();
     connect(transparency_gsettings, &QGSettings::changed, this, [=] (const QString &key){

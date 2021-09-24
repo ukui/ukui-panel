@@ -734,8 +734,6 @@ private:
     int movelock = -1;
 
     void connectToServer();
-    void caculateScreenGeometry();
-    int getScreenGeometry(QString methodName);
 
 private slots:
     void panelReset();
