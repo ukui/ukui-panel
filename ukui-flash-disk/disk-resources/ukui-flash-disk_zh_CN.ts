@@ -5,7 +5,7 @@
     <name>BaseDialog</name>
     <message>
         <source>Disk test</source>
-        <translation>U盘检测</translation>
+        <translation>设备检测</translation>
     </message>
 </context>
 <context>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Formatting failed, please unplug the U disk and try again!</source>
-        <translation>格式化失败，请拔出U盘并重试！</translation>
+        <translation>格式化失败，请拔出设备并重试！</translation>
     </message>
     <message>
         <source>Format</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Format disk</source>
-        <translation>格式化U盘</translation>
+        <translation>格式化</translation>
     </message>
     <message>
         <source>Formatting this volume will erase all data on it. Please back up all retained data before formatting. Do you want to continue?</source>
@@ -90,7 +90,7 @@
     </message>
     <message>
         <source>Disk format</source>
-        <translation>U盘格式化</translation>
+        <translation>设备格式化</translation>
     </message>
 </context>
 <context>
@@ -113,7 +113,7 @@
     </message>
     <message>
         <source>Please do not pull out the USB flash disk when reading or writing</source>
-        <translation>U盘读写时请不要直接拔出</translation>
+        <translation>设备读写时请不要直接拔出</translation>
     </message>
     <message>
         <source>Please do not pull out the CDROM when reading or writing</source>
@@ -130,6 +130,10 @@
     <message>
         <source>telephone device</source>
         <translation>手机设备</translation>
+    </message>
+    <message>
+        <source>Removable storage device removed</source>
+        <translation>移动存储设备已移除</translation>
     </message>
 </context>
 <context>
@@ -174,7 +178,7 @@
     <name>RepairDialogBox</name>
     <message>
         <source>Disk test</source>
-        <translation>U盘检测</translation>
+        <translation>设备检测</translation>
     </message>
     <message>
         <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk and drive are properly connected, make sure the disk is not a read-only disk, and try again. For more information, search for help on read-only files and how to change read-only files.&lt;/p&gt;</source>
@@ -182,7 +186,7 @@
     </message>
     <message>
         <source>Format disk</source>
-        <translation>格式化U盘</translation>
+        <translation>格式化设备</translation>
     </message>
     <message>
         <source>Repair</source>
@@ -205,7 +209,7 @@
     </message>
     <message>
         <source>Attempting a disk repair...</source>
-        <translation>正在尝试修复U盘...</translation>
+        <translation>正在尝试修复设备...</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -217,7 +221,7 @@
     </message>
     <message>
         <source>The repair completed. If the USB flash disk is not mounted, please try formatting the device!</source>
-        <translation>修复完成，如果U盘没有成功挂载，建议格式化!</translation>
+        <translation>修复失败，如果设备没有成功挂载，请尝试格式化修复！</translation>
     </message>
     <message>
         <source>Disk test</source>
@@ -225,7 +229,7 @@
     </message>
     <message>
         <source>Disk repair</source>
-        <translation>U盘修复</translation>
+        <translation>设备检测</translation>
     </message>
 </context>
 <context>

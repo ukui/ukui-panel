@@ -92,8 +92,12 @@ public:
     void resetAllNewState();
     quint64 getMountTickDiff(FDMountInfo mountInfo);
     bool getVolumeInfoByMount(FDMountInfo mountInfo, FDVolumeInfo& volumeInfo);
+    unsigned getAttachedVolumeCount(string strId);
 
     void OutputInfos();
+
+Q_SIGNALS:
+    void notifyDeviceRemoved(QString strDevId);
 
 private:
     FlashDiskData();

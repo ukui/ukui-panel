@@ -93,6 +93,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this,&MainWindow::convertUpdateWindow,this,&MainWindow::onConvertUpdateWindow);
     connect(this,&MainWindow::remountVolume,this,&MainWindow::onRemountVolume);
     connect(this,&MainWindow::checkDriveValid,this,&MainWindow::onCheckDriveValid);
+    connect(this, &MainWindow::notifyDeviceRemoved, this, &MainWindow::onNotifyDeviceRemoved);
+    connect(m_dataFlashDisk, &FlashDiskData::notifyDeviceRemoved, this, &MainWindow::onNotifyDeviceRemoved);
     ui->centralWidget->setLayout(vboxlayout);
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
                                                   "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
@@ -683,6 +685,36 @@ void MainWindow::onConvertShowWindow(QString strDriveId, QString strMountUri)
         #endif
         m_vtDeviveId.push_back(strDeviceId);
     }
+}
+
+void MainWindow::onNotifyDeviceRemoved(QString strDevId)
+{
+    if (strDevId.isEmpty()) {
+        return;
+    }
+    #if IFDISTINCT_DEVICON
+    if (strDevId.startsWith("/dev/sr")) {
+        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+                                    QString("media-optical"));
+    } else if (strDevId.startsWith("/dev/mmcblk")) {
+        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+                                    QString("media-memory-sd"));
+    } else {
+        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+                                    QString("drive-removable-media-usb"));
+    }
+    #else
+    if (strDevId.startsWith("/dev/sr")) {
+        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+                                    QString("media-removable-symbolic"));
+    } else if (strDevId.startsWith("/dev/mmcblk")) {
+        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+                                    QString("media-removable-symbolic"));
+    } else {
+        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+                                    QString("drive-removable-media-usb"));
+    }
+    #endif
 }
 
 void MainWindow::onConvertUpdateWindow(QString strDevName, unsigned uDevType)

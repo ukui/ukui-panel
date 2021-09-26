@@ -190,6 +190,9 @@ int FlashDiskData::removeDriveInfo(FDDriveInfo driveInfo)
         return -1;
     }
     if (m_devInfoWithDrive.find(driveInfo.strId) != m_devInfoWithDrive.end()) {
+        if (getAttachedVolumeCount(driveInfo.strId) > 0) {
+            Q_EMIT notifyDeviceRemoved(QString::fromStdString(driveInfo.strId));
+        }
         m_devInfoWithDrive.erase(driveInfo.strId);
         return 0;
     }
@@ -202,6 +205,9 @@ int FlashDiskData::removeVolumeInfo(FDVolumeInfo volumeInfo)
         return -1;
     }
     if (m_devInfoWithVolume.find(volumeInfo.strId) != m_devInfoWithVolume.end()) {
+        if (getAttachedVolumeCount(volumeInfo.strId) == 1) {
+            Q_EMIT notifyDeviceRemoved(QString::fromStdString(volumeInfo.strId));
+        }
         m_devInfoWithVolume.erase(volumeInfo.strId);
         return 0;
     } else {
@@ -209,9 +215,13 @@ int FlashDiskData::removeVolumeInfo(FDVolumeInfo volumeInfo)
         for (; itDriveInfo != m_devInfoWithDrive.end(); itDriveInfo++) {
             map<string, FDVolumeInfo>::iterator itVolumeInfo = itDriveInfo->second.listVolumes.find(volumeInfo.strId);
             if (itVolumeInfo != itDriveInfo->second.listVolumes.end()) {
-                itVolumeInfo->second.strId = "";
+                if (getAttachedVolumeCount(volumeInfo.strId) == 1) {
+                    Q_EMIT notifyDeviceRemoved(QString::fromStdString(volumeInfo.strId));
+                }
                 if (itVolumeInfo->second.mountInfo.strId.empty()) {
                     itDriveInfo->second.listVolumes.erase(volumeInfo.strId);
+                } else {
+                    itVolumeInfo->second.strId = "";
                 }
                 return 0;
             }
@@ -239,7 +249,11 @@ int FlashDiskData::removeMountInfo(FDMountInfo mountInfo)
                     m_devInfoWithVolume.erase(itVolumeInfo);
                 }
                 #else 
-                m_devInfoWithVolume.erase(itVolumeInfo);
+                // if (getAttachedVolumeCount(itVolumeInfo->second.strId) == 1) {
+                //     Q_EMIT notifyDeviceRemoved(QString::fromStdString(itVolumeInfo->second.strId));
+                // }
+                // m_devInfoWithVolume.erase(itVolumeInfo);
+                itVolumeInfo->second.mountInfo.strId = "";
                 #endif
                 return 0;
             }
@@ -256,7 +270,11 @@ int FlashDiskData::removeMountInfo(FDMountInfo mountInfo)
                         itDriveInfo->second.listVolumes.erase(itVolumeInfo);
                     }
                     #else
-                    itDriveInfo->second.listVolumes.erase(itVolumeInfo);
+                    // if (getAttachedVolumeCount(itVolumeInfo->second.strId) == 1) {
+                    //     Q_EMIT notifyDeviceRemoved(QString::fromStdString(itVolumeInfo->second.strId));
+                    // }
+                    // itDriveInfo->second.listVolumes.erase(itVolumeInfo);
+                    itVolumeInfo->second.mountInfo.strId = "";
                     #endif
                     return 0;
                 }
@@ -403,6 +421,33 @@ unsigned FlashDiskData::getValidInfoCount()
         }
     }
     return uDriveCount + uVolumeCount + uMountCount;
+}
+
+unsigned FlashDiskData::getAttachedVolumeCount(string strId)
+{
+    if (strId.empty()) {
+        return 0;
+    }
+    map<string, FDVolumeInfo>::iterator itVolumeInfo = m_devInfoWithVolume.begin();
+    for (; itVolumeInfo != m_devInfoWithVolume.end(); itVolumeInfo++) {
+        if (itVolumeInfo->second.strId == strId) {
+            return 1;
+        }
+    }
+    map<string, FDDriveInfo>::iterator itDriveInfo = m_devInfoWithDrive.begin();
+    for (; itDriveInfo != m_devInfoWithDrive.end(); itDriveInfo++) {
+        if (itDriveInfo->second.strId == strId) {
+            return itDriveInfo->second.listVolumes.size();
+        } else {
+            itVolumeInfo = itDriveInfo->second.listVolumes.begin();
+            for (; itVolumeInfo != itDriveInfo->second.listVolumes.end(); itVolumeInfo++) {
+                if (itVolumeInfo->second.strId == strId) {
+                    return itDriveInfo->second.listVolumes.size();
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 void FlashDiskData::clearAllData()

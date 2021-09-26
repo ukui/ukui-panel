@@ -209,6 +209,8 @@ public Q_SLOTS:
     void onMountVolume(GVolume*);
     void onEjectVolumeForce(GVolume* v);             // A fix pops up if the mount fails
 
+    void onNotifyDeviceRemoved(QString strDevId);
+
 Q_SIGNALS:
     void clicked();
     void convertShowWindow(QString strDriveId, QString strMountUri);
@@ -221,6 +223,7 @@ Q_SIGNALS:
     void ejectVolumeForce(GVolume*);
     void remountVolume(FDVolumeInfo volumeInfo);
     void checkDriveValid(FDDriveInfo driveInfo);
+    void notifyDeviceRemoved(QString strDevId);
 
 protected:
     void resizeEvent(QResizeEvent *event);

@@ -32,6 +32,7 @@
 #include <QLineEdit>
 #include <QWidget>
 #include <QMessageBox>
+#include <QProxyStyle>
 
 #include <gio/gio.h>
 #include "device-operation.h"
@@ -40,6 +41,30 @@
 class QGSettings;
 class QDBusConnection;
 class RepairProgressBar;
+
+class BaseDialogStyle : public QProxyStyle
+{
+    Q_OBJECT
+public:
+    static BaseDialogStyle* getStyle();
+
+public:
+    void polish (QWidget* w) override;
+
+    void drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = nullptr) const override;
+    void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const override;
+
+    void drawPrimitive(PrimitiveElement elem, const QStyleOption *option, QPainter *painter, const QWidget *widget) const override;
+    void drawItemText(QPainter *painter, const QRect &rect, int flags, const QPalette &pal, bool enabled, const QString &text, QPalette::ColorRole textRole = QPalette::NoRole) const override;
+
+private:
+    BaseDialogStyle ();
+    ~BaseDialogStyle ();
+
+private:
+    QPalette mPalette;
+    static BaseDialogStyle* gInstance;
+};
 
 class BaseDialog : public QDialog
 {
@@ -51,6 +76,9 @@ public:
     QPalette getWhitePalette();
 
     void setTheme();
+
+Q_SIGNALS:
+    void themeChanged ();
 
 private:
     QGSettings*             mGSettings = nullptr;

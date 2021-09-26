@@ -123,6 +123,10 @@
         <source>telephone device</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Removable storage device removed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessageBox</name>
