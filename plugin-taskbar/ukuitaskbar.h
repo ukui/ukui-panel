@@ -183,15 +183,7 @@ private slots:
     void removeButton(QString exec);
     void buttonDeleted();
     void switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button);
-    void PageUp();
-    void PageDown();
-
     QString readFile(const QString &filename);
-    /**
-     * @brief loadJsonfile
-     * 加载json文件
-     */
-    void loadJsonfile();
 
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
@@ -223,17 +215,8 @@ private:
     QWidget *tmpwidget;
     QVector <UKUITaskGroup*> mBtnAll;
     QVector <int> mBtncvd;
-    int show_num = 0;
-    int page_num = 1;
-    int max_page;
-    int old_page;
-    void ShowPage();
-    void GetMaxPage();
-    ///////////////////////////////////
-    /// quicklaunch function
 
     void directoryUpdated(const QString &path);
-    int savecount;
 
 private:
     QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
@@ -288,7 +271,6 @@ public slots:
     int GetPanelSize(QString arg);
     void WindowAddtoTaskBar(QString arg);
     void WindowRemovefromTaskBar(QString arg);
-    void ReloadSecurityConfig();
     QString GetSecurityConfigPath();
 
 };

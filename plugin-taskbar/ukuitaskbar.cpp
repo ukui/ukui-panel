@@ -47,12 +47,9 @@
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
 #include "quicklaunchaction.h"
-#include "json.h"
 #define PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANEL_LINES    "panellines"
 using namespace UKUi;
-using QtJson::JsonObject;
-using QtJson::JsonArray;
 /************************************************
 
 ************************************************/
@@ -77,37 +74,14 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mPlaceHolder(new QWidget(this)),
     mStyle(new LeftAlignedTextStyle())
 {
-
-    SecurityConfigPath=QDir::homePath()+QString("/.config/ukui-panel-security-config.json");
-
     taskstatus=NORMAL;
     setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
-    savecount = 0;
-    //setStyle(mStyle);
     mLayout = new UKUi::GridLayout(this);
     setLayout(mLayout);
     mLayout->setMargin(0);
     mLayout->setStretch(UKUi::GridLayout::StretchHorizontal | UKUi::GridLayout::StretchVertical);
 
-    /* 翻页功能按钮
-    tmpwidget = new QWidget(this);
-    QVBoxLayout *_style = new QVBoxLayout(tmpwidget);
-
-    pageup = new QToolButton(this);
-    pagedown = new QToolButton(this);
-    pageup->setStyle(new CustomStyle);
-    pagedown->setStyle(new CustomStyle);
-    pageup->setText("∧");
-    pagedown->setText("∨");
-
-    _style->addWidget(pageup, 0,Qt::AlignTop|Qt::AlignHCenter);
-    _style->addWidget(pagedown,0,Qt::AlignHCenter);
-    _style->setContentsMargins(0,1,0,10);
-
-    mLayout->addWidget(tmpwidget);
-    tmpwidget->setHidden(true);
-    */
     //往任务栏中加入快速启动按钮
     refreshQuickLaunch();
 
@@ -121,21 +95,13 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
         hasPlaceHolder = true;
     }
 
-    GetMaxPage();
-    old_page = page_num;
-
-//    QTimer::singleShot(0, this, SLOT(settingsChanged()));
     settingsChanged();
-//    setButtonStyle(Qt::ToolButtonIconOnly);
     setAcceptDrops(true);
 
     const QByteArray id(PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id)){
         settings=new QGSettings(id);
     }
-
-  //  connect(pageup,SIGNAL(clicked()),this,SLOT(PageUp()));
-  //  connect(pagedown,SIGNAL(clicked()),this,SLOT(PageDown()));
 
     connect(mSignalMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped), this, &UKUITaskBar::activateTask);
     QTimer::singleShot(0, this, &UKUITaskBar::registerShortcuts);
@@ -178,27 +144,6 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
                directoryUpdated(androidDesktopFilePath);
             });
 
-     // for
-
-//    if (mLayout->isEmpty())
-//        showPlaceHolder();int counts = countOfButtons();
-    /*
-    int i = 0;
-    int counts = countOfButtons();
-    int shows = (counts < 5 ? counts : 5);
-    while (i != counts && shows) {
-        UKUITaskGroup *b = qobject_cast<UKUITaskGroup*>(mLayout->itemAt(i)->widget());
-        if (shows) {
-            b->setHidden(0);
-            qcklchShow.insert(show_num++, b);
-            --shows;
-        } else {
-            b->setHidden(1);
-        }
-        ++i;
-    }
-    realign();
-    */
     //龙芯机器的最小化任务窗口的预览窗口的特殊处理
     system("cat /proc/cpuinfo >> /tmp/_tmp_cpu_info_cat_");
     QFile file("/tmp/_tmp_cpu_info_cat_");
@@ -230,11 +175,6 @@ UKUITaskBar::~UKUITaskBar()
     mVBtn.clear();
 }
 
-void UKUITaskBar::ReloadSecurityConfig(){
-    this->loadJsonfile();
-    this->refreshQuickLaunch();
-}
-
 QString UKUITaskBar::GetSecurityConfigPath(){
     return SecurityConfigPath;
 }
@@ -258,87 +198,6 @@ void UKUITaskBar::onDesktopChanged() {
                 btn->setVisible((*i)->isHidden());
         }
     }
-}
-
-void UKUITaskBar::loadJsonfile() {
-    QString json = readFile(SecurityConfigPath);
-    if (json.isEmpty()) {
-        qFatal("Could not read JSON file!");
-        return ;
-    }
-    bool ok;
-    JsonObject result = QtJson::parse(json, ok).toMap();
-    QVariant fristLayer;
-    fristLayer=result.value("ukui-panel");
-    mModel=fristLayer.toMap().value("mode").toString();
-
-    QVariant blacklistLayer;
-    blacklistLayer=fristLayer.toMap().value("blacklist");
-    QVariant whitelistLayer;
-    whitelistLayer=fristLayer.toMap().value("whitelist");
-
-    if(!blacklistLayer.isNull()){
-        QList<QVariant> thirdLayer;
-        thirdLayer=blacklistLayer.toList();
-        QMap<QString,QVariant> fourthLayer;
-        fourthLayer=thirdLayer.at(0).toMap();
-        QList<QVariant> fifthLayer;
-        fifthLayer=fourthLayer.value("entries").toList();
-        QMap<QString,QVariant> attribute;
-        QList<QString> blackNames;
-        for(int i=0;i<fifthLayer.size();i++){
-            attribute=fifthLayer.at(i).toMap();
-            blackNames.append(attribute.value("path").toString());
-        }
-        blacklist=blackNames;
-    }
-
-    if(!whitelistLayer.isNull()){
-        QList<QVariant> thirdLayer;
-        thirdLayer=whitelistLayer.toList();
-        QMap<QString,QVariant> fourthLayer;
-        fourthLayer=thirdLayer.at(0).toMap();
-        QList<QVariant> fifthLayer;
-        fifthLayer=fourthLayer.value("entries").toList();
-        QMap<QString,QVariant> attribute;
-        QList<QString> whiteNames;
-        for(int i=0;i<fifthLayer.size();i++){
-            attribute=fifthLayer.at(i).toMap();
-            whiteNames.append(attribute.value("path").toString());
-        }
-        whitelist=whiteNames;
-    }
-}
-
-void UKUITaskBar::PageUp() {
-    --page_num;
-    if (page_num < 1) page_num = max_page;
-    old_page = page_num;
-    realign();
-}
-
-void UKUITaskBar::PageDown() {
-    ++page_num;
-    if (page_num > max_page) page_num = 1;
-    old_page = page_num;
-    realign();
-}
-
-void UKUITaskBar::GetMaxPage() {
-    if (mPlugin->panel()->isHorizontal()) {
-        int btn_cnt = countOfButtons();
-        max_page = (int)(btn_cnt / 32);
-        if (btn_cnt % 5 != 0) max_page += 1;
-    }/* else if (mPlugin->panel()->panelSize() == PANEL_LARGE_SIZE){
-        int btn_cnt = countOfButtons();
-        max_page = (int)(btn_cnt / 2);
-        if (btn_cnt % 2 != 0) max_page += 1;
-    } else {
-        int btn_cnt = countOfButtons();
-        max_page = (int)(btn_cnt / 3);
-        if (btn_cnt % 3 != 0) max_page += 1;
-    }*/
-    if (page_num > max_page && max_page) page_num = max_page;
 }
 
 void UKUITaskBar::refreshQuickLaunch(){
@@ -397,7 +256,6 @@ void UKUITaskBar::refreshQuickLaunch(){
             execname = app.value("name", "").toString();
             exec = app.value("exec", "").toString();
             icon = app.value("icon", "").toString();
-//            addButton(new QuickLaunchAction(execname, exec, icon, this));
         }
     }
 }
@@ -883,7 +741,6 @@ void UKUITaskBar::refreshButtonRotation()
  ************************************************/
 void UKUITaskBar::refreshPlaceholderVisibility()
 {
-    // if no visible group button show placeholder widget
     bool haveVisibleWindow = false;
     for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i_e != i; ++i)
     {
@@ -893,16 +750,6 @@ void UKUITaskBar::refreshPlaceholderVisibility()
             break;
         }
     }
-    /*
-    //mPlaceHolder->setVisible(!haveVisibleWindow);
-    if (haveVisibleWindow)
-        mPlaceHolder->setFixedSize(0, 0);
-    else
-    {
-        mPlaceHolder->setMinimumSize(1, 1);
-        mPlaceHolder->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-    }*/
-
 }
 
 /************************************************
@@ -981,7 +828,6 @@ void UKUITaskBar::setShowGroupOnHover(bool bFlag)
 int i = 0;
 void UKUITaskBar::realign()
 {
-    if(savecount < 0) savecount = 0;
     mLayout->setEnabled(false);
     refreshButtonRotation();
 

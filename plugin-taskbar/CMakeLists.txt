@@ -9,8 +9,6 @@ set(HEADERS
     ukuitaskwidget.h
     ukuitaskclosebutton.h
         quicklaunchaction.h
-        json.h
-#         quicklaunchbutton.h
 )
 
 set(SOURCES
@@ -22,8 +20,6 @@ set(SOURCES
     ukuitaskwidget.cpp
     ukuitaskclosebutton.cpp
     quicklaunchaction.cpp
-    json.cpp
-#    quicklaunchbutton.cpp
 )
 
 find_package(X11 REQUIRED)

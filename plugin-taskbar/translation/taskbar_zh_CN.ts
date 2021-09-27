@@ -4,14 +4,14 @@
 <context>
     <name>UKUITaskBar</name>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="528"/>
-        <location filename="../ukuitaskbar.cpp" line="1543"/>
+        <location filename="../ukuitaskbar.cpp" line="386"/>
+        <location filename="../ukuitaskbar.cpp" line="1389"/>
         <source>Drop Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="529"/>
-        <location filename="../ukuitaskbar.cpp" line="1544"/>
+        <location filename="../ukuitaskbar.cpp" line="387"/>
+        <location filename="../ukuitaskbar.cpp" line="1390"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation type="unfinished"></translation>
     </message>
