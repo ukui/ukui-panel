@@ -21,6 +21,7 @@
 #include <QPainter>
 #include <QDesktopWidget>
 #include <QApplication>
+#include <QTimer>
 
 #include "storagearrow.h"
 #include "../panel/customstyle.h"
@@ -36,6 +37,7 @@ StorageArrow::StorageArrow(QWidget* parent):
     setStyle(new CustomStyle());
 //    setVisible(false);
 
+    QTimer::singleShot(10,[this]{setArrowIcon();});
     const QByteArray id(PANEL_SETTINGS);
     gsetting = new QGSettings(id);
     panelPosition = gsetting->get(PANEL_POSITION_KEY).toInt();
