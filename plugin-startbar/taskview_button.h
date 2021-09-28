@@ -18,6 +18,7 @@ protected:
 
 private:
     QWidget *mParent;
+    IUKUIPanelPlugin * mPlugin;
 
 };
 

@@ -10,6 +10,7 @@ StartMenuButton::StartMenuButton(IUKUIPanelPlugin *plugin, QWidget* parent ):
     this->setStyle(new CustomStyle());
     setStyleSheet("QToolButton { margin-left: 4px; } ");
     QTimer::singleShot(5000,[this] {this->setToolTip(tr("UKui Menu")); });
+    qDebug()<<"***************"<<mParent->height()*0.6;
     this->setIconSize(QSize(mParent->height()*0.6,mParent->height()*0.6));
 }
 
@@ -20,7 +21,11 @@ StartMenuButton::~StartMenuButton()
 /*plugin-startmenu refresh function*/
 void StartMenuButton::realign()
 {
-    this->setIconSize(QSize(mParent->height()*0.6,mParent->height()*0.6));
+    if (mPlugin->panel()->isHorizontal())
+        this->setFixedSize(mPlugin->panel()->panelSize()*1.3,mPlugin->panel()->panelSize());
+    else
+        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*1.3);
+    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
 }
 
 void StartMenuButton::mousePressEvent(QMouseEvent* event)
