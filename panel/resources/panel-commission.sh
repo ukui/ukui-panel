@@ -4,16 +4,16 @@
 #判断文件是否存在
 commissionFile="${HOME}/.config/ukui/panel-commission.ini"
 if [[ ! -f "$commissionFile" ]]; then
-  echo "文件不存在"
+  echo "file not exit"
   cp /usr/share/ukui/ukui-panel/panel-commission.ini ${HOME}/.config/ukui
 else
-  echo "文件存在"
+  echo "file exit"
 fi
 
 ## 龙芯机器屏蔽夜间模式
 grep  -nr  "Loongson"     /proc/cpuinfo
 if [ $? -ne 0 ]; then
-  echo "非龙芯机器"
+  echo "not Loongarch"
 else
   echo "龙芯机器 屏幕夜间模式"
   while read line
@@ -28,7 +28,7 @@ fi
 ## 华为990 屏蔽休眠接口
 env | grep "XDG_SESSION_TYPE=wayland"
 if [ $? -ne 0 ]; then
-  echo "非华为990"
+  echo " "
 else
   echo "华为990"
   #sed -i 's/hibernate=show/hibernate=hide/' ${HOME}/.config/ukui/panel-commission.ini
@@ -37,7 +37,7 @@ fi
 ## 华为990 屏蔽夜间模式
 env | grep "XDG_SESSION_TYPE=wayland"
 if [ $? -ne 0 ]; then
-  echo "非华为990"
+  echo " "
 else
   echo "华为990"
   while read line1
@@ -47,3 +47,5 @@ else
     fi
   done < ${HOME}/.config/ukui/panel-commission.ini
 fi
+
+
