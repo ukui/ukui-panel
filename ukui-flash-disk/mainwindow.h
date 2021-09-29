@@ -127,6 +127,9 @@ private:
     static void driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo *peDeviceInfo);
 
     bool getDataCDRomCapacity(QString strDevId, quint64 &totalCapacity);
+    void getDriveIconsInfo(GDrive* drive, FDDriveInfo& driveInfo);
+    void getVolumeIconsInfo(GVolume* volume, FDVolumeInfo& volumeInfo);
+    void getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo);
 
 private:
     QIcon iconSystray;

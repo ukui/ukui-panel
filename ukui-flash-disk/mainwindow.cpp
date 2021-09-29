@@ -273,6 +273,7 @@ void MainWindow::getDeviceInfo()
                 driveInfo.strName = strName;
                 g_free(strName);
             }
+            getDriveIconsInfo(gdrive, driveInfo);
             driveInfo.isCanEject = g_drive_can_eject(gdrive);
             driveInfo.isCanStop = g_drive_can_stop(gdrive);
             driveInfo.isCanStart = g_drive_can_start(gdrive);
@@ -303,6 +304,7 @@ void MainWindow::getDeviceInfo()
                                 volumeInfo.strDevName = strDevName;
                                 g_free(strDevName);
                             }
+                            getVolumeIconsInfo(volume, volumeInfo);
                             volumeInfo.isCanMount = g_volume_can_mount(volume);
                             volumeInfo.isCanEject = g_volume_can_eject(volume);
                             volumeInfo.isShouldAutoMount = g_volume_should_automount(volume);
@@ -355,6 +357,7 @@ void MainWindow::getDeviceInfo()
                                         }
                                         g_object_unref(root);
                                     }
+                                    getMountIconsInfo(mount, volumeInfo.mountInfo);
                                 }
                                 g_object_unref(mount);
                             } else {
@@ -417,6 +420,7 @@ void MainWindow::getDeviceInfo()
                     volumeInfo.strDevName = strDevName;
                     g_free(strDevName);
                 }
+                getVolumeIconsInfo(volume, volumeInfo);
                 volumeInfo.isCanMount = g_volume_can_mount(volume);
                 volumeInfo.isCanEject = g_volume_can_eject(volume);
                 volumeInfo.isShouldAutoMount = g_volume_should_automount(volume);
@@ -469,6 +473,7 @@ void MainWindow::getDeviceInfo()
                             }
                             g_object_unref(root);
                         }
+                        getMountIconsInfo(mount, volumeInfo.mountInfo);
                     }
                     g_object_unref(mount);
                 } else {
@@ -510,6 +515,7 @@ void MainWindow::getDeviceInfo()
                             driveInfo.strName = strName;
                             g_free(strName);
                         }
+                        getDriveIconsInfo(gdrive, driveInfo);
                         driveInfo.isCanEject = g_drive_can_eject(gdrive);
                         driveInfo.isCanStop = g_drive_can_stop(gdrive);
                         driveInfo.isCanStart = g_drive_can_start(gdrive);
@@ -566,6 +572,7 @@ void MainWindow::getDeviceInfo()
                                         }
                                         g_object_unref(root);
                                     }
+                                    getMountIconsInfo(gmount, mountInfo);
                                     if (isValidMount) {
                                         FDVolumeInfo volumeInfo;
                                         volumeInfo.mountInfo = mountInfo;
@@ -661,16 +668,9 @@ void MainWindow::onConvertShowWindow(QString strDriveId, QString strMountUri)
     string strDeviceId = strDriveId.toStdString();
     if (std::find(m_vtDeviveId.begin(), m_vtDeviveId.end(), strDeviceId) == m_vtDeviveId.end()) {
         #if IFDISTINCT_DEVICON
-        if (strDriveId.startsWith("/dev/sr")) {
-            onRequestSendDesktopNotify(tr("Please do not pull out the CDROM when reading or writing"),
-                                        QString("media-optical"));
-        } else if (strDriveId.startsWith("/dev/mmcblk")) {
-            onRequestSendDesktopNotify(tr("Please do not pull out the SD Card when reading or writing"),
-                                        QString("media-memory-sd"));
-        } else {
-            onRequestSendDesktopNotify(tr("Please do not pull out the USB flash disk when reading or writing"),
-                                        QString("drive-removable-media-usb"));
-        }
+        QString strIcon = m_dataFlashDisk->getVolumeIcon(strDriveId);
+        onRequestSendDesktopNotify(tr("Please do not pull out the storage device when reading or writing"),
+                                        strIcon);
         #else
         if (strDriveId.startsWith("/dev/sr")) {
             onRequestSendDesktopNotify(tr("Please do not pull out the CDROM when reading or writing"),
@@ -693,25 +693,18 @@ void MainWindow::onNotifyDeviceRemoved(QString strDevId)
         return;
     }
     #if IFDISTINCT_DEVICON
-    if (strDevId.startsWith("/dev/sr")) {
-        onRequestSendDesktopNotify(tr("Removable storage device removed"),
-                                    QString("media-optical"));
-    } else if (strDevId.startsWith("/dev/mmcblk")) {
-        onRequestSendDesktopNotify(tr("Removable storage device removed"),
-                                    QString("media-memory-sd"));
-    } else {
-        onRequestSendDesktopNotify(tr("Removable storage device removed"),
-                                    QString("drive-removable-media-usb"));
-    }
+    QString strIcon = m_dataFlashDisk->getVolumeIcon(strDevId);
+    onRequestSendDesktopNotify(tr("Storage device removed"),
+                                strIcon);
     #else
     if (strDevId.startsWith("/dev/sr")) {
-        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+        onRequestSendDesktopNotify(tr("Storage device removed"),
                                     QString("media-removable-symbolic"));
     } else if (strDevId.startsWith("/dev/mmcblk")) {
-        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+        onRequestSendDesktopNotify(tr("Storage device removed"),
                                     QString("media-removable-symbolic"));
     } else {
-        onRequestSendDesktopNotify(tr("Removable storage device removed"),
+        onRequestSendDesktopNotify(tr("Storage device removed"),
                                     QString("drive-removable-media-usb"));
     }
     #endif
@@ -760,6 +753,8 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
             uSubVolumeSize = g_list_length(lVolume);
             g_list_free(lVolume);
         }
+
+        p_this->getDriveIconsInfo(gdrive, driveInfo);
 
         if (!driveInfo.strId.empty()) {
             p_this->m_dataFlashDisk->addDriveInfo(driveInfo);
@@ -866,6 +861,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             volumeInfo.strDevName = strDevName;
             g_free(strDevName);
         }
+        p_this->getVolumeIconsInfo(volume, volumeInfo);
         volumeInfo.isCanMount = g_volume_can_mount(volume);
         volumeInfo.isCanEject = g_volume_can_eject(volume);
         volumeInfo.isShouldAutoMount = g_volume_should_automount(volume);
@@ -919,6 +915,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                     }
                     g_object_unref(root);
                 }
+                p_this->getMountIconsInfo(mount, volumeInfo.mountInfo);
             }
             g_object_unref(mount);
         } else {
@@ -947,6 +944,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                 driveInfo.strName = strName;
                 g_free(strName);
             }
+            p_this->getDriveIconsInfo(gdrive, driveInfo);
             driveInfo.isCanEject = g_drive_can_eject(gdrive);
             driveInfo.isCanStop = g_drive_can_stop(gdrive);
             driveInfo.isCanStart = g_drive_can_start(gdrive);
@@ -970,6 +968,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                             volumeInfo.strDevName = strDevName;
                             g_free(strDevName);
                         }
+                        p_this->getVolumeIconsInfo(volume, volumeInfo);
                         volumeInfo.isCanMount = g_volume_can_mount(volume);
                         volumeInfo.isCanEject = g_volume_can_eject(volume);
                         volumeInfo.isShouldAutoMount = g_volume_should_automount(volume);
@@ -1021,6 +1020,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                                     }
                                     g_object_unref(root);
                                 }
+                                p_this->getMountIconsInfo(mount, volumeInfo.mountInfo);
                             }
                             g_object_unref(mount);
                         } else {
@@ -1108,6 +1108,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
                 driveInfo.strName = strName;
                 g_free(strName);
             }
+            p_this->getDriveIconsInfo(gdrive, driveInfo);
             driveInfo.isCanEject = g_drive_can_eject(gdrive);
             driveInfo.isCanStop = g_drive_can_stop(gdrive);
             driveInfo.isCanStart = g_drive_can_start(gdrive);
@@ -1136,7 +1137,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
                 volumeInfo.strDevName = strDevName;
                 g_free(strDevName);
             }
-
+            p_this->getVolumeIconsInfo(gvolume, volumeInfo);
             volumeInfo.isCanMount = g_volume_can_mount(gvolume);
             volumeInfo.isCanEject = g_volume_can_eject(gvolume);
             volumeInfo.isShouldAutoMount = g_volume_should_automount(gvolume);
@@ -1198,6 +1199,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
         }
         g_object_unref(root);
     }
+    p_this->getMountIconsInfo(mount, mountInfo);
 
     if (driveInfo.strId.empty()) {
        Q_EMIT p_this->telephoneMount();
@@ -1324,6 +1326,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                     driveInfo.strName = strName;
                     g_free(strName);
                 }
+                p_this->getDriveIconsInfo(gdrive, driveInfo);
                 driveInfo.isCanEject = g_drive_can_eject(gdrive);
                 driveInfo.isCanStop = g_drive_can_stop(gdrive);
                 driveInfo.isCanStart = g_drive_can_start(gdrive);
@@ -1346,7 +1349,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 volumeInfo.strDevName = strDevName;
                 g_free(strDevName);
             }
-
+            p_this->getVolumeIconsInfo(source_object, volumeInfo);
             volumeInfo.isCanMount = g_volume_can_mount(source_object);
             volumeInfo.isCanEject = g_volume_can_eject(source_object);
             volumeInfo.isShouldAutoMount = g_volume_should_automount(source_object);
@@ -1408,6 +1411,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
                 }
                 g_object_unref(root);
             }
+            p_this->getMountIconsInfo(gmount, mountInfo);
             g_object_unref(gmount);
         }
         if (bMountSuccess) {
@@ -2393,14 +2397,14 @@ void MainWindow::frobnitz_force_result_func(GDrive *source_object,GAsyncResult *
             driveInfo.strName = strName;
             g_free(strName);
         }
+        p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),
+                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
+        p_this->m_eject->show();
         FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
         if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
         {
             p_this->m_systray->hide();
         }
-        p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),
-                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
-        p_this->m_eject->show();
     } else {
         GList* listVolume = g_drive_get_volumes(source_object);
         if (listVolume) {
@@ -2446,14 +2450,14 @@ void MainWindow::frobnitz_result_func(GDrive *source_object,GAsyncResult *res,Ma
             driveInfo.strName = strName;
             g_free(strName);
         }
+        p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),
+                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
+        p_this->m_eject->show();
         FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
         if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
         {
             p_this->m_systray->hide();
         }
-        p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),
-                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
-        p_this->m_eject->show();
     } else /*if(g_drive_can_stop(source_object) == true)*/ {
         FDDriveInfo driveInfo;
         char *devPath = g_drive_get_identifier(source_object,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
@@ -2816,15 +2820,15 @@ GAsyncReadyCallback MainWindow::fileEjectMountableCB(GFile *file, GAsyncResult *
         FDDriveInfo driveInfo;
         driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
         driveInfo.strName = peDeviceInfo->strDriveName.toStdString();
-        FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
         MainWindow* pThis = (MainWindow*)(peDeviceInfo->pVoid);
+        pThis->m_eject = new ejectInterface(pThis->ui->centralWidget,QString::fromStdString(driveInfo.strName),
+                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
+        pThis->m_eject->show();
+        FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
         if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
         {
             pThis->m_systray->hide();
         }
-        pThis->m_eject = new ejectInterface(pThis->ui->centralWidget,QString::fromStdString(driveInfo.strName),
-                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
-        pThis->m_eject->show();
     } else /*if(g_drive_can_stop(source_object) == true)*/ {
         if (peDeviceInfo->uFlag != G_MOUNT_UNMOUNT_FORCE) {
             FDDriveInfo driveInfo;
@@ -2859,14 +2863,14 @@ void MainWindow::driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo
         driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
         driveInfo.strName = peDeviceInfo->strDriveName.toStdString();
         MainWindow* pThis = (MainWindow*)(peDeviceInfo->pVoid);
+        pThis->m_eject = new ejectInterface(pThis->ui->centralWidget,QString::fromStdString(driveInfo.strName),
+                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
+        pThis->m_eject->show();
         FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
         if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
         {
             pThis->m_systray->hide();
         }
-        pThis->m_eject = new ejectInterface(pThis->ui->centralWidget,QString::fromStdString(driveInfo.strName),
-                                            NORMALDEVICE,QString::fromStdString(driveInfo.strId));
-        pThis->m_eject->show();
     } else {
         if (peDeviceInfo->uFlag != G_MOUNT_UNMOUNT_FORCE) {
             FDDriveInfo driveInfo;
@@ -3067,5 +3071,56 @@ bool MainWindow::getDataCDRomCapacity(QString strDevId, quint64 &totalCapacity)
         return true;
     } else {
         return false;
+    }
+}
+
+void MainWindow::getDriveIconsInfo(GDrive* drive, FDDriveInfo& driveInfo)
+{
+    GIcon *g_icon = g_drive_get_icon(drive);
+    if (g_icon) {
+        if (G_IS_THEMED_ICON(g_icon)) {
+            const gchar* const* icon_names = g_themed_icon_get_names(G_THEMED_ICON (g_icon));
+            if (icon_names) {
+                driveInfo.strIconPath = *icon_names;
+            }
+        }
+        g_object_unref(g_icon);
+    }
+}
+
+void MainWindow::getVolumeIconsInfo(GVolume* volume, FDVolumeInfo& volumeInfo)
+{
+    GIcon *g_icon = g_volume_get_icon(volume);
+    if (g_icon) {
+        if (G_IS_THEMED_ICON(g_icon)) {
+            const gchar* const* icon_names = g_themed_icon_get_names(G_THEMED_ICON (g_icon));
+            if (icon_names) {
+                volumeInfo.strIconPath = *icon_names;
+            }
+        }
+        g_object_unref(g_icon);
+    }
+}
+
+void MainWindow::getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo)
+{
+    GIcon *g_icon = g_mount_get_icon(mount);
+    if (g_icon) {
+        if (G_IS_ICON(g_icon)) {
+            if (G_IS_THEMED_ICON(g_icon)) {
+                const gchar* const* icon_names = g_themed_icon_get_names(G_THEMED_ICON (g_icon));
+                if (icon_names) {
+                    mountInfo.strIconPath = *icon_names;
+                }
+            } else {
+                //if it's a bootable-media,maybe we can get the icon from the mount directory.
+                char *bootableIcon = g_icon_to_string(g_icon);
+                if(bootableIcon){
+                    mountInfo.strIconPath = bootableIcon;
+                    g_free(bootableIcon);
+                }
+            }
+        }
+        g_object_unref(g_icon);
     }
 }

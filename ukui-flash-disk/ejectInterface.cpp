@@ -18,6 +18,7 @@
 #include "ejectInterface.h"
 #include <qgsettings.h>
 #include <KWindowEffects>
+#include "flashdiskdata.h"
 
 ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType,QString strDevId) : QWidget(parent),eject_image_label(nullptr),show_text_label(nullptr),
     mount_name_label(nullptr)
@@ -29,163 +30,62 @@ ejectInterface::ejectInterface(QWidget *parent,QString mount_name,int deviceType
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     EjectScreen = qApp->primaryScreen();
     eject_image_label = new QLabel(this);
-    eject_image_label->setFixedSize(30,30);
+    eject_image_label->setFixedSize(24,24);
     //QPixmap pixmap("kylin-media-removable-symbolic");
     QString strNoraml = "";
-    #if IFDISTINCT_DEVICON
-    if (strDevId.startsWith("/dev/sr")) {
-        eject_image_icon = QIcon::fromTheme("media-optical");
-        strNoraml = tr("cdrom has been unplugged safely");
-    } else if (strDevId.startsWith("/dev/mmcblk")) {
-        eject_image_icon = QIcon::fromTheme("media-memory-sd");
-        strNoraml = tr("sd has been unplugged safely");
-    } else {
+    QString strIcon = FlashDiskData::getInstance()->getVolumeIcon(strDevId);
+    eject_image_icon = QIcon::fromTheme(strIcon);
+    strNoraml = mount_name;
+    if (eject_image_icon.isNull()) {
         eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
-        strNoraml = tr("usb has been unplugged safely");
     }
-    #else
-    if (strDevId.startsWith("/dev/sr")) {
-        eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
-        strNoraml = tr("cdrom has been unplugged safely");
-    } else if (strDevId.startsWith("/dev/mmcblk")) {
-        eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
-        strNoraml = tr("sd has been unplugged safely");
-    } else {
-        eject_image_icon = QIcon::fromTheme("kylin-media-removable-symbolic");
-        strNoraml = tr("usb has been unplugged safely");
-    }
-    #endif
-    QPixmap pixmap = eject_image_icon.pixmap(QSize(25, 25));
+    QPixmap pixmap = eject_image_icon.pixmap(QSize(24, 24));
     eject_image_label->setPixmap(pixmap);
     //add it to show the eject button
 
-//    m_driveName_label = new QLabel();         ////
-//    m_driveName_label->setFont(QFont("Noto Sans CJK SC",14));
-//    QString DriveName = getElidedText(m_driveName_label->font(), m_driveName, 180);
-//    m_driveName_label->setText(DriveName);
-//    m_driveName_label->setFixedSize(180,40);  ////
-//    if(eject_image_button)
-//    {
-//        eject_image_button->setIcon(eject_image_icon);
-//    }
-
-//    //set the size of the picture
-//    eject_image_button->setIconSize(QSize(25,25));
-
     show_text_label = new QLabel(this);
+    show_text_label->setFixedSize(192, 36);
     show_text_label->setFont(QFont("Noto Sans CJK SC",fontSize));
-    QString strOccupy = tr("usb is occupying unejectable");
-    QString strDataDevice = tr("data device has been unloaded");
-    QString strGParted = tr("gparted has started");
-    QString normalShow = getElidedText(show_text_label->font(),strNoraml,150);
-    QString occupyShow = getElidedText(show_text_label->font(),strOccupy,150);
-    QString datadeviceShow = getElidedText(show_text_label->font(),strDataDevice,150);
-    QString gpartedShow = getElidedText(show_text_label->font(),strGParted,150);
+    show_text_label->setAlignment(Qt::AlignHCenter);
+    QString normalShow = getElidedText(show_text_label->font(),strNoraml,192);
     //add the text of the eject interface
-    if(show_text_label)
-    {
-        if(deviceType == NORMALDEVICE)
-        {
-            show_text_label->setText(normalShow);
-//            QPalette pe;
-//            pe.setColor(QPalette::WindowText,Qt::white);
-//            show_text_label->setPalette(pe);
-        }
-        else if(deviceType == OCCUPYDEVICE)
-        {
-//            show_text_label->setText(tr("usb is occupying unejectable"));
-            show_text_label->setText(occupyShow);
-        }
-        else if(deviceType == DATADEVICE)
-        {
-//            show_text_label->setText(tr("data device has been unloaded"));
-            show_text_label->setText(datadeviceShow);
-        }
-        else if(deviceType == GPARTEDINTERFACE)
-        {
-            show_text_label->setText(gpartedShow);
-        }
-        else{}
+    show_text_label->setText(normalShow);
+    if (strNoraml != normalShow) {
+        show_text_label->setToolTip(strNoraml);
     }
 
     ejectinterface_h_BoxLayout = new QHBoxLayout();
-    if(ejectinterface_h_BoxLayout)
-    {
-        ejectinterface_h_BoxLayout->addStretch();
-        ejectinterface_h_BoxLayout->addWidget(eject_image_label);
-        ejectinterface_h_BoxLayout->addWidget(show_text_label);
-        ejectinterface_h_BoxLayout->addStretch();
-    }
-    mountname_h_BoxLayout = new QHBoxLayout();
-    mount_name_label = new QLabel(this);
-    mount_name_label->setFont(QFont("Noto Sans CJK SC",fontSize));
-    if(mount_name_label)
-    {
-        mount_name_label->setText(mount_name);
-    }
-    mountname_h_BoxLayout->addStretch();
-    mountname_h_BoxLayout->addWidget(mount_name_label);
-    mountname_h_BoxLayout->addStretch();
-    main_V_BoxLayput = new QVBoxLayout;
-    main_V_BoxLayput->addLayout(ejectinterface_h_BoxLayout);
-    main_V_BoxLayput->addLayout(mountname_h_BoxLayout);
+    ejectinterface_h_BoxLayout->setContentsMargins(0,0,0,0);
+    ejectinterface_h_BoxLayout->setSpacing(8);
+    ejectinterface_h_BoxLayout->addWidget(eject_image_label,0,Qt::AlignLeft|Qt::AlignTop);
+    ejectinterface_h_BoxLayout->addWidget(show_text_label,0,Qt::AlignHCenter|Qt::AlignTop);
 
-    this->setFixedSize(210,86);
+    QHBoxLayout *ejectTipLayout = new QHBoxLayout();
+    ejectTipLayout->setContentsMargins(0,0,0,0);
+    ejectTipLayout->setSpacing(0);
+    QLabel *ejectTip = new QLabel();
+    ejectTip->setText(tr("Storage device can be safely unplugged"));
+    ejectTip->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
+    ejectTip->setWordWrap(true);
+    ejectTipLayout->addWidget(ejectTip,0,Qt::AlignHCenter|Qt::AlignTop);
+
+    main_V_BoxLayput = new QVBoxLayout;
+    main_V_BoxLayput->setContentsMargins(8,8,8,8);
+    main_V_BoxLayput->setSpacing(0);
+    main_V_BoxLayput->addLayout(ejectinterface_h_BoxLayout);
+    main_V_BoxLayput->addLayout(ejectTipLayout);
+    main_V_BoxLayput->addStretch();
+
+    QString strTipShow = getElidedText(ejectTip->font(),ejectTip->text(),224);
+    if (strTipShow != ejectTip->text()) {
+        this->setFixedSize(240,120);
+    } else {
+        this->setFixedSize(240,90);
+    }
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     this->setAttribute(Qt::WA_DeleteOnClose); //设置窗口关闭时自动销毁
 
-//    QPainterPath path;
-//    auto rect = this->rect();
-//    rect.adjust(0,0,-0,-0);
-//    path.addRoundedRect(rect, 6, 6);
-//    setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
-
-    //set the mian style of the ejecet interface
-//    this->setStyleSheet("QWidget{"
-//                        "background:rgba(19,19,20,1);"
-//                        "border:1px solid rgba(255, 255, 255, 0.05);"
-//                        "border-radius:6px;"
-//                        "box-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.2);"
-//                        "border-radius:6px"
-//                        "}");
-
-    //set the style of the ejecet-image-button
-
-//    eject_image_button->setStyleSheet(
-//                //正常状态样式
-//                "QPushButton{"
-//                "color:rgba(255,255,255,1);"
-//                "line-height:24px;"
-//                "opacity:1;"
-//                "border:none;"
-//                "}"
-//                );
-    //set the syle of show_text_label
-//    show_text_label->setStyleSheet(
-//                //正常状态样式
-//                "QLabel{"
-//                "font-size:16px;"
-//                "font-family:NotoSansCJKsc-Regular;"
-//                "font-weight:400;"
-//                "color:rgba(255,255,255,1);"
-//                "line-height:24px;"
-//                "opacity:1;"
-//                "border:none;"
-//                "}");
-//    mount_name_label->setStyleSheet(
-//                //正常状态样式
-//                "QLabel{"
-//                "width:93px;"
-//                "height:15px;"
-//                "font-size:14px;"
-//                "font-family:NotoSansCJKsc-Regular;"
-//                "font-weight:400;"
-//                "color:rgba(255,255,255,0.35);"
-//                "line-height:28px;"
-//                "opacity:0.35;"
-//                "border:none;"
-//                "}");
     this->setLayout(main_V_BoxLayput);
 
     //set the main signal-slot function to complete the eject interface to let it disappear automatically

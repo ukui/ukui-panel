@@ -133,7 +133,15 @@
     </message>
     <message>
         <source>Removable storage device removed</source>
-        <translation>移动存储设备已移除</translation>
+        <translation type="vanished">移动存储设备已移除</translation>
+    </message>
+    <message>
+        <source>Please do not pull out the storage device when reading or writing</source>
+        <translation>存储设备读写时请不要直接拔出</translation>
+    </message>
+    <message>
+        <source>Storage device removed</source>
+        <translation>存储设备已移除</translation>
     </message>
 </context>
 <context>
@@ -236,27 +244,23 @@
     <name>ejectInterface</name>
     <message>
         <source>usb has been unplugged safely</source>
-        <translation>U盘已安全拔出</translation>
+        <translation type="vanished">U盘已安全拔出</translation>
     </message>
     <message>
         <source>cdrom has been unplugged safely</source>
-        <translation>光盘已安全拔出</translation>
+        <translation type="vanished">光盘已安全拔出</translation>
     </message>
     <message>
         <source>sd has been unplugged safely</source>
-        <translation>SD卡已安全拔出</translation>
+        <translation type="vanished">SD卡已安全拔出</translation>
     </message>
     <message>
         <source>usb is occupying unejectable</source>
-        <translation>U盘占用无法弹出</translation>
+        <translation type="vanished">U盘占用无法弹出</translation>
     </message>
     <message>
-        <source>data device has been unloaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>gparted has started</source>
-        <translation type="unfinished"></translation>
+        <source>Storage device can be safely unplugged</source>
+        <translation>存储设备可以安全拔出</translation>
     </message>
 </context>
 <context>

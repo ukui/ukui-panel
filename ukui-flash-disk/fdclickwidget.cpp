@@ -23,6 +23,8 @@
 #include "MacroFile.h"
 #include <KWindowEffects>
 #include <QFontMetrics>
+#include "flashdiskdata.h"
+#include "UnionVariable.h"
 
 FDClickWidget::FDClickWidget(QWidget *parent,
                           unsigned diskNo,
@@ -72,11 +74,9 @@ FDClickWidget::FDClickWidget(QWidget *parent,
         //to get theme picture for label
         #if IFDISTINCT_DEVICON
         QString strDevId = m_driveId.isEmpty()?m_volumeId:m_driveId;
-        if (strDevId.startsWith("/dev/sr")) {
-            imgIcon = QIcon::fromTheme("media-optical");
-        } else if (strDevId.startsWith("/dev/mmcblk")) {
-            imgIcon = QIcon::fromTheme("media-memory-sd");
-        } else {
+        QString strIcon = FlashDiskData::getInstance()->getVolumeIcon(strDevId);
+        imgIcon = QIcon::fromTheme(strIcon);
+        if (imgIcon.isNull()) {
             imgIcon = QIcon::fromTheme("drive-removable-media-usb");
         }
         #else 
@@ -119,6 +119,7 @@ FDClickWidget::FDClickWidget(QWidget *parent,
     QHBoxLayout *onevolume_h_BoxLayout = new QHBoxLayout();
     m_nameDis1_label = new ClickLabel(disWidgetNumOne);
     m_nameDis1_label->setFont(QFont("Microsoft YaHei",fontSize));
+    handleVolumeLabelForFat32Me(m_volumeName, m_volumeId);
     QString VolumeName = getElidedText(m_nameDis1_label->font(), m_volumeName, 120);
     m_nameDis1_label->adjustSize();
     m_nameDis1_label->setText("- "+VolumeName+":");
@@ -338,19 +339,15 @@ QString FDClickWidget::size_human(qlonglong capacity)
             conversion /= 1024.0;
             conversionNum++;
         }
-
         qlonglong remain  = capacity - conversion * qPow(1024,conversionNum);
-        float showRemain;
-        if(conversionNum == 3)
-        {
+        double showRemain = 0.0;
+        if(conversionNum == 4) {
+            showRemain = (float)remain /1024/1024/1024/1024;
+        } else if(conversionNum == 3) {
             showRemain = (float)remain /1024/1024/1024;
-        }
-        if(conversionNum == 2)
-        {
+        } else if(conversionNum == 2) {
             showRemain = (float)remain /1024/1024;
-        }
-        if(conversionNum == 1)
-        {
+        } else if(conversionNum == 1) {
             showRemain = (float)remain /1024;
         }
 

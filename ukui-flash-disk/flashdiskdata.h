@@ -45,6 +45,7 @@ typedef struct FDMountInfo_s {
     bool   isNewInsert = false;
     quint64 lluTotalSize = 0;
     quint64 lluMountTick = 0;
+    string strIconPath = "";
 }FDMountInfo;
 
 typedef struct FDVolumeInfo_s {
@@ -56,6 +57,7 @@ typedef struct FDVolumeInfo_s {
     bool   isCanEject = false;
     bool   isNewInsert = false;
     FDMountInfo mountInfo;
+    string strIconPath = "";
 }FDVolumeInfo;
 Q_DECLARE_METATYPE(FDVolumeInfo);
 
@@ -67,6 +69,7 @@ typedef struct FDDriveInfo_s {
     bool    isCanStart = false;
     bool    isCanStop = false;
     map<string, FDVolumeInfo> listVolumes;
+    string strIconPath = "";
 }FDDriveInfo;
 
 class FlashDiskData : public QObject
@@ -93,6 +96,7 @@ public:
     quint64 getMountTickDiff(FDMountInfo mountInfo);
     bool getVolumeInfoByMount(FDMountInfo mountInfo, FDVolumeInfo& volumeInfo);
     unsigned getAttachedVolumeCount(string strId);
+    QString getVolumeIcon(QString strVolumeId);
 
     void OutputInfos();
 
