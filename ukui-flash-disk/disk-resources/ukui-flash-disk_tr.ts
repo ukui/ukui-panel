@@ -124,7 +124,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Removable storage device removed</source>
+        <source>Please do not pull out the storage device when reading or writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Storage device removed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -220,26 +224,10 @@
     <name>ejectInterface</name>
     <message>
         <source>usb has been unplugged safely</source>
-        <translation>USB güvenli bir şekilde çıkarıldı</translation>
+        <translation type="vanished">USB güvenli bir şekilde çıkarıldı</translation>
     </message>
     <message>
-        <source>cdrom has been unplugged safely</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>sd has been unplugged safely</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>usb is occupying unejectable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>data device has been unloaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>gparted has started</source>
+        <source>Storage device can be safely unplugged</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
