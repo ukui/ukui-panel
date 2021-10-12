@@ -140,15 +140,8 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
             dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
             _timeUpdate();
             setColor(dark_style);
-            QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-up-symbolic")).pixmap(QSize(24, 24));
-            PictureToWhite pictToWhite1;
-            btnPrevYear->setPixmap(pictToWhite1.drawSymbolicColoredPixmap(pixmap1));
-            btnPrevYear->setProperty("useIconHighlightEffect", 0x2);
-
-            QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-down-symbolic")).pixmap(QSize(24, 24));
-            PictureToWhite pictToWhite2;
-            btnNextYear->setPixmap(pictToWhite2.drawSymbolicColoredPixmap(pixmap2));
-            btnNextYear->setProperty("useIconHighlightEffect", 0x2);
+        }else{
+            qDebug()<<"key!=STYLE_NAME";
         }
     });
 
@@ -346,6 +339,7 @@ void LunarCalendarWidget::initWidget()
     btnYear->setFocusPolicy(Qt::NoFocus);
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnYear->setText(tr("Year"));
+    btnYear->setToolTip(tr("Year"));
     btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
     connect(btnYear,&QPushButton::clicked,this,&LunarCalendarWidget::yearWidgetChange);
 
@@ -354,6 +348,7 @@ void LunarCalendarWidget::initWidget()
     btnMonth->setFocusPolicy(Qt::NoFocus);
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnMonth->setText(tr("Month"));
+    btnMonth->setToolTip(tr("Month"));
     btnMonth->setStyle(new CustomStyle_pushbutton("ukui-default"));
     connect(btnMonth,&QPushButton::clicked,this,&LunarCalendarWidget::monthWidgetChange);
 
@@ -364,6 +359,7 @@ void LunarCalendarWidget::initWidget()
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnToday->setText(tr("Today"));
+    btnToday->setToolTip(tr("Today"));
 
     //年份与月份下拉框 暂不用此
     cboxYearandMonth = new QComboBox;
@@ -391,7 +387,7 @@ void LunarCalendarWidget::initWidget()
     //顶部横向布局
     QHBoxLayout *layoutTop = new QHBoxLayout(widgetTop);
     layoutTop->setContentsMargins(0, 0, 0, 9);
-    layoutTop->addItem(new QSpacerItem(5,1));
+//    layoutTop->addItem(new QSpacerItem(5,1));//去掉按钮间的间隔限制
 
     layoutTop->addWidget(cboxYearandMonthLabel);
     layoutTop->addStretch();
@@ -404,7 +400,7 @@ void LunarCalendarWidget::initWidget()
     layoutTop->addWidget(btnMonth);
     layoutTop->addWidget(btnToday);
     layoutTop->addStretch();
-    layoutTop->addItem(new QSpacerItem(10,1));
+//    layoutTop->addItem(new QSpacerItem(10,1));//去掉按钮间的间隔限制
 
     //时间
     widgetTime->setMinimumHeight(50);
