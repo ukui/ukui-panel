@@ -29,23 +29,27 @@ void PictureToWhite::initGsettingValue()
     stylelist << STYLE_NAME_KEY_DARK << STYLE_NAME_KEY_LIGHT << STYLE_NAME_KEY_DEFAULT << STYLE_NAME_KEY_BLACK;
     if (QGSettings::isSchemaInstalled(id)) {
         m_pgsettings = new QGSettings(id);
-        if (stylelist.contains(m_pgsettings->get(STYLE_NAME).toString()) && m_pgsettings->get(STYLE_NAME).toString() == STYLE_NAME_KEY_LIGHT)
+        if (stylelist.contains(m_pgsettings->get(STYLE_NAME).toString()) && m_pgsettings->get(STYLE_NAME).toString() == STYLE_NAME_KEY_LIGHT){
             tray_icon_color = TRAY_ICON_COLOR_LOGHT;
-        else
+        }else{
             tray_icon_color = TRAY_ICON_COLOR_DRAK;
+        }
     }
     connect(m_pgsettings, &QGSettings::changed, this, [=] (const QString &key) {
         if (key==STYLE_NAME) {
-            if (stylelist.contains(m_pgsettings->get(STYLE_NAME).toString()) && m_pgsettings->get(STYLE_NAME).toString() == STYLE_NAME_KEY_LIGHT)
+            if (stylelist.contains(m_pgsettings->get(STYLE_NAME).toString()) && m_pgsettings->get(STYLE_NAME).toString() == STYLE_NAME_KEY_LIGHT){
                 tray_icon_color = TRAY_ICON_COLOR_LOGHT;
-            else
+            }else{
                 tray_icon_color = TRAY_ICON_COLOR_DRAK;
+            }
+
         }
     });
 }
 
 QPixmap PictureToWhite::drawSymbolicColoredPixmap(const QPixmap &source)
 {
+
     QColor gray(128,128,128);
     QColor standard (31,32,34);
     QImage img = source.toImage();
@@ -59,12 +63,19 @@ QPixmap PictureToWhite::drawSymbolicColoredPixmap(const QPixmap &source)
                     color.setBlue(tray_icon_color);
                     img.setPixelColor(x, y, color);
                 } else if (qAbs(color.red()-standard.red()) < 20 && qAbs(color.green()-standard.green()) < 20 && qAbs(color.blue()-standard.blue()) < 20) {
+//                   qDebug()<<"反色"<<tray_icon_color;
                     color.setRed(tray_icon_color);
                     color.setGreen(tray_icon_color);
                     color.setBlue(tray_icon_color);
                     img.setPixelColor(x, y, color);
-                } else
+                } else {
+                    //其他则默认反色255
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
                     img.setPixelColor(x, y, color);
+                }
+
             }
         }
     }
