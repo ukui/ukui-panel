@@ -264,7 +264,7 @@ void UKUITaskGroup::initDesktopFileName(WId window) {
             continue;
         _cmd.sprintf(GET_DESKTOP_EXEC_NAME_MAIN, fileInfo.filePath().toStdString().data());
         QString desktopFileExeName = getDesktopFileName(_cmd);
-        if (desktopFileExeName.at(desktopFileExeName.size() - 1) == '\n')
+        if ((!desktopFileExeName.isEmpty()) && (desktopFileExeName.at(desktopFileExeName.size() - 1) == '\n'))
             desktopFileExeName.truncate(desktopFileExeName.size() - 1);
         flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
         if (flag && !desktopFileExeName.isEmpty()) {
@@ -578,7 +578,7 @@ void UKUITaskGroup::onWindowRemoved(WId window)
         button->deleteLater();
         if (!parentTaskBar()->getCpuInfoFlg())
             system(QString("rm -f /tmp/%1.png").arg(window).toLatin1());
-        if (isLeaderWindow(window))
+        if (isLeaderWindow(window) && (mShowInTurn.size() > 0))
             setLeaderWindow(mButtonHash.key(mShowInTurn.at(0)));
         if (mButtonHash.count())
         {
@@ -845,7 +845,8 @@ void UKUITaskGroup::refreshVisibility()
         }
         will |= visible;
     }
-    setLeaderWindow(mVisibleHash.key(mShowInTurn.at(0)));
+    if (!mShowInTurn.isEmpty())
+        setLeaderWindow(mVisibleHash.key(mShowInTurn.at(0)));
 
     bool is = isVisible();
   //  emit groupVisible(groupName(), will);
@@ -908,11 +909,11 @@ void UKUITaskGroup::refreshIconsGeometry()
         return;
     }
 
-//    for(UKUITaskButton *but : qAsConst(mButtonHash))
-//    {
-//        but->refreshIconGeometry(rect);
+    for(UKUITaskWidget *but : qAsConst(mButtonHash))
+    {
+        but->refreshIconGeometry(rect);
 //        but->setIconSize(QSize(plugin()->panel()->iconSize(), plugin()->panel()->iconSize()));
-//    }
+    }
 }
 
 /************************************************
