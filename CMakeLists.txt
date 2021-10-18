@@ -164,23 +164,11 @@ if(CALENDAR_PLUGIN)
     add_subdirectory(plugin-calendar)
 endif(CALENDAR_PLUGIN)
 
-setByDefault(STARTMENU_PLUGIN No)
-if(STARTMENU_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "startmenu")
-    add_subdirectory(plugin-startmenu)
-endif(STARTMENU_PLUGIN)
-
 setByDefault(NIGHTMODE_PLUGIN Yes)
 if(NIGHTMODE_PLUGIN)
     list(APPEND ENABLED_PLUGINS "nightmode")
     add_subdirectory(plugin-nightmode)
 endif(NIGHTMODE_PLUGIN)
-
-setByDefault(TASKVIEW_PLUGIN No)
-if(TASKVIEW_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "taskview")
-    add_subdirectory(plugin-taskview)
-endif(TASKVIEW_PLUGIN)
 
 setByDefault(SEGMENTATION_PLUGIN Yes)
 if(SEGMENTATION_PLUGIN)
