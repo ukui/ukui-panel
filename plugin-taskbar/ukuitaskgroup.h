@@ -109,11 +109,6 @@ public:
     UKUITaskGroup* getOwnQckBtn() { return this->mpQckLchBtn; }
 
     QWidget * addWindow(WId id);
-    QWidget * checkedButton() const;
-
-    // Returns the next or the previous button in the popup
-    // if circular is true, then it will go around the list of buttons
-    QWidget * getNextPrevChildButton(bool next, bool circular);
 
     bool onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2);
     Qt::ToolButtonStyle popupButtonStyle() const;

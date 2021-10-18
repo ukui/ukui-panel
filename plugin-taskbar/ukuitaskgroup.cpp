@@ -140,8 +140,7 @@ UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin,
         }
     });
     setContextMenuPolicy(Qt::CustomContextMenu);
-   // connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
-   //         this, SLOT(toDothis_customContextMenuRequested(const QPoint&)));
+
     file_name=act->m_settingsMap["desktop"];
     file = act->m_settingsMap["file"];
     exec = act->m_settingsMap["exec"];
@@ -150,14 +149,6 @@ UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin,
     repaint();
 }
 
-
-
-////////////////////////////////////////////////////////////////////////
-/// \brief UKUITaskGroup::UKUITaskGroup
-/// \param groupName
-/// \param window
-/// \param parent
-///
 
 UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *parent)
     : UKUITaskButton(groupName,window, parent, parent),
@@ -189,21 +180,6 @@ UKUITaskGroup::UKUITaskGroup(const QString &groupName, WId window, UKUITaskBar *
 
 UKUITaskGroup::~UKUITaskGroup()
 {
-//    if(mPopup)
-//    {
-//        mPopup->deleteLater();
-//        mPopup = NULL;
-//    }
-//    if(mpWidget)
-//    {
-//        mpWidget->deleteLater();
-//        mpWidget = NULL;
-//    }
-//    if(VLayout)
-//    {
-//        VLayout->deleteLater();
-//        VLayout = NULL;
-//    }
 }
 
 
@@ -306,64 +282,14 @@ void UKUITaskGroup::initActionsInRightButtonMenu(){
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
     XdgDesktopFile xdg;
-    if (xdg.load(fileName))
-    {
-        /*This fuction returns true if the desktop file is applicable to the
-          current environment.
-          but I don't need this attributes now
-        */
-        //        if (xdg.isSuitable())
+    if (xdg.load(fileName)){
         mAct = new QuickLaunchAction(&xdg, this);
-    }
-    else if (fi.exists() && fi.isExecutable() && !fi.isDir())
-    {
-        mAct = new QuickLaunchAction(fileName, fileName, "", this);
-    }
-    else if (fi.exists())
-    {
+    }else if (fi.exists()){
         mAct = new QuickLaunchAction(fileName, this);
     }
     setGroupIcon(mAct->getIconfromAction());
 }
 
-/************************************************
-
- ************************************************/
-
-//void UKUITaskGroup::initGroupName(QString Name) {
-//    QFile file(Name);
-//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//        qDebug() << "Can't Read The Desktop File in /usr/share/application -- taskgroup init failed";
-//    }
-//    while (!file.atEnd()) {
-//        QByteArray line = file.readLine();
-//        QString str(line);
-//        qDebug() << str;
-//    }
-//}
-
-//void UKUITaskGroup::initFileName(QString Name) {
-//    path = "/usr/share/applications/"
-//    QFile file(Name);
-//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//        qDebug() << "Can't Read The Desktop File in /usr/share/application -- taskgroup init failed";
-//    }
-//    while (!file.atEnd()) {
-//        QByteArray line = file.readLine();
-//        QString str(line);
-//        qDebug() << str;
-//    }
-//}
-
-
-//void UKUITaskGroup::initDoubleName(QString Name) {
-//    if (file_name) {
-//        initGroupName(Name);
-//    }
-//    if (mGroupName) {
-//        initFileName(Name);
-//    }
-//}
 
 void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 {
@@ -411,7 +337,6 @@ void UKUITaskGroup::AddtoTaskBar()
  ************************************************/
 void UKUITaskGroup::closeGroup()
 {
-    //To Do
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
     for(auto it=mButtonHash.begin();it!=mButtonHash.end();it++)
     {
@@ -464,17 +389,6 @@ QWidget * UKUITaskGroup::addWindow(WId id)
     return btn;
 }
 
-/************************************************
-
- ************************************************/
-QWidget * UKUITaskGroup::checkedButton() const
-{
-//    for (QWidget* button : qAsConst(mButtonHash))
-//        if (button->isChecked())
-//            return button;
-
-    return NULL;
-}
 
 /*changeTaskButtonStyle in class UKUITaskGroup not class UKUITaskButton
  * because class UKUITaskButton can not get mButtonHash.size
@@ -486,57 +400,7 @@ void UKUITaskGroup::changeTaskButtonStyle()
     else
         this->setStyle(new CustomStyle("taskbutton",false));
 }
-/************************************************
 
- ************************************************/
-QWidget * UKUITaskGroup::getNextPrevChildButton(bool next, bool circular)
-{
-#if 0
-    QWidget *button = checkedButton();
-    int idx = mPopup->indexOf(button);
-    int inc = next ? 1 : -1;
-    idx += inc;
-
-    // if there is no cheked button, get the first one if next equals true
-    // or the last one if not
-    if (!button)
-    {
-        idx = -1;
-        if (next)
-        {
-            for (int i = 0; i < mPopup->count() && idx == -1; i++)
-                if (mPopup->itemAt(i)->widget()->isVisibleTo(mPopup))
-                    idx = i;
-        }
-        else
-        {
-            for (int i = mPopup->count() - 1; i >= 0 && idx == -1; i--)
-                if (mPopup->itemAt(i)->widget()->isVisibleTo(mPopup))
-                    idx = i;
-        }
-    }
-
-    if (circular)
-        idx = (idx + mButtonHash.count()) % mButtonHash.count();
-    else if (mPopup->count() <= idx || idx < 0)
-        return NULL;
-
-    // return the next or the previous child
-    QLayoutItem *item = mPopup->itemAt(idx);
-    if (item)
-    {
-        button = qobject_cast<UKUITaskButton*>(item->widget());
-        if (button->isVisibleTo(mPopup))
-            return button;
-    }
-
-#endif
-     return NULL;
-}
-
-/************************************************
-
- ************************************************/
 void UKUITaskGroup::onActiveWindowChanged(WId window)
 {
     UKUITaskWidget *button = mButtonHash.value(window, nullptr);
@@ -1077,15 +941,6 @@ void UKUITaskGroup::enterEvent(QEvent *event)
     }
     mEvent = event;
     mTimer->start(400);
-//    if (sDraggging)
-//        return;
-//    if (parentTaskBar()->isShowGroupOnHover())
-//    {
-//        setPopupVisible(true);
-//        parentTaskBar()->setShowGroupOnHover(false);//enter this group other groups will be blocked
-//    }
-//    taskgroupStatus = HOVER;
-//    repaint();
 }
 
 void UKUITaskGroup::handleSavedEvent()

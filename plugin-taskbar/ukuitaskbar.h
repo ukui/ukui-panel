@@ -130,7 +130,6 @@ public:
     int countOfButtons() const;
     //virtual QLayoutItem *takeAt(int index) = 0;
     void saveSettings();
-    void showPlaceHolder();
     void refreshQuickLaunch();
     bool isDesktopFile(QString urlName);
     friend class FilectrlAdaptor;
@@ -164,13 +163,9 @@ private slots:
     void refreshPlaceholderVisibility();
     void groupBecomeEmptySlot();
     void saveSettingsSlot();
-   // void groupHiddenSlot();
-   // void groupVisibleSlot(QString name, bool will);
     void onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2);
     void onWindowAdded(WId window);
     void onWindowRemoved(WId window);
-    void registerShortcuts();
-    void shortcutRegistered();
     void activateTask(int pos);
     void DosaveSettings() { saveSettings(); }
     void onDesktopChanged();
@@ -205,18 +200,12 @@ private:
 
     QVector<UKUITaskGroup*> mVBtn;
     QGSettings *settings;
-    QFileSystemWatcher *fsWatcher;
-    QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
-    QString desktopFilePath ="/usr/share/applications/";
-    QString androidDesktopFilePath =QDir::homePath()+"/.local/share/applications/";
 
     QToolButton *pageup;
     QToolButton *pagedown;
     QWidget *tmpwidget;
     QVector <UKUITaskGroup*> mBtnAll;
     QVector <int> mBtncvd;
-
-    void directoryUpdated(const QString &path);
 
 private:
     QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
@@ -242,7 +231,6 @@ private:
     bool mShowGroupOnHover;
     bool mIconByClass;
     bool mCycleOnWheelScroll; //!< flag for processing the wheelEvent
-    bool hasPlaceHolder;
 
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
@@ -253,25 +241,21 @@ private:
     void resizeEvent(QResizeEvent *event);
 
     IUKUIPanelPlugin *mPlugin;
-    QWidget *mPlaceHolder;
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
 
-    QList<QString> blacklist;
-    QList<QString> whitelist;
-    QString mModel;
-    QString SecurityConfigPath;
-
 public slots:
     bool AddToTaskbar(QString arg);
+    /*为开始菜单提供从任务栏上移除的接口*/
     bool RemoveFromTaskbar(QString arg);
-    void FileDeleteFromTaskbar(QString arg);
+    /*
+     * @need resolved bug
+     * 为开始菜单提供检测应用是否在任务栏上面的接口
+     */
     bool CheckIfExist(QString arg);
-    int GetPanelPosition(QString arg);
-    int GetPanelSize(QString arg);
+
     void WindowAddtoTaskBar(QString arg);
     void WindowRemovefromTaskBar(QString arg);
-    QString GetSecurityConfigPath();
 
 };
 
@@ -289,30 +273,17 @@ class FilectrlAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"out\" type=\"b\"/>\n"
 "      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
 "    </method>\n"
-"    <method name=\"FileDeleteFromTaskbar\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
-"    </method>\n"
 "    <method name=\"CheckIfExist\">\n"
 "      <arg direction=\"out\" type=\"b\"/>\n"
 "      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
 "    </method>\n"
-"    <method name=\"GetPanelPosition\">\n"
-"      <arg direction=\"out\" type=\"i\"/>\n"
-"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
-"    </method>\n"
-"    <method name=\"GetPanelSize\">\n"
-"      <arg direction=\"out\" type=\"i\"/>\n"
-"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
-"    </method>\n"
-"    <method name=\"ReloadSecurityConfig\">\n"
-"    </method>\n"
-"    <method name=\"GetSecurityConfigPath\">\n"
-"      <arg direction=\"out\" type=\"s\"/>\n"
-"    </method>\n"
 "  </interface>\n"
         "")
 public:
+    /*
+     * Implementation of adaptor class FilectrlAdaptor
+     * 为开始菜单提供D_Bus接口
+     */
     FilectrlAdaptor(QObject *parent);
     virtual ~FilectrlAdaptor();
 
@@ -321,11 +292,6 @@ public Q_SLOTS: // METHODS
     bool AddToTaskbar(const QString &arg);
     bool CheckIfExist(const QString &arg);
     bool RemoveFromTaskbar(const QString &arg);
-    bool FileDeleteFromTaskbar(const QString &arg);
-    int GetPanelPosition(const QString &arg);
-    int GetPanelSize(const QString &arg);
-    void ReloadSecurityConfig();
-    QString GetSecurityConfigPath();
 
 Q_SIGNALS: // SIGNALS
 

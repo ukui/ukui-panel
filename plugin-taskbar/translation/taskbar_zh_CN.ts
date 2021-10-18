@@ -4,14 +4,14 @@
 <context>
     <name>UKUITaskBar</name>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="386"/>
-        <location filename="../ukuitaskbar.cpp" line="1389"/>
+        <location filename="../ukuitaskbar.cpp" line="331"/>
+        <location filename="../ukuitaskbar.cpp" line="1152"/>
         <source>Drop Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="387"/>
-        <location filename="../ukuitaskbar.cpp" line="1390"/>
+        <location filename="../ukuitaskbar.cpp" line="332"/>
+        <location filename="../ukuitaskbar.cpp" line="1153"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation type="unfinished"></translation>
     </message>
@@ -122,32 +122,32 @@
 <context>
     <name>UKUITaskGroup</name>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="378"/>
+        <location filename="../ukuitaskgroup.cpp" line="304"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="385"/>
+        <location filename="../ukuitaskgroup.cpp" line="311"/>
         <source>delete from taskbar</source>
         <translation>从任务栏取消固定</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="387"/>
+        <location filename="../ukuitaskgroup.cpp" line="313"/>
         <source>add to taskbar</source>
         <translation>添加到任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="392"/>
+        <location filename="../ukuitaskgroup.cpp" line="318"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="1036"/>
+        <location filename="../ukuitaskgroup.cpp" line="901"/>
         <source>Drop Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="1037"/>
+        <location filename="../ukuitaskgroup.cpp" line="902"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation type="unfinished"></translation>
     </message>
