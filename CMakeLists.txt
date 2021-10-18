@@ -170,12 +170,6 @@ if(NIGHTMODE_PLUGIN)
     add_subdirectory(plugin-nightmode)
 endif(NIGHTMODE_PLUGIN)
 
-setByDefault(SEGMENTATION_PLUGIN Yes)
-if(SEGMENTATION_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "segmentation")
-    add_subdirectory(plugin-segmentation)
-endif(SEGMENTATION_PLUGIN)
-
 setByDefault(STARTBAR_PLUGIN Yes)
 if(STARTBAR_PLUGIN)
     list(APPEND ENABLED_PLUGINS "startbar")
