@@ -1,6 +1,6 @@
-#include "snideamo.h"
+#include "snidaemon.h"
 #include "statusnotifieritem_interface.h"
-SniDeamo::SniDeamo()
+SniDaemon::SniDaemon()
 {
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerObject(QStringLiteral("/StatusNotifierWatcher"),"org.kde.StatusNotifierWatcher",this,QDBusConnection::ExportAllContents);
@@ -10,18 +10,18 @@ SniDeamo::SniDeamo()
     m_serviceWatcher->setConnection(dbus);
     m_serviceWatcher->setWatchMode(QDBusServiceWatcher::WatchForUnregistration);
 
-    connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &SniDeamo::serviceUnregistered);
+    connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &SniDaemon::serviceUnregistered);
 
 }
 
-SniDeamo::~SniDeamo()
+SniDaemon::~SniDaemon()
 {
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.unregisterService(QStringLiteral("org.kde.StatusNotifierWatcher"));
 }
 
 
-void SniDeamo::serviceUnregistered(const QString& name)
+void SniDaemon::serviceUnregistered(const QString& name)
 {
     qDebug()<<"Service "<< name << "unregistered";
     m_serviceWatcher->removeWatchedService(name);
@@ -45,7 +45,7 @@ void SniDeamo::serviceUnregistered(const QString& name)
     }
 }
 
-void SniDeamo::RegisterStatusNotifierItem(const QString &serviceOrPath)
+void SniDaemon::RegisterStatusNotifierItem(const QString &serviceOrPath)
 {
     QString service;
     QString path;
@@ -76,7 +76,7 @@ void SniDeamo::RegisterStatusNotifierItem(const QString &serviceOrPath)
     }
 }
 
-void SniDeamo::RegisterStatusNotifierHost(const QString &service)
+void SniDaemon::RegisterStatusNotifierHost(const QString &service)
 {
     if (service.contains(QLatin1String("org.kde.StatusNotifierHost-")) &&
         QDBusConnection::sessionBus().interface()->isServiceRegistered(service).value() &&
@@ -89,17 +89,17 @@ void SniDeamo::RegisterStatusNotifierHost(const QString &service)
     }
 }
 
-QStringList SniDeamo::RegisteredStatusNotifierItems() const
+QStringList SniDaemon::RegisteredStatusNotifierItems() const
 {
     return m_registeredServices;
 }
 
-bool SniDeamo::IsStatusNotifierHostRegistered() const
+bool SniDaemon::IsStatusNotifierHostRegistered() const
 {
     return !m_statusNotifierHostServices.isEmpty();
 }
 
-int SniDeamo::ProtocolVersion() const
+int SniDaemon::ProtocolVersion() const
 {
     return 0;
 }
