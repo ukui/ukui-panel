@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 
-project(sni-daemo)
+project(sni-daemon)
 
 #判断编译器类型,如果是gcc编译器,则在编译选项中加入c++11支持
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -21,7 +21,7 @@ find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 
-add_executable(sni-daemo
+add_executable(sni-daemon
         main.cpp
         snideamo.cpp
         statusnotifieritem_interface.cpp
@@ -31,17 +31,17 @@ add_executable(sni-daemo
         systemtraytypedefs.h
 )
 
-target_link_libraries(sni-daemo
+target_link_libraries(sni-daemon
     Qt5::Widgets
     Qt5::DBus
     )
 
 add_definitions(-DQT_MESSAGELOGCONTEXT)
 
-install(TARGETS sni-daemo DESTINATION bin)
+install(TARGETS sni-daemon DESTINATION bin)
 
 install(FILES
-    resources/sni-daemo.desktop
+    resources/sni-daemon.desktop
     DESTINATION "/etc/xdg/autostart/"
     COMPONENT Runtime
 )
