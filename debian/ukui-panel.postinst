@@ -4,4 +4,13 @@ set -e
 
 glib-compile-schemas /usr/share/glib-2.0/schemas/ 
 
+panelConfigFilePath="/home/${SUDO_USER}/.config/ukui"
+if [ -d "$panelConfigFilePath" ]; then
+  panelConfigFile="/usr/share/ukui/panel.conf"
+  if [ -f "$panelConfigFile" ]; then
+  	cp  $panelConfigFile  $panelConfigFilePath
+  fi
+fi
+
+
 #DEBHELPER#

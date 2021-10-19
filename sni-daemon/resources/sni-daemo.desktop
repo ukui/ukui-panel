@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=sni-daemon
+Name[zh_CN]=sni后台服务
+Comment=sni-daemon
+Comment[zh_CN]=sni后台服务
+Exec=sni-daemon
+Terminal=false
+Type=Application
+OnlyShowIn=UKUI
+NoDisplay=true
+X-UKUI-AutoRestart=true
+X-UKUI-Autostart-Phase=Initialization
+

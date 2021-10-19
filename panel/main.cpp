@@ -36,7 +36,7 @@
 #include <QFile>
 #include <QDir>
 #include <X11/Xlib.h>
-//#include <ukui-log4qt.h>
+#include <ukui-log4qt.h>
 /*! The ukui-panel is the panel of UKUI.
   Usage: ukui-panel [CONFIG_ID]
     CONFIG_ID      Section name in config file ~/.config/ukui/panel.conf
@@ -89,7 +89,7 @@ void messageOutput(QtMsgType type, const QMessageLogContext &context, const QStr
 
 int main(int argc, char *argv[])
 {
-//    initUkuiLog4qt("ukui-panel");
+    initUkuiLog4qt("ukui-panel");
     qDebug()<<"Main :: ukui-panel start"<<QDateTime::currentDateTime();
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -111,21 +111,23 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    //翻译文件
-    QString locale = QLocale::system().name();
-    QTranslator translator;
-    if (locale == "zh_CN"){
-        if (translator.load("ukui-panel_zh_CN.qm", "/usr/share/ukui-panel/panel/resources/"))
-            app.installTranslator(&translator);
-        else
-            qDebug() << "Load translations file" << locale << "failed!";
-    }
-    if (locale == "tr_TR"){
-        if (translator.load("ukui-panel_tr.qm", "/usr/share/ukui-panel/panel/resources/"))
-            app.installTranslator(&translator);
-        else
-            qDebug() << "Load translations file" << locale << "failed!";
-    }
+    //tanslate
+//    QString locale = QLocale::system().name();
+//    QTranslator translator;
+//    if (locale == "zh_CN"){
+//        if (translator.load("ukui-panel_zh_CN.qm", "/usr/share/ukui-panel/panel/resources/")){
+//            app.installTranslator(&translator);
+//        }
+//        else{
+//            qDebug() << "Load translations file" << locale << "failed!";
+//        }
+//    }
+//    if (locale == "tr_TR"){
+//        if (translator.load("ukui-panel_tr.qm", "/usr/share/ukui-panel/panel/resources/"))
+//            app.installTranslator(&translator);
+//        else
+//            qDebug() << "Load translations file" << locale << "failed!";
+//    }
 
     return app.exec();
 }

@@ -1,8 +1,8 @@
-
-#pragma execution_character_set("utf-8")
+﻿#pragma execution_character_set("utf-8")
 
 #include "lunarcalendaritem.h"
 #include "lunarcalendarwidget.h"
+#include "lunarcalendarinfo.h"
 #include "qpainter.h"
 #include "qevent.h"
 #include "qdatetime.h"
@@ -264,26 +264,27 @@ void LunarCalendarItem::drawDay(QPainter *painter)
         }
     }
     else {
+        //非农历
         QRect dayRect = QRect(0, 0, width, height);
         painter->drawText(dayRect, Qt::AlignCenter, QString::number(date.day()));
         if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "2") {
             painter->setPen(Qt::NoPen);
-            painter->setBrush(QColor(255,0,0));
+//            painter->setBrush(QColor(255,0,0));
             QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
             painter->drawRoundedRect(dayRect1,1,1);
             font.setPixelSize(side / 5);
             painter->setFont(font);
             painter->setPen(Qt::white);
-            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"休");
+//            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"休");
         } else if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "1") {
             painter->setPen(Qt::NoPen);
-            painter->setBrush(QColor(251,170,42));
+//            painter->setBrush(QColor(251,170,42));
             QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
             painter->drawRoundedRect(dayRect1,1,1);
             font.setPixelSize(side / 5);
             painter->setFont(font);
             painter->setPen(Qt::white);
-            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"班");
+//            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"班");
         }
     }
 
@@ -292,15 +293,37 @@ void LunarCalendarItem::drawDay(QPainter *painter)
 
 void LunarCalendarItem::drawLunar(QPainter *painter)
 {
-    if (!showLunar) {
-        return;
-    }
-
     int width = this->width();
     int height = this->height();
     int side = qMin(width, height);
+    int month;
+    int day;
+    QString strHoliday;
 
     painter->save();
+
+    if (!showLunar) {
+        //非农历
+//        int month = date.month();
+//        int day = date.day();
+//        LunarCalendarInfo *lun = LunarCalendarInfo::Instance();
+//        strHoliday = lun->getHoliday(month,day);
+////        delete lun;
+
+//        QColor color = currentLunarColor;
+//        if (dayType == DayType_MonthPre || dayType == DayType_MonthNext) {
+//            color = otherLunarColor;
+//        }
+//        painter->setPen(color);
+
+//        QFont font;
+//        font.setPixelSize(side * 0.27);
+//        painter->setFont(font);
+
+//        QRect lunarRect(0, height / 2, width, height / 2);
+//        painter->drawText(lunarRect, Qt::AlignCenter, strHoliday);
+    }
+    else {
 
     QStringList listDayName;
     listDayName << "*" << "初一" << "初二" << "初三" << "初四" << "初五" << "初六" << "初七" << "初八" << "初九" << "初十"
@@ -336,8 +359,11 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
 
     QRect lunarRect(0, height / 2, width, height / 2);
     painter->drawText(lunarRect, Qt::AlignCenter, lunar);
+    }
     painter->restore();
+
 }
+
 
 bool LunarCalendarItem::getSelect() const
 {

@@ -51,7 +51,7 @@ pkg_check_modules(Gsetting REQUIRED gsettings-qt)
 include_directories(${Gsetting_INCLUDE_DIRS})
 set(LIBRARIES
     ${Gsetting_LIBRARIES}
-    #    -lukui-log4qt
+    -lukui-log4qt
 )
 
 # Patch Version
@@ -102,7 +102,7 @@ include(./cmake/ukui-build-tools/modules/UKUiTranslationLoader.cmake)
 set(ENABLED_PLUGINS) # list of enabled plugins
 set(STATIC_PLUGINS) # list of statically linked plugins
 
-setByDefault(QUICKLAUNCH_PLUGIN Yes)
+setByDefault(QUICKLAUNCH_PLUGIN No)
 if(QUICKLAUNCH_PLUGIN)
     list(APPEND STATIC_PLUGINS "quicklaunch")
     add_definitions(-DWITH_QUICKLAUNCH_PLUGIN)
@@ -129,14 +129,10 @@ if(TASKBAR_PLUGIN)
 endif()
 
 add_subdirectory(ukui-flash-disk)
-
-setByDefault(TRAY_PLUGIN Yes)
-if(TRAY_PLUGIN)
-    list(APPEND STATIC_PLUGINS "tray")
-    add_definitions(-DWITH_TRAY_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "System Tray")
-    add_subdirectory(plugin-tray)
-endif()
+#add_subdirectory(ukui-calendar)
+add_subdirectory(panel-daemon)
+add_subdirectory(sni-daemon)
+add_subdirectory(sni-xembed-proxy)
 
 setByDefault(STATUSNOTIFIER_PLUGIN Yes)
 if(STATUSNOTIFIER_PLUGIN)
@@ -160,29 +156,17 @@ if(CALENDAR_PLUGIN)
     add_subdirectory(plugin-calendar)
 endif(CALENDAR_PLUGIN)
 
-setByDefault(STARTMENU_PLUGIN Yes)
-if(STARTMENU_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "startmenu")
-    add_subdirectory(plugin-startmenu)
-endif(STARTMENU_PLUGIN)
-
 setByDefault(NIGHTMODE_PLUGIN Yes)
 if(NIGHTMODE_PLUGIN)
     list(APPEND ENABLED_PLUGINS "nightmode")
     add_subdirectory(plugin-nightmode)
 endif(NIGHTMODE_PLUGIN)
 
-setByDefault(TASKVIEW_PLUGIN Yes)
-if(TASKVIEW_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "taskview")
-    add_subdirectory(plugin-taskview)
-endif(TASKVIEW_PLUGIN)
-
-setByDefault(SEGMENTATION_PLUGIN Yes)
-if(SEGMENTATION_PLUGIN)
-    list(APPEND ENABLED_PLUGINS "segmentation")
-    add_subdirectory(plugin-segmentation)
-endif(SEGMENTATION_PLUGIN)
+setByDefault(STARTBAR_PLUGIN Yes)
+if(STARTBAR_PLUGIN)
+    list(APPEND ENABLED_PLUGINS "startbar")
+    add_subdirectory(plugin-startbar)
+endif(STARTBAR_PLUGIN)
 
 #########################################################################
 
@@ -196,24 +180,24 @@ add_subdirectory(panel)
 
 file(GLOB_RECURSE QRC_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.qrc)
 
-# translation
-set(UKUI_TRANSLATIONS_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/ukui/)
-add_definitions(
-    -DUKUI_TRANSLATIONS_DIR="${UKUI_TRANSLATIONS_DIR}"
-)
-if (NOT DEFINED UPDATE_TRANSLATIONS)
-    set(UPDATE_TRANSLATIONS "No")
-endif()
+## translation
+#set(UKUI_TRANSLATIONS_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/ukui/)
+#add_definitions(
+#    -DUKUI_TRANSLATIONS_DIR="${UKUI_TRANSLATIONS_DIR}"
+#)
+#if (NOT DEFINED UPDATE_TRANSLATIONS)
+#    set(UPDATE_TRANSLATIONS "No")
+#endif()
 
-# To create a new ts file: lupdate -recursive . -target-language zh_CN -ts panel/resources/ukui-panel_zh_CN.ts
-file(GLOB TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/panel/resources/*.ts")
+## To create a new ts file: lupdate -recursive . -target-language zh_CN -ts panel/resources/ukui-panel_zh_CN.ts
+#file(GLOB TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/panel/resources/*.ts")
 
-# cmake -DUPDATE_TRANSLATIONS=yes
-if (UPDATE_TRANSLATIONS)
-    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-else()
-    qt5_add_translation(QM_FILES ${TS_FILES})
-endif()
-add_custom_target(translations ALL DEPENDS ${QM_FILES})
-install(FILES ${QM_FILES} DESTINATION ${UKUI_TRANSLATIONS_DIR})
+## cmake -DUPDATE_TRANSLATIONS=yes
+#if (UPDATE_TRANSLATIONS)
+#    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+#else()
+#    qt5_add_translation(QM_FILES ${TS_FILES})
+#endif()
+#add_custom_target(translations ALL DEPENDS ${QM_FILES})
+#install(FILES ${QM_FILES} DESTINATION ${UKUI_TRANSLATIONS_DIR})
 

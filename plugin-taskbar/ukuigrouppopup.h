@@ -72,9 +72,9 @@ protected:
     void closeTimerSlot();
 
 private:
-    bool rightclick;
     UKUITaskGroup *mGroup;
     QTimer mCloseTimer;
+    bool rightclick;
 private slots:
     void killTimerDelay();
     void closeWindowDelay();

@@ -9,8 +9,9 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-//    RepairDialogBox box(nullptr);
-//    box.show();
+    GDrive* test = nullptr;
+    RepairDialogBox box(test);
+    box.show();
 
 //    RepairProgressBar test(QObject::tr("正在进行磁盘修复..."));
 //    test.exec();

@@ -123,6 +123,14 @@
         <source>telephone device</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Please do not pull out the storage device when reading or writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Storage device removed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessageBox</name>
@@ -169,15 +177,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk and drive are properly connected, make sure the disk is not a read-only disk, and try again. For more information, search for help on read-only files and how to change read-only files.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Format disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Repair</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk/drive is properly connected,make sure the disk is not a read-only disk, and try again.For more information, search for help on read-only files andhow to change read-only files.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk/drive &apos;%1&apos; is properly connected,make sure the disk is not a read-only disk, and try again.For more information, search for help on read-only files andhow to change read-only files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -212,26 +224,10 @@
     <name>ejectInterface</name>
     <message>
         <source>usb has been unplugged safely</source>
-        <translation>USB güvenli bir şekilde çıkarıldı</translation>
+        <translation type="vanished">USB güvenli bir şekilde çıkarıldı</translation>
     </message>
     <message>
-        <source>cdrom has been unplugged safely</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>sd has been unplugged safely</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>usb is occupying unejectable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>data device has been unloaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>gparted has started</source>
+        <source>Storage device can be safely unplugged</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

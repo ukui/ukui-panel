@@ -45,6 +45,7 @@ NightMode::NightMode(const IUKUIPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IUKUIPanelPlugin(startupInfo)
 {
+    translator();
     qDebug()<<"Plugin-NightMode :: plugin-nightmode start";
     //读取配置文件中nightmode 的值
     QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
@@ -77,10 +78,21 @@ NightMode::~NightMode(){
     delete gsettings;
 }
 
+void NightMode::translator(){
+    m_translator = new QTranslator(this);
+     QString locale = QLocale::system().name();
+     if (locale == "zh_CN"){
+         if (m_translator->load(QM_INSTALL))
+             qApp->installTranslator(m_translator);
+         else
+             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+     }
+}
+
 void NightMode::realign()
 {
     if(gsettings->get(SHOW_NIGHTMODE).toBool() && nightmode_action == "show"){
-        mButton->setFixedSize(panel()->panelSize()*0.75,panel()->panelSize()*0.75);
+        mButton->setFixedSize(panel()->panelSize()*0.75,panel()->panelSize());
         mButton->setIconSize(QSize(panel()->iconSize()*0.75,panel()->iconSize()*0.75));
     }
     else{

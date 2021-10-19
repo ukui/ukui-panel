@@ -127,6 +127,9 @@ private:
     static void driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo *peDeviceInfo);
 
     bool getDataCDRomCapacity(QString strDevId, quint64 &totalCapacity);
+    void getDriveIconsInfo(GDrive* drive, FDDriveInfo& driveInfo);
+    void getVolumeIconsInfo(GVolume* volume, FDVolumeInfo& volumeInfo);
+    void getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo);
 
 private:
     QIcon iconSystray;
@@ -209,6 +212,8 @@ public Q_SLOTS:
     void onMountVolume(GVolume*);
     void onEjectVolumeForce(GVolume* v);             // A fix pops up if the mount fails
 
+    void onNotifyDeviceRemoved(QString strDevId);
+
 Q_SIGNALS:
     void clicked();
     void convertShowWindow(QString strDriveId, QString strMountUri);
@@ -221,6 +226,7 @@ Q_SIGNALS:
     void ejectVolumeForce(GVolume*);
     void remountVolume(FDVolumeInfo volumeInfo);
     void checkDriveValid(FDDriveInfo driveInfo);
+    void notifyDeviceRemoved(QString strDevId);
 
 protected:
     void resizeEvent(QResizeEvent *event);

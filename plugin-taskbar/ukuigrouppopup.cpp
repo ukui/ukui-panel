@@ -48,7 +48,6 @@ UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     QFrame(group),
     mGroup(group)
 {
-    rightclick = false;
     Q_ASSERT(group);
     setAcceptDrops(true);
     setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
@@ -58,6 +57,7 @@ UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     setLayout(new QHBoxLayout);
     layout()->setSpacing(3);
     layout()->setMargin(3);
+    rightclick = false;
 
     connect(&mCloseTimer, &QTimer::timeout, this, &UKUIGroupPopup::closeTimerSlot);
     mCloseTimer.setSingleShot(true);
@@ -137,9 +137,6 @@ void UKUIGroupPopup::dragLeaveEvent(QDragLeaveEvent *event)
  ************************************************/
 void UKUIGroupPopup::leaveEvent(QEvent *event)
 {
-//    qDebug()<<"UKUIGroupPopup::leaveEvent:"<<mCloseTimer.isActive();
-//    mCloseTimer.start();
-//    isSetByLeaveEvent = true;
     if (!rightclick) {
         QTimer::singleShot(300, this,SLOT(closeWindowDelay()));
         rightclick = false;

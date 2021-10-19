@@ -5,7 +5,7 @@
     <name>BaseDialog</name>
     <message>
         <source>Disk test</source>
-        <translation type="unfinished">U盘检测</translation>
+        <translation>设备检测</translation>
     </message>
 </context>
 <context>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Formatting failed, please unplug the U disk and try again!</source>
-        <translation>格式化失败，请拔出U盘并重试！</translation>
+        <translation>格式化失败，请拔出设备并重试！</translation>
     </message>
     <message>
         <source>Format</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Format disk</source>
-        <translation>格式化U盘</translation>
+        <translation>格式化</translation>
     </message>
     <message>
         <source>Formatting this volume will erase all data on it. Please back up all retained data before formatting. Do you want to continue?</source>
@@ -90,7 +90,7 @@
     </message>
     <message>
         <source>Disk format</source>
-        <translation>U盘格式化</translation>
+        <translation>设备格式化</translation>
     </message>
 </context>
 <context>
@@ -113,7 +113,7 @@
     </message>
     <message>
         <source>Please do not pull out the USB flash disk when reading or writing</source>
-        <translation>U盘读写时请不要直接拔出</translation>
+        <translation>设备读写时请不要直接拔出</translation>
     </message>
     <message>
         <source>Please do not pull out the CDROM when reading or writing</source>
@@ -130,6 +130,18 @@
     <message>
         <source>telephone device</source>
         <translation>手机设备</translation>
+    </message>
+    <message>
+        <source>Removable storage device removed</source>
+        <translation type="vanished">移动存储设备已移除</translation>
+    </message>
+    <message>
+        <source>Please do not pull out the storage device when reading or writing</source>
+        <translation>存储设备读写时请不要直接拔出</translation>
+    </message>
+    <message>
+        <source>Storage device removed</source>
+        <translation>存储设备已移除</translation>
     </message>
 </context>
 <context>
@@ -174,19 +186,27 @@
     <name>RepairDialogBox</name>
     <message>
         <source>Disk test</source>
-        <translation>U盘检测</translation>
+        <translation>设备检测</translation>
     </message>
     <message>
         <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk and drive are properly connected, make sure the disk is not a read-only disk, and try again. For more information, search for help on read-only files and how to change read-only files.&lt;/p&gt;</source>
-        <translation>&lt;h4&gt;系统无法识别U盘内容&lt;/h4&gt;&lt;p&gt;检查磁盘和驱动器是否正确连接，确保磁盘不是只读磁盘，然后重试。有关更多信息，请搜索有关只读文件和如何更改只读文件的帮助。&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;h4&gt;系统无法识别U盘内容&lt;/h4&gt;&lt;p&gt;检查磁盘和驱动器是否正确连接，确保磁盘不是只读磁盘，然后重试。有关更多信息，请搜索有关只读文件和如何更改只读文件的帮助。&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Format disk</source>
-        <translation>格式化U盘</translation>
+        <translation>格式化设备</translation>
     </message>
     <message>
         <source>Repair</source>
         <translation>修复</translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk/drive is properly connected,make sure the disk is not a read-only disk, and try again.For more information, search for help on read-only files andhow to change read-only files.&lt;/p&gt;</source>
+        <translation>&lt;h4&gt;系统无法识别移动设备内容&lt;/h4&gt;&lt;p&gt;检查磁盘/驱动器是否正确连接，确保磁盘不是只读磁盘，然后重试。有关更多信息，请搜索有关只读文件和如何更改只读文件的帮助。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;The system could not recognize the disk contents&lt;/h4&gt;&lt;p&gt;Check that the disk/drive &apos;%1&apos; is properly connected,make sure the disk is not a read-only disk, and try again.For more information, search for help on read-only files andhow to change read-only files.&lt;/p&gt;</source>
+        <translation>&lt;h4&gt;系统无法识别移动设备内容&lt;/h4&gt;&lt;p&gt;检查磁盘/驱动器 &quot;%1&quot; 是否正确连接，确保磁盘不是只读磁盘，然后重试。有关更多信息，请搜索有关只读文件和如何更改只读文件的帮助。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -197,7 +217,7 @@
     </message>
     <message>
         <source>Attempting a disk repair...</source>
-        <translation>正在尝试修复U盘...</translation>
+        <translation>正在尝试修复设备...</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -209,7 +229,7 @@
     </message>
     <message>
         <source>The repair completed. If the USB flash disk is not mounted, please try formatting the device!</source>
-        <translation>修复完成，如果U盘没有成功挂载，建议格式化!</translation>
+        <translation>修复失败，如果设备没有成功挂载，请尝试格式化修复！</translation>
     </message>
     <message>
         <source>Disk test</source>
@@ -217,34 +237,30 @@
     </message>
     <message>
         <source>Disk repair</source>
-        <translation type="unfinished">U盘修复</translation>
+        <translation>设备检测</translation>
     </message>
 </context>
 <context>
     <name>ejectInterface</name>
     <message>
         <source>usb has been unplugged safely</source>
-        <translation>U盘已安全拔出</translation>
+        <translation type="vanished">U盘已安全拔出</translation>
     </message>
     <message>
         <source>cdrom has been unplugged safely</source>
-        <translation>光盘已安全拔出</translation>
+        <translation type="vanished">光盘已安全拔出</translation>
     </message>
     <message>
         <source>sd has been unplugged safely</source>
-        <translation>SD卡已安全拔出</translation>
+        <translation type="vanished">SD卡已安全拔出</translation>
     </message>
     <message>
         <source>usb is occupying unejectable</source>
-        <translation>U盘占用无法弹出</translation>
+        <translation type="vanished">U盘占用无法弹出</translation>
     </message>
     <message>
-        <source>data device has been unloaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>gparted has started</source>
-        <translation type="unfinished"></translation>
+        <source>Storage device can be safely unplugged</source>
+        <translation>存储设备可以安全拔出</translation>
     </message>
 </context>
 <context>

@@ -5,6 +5,8 @@
 #include<QDebug>
 #include <QJsonParseError>
 #include <QJsonObject>
+#include <QProcess>
+
 
 #define PANEL_CONTROL_IN_CALENDAR "org.ukui.control-center.panel.plugins"
 #define LUNAR_KEY                 "calendar"
@@ -138,15 +140,8 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
             dark_style=stylelist.contains(style_settings->get(STYLE_NAME).toString());
             _timeUpdate();
             setColor(dark_style);
-            QPixmap pixmap1 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-up-symbolic")).pixmap(QSize(24, 24));
-            PictureToWhite pictToWhite1;
-            btnPrevYear->setPixmap(pictToWhite1.drawSymbolicColoredPixmap(pixmap1));
-            btnPrevYear->setProperty("useIconHighlightEffect", 0x2);
-
-            QPixmap pixmap2 = QIcon::fromTheme("strIconPath", QIcon::fromTheme("pan-down-symbolic")).pixmap(QSize(24, 24));
-            PictureToWhite pictToWhite2;
-            btnNextYear->setPixmap(pictToWhite2.drawSymbolicColoredPixmap(pixmap2));
-            btnNextYear->setProperty("useIconHighlightEffect", 0x2);
+        }else{
+            qDebug()<<"key!=STYLE_NAME";
         }
     });
 
@@ -173,10 +168,14 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
     timer->start(1000);
 
+    locale = QLocale::system().name();
+
     if(QGSettings::isSchemaInstalled(calendar_id)){
         setWeekNameFormat(calendar_gsettings->get(FIRST_DAY_KEY).toString() == "sunday");
         setShowLunar(calendar_gsettings->get(LUNAR_KEY).toString() == "lunar");
     }
+    //监听手动更改时间,后期找到接口进行替换
+//    QTimer::singleShot(1000,this,[=](){ListenForManualSetTime();});
 }
 
 LunarCalendarWidget::~LunarCalendarWidget()
@@ -339,7 +338,8 @@ void LunarCalendarWidget::initWidget()
     btnYear->setObjectName("btnYear");
     btnYear->setFocusPolicy(Qt::NoFocus);
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnYear->setText(tr("年"));
+    btnYear->setText(tr("Year"));
+    btnYear->setToolTip(tr("Year"));
     btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
     connect(btnYear,&QPushButton::clicked,this,&LunarCalendarWidget::yearWidgetChange);
 
@@ -347,7 +347,8 @@ void LunarCalendarWidget::initWidget()
     btnMonth->setObjectName("btnMonth");
     btnMonth->setFocusPolicy(Qt::NoFocus);
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnMonth->setText(tr("月"));
+    btnMonth->setText(tr("Month"));
+    btnMonth->setToolTip(tr("Month"));
     btnMonth->setStyle(new CustomStyle_pushbutton("ukui-default"));
     connect(btnMonth,&QPushButton::clicked,this,&LunarCalendarWidget::monthWidgetChange);
 
@@ -357,7 +358,8 @@ void LunarCalendarWidget::initWidget()
     //btnToday->setFixedWidth(40);
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    btnToday->setText(tr("今天"));
+    btnToday->setText(tr("Today"));
+    btnToday->setToolTip(tr("Today"));
 
     //年份与月份下拉框 暂不用此
     cboxYearandMonth = new QComboBox;
@@ -375,30 +377,30 @@ void LunarCalendarWidget::initWidget()
     cboxYearandMonthLabel->setFixedWidth(100);
 
     //中间用个空widget隔开
-    QWidget *widgetBlank1 = new QWidget;
-    widgetBlank1->setFixedWidth(180);
-    QWidget *widgetBlank2 = new QWidget;
-    widgetBlank2->setFixedWidth(5);
-    QWidget *widgetBlank3 = new QWidget;
-    widgetBlank3->setFixedWidth(40);
+//    QWidget *widgetBlank1 = new QWidget;
+//    widgetBlank1->setFixedWidth(180);
+//    QWidget *widgetBlank2 = new QWidget;
+//    widgetBlank2->setFixedWidth(5);
+//    QWidget *widgetBlank3 = new QWidget;
+//    widgetBlank3->setFixedWidth(40);
 
     //顶部横向布局
     QHBoxLayout *layoutTop = new QHBoxLayout(widgetTop);
     layoutTop->setContentsMargins(0, 0, 0, 9);
-    layoutTop->addItem(new QSpacerItem(5,1));
-//    layoutTop->addWidget(cboxYearandMonth);
+//    layoutTop->addItem(new QSpacerItem(5,1));//去掉按钮间的间隔限制
+
     layoutTop->addWidget(cboxYearandMonthLabel);
-    layoutTop->addWidget(widgetBlank3);
+    layoutTop->addStretch();
     layoutTop->addWidget(btnNextYear);
     layoutTop->addWidget(btnPrevYear);
 
 
-    layoutTop->addWidget(widgetBlank1);
-//    layoutTop->addWidget(widgetBlank2);
+    layoutTop->addStretch();
     layoutTop->addWidget(btnYear);
     layoutTop->addWidget(btnMonth);
     layoutTop->addWidget(btnToday);
-    layoutTop->addItem(new QSpacerItem(10,1));
+    layoutTop->addStretch();
+//    layoutTop->addItem(new QSpacerItem(10,1));//去掉按钮间的间隔限制
 
     //时间
     widgetTime->setMinimumHeight(50);
@@ -459,7 +461,6 @@ void LunarCalendarWidget::initWidget()
         layoutBodyYear->addWidget(labYear, i / 3, i % 3);
         yearItems.append(labYear);
     }
-
     widgetYearBody->hide();
 
     //月份标签widget
@@ -534,7 +535,6 @@ void LunarCalendarWidget::initWidget()
     verLayoutCalendar->addWidget(lineDown);
     verLayoutCalendar->addWidget(labWidget);
     verLayoutCalendar->addWidget(yijiWidget);
-
 
     //绑定按钮和下拉框信号
 //    connect(btnPrevYear, SIGNAL(clicked(bool)), this, SLOT(showPreviousYear()));
@@ -733,9 +733,7 @@ void LunarCalendarWidget::initDate()
 
     for (int i=0;i<12;i++){
         yearItems.at(i)->setDate(date.addYears(i));
-//        qDebug()<<"================="<<i<<"--"<<"传入的年份值："<<date.addYears(i);
         monthItems.at(i)->setDate(date.addMonths(i));
-//        qDebug()<<"~~~~~~~~~~~~~~~~~"<<i<<"--"<<"传入的月份值："<<date.addMonths(i);
     }
 }
 
@@ -812,8 +810,19 @@ void LunarCalendarWidget::yijihandle(const QDate &date)
     {
         QJsonValue jsonValueList = jsonObject.value(QString("d%1").arg(date.toString("MMdd")));
         QJsonObject item = jsonValueList.toObject();
-        QString yiString = "     宜：" + item["y"].toString();
-        QString jiString = "     忌：" + item["j"].toString();
+        QString yiString;
+        QString jiString;
+        if (item["y"].toString() == "."){
+            yiString = "     宜：";
+        }else {
+            yiString = "     宜：" + item["y"].toString();
+        }
+        if (item["j"].toString() == "."){
+            jiString = "     忌：";
+        }else {
+            jiString = "     忌：" + item["j"].toString();
+        }
+
 
 
         yiLabel->setText(yiString);
@@ -864,6 +873,7 @@ void LunarCalendarWidget::clicked(const QDate &date, const LunarCalendarItem::Da
 void LunarCalendarWidget::updateYearClicked(const QDate &date, const LunarCalendarYearItem::DayType &dayType)
 {
     //通过传来的日期，设置当前年月份
+    this->date = date;
     widgetYearBody->hide();
     widgetWeek->show();
     widgetDayBody->show();
@@ -872,14 +882,15 @@ void LunarCalendarWidget::updateYearClicked(const QDate &date, const LunarCalend
     clickDate = date;
     changeDate(date);
     dayChanged(date,clickDate);
-    for (int i = 0; i < 12; i++) {
-        qDebug()<<"*******************"<<"循环位："<<i<<yearItems.at(i)->date;
-    }
+//   for (int i = 0; i < 12; i++) {
+//        qDebug()<<"*******************"<<"循环位："<<i<<yearItems.at(i)->date;
+//    }
 }
 
 void LunarCalendarWidget::updateMonthClicked(const QDate &date, const LunarCalendarMonthItem::DayType &dayType)
 {
     //通过传来的日期，设置当前年月份
+    this->date = date;
     widgetYearBody->hide();
     widgetWeek->show();
     widgetDayBody->show();
@@ -900,10 +911,13 @@ void LunarCalendarWidget::changeDate(const QDate &date)
         yijihandle(date);
         oneRun = false;
     }
+
+
     //设置为今天,设置变量防止重复触发
     btnClick = true;
     cboxYearandMonth->setCurrentIndex(cboxYearandMonth->findText(QString("%1.%2").arg(year).arg(month)));
     btnClick = false;
+
     cboxYearandMonthLabel->setText(QString("   %1.%2").arg(year).arg(month));
 
     //首先判断当前月的第一天是星期几
@@ -929,7 +943,6 @@ void LunarCalendarWidget::changeDate(const QDate &date)
 
     //纠正1月份前面部分偏差,1月份前面部分是上一年12月份
     tempYear = year;
-//    qDebug()<<"++++++++++++++++++临时年"<<tempYear;
     tempMonth = month - 1;
     if (tempMonth < 1) {
         tempYear--;
@@ -937,11 +950,9 @@ void LunarCalendarWidget::changeDate(const QDate &date)
     }
 
     //显示上月天数
-    for (int i = startPre; i <= endPre; i++) {
-        qDebug()<<"++++++++++++++++++循环位"<<i;
+    for (int i = startPre; i < endPre; i++) {
         index = i;
         tempDay = countDayPre - endPre + i + 1;
-        qDebug()<<"临时天++++++++++++++++++"<<tempDay;
 
         QDate date(tempYear, tempMonth, tempDay);
         QString lunar = LunarCalendarInfo::Instance()->getLunarDay(tempYear, tempMonth, tempDay);
@@ -985,10 +996,9 @@ void LunarCalendarWidget::changeDate(const QDate &date)
     }
 
     for (int i=0;i<12;i++){
-        yearItems.at(i)->setDate(date.addYears(i));
-//        qDebug()<<"================="<<i<<"--"<<"传入的年份值："<<date;
-        monthItems.at(i)->setDate(date.addMonths(i));
-//        qDebug()<<"~~~~~~~~~~~~~~~~~"<<i<<"--"<<"传入的月份值："<<date.addMonths(i);
+        yearItems.at(i)->setDate(clickDate.addYears(i));
+//        qDebug()<<"*******************"<<"循环位："<<i<<yearItems.at(i);
+        monthItems.at(i)->setDate(clickDate.addMonths(i));
     }
 }
 
@@ -1065,11 +1075,11 @@ LunarCalendarWidget::SelectType LunarCalendarWidget::getSelectType() const
     return this->selectType;
 }
 
+
 QColor LunarCalendarWidget::getBorderColor() const
 {
     return this->borderColor;
 }
-
 QColor LunarCalendarWidget::getWeekColor() const
 {
     return this->weekColor;
@@ -1084,7 +1094,6 @@ QColor LunarCalendarWidget::getLunarColor() const
 {
     return this->lunarColor;
 }
-
 QColor LunarCalendarWidget::getCurrentTextColor() const
 {
     return this->currentTextColor;
@@ -1094,7 +1103,6 @@ QColor LunarCalendarWidget::getOtherTextColor() const
 {
     return this->otherTextColor;
 }
-
 QColor LunarCalendarWidget::getSelectTextColor() const
 {
     return this->selectTextColor;
@@ -1252,21 +1260,21 @@ void LunarCalendarWidget::setWeekNameFormat(bool FirstDayisSun)
 //        listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
 //        listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
 //          listWeek << "Sun" << "Mon" << "Tue" << "Wed" << "Thur" << "Fri" << "Sat";
-          labWeeks.at(0)->setText((tr("周日")));
-          labWeeks.at(1)->setText((tr("周一")));
-          labWeeks.at(2)->setText((tr("周二")));
-          labWeeks.at(3)->setText((tr("周三")));
-          labWeeks.at(4)->setText((tr("周四")));
-          labWeeks.at(5)->setText((tr("周五")));
-          labWeeks.at(6)->setText((tr("周六")));
+          labWeeks.at(0)->setText((tr("Sun")));
+          labWeeks.at(1)->setText((tr("Mon")));
+          labWeeks.at(2)->setText((tr("Tue")));
+          labWeeks.at(3)->setText((tr("Wed")));
+          labWeeks.at(4)->setText((tr("Thur")));
+          labWeeks.at(5)->setText((tr("Fri")));
+          labWeeks.at(6)->setText((tr("Sat")));
     } else {
-        labWeeks.at(0)->setText((tr("周一")));
-        labWeeks.at(1)->setText((tr("周二")));
-        labWeeks.at(2)->setText((tr("周三")));
-        labWeeks.at(3)->setText((tr("周四")));
-        labWeeks.at(4)->setText((tr("周五")));
-        labWeeks.at(5)->setText((tr("周六")));
-        labWeeks.at(6)->setText((tr("周日")));
+        labWeeks.at(0)->setText((tr("Mon")));
+        labWeeks.at(1)->setText((tr("Tue")));
+        labWeeks.at(2)->setText((tr("Wed")));
+        labWeeks.at(3)->setText((tr("Thur")));
+        labWeeks.at(4)->setText((tr("Fri")));
+        labWeeks.at(5)->setText((tr("Sat")));
+        labWeeks.at(6)->setText((tr("Sun")));
     }
         initDate();
 }
@@ -1297,6 +1305,11 @@ void LunarCalendarWidget::setWeekBgColor(const QColor &weekBgColor)
 
 void LunarCalendarWidget::setShowLunar(bool showLunar)
 {
+    if (locale == "zh_CN"){
+        showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
+    }else if (locale == "en_US"){
+        showLunar = false;
+    }
         this->showLunar = showLunar;
         initStyle();
 }

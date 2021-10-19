@@ -88,7 +88,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     mViewHeight(0),
     mWebViewDiag(NULL)
 {
-
+    translator();
     mMainWidget = new QWidget();
     mContent = new CalendarActiveLabel(this);
     mWebViewDiag = new UkuiWebviewDialog(this);
@@ -227,7 +227,15 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     m_settings.endGroup();
 
     //监听手动更改时间,后期找到接口进行替换
-    QTimer::singleShot(1000*10,this,[=](){ListenForManualSettingTime();});
+    QTimer::singleShot(1000,this,[=](){ListenForManualSettingTime();});
+
+        //实时监听系统字体的改变
+        const QByteArray id1("org.ukui.style");
+        QGSettings * fontSetting = new QGSettings(id1, QByteArray(), this);
+        connect(fontSetting, &QGSettings::changed,[=](QString key) {
+            updateTimeText();
+        });
+
 }
 
 IndicatorCalendar::~IndicatorCalendar()
@@ -246,6 +254,17 @@ IndicatorCalendar::~IndicatorCalendar()
     }
     gsettings->deleteLater();
     fgsettings->deleteLater();
+}
+
+void IndicatorCalendar::translator(){
+    m_translator = new QTranslator(this);
+     QString locale = QLocale::system().name();
+     if (locale == "zh_CN"){
+         if (m_translator->load(QM_INSTALL))
+             qApp->installTranslator(m_translator);
+         else
+             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+     }
 }
 
 void IndicatorCalendar::checkUpdateTime()
@@ -566,7 +585,8 @@ void IndicatorCalendar::ListenForManualSettingTime(){
 
 CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QLabel(parent),
-    mPlugin(plugin)
+    mPlugin(plugin),
+    mInterface(new QDBusInterface(SERVICE,PATH,INTERFACE,QDBusConnection::sessionBus(),this))
 {
     w = new frmLunarCalendarWidget();
     connect(w,&frmLunarCalendarWidget::yijiChangeDown, this, [=] (){
@@ -585,12 +605,18 @@ CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *pare
 void CalendarActiveLabel::mousePressEvent(QMouseEvent *event)
 {
     if (Qt::LeftButton == event->button()){
-        //点击时间标签日历隐藏，特殊处理
-        if(w->isHidden()){
-            changeWidowpos();
-        }else{
-            w->hide();
+        if(calendar_version == "old"){
+            Q_EMIT pressTimeText();
+        } else {
+            //点击时间标签日历隐藏，特殊处理
+            if(w->isHidden()){
+                changeWidowpos();
+            }else{
+                w->hide();
+            }
         }
+//        mInterface->call("ShowCalendar");
+        
     }
 }
 

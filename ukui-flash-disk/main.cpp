@@ -25,7 +25,7 @@
 #include <QtDBus/QDBusConnection>
 #include <QTranslator>
 #include <QTextCodec>
-//#include <ukui-log4qt.h>
+#include <ukui-log4qt.h>
 #include "UnionVariable.h"
 #include "mainwindow.h"
 #include "MainController.h"
@@ -33,7 +33,7 @@
 
 int main(int argc, char *argv[])
 {
-//    initUkuiLog4qt("ukui-flash-disk");
+    initUkuiLog4qt("ukui-flash-disk");
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 

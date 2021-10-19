@@ -33,6 +33,16 @@ public:
     explicit DeviceOperation(GDrive* drive, QObject *parent = nullptr);
     explicit DeviceOperation(GVolume* volume, QObject *parent = nullptr);
     ~DeviceOperation();
+    
+    
+    static bool repairFilesystem(GDrive* drive);
+    static bool repairFilesystem(GVolume* volume);
+
+    static gint64 getDriveSize(GDrive* drive);
+
+    static gchar* getDriveLabel(GDrive* drive);
+    static gchar* getDriveLabel(GVolume* volume);
+    
 
 public Q_SLOTS:
     void udiskFormat(QString type, QString labelName);
@@ -45,7 +55,7 @@ public Q_SLOTS:
     QString udiskLabel();
 
 private:
-    UDisksObject* getObjectFromBlockDevice(UDisksClient *client, const gchar *bdevice);
+    static UDisksObject* getObjectFromBlockDevice(UDisksClient *client, const gchar *bdevice);
 
 Q_SIGNALS:
     void repairFinished(bool);

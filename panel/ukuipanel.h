@@ -224,8 +224,6 @@ public:
     int iconSize() const override { return mIconSize; } //!< Implement IUKUIPanel::iconSize().
     int lineCount() const override { return mLineCount; } //!< Implement IUKUIPanel::lineCount().
     int panelSize() const override{ return mPanelSize; }
-    int sizeModel() const override{ return (mPanelSize == SML_SIZE_PANEL_IN_CALC ? 0 : (mPanelSize == MID_SIZE_PANEL_IN_CALC ? 1 : 2)); }
-    bool isMaxSize() const override{ return mPanelSize == MAX_SIZE_PANEL_IN_CALC; }
     int length() const { return mLength; }
     bool lengthInPercents() const { return mLengthInPercents; }
     UKUIPanel::Alignment alignment() const { return mAlignment; }
@@ -398,6 +396,12 @@ protected:
     void showEvent(QShowEvent *event) override;
     void paintEvent(QPaintEvent *);
 
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+
 public slots:
     /**
      * @brief Shows the ConfigPanelDialog and shows the "Config Panel"
@@ -525,6 +529,10 @@ private:
      * layout.
      */
     void loadPlugins();
+    void reloadPlugins(QString model);
+    QStringList readConfig(QString model);
+    void checkPlugins(QStringList list);
+    void movePlugins(QStringList list);
 
     /**
      * @brief Calculates and sets the geometry (i.e. the position and the size
@@ -710,6 +718,8 @@ private:
 
     QDBusInterface *m_cloudInterface;
 
+    IUKUIPanel::Position oldpos;
+
     QMenu * menu;
     QAction * m_lockAction;
     /**
@@ -720,16 +730,10 @@ private:
     QRect mcurrentScreenRect;
     QString flag_hw990;
 
-    int MAX_SIZE_PANEL_IN_CALC;
-    int MID_SIZE_PANEL_IN_CALC;
-    int SML_SIZE_PANEL_IN_CALC;
-    int MAX_ICON_SIZE_IN_CLAC;
-    int MID_ICON_SIZE_IN_CLAC;
-    int SML_ICON_SIZE_IN_CLAC;
-    void getSize();
+    IUKUIPanel::Position areaDivid(QPoint globalpos);
+    int movelock = -1;
+
     void connectToServer();
-    void caculateScreenGeometry();
-    int getScreenGeometry(QString methodName);
 
 private slots:
     void panelReset();
@@ -740,6 +744,8 @@ private slots:
 public:
     QGSettings *gsettings;
     QGSettings *transparency_gsettings;
+    QGSettings *scale_gsetting;
+    int scale_flag;
     QTimer *time;
 
 };

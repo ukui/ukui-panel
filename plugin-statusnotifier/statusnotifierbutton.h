@@ -106,15 +106,11 @@ protected:
     void wheelEvent(QWheelEvent *event);
     void dragEnterEvent(QDragEnterEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
-    void dragLeaveEvent(QDragLeaveEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mousePressEvent(QMouseEvent *e);
     bool event(QEvent *e);
     virtual QMimeData * mimeData();
     void resizeEvent(QResizeEvent *event);
-
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
 
     void refetchIcon(Status status);
     void resetIcon();

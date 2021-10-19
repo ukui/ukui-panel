@@ -359,12 +359,6 @@ void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
 
 }
 
-void StatusNotifierButton::dragLeaveEvent(QDragLeaveEvent * e)
-{
-    repaint();
-    QToolButton::dragLeaveEvent(e);
-}
-
 void StatusNotifierButton::dragEnterEvent(QDragEnterEvent *e)
 {
     e->acceptProposedAction();
@@ -373,7 +367,6 @@ void StatusNotifierButton::dragEnterEvent(QDragEnterEvent *e)
         emit switchButtons(mimeData->button(), this);
         emit sendTitle(mimeData->button()->hideAbleStatusNotifierButton());
     }
-    repaint();
     QToolButton::dragEnterEvent(e);
 }
 
@@ -395,18 +388,6 @@ void StatusNotifierButton::mousePressEvent(QMouseEvent *e)
 //    }
 
 //    QToolButton::mousePressEvent(e);
-}
-
-void StatusNotifierButton::enterEvent(QEvent *)
-{
-    repaint();
-}
-
-/***************************************************/
-
-void StatusNotifierButton::leaveEvent(QEvent *)
-{
-    repaint();
 }
 
 bool StatusNotifierButton::event(QEvent *e)

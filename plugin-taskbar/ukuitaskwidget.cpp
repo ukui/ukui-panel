@@ -169,10 +169,18 @@ void UKUITaskWidget::updateText()
 {
     KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
     QString title = info.visibleName().isEmpty() ? info.name() : info.visibleName();
-    mTitleLabel->setText(title);
-    QPalette pa;
-    pa.setColor(QPalette::WindowText,Qt::white);
-    mTitleLabel->setPalette(pa);
+
+    mTitleLabel->setToolTip(title);
+    QTimer::singleShot(0,this,[=](){
+        QString formatAppName = mTitleLabel->fontMetrics().elidedText(title,Qt::ElideRight, mTitleLabel->width()*2/3);
+        mTitleLabel->setText(formatAppName);
+        QPalette pa;
+        pa.setColor(QPalette::WindowText,Qt::white);
+        mTitleLabel->setPalette(pa);
+    });
+
+//    mTitleLabel->setText(title);
+
     //    setText(title.replace("&", "&&"));
     //    setToolTip(title);
 }
@@ -347,7 +355,6 @@ void UKUITaskWidget::mouseMoveEvent(QMouseEvent* event)
 }
 
 void UKUITaskWidget::closeGroup() {
-    printf("\n....\n");
     emit closeSigtoGroup();
 }
 

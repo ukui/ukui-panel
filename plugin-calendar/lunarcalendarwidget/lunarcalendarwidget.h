@@ -33,6 +33,8 @@
 #include "lunarcalendarmonthitem.h"
 #include "customstylePushbutton.h"
 #include <QCheckBox>
+#include <QLocale>
+#include <QProcess>
 
 
 class QLabel;
@@ -141,6 +143,7 @@ private:
     QWidget *widgetDayBody;
     QWidget *widgetYearBody;
     QWidget *widgetmonthBody;
+    QProcess *myProcess;
 
     QString timemodel = 0;
     bool yijistate = false;
@@ -254,6 +257,7 @@ public:
 
     QSize sizeHint()                    const;
     QSize minimumSizeHint()             const;
+    QString locale                     ;
 
 public Q_SLOTS:
 

@@ -7,4 +7,8 @@ set(HEADERS
 set(SOURCES
     showdesktop.cpp
 )
+
+include(../cmake/UkuiPluginTranslationTs.cmake)
+ukui_plugin_translate_ts(${PLUGIN})
+
 BUILD_UKUI_PLUGIN(${PLUGIN})

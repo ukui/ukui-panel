@@ -40,29 +40,12 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     QWidget(parent),
     mPlugin(plugin)
 {
-    QString dbusName = QString("org.kde.StatusNotifierHost-%1-%2").arg(QApplication::applicationPid()).arg(1);
-    if (!QDBusConnection::sessionBus().registerService(dbusName))
-        qDebug() << QDBusConnection::sessionBus().lastError().message();
 
     mWatcher = new StatusNotifierWatcher;
-    mWatcher->RegisterStatusNotifierHost(dbusName);
     connect(mWatcher, &StatusNotifierWatcher::StatusNotifierItemRegistered,
             this, &StatusNotifierWidget::itemAdded);
     connect(mWatcher, &StatusNotifierWatcher::StatusNotifierItemUnregistered,
             this, &StatusNotifierWidget::itemRemoved);
-
-    //一些标志位，防止realign()的反复执行占用cpu
-//    timecount=0;
-    //在按键加入容器后进行多次刷新
-//    time = new QTimer(this);
-//    connect(time, &QTimer::timeout, this,[=] (){
-//        if(timecount<10){
-//            resetLayout();
-//            timecount++;
-//        }else
-//            time->stop();
-//    });
-//    time->start(10);
 
     mBtn = new StatusNotifierStorageArrow(this);
     connect(mBtn,SIGNAL(addButton(QString)),this,SLOT(btnAddButton(QString)));
@@ -71,10 +54,8 @@ StatusNotifierWidget::StatusNotifierWidget(IUKUIPanelPlugin *plugin, QWidget *pa
     setLayout(mLayout);
     mLayout->addWidget(mBtn);
     const QByteArray id(UKUI_PANEL_SETTINGS);
-    if(QGSettings::isSchemaInstalled(id)){
+    if(QGSettings::isSchemaInstalled(id))
         gsettings = new QGSettings(id);
-        gsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
-    }
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==SHOW_STATUSNOTIFIER_BUTTON){
             exchangeHideAndShow();
@@ -97,22 +78,24 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     StatusNotifierButton *button = new StatusNotifierButton(serv, path, mPlugin, this);
     mServices.insert(serviceAndPath, button);
     mStatusNotifierButtons.append(button);
-    button->setStyle(new CustomStyle());
+    button->setStyle(new CustomStyle);
     connect(button, SIGNAL(switchButtons(StatusNotifierButton*,StatusNotifierButton*)), this, SLOT(switchButtons(StatusNotifierButton*,StatusNotifierButton*)));
 
     //dbus异步调用，同步执行获取不到托盘名字，通过定时器进行异步刷新，后期可进行优化
-    QTimer *timer=new QTimer(this);
-    connect(timer,&QTimer::timeout,this,[=](){
-        if(button){
-            if(button->hideAbleStatusNotifierButton()==NULL){
-                timer->start(100);
-            }else{
-                timer->stop();
-                resetLayout();
+    for(int i=0;i<mStatusNotifierButtons.size();i++){
+        if(mStatusNotifierButtons.at(i))
+        {
+            if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()==""){
+                continue;
             }
         }
-    });
-    timer->start(100);
+        else{
+            qDebug()<<"mStatusNotifierButtons add error   :  "<<mStatusNotifierButtons.at(i);
+        }
+    }
+
+    QTimer::singleShot(200,this,[=](){resetLayout();});
+
 }
 
 void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
@@ -221,8 +204,6 @@ void StatusNotifierWidget::switchButtons(StatusNotifierButton *button1, StatusNo
     }
     saveSettings(button1->hideAbleStatusNotifierButton(),button2->hideAbleStatusNotifierButton());
     resetLayout();
-    button1->repaint();
-    button2->repaint();
 }
 
 void StatusNotifierWidget::saveSettings(QString button1,QString button2){
@@ -309,6 +290,7 @@ void StatusNotifierWidget::exchangeHideAndShow(){
         i.value()->setVisible(gsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool());
     }
 }
+
 
 void StatusNotifierWidget::btnAddButton(QString button){
     saveSettings(button,"");
