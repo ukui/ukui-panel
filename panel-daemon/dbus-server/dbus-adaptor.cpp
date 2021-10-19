@@ -18,38 +18,38 @@
 #include <QtCore/QVariant>
 
 /*
- * Implementation of adaptor class DeamonAdaptor
+ * Implementation of adaptor class DaemonAdaptor
  */
 
-DeamonAdaptor::DeamonAdaptor(QObject *parent)
+DaemonAdaptor::DaemonAdaptor(QObject *parent)
     : QDBusAbstractAdaptor(parent)
 {
     // constructor
     setAutoRelaySignals(true);
 }
 
-DeamonAdaptor::~DeamonAdaptor()
+DaemonAdaptor::~DaemonAdaptor()
 {
     // destructor
 }
 
-void DeamonAdaptor::DesktopFileDeleteSlot(const QString &path, const QStringList &deleteFile)
+void DaemonAdaptor::DesktopFileDeleteSlot(const QString &path, const QStringList &deleteFile)
 {
-    // handle method call org.ukui.panel.deamon.DesktopFileDeleteSlot
+    // handle method call org.ukui.panel.daemon.DesktopFileDeleteSlot
     QMetaObject::invokeMethod(parent(), "DesktopFileDeleteSlot", Q_ARG(QString, path), Q_ARG(QStringList, deleteFile));
 }
 
-int DeamonAdaptor::DesktopToWID(const QString &desktop)
+int DaemonAdaptor::DesktopToWID(const QString &desktop)
 {
-    // handle method call org.ukui.panel.deamon.DesktopToWID
+    // handle method call org.ukui.panel.daemon.DesktopToWID
     int out0;
     QMetaObject::invokeMethod(parent(), "DesktopToWID", Q_RETURN_ARG(int, out0), Q_ARG(QString, desktop));
     return out0;
 }
 
-QString DeamonAdaptor::WIDToDesktop(int id)
+QString DaemonAdaptor::WIDToDesktop(int id)
 {
-    // handle method call org.ukui.panel.deamon.WIDToDesktop
+    // handle method call org.ukui.panel.daemon.WIDToDesktop
     QString out0;
     QMetaObject::invokeMethod(parent(), "WIDToDesktop", Q_RETURN_ARG(QString, out0), Q_ARG(int, id));
     return out0;

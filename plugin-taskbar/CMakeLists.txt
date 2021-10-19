@@ -24,10 +24,6 @@ set(SOURCES
 
 find_package(X11 REQUIRED)
 
-set(LIBRARIES
-    ${X11_LIBRARIES}
-    Qt5X11Extras
-)
 find_package(PkgConfig)
 pkg_check_modules(GIOUNIX2 REQUIRED gio-unix-2.0)
 pkg_check_modules(GLIB2 REQUIRED glib-2.0 gio-2.0)
@@ -43,6 +39,8 @@ include_directories(
 set(LIBRARIES
     Qt5Xdg
     ${GIOUNIX2_LIBRARIES}
+    ${X11_LIBRARIES}
+    Qt5X11Extras
 )
 
 include(../cmake/UkuiPluginTranslationTs.cmake)

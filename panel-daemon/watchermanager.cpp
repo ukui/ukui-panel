@@ -22,7 +22,7 @@ void WatcherManager::register_dbus()
     connect(dbus,&Server::DesktopFileDelete, this,[=](){
         qDebug()<<"signal send success!";
     });
-    new DeamonAdaptor(dbus);
+    new DaemonAdaptor(dbus);
     QDBusConnection con=QDBusConnection::sessionBus();
 
     if(!con.registerService("org.ukui.panel.daemon"))

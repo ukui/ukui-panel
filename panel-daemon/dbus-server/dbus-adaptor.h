@@ -25,14 +25,14 @@ class QVariant;
 QT_END_NAMESPACE
 
 /*
- * Adaptor class for interface org.ukui.panel.deamon
+ * Adaptor class for interface org.ukui.panel.daemon
  */
-class DeamonAdaptor: public QDBusAbstractAdaptor
+class DaemonAdaptor: public QDBusAbstractAdaptor
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.ukui.panel.deamon")
+    Q_CLASSINFO("D-Bus Interface", "org.ukui.panel.daemon")
     Q_CLASSINFO("D-Bus Introspection", ""
-"  <interface name=\"org.ukui.panel.deamon\">\n"
+"  <interface name=\"org.ukui.panel.daemon\">\n"
 "    <method name=\"DesktopToWID\">\n"
 "      <arg direction=\"out\" type=\"i\"/>\n"
 "      <arg direction=\"in\" type=\"s\" name=\"desktop\"/>\n"
@@ -48,8 +48,8 @@ class DeamonAdaptor: public QDBusAbstractAdaptor
 "  </interface>\n"
         "")
 public:
-    DeamonAdaptor(QObject *parent);
-    virtual ~DeamonAdaptor();
+    DaemonAdaptor(QObject *parent);
+    virtual ~DaemonAdaptor();
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS

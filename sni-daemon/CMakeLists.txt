@@ -23,10 +23,10 @@ find_package(PkgConfig REQUIRED)
 
 add_executable(sni-daemon
         main.cpp
-        snideamo.cpp
+        snidaemon.cpp
         statusnotifieritem_interface.cpp
 
-        snideamo.h
+        snidaemon.h
         statusnotifieritem_interface.h
         systemtraytypedefs.h
 )

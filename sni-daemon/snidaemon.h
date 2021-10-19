@@ -1,10 +1,10 @@
-#ifndef SNIDEAMO_H
-#define SNIDEAMO_H
+#ifndef SNIDAEMON_H
+#define SNIDAEMON_H
 
 #include <QtDBus/QtDBus>
 #include <QStringList>
 #include <QDBusAbstractInterface>
-class SniDeamo : public QObject,protected QDBusContext
+class SniDaemon : public QObject, protected QDBusContext
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.StatusNotifierWatcher")
@@ -13,8 +13,8 @@ class SniDeamo : public QObject,protected QDBusContext
     Q_PROPERTY(bool IsStatusNotifierHostRegistered READ IsStatusNotifierHostRegistered)
     Q_PROPERTY(int ProtocolVersion READ ProtocolVersion)
 public:
-    SniDeamo();
-    ~SniDeamo();
+    SniDaemon();
+    ~SniDaemon();
 
     QStringList RegisteredStatusNotifierItems() const;
 
@@ -41,4 +41,4 @@ protected Q_SLOTS:
     void serviceUnregistered(const QString& name);
 
 };
-#endif // SNIDEAMO_H
+#endif // SNIDAEMON_H
