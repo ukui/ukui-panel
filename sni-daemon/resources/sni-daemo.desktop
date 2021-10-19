@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=sni-daemo
+Name=sni-daemon
 Name[zh_CN]=sni后台服务
-Comment=sni-daemo
+Comment=sni-daemon
 Comment[zh_CN]=sni后台服务
-Exec=sni-daemo
+Exec=sni-daemon
 Terminal=false
 Type=Application
 OnlyShowIn=UKUI
