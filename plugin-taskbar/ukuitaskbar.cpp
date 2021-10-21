@@ -83,8 +83,6 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
 
     //往任务栏中加入快速启动按钮
     refreshQuickLaunch();
-
-    //往任务栏中加入任务栏按钮
     realign();
 
     settingsChanged();
@@ -105,12 +103,6 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
 
     FilectrlAdaptor *f;
     f=new FilectrlAdaptor(this);
-    QDBusConnection con=QDBusConnection::sessionBus();
-    if(!con.registerService("com.ukui.panel.desktop") ||
-       !con.registerObject("/", this))
-    {
-       qDebug()<<"fail";
-    }
 
     //龙芯机器的最小化任务窗口的预览窗口的特殊处理
     system("cat /proc/cpuinfo >> /tmp/_tmp_cpu_info_cat_");
@@ -166,6 +158,7 @@ void UKUITaskBar::onDesktopChanged() {
 }
 
 void UKUITaskBar::refreshQuickLaunch(){
+    qDebug()<<"desktop  ******";
     for(auto it = mVBtn.begin(); it != mVBtn.end();)
     {
         (*it)->deleteLater();
@@ -174,15 +167,13 @@ void UKUITaskBar::refreshQuickLaunch(){
 
     QString desktop;
     QString file;
-    QString execname;
-    QString exec;
-    QString icon;
 
     //gsetting的方式读取写入 apps
     const auto apps = mPlugin->settings()->readArray("apps");
     for (const QMap<QString, QVariant> &app : apps)
     {
         desktop = app.value("desktop", "").toString();
+        qDebug()<<"desktop  ******"<<desktop;
 
         file = app.value("file", "").toString();
         if (!desktop.isEmpty())
@@ -190,16 +181,8 @@ void UKUITaskBar::refreshQuickLaunch(){
             XdgDesktopFile xdg;
             if (xdg.load(desktop))
                 addButton(new QuickLaunchAction(&xdg, this));
-        }
-        else if (! file.isEmpty())
-        {
-            addButton(new QuickLaunchAction(file, this));
-        }
-        else
-        {
-            execname = app.value("name", "").toString();
-            exec = app.value("exec", "").toString();
-            icon = app.value("icon", "").toString();
+        }else{
+            qDebug()<<"error desktop file";
         }
     }
 }
@@ -451,6 +434,7 @@ void UKUITaskBar::groupBecomeEmptySlot()
  ************************************************/
 void UKUITaskBar::addWindow(WId window)
 {
+    qDebug()<<"^^^^^^^^^^^^^^^";
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
     UKUITaskGroup *group = nullptr;
