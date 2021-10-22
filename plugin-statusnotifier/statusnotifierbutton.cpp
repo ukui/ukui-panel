@@ -423,7 +423,7 @@ void StatusNotifierButton::resizeEvent(QResizeEvent *event){
 
 QString StatusNotifierButton::hideAbleStatusNotifierButton()
 {
-    interface->propertyGetAsync(QLatin1String("Title"), [this] (QString title) {
+    interface->propertyGetAsync(QLatin1String("Id"), [this] (QString title) {
         mTitle = title;
     });
     return mTitle;
