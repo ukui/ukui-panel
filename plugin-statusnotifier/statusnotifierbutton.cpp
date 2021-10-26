@@ -348,6 +348,8 @@ void StatusNotifierButton::resetIcon()
         setIcon(mAttentionIcon);
     else
         setIcon(mFallbackIcon);
+
+    emit iconReady();
 }
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)

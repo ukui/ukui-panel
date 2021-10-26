@@ -69,6 +69,7 @@ public:
     QString hideAbleStatusNotifierButton();
     static QString mimeDataFormat() { return QLatin1String("x-ukui/statusnotifier-button"); }
 
+
 public slots:
     void newIcon();
     void newAttentionIcon();
@@ -99,6 +100,7 @@ signals:
     void sendTitle(QString arg);
     void sendstatus(QString arg);
     void cleansignal();
+    void iconReady();
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
