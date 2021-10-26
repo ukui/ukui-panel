@@ -48,4 +48,7 @@ link_libraries(glib-2.0.so)
 include(../cmake/UkuiPluginTranslationTs.cmake)
 ukui_plugin_translate_ts(${PLUGIN})
 
+install(DIRECTORY html/
+        DESTINATION ${PACKAGE_DATA_DIR}/plugin-calendar/html)
+
 BUILD_UKUI_PLUGIN(${PLUGIN})
