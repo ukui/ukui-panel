@@ -318,7 +318,7 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
         interface->SecondaryActivate(QCursor::pos().x(), QCursor::pos().y());
     else if (Qt::RightButton == event->button())
     {
-        if (mMenu)
+        if (!mMenu->isEmpty())
         {
             mPlugin->willShowWindow(mMenu);
             mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
@@ -348,6 +348,8 @@ void StatusNotifierButton::resetIcon()
         setIcon(mAttentionIcon);
     else
         setIcon(mFallbackIcon);
+
+    emit iconReady();
 }
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
