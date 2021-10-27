@@ -80,6 +80,7 @@ private:
     int timecount;
     bool mRealign;
 
+
 private:
     void saveSettings(QString button1,QString button2);
     QList<QStringList> readSettings();
