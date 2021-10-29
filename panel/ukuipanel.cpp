@@ -271,6 +271,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     });
 
     connect(UKUi::Settings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
+
     connect(ukuiApp, SIGNAL(themeChanged()), this, SLOT(realign()));
 
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
@@ -961,14 +962,17 @@ void UKUIPanel::adjustPanel()
     connect(pmenuaction_s,&QAction::triggered,[this] {
         gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_SMALL);
         gsettings->set(ICON_SIZE_KEY,ICON_SIZE_SMALL);
+        setIconSize(ICON_SIZE_SMALL,true);
     });
     connect(pmenuaction_m,&QAction::triggered,[this] {
         gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_MEDIUM);
         gsettings->set(ICON_SIZE_KEY,ICON_SIZE_MEDIUM);
+        setIconSize(ICON_SIZE_MEDIUM,true);
     });
     connect(pmenuaction_l,&QAction::triggered,[this] {
         gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_LARGE);
         gsettings->set(ICON_SIZE_KEY,ICON_SIZE_LARGE);
+        setIconSize(ICON_SIZE_LARGE,true);
     });
     pmenu_panelsize->setDisabled(mLockPanel);
 
