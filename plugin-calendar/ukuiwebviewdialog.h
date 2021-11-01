@@ -23,8 +23,6 @@
 
 #include <QDialog>
 #include <QMouseEvent>
-#include <QtWebKitWidgets/QWebView>
-#include <QtWebKitWidgets/QWebFrame>
 #include "../panel/iukuipanelplugin.h"
 namespace Ui {
 class UkuiWebviewDialog;
@@ -49,13 +47,11 @@ public:
     ~UkuiWebviewDialog();
     void creatwebview(int _mode, int _panelSize);
     void showinfo(QString string);
-    QWebView *webview(){return mWebView;}
 Q_SIGNALS:
     void deactivated();
 
 private:
     Ui::UkuiWebviewDialog *ui;
-    QWebView   *mWebView;
     QSize      mQsize;
 protected:
 //    virtual bool event(QEvent *event);
