@@ -4,17 +4,17 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../ukuicalendar.cpp" line="602"/>
+        <location filename="../ukuicalendar.cpp" line="600"/>
         <source>Time and Date</source>
         <translation>时间与日期</translation>
     </message>
     <message>
-        <location filename="../ukuicalendar.cpp" line="653"/>
+        <location filename="../ukuicalendar.cpp" line="651"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../ukuicalendar.cpp" line="657"/>
+        <location filename="../ukuicalendar.cpp" line="655"/>
         <source>Config panel</source>
         <translation>设置任务栏</translation>
     </message>

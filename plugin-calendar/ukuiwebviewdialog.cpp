@@ -39,7 +39,6 @@ UkuiWebviewDialogStatus status;
 
 UkuiWebviewDialog::UkuiWebviewDialog(QWidget *parent) :
     QDialog(parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint),
-    mWebView(NULL),
     ui(new Ui::UkuiWebviewDialog)
 {
     ui->setupUi(this);
@@ -49,132 +48,12 @@ UkuiWebviewDialog::UkuiWebviewDialog(QWidget *parent) :
 UkuiWebviewDialog::~UkuiWebviewDialog()
 {
     delete ui;
-    if(mWebView != NULL)
-    {
-        mWebView->deleteLater();
-        mWebView = NULL;
-    }
 }
 
 void UkuiWebviewDialog::creatwebview(int _mode, int _panelSize)
 {
-    int iViewWidth = CALENDAR_MAX_WIDTH;
-    int iViewHeight = CALENDAR_MAX_HEIGHT;
-    int iScreenHeight = QApplication::screens().at(0)->size().height() - _panelSize;
-    if(!mWebView)
-    {
-         mWebView = new QWebView(this);
-    }
-    else
-    {
-        //deletePopup();
-    }
-    if(mWebView != NULL)
-    {
-        QString  htmlFilePath = QLatin1String(PACKAGE_DATA_DIR);
-        if (QLocale::system().name() == "zh_CN")
-        {
-            if(_mode == lunarMonday)
-            {
-                //first day a week is monday in lunar mode
-                if(CALENDAR_MAX_HEIGHT < iScreenHeight)
-                {
-                    htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-mon.html");
-                }
-                else
-                {
-                    iViewHeight = CALENDAR_MIN_HEIGHT;
-                    htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-mon-min.html");
-                }
-            }
-            else if(_mode == solarSunday)
-            {
-                //first day a week is sunday in solar mode
-                iViewHeight = 600;
-                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-cn.html");
-            }
-            else if(_mode == solarMonday)
-            {
-                //first day a week is monday in solar mode
-                iViewHeight = 600;
-                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-cn-mon.html");
-            }
-            else
-            {
-                //first day a week is sunday in lunar mode
-                if(CALENDAR_MAX_HEIGHT < iScreenHeight)
-                {
-                    htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui.html");
-                }
-                else
-                {
-                    iViewHeight = 600;
-                    htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-min.html");
-                }
-            }
-        }
-        else
-        {
-            if(_mode == solarSunday)
-            {
-                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-en.html");
-            }
-            else
-            {
-                htmlFilePath = QLatin1String("file://") + htmlFilePath + QLatin1String("/plugin-calendar/html/ukui-solar-en-mon.html");
-            }
-            iViewHeight = 600;
-        }
-        /*set window no margins*/
-        mWebView->setWindowFlags(Qt::FramelessWindowHint);
-
-        /*set rounded corner ,including radius*/
-        QBitmap bmp(iViewWidth,iViewHeight);
-        bmp.fill();
-        QPainter p(&bmp);
-        p.setPen(Qt::NoPen);
-        p.setBrush(Qt::black);
-        p.drawRoundedRect(bmp.rect(),6,6);
-        setMask(bmp);
-
-        /*set window size*/
-        mWebView->resize(iViewWidth,iViewHeight);
-        mWebView->settings()->setAttribute(QWebSettings::JavascriptEnabled,true);
-        mWebView->settings()->setAttribute(QWebSettings::WebAttribute::LocalStorageEnabled, true);
-        mWebView->setContextMenuPolicy(Qt::NoContextMenu);
-        mWebView->load(QUrl(htmlFilePath));
-    }
 }
 
-#if 0
-//event 与 nativeEvent  是用来处理界面的隐藏与显示相关的问题
-bool UkuiWebviewDialog::event(QEvent *event)
-{
-    if (event->type() == QEvent::Close)
-    {
-        Q_EMIT deactivated();
-    }
-
-    return QDialog::event(event);
-}
-
-bool UkuiWebviewDialog::nativeEvent(const QByteArray &eventType, void *message, long *result)
-
-{
-    Q_UNUSED(result);
-    if (eventType != "xcb_generic_event_t") {
-        return false;
-    }
-    xcb_generic_event_t *event = (xcb_generic_event_t*)message;
-    switch (event->response_type & ~0x80) {
-    qDebug()<<"YYF - event->response_type : "<<event->response_type;//YYF 20200922
-    case XCB_FOCUS_OUT:
-        this->hide();
-        break;
-    }
-    return false;
-}
-#endif
 /*
  * 事件过滤，检测鼠标点击外部活动区域则收回收纳栏
 */

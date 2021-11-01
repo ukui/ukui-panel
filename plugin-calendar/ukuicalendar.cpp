@@ -484,7 +484,6 @@ void IndicatorCalendar::CalendarWidgetShow()
         {
             status = ST_SHOW;
             mWebViewDiag->setHidden(false);
-            mWebViewDiag->webview()->reload();
         }
         else
         {
@@ -520,7 +519,6 @@ void IndicatorCalendar::hidewebview()
 {
     mWebViewDiag->setHidden(true);
     mbActived = false;
-    mWebViewDiag->webview()->reload();
 }
 
 void IndicatorCalendar::realign()
