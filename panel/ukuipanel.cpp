@@ -906,20 +906,6 @@ int UKUIPanel::findAvailableScreen(UKUIPanel::Position position)
 //    KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
 //}
 
-
-/*右键　设置任务栏选项*/
-void UKUIPanel::setUpPanel()
-{
-    if(QFileInfo::exists(QString("/usr/bin/ukui-control-center")))
-    {
-        QProcess *process =new QProcess(this);
-        process->startDetached("/usr/bin/ukui-control-center  -d");
-        process->deleteLater();
-    }
-    else
-        qDebug()<<"not find /usr/bin/ukui-control-center";
-}
-
 /*右键　系统监视器选项*/
 void UKUIPanel::systeMonitor()
 {
@@ -1173,7 +1159,7 @@ void UKUIPanel::setPosition(int screen, IUKUIPanel::Position position, bool save
     }
 
     realign();
-
+    gsettings->set(PANEL_POSITION_KEY,position);
     setPanelGeometry(true);
 }
 
@@ -1403,11 +1389,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                    this, SLOT(showAddPluginDialog())
                   )->setDisabled(mLockPanel);
 */
-
-    menu->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
-                    tr("Set up Panel"),
-                    this, SLOT(setUpPanel())
-                    );
 
     menu->addSeparator();
 
