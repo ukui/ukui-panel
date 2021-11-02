@@ -440,7 +440,6 @@ private slots:
      * 2. UKUi::Application::themeChanged(), i.e. when the user changes
      * the theme.
      */
-    void setUpPanel();
     void systeMonitor();
     void showDesktop();
     void showTaskView();
