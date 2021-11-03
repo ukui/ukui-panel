@@ -8,6 +8,7 @@
 
 //file
 #include "filewatcher/filewatcher.h"
+#include "convert-desktop-windowid/convertdesktoptowinid.h"
 
 class Server : public QObject
 {
@@ -32,6 +33,7 @@ Q_SIGNALS:
 
 private:
     FileWatcher *mFileWatcher;
+    ConvertDesktopToWinId *mDesktop;
 
 };
 
