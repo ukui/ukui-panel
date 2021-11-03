@@ -39,18 +39,15 @@ QString ConvertDesktopToWinId::confirmDesktopFileName(KWindowInfo info)
     searchFromEnviron(info);
 
     //第二种方法：比较名字一致性
-    if(desktop_file_path.isEmpty())
-    {
+    if (desktop_file_path.isEmpty()) {
         classClass = info.windowClassClass().toLower();
         className = info.windowClassName();
 
         QFile file(QString("/proc/%1/status").arg(info.pid()));
-        if(file.open(QIODevice::ReadOnly))
-        {
+        if (file.open(QIODevice::ReadOnly)) {
             char buf[1024];
             qint64 len=file.readLine(buf,sizeof(buf));
-            if(len!=-1)
-            {
+            if (len!=-1) {
                 statusName = QString::fromLocal8Bit(buf).remove("Name:").remove("\t").remove("\n");
             }
         }
@@ -59,15 +56,12 @@ QString ConvertDesktopToWinId::confirmDesktopFileName(KWindowInfo info)
     }
 
     //第三种方法：比较cmd命令行操作一致性
-    if(desktop_file_path.isEmpty())
-    {
+    if (desktop_file_path.isEmpty()) {
         QFile file(QString("/proc/%1/cmdline").arg(info.pid()));
-        if(file.open(QIODevice::ReadOnly))
-        {
+        if (file.open(QIODevice::ReadOnly)) {
             char buf[1024];
             qint64 len=file.readLine(buf,sizeof(buf));
-            if(len!=-1)
-            {
+            if (len!=-1) {
                 cmd_line = QString::fromLocal8Bit(buf).remove("\n");
             }
         }
@@ -76,8 +70,7 @@ QString ConvertDesktopToWinId::confirmDesktopFileName(KWindowInfo info)
 
     //第四种方法：匹配部分字段
     //目前主要用来解决WPS应用的匹配
-    if(desktop_file_path.isEmpty())
-    {
+    if (desktop_file_path.isEmpty()) {
         compareLastStrategy();
     }
     //返回desktop文件名
@@ -91,8 +84,8 @@ void ConvertDesktopToWinId::searchFromEnviron(KWindowInfo info)
     QByteArray BA = file.readAll();
     file.close();
     QList<QByteArray> list_BA = BA.split('\0');
-    for(int i=0; i<list_BA.length(); i++){
-        if(list_BA.at(i).startsWith("GIO_LAUNCHED_DESKTOP_FILE=")){
+    for (int i = 0; i < list_BA.length(); i++) {
+        if (list_BA.at(i).startsWith("GIO_LAUNCHED_DESKTOP_FILE=")) {
             desktop_file_path = list_BA.at(i);
             desktop_file_path = desktop_file_path.mid(desktop_file_path.indexOf("=") + 1);
             //desktop文件地址需要重写
@@ -100,13 +93,10 @@ void ConvertDesktopToWinId::searchFromEnviron(KWindowInfo info)
         }
     }
     //desktop文件地址重写
-    if(!desktop_file_path.isEmpty())
-    {
-        for(int i = 0; i < list.size(); i++)
-        {
+    if (!desktop_file_path.isEmpty()) {
+        for (int i = 0; i < list.size(); i++) {
             QFileInfo fileInfo = list.at(i);;
-            if(fileInfo.filePath() == DEKSTOP_FILE_PATH + desktop_file_path)
-            {
+            if (fileInfo.filePath() == DEKSTOP_FILE_PATH + desktop_file_path) {
                 desktop_file_path = fileInfo.filePath();
             }
         }
@@ -116,17 +106,15 @@ void ConvertDesktopToWinId::searchFromEnviron(KWindowInfo info)
 
 void ConvertDesktopToWinId::compareClassName()
 {
-    for(int i = 0; i < list.size(); i++)
-    {
+    for (int i = 0; i < list.size(); i++) {
         QFileInfo fileInfo = list.at(i);;
         QString path_desktop_name = fileInfo.filePath();
-        if(!fileInfo.filePath().endsWith(".desktop")){
+        if (!fileInfo.filePath().endsWith(".desktop")) {
             continue;
         }
         path_desktop_name = path_desktop_name.mid(path_desktop_name.lastIndexOf("/") + 1);
         path_desktop_name = path_desktop_name.left(path_desktop_name.lastIndexOf("."));
-        if(path_desktop_name == classClass || path_desktop_name == className || path_desktop_name == statusName)
-        {
+        if (path_desktop_name == classClass || path_desktop_name == className || path_desktop_name == statusName)  {
             desktop_file_path = fileInfo.filePath();
         }
     }
@@ -134,32 +122,27 @@ void ConvertDesktopToWinId::compareClassName()
 
 void ConvertDesktopToWinId::compareCmdExec()
 {
-    for(int i = 0; i < list.size(); i++)
-    {
+    for (int i = 0; i < list.size(); i++) {
         QString _cmd;
         QFileInfo fileInfo = list.at(i);
-        if(!fileInfo.filePath().endsWith(".desktop")){
+        if (!fileInfo.filePath().endsWith(".desktop")) {
             continue;
         }
         _cmd.sprintf(GET_DESKTOP_EXEC_NAME_MAIN, fileInfo.filePath().toStdString().data());
         QString desktopFileExeName = getDesktopFileName(_cmd).remove("\n");
 
-        if(desktopFileExeName.isEmpty())
-        {
+        if (desktopFileExeName.isEmpty()) {
             continue;
         }
 
-        if(desktopFileExeName == cmd_line || desktopFileExeName.startsWith(cmd_line) || cmd_line.startsWith(desktopFileExeName)) // 53/59
-        {
+        if (desktopFileExeName == cmd_line || desktopFileExeName.startsWith(cmd_line) || cmd_line.startsWith(desktopFileExeName)) {
             desktop_file_path = fileInfo.filePath();
         }
 
         //仅仅是为了适配微信
-        if(desktop_file_path.isEmpty()) // 54/59
-        {
+        if (desktop_file_path.isEmpty()) {
             desktopFileExeName = "/usr/lib/" + desktopFileExeName;
-            if(desktopFileExeName == cmd_line || desktopFileExeName.startsWith(cmd_line) || cmd_line.startsWith(desktopFileExeName))
-            {
+            if (desktopFileExeName == cmd_line || desktopFileExeName.startsWith(cmd_line) || cmd_line.startsWith(desktopFileExeName)) {
                 desktop_file_path = fileInfo.filePath();
             }
         }
@@ -169,59 +152,50 @@ void ConvertDesktopToWinId::compareCmdExec()
 //最后的匹配策略汇总
 void ConvertDesktopToWinId::compareLastStrategy()
 {
-    for(int i = 0; i < list.size(); i++)
-    {
+    for (int i = 0; i < list.size(); i++) {
         QString _cmd;
         QFileInfo fileInfo = list.at(i);
-        if(!fileInfo.filePath().endsWith(".desktop")){
+        if (!fileInfo.filePath().endsWith(".desktop")) {
             continue;
         }
         _cmd.sprintf(GET_DESKTOP_EXEC_NAME_MAIN, fileInfo.filePath().toStdString().data());
         QString desktopFileExeName = getDesktopFileName(_cmd).remove("\n");
 
-        if(desktopFileExeName.isEmpty())
-        {
+        if (desktopFileExeName.isEmpty()) {
             continue;
         }
 
-        if(desktopFileExeName.startsWith(className) || desktopFileExeName.endsWith(className)) // 59/59
-        {
+        if (desktopFileExeName.startsWith(className) || desktopFileExeName.endsWith(className)) {
             desktop_file_path = fileInfo.filePath();
         }
     }
 
-    if(desktop_file_path.isEmpty())
-    {
-        for(int i = 0; i < list.size(); i++)
-        {
+    if (desktop_file_path.isEmpty()) {
+        for (int i = 0; i < list.size(); i++) {
             QFileInfo fileInfo = list.at(i);
             QString path_desktop_name = fileInfo.filePath();
-            if(!fileInfo.filePath().endsWith(".desktop")){
+            if (!fileInfo.filePath().endsWith(".desktop")) {
                 continue;
             }
             path_desktop_name = path_desktop_name.mid(path_desktop_name.lastIndexOf("/") + 1);
             path_desktop_name = path_desktop_name.left(path_desktop_name.lastIndexOf("."));
 
-            if(path_desktop_name.startsWith(className) || path_desktop_name.endsWith(className))
-            {
+            if (path_desktop_name.startsWith(className) || path_desktop_name.endsWith(className)) {
                 desktop_file_path = fileInfo.filePath();
             }
-            else if(className.startsWith(path_desktop_name) || className.endsWith(path_desktop_name))
-            {
+            else if (className.startsWith(path_desktop_name) || className.endsWith(path_desktop_name)) {
                 desktop_file_path = fileInfo.filePath();
             }
         }
     }
 
-    if(desktop_file_path.isEmpty())
-    {
-        for(int i = 0; i < list.size(); i++)
-        {
+    if (desktop_file_path.isEmpty()) {
+        for (int i = 0; i < list.size(); i++) {
             QString _cmd;
             QFileInfo fileInfo = list.at(i);
             QString path_desktop_name = fileInfo.filePath();
 
-            if(!fileInfo.filePath().endsWith(".desktop")){
+            if (!fileInfo.filePath().endsWith(".desktop")) {
                 continue;
             }
 
@@ -231,8 +205,7 @@ void ConvertDesktopToWinId::compareLastStrategy()
             path_desktop_name = path_desktop_name.mid(path_desktop_name.lastIndexOf("/") + 1);
             path_desktop_name = path_desktop_name.left(path_desktop_name.lastIndexOf("."));
 
-            if(path_desktop_name.contains(className) || desktopFileExeName.contains(className))
-            {
+            if (path_desktop_name.contains(className) || desktopFileExeName.contains(className)) {
                 desktop_file_path = fileInfo.filePath();
             }
         }
@@ -240,7 +213,8 @@ void ConvertDesktopToWinId::compareLastStrategy()
 }
 
 //执行头文件中宏定义写好的终端指令获取对应的Exec字段
-QString ConvertDesktopToWinId::getDesktopFileName(QString cmd) {
+QString ConvertDesktopToWinId::getDesktopFileName(QString cmd)
+{
     char name[200];
     FILE *fp1 = NULL;
     if ((fp1 = popen(cmd.toStdString().data(), "r")) == NULL)
