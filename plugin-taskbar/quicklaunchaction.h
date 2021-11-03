@@ -43,22 +43,9 @@ class  QuickLaunchAction : public QAction
     Q_OBJECT
 
 public:
-    /*! Constructor for "legacy" launchers.
-        \warning The XDG way is preferred this is only for older or non-standard apps
-        \param name a name to display in tooltip
-        \param exec a executable with path
-        \param icon a valid QIcon
-     */
-    QuickLaunchAction(const QString & name,
-                      const QString & exec,
-                      const QString & icon,
-                      QWidget * parent);
     /*! Constructor for XDG desktop handlers.
      */
     QuickLaunchAction(const XdgDesktopFile * xdg, QWidget * parent);
-    /*! Constructor for regular files
-     */
-    QuickLaunchAction(const QString & fileName, QWidget * parent);
 
     //! Returns true if the action is valid (contains all required properties).
     bool isValid() { return m_valid; }

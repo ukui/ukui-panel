@@ -180,6 +180,8 @@ private slots:
     void switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button);
     QString readFile(const QString &filename);
 
+    void _AddToTaskbar(QString arg);
+
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
 
@@ -188,7 +190,6 @@ private:
     void addButton(QuickLaunchAction* action);
     windowMap_t::iterator removeWindow(windowMap_t::iterator pos);
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
-    void _AddToTaskbar(QString arg);
     void doInitGroupButton(QString sname);
     void initRelationship();
 
@@ -245,58 +246,9 @@ private:
     UKUITaskBarIcon *mpTaskBarIcon;
 
 public slots:
-    bool AddToTaskbar(QString arg);
-    /*为开始菜单提供从任务栏上移除的接口*/
-    bool RemoveFromTaskbar(QString arg);
-    /*
-     * @need resolved bug
-     * 为开始菜单提供检测应用是否在任务栏上面的接口
-     */
-    bool CheckIfExist(QString arg);
-
     void WindowAddtoTaskBar(QString arg);
     void WindowRemovefromTaskBar(QString arg);
 
-};
-
-class FilectrlAdaptor: public QDBusAbstractAdaptor
-{
-    Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "com.ukui.panel.desktop")
-    Q_CLASSINFO("D-Bus Introspection", ""
-"  <interface name=\"com.ukui.panel.desktop\">\n"
-"    <method name=\"AddToTaskbar\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
-"    </method>\n"
-"    <method name=\"RemoveFromTaskbar\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
-"    </method>\n"
-"    <method name=\"CheckIfExist\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"      <arg direction=\"in\" type=\"s\" name=\"arg\"/>\n"
-"    </method>\n"
-"  </interface>\n"
-        "")
-public:
-    /*
-     * Implementation of adaptor class FilectrlAdaptor
-     * 为开始菜单提供D_Bus接口
-     */
-    FilectrlAdaptor(QObject *parent);
-    virtual ~FilectrlAdaptor();
-
-public: // PROPERTIES
-public Q_SLOTS: // METHODS
-    bool AddToTaskbar(const QString &arg);
-    bool CheckIfExist(const QString &arg);
-    bool RemoveFromTaskbar(const QString &arg);
-
-Q_SIGNALS: // SIGNALS
-
-signals:
-    void addtak(int);
 };
 
 #endif // UKUITASKBAR_H
