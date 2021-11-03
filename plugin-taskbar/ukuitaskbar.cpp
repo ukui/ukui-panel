@@ -101,9 +101,6 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged()));
 
-    FilectrlAdaptor *f;
-    f=new FilectrlAdaptor(this);
-
     //龙芯机器的最小化任务窗口的预览窗口的特殊处理
     system("cat /proc/cpuinfo >> /tmp/_tmp_cpu_info_cat_");
     QFile file("/tmp/_tmp_cpu_info_cat_");
@@ -120,6 +117,8 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QDBusConnection::sessionBus().unregisterService("com.ukui.panel.plugins.service");
     QDBusConnection::sessionBus().registerService("com.ukui.panel.plugins.service");
     QDBusConnection::sessionBus().registerObject("/taskbar/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
+
+    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "AddToTaskbar", this, SLOT(_AddToTaskbar(QString)));
 }
 
 /************************************************
@@ -231,23 +230,6 @@ bool UKUITaskBar::acceptWindow(WId window) const
  ************************************************/
 void UKUITaskBar::dragEnterEvent(QDragEnterEvent* event)
 {
-    if (event->mimeData()->hasFormat(UKUITaskGroup::mimeDataFormat()))
-    {
-        event->acceptProposedAction();
-        buttonMove(nullptr, qobject_cast<UKUITaskGroup *>(event->source()), event->pos());
-    } else
-        event->ignore();
-    if (event->mimeData()->hasUrls())
-    {
-        event->acceptProposedAction();
-        return;
-    }
-
-    if (event->source() && event->source()->parent() == this)
-    {
-        event->acceptProposedAction();
-    }
-    QWidget::dragEnterEvent(event);
 }
 
 /************************************************
@@ -255,10 +237,6 @@ void UKUITaskBar::dragEnterEvent(QDragEnterEvent* event)
  ************************************************/
 void UKUITaskBar::dragMoveEvent(QDragMoveEvent * event)
 {
-    //we don't get any dragMoveEvents if dragEnter wasn't accepted
-
-    buttonMove(nullptr, qobject_cast<UKUITaskGroup *>(event->source()), event->pos());
-    QWidget::dragMoveEvent(event);
 }
 
 QString UKUITaskBar::isComputerOrTrash(QString urlName) {
@@ -271,50 +249,6 @@ QString UKUITaskBar::isComputerOrTrash(QString urlName) {
 
 void UKUITaskBar::dropEvent(QDropEvent *e)
 {
-    //saveSettings();
-    const auto urls = e->mimeData()->urls().toSet();
-    for (const QUrl &url : urls)
-    {
-        XdgDesktopFile xdg;
-        QString urlName(url.isLocalFile() ? url.toLocalFile() : url.url());
-        QFileInfo ur(urlName);
-        QString fileName("/usr/share/applications/");
-
-        fileName.append(urlName.section('/', -1, -1));
-        fileName = isComputerOrTrash(urlName);
-        urlName = isComputerOrTrash(urlName);
-
-        if (CheckIfExist(urlName)) return;
-        if (CheckIfExist(fileName)) return;
-        if (isDesktopFile(urlName)) {
-            if (ur.isSymLink()){
-                if (xdg.load(urlName) && xdg.isSuitable()) {
-                   if (CheckIfExist(xdg.fileName())) return;
-                   addButton(new QuickLaunchAction(&xdg, this));
-                }
-            } else {
-                if (xdg.load(fileName) && xdg.isSuitable()) {
-                   if (CheckIfExist(urlName)) return;
-                   addButton(new QuickLaunchAction(&xdg, this));
-                }
-            }
-        } else if (ur.exists() && ur.isExecutable() && !ur.isDir() || ur.isSymLink()) {
-            if (ur.size() <= 153600)
-                xdg.load(urlName);
-            addButton(new QuickLaunchAction(urlName, this));
-        } else if (ur.exists()) {
-            if (ur.size() <= 153600)
-                xdg.load(urlName);
-            addButton(new QuickLaunchAction(urlName, this));
-            //taskbar->pubAddButton(new QuickLaunchAction(urlName, urlName, "", this));
-        } else {
-            qWarning() << "XdgDesktopFile" << urlName << "is not valid";
-            QMessageBox::information(this, tr("Drop Error"),
-                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(urlName)
-                                     );
-        }
-    }
-    saveSettings();
 }
 
 /************************************************
@@ -798,54 +732,6 @@ void UKUITaskBar::realign()
  ************************************************/
 void UKUITaskBar::wheelEvent(QWheelEvent* event)
 {
-#if 0
-    if (!mCycleOnWheelScroll)
-        return QFrame::wheelEvent(event);
-
-    static int threshold = 0;
-    threshold += abs(event->delta());
-    if (threshold < 300)
-        return QFrame::wheelEvent(event);
-    else
-        threshold = 0;
-
-    int delta = event->delta() < 0 ? 1 : -1;
-
-    // create temporary list of visible groups in the same order like on the layout
-    QList<UKUITaskGroup*> list;
-    UKUITaskGroup *group = NULL;
-    for (int i = 0; i < mLayout->count(); i++)
-    {
-        QWidget * o = mLayout->itemAt(i)->widget();
-        UKUITaskGroup * g = qobject_cast<UKUITaskGroup *>(o);
-        if (!g)
-            continue;
-
-        if (g->isVisible())
-            list.append(g);
-        if (g->isChecked())
-            group = g;
-    }
-
-    if (list.isEmpty())
-        return QFrame::wheelEvent(event);
-
-    if (!group)
-        group = list.at(0);
-
-    UKUITaskButton *button = NULL;
-
-    // switching between groups from temporary list in modulo addressing
-    while (!button)conSize()
-    {
-        button = group->getNextPrevChildButton(delta == 1, !(list.count() - 1));
-        if (button)
-            button->raiseApplication();
-        int idx = (list.indexOf(group) + delta + list.count()) % list.count();
-        group = list.at(idx);
-    }
-    QFrame::wheelEvent(event);
-#endif
 }
 
 /************************************************
@@ -939,22 +825,9 @@ void UKUITaskBar::mousePressEvent(QMouseEvent *)
     /*创建QT的DBus信号*/
     QDBusMessage message =QDBusMessage::createSignal("/taskbar/click", "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp");
     /*
-     * 发射信号,此处不给信号赋值　　message << QString("clicked");的原因是
-     * 侧边栏和开始菜单仅需要点击信号
-     * 若后期有特殊的设计需求，例如对鼠标左键，右键，滚轮　进行不同的处理就需要给信号赋值
-     * tr:
-     * Transmit the signal, the signal is not assigned here The reason is
-     * The sidebar and start menu only need to click the signal
-     * If there are special design requirements in the later stage,
-     * such as different processing for the left mouse button, right mouse button, and scroll wheel,
-     * the signal needs to be assigned and processed
-     *
      * 需要此点击信号的应用需要做如下绑定
      * QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(client_get(void)));
      * 在槽函数client_get(void)　中处理接受到的点击信号
-     * tr:
-     * Applications that require this click signal need to do the following binding
-     * Process the received click signal in the slot function client_get (void)
      * NOTE:https://blog.csdn.net/czhzasui/article/details/81071383
 　　　*/
     QDBusConnection::sessionBus().send(message);
@@ -1122,12 +995,14 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
 }
 
 void UKUITaskBar::_AddToTaskbar(QString arg) {
+    qDebug()<<"add To taskbar  "<<arg;
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
     XdgDesktopFile xdg;
     if (xdg.load(fileName)){
-        addButton(new QuickLaunchAction(&xdg, this));
+        if(!checkButton(new QuickLaunchAction(&xdg, this)))
+            addButton(new QuickLaunchAction(&xdg, this));
     }else{
         qWarning() << "XdgDesktopFile" << fileName << "is not valid";
         QMessageBox::information(this, tr("Drop Error"),
@@ -1135,37 +1010,6 @@ void UKUITaskBar::_AddToTaskbar(QString arg) {
                                  );
     }
     saveSettings();
-}
-
-bool UKUITaskBar::AddToTaskbar(QString arg)
-{
-    _AddToTaskbar(arg);
-    return true;
-}
-
-bool UKUITaskBar::CheckIfExist(QString arg)
-{
-    if(countOfButtons()>0)
-    {
-        const auto url=QUrl(arg);
-        QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-        XdgDesktopFile xdg;
-        xdg.load(fileName);
-        bool state;
-        state=checkButton(new QuickLaunchAction(&xdg, this));
-        return state;
-    }
-    return 0;
-}
-
-bool UKUITaskBar::RemoveFromTaskbar(QString arg)
-{
-    const auto url=QUrl(arg);
-    QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-    XdgDesktopFile xdg;
-    xdg.load(fileName);
-    removeButton(new QuickLaunchAction(&xdg, this));
-    return true;
 }
 
 void UKUITaskBar::doInitGroupButton(QString sname) {
@@ -1257,38 +1101,4 @@ int UKUITaskBar::indexOfButton(UKUITaskGroup* button) const
 int UKUITaskBar::countOfButtons() const
 {
     return mLayout->count();
-}
-
-
-FilectrlAdaptor::FilectrlAdaptor(QObject *parent)
-    : QDBusAbstractAdaptor(parent)
-{
-    setAutoRelaySignals(true);
-}
-
-FilectrlAdaptor::~FilectrlAdaptor(){
-}
-
-/*添加到快速启动栏*/
-bool FilectrlAdaptor::AddToTaskbar(const QString &arg)
-{
-    bool out0;
-    QMetaObject::invokeMethod(parent(), "AddToTaskbar", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
-    return out0;
-}
-
-/*检测是否已经存在于快速启动栏*/
-bool FilectrlAdaptor::CheckIfExist(const QString &arg)
-{
-    bool out0;
-    QMetaObject::invokeMethod(parent(), "CheckIfExist", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
-    return out0;
-}
-
-/*从快速启动栏删除应用*/
-bool FilectrlAdaptor::RemoveFromTaskbar(const QString &arg)
-{
-    bool out0;
-    QMetaObject::invokeMethod(parent(), "RemoveFromTaskbar", Q_RETURN_ARG(bool, out0), Q_ARG(QString, arg));
-    return out0;
 }

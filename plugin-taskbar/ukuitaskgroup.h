@@ -146,9 +146,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent * event);
     void mouseMoveEvent(QMouseEvent * event);
     void mouseReleaseEvent(QMouseEvent *event);
-    void dropEvent(QDropEvent *event);
-//    void paintEvent(QPaintEvent *);
-    int recalculateFrameHeight() const;
     int recalculateFrameWidth() const;
     void setLayOutForPostion();
 

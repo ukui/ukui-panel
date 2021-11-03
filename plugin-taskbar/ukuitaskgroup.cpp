@@ -280,12 +280,9 @@ void UKUITaskGroup::initActionsInRightButtonMenu(){
     if (file_name.isEmpty()) return;
     const auto url=QUrl(file_name);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
-    QFileInfo fi(fileName);
     XdgDesktopFile xdg;
     if (xdg.load(fileName)){
         mAct = new QuickLaunchAction(&xdg, this);
-    }else if (fi.exists()){
-        mAct = new QuickLaunchAction(fileName, this);
     }
     setGroupIcon(mAct->getIconfromAction());
 }
@@ -785,7 +782,7 @@ void UKUITaskGroup::refreshIconsGeometry()
  ************************************************/
 QSize UKUITaskGroup::recalculateFrameSize()
 {
-    int height = recalculateFrameHeight();
+    int height = 120;
     mPopup->setMaximumHeight(1000);
     mPopup->setMinimumHeight(0);
 
@@ -799,20 +796,6 @@ QSize UKUITaskGroup::recalculateFrameSize()
     return newSize;
 }
 
-/************************************************
-
- ************************************************/
-int UKUITaskGroup::recalculateFrameHeight() const
-{
-//    int cont = visibleButtonsCount();
-//    int h = !plugin()->panel()->isHorizontal() && parentTaskBar()->isAutoRotate() ? width() : height();
-//    return cont * h + (cont + 1) * mPopup->spacing();
-    return 120;
-}
-
-/************************************************
-
- ************************************************/
 int UKUITaskGroup::recalculateFrameWidth() const
 {
     const QFontMetrics fm = fontMetrics();
@@ -841,7 +824,7 @@ QPoint UKUITaskGroup::recalculateFramePosition()
         y_offset += height();
         break;
     case IUKUIPanel::PositionBottom:
-        y_offset = -recalculateFrameHeight();
+        y_offset = -120;
         break;
     case IUKUIPanel::PositionLeft:
         x_offset += width();
@@ -857,59 +840,6 @@ QPoint UKUITaskGroup::recalculateFramePosition()
     return pos;
 }
 
-void UKUITaskGroup::dropEvent(QDropEvent *event)
-{
-    UKUITaskBar *taskbar = qobject_cast<UKUITaskBar*>(parent());
-    const auto urls = event->mimeData()->urls().toSet();
-    int i = 0;
-    for (const QUrl &url : urls)
-    {
-        XdgDesktopFile xdg;
-        QString urlName(url.isLocalFile() ? url.toLocalFile() : url.url());
-        QFileInfo ur(urlName);
-        QString fileName("/usr/share/applications/");
-
-        fileName.append(urlName.section('/', -1, -1));
-        fileName = taskbar->isComputerOrTrash(urlName);
-        urlName = taskbar->isComputerOrTrash(urlName);
-
-        if (taskbar->pubCheckIfExist(urlName)) return;
-        if (taskbar->pubCheckIfExist(fileName)) return;
-        if (taskbar->isDesktopFile(urlName)) {
-            if (ur.isSymLink()){
-                if (xdg.load(urlName) && xdg.isSuitable()) {
-                   if (taskbar->pubCheckIfExist(xdg.fileName())) return;
-                   taskbar->pubAddButton(new QuickLaunchAction(&xdg, this));
-                }
-            } else {
-                if (xdg.load(fileName) && xdg.isSuitable()) {
-                   if (taskbar->pubCheckIfExist(urlName)) return;
-                   taskbar->pubAddButton(new QuickLaunchAction(&xdg, this));
-                }
-            }
-        } else if (ur.exists() && ur.isExecutable() && !ur.isDir() || ur.isSymLink()) {
-            if (ur.size() <= 153600)
-                xdg.load(urlName);
-            taskbar->pubAddButton(new QuickLaunchAction(urlName, this));
-        } else if (ur.exists()) {
-            if (ur.size() <= 153600)
-                xdg.load(urlName);
-            taskbar->pubAddButton(new QuickLaunchAction(urlName, this));
-            //taskbar->pubAddButton(new QuickLaunchAction(urlName, urlName, "", this));
-        } else {
-            qWarning() << "XdgDesktopFile" << urlName << "is not valid";
-            QMessageBox::information(this, tr("Drop Error"),
-                                     tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(urlName)
-                                     );
-        }
-    }
-    taskbar->pubSaveSettings();
-    emit t_saveSettings();
-    UKUITaskButton::dropEvent(event);
-}
-/************************************************
-
- ************************************************/
 void UKUITaskGroup::leaveEvent(QEvent *event)
 {
     //QTimer::singleShot(300, this,SLOT(mouseLeaveOut()));
@@ -928,9 +858,7 @@ void UKUITaskGroup::leaveEvent(QEvent *event)
         mTimer->start(300);
     }
 }
-/************************************************
 
- ************************************************/
 void UKUITaskGroup::enterEvent(QEvent *event)
 {
     //QToolButton::enterEvent(event);
@@ -957,12 +885,6 @@ void UKUITaskGroup::handleSavedEvent()
     QToolButton::enterEvent(mEvent);
 }
 
-//void UKUITaskGroup::paintEvent(QPaintEvent *)
-//{
-//}
-/************************************************
-
- ************************************************/
 void UKUITaskGroup::dragEnterEvent(QDragEnterEvent *event)
 {
     // only show the popup if we aren't dragging a taskgroup

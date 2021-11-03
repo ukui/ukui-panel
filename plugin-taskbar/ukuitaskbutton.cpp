@@ -798,74 +798,6 @@ void UKUITaskButton::paintEvent(QPaintEvent *event)
 {
         QToolButton::paintEvent(event);
         return;
-/*
-    QSize sz = size();
-    QSize adjSz =sz;
-    QTransform transform;
-    QPoint originPoint;
-
-    switch (mOrigin)
-    {
-    case Qt::TopLeftCorner:
-        transform.rotate(0.0);
-        originPoint = QPoint(0.0, 0.0);
-        break;
-
-    case Qt::TopRightCorner:
-        transform.rotate(90.0);
-        originPoint = QPoint(0.0, -sz.width());
-        adjSz.transpose();
-        break;
-
-    case Qt::BottomRightCorner:
-        transform.rotate(180.0);
-        originPoint = QPoint(-sz.width(), -sz.height());
-        break;
-
-    case Qt::BottomLeftCorner:
-        transform.rotate(270.0);
-        originPoint = QPoint(-sz.height(), 0.0);
-        adjSz.transpose();
-        break;
-    }
-
-    bool drawPixmapNextTime = false;
-
-    if (!mDrawPixmap)
-    {
-        mPixmap = QPixmap(adjSz);
-        mPixmap.fill(QColor(255, 0, 0, 0));
-
-        if (adjSz != sz)
-            resize(adjSz); // this causes paint event to be repeated - next time we'll paint the pixmap to the widget surface.
-
-        // copied from QToolButton::paintEvent   {
-        QStylePainter painter(&mPixmap, this);
-        QStyleOptionToolButton opt;
-        initStyleOption(&opt);
-        painter.setBrush(QBrush(QColor(0xFF,0xFF,0xFF,0x19)));
-        painter.drawComplexControl(QStyle::CC_ToolButton, opt);
-        // }
-
-        if (adjSz != sz)
-        {
-            resize(sz);
-            drawPixmapNextTime = true;
-        }
-        else
-            mDrawPixmap = true; // transfer the pixmap to the widget now!
-    }
-    if (mDrawPixmap)
-    {
-        QPainter painter(this);
-        painter.setTransform(transform);
-        painter.drawPixmap(originPoint, mPixmap);
-
-        drawPixmapNextTime = false;
-    }
-
-    mDrawPixmap = drawPixmapNextTime;
-    */
 }
 
 bool UKUITaskButton::hasDragAndDropHover() const
@@ -875,7 +807,6 @@ bool UKUITaskButton::hasDragAndDropHover() const
 
 
 
-//////////////////////////////////////////////////////////////
 UKUITaskButton::UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, QWidget * parent)
     : QToolButton(parent),
       mAct(act),
@@ -909,7 +840,6 @@ UKUITaskButton::UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugi
     mDNDTimer->setInterval(700);
     connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
     file_name=act->m_settingsMap["desktop"];
-    //path=act->m_settingsMap["file"];
     this->setStyle(new CustomStyle());
     repaint();
 

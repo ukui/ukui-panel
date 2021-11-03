@@ -4,14 +4,12 @@
 <context>
     <name>UKUITaskBar</name>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="331"/>
-        <location filename="../ukuitaskbar.cpp" line="1152"/>
+        <location filename="../ukuitaskbar.cpp" line="1008"/>
         <source>Drop Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="332"/>
-        <location filename="../ukuitaskbar.cpp" line="1153"/>
+        <location filename="../ukuitaskbar.cpp" line="1009"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation type="unfinished"></translation>
     </message>
@@ -114,7 +112,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskbutton.cpp" line="936"/>
+        <location filename="../ukuitaskbutton.cpp" line="866"/>
         <source>delete from quicklaunch</source>
         <translation>从快速启动栏删除</translation>
     </message>
@@ -122,34 +120,24 @@
 <context>
     <name>UKUITaskGroup</name>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="304"/>
+        <location filename="../ukuitaskgroup.cpp" line="301"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="311"/>
+        <location filename="../ukuitaskgroup.cpp" line="308"/>
         <source>delete from taskbar</source>
         <translation>从任务栏取消固定</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="313"/>
+        <location filename="../ukuitaskgroup.cpp" line="310"/>
         <source>add to taskbar</source>
         <translation>添加到任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="318"/>
+        <location filename="../ukuitaskgroup.cpp" line="315"/>
         <source>close</source>
         <translation>关闭</translation>
-    </message>
-    <message>
-        <location filename="../ukuitaskgroup.cpp" line="901"/>
-        <source>Drop Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ukuitaskgroup.cpp" line="902"/>
-        <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
