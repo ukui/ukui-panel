@@ -128,7 +128,7 @@ void MainWindow::onRequestSendDesktopNotify(QString message, QString strIcon)
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
     QList<QVariant> args;
-    args<<(tr("ukui-flash-disk"))
+    args<<(tr("ukui flash disk"))
        <<((unsigned int) 0)
       <<strIcon
      <<tr("kindly reminder") //显示的是什么类型的信息
@@ -146,7 +146,7 @@ void MainWindow::onInsertAbnormalDiskNotify(QString message)
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
     QList<QVariant> args;
-    args<<(tr("ukui-flash-disk"))
+    args<<(tr("ukui flash disk"))
        <<((unsigned int) 0)
       <<QString("media-removable-symbolic")
      <<tr("wrong reminder") //显示的是什么类型的信息

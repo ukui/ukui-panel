@@ -96,10 +96,6 @@
         <translation>Usb yönetim aracı</translation>
     </message>
     <message>
-        <source>ukui-flash-disk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>kindly reminder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -129,6 +125,14 @@
     </message>
     <message>
         <source>Storage device removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MainWindow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ukui flash disk</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
