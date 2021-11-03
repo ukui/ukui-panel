@@ -40,29 +40,6 @@
 #include <XdgDesktopFile>
 #include <QFileInfo>
 
-/*传入参数为三个字段*/
-QuickLaunchAction::QuickLaunchAction(const QString & name,
-                                     const QString & exec,
-                                     const QString & icon,
-                                     QWidget * parent)
-    : QAction(name, parent),
-      m_valid(true)
-{
-    m_type = ActionLegacy;
-
-    m_settingsMap["name"] = name;
-    m_settingsMap["exec"] = exec;
-    m_settingsMap["icon"] = icon;
-
-    if (icon == "" || icon.isNull())
-        setIcon(XdgIcon::defaultApplicationIcon());
-    else
-        setIcon(QIcon(icon));
-
-    setData(exec);
-    connect(this, &QAction::triggered, this, [this] { execAction(); });
-}
-
 /*用xdg的方式解析*/
 QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
                                      QWidget * parent)
@@ -105,32 +82,6 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
         connect(act, &QAction::triggered, [this, act] { execAction(act->data().toString()); });
         m_addtitionalActions.push_back(act);
     }
-}
-
-QuickLaunchAction::QuickLaunchAction(const QString & fileName, QWidget * parent)
-    : QAction(parent),
-      m_valid(true)
-{
-    m_type = ActionFile;
-    setText(fileName);
-    setData(fileName);
-
-    m_settingsMap["file"] = fileName;
-
-    QFileInfo fi(fileName);
-    if (fi.isDir())
-    {
-        QFileIconProvider ip;
-        setIcon(ip.icon(fi));
-    }
-    else
-    {
-        QMimeDatabase db;
-        XdgMimeType mi(db.mimeTypeForFile(fi));
-        setIcon(mi.icon());
-    }
-
-    connect(this, &QAction::triggered, this, [this] { execAction(); });
 }
 
 /*解析Exec字段*/
