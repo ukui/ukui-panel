@@ -318,10 +318,12 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
         interface->SecondaryActivate(QCursor::pos().x(), QCursor::pos().y());
     else if (Qt::RightButton == event->button())
     {
-        if (!mMenu->isEmpty())
+        if (mMenu)
         {
-            mPlugin->willShowWindow(mMenu);
-            mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+            if (!mMenu->isEmpty()){
+                mPlugin->willShowWindow(mMenu);
+                mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+            }
         } else
             interface->ContextMenu(QCursor::pos().x(), QCursor::pos().y());
     }
