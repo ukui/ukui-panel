@@ -32,24 +32,26 @@ public:
     ConvertDesktopToWinId();
     ~ConvertDesktopToWinId();
     //QList<int> InfoPidList;
-    QString desktop_file_path = nullptr;
-    QString classClass = nullptr;
-    QString className = nullptr;
-    QString statusName = nullptr;
-    QString cmd_line = nullptr;
+    QString m_desktopfilePath = nullptr;
+    QString m_classClass = nullptr;
+    QString m_className = nullptr;
+    QString m_statusName = nullptr;
+    QString m_cmdLine = nullptr;
 
-    QDir *dir = nullptr;
-    QFileInfoList list;
+    QDir *m_dir = nullptr;
+    QFileInfoList m_list;
 
     QString tranIdToDesktop(WId id);
 
 private:
-    QString onWindowAdded(WId windowId);
-    QString confirmDesktopFileName(KWindowInfo info);
+    QString confirmDesktopFile(KWindowInfo info);
     void searchFromEnviron(KWindowInfo info);
     void compareClassName();
     void compareCmdExec();
     void compareLastStrategy();
+    void compareCmdName();
+    void compareDesktopClass();
+    void containsName();
     QString getDesktopFileName(QString cmd);
 };
 
