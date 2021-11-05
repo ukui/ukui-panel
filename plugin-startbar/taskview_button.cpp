@@ -10,7 +10,7 @@ TaskViewButton::TaskViewButton(IUKUIPanelPlugin *plugin,QWidget *parent):
     this->setToolTip(tr("Show Taskview"));
     this->setStyle(new CustomStyle());
     this->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
-    this->setIconSize(QSize(mParent->height()*0.6,mParent->height()*0.6));
+    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
 }
 TaskViewButton::~TaskViewButton(){
 }
