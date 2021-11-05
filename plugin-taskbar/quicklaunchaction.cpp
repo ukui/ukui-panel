@@ -39,6 +39,10 @@
 #include <QMessageBox>
 #include <XdgDesktopFile>
 #include <QFileInfo>
+#include <QtX11Extras/QX11Info>
+#include <kstartupinfo.h>
+
+#define USE_STARTUP_INFO true
 
 /*用xdg的方式解析*/
 QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
@@ -84,6 +88,21 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     }
 }
 
+#if USE_STARTUP_INFO
+void pid_callback(GDesktopAppInfo *appinfo, GPid pid, gpointer user_data) {
+    KStartupInfoId* startInfoId = static_cast<KStartupInfoId*>(user_data);
+    KStartupInfoData data;
+    data.addPid(pid);
+    data.setIconGeometry(QRect(0, 0, 1, 1));  // ugly
+
+    KStartupInfo::sendChange(*startInfoId, data);
+    KStartupInfo::resetStartupEnv();
+
+    g_object_unref(appinfo);
+    delete startInfoId;
+}
+#endif
+
 /*解析Exec字段*/
 void QuickLaunchAction::execAction(QString additionalAction)
 {
@@ -98,13 +117,41 @@ void QuickLaunchAction::execAction(QString additionalAction)
             break;
         case ActionXdg: {
             XdgDesktopFile xdg;
-            if(xdg.load(exec))
+            if (xdg.load(exec))
             {
-               if (additionalAction.isEmpty()){
+                if (additionalAction.isEmpty()) {
+#if USE_STARTUP_INFO
+                    bool needCleanup = true;
+                    QWidget * pw = static_cast<QWidget*>(parent());
+                    QRect rect = pw->geometry();
+                    rect.moveTo(pw->mapToGlobal(QPoint(0, 0)));
+
+                    quint32 timeStamp = QX11Info::isPlatformX11() ? QX11Info::appUserTime() : 0;
+                    KStartupInfoId* startInfoId = new KStartupInfoId();
+                    startInfoId->initId(KStartupInfo::createNewStartupIdForTimestamp(timeStamp));
+                    startInfoId->setupStartupEnv();
+                    KStartupInfoData data;
+                    data.setHostname();
+                    data.setName(exec);
+                    data.setIconGeometry(rect);
+                    data.setLaunchedBy(getpid());
+                    KStartupInfo::sendStartup(*startInfoId, data);
+
+                    GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
+                    needCleanup = !g_desktop_app_info_launch_uris_as_manager(appinfo, nullptr, nullptr, 
+                                                                             GSpawnFlags::G_SPAWN_DEFAULT, nullptr, nullptr, 
+                                                                             pid_callback, (gpointer)startInfoId, nullptr);
+                    if (needCleanup) {
+                        showQMessage =true;
+                        delete startInfoId;
+                        g_object_unref(appinfo);
+                    }
+#else
                     GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
                     if (!g_app_info_launch_uris(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
                         showQMessage =true;
                     g_object_unref(appinfo);
+#endif
                 } else {
                     if (!xdg.actionActivate(additionalAction, QStringList{}))
                         showQMessage =true;
