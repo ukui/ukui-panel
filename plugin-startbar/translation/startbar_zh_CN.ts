@@ -4,8 +4,12 @@
 <context>
     <name>StartMenuButton</name>
     <message>
-        <location filename="../startmenu_button.cpp" line="12"/>
         <source>UKui Menu</source>
+        <translation type="vanished">开始菜单</translation>
+    </message>
+    <message>
+        <location filename="../startmenu_button.cpp" line="12"/>
+        <source>UKUI Menu</source>
         <translation>开始菜单</translation>
     </message>
     <message>
