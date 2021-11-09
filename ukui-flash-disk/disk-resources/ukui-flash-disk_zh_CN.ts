@@ -101,7 +101,7 @@
     </message>
     <message>
         <source>ukui-flash-disk</source>
-        <translation>U盘管理工具</translation>
+        <translation type="vanished">U盘管理工具</translation>
     </message>
     <message>
         <source>kindly reminder</source>
@@ -142,6 +142,14 @@
     <message>
         <source>Storage device removed</source>
         <translation>存储设备已移除</translation>
+    </message>
+    <message>
+        <source>MainWindow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ukui flash disk</source>
+        <translation>U盘管理工具</translation>
     </message>
 </context>
 <context>
