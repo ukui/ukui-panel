@@ -190,7 +190,7 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
 void NightModeButton::setUpNightMode()
 {
     QProcess *process =new QProcess(this);
-    process->startDetached("ukui-control-center -m");
+    process->startDetached("ukui-control-center -m Display");
     process->deleteLater();
 }
 

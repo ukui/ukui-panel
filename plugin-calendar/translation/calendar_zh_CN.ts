@@ -14,9 +14,8 @@
         <translation>时间日期设置</translation>
     </message>
     <message>
-        <location filename="../ukuicalendar.cpp" line="655"/>
         <source>Config panel</source>
-        <translation>设置任务栏</translation>
+        <translation type="vanished">设置任务栏</translation>
     </message>
 </context>
 <context>

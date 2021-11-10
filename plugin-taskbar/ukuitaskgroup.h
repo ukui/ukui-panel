@@ -202,7 +202,7 @@ private:
     void v_adjustPopWindowSize(int width, int height, int v_all);
     void regroup();
     QString isComputerOrTrash(QString urlName);
-    void initDesktopFileName(WId window);
+    void initDesktopFileName(int window);
     void initActionsInRightButtonMenu();
     void badBackFunctionToFindDesktop();
     void setBackIcon();

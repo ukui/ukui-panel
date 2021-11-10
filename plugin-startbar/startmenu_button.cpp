@@ -8,7 +8,7 @@ StartMenuButton::StartMenuButton(IUKUIPanelPlugin *plugin, QWidget* parent ):
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     this->setStyle(new CustomStyle());
-    QTimer::singleShot(5000,[this] {this->setToolTip(tr("UKui Menu")); });
+    QTimer::singleShot(5000,[this] {this->setToolTip(tr("UKUI Menu")); });
     this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
 }
 

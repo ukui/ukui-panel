@@ -4,12 +4,12 @@
 <context>
     <name>UKUITaskBar</name>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="1008"/>
+        <location filename="../ukuitaskbar.cpp" line="908"/>
         <source>Drop Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="1009"/>
+        <location filename="../ukuitaskbar.cpp" line="909"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation type="unfinished"></translation>
     </message>
@@ -120,22 +120,22 @@
 <context>
     <name>UKUITaskGroup</name>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="301"/>
+        <location filename="../ukuitaskgroup.cpp" line="225"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="308"/>
+        <location filename="../ukuitaskgroup.cpp" line="232"/>
         <source>delete from taskbar</source>
         <translation>从任务栏取消固定</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="310"/>
+        <location filename="../ukuitaskgroup.cpp" line="234"/>
         <source>add to taskbar</source>
         <translation>添加到任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="315"/>
+        <location filename="../ukuitaskgroup.cpp" line="239"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
