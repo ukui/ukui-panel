@@ -58,6 +58,8 @@
 #include <QtCore/QObject>
 #include <QPushButton>
 #include <QToolButton>
+#include <QScrollArea>
+#include <QScrollBar>
 
 QT_BEGIN_NAMESPACE
 class QByteArray;
@@ -81,7 +83,7 @@ namespace UKUi {
 class GridLayout;
 }
 
-class UKUITaskBar : public QFrame
+class UKUITaskBar : public QScrollArea
 {
     Q_OBJECT
 
@@ -240,6 +242,7 @@ private:
     IUKUIPanelPlugin *mPlugin;
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
+    QWidget *mAllFrame;
 
 public slots:
     void WindowAddtoTaskBar(QString arg);
