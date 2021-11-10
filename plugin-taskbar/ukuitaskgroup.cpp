@@ -1164,6 +1164,7 @@ void UKUITaskGroup::showAllWindowByList()
         UKUITaskWidget *btn = *it;
         btn->clearMask();
         btn->setTitleFixedWidth(mpWidget->width());
+        btn->updateTitle();
         btn->setParent(mpScrollArea);
         btn->removeThumbNail();
         btn->addThumbNail();

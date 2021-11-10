@@ -54,7 +54,7 @@ using namespace UKUi;
 
 ************************************************/
 UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
-    QFrame(parent),
+    QScrollArea(parent),
     mSignalMapper(new QSignalMapper(this)),
     mButtonStyle(Qt::ToolButtonIconOnly),
     mButtonWidth(400),
@@ -73,11 +73,22 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mPlugin(plugin),
     mStyle(new LeftAlignedTextStyle())
 {
+    mAllFrame=new QWidget(this);
+    mAllFrame->setAttribute(Qt::WA_TranslucentBackground);
+
+    this->setWidget(mAllFrame);
+    this->horizontalScrollBar()->setVisible(false);
+    this->verticalScrollBar()->setVisible(false);
+    this->setFrameShape(QFrame::NoFrame);//去掉边框
+    this->setWidgetResizable(true);
+    this->viewport()->setStyleSheet("background-color:transparent;");
+    horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
+    verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
+
     taskstatus=NORMAL;
-    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
-    mLayout = new UKUi::GridLayout(this);
-    setLayout(mLayout);
+
+    mLayout = new UKUi::GridLayout(mAllFrame);
+    mAllFrame->setLayout(mLayout);
     mLayout->setMargin(0);
     mLayout->setStretch(UKUi::GridLayout::StretchHorizontal | UKUi::GridLayout::StretchVertical);
 
@@ -327,7 +338,7 @@ void UKUITaskBar::groupBecomeEmptySlot()
     {
         UKUITaskGroup *pQuickBtn = *it;
         if(pQuickBtn->file_name == group->file_name
-           &&(layout()->indexOf(pQuickBtn) >= 0 ))
+           &&(mLayout->indexOf(pQuickBtn) >= 0 ))
         {
             pQuickBtn->setHidden(false);
             mLayout->moveItem(mLayout->indexOf(pQuickBtn), mLayout->indexOf(group));
@@ -388,7 +399,7 @@ void UKUITaskBar::addWindow(WId window)
         {
             UKUITaskGroup *pQuickBtn = *it;
             if(pQuickBtn->file_name == group->file_name
-               &&(layout()->indexOf(pQuickBtn) >= 0 ))
+               &&(mLayout->indexOf(pQuickBtn) >= 0 ))
             {
                 mLayout->addWidget(group);
                 mLayout->moveItem(mLayout->indexOf(group), mLayout->indexOf(pQuickBtn));
@@ -595,11 +606,25 @@ void UKUITaskBar::realign()
     bool rotated = false;
     if (panel->isHorizontal())
     {
+        this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        mAllFrame->setMinimumSize(QSize((mLayout->count()+3)*panel->panelSize(),panel->panelSize()));
+        if (mAllFrame->width() < this->width()) {
+            mAllFrame->setFixedWidth(this->width());
+        }
+
         mLayout->setRowCount(panel->lineCount());
         mLayout->setColumnCount(0);
     }
     else
     {
+        this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        this->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        mAllFrame->setMinimumSize(QSize(panel->panelSize(),(mLayout->count()+3)*panel->panelSize()));
+        if (mAllFrame->height() < this->height()) {
+            mAllFrame->setFixedHeight(this->height());
+        }
+
         mLayout->setRowCount(0);
 
         if (mButtonStyle == Qt::ToolButtonIconOnly)
@@ -646,6 +671,26 @@ void UKUITaskBar::realign()
 
 void UKUITaskBar::wheelEvent(QWheelEvent* event)
 {
+    if (this->verticalScrollBarPolicy()==Qt::ScrollBarAlwaysOff) {
+        if (event->delta()>=0) {
+            horizontalScrollBar()->setValue(horizontalScrollBar()->value()-40);
+            qDebug()<<"-40-horizontalScrollBar()->value()"<<horizontalScrollBar()->value();
+        } else {
+            horizontalScrollBar()->setValue(horizontalScrollBar()->value()+40);
+            if (horizontalScrollBar()->value()>mAllFrame->width()) {
+                horizontalScrollBar()->setValue(mAllFrame->width());
+            }
+            qDebug()<<"+40+horizontalScrollBar()->value()"<<horizontalScrollBar()->value();
+            //                qDebug()<<"scrollArea->horizontalScrollBar()->width()"<<horizontalScrollBar()->width();
+        }
+        //            qDebug()<<"scrollArea->horizontalScrollBar()->width()"<<horizontalScrollBar()->width();
+    } else {
+        if (event->delta()>=0) {
+            verticalScrollBar()->setValue(verticalScrollBar()->value()-40);
+        } else {
+            verticalScrollBar()->setValue(verticalScrollBar()->value()+40);
+        }
+    }
 }
 
 void UKUITaskBar::resizeEvent(QResizeEvent* event)
@@ -757,7 +802,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
     {
         UKUITaskGroup *group = *it;
         if(btn->file_name == group->file_name
-           &&(layout()->indexOf(group) >= 0))
+           &&(mLayout->indexOf(group) >= 0))
         {
             mLayout->addWidget(btn);
             mLayout->moveItem(mLayout->indexOf(btn), mLayout->indexOf(group));
@@ -883,7 +928,7 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
     {
         UKUITaskGroup *pQuickBtn = *it;
         if(pQuickBtn->file_name == arg
-           && (layout()->indexOf(pQuickBtn) >= 0 ))
+           && (mLayout->indexOf(pQuickBtn) >= 0 ))
         {
             doInitGroupButton(pQuickBtn->file_name);
             mVBtn.removeOne(pQuickBtn);

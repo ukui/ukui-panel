@@ -172,7 +172,7 @@ void UKUITaskWidget::updateText()
 
     mTitleLabel->setToolTip(title);
     QTimer::singleShot(0,this,[=](){
-        QString formatAppName = mTitleLabel->fontMetrics().elidedText(title,Qt::ElideRight, mTitleLabel->width()*2/3);
+        QString formatAppName = mTitleLabel->fontMetrics().elidedText(title,Qt::ElideRight, mTitleLabel->width());
         mTitleLabel->setText(formatAppName);
         QPalette pa;
         pa.setColor(QPalette::WindowText,Qt::white);
