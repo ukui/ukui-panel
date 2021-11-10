@@ -642,9 +642,13 @@
         <translation type="vanished">切换用户</translation>
     </message>
     <message>
-        <location filename="../../plugin-startbar/startmenu_button.cpp" line="12"/>
         <source>UKui Menu</source>
-        <translation type="unfinished">开始菜单</translation>
+        <translation type="obsolete">开始菜单</translation>
+    </message>
+    <message>
+        <location filename="../../plugin-startbar/startmenu_button.cpp" line="12"/>
+        <source>UKUI Menu</source>
+        <translation>开始菜单</translation>
     </message>
     <message>
         <location filename="../../plugin-startbar/startmenu_button.cpp" line="53"/>

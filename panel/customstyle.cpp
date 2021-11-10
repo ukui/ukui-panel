@@ -314,17 +314,26 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
             painter->drawRoundedRect(option->rect.adjusted(2,2,-2,-2),6,6);
             painter->restore();
 
+            /*buttom center x:22.5  y:42*/
             if(multileWindow)
             {
                 painter->save();
                 painter->setRenderHint(QPainter::Antialiasing, true);
                 painter->setPen(Qt::NoPen);
                 painter->setBrush(option->palette.color(QPalette::Highlight));
-                painter->drawEllipse(option->rect.topLeft() + QPointF(8.5, 4.5), 2.5, 2.5);
+                painter->drawEllipse(option->rect.topLeft() + QPointF(25, 42), 2, 2);
                 painter->setBrush(option->palette.color(QPalette::Highlight).light(125));
-                painter->drawEllipse(option->rect.topLeft() + QPointF(4.5, 4.5), 2.5, 2.5);
+                painter->drawEllipse(option->rect.topLeft() + QPointF(20, 42), 2, 2);
+                painter->restore();
+            } else {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing, true);
+                painter->setPen(Qt::NoPen);
+                painter->setBrush(option->palette.color(QPalette::Highlight));
+                painter->drawEllipse(option->rect.topLeft() + QPointF(22.5, 42), 2, 2);
                 painter->restore();
             }
+
             return;
         }
 

@@ -8,10 +8,8 @@ StartMenuButton::StartMenuButton(IUKUIPanelPlugin *plugin, QWidget* parent ):
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
     this->setStyle(new CustomStyle());
-    setStyleSheet("QToolButton { margin-left: 4px; } ");
     QTimer::singleShot(5000,[this] {this->setToolTip(tr("UKUI Menu")); });
-    qDebug()<<"***************"<<mParent->height()*0.6;
-    this->setIconSize(QSize(mParent->height()*0.6,mParent->height()*0.6));
+    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
 }
 
 StartMenuButton::~StartMenuButton()

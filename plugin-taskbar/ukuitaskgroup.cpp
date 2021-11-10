@@ -62,6 +62,12 @@
 #define UKUI_PANEL_SETTINGS "org.ukui.panel.settings"
 #define PANELPOSITION       "panelposition"
 
+#define UKUI_PANEL_DAEMON           "org.ukui.panel.daemon"
+#define UKUI_PANEL_DAEMON_PATH      "/convert/desktopwid"
+#define UKUI_PANEL_DAEMON_INTERFACE "org.ukui.panel.daemon"
+#define UKUI_PANEL_DAEMON_METHOD    "WIDToDesktop"
+
+
 QPixmap qimageFromXImage(XImage* ximage)
 {
     QImage::Format format = QImage::Format_ARGB32_Premultiplied;
@@ -182,98 +188,16 @@ UKUITaskGroup::~UKUITaskGroup()
 {
 }
 
-
-bool DesktopFileNameCompare(QString str1, QString str2) {
-    if (str1 == str2)
-        return true;
-    if (str2.contains(str1))
-        return true;
-    if (str1.contains(str2))
-        return true;
-    return false;
-}
-
-QString getDesktopFileName(QString cmd) {
-    char name[200];
-    FILE *fp1 = NULL;
-    if ((fp1 = popen(cmd.toStdString().data(), "r")) == NULL)
-        return QString();
-    memset(name, 0, sizeof(name));
-    fgets(name, sizeof(name),fp1);
-    pclose(fp1);
-    return QString(name);
-}
-
-void UKUITaskGroup::badBackFunctionToFindDesktop() {
-    if (file_name.isEmpty()) {
-        QDir dir("/usr/share/applications/");
-        QFileInfoList list = dir.entryInfoList();
-        for (int i = 0; i < list.size(); i++) {
-            QFileInfo fileInfo = list.at(i);
-            if (parentTaskBar()->ignoreSymbolCMP(fileInfo.filePath(), groupName())) {
-                file_name = fileInfo.filePath();
-                if (file_name == QString(PEONY_COMUTER) ||
-                    file_name == QString(PEONY_TRASH) ||
-                    file_name == QString(PEONY_HOME))
-                    file_name = QString(PEONY_MAIN);
-                break;
-            }
-        }
+void UKUITaskGroup::initDesktopFileName(int window) {
+    QDBusInterface iface(UKUI_PANEL_DAEMON,
+                         UKUI_PANEL_DAEMON_PATH,
+                         UKUI_PANEL_DAEMON_INTERFACE,
+                         QDBusConnection::sessionBus());
+    QDBusReply<QString> reply = iface.call(UKUI_PANEL_DAEMON_METHOD, window);
+    QString processExeName = reply.value();
+    if (!processExeName.isEmpty()) {
+        file_name = processExeName;
     }
-}
-
-void UKUITaskGroup::initDesktopFileName(WId window) {
-
-    KWindowInfo info(window, 0, NET::WM2DesktopFileName);
-    QString cmd;
-    cmd.sprintf(GET_PROCESS_EXEC_NAME_MAIN, info.pid());
-    QString processExeName = getDesktopFileName(cmd);
-
-    QDir dir(DEKSTOP_FILE_PATH);
-    QFileInfoList list = dir.entryInfoList();
-    for (int i = 0; i < list.size(); i++) {
-        bool flag = false;
-        QFileInfo fileInfo = list.at(i);
-        QString _cmd;
-        if (fileInfo.filePath() == QString(USR_SHARE_APP_CURRENT) ||
-            fileInfo.filePath() == QString(USR_SHARE_APP_UPER) )
-            continue;
-        _cmd.sprintf(GET_DESKTOP_EXEC_NAME_MAIN, fileInfo.filePath().toStdString().data());
-        QString desktopFileExeName = getDesktopFileName(_cmd);
-        if ((!desktopFileExeName.isEmpty()) && (desktopFileExeName.at(desktopFileExeName.size() - 1) == '\n'))
-            desktopFileExeName.truncate(desktopFileExeName.size() - 1);
-        flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
-        if (flag && !desktopFileExeName.isEmpty()) {
-            file_name = fileInfo.filePath();
-            if (file_name == QString(PEONY_COMUTER) ||
-                file_name == QString(PEONY_TRASH) ||
-                file_name == QString(PEONY_HOME) )
-                file_name = QString(PEONY_MAIN);
-            break;
-        }
-    }
-    if (file_name.isEmpty()) {
-        for (int i = 0; i < list.size(); i++) {
-            bool flag = false;
-            QFileInfo fileInfo = list.at(i);
-            if (fileInfo.filePath() == QString(USR_SHARE_APP_CURRENT) ||
-                fileInfo.filePath() == QString(USR_SHARE_APP_UPER) )
-                continue;
-            QString _cmd;
-            _cmd.sprintf(GET_DESKTOP_EXEC_NAME_BACK, fileInfo.filePath().toStdString().data());
-            QString desktopFileExeName = getDesktopFileName(_cmd);
-            flag = DesktopFileNameCompare(desktopFileExeName, processExeName);
-            if (flag && !desktopFileExeName.isEmpty()) {
-                file_name = fileInfo.filePath();
-                if (file_name == QString(PEONY_COMUTER) ||
-                    file_name == QString(PEONY_TRASH) ||
-                    file_name == QString(PEONY_HOME) )
-                    file_name = QString(PEONY_MAIN);
-                break;
-            }
-        }
-    }
-    badBackFunctionToFindDesktop();
 }
 
 void UKUITaskGroup::initActionsInRightButtonMenu(){

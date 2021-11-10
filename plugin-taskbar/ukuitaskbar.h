@@ -106,7 +106,6 @@ public:
     int showDesktopNum() const { return mShowDesktopNum; }
     bool getCpuInfoFlg() const { return CpuInfoFlg; }
     bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
-    bool ignoreSymbolCMP(QString filename,QString groupname);
     bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
     bool isAutoRotate() const { return mAutoRotate; }
     bool isGroupingEnabled() const { return mGroupingEnabled; }
@@ -118,8 +117,6 @@ public:
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
     void pubAddButton(QuickLaunchAction* action) { addButton(action); }
     void pubSaveSettings() { saveSettings(); }
-    QString isComputerOrTrash(QString urlName);
-    bool pubCheckIfExist(QString name);
 
 
     ////////////////////////////////////////////////
@@ -131,7 +128,6 @@ public:
     //virtual QLayoutItem *takeAt(int index) = 0;
     void saveSettings();
     void refreshQuickLaunch();
-    bool isDesktopFile(QString urlName);
     friend class FilectrlAdaptor;
 
 

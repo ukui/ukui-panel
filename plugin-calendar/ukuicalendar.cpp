@@ -651,10 +651,6 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
                    tr("Time and Date Setting"),
                    this, SLOT(setControlTime())
                   );
-    menuCalender->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
-                   tr("Config panel"),
-                   this, SLOT(setUpPanel())
-                  );
     menuCalender->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menuCalender->sizeHint()));
     menuCalender->show();
 }
@@ -662,12 +658,5 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 void CalendarActiveLabel::setControlTime()
 {
     QProcess *process =new QProcess(this);
-    process->startDetached("ukui-control-center -t");
+    process->startDetached("ukui-control-center -m Date");
 }
-
-void CalendarActiveLabel::setUpPanel()
-{
-    QProcess *process =new QProcess(this);
-    process->startDetached("ukui-control-center -d");
-}
-

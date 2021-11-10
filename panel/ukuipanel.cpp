@@ -1470,7 +1470,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         menu->addAction(about);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
-            process->startDetached("ukui-control-center -a");
+            process->startDetached("ukui-control-center -m About");
         });
 
     }
