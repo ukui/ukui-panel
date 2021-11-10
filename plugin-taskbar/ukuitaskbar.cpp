@@ -362,9 +362,6 @@ void UKUITaskBar::addWindow(WId window)
 
     m_settings.beginGroup("IgnoreWindow");
     QStringList ignoreWindow = m_settings.value("ignoreWindow", "").toStringList();
-    if (ignoreWindow.isEmpty()) {
-        ignoreWindow<<"ukui-menu"<<"ukui-sidebar"<<"ukui-search";
-    }
     m_settings.endGroup();
 
     if (ignoreWindow.contains(group_id)) {
