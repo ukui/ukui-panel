@@ -47,8 +47,9 @@
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
 #include "quicklaunchaction.h"
-#define PANEL_SETTINGS "org.ukui.panel.settings"
-#define PANEL_LINES    "panellines"
+#define PANEL_SETTINGS     "org.ukui.panel.settings"
+#define PANEL_LINES        "panellines"
+#define PANEL_CONFIG_PATH  "/usr/share/ukui/ukui-panel/panel-commission.ini"
 using namespace UKUi;
 /************************************************
 
@@ -354,6 +355,22 @@ void UKUITaskBar::addWindow(WId window)
 {
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
+
+    QString filename = PANEL_CONFIG_PATH;
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+
+    m_settings.beginGroup("IgnoreWindow");
+    QStringList ignoreWindow = m_settings.value("ignoreWindow", "").toStringList();
+    if (ignoreWindow.isEmpty()) {
+        ignoreWindow<<"ukui-menu"<<"ukui-sidebar"<<"ukui-search";
+    }
+    m_settings.endGroup();
+
+    if (ignoreWindow.contains(group_id)) {
+        return;
+    }
+
     UKUITaskGroup *group = nullptr;
     bool isNeedAddNewWidget = true;
     auto i_group = mKnownWindows.find(window);
