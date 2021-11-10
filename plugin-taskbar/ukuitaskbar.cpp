@@ -356,7 +356,7 @@ void UKUITaskBar::addWindow(WId window)
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
 
-    QString filename = PANEL_CONFIG_PATH;
+    QString filename = QString::fromLocal8Bit(PANEL_CONFIG_PATH);
     QSettings m_settings(filename, QSettings::IniFormat);
     m_settings.setIniCodec("UTF-8");
 
