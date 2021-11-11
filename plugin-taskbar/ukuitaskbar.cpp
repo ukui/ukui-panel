@@ -72,6 +72,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mIconByClass(false),
     mCycleOnWheelScroll(true),
     mPlugin(plugin),
+    mIgnoreWindow(),
     mStyle(new LeftAlignedTextStyle())
 {
     mAllFrame=new QWidget(this);
@@ -93,6 +94,13 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mLayout->setMargin(0);
     mLayout->setStretch(UKUi::GridLayout::StretchHorizontal | UKUi::GridLayout::StretchVertical);
 
+    QString filename = QString::fromLocal8Bit(PANEL_CONFIG_PATH);
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+    m_settings.beginGroup("IgnoreWindow");
+    mIgnoreWindow = m_settings.value("ignoreWindow", "").toStringList();
+    m_settings.endGroup();
+
     //往任务栏中加入快速启动按钮
     refreshQuickLaunch();
     realign();
@@ -101,7 +109,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     setAcceptDrops(true);
 
     const QByteArray id(PANEL_SETTINGS);
-    if(QGSettings::isSchemaInstalled(id)){
+    if (QGSettings::isSchemaInstalled(id)) {
         settings=new QGSettings(id);
     }
 
@@ -355,16 +363,7 @@ void UKUITaskBar::addWindow(WId window)
 {
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
-
-    QString filename = QString::fromLocal8Bit(PANEL_CONFIG_PATH);
-    QSettings m_settings(filename, QSettings::IniFormat);
-    m_settings.setIniCodec("UTF-8");
-
-    m_settings.beginGroup("IgnoreWindow");
-    QStringList ignoreWindow = m_settings.value("ignoreWindow", "").toStringList();
-    m_settings.endGroup();
-
-    if (ignoreWindow.contains(group_id)) {
+    if (mIgnoreWindow.contains(group_id)) {
         return;
     }
 
