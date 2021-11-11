@@ -53,10 +53,11 @@ UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setAttribute(Qt::WA_TranslucentBackground);
+    setProperty("useSystemStyleBlur", true);
 
     setLayout(new QHBoxLayout);
     layout()->setSpacing(3);
-    layout()->setMargin(3);
+    layout()->setMargin(0);
     rightclick = false;
 
     connect(&mCloseTimer, &QTimer::timeout, this, &UKUIGroupPopup::closeTimerSlot);
