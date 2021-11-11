@@ -131,6 +131,7 @@ public:
     void saveSettings();
     void refreshQuickLaunch();
     friend class FilectrlAdaptor;
+    QStringList mIgnoreWindow;
 
 
 signals:
