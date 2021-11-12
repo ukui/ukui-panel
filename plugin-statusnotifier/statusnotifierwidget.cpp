@@ -80,7 +80,10 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     mStatusNotifierButtons.append(button);
     button->setStyle(new CustomStyle);
     connect(button, SIGNAL(switchButtons(StatusNotifierButton*,StatusNotifierButton*)), this, SLOT(switchButtons(StatusNotifierButton*,StatusNotifierButton*)));
-    QTimer::singleShot(200,this,[=](){resetLayout();});
+    //QTimer::singleShot(200,this,[=](){resetLayout();});
+    connect(button,&StatusNotifierButton::layoutReady,this,[=](){
+        resetLayout();
+    });
 }
 
 void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)

@@ -79,6 +79,9 @@ public slots:
 
 public:
     QString mTitle;
+    bool mIdStatus=false;
+    bool mIconStatus=false;
+    QTimer *mTime;
 
 private:
     SniAsync *interface;
@@ -101,6 +104,7 @@ signals:
     void sendstatus(QString arg);
     void cleansignal();
     void iconReady();
+    void layoutReady();
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
