@@ -28,14 +28,20 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
     m_list.removeAll(QFile(USR_SHARE_APP_CURRENT));
     m_list.removeAll(QFile(USR_SHARE_APP_UPER));
 
+    m_classClass = info.windowClassClass().toLower();
+    m_className = info.windowClassName();
+
+    //匹配安卓兼容
+    if(m_className == "kylin-kmre-window"){
+        searchAndroidApp(info);
+        return m_desktopfilePath;
+    }
+
     //第一种方法：获取点击应用时大部分desktop文件名
     searchFromEnviron(info);
 
     //第二种方法：比较名字一致性
     if (m_desktopfilePath.isEmpty()) {
-        m_classClass = info.windowClassClass().toLower();
-        m_className = info.windowClassName();
-
         QFile file(QString("/proc/%1/status").arg(info.pid()));
         if (file.open(QIODevice::ReadOnly)) {
             char buf[1024];
@@ -65,6 +71,32 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
         compareLastStrategy();
     }
     return m_desktopfilePath;
+}
+
+void ConvertDesktopToWinId::searchAndroidApp(KWindowInfo info)
+{
+    m_anDir = new QDir(QString(QDir::homePath() + ANDROID_FILE_PATH));
+    m_anList = m_anDir->entryInfoList();
+    m_anList.removeAll(QDir::homePath() + ANDROID_APP_CURRENT);
+    m_anList.removeAll(QDir::homePath() + ANDROID_APP_UPER);
+
+    QFile file(QString("/proc/%1/cmdline").arg(info.pid()));
+    file.open(QIODevice::ReadOnly);
+    QByteArray cmd = file.readAll();
+    file.close();
+    QList<QByteArray> cmdList = cmd.split('\0');
+    for(int i = 0; i < m_anList.size(); i++){
+        QFileInfo fileInfo = m_anList.at(i);
+        QString desktopName = fileInfo.filePath();
+        if(!fileInfo.filePath().endsWith(".desktop")){
+            continue;
+        }
+        desktopName = desktopName.mid(desktopName.lastIndexOf("/") + 1);
+        desktopName = desktopName.left(desktopName.lastIndexOf("."));
+        if(desktopName == cmdList.at(10)){
+            m_desktopfilePath = fileInfo.filePath();
+        }
+    }
 }
 
 void ConvertDesktopToWinId::searchFromEnviron(KWindowInfo info)
