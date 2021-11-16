@@ -36,7 +36,7 @@ void StatusNotifierStorageArrow::dropEvent(QDropEvent *event){
 void StatusNotifierStorageArrow::dragEnterEvent(QDragEnterEvent *event){
     const StatusNotifierButtonMimeData *mimeData = qobject_cast<const StatusNotifierButtonMimeData*>(event->mimeData());
     if (mimeData && mimeData->button()){
-        emit addButton(mimeData->button()->mTitle);
+        emit addButton(mimeData->button()->mId);
     }
 
     if(mGsettings){

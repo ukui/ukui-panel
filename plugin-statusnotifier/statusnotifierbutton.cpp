@@ -79,24 +79,19 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     connect(interface, &SniAsync::NewStatus, this, &StatusNotifierButton::newStatus);
 
     hideAbleStatusNotifierButton();
-    mTime = new QTimer(this);
-    connect(mTime,&QTimer::timeout,this,[=](){
-        if(this->mIdStatus && this->mIconStatus){
-            if(!this->mTitle.isEmpty()){
-                emit layoutReady();
-                mTime->stop();
-            }
-            else{
-                mIdStatus = false;
-                hideAbleStatusNotifierButton();
-                mTime->start(10);
-            }
+    connect(this,&StatusNotifierButton::paramReady,this,[=](){
+        if(!this->mId.isEmpty() && this->mIconStatus && !mParamInit){
+            emit layoutReady();
+            mParamInit = true;
         }
         else{
-            mTime->start(10);
+            if(this->mId.isEmpty()){
+                if(mCount < 5)      //超过5次将不再获取
+                    hideAbleStatusNotifierButton();
+                mCount++;
+            }
         }
     });
-    mTime->start(10);
 
     interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
         if (!path.path().isEmpty())
@@ -372,7 +367,7 @@ void StatusNotifierButton::resetIcon()
         setIcon(mFallbackIcon);
 
     mIconStatus=true;
-    emit iconReady();
+    emit paramReady();
 }
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
@@ -449,8 +444,10 @@ void StatusNotifierButton::resizeEvent(QResizeEvent *event){
 QString StatusNotifierButton::hideAbleStatusNotifierButton()
 {
     interface->propertyGetAsync(QLatin1String("Id"), [this] (QString title) {
-        mTitle = title;
-        mIdStatus = true;
+        mId = "";
+        mId = title;
+        emit paramReady();
+
     });
-    return mTitle;
+    return mId;
 }
