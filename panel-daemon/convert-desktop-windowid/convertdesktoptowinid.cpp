@@ -75,18 +75,18 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
 
 void ConvertDesktopToWinId::searchAndroidApp(KWindowInfo info)
 {
-    m_anDir = new QDir(QString(QDir::homePath() + ANDROID_FILE_PATH));
-    m_anList = m_anDir->entryInfoList();
-    m_anList.removeAll(QDir::homePath() + ANDROID_APP_CURRENT);
-    m_anList.removeAll(QDir::homePath() + ANDROID_APP_UPER);
+    m_androidDir = new QDir(QString(QDir::homePath() + ANDROID_FILE_PATH));
+    m_androidList = m_androidDir->entryInfoList();
+    m_androidList.removeAll(QDir::homePath() + ANDROID_APP_CURRENT);
+    m_androidList.removeAll(QDir::homePath() + ANDROID_APP_UPER);
 
     QFile file(QString("/proc/%1/cmdline").arg(info.pid()));
     file.open(QIODevice::ReadOnly);
     QByteArray cmd = file.readAll();
     file.close();
     QList<QByteArray> cmdList = cmd.split('\0');
-    for(int i = 0; i < m_anList.size(); i++){
-        QFileInfo fileInfo = m_anList.at(i);
+    for(int i = 0; i < m_androidList.size(); i++){
+        QFileInfo fileInfo = m_androidList.at(i);
         QString desktopName = fileInfo.filePath();
         if(!fileInfo.filePath().endsWith(".desktop")){
             continue;
