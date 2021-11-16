@@ -9,10 +9,6 @@
 #define DEKSTOP_FILE_PATH       "/usr/share/applications/"
 #define USR_SHARE_APP_CURRENT   "/usr/share/applications/."
 #define USR_SHARE_APP_UPER      "/usr/share/applications/.."
-#define ANDROID_FILE_PATH       "/.local/share/applications/"
-#define ANDROID_APP_CURRENT     "/.local/share/applications/."
-#define ANDROID_APP_UPER        "/.local/share/applications/.."
-
 #define PEONY_TRASH             "/usr/share/applications/peony-trash.desktop"
 #define PEONY_COMUTER           "/usr/share/applications/peony-computer.desktop"
 #define PEONY_HOME              "/usr/share/applications/peony-home.desktop"
@@ -43,16 +39,13 @@ public:
     QString m_cmdLine = nullptr;
 
     QDir *m_dir = nullptr;
-    QDir *m_androidDir = nullptr;
     QFileInfoList m_list;
-    QFileInfoList m_androidList;
 
     QString tranIdToDesktop(WId id);
 
 private:
     QString confirmDesktopFile(KWindowInfo info);
     void searchFromEnviron(KWindowInfo info);
-    void searchAndroidApp(KWindowInfo info);
     void compareClassName();
     void compareCmdExec();
     void compareLastStrategy();
