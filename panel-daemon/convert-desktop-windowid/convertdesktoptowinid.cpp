@@ -28,20 +28,14 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
     m_list.removeAll(QFile(USR_SHARE_APP_CURRENT));
     m_list.removeAll(QFile(USR_SHARE_APP_UPER));
 
-    m_classClass = info.windowClassClass().toLower();
-    m_className = info.windowClassName();
-
-    //匹配安卓兼容
-    if(m_className == "kylin-kmre-window"){
-        searchAndroidApp(info);
-        return m_desktopfilePath;
-    }
-
     //第一种方法：获取点击应用时大部分desktop文件名
     searchFromEnviron(info);
 
     //第二种方法：比较名字一致性
     if (m_desktopfilePath.isEmpty()) {
+        m_classClass = info.windowClassClass().toLower();
+        m_className = info.windowClassName();
+
         QFile file(QString("/proc/%1/status").arg(info.pid()));
         if (file.open(QIODevice::ReadOnly)) {
             char buf[1024];

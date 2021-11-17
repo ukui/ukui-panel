@@ -78,10 +78,9 @@ public slots:
     void newStatus(QString status);
 
 public:
-    QString mTitle;
+    QString mId;
     bool mIdStatus=false;
     bool mIconStatus=false;
-    QTimer *mTime;
 
 private:
     SniAsync *interface;
@@ -89,7 +88,6 @@ private:
     Status mStatus;
 
     QString mThemePath;
-//    QString mTitle;
     QIcon mIcon, mOverlayIcon, mAttentionIcon, mFallbackIcon;
 
     QPoint mDragStart;
@@ -98,6 +96,9 @@ private:
 
     QString drag_status_flag;
 
+    uint mCount = 0;
+    bool mParamInit=false;
+
 signals:
     void switchButtons(StatusNotifierButton *from, StatusNotifierButton *to);
     void sendTitle(QString arg);
@@ -105,6 +106,7 @@ signals:
     void cleansignal();
     void iconReady();
     void layoutReady();
+    void paramReady();
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
