@@ -67,6 +67,32 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
     return m_desktopfilePath;
 }
 
+void ConvertDesktopToWinId::searchAndroidApp(KWindowInfo info)
+{
+    m_androidDir = new QDir(QString(QDir::homePath() + ANDROID_FILE_PATH));
+    m_androidList = m_androidDir->entryInfoList();
+    m_androidList.removeAll(QDir::homePath() + ANDROID_APP_CURRENT);
+    m_androidList.removeAll(QDir::homePath() + ANDROID_APP_UPER);
+
+    QFile file(QString("/proc/%1/cmdline").arg(info.pid()));
+    file.open(QIODevice::ReadOnly);
+    QByteArray cmd = file.readAll();
+    file.close();
+    QList<QByteArray> cmdList = cmd.split('\0');
+    for(int i = 0; i < m_androidList.size(); i++){
+        QFileInfo fileInfo = m_androidList.at(i);
+        QString desktopName = fileInfo.filePath();
+        if(!fileInfo.filePath().endsWith(".desktop")){
+            continue;
+        }
+        desktopName = desktopName.mid(desktopName.lastIndexOf("/") + 1);
+        desktopName = desktopName.left(desktopName.lastIndexOf("."));
+        if(desktopName == cmdList.at(10)){
+            m_desktopfilePath = fileInfo.filePath();
+        }
+    }
+}
+
 void ConvertDesktopToWinId::searchFromEnviron(KWindowInfo info)
 {
     QFile file("/proc/" + QString::number(info.pid()) + "/environ");

@@ -39,7 +39,9 @@ public:
     QString m_cmdLine = nullptr;
 
     QDir *m_dir = nullptr;
+    QDir *m_androidDir = nullptr;
     QFileInfoList m_list;
+    QFileInfoList m_androidList;
 
     QString tranIdToDesktop(WId id);
 
