@@ -216,10 +216,9 @@ void PanelPluginsModel::movePlugin(Plugin * plugin, QString const & nameAfter)
 
 void PanelPluginsModel::loadPlugins(QStringList const & desktopDirs)
 {
-    QSettings *mBackupQSettings;
-    mBackupQSettings = new QSettings(CONFIG_FILE_BACKUP,QSettings::IniFormat);
+    QSettings backup_qsettings(CONFIG_FILE_BACKUP,QSettings::IniFormat);
 
-    QStringList plugin_names = mBackupQSettings->value(mNamesKey).toStringList();
+    QStringList plugin_names = backup_qsettings.value(mNamesKey).toStringList();
 
 #ifdef DEBUG_PLUGIN_LOADTIME
     QElapsedTimer timer;
@@ -229,10 +228,10 @@ void PanelPluginsModel::loadPlugins(QStringList const & desktopDirs)
     for (auto const & name : plugin_names)
     {
         pluginslist_t::iterator i = mPlugins.insert(mPlugins.end(), {name, nullptr});
-        QString type = mBackupQSettings->value(name + "/type").toString();
+        QString type = backup_qsettings.value(name + "/type").toString();
         if (type.isEmpty())
         {
-            qWarning() << QString("Section \"%1\" not found in %2.").arg(name, mBackupQSettings->fileName());
+            qWarning() << QString("Section \"%1\" not found in %2.").arg(name, backup_qsettings.fileName());
             continue;
         }
 #ifdef WITH_SCREENSAVER_FALLBACK
