@@ -31,8 +31,9 @@
 #include <QPointer>
 #include <XdgIcon>
 #include "common/ukuisettings.h"
-
 #include <QDebug>
+
+#define CONFIG_FILE_BACKUP     "/usr/share/ukui/panel.conf"
 
 PanelPluginsModel::PanelPluginsModel(UKUIPanel * panel,
                                      QString const & namesKey,
@@ -215,7 +216,10 @@ void PanelPluginsModel::movePlugin(Plugin * plugin, QString const & nameAfter)
 
 void PanelPluginsModel::loadPlugins(QStringList const & desktopDirs)
 {
-    QStringList plugin_names = mPanel->settings()->value(mNamesKey).toStringList();
+    QSettings backup_qsettings(CONFIG_FILE_BACKUP,QSettings::IniFormat);
+
+    QStringList plugin_names = backup_qsettings.value(mNamesKey).toStringList();
+
 #ifdef DEBUG_PLUGIN_LOADTIME
     QElapsedTimer timer;
     timer.start();
@@ -224,10 +228,10 @@ void PanelPluginsModel::loadPlugins(QStringList const & desktopDirs)
     for (auto const & name : plugin_names)
     {
         pluginslist_t::iterator i = mPlugins.insert(mPlugins.end(), {name, nullptr});
-        QString type = mPanel->settings()->value(name + "/type").toString();
+        QString type = backup_qsettings.value(name + "/type").toString();
         if (type.isEmpty())
         {
-            qWarning() << QString("Section \"%1\" not found in %2.").arg(name, mPanel->settings()->fileName());
+            qWarning() << QString("Section \"%1\" not found in %2.").arg(name, backup_qsettings.fileName());
             continue;
         }
 #ifdef WITH_SCREENSAVER_FALLBACK
