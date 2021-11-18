@@ -35,73 +35,24 @@
 #include "datacdrom.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent)
+  , ui(new Ui::MainWindow)
+  , findPointMount(false)
+  , telephoneNum(0)
+  , driveVolumeNum(0)
+  , m_strSysRootDev(QString(""))
 {
-    findPointMount = false;
-    telephoneNum = 0;
-    driveVolumeNum = 0;
-    m_vtDeviveId.clear();
-    m_strSysRootDev = "";
-
-    const QByteArray idd(THEME_QT_SCHEMA);
-
-    if(QGSettings::isSchemaInstalled(idd))
-    {
-        qtSettings = new QGSettings(idd);
-    }
-
-    const QByteArray id(AUTOLOAD);
-    if(QGSettings::isSchemaInstalled(idd))
-    {
-        ifsettings = new QGSettings(id);
-    }
+    ui->setupUi(this);
 
     initThemeMode();
-
+    initFlashDisk();
+    initSlots();
     installEventFilter(this);
-    m_nAppStartTimestamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    m_dataFlashDisk = FlashDiskData::getInstance();
-    ui->setupUi(this);
-    //框架的样式设置
-    //set the style of the framework
-    interfaceHideTime = new QTimer(this);
-    connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(onMaininterfacehide()));
-    initTransparentState();
-    ui->centralWidget->setObjectName("centralWidget");
-    iconSystray = QIcon::fromTheme("media-removable-symbolic");
-    vboxlayout = new QVBoxLayout();
-    //hboxlayout = new QHBoxLayout();
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
-#else
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
-#endif
-    this->setAttribute(Qt::WA_TranslucentBackground);
-    m_systray = new QSystemTrayIcon;
-    m_systray->setIcon(iconSystray);
-    //m_systray->setVisible(true);
-    m_systray->setToolTip(tr("usb management tool"));
-    //init the screen
-    screen = qApp->primaryScreen();
-    //get system root device
-    getSystemRootDev();
-    //underlying code to get the information of the usb device
-    getDeviceInfo();
-    connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
-    connect(this,&MainWindow::convertShowWindow,this,&MainWindow::onConvertShowWindow);
-    connect(this,&MainWindow::convertUpdateWindow,this,&MainWindow::onConvertUpdateWindow);
-    connect(this,&MainWindow::remountVolume,this,&MainWindow::onRemountVolume);
-    connect(this,&MainWindow::checkDriveValid,this,&MainWindow::onCheckDriveValid);
-    connect(this, &MainWindow::notifyDeviceRemoved, this, &MainWindow::onNotifyDeviceRemoved);
-    connect(m_dataFlashDisk, &FlashDiskData::notifyDeviceRemoved, this, &MainWindow::onNotifyDeviceRemoved);
-    ui->centralWidget->setLayout(vboxlayout);
-    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
-                                                  "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
 
-    connect(this, SIGNAL(deviceError(GDrive*)), this, SLOT(onDeviceErrored(GDrive*)), (Qt::UniqueConnection));
-    connect(this, SIGNAL(mountVolume(GVolume*)), this, SLOT(onMountVolume(GVolume*)));
-    connect(this, SIGNAL(ejectVolumeForce(GVolume*)), this, SLOT(onEjectVolumeForce(GVolume*)));
+    // get system root device
+    getSystemRootDev();
+    // underlying code to get the information of the usb device
+    getDeviceInfo();
 }
 
 MainWindow::~MainWindow()
@@ -111,14 +62,62 @@ MainWindow::~MainWindow()
         delete m_transparency_gsettings;
         m_transparency_gsettings = nullptr;
     }
-    if (qtSettings) {
-        delete qtSettings;
-        qtSettings = nullptr;
-    }
+
     if (ifsettings) {
         delete ifsettings;
         ifsettings = nullptr;
     }
+}
+
+void MainWindow::initFlashDisk()
+{
+    m_vtDeviveId.clear();
+
+    // 框架的样式设置
+    // set the style of the framework
+    interfaceHideTime = new QTimer(this);
+
+    initTransparentState();
+    ui->centralWidget->setObjectName("centralWidget");
+    vboxlayout = new QVBoxLayout(this);
+    ui->centralWidget->setLayout(vboxlayout);
+
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+#else
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+#endif
+    this->setAttribute(Qt::WA_TranslucentBackground);
+
+    m_systray = new QSystemTrayIcon(this);
+    m_systray->setIcon(QIcon::fromTheme("media-removable-symbolic"));
+    //m_systray->setVisible(true);
+    m_systray->setToolTip(tr("usb management tool"));
+
+    // init the screen
+    screen = qApp->primaryScreen();
+
+    m_nAppStartTimestamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    m_dataFlashDisk = FlashDiskData::getInstance();
+}
+
+void MainWindow::initSlots()
+{
+    connect(m_systray, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
+    connect(this, &MainWindow::convertShowWindow, this, &MainWindow::onConvertShowWindow);
+    connect(this, &MainWindow::convertUpdateWindow, this, &MainWindow::onConvertUpdateWindow);
+    connect(this, &MainWindow::remountVolume, this, &MainWindow::onRemountVolume);
+    connect(this, &MainWindow::checkDriveValid, this, &MainWindow::onCheckDriveValid);
+    connect(this, &MainWindow::notifyDeviceRemoved, this, &MainWindow::onNotifyDeviceRemoved);
+    connect(m_dataFlashDisk, &FlashDiskData::notifyDeviceRemoved, this, &MainWindow::onNotifyDeviceRemoved);
+
+    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), \
+                                                  "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(on_clickPanelToHideInterface()));
+
+    connect(this, SIGNAL(deviceError(GDrive*)), this, SLOT(onDeviceErrored(GDrive*)), (Qt::UniqueConnection));
+    connect(this, SIGNAL(mountVolume(GVolume*)), this, SLOT(onMountVolume(GVolume*)));
+    connect(this, SIGNAL(ejectVolumeForce(GVolume*)), this, SLOT(onEjectVolumeForce(GVolume*)));
+    connect(interfaceHideTime, SIGNAL(timeout()), this, SLOT(onMaininterfacehide()));
 }
 
 void MainWindow::onRequestSendDesktopNotify(QString message, QString strIcon)
@@ -128,14 +127,14 @@ void MainWindow::onRequestSendDesktopNotify(QString message, QString strIcon)
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
     QList<QVariant> args;
-    args<<(tr("ukui flash disk"))
-       <<((unsigned int) 0)
-      <<strIcon
-     <<tr("kindly reminder") //显示的是什么类型的信息
-    <<message //显示的具体信息
-    <<QStringList()
-    <<QVariantMap()
-    <<(int)-1;
+    args << (tr("ukui flash disk"))
+         << ((unsigned int) 0)
+         << strIcon
+         << tr("kindly reminder") //显示的是什么类型的信息
+         << message //显示的具体信息
+         << QStringList()
+         << QVariantMap()
+         << (int)-1;
     iface.callWithArgumentList(QDBus::NoBlock,"Notify",args);
 }
 
@@ -146,14 +145,14 @@ void MainWindow::onInsertAbnormalDiskNotify(QString message)
                          "org.freedesktop.Notifications",
                          QDBusConnection::sessionBus());
     QList<QVariant> args;
-    args<<(tr("ukui flash disk"))
-       <<((unsigned int) 0)
-      <<QString("media-removable-symbolic")
-     <<tr("wrong reminder") //显示的是什么类型的信息
-    <<message //显示的具体信息
-    <<QStringList()
-    <<QVariantMap()
-    <<(int)-1;
+    args << (tr("ukui flash disk"))
+         << ((unsigned int) 0)
+         << QString("media-removable-symbolic")
+         << tr("wrong reminder") //显示的是什么类型的信息
+         << message //显示的具体信息
+         << QStringList()
+         << QVariantMap()
+         << (int)-1;
     iface.callWithArgumentList(QDBus::NoBlock,"Notify",args);
 }
 
@@ -188,18 +187,28 @@ void MainWindow::onNotifyWnd(QObject* obj, QEvent *event)
 
 void MainWindow::initThemeMode()
 {
-    connect(qtSettings,&QGSettings::changed,this,[=](const QString &key)
-    {
-        auto style = qtSettings->get(key).toString();
+    const QByteArray idd(THEME_QT_SCHEMA);
+
+    if(QGSettings::isSchemaInstalled(idd)) {
+        QGSettings *qtSettings = new QGSettings(idd, QByteArray(), this);
+
+        connect(qtSettings,&QGSettings::changed,this,[=](const QString &key) {
+            currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+        });
         currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
-    });
-    currentThemeMode = qtSettings->get(MODE_QT_KEY).toString();
+    }
+
+    const QByteArray id(AUTOLOAD);
+    if(QGSettings::isSchemaInstalled(idd)) {
+        ifsettings = new QGSettings(id);
+    }
 }
 
 void MainWindow::on_clickPanelToHideInterface()
 {
-    if(!ui->centralWidget->isHidden())
+    if(!ui->centralWidget->isHidden()) {
         ui->centralWidget->hide();
+    }
 }
 
 void MainWindow::getSystemRootDev()
@@ -208,7 +217,7 @@ void MainWindow::getSystemRootDev()
     QProcess *p = new QProcess();
     p->start(cmd);
     p->waitForFinished();
-    while(p->canReadLine()){
+    while(p->canReadLine()) {
         QString str = p->readLine();
         QStringList infoList = str.split(QRegExp("\\s+"));
         if (infoList.size() >= 6) {
@@ -235,22 +244,19 @@ void MainWindow::getDeviceInfo()
     char buf[128] = {0};
 
     fp = fopen("/proc/cmdline","r");
-    if (fp) {
-        while(fscanf(fp,"%127s",buf) >0 )
-        {
-            if(strcmp(buf,"live") == 0)
-            {
+    if(fp) {
+        while(fscanf(fp,"%127s",buf) >0 ) {
+            if(strcmp(buf,"live") == 0) {
                 a++;
             }
         }
         fclose(fp);
     }
-    if(a > 0)
-    {
+    if(a > 0) {
         QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload false");
     }
 
-//callback function that to monitor the insertion and removal of the underlying equipment
+    // callback function that to monitor the insertion and removal of the underlying equipment
     GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
     g_signal_connect (g_volume_monitor, "drive-connected", G_CALLBACK (drive_connected_callback), this);
     g_signal_connect (g_volume_monitor, "drive-disconnected", G_CALLBACK (drive_disconnected_callback), this);
@@ -260,7 +266,7 @@ void MainWindow::getDeviceInfo()
     g_signal_connect (g_volume_monitor, "mount-removed", G_CALLBACK (mount_removed_callback), this);
 
     GList *lDrive = NULL, *lVolume = NULL, *lMount = NULL;
-//about drive
+    // about drive
     GList *current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
     for (lDrive = current_drive_list; lDrive != NULL; lDrive = lDrive->next) {
         GDrive *gdrive = (GDrive *)lDrive->data;
@@ -385,7 +391,7 @@ void MainWindow::getDeviceInfo()
     if (current_drive_list) {
         g_list_free(current_drive_list);
     }
-//about volume not associated with a drive
+    // about volume not associated with a drive
     GList *current_volume_list = g_volume_monitor_get_volumes(g_volume_monitor);
     if (current_volume_list) {
         for (lVolume = current_volume_list; lVolume != NULL; lVolume = lVolume->next) {
@@ -497,7 +503,8 @@ void MainWindow::getDeviceInfo()
         }
         g_list_free(current_volume_list);
     }
-//about mount not associated with a volume
+
+    // about mount not associated with a volume
     GList *current_mount_list = g_volume_monitor_get_mounts(g_volume_monitor);
     if (current_mount_list) {
         for (lMount = current_mount_list; lMount != NULL; lMount = lMount->next) {
@@ -647,7 +654,8 @@ void MainWindow::getDeviceInfo()
         }
         g_list_free(current_mount_list);
     }
- //determine the systray icon should be showed  or be hieded
+
+    // determine the systray icon should be showed  or be hieded
     if(m_dataFlashDisk->getValidInfoCount() >= 1) {
         m_systray->show();
     } else {
@@ -664,6 +672,7 @@ void MainWindow::onConvertShowWindow(QString strDriveId, QString strMountUri)
         return;
     }
     insertorclick = true;
+
     MainWindowShow();
     string strDeviceId = strDriveId.toStdString();
     if (std::find(m_vtDeviveId.begin(), m_vtDeviveId.end(), strDeviceId) == m_vtDeviveId.end()) {
@@ -694,8 +703,7 @@ void MainWindow::onNotifyDeviceRemoved(QString strDevId)
     }
     #if IFDISTINCT_DEVICON
     QString strIcon = m_dataFlashDisk->getVolumeIcon(strDevId);
-    onRequestSendDesktopNotify(tr("Storage device removed"),
-                                strIcon);
+    onRequestSendDesktopNotify(tr("Storage device removed"), strIcon);
     #else
     if (strDevId.startsWith("/dev/sr")) {
         onRequestSendDesktopNotify(tr("Storage device removed"),
@@ -719,12 +727,11 @@ void MainWindow::onConvertUpdateWindow(QString strDevName, unsigned uDevType)
     }
 }
 
-//the drive-connected callback function the is triggered when the usb device is inseted
+// the drive-connected callback function the is triggered when the usb device is inseted
 void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this)
 {
-    qInfo()<<"drive add";
-    if(p_this->ifsettings->get(IFAUTOLOAD).toBool())
-    {
+    qInfo() << "drive add";
+    if(p_this->ifsettings->get(IFAUTOLOAD).toBool()) {
         GList *lVolume = NULL;
         FDDriveInfo driveInfo;
         GDrive *gdrive = (GDrive *)drive;
@@ -774,10 +781,10 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
     p_this->m_dataFlashDisk->OutputInfos();
 }
 
-//the drive-disconnected callback function the is triggered when the usb device is pull out
+// the drive-disconnected callback function the is triggered when the usb device is pull out
 void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *drive, MainWindow *p_this)
 {
-    qInfo()<<"drive disconnect";
+    qInfo() << "drive disconnect";
 
     FDDriveInfo driveInfo;
     char *devPath = g_drive_get_identifier(drive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
@@ -785,6 +792,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
         driveInfo.strId = devPath;
         g_free(devPath);
     }
+
     vector<string>::iterator itDeviceId = p_this->m_vtDeviveId.begin();
     for (; itDeviceId != p_this->m_vtDeviveId.end();) {
         if (driveInfo.strId == *itDeviceId) {
@@ -801,10 +809,10 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
     p_this->m_dataFlashDisk->OutputInfos();
 }
 
-//when the usb device is identified,we should mount every partition
+// when the usb device is identified, we should mount every partition
 void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
-    qDebug()<<"volume add";
+    qDebug() << "volume add";
     GDrive* gdrive = g_volume_get_drive(volume);
 
     FILE *fp = NULL;
@@ -813,24 +821,21 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
 
     fp = fopen("/proc/cmdline","r");
     if (fp) {
-        while(fscanf(fp,"%127s",buf) > 0)
-        {
-            if(strcmp(buf,"live") == 0)
-            {
+        while(fscanf(fp,"%127s",buf) > 0) {
+            if(strcmp(buf,"live") == 0) {
                 a++;
             }
         }
         fclose(fp);
     }
     p_this->ifautoload = p_this->ifsettings->get(IFAUTOLOAD).toBool();
-    if(a > 0)
-    {
+
+    if(a > 0) {
         QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload false");
-    }
-    else
-    {
+    } else {
         //QProcess::startDetached("gsettings set org.ukui.flash-disk.autoload ifautoload true");
     }
+
     bool isNewMount = false;
     if(!gdrive) {
         FDVolumeInfo volumeInfo;
@@ -910,7 +915,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                     }
                     char *tooltip = g_file_get_parse_name(root);      //提示，即文件的解释
                     if (tooltip) {
-                        volumeInfo.mountInfo.strTooltip =tooltip;
+                        volumeInfo.mountInfo.strTooltip = tooltip;
                         g_free(tooltip);
                     }
                     g_object_unref(root);
@@ -1056,10 +1061,10 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
     p_this->m_dataFlashDisk->OutputInfos();
 }
 
-//when the U disk is pull out we should reduce all its partitions
+// when the U disk is pull out we should reduce all its partitions
 void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volume, MainWindow *p_this)
 {
-    qInfo()<<"volume removed";
+    qInfo() << "volume removed";
     FDVolumeInfo volumeInfo;
     char *volumeId = g_volume_get_identifier(volume,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
     if (volumeId) {
@@ -1087,10 +1092,10 @@ void MainWindow::volume_removed_callback(GVolumeMonitor *monitor, GVolume *volum
     Q_EMIT p_this->convertUpdateWindow(QString::fromStdString(volumeInfo.strName), 1);     //emit a signal to update the MainMainShow slot
 }
 
-//when the volumes were mounted we add its mounts number
+// when the volumes were mounted we add its mounts number
 void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this)
 {
-    qInfo()<<"mount add";
+    qInfo() << "mount add";
 
     GDrive* gdrive = g_mount_get_drive(mount);
     GVolume* gvolume = g_mount_get_volume(mount);
@@ -1233,13 +1238,11 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
             p_this->m_dataFlashDisk->addMountInfo(mountInfo);
         }
     }
-    else
-    {
+    else {
         qInfo()<<"不符合过滤条件的设备已被挂载";
     }
 
-    if(p_this->m_dataFlashDisk->getValidInfoCount() >= 1)
-    {
+    if(p_this->m_dataFlashDisk->getValidInfoCount() >= 1) {
         if (isValidMount && isNewMount) {
             //qInfo()<<"cd data disk has mounted!";
             string strDevId = driveInfo.strId.empty()?volumeInfo.strId:driveInfo.strId;
@@ -1250,10 +1253,10 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     p_this->m_dataFlashDisk->OutputInfos();
 }
 
-//when the mountes were uninstalled we reduce mounts number
+// when the mountes were uninstalled we reduce mounts number
 void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, MainWindow *p_this)
 {
-    qInfo()<<mount<<"mount remove";
+    qInfo() << mount << "mount remove";
     FDMountInfo mountInfo;
     mountInfo.isCanEject = g_mount_can_eject(mount);
     char *mountId = g_mount_get_uuid(mount);
@@ -1292,8 +1295,7 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
 
     p_this->m_dataFlashDisk->removeMountInfo(mountInfo);
 
-    if(p_this->m_dataFlashDisk->getValidInfoCount() == 0)
-    {
+    if(p_this->m_dataFlashDisk->getValidInfoCount() == 0) {
         p_this->m_systray->hide();
     }
     p_this->m_dataFlashDisk->OutputInfos();
@@ -1304,7 +1306,7 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
     }
 }
 
-//it stands that when you insert a usb device when all the  U disk partitions
+// it stands that when you insert a usb device when all the  U disk partitions
 void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult *res,MainWindow *p_this)
 {
     gboolean success =  FALSE;
@@ -1448,7 +1450,7 @@ void MainWindow::frobnitz_result_func_volume(GVolume *source_object,GAsyncResult
     }
 }
 
-//here we begin painting the main interface
+// here we begin painting the main interface
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     triggerType = 1;  //It represents how we open the interface
@@ -1466,7 +1468,6 @@ void MainWindow::hideEvent(QHideEvent event)
 {
     // delete open_widget;
 }
-
 
 /*
  * newarea use all the information of the U disk to paint the main interface and add line
@@ -1552,20 +1553,16 @@ void MainWindow::newarea(unsigned uDiskNo,
     line->setFixedHeight(1);
     line->setObjectName("lineWidget");
     if(currentThemeMode == "ukui-dark" || currentThemeMode == "ukui-black" || currentThemeMode == "ukui-default"
-        || currentThemeMode == "ukui")
-    {
+        || currentThemeMode == "ukui") {
         line->setStyleSheet("background-color:rgba(255,255,255,0.2);");
-    }
-    else
-    {
+    } else {
         line->setStyleSheet("background-color:rgba(0,0,0,0.2);");
     }
 
-    //when the drive is only or the drive is the first one,we make linestatus become  1
+    // when the drive is only or the drive is the first one,we make linestatus become  1
     line->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     line->setFixedSize(276,1);
-    if (linestatus == 2)
-    {
+    if (linestatus == 2) {
         this->vboxlayout->addWidget(line);
     }
 
@@ -1574,8 +1571,7 @@ void MainWindow::newarea(unsigned uDiskNo,
     vboxlayout->setMargin(0);
     this->vboxlayout->addWidget(m_fdClickWidget);
 
-    if (linestatus == 0)
-    {
+    if (linestatus == 0) {
         this->vboxlayout->addWidget(line);
     }
 }
@@ -2172,13 +2168,16 @@ void MainWindow::ifgetPinitMount()
         QString content = file.readLine().trimmed();
         while (!file.atEnd())
         {
-            if (content.contains(".mount"))
+            if (content.contains(".mount")) {
                 pointMountNum += 1;
-                content = file.readLine().trimmed();
-                if(pointMountNum >= 1)
-                    findPointMount = true;
-                else
-                    findPointMount = false;
+            }
+
+            content = file.readLine().trimmed();
+            if(pointMountNum >= 1) {
+                findPointMount = true;
+            } else {
+                findPointMount = false;
+            }
         }
     }
     file.close();
@@ -2229,40 +2228,41 @@ void MainWindow::moveBottomNoBase()
     ui->centralWidget->repaint();
 
 #endif
-    //MARGIN 为到任务栏或屏幕边缘的间隔
+    // MARGIN 为到任务栏或屏幕边缘的间隔
 #define MARGIN 4
     QDBusInterface iface("org.ukui.panel",
                          "/panel/position",
                          "org.ukui.panel",
                          QDBusConnection::sessionBus());
     QDBusReply<QVariantList> reply=iface.call("GetPrimaryScreenGeometry");
+
     if (!iface.isValid() || !iface.isValid() || reply.value().size()<5) {
         qCritical() << QDBusConnection::sessionBus().lastError().message();
         ui->centralWidget->setGeometry(0,0,ui->centralWidget->width(),ui->centralWidget->height());
-    }else{
-        //reply获取的参数共5个，分别是 主屏可用区域的起点x坐标，主屏可用区域的起点y坐标，主屏可用区域的宽度，主屏可用区域高度，任务栏位置
+    } else {
+        // reply获取的参数共5个，分别是 主屏可用区域的起点x坐标，主屏可用区域的起点y坐标，主屏可用区域的宽度，主屏可用区域高度，任务栏位置
         QVariantList position_list=reply.value();
 
         switch(reply.value().at(4).toInt()){
         case 1:
-            //任务栏位于上方
+            // 任务栏位于上方
             ui->centralWidget->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-ui->centralWidget->width()-MARGIN,
                                            position_list.at(1).toInt()+MARGIN,
                                            ui->centralWidget->width(),ui->centralWidget->height());
             break;
-            //任务栏位于左边
+            // 任务栏位于左边
         case 2:
             ui->centralWidget->setGeometry(position_list.at(0).toInt()+MARGIN,
                                            position_list.at(1).toInt()+reply.value().at(3).toInt()-ui->centralWidget->height()-MARGIN,
                                            ui->centralWidget->width(),this->height());
             break;
-            //任务栏位于右边
+            // 任务栏位于右边
         case 3:
             ui->centralWidget->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-ui->centralWidget->width()-MARGIN,
                                            position_list.at(1).toInt()+reply.value().at(3).toInt()-ui->centralWidget->height()-MARGIN,
                                            ui->centralWidget->width(),ui->centralWidget->height());
             break;
-            //任务栏位于下方
+            // 任务栏位于下方
         default:
             ui->centralWidget->setGeometry(position_list.at(0).toInt()+position_list.at(2).toInt()-ui->centralWidget->width()-MARGIN,
                                            position_list.at(1).toInt()+reply.value().at(3).toInt()-ui->centralWidget->height()-MARGIN,
@@ -2312,7 +2312,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
-//new a gsettings object to get the information of the opacity of the window
+// new a gsettings object to get the information of the opacity of the window
 void MainWindow::initTransparentState()
 {
     const QByteArray idtrans(THEME_QT_TRANS);
@@ -2323,22 +2323,19 @@ void MainWindow::initTransparentState()
     }
 }
 
-//use gsettings to get the opacity
+// use gsettings to get the opacity
 void MainWindow::getTransparentData()
 {
-    if (!m_transparency_gsettings)
-    {
+    if (!m_transparency_gsettings) {
        m_transparency = 0.95;
        return;
     }
 
     QStringList keys = m_transparency_gsettings->keys();
-    if (keys.contains("transparency"))
-    {
+    if (keys.contains("transparency")) {
         m_transparency = m_transparency_gsettings->get("transparency").toDouble();
     }
 }
-
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
@@ -2369,14 +2366,17 @@ void MainWindow::onEjectVolumeForce(GVolume *v)
 
 void MainWindow::AsyncUnmount(QString strMountRoot,MainWindow *p_this)
 {
-    qInfo()<<"dataPath:"<<strMountRoot;
+    qInfo() << "dataPath:" << strMountRoot;
     QProcess p;
     p.setProgram("pkexec");
-    p.setArguments(QStringList()<<"eject"<<strMountRoot);
+    p.setArguments(QStringList() << "eject" << strMountRoot);
     p.start();
+
     bool bSuccess = p.waitForFinished();
-    if (p_this)
+
+    if (p_this) {
         p_this->ifSucess = bSuccess;
+    }
 }
 
 void MainWindow::frobnitz_force_result_func(GDrive *source_object,GAsyncResult *res, MainWindow *p_this)
@@ -2385,6 +2385,7 @@ void MainWindow::frobnitz_force_result_func(GDrive *source_object,GAsyncResult *
     gboolean success =  FALSE;
     GError *err = nullptr;
     success = g_drive_eject_with_operation_finish (source_object, res, &err);
+
     if (!err) {
         FDDriveInfo driveInfo;
         char *devPath = g_drive_get_identifier(source_object,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
@@ -2392,17 +2393,18 @@ void MainWindow::frobnitz_force_result_func(GDrive *source_object,GAsyncResult *
             driveInfo.strId = devPath;
             g_free(devPath);
         }
+
         char *strName = g_drive_get_name(source_object);
         if (strName) {
             driveInfo.strName = strName;
             g_free(strName);
         }
+
         p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),
                                             NORMALDEVICE,QString::fromStdString(driveInfo.strId));
         p_this->m_eject->show();
         FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
-        if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
-        {
+        if(FlashDiskData::getInstance()->getValidInfoCount() == 0) {
             p_this->m_systray->hide();
         }
     } else {
@@ -2445,17 +2447,18 @@ void MainWindow::frobnitz_result_func(GDrive *source_object,GAsyncResult *res,Ma
             driveInfo.strId = devPath;
             g_free(devPath);
         }
+
         char *strName = g_drive_get_name(source_object);
         if (strName) {
             driveInfo.strName = strName;
             g_free(strName);
         }
+
         p_this->m_eject = new ejectInterface(p_this->ui->centralWidget,QString::fromStdString(driveInfo.strName),
                                             NORMALDEVICE,QString::fromStdString(driveInfo.strId));
         p_this->m_eject->show();
         FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
-        if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
-        {
+        if(FlashDiskData::getInstance()->getValidInfoCount() == 0) {
             p_this->m_systray->hide();
         }
     } else /*if(g_drive_can_stop(source_object) == true)*/ {
@@ -2465,19 +2468,19 @@ void MainWindow::frobnitz_result_func(GDrive *source_object,GAsyncResult *res,Ma
             driveInfo.strId = devPath;
             g_free(devPath);
         }
+
         char *strName = g_drive_get_name(source_object);
         if (strName) {
             driveInfo.strName = strName;
             g_free(strName);
         }
-        if (p_this->chooseDialog == nullptr)
-        {
+
+        if (p_this->chooseDialog == nullptr) {
             p_this->chooseDialog = new interactiveDialog(QString::fromStdString(driveInfo.strId), p_this->ui->centralWidget);
         }
         p_this->chooseDialog->show();
         p_this->chooseDialog->setFocus();
-        p_this->connect(p_this->chooseDialog,&interactiveDialog::FORCESIG,p_this,[=]()
-        {
+        p_this->connect(p_this->chooseDialog,&interactiveDialog::FORCESIG,p_this,[=]() {
             g_drive_eject_with_operation(source_object,
                                          G_MOUNT_UNMOUNT_FORCE,
                                          NULL,
@@ -2495,17 +2498,16 @@ void MainWindow::frobnitz_normal_result_volume_eject(GVolume *source_object,GAsy
     gboolean success =  FALSE;
     GError *err = nullptr;
     success = g_volume_eject_with_operation_finish(source_object, res, &err);
-    if(!err)
-    {
+    if(!err) {
         FDVolumeInfo volumeInfo;
         char *volumeId = g_volume_get_identifier(source_object,G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
         if (volumeId) {
             volumeInfo.strId = volumeId;
             g_free(volumeId);
         }
+
         FlashDiskData::getInstance()->removeVolumeInfo(volumeInfo);
-        if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
-        {
+        if(FlashDiskData::getInstance()->getValidInfoCount() == 0) {
             p_this->m_systray->hide();
         }
     }
@@ -2516,8 +2518,7 @@ void MainWindow::frobnitz_force_result_unmount(GMount *source_object,GAsyncResul
     gboolean success =  FALSE;
     GError *err = nullptr;
     success = g_mount_unmount_with_operation_finish(source_object,res, &err);
-    if(!err)
-    {
+    if(!err) {
         FDMountInfo mountInfo;
         mountInfo.isCanEject = g_mount_can_eject(source_object);
         char *mountId = g_mount_get_uuid(source_object);
@@ -2525,6 +2526,7 @@ void MainWindow::frobnitz_force_result_unmount(GMount *source_object,GAsyncResul
             mountInfo.strId = mountId;
             g_free(mountId);
         }
+
         GFile *root = g_mount_get_default_location(source_object);
         if (root) {
             char *mountUri = g_file_get_uri(root);           //get挂载点的uri路径
@@ -2537,6 +2539,7 @@ void MainWindow::frobnitz_force_result_unmount(GMount *source_object,GAsyncResul
             }
             g_object_unref(root);
         }
+
         FlashDiskData::getInstance()->removeMountInfo(mountInfo);
         if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
         {
@@ -2606,8 +2609,10 @@ void MainWindow::onMountVolume(GVolume* v)
 bool MainWindow::doRealEject(EjectDeviceInfo* peDeviceInfo, GMountUnmountFlags flag)
 {
     // find the device's drive & volume & mount
-    if (!peDeviceInfo || !peDeviceInfo->pVoid)
+    if (!peDeviceInfo || !peDeviceInfo->pVoid) {
         return false;
+    }
+
     GList *lDrive = NULL;
     GList *lVolume = NULL;
     GList *lMount = NULL;
@@ -2619,6 +2624,7 @@ bool MainWindow::doRealEject(EjectDeviceInfo* peDeviceInfo, GMountUnmountFlags f
     GMount* devMount = NULL;
     unsigned uVolumeSize = 0;
     bool isDone = false;
+
     //about drive
     GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
     if (!peDeviceInfo->strDriveId.isEmpty()) {
@@ -2702,6 +2708,7 @@ bool MainWindow::doRealEject(EjectDeviceInfo* peDeviceInfo, GMountUnmountFlags f
             current_drive_list = NULL;
         }
     }
+
     //about volume not associated with a drive
     if (!isDone && !peDeviceInfo->strVolumeId.isEmpty()) {
         current_volume_list = g_volume_monitor_get_volumes(g_volume_monitor);
@@ -2745,6 +2752,7 @@ bool MainWindow::doRealEject(EjectDeviceInfo* peDeviceInfo, GMountUnmountFlags f
             current_volume_list = NULL;
         }
     }
+
     //about mount not associated with a volume
     if (!isDone && !peDeviceInfo->strMountId.isEmpty()) {
         current_mount_list = g_volume_monitor_get_mounts(g_volume_monitor);
@@ -2802,8 +2810,7 @@ bool MainWindow::doRealEject(EjectDeviceInfo* peDeviceInfo, GMountUnmountFlags f
         m_dataFlashDisk->removeVolumeInfo(volumeInfo);
         driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
         m_dataFlashDisk->removeDriveInfo(driveInfo);
-        if(m_dataFlashDisk->getValidInfoCount() == 0)
-        {
+        if(m_dataFlashDisk->getValidInfoCount() == 0) {
             m_systray->hide();
         }
     }
@@ -2825,8 +2832,7 @@ GAsyncReadyCallback MainWindow::fileEjectMountableCB(GFile *file, GAsyncResult *
                                             NORMALDEVICE,QString::fromStdString(driveInfo.strId));
         pThis->m_eject->show();
         FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
-        if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
-        {
+        if(FlashDiskData::getInstance()->getValidInfoCount() == 0) {
             pThis->m_systray->hide();
         }
     } else /*if(g_drive_can_stop(source_object) == true)*/ {
@@ -2835,14 +2841,12 @@ GAsyncReadyCallback MainWindow::fileEjectMountableCB(GFile *file, GAsyncResult *
             driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
             driveInfo.strName = peDeviceInfo->strDriveName.toStdString();
             MainWindow* pThis = (MainWindow*)(peDeviceInfo->pVoid);
-            if (pThis->chooseDialog == nullptr)
-            {
+            if (pThis->chooseDialog == nullptr) {
                 pThis->chooseDialog = new interactiveDialog(QString::fromStdString(driveInfo.strId), pThis->ui->centralWidget);
             }
             pThis->chooseDialog->show();
             pThis->chooseDialog->setFocus();
-            pThis->connect(pThis->chooseDialog,&interactiveDialog::FORCESIG,pThis,[=]()
-            {
+            pThis->connect(pThis->chooseDialog,&interactiveDialog::FORCESIG,pThis,[=]() {
                 pThis->chooseDialog->close();
                 peDeviceInfo->uFlag = G_MOUNT_UNMOUNT_FORCE;
                 pThis->doRealEject(peDeviceInfo, G_MOUNT_UNMOUNT_FORCE);
@@ -2857,7 +2861,8 @@ void MainWindow::driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo
     gboolean success =  FALSE;
     GError *err = nullptr;
     success = g_drive_stop_finish(G_DRIVE(object), res, &err);
-    qInfo()<<"driveStopCb:"<<success;
+    qInfo() << "driveStopCb:" << success;
+
     if (success || !err || (G_IO_ERROR_FAILED_HANDLED == err->code)) {
         FDDriveInfo driveInfo;
         driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
@@ -2867,8 +2872,7 @@ void MainWindow::driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo
                                             NORMALDEVICE,QString::fromStdString(driveInfo.strId));
         pThis->m_eject->show();
         FlashDiskData::getInstance()->removeDriveInfo(driveInfo);
-        if(FlashDiskData::getInstance()->getValidInfoCount() == 0)
-        {
+        if(FlashDiskData::getInstance()->getValidInfoCount() == 0) {
             pThis->m_systray->hide();
         }
     } else {
@@ -2877,14 +2881,12 @@ void MainWindow::driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo
             driveInfo.strId = peDeviceInfo->strDriveId.toStdString();
             driveInfo.strName = peDeviceInfo->strDriveName.toStdString();
             MainWindow* pThis = (MainWindow*)(peDeviceInfo->pVoid);
-            if (pThis->chooseDialog == nullptr)
-            {
+            if (pThis->chooseDialog == nullptr) {
                 pThis->chooseDialog = new interactiveDialog(QString::fromStdString(driveInfo.strId), pThis->ui->centralWidget);
             }
             pThis->chooseDialog->show();
             pThis->chooseDialog->setFocus();
-            pThis->connect(pThis->chooseDialog,&interactiveDialog::FORCESIG,pThis,[=]()
-            {
+            pThis->connect(pThis->chooseDialog,&interactiveDialog::FORCESIG,pThis,[=]() {
                 pThis->chooseDialog->close();
                 peDeviceInfo->uFlag = G_MOUNT_UNMOUNT_FORCE;
                 pThis->doRealEject(peDeviceInfo, G_MOUNT_UNMOUNT_FORCE);
@@ -2895,12 +2897,15 @@ void MainWindow::driveStopCb(GObject* object, GAsyncResult* res, EjectDeviceInfo
 
 void MainWindow::onRemountVolume(FDVolumeInfo volumeInfo)
 {
-    if (volumeInfo.strId.empty())
+    if (volumeInfo.strId.empty()) {
         return;
+    }
+
     if (!(g_str_has_prefix(volumeInfo.strId.c_str(),"/dev/bus") || g_str_has_prefix(volumeInfo.strId.c_str(),"/dev/sd"))) {
         return;
     }
-    qInfo()<<"volumeInfo.strId:"<<volumeInfo.strId.c_str();
+
+    qInfo() << "volumeInfo.strId:" << volumeInfo.strId.c_str();
     GList *lDrive = NULL;
     GList *lVolume = NULL;
     GList *current_drive_list = NULL;
@@ -2908,6 +2913,7 @@ void MainWindow::onRemountVolume(FDVolumeInfo volumeInfo)
     GDrive* devDrive = NULL;
     GVolume* devVolume = NULL;
     bool isDone = false;
+
     //about drive
     GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
     current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
@@ -2963,6 +2969,7 @@ void MainWindow::onRemountVolume(FDVolumeInfo volumeInfo)
         g_list_free(current_drive_list);
         current_drive_list = NULL;
     }
+
     //about volume not associated with a drive
     if (!isDone) {
         current_volume_list = g_volume_monitor_get_volumes(g_volume_monitor);
@@ -3015,16 +3022,20 @@ void MainWindow::onRemountVolume(FDVolumeInfo volumeInfo)
 
 void MainWindow::onCheckDriveValid(FDDriveInfo driveInfo)
 {
-    if (driveInfo.strId.empty())
+    if (driveInfo.strId.empty()) {
         return;
-    qInfo()<<"driveInfo.strId:"<<driveInfo.strId.c_str();
+    }
+
+    qInfo() << "driveInfo.strId:" << driveInfo.strId.c_str();
     if(!this->isSystemRootDev(driveInfo.strId.c_str()) &&
         (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
         if(g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sr") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/bus")
             || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/sd") || g_str_has_prefix(driveInfo.strId.c_str(),"/dev/mmcblk")) {
+
             GList *lDrive = NULL;
             GList *current_drive_list = NULL;
             GDrive* devDrive = NULL;
+
             //about drive
             GVolumeMonitor *g_volume_monitor = g_volume_monitor_get();
             current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
@@ -3056,8 +3067,10 @@ void MainWindow::onCheckDriveValid(FDDriveInfo driveInfo)
 
 bool MainWindow::getDataCDRomCapacity(QString strDevId, quint64 &totalCapacity)
 {
-    if (!strDevId.startsWith("/dev/sr"))
+    if (!strDevId.startsWith("/dev/sr")) {
         return false;
+    }
+
     quint64 uTotalCapacity = 0;
     DataCDROM *cdrom = new DataCDROM(strDevId);
     if (cdrom) {
@@ -3113,9 +3126,9 @@ void MainWindow::getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo)
                     mountInfo.strIconPath = *icon_names;
                 }
             } else {
-                //if it's a bootable-media,maybe we can get the icon from the mount directory.
+                // if it's a bootable-media,maybe we can get the icon from the mount directory.
                 char *bootableIcon = g_icon_to_string(g_icon);
-                if(bootableIcon){
+                if(bootableIcon) {
                     mountInfo.strIconPath = bootableIcon;
                     g_free(bootableIcon);
                 }

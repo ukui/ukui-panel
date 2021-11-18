@@ -42,16 +42,9 @@ using namespace std;
 #include "fdclickwidget.h"
 #include "repair-dialog-box.h"
 
-
 namespace Ui {
 class MainWindow;
 }
-
-//struct UMount
-//{
-//    QString id;
-//    int count;
-//};
 
 class MainWindow : public QMainWindow
 {
@@ -60,17 +53,79 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+public:
+    QSystemTrayIcon *m_systray;
+    ejectInterface *m_eject = nullptr;
+    interactiveDialog *chooseDialog = nullptr;
+    bool ifSucess;
+    int flagType;
+    int driveMountNum;
+    vector<string> m_vtDeviveId;
+    EjectDeviceInfo m_curEjectDeviceInfo;
+
     void MainWindowShow(bool isUpdate = false);
+    void initTransparentState();
+    void initThemeMode();
+    void getTransparentData();
+    int getPanelPosition(QString str);
+    int getPanelHeight(QString str);
 
 protected:
     void hideEvent(QHideEvent event);
+    void resizeEvent(QResizeEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event);
+    void paintEvent(QPaintEvent *event);
 
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *vboxlayout;
-    //QHBoxLayout *hboxlayout;
     QLabel *no_device_label;
     QPushButton *eject_image_button;
+
+    char *UDiskPathDis1;
+    char *UDiskPathDis2;
+    char *UDiskPathDis3;
+    char *UDiskPathDis4;
+    quint64 totalDis1;
+    quint64 totalDis2;
+    quint64 totalDis3;
+    quint64 totalDis4;
+    QClickWidget *open_widget;
+    FDClickWidget *m_fdClickWidget;
+    int hign;
+    int VolumeNum;
+    QTimer *interfaceHideTime;
+    int num = 0;
+    QScreen *screen;
+    int triggerType = 0; //detective the type of MainWinow(insert USB disk or click systemtray icon)
+
+    double m_transparency;
+    QString currentThemeMode;
+
+    QGSettings *m_transparency_gsettings = nullptr;
+
+    QWidget *line = nullptr;
+    bool ifautoload;
+    bool insertorclick;
+
+    QGSettings * ifsettings = nullptr;
+    int telephoneNum;
+    QString tmpPath;
+    bool findPointMount;
+    int driveVolumeNum;
+    FlashDiskData* m_dataFlashDisk = nullptr;
+    bool m_bIsMouseInTraIcon = false;
+    bool m_bIsMouseInCentral = false;
+    qint64 m_nAppStartTimestamp = 0; // 进程启动时的时间戳
+    QString m_strSysRootDev;
+
+    bool                                mIsrunning = false;
+    QMap<QString, RepairDialogBox*>     mRepairDialog;
+
+    void initFlashDisk();
+    void initSlots();
+
     void newarea(int No,
                  GDrive *Drive,
                  GVolume *Volume,
@@ -131,70 +186,6 @@ private:
     void getVolumeIconsInfo(GVolume* volume, FDVolumeInfo& volumeInfo);
     void getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo);
 
-private:
-    QIcon iconSystray;
-//    QString UDiskPathDis1;
-//    QString UDiskPathDis2;
-//    QString UDiskPathDis3;
-//    QString UDiskPathDis4;
-    char *UDiskPathDis1;
-    char *UDiskPathDis2;
-    char *UDiskPathDis3;
-    char *UDiskPathDis4;
-    quint64 totalDis1;
-    quint64 totalDis2;
-    quint64 totalDis3;
-    quint64 totalDis4;
-//    QClickWidget *open_widget;
-    QClickWidget *open_widget;
-    FDClickWidget *m_fdClickWidget;
-    int hign;
-    int VolumeNum;
-    QTimer *interfaceHideTime;
-    int num = 0;
-    QScreen *screen;
-    int triggerType = 0; //detective the type of MainWinow(insert USB disk or click systemtray icon)
-
-    double m_transparency;
-    QString currentThemeMode;
-
-    QGSettings *m_transparency_gsettings = nullptr;
-    QGSettings *qtSettings = nullptr;
-
-    QWidget *line = nullptr;
-    bool ifautoload;
-    bool insertorclick;
-
-    QGSettings * ifsettings = nullptr;
-    int telephoneNum;
-    QString tmpPath;
-    bool findPointMount;
-    int driveVolumeNum;
-    FlashDiskData* m_dataFlashDisk = nullptr;
-    bool m_bIsMouseInTraIcon = false;
-    bool m_bIsMouseInCentral = false;
-    qint64 m_nAppStartTimestamp = 0; // 进程启动时的时间戳
-    QString m_strSysRootDev;
-    //authority
-    //QDBusInterface *systemIface;
-public:
-    QSystemTrayIcon *m_systray;
-    ejectInterface *m_eject = nullptr;
-    interactiveDialog *chooseDialog = nullptr;
-
-    void initTransparentState();
-    void initThemeMode();
-//    double getTransparentData();
-    void getTransparentData();
-    int getPanelPosition(QString str);
-    int getPanelHeight(QString str);
-    bool ifSucess;
-    int flagType;
-//    static bool isShow;
-    int driveMountNum;
-    vector<string> m_vtDeviveId;
-    EjectDeviceInfo m_curEjectDeviceInfo;
-
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
     void onConvertShowWindow(QString strDriveId, QString strMountUri);
@@ -227,15 +218,6 @@ Q_SIGNALS:
     void remountVolume(FDVolumeInfo volumeInfo);
     void checkDriveValid(FDDriveInfo driveInfo);
     void notifyDeviceRemoved(QString strDevId);
-
-protected:
-    void resizeEvent(QResizeEvent *event);
-    bool eventFilter(QObject *obj, QEvent *event);
-    void paintEvent(QPaintEvent *event);
-
-private:
-    bool                                mIsrunning = false;
-    QMap<QString, RepairDialogBox*>     mRepairDialog;
 };
 
 #endif

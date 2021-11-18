@@ -89,7 +89,7 @@ void FDFrame::paintEvent(QPaintEvent * event)
 
     path.addRoundedRect(this->rect(), 6, 6);
     path.setFillRule(Qt::WindingFill);
-    painter.setBrush(this->palette().base());
+    painter.setBrush(this->palette().color(QPalette::Base));
     painter.setPen(Qt::transparent);
 
     painter.drawPath(path);
