@@ -12,6 +12,7 @@ ConvertDesktopToWinId::ConvertDesktopToWinId()
 
 QString ConvertDesktopToWinId::tranIdToDesktop(WId id)
 {
+	
     KWindowInfo info(id, 0, NET::WM2AllProperties);
     QString desktopName = confirmDesktopFile(info);
     qDebug() << "desktopName is :" << desktopName;
@@ -35,6 +36,13 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
     if (m_desktopfilePath.isEmpty()) {
         m_classClass = info.windowClassClass().toLower();
         m_className = info.windowClassName();
+
+        //匹配安卓兼容
+        if(m_className == "kylin-kmre-window"){
+            searchAndroidApp(info);
+            return m_desktopfilePath;
+        }
+
 
         QFile file(QString("/proc/%1/status").arg(info.pid()));
         if (file.open(QIODevice::ReadOnly)) {
