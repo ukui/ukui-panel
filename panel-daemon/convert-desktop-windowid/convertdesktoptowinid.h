@@ -15,6 +15,10 @@
 #define PEONY_MAIN              "/usr/share/applications/peony.desktop"
 
 #define GET_DESKTOP_EXEC_NAME_MAIN          "cat %s | awk '{if($1~\"Exec=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
+#define ANDROID_FILE_PATH       "/.local/share/applications/"
+#define ANDROID_APP_CURRENT     "/.local/share/applications/."
+#define ANDROID_APP_UPER        "/.local/share/applications/.."
+
 
 /**
  * @brief The ConvertDesktopToWinId class
@@ -48,6 +52,7 @@ public:
 private:
     QString confirmDesktopFile(KWindowInfo info);
     void searchFromEnviron(KWindowInfo info);
+    void searchAndroidApp(KWindowInfo info);
     void compareClassName();
     void compareCmdExec();
     void compareLastStrategy();
