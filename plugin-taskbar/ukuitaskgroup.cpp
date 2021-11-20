@@ -906,7 +906,7 @@ bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
             }
         }
     }
-
+    updateIcon();
     if (needsRefreshVisibility)
         refreshVisibility();
 
