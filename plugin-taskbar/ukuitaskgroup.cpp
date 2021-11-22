@@ -891,6 +891,7 @@ bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
             updateIcon();
             for(UKUITaskButtonHash::const_iterator i=mVisibleHash.begin();i!= mVisibleHash.end();i++)
                 i.value()->updateIcon();
+
         }
 
         if (prop.testFlag(NET::WMState))
@@ -906,7 +907,6 @@ bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
             }
         }
     }
-    updateIcon();
     if (needsRefreshVisibility)
         refreshVisibility();
 

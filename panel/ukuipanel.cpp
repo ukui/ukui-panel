@@ -579,16 +579,16 @@ void UKUIPanel::setPanelGeometry(bool animate)
         if (mPosition == IUKUIPanel::PositionTop)
         {
             if (mHidden)
-                rect.moveBottom(currentScreen.top() + PANEL_HIDE_SIZE - 1);
+                rect.moveBottom(currentScreen.top() + PANEL_HIDE_SIZE);
             else
                 rect.moveTop(currentScreen.top());
         }
         else
         {
             if (mHidden)
-                rect.moveTop(currentScreen.bottom() - PANEL_HIDE_SIZE + 1);
+                rect.moveTop(currentScreen.bottom() - PANEL_HIDE_SIZE);
             else
-                rect.moveBottom(currentScreen.bottom() +1 );
+                rect.moveBottom(currentScreen.bottom());
         }
         qDebug()<<"ukui-panel Rect is :"<<rect;
     }
@@ -628,14 +628,14 @@ void UKUIPanel::setPanelGeometry(bool animate)
         if (mPosition == IUKUIPanel::PositionLeft)
         {
             if (mHidden)
-                rect.moveRight(currentScreen.left() + PANEL_HIDE_SIZE - 1);
+                rect.moveRight(currentScreen.left() + PANEL_HIDE_SIZE);
             else
                 rect.moveLeft(currentScreen.left());
         }
         else
         {
             if (mHidden)
-                rect.moveLeft(currentScreen.right() - PANEL_HIDE_SIZE + 1);
+                rect.moveLeft(currentScreen.right() - PANEL_HIDE_SIZE);
             else
                 rect.moveRight(currentScreen.right());
         }
