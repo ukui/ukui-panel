@@ -88,7 +88,7 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
     }
     m_settings.endGroup();
 
-    if(QString::compare(version,"Ubuntu") && hibernate_action != "hide"){
+    if(QString::compare(getCanHibernateResult(),"yes") == 0){
         pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
                                    tr("Hibernate Mode"),
                                    this, SLOT(SessionHibernate())
