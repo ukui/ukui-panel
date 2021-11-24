@@ -85,11 +85,11 @@ void UKUIStartBarWidget::realign()
     if (mPlugin->panel()->isHorizontal()){
         mLayout->setColumnCount(mLayout->count());
         mLayout->setRowCount(0);
-        this->setFixedSize(mPlugin->panel()->panelSize()*2,mPlugin->panel()->panelSize());
+        this->setFixedSize(mPlugin->panel()->panelSize()*2.3,mPlugin->panel()->panelSize());
     }else{
         mLayout->setRowCount(mLayout->count());
         mLayout->setColumnCount(0);
-        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*2);
+        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*2.3);
     }
     mStartMenuButton->realign();
     mTaskViewButton->realign();
