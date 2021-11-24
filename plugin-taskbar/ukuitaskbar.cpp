@@ -435,6 +435,7 @@ void UKUITaskBar::addWindow(WId window)
 
     group->addWindow(window);
     group->groupName();
+    group->updateIcon();
 }
 
 auto UKUITaskBar::removeWindow(windowMap_t::iterator pos) -> windowMap_t::iterator
