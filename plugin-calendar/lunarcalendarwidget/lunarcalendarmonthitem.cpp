@@ -200,7 +200,7 @@ void LunarCalendarMonthItem::drawMonth(QPainter *painter)
     painter->setFont(font);
 
     QRect dayRect = QRect(0, 0, width, height / 1.7);
-    QString arg = QString::number(date.month()) +"月";
+    QString arg = QString::number(date.month()) /*+ "月"*/;
     painter->drawText(dayRect, Qt::AlignHCenter | Qt::AlignBottom, arg);
     painter->restore();
 }
