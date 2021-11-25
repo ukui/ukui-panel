@@ -224,13 +224,7 @@ void StatusNotifierButton::refetchIcon(Status status)
                             qToUnaligned(qToBigEndian<quint32>(qFromUnaligned<quint32>(src)), dest);
 
                         //图标反白
-                        QImage currentImage = image;
-                        QStringList strList;
-                        strList<<"ukui-search"<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"
-                               <<"ukui-flash-disk"<<"ukui-power-manager-tray"<<"ukui-bluetooth"<<"indicator-china-weather";
-                        if(strList.contains(mId)){
-                            currentImage= getBlackThemeIcon(image);
-                        }
+                        QImage currentImage= getBlackThemeIcon(image);
                         nextIcon.addPixmap(QPixmap::fromImage(currentImage));
                     }
                 }
@@ -460,12 +454,12 @@ QString StatusNotifierButton::hideAbleStatusNotifierButton()
 
 QImage StatusNotifierButton::getBlackThemeIcon(QImage image)
 {
-    QColor standard (30,30,30);
+    QColor standard (31,32,34);
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
             auto color = image.pixelColor(x, y);
             if (color.alpha() > 0) {
-                if(qAbs(color.red()-standard.red())<=30 && qAbs(color.green()-standard.green())<=30 && qAbs(color.blue()-standard.blue())<=30){
+                if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20){
                     color.setRed(255);
                     color.setGreen(255);
                     color.setBlue(255);
