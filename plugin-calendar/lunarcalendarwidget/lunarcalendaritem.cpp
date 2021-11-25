@@ -239,28 +239,38 @@ void LunarCalendarItem::drawDay(QPainter *painter)
     font.setBold(true);
     painter->setFont(font);
 
+    QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
     //代码复用率待优化
     if (showLunar) {
         QRect dayRect = QRect(0, 0, width, height / 1.7);
         painter->drawText(dayRect, Qt::AlignHCenter | Qt::AlignBottom, QString::number(date.day()));
         if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "2") {
             painter->setPen(Qt::NoPen);
-            painter->setBrush(QColor(244,78,80));
+            if(locale == QLocale::Chinese){
+                painter->setBrush(QColor(244,78,80));
+            }
             QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
             painter->drawRoundedRect(dayRect1,1,1);
             font.setPixelSize(side / 5);
             painter->setFont(font);
             painter->setPen(Qt::white);
-            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"休");
+            if(locale == QLocale::Chinese){
+                painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"休");
+            }
+
         } else if (handleJsMap(date.toString("yyyy"),date.toString("MMdd")) == "1") {
             painter->setPen(Qt::NoPen);
-            painter->setBrush(QColor(251,170,42));
+            if(locale == QLocale::Chinese){
+                painter->setBrush(QColor(251,170,42));
+            }
             QRect dayRect1 = QRect(0, 0, width/3.5,height/3.5);
             painter->drawRoundedRect(dayRect1,1,1);
             font.setPixelSize(side / 5);
             painter->setFont(font);
             painter->setPen(Qt::white);
-            painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"班");
+            if(locale == QLocale::Chinese){
+                painter->drawText(dayRect1, Qt::AlignHCenter | Qt::AlignBottom,"班");
+            }
         }
     }
     else {
@@ -299,7 +309,8 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
     int month;
     int day;
     QString strHoliday;
-
+    QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
+    qDebug()<<"LunarCalendarItem语言模式:"<<locale;
     painter->save();
 
     if (!showLunar) {
@@ -325,42 +336,45 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
     }
     else {
 
-    QStringList listDayName;
-    listDayName << "*" << "初一" << "初二" << "初三" << "初四" << "初五" << "初六" << "初七" << "初八" << "初九" << "初十"
-                << "十一" << "十二" << "十三" << "十四" << "十五" << "十六" << "十七" << "十八" << "十九" << "二十"
-                << "廿一" << "廿二" << "廿三" << "廿四" << "廿五" << "廿六" << "廿七" << "廿八" << "廿九" << "三十";
+        if(locale == QLocale::Chinese){
+            QStringList listDayName;
+            listDayName << "*" << "初一" << "初二" << "初三" << "初四" << "初五" << "初六" << "初七" << "初八" << "初九" << "初十"
+                        << "十一" << "十二" << "十三" << "十四" << "十五" << "十六" << "十七" << "十八" << "十九" << "二十"
+                        << "廿一" << "廿二" << "廿三" << "廿四" << "廿五" << "廿六" << "廿七" << "廿八" << "廿九" << "三十";
 
-    //判断当前农历文字是否节日,是节日且是当月则用农历节日颜色显示
-    bool exist = (!listDayName.contains(lunar) && dayType != DayType_MonthPre && dayType != DayType_MonthNext);
+            //判断当前农历文字是否节日,是节日且是当月则用农历节日颜色显示
+            bool exist = (!listDayName.contains(lunar) && dayType != DayType_MonthPre && dayType != DayType_MonthNext);
 
-    //根据当前类型选择对应的颜色
-    QColor color = currentLunarColor;
-    if (dayType == DayType_MonthPre || dayType == DayType_MonthNext) {
-        color = otherLunarColor;
-    }
+            //根据当前类型选择对应的颜色
+            QColor color = currentLunarColor;
+            if (dayType == DayType_MonthPre || dayType == DayType_MonthNext) {
+                color = otherLunarColor;
+            }
 
-//    if (select) {
-//        color = selectTextColor;
-//    } /*else if (hover) {
-//        color = hoverTextColor;
-//    }*/ else if (exist) {
-//        color = lunarColor;
-//    }
+        //    if (select) {
+        //        color = selectTextColor;
+        //    } /*else if (hover) {
+        //        color = hoverTextColor;
+        //    }*/ else if (exist) {
+        //        color = lunarColor;
+        //    }
 
-    if (exist) {
-           color = lunarColor;
-    }
+            if (exist) {
+                   color = lunarColor;
+            }
 
-    painter->setPen(color);
+            painter->setPen(color);
 
-    QFont font;
-    font.setPixelSize(side * 0.27);
-    painter->setFont(font);
+            QFont font;
+            font.setPixelSize(side * 0.27);
+            painter->setFont(font);
 
-    QRect lunarRect(0, height / 2, width, height / 2);
-    painter->drawText(lunarRect, Qt::AlignCenter, lunar);
-    }
-    painter->restore();
+            QRect lunarRect(0, height / 2, width, height / 2);
+            painter->drawText(lunarRect, Qt::AlignCenter, lunar);
+            }
+            painter->restore();
+        }
+
 
 }
 

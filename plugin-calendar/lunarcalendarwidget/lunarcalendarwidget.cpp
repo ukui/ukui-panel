@@ -32,10 +32,22 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
         connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
             if(key == LUNAR_KEY){
                 if(calendar_gsettings->get("calendar").toString() == "lunar") {
-                    //农历
-                    lunarstate = true;
-                    labWidget->setVisible(true);
-                    yijiWidget->setVisible(true);
+
+                    QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
+
+                    if(locale == QLocale::Chinese){
+                        //农历模式且是中文模式
+                        qDebug()<<"语言模式1:"<<locale;
+                        lunarstate = true;
+                        labWidget->setVisible(true);
+                        yijiWidget->setVisible(true);
+                    }else{
+                        qDebug()<<"农历模式但非中文模式则不能显示农历相关";
+                        lunarstate = false;
+                        labWidget->setVisible(false);
+                        yijiWidget->setVisible(false);
+                    }
+
                 } else {
                     //公历
                     lunarstate = false;
@@ -113,16 +125,29 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
      if(QGSettings::isSchemaInstalled(calendar_id)){
          //初始化农历/公历显示方式
          if(calendar_gsettings->get("calendar").toString() == "lunar") {
-             //农历
-             lunarstate = true;
-             labWidget->setVisible(true);
-             yijiWidget->setVisible(true);
+
+             QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
+             qDebug()<<"语言模式2:"<<locale;
+             if(locale == QLocale::Chinese){
+                 //农历模式且是中文模式
+                 qDebug()<<"农历模式且是中文模式";
+                 lunarstate = true;
+                 labWidget->setVisible(true);
+                 yijiWidget->setVisible(true);
+             }else{
+                 qDebug()<<"农历模式但非中文模式则不能显示农历相关";
+                 lunarstate = false;
+                 labWidget->setVisible(false);
+                 yijiWidget->setVisible(false);
+             }
+
          } else {
              //公历
              lunarstate = false;
              labWidget->setVisible(false);
              yijiWidget->setVisible(false);
          }
+
      }
 
 
@@ -1305,13 +1330,17 @@ void LunarCalendarWidget::setWeekBgColor(const QColor &weekBgColor)
 
 void LunarCalendarWidget::setShowLunar(bool showLunar)
 {
-    if (locale == "zh_CN"){
-        showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
-    }else if (locale == "en_US"){
-        showLunar = false;
+    if(calendar_gsettings!=nullptr){
+        if (locale == "zh_CN"){
+            qDebug()<<"中文模式";
+            showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
+        }else if (locale == "en_US"){
+            qDebug()<<"英文模式";
+            showLunar = false;
+        }
     }
-        this->showLunar = showLunar;
-        initStyle();
+    this->showLunar = showLunar;
+    initStyle();
 }
 
 void LunarCalendarWidget::setBgImage(const QString &bgImage)

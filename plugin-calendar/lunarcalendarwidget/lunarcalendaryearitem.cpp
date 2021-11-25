@@ -199,7 +199,7 @@ void LunarCalendarYearItem::drawYear(QPainter *painter)
     painter->setFont(font);
 
     QRect dayRect = QRect(0, 0, width, height / 1.7);
-    QString arg = QString::number(date.year()) + "年";
+    QString arg = QString::number(date.year()) /*+ "年"*/;
     painter->drawText(dayRect, Qt::AlignHCenter | Qt::AlignBottom, arg);
     painter->restore();
 }

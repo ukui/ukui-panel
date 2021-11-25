@@ -43,27 +43,27 @@
         <translation>注销</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="93"/>
+        <location filename="../startmenu_button.cpp" line="73"/>
         <source>Hibernate Mode</source>
         <translation>休眠</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="98"/>
+        <location filename="../startmenu_button.cpp" line="78"/>
         <source>Sleep Mode</source>
         <translation>睡眠</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="102"/>
+        <location filename="../startmenu_button.cpp" line="82"/>
         <source>Restart</source>
         <translation>重启</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="108"/>
+        <location filename="../startmenu_button.cpp" line="88"/>
         <source>TimeShutdown</source>
         <translation>定时关机</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="112"/>
+        <location filename="../startmenu_button.cpp" line="92"/>
         <source>Power Off</source>
         <translation>关机</translation>
     </message>
@@ -71,7 +71,7 @@
 <context>
     <name>TaskViewButton</name>
     <message>
-        <location filename="../taskview_button.cpp" line="10"/>
+        <location filename="../taskview_button.cpp" line="11"/>
         <source>Show Taskview</source>
         <translation>显示任务视图</translation>
     </message>
