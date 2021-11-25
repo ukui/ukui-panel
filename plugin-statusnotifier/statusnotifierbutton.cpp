@@ -223,7 +223,15 @@ void StatusNotifierButton::refetchIcon(Status status)
                         for (const uchar *src = image.constBits(); src < end; src += 4, dest += 4)
                             qToUnaligned(qToBigEndian<quint32>(qFromUnaligned<quint32>(src)), dest);
 
-                        nextIcon.addPixmap(QPixmap::fromImage(image));
+                        //图标反白
+                        QImage currentImage = image;
+                        QStringList strList;
+                        strList<<"ukui-search"<<"ukui-volume-control-applet-qt"<<"kylin-nm"<<"ukui-sidebar"
+                               <<"ukui-flash-disk"<<"ukui-power-manager-tray"<<"ukui-bluetooth"<<"indicator-china-weather";
+                        if(strList.contains(mId)){
+                            currentImage= getBlackThemeIcon(image);
+                        }
+                        nextIcon.addPixmap(QPixmap::fromImage(currentImage));
                     }
                 }
 
@@ -239,7 +247,6 @@ void StatusNotifierButton::refetchIcon(Status status)
                         mIcon = nextIcon;
                         break;
                 }
-
                 resetIcon();
             });
         }
@@ -449,4 +456,26 @@ QString StatusNotifierButton::hideAbleStatusNotifierButton()
 
     });
     return mId;
+}
+
+QImage StatusNotifierButton::getBlackThemeIcon(QImage image)
+{
+    QColor standard (30,30,30);
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            auto color = image.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if(qAbs(color.red()-standard.red())<=30 && qAbs(color.green()-standard.green())<=30 && qAbs(color.blue()-standard.blue())<=30){
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+                    image.setPixelColor(x, y, color);
+                }
+                else{
+                    image.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return image;
 }

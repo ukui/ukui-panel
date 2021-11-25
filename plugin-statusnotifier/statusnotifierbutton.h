@@ -68,7 +68,7 @@ public:
     };
     QString hideAbleStatusNotifierButton();
     static QString mimeDataFormat() { return QLatin1String("x-ukui/statusnotifier-button"); }
-
+    QImage getBlackThemeIcon(QImage image);
 
 public slots:
     void newIcon();
