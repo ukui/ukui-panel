@@ -1,5 +1,6 @@
 #include "taskview_button.h"
 
+
 TaskViewButton::TaskViewButton(IUKUIPanelPlugin *plugin,QWidget *parent):
     mParent(parent),
     mPlugin(plugin)
@@ -17,10 +18,11 @@ TaskViewButton::~TaskViewButton(){
 
 void TaskViewButton::realign()
 {
-    if (mPlugin->panel()->isHorizontal())
+    if (mPlugin->panel()->isHorizontal()) {
         this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
-    else
+    } else {
         this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+    }
     this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
 }
 
