@@ -27,6 +27,8 @@
 #include "../panel/customstyle.h"
 #define THEME_QT_SCHEMA                     "org.ukui.style"
 #define THEME_Style_Name                    "styleName"
+#define UKUI_PANEL_SETTINGS                 "org.ukui.panel.settings"
+#define SHOW_TASKVIEW                       "showtaskview"
 
 UKUIStartbarPlugin::UKUIStartbarPlugin(const IUKUIPanelPluginStartupInfo &startupInfo):
     QObject(),
@@ -34,6 +36,7 @@ UKUIStartbarPlugin::UKUIStartbarPlugin(const IUKUIPanelPluginStartupInfo &startu
     mWidget(new UKUIStartBarWidget(this))
 {
 
+    mWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 }
 
@@ -60,8 +63,15 @@ UKUIStartBarWidget::UKUIStartBarWidget( IUKUIPanelPlugin *plugin, QWidget* paren
     mTaskViewButton=new TaskViewButton(plugin,this);
     mLayout=new UKUi::GridLayout(this);
     mLayout->addWidget(mStartMenuButton);
-    mLayout->addWidget(mTaskViewButton);
+    const QByteArray id(UKUI_PANEL_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id))
+        mGsettings = new QGSettings(id);
+    connect(mGsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==SHOW_TASKVIEW)
+            realign();
+    });
 
+    realign();
 }
 
 void UKUIStartBarWidget::translator(){
@@ -82,14 +92,21 @@ UKUIStartBarWidget::~UKUIStartBarWidget()
 /*plugin-startmenu refresh function*/
 void UKUIStartBarWidget::realign()
 {
+    if(mGsettings->get(SHOW_TASKVIEW).toBool()){
+        if (mLayout->count() == 1) {
+            mLayout->addWidget(mTaskViewButton);
+        }
+    } else {
+        mLayout->removeWidget(mTaskViewButton);
+    }
     if (mPlugin->panel()->isHorizontal()){
         mLayout->setColumnCount(mLayout->count());
         mLayout->setRowCount(0);
-        this->setFixedSize(mPlugin->panel()->panelSize()*2.3,mPlugin->panel()->panelSize());
+//        this->setFixedSize(mPlugin->panel()->panelSize()*2.3,mPlugin->panel()->panelSize());
     }else{
         mLayout->setRowCount(mLayout->count());
         mLayout->setColumnCount(0);
-        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*2.3);
+//        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*2.3);
     }
     mStartMenuButton->realign();
     mTaskViewButton->realign();

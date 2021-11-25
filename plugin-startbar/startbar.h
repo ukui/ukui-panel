@@ -92,6 +92,7 @@ private:
     TaskViewButton *mTaskViewButton;
     UKUi::GridLayout *mLayout;
     QTranslator *m_translator;
+    QGSettings *mGsettings;
 private:
     void translator();
 
