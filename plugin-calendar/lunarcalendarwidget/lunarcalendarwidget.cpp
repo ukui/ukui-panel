@@ -359,10 +359,13 @@ void LunarCalendarWidget::initWidget()
     btnNextYear->setProperty("useIconHighlightEffect", 0x2);
 
 
+    m_font.setPointSize(12);
+
     //转到年显示
     btnYear->setObjectName("btnYear");
     btnYear->setFocusPolicy(Qt::NoFocus);
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    btnYear->setFont(m_font);
     btnYear->setText(tr("Year"));
     btnYear->setToolTip(tr("Year"));
     btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
@@ -371,6 +374,7 @@ void LunarCalendarWidget::initWidget()
     //转到月显示
     btnMonth->setObjectName("btnMonth");
     btnMonth->setFocusPolicy(Qt::NoFocus);
+    btnMonth->setFont(m_font);
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnMonth->setText(tr("Month"));
     btnMonth->setToolTip(tr("Month"));
@@ -380,6 +384,7 @@ void LunarCalendarWidget::initWidget()
     //转到今天
     btnToday->setObjectName("btnToday");
     btnToday->setFocusPolicy(Qt::NoFocus);
+    btnToday->setFont(m_font);
     //btnToday->setFixedWidth(40);
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -400,6 +405,7 @@ void LunarCalendarWidget::initWidget()
 
     cboxYearandMonthLabel = new QLabel();
     cboxYearandMonthLabel->setFixedWidth(100);
+    cboxYearandMonthLabel->setFont(m_font);
 
     //中间用个空widget隔开
 //    QWidget *widgetBlank1 = new QWidget;
@@ -445,6 +451,7 @@ void LunarCalendarWidget::initWidget()
 
     for (int i = 0; i < 7; i++) {
         QLabel *lab = new QLabel;
+        lab->setFont(m_font);
         lab->setAlignment(Qt::AlignCenter);
         layoutWeek->addWidget(lab);
         labWeeks.append(lab);
@@ -1234,7 +1241,7 @@ void LunarCalendarWidget::showPreviousMonth(bool date_clicked)
     }
 
     dateChanged(year, month, day);
-    dayChanged(this->date,clickDate);
+//    dayChanged(this->date,clickDate);
 }
 
 //显示下月日期
@@ -1255,7 +1262,7 @@ void LunarCalendarWidget::showNextMonth(bool date_clicked)
     }
 
     dateChanged(year, month, day);
-    dayChanged(this->date,clickDate);
+    //dayChanged(this->date,clickDate);
 }
 
 //转到今天

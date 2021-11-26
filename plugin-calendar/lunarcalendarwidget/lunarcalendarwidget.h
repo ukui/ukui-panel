@@ -163,6 +163,7 @@ private:
     QList<LunarCalendarItem *> dayItems;            //日期元素
     QList<LunarCalendarYearItem *> yearItems;       //年份元素
     QList<LunarCalendarMonthItem *> monthItems;     //月份元素
+    QFont m_font;
 
     CalendarStyle calendarStyle;        //整体样式
     bool FirstdayisSun;                 //首日期为周日
