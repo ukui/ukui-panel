@@ -176,6 +176,7 @@ private slots:
     void removeButton(QuickLaunchAction* action);
     void removeButton(QString exec);
     void buttonDeleted();
+    void removeFromTaskbar(QString arg);
     void switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button);
     QString readFile(const QString &filename);
 
