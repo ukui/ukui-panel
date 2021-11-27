@@ -288,7 +288,6 @@ void StatusNotifierButton::contextMenuEvent(QContextMenuEvent* event)
 
 void StatusNotifierButton::mouseMoveEvent(QMouseEvent *e)
 {
-
     if (e->button() == Qt::RightButton)
         return;
     if (!(e->buttons() & Qt::LeftButton))
@@ -373,6 +372,7 @@ void StatusNotifierButton::resetIcon()
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
 {
+    update();
 //    if (e->mimeData()->hasFormat(MIMETYPE))
 //        e->acceptProposedAction();
 //    else
@@ -389,6 +389,12 @@ void StatusNotifierButton::dragEnterEvent(QDragEnterEvent *e)
         emit sendTitle(mimeData->button()->hideAbleStatusNotifierButton());
     }
     QToolButton::dragEnterEvent(e);
+}
+
+void StatusNotifierButton::dragLeaveEvent(QDragLeaveEvent *e)
+{
+    update();  //拖拽离开wigget时，需要updata
+    e->accept();
 }
 
 QMimeData * StatusNotifierButton::mimeData()
