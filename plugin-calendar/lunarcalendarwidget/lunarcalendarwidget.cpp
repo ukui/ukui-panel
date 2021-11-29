@@ -32,10 +32,22 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
         connect(calendar_gsettings, &QGSettings::changed, this, [=] (const QString &key){
             if(key == LUNAR_KEY){
                 if(calendar_gsettings->get("calendar").toString() == "lunar") {
-                    //农历
-                    lunarstate = true;
-                    labWidget->setVisible(true);
-                    yijiWidget->setVisible(true);
+
+                    QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
+
+                    if(locale == QLocale::Chinese){
+                        //农历模式且是中文模式
+                        qDebug()<<"语言模式1:"<<locale;
+                        lunarstate = true;
+                        labWidget->setVisible(true);
+                        yijiWidget->setVisible(true);
+                    }else{
+                        qDebug()<<"农历模式但非中文模式则不能显示农历相关";
+                        lunarstate = false;
+                        labWidget->setVisible(false);
+                        yijiWidget->setVisible(false);
+                    }
+
                 } else {
                     //公历
                     lunarstate = false;
@@ -113,16 +125,29 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
      if(QGSettings::isSchemaInstalled(calendar_id)){
          //初始化农历/公历显示方式
          if(calendar_gsettings->get("calendar").toString() == "lunar") {
-             //农历
-             lunarstate = true;
-             labWidget->setVisible(true);
-             yijiWidget->setVisible(true);
+
+             QLocale locale = (QLocale::system().name() == "zh_CN" ? (QLocale::Chinese) : (QLocale::English));
+             qDebug()<<"语言模式2:"<<locale;
+             if(locale == QLocale::Chinese){
+                 //农历模式且是中文模式
+                 qDebug()<<"农历模式且是中文模式";
+                 lunarstate = true;
+                 labWidget->setVisible(true);
+                 yijiWidget->setVisible(true);
+             }else{
+                 qDebug()<<"农历模式但非中文模式则不能显示农历相关";
+                 lunarstate = false;
+                 labWidget->setVisible(false);
+                 yijiWidget->setVisible(false);
+             }
+
          } else {
              //公历
              lunarstate = false;
              labWidget->setVisible(false);
              yijiWidget->setVisible(false);
          }
+
      }
 
 
@@ -334,10 +359,13 @@ void LunarCalendarWidget::initWidget()
     btnNextYear->setProperty("useIconHighlightEffect", 0x2);
 
 
+    m_font.setPointSize(12);
+
     //转到年显示
     btnYear->setObjectName("btnYear");
     btnYear->setFocusPolicy(Qt::NoFocus);
     btnYear->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    btnYear->setFont(m_font);
     btnYear->setText(tr("Year"));
     btnYear->setToolTip(tr("Year"));
     btnYear->setStyle(new CustomStyle_pushbutton("ukui-default"));
@@ -346,6 +374,7 @@ void LunarCalendarWidget::initWidget()
     //转到月显示
     btnMonth->setObjectName("btnMonth");
     btnMonth->setFocusPolicy(Qt::NoFocus);
+    btnMonth->setFont(m_font);
     btnMonth->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     btnMonth->setText(tr("Month"));
     btnMonth->setToolTip(tr("Month"));
@@ -355,6 +384,7 @@ void LunarCalendarWidget::initWidget()
     //转到今天
     btnToday->setObjectName("btnToday");
     btnToday->setFocusPolicy(Qt::NoFocus);
+    btnToday->setFont(m_font);
     //btnToday->setFixedWidth(40);
     btnToday->setStyle(new CustomStyle_pushbutton("ukui-default"));
     btnToday->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -375,6 +405,7 @@ void LunarCalendarWidget::initWidget()
 
     cboxYearandMonthLabel = new QLabel();
     cboxYearandMonthLabel->setFixedWidth(100);
+    cboxYearandMonthLabel->setFont(m_font);
 
     //中间用个空widget隔开
 //    QWidget *widgetBlank1 = new QWidget;
@@ -420,6 +451,7 @@ void LunarCalendarWidget::initWidget()
 
     for (int i = 0; i < 7; i++) {
         QLabel *lab = new QLabel;
+        lab->setFont(m_font);
         lab->setAlignment(Qt::AlignCenter);
         layoutWeek->addWidget(lab);
         labWeeks.append(lab);
@@ -1209,7 +1241,7 @@ void LunarCalendarWidget::showPreviousMonth(bool date_clicked)
     }
 
     dateChanged(year, month, day);
-    dayChanged(this->date,clickDate);
+//    dayChanged(this->date,clickDate);
 }
 
 //显示下月日期
@@ -1230,7 +1262,7 @@ void LunarCalendarWidget::showNextMonth(bool date_clicked)
     }
 
     dateChanged(year, month, day);
-    dayChanged(this->date,clickDate);
+    //dayChanged(this->date,clickDate);
 }
 
 //转到今天
@@ -1305,13 +1337,17 @@ void LunarCalendarWidget::setWeekBgColor(const QColor &weekBgColor)
 
 void LunarCalendarWidget::setShowLunar(bool showLunar)
 {
-    if (locale == "zh_CN"){
-        showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
-    }else if (locale == "en_US"){
-        showLunar = false;
+    if(calendar_gsettings!=nullptr){
+        if (locale == "zh_CN"){
+            qDebug()<<"中文模式";
+            showLunar = calendar_gsettings->get(LUNAR_KEY).toString() == "lunar";
+        }else if (locale == "en_US"){
+            qDebug()<<"英文模式";
+            showLunar = false;
+        }
     }
-        this->showLunar = showLunar;
-        initStyle();
+    this->showLunar = showLunar;
+    initStyle();
 }
 
 void LunarCalendarWidget::setBgImage(const QString &bgImage)

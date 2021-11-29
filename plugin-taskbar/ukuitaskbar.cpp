@@ -139,6 +139,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QDBusConnection::sessionBus().registerObject("/taskbar/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
 
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "AddToTaskbar", this, SLOT(_AddToTaskbar(QString)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "RemoveFromTaskbar", this, SLOT(removeFromTaskbar(QString)));
 }
 
 /************************************************
@@ -969,6 +970,13 @@ void UKUITaskBar::_AddToTaskbar(QString arg) {
                                  );
     }
     saveSettings();
+}
+
+void UKUITaskBar::removeFromTaskbar(QString arg)
+{
+    XdgDesktopFile xdg;
+    xdg.load(arg);
+    removeButton(new QuickLaunchAction(&xdg, this));
 }
 
 void UKUITaskBar::doInitGroupButton(QString sname) {

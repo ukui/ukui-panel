@@ -67,28 +67,8 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                            tr("Logout"),
                            this, SLOT(SessionLogout())
                            );                                     //注销
-    /*
-    //社区版本 安装时未强求建立 swap分区，若未建swap分区,会导致休眠(hibernate)失败，所以在20.04上屏蔽该功能
-    getOsRelease();
-    if(QString::compare(version,"Ubuntu"))
-    或使用!QString::compare(getCanHibernateResult(),"yes") 【目前该接口有bug】
-    */
 
-    //检测CanHibernate接口的返回值，判断是否可以执行挂起操作
-
-
-    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
-    QSettings m_settings(filename, QSettings::IniFormat);
-    m_settings.setIniCodec("UTF-8");
-
-    m_settings.beginGroup("Hibernate");
-    QString hibernate_action = m_settings.value("hibernate", "").toString();
-    if (hibernate_action.isEmpty()) {
-        hibernate_action = "show";
-    }
-    m_settings.endGroup();
-
-    if(QString::compare(version,"Ubuntu") && hibernate_action != "hide"){
+    if(QString::compare(getCanHibernateResult(),"yes") == 0){
         pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
                                    tr("Hibernate Mode"),
                                    this, SLOT(SessionHibernate())

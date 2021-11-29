@@ -135,6 +135,7 @@ void QuickLaunchAction::execAction(QString additionalAction)
                     data.setName(exec);
                     data.setIconGeometry(rect);
                     data.setLaunchedBy(getpid());
+                    data.setDescription("Launch by ukui-panel");
                     KStartupInfo::sendStartup(*startInfoId, data);
 
                     GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
