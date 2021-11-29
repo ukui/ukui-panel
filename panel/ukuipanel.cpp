@@ -271,6 +271,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     });
 
     connect(UKUi::Settings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
+
     connect(ukuiApp, SIGNAL(themeChanged()), this, SLOT(realign()));
 
     connect(mStandaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
@@ -578,16 +579,16 @@ void UKUIPanel::setPanelGeometry(bool animate)
         if (mPosition == IUKUIPanel::PositionTop)
         {
             if (mHidden)
-                rect.moveBottom(currentScreen.top() + PANEL_HIDE_SIZE - 1);
+                rect.moveBottom(currentScreen.top() + PANEL_HIDE_SIZE);
             else
                 rect.moveTop(currentScreen.top());
         }
         else
         {
             if (mHidden)
-                rect.moveTop(currentScreen.bottom() - PANEL_HIDE_SIZE + 1);
+                rect.moveTop(currentScreen.bottom() - PANEL_HIDE_SIZE);
             else
-                rect.moveBottom(currentScreen.bottom() +1 );
+                rect.moveBottom(currentScreen.bottom());
         }
         qDebug()<<"ukui-panel Rect is :"<<rect;
     }
@@ -627,14 +628,14 @@ void UKUIPanel::setPanelGeometry(bool animate)
         if (mPosition == IUKUIPanel::PositionLeft)
         {
             if (mHidden)
-                rect.moveRight(currentScreen.left() + PANEL_HIDE_SIZE - 1);
+                rect.moveRight(currentScreen.left() + PANEL_HIDE_SIZE);
             else
                 rect.moveLeft(currentScreen.left());
         }
         else
         {
             if (mHidden)
-                rect.moveLeft(currentScreen.right() - PANEL_HIDE_SIZE + 1);
+                rect.moveLeft(currentScreen.right() - PANEL_HIDE_SIZE);
             else
                 rect.moveRight(currentScreen.right());
         }
@@ -947,14 +948,17 @@ void UKUIPanel::adjustPanel()
     connect(pmenuaction_s,&QAction::triggered,[this] {
         gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_SMALL);
         gsettings->set(ICON_SIZE_KEY,ICON_SIZE_SMALL);
+        setIconSize(ICON_SIZE_SMALL,true);
     });
     connect(pmenuaction_m,&QAction::triggered,[this] {
         gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_MEDIUM);
         gsettings->set(ICON_SIZE_KEY,ICON_SIZE_MEDIUM);
+        setIconSize(ICON_SIZE_MEDIUM,true);
     });
     connect(pmenuaction_l,&QAction::triggered,[this] {
         gsettings->set(PANEL_SIZE_KEY,PANEL_SIZE_LARGE);
         gsettings->set(ICON_SIZE_KEY,ICON_SIZE_LARGE);
+        setIconSize(ICON_SIZE_LARGE,true);
     });
     pmenu_panelsize->setDisabled(mLockPanel);
 
@@ -1466,7 +1470,7 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         menu->addAction(about);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
-            process->startDetached("ukui-control-center -a");
+            process->startDetached("ukui-control-center -m About");
         });
 
     }
