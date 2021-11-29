@@ -401,13 +401,12 @@ QMimeData * StatusNotifierButton::mimeData()
 
 void StatusNotifierButton::mousePressEvent(QMouseEvent *e)
 {
-//    if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
-//    {
-//        mDragStart = e->pos();
-//        return;
-//    }
+    if (e->button() == Qt::LeftButton ) {
+        mDragStart = e->pos();
+        return;
+    }
 
-//    QToolButton::mousePressEvent(e);
+    QToolButton::mousePressEvent(e);
 }
 
 bool StatusNotifierButton::event(QEvent *e)

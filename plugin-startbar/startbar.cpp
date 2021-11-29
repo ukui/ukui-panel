@@ -97,7 +97,11 @@ void UKUIStartBarWidget::realign()
             mLayout->addWidget(mTaskViewButton);
         }
     } else {
-        mLayout->removeWidget(mTaskViewButton);
+        if (mLayout->count() == 2) {
+            mLayout->removeWidget(mTaskViewButton);
+        } else {
+            return;
+        }
     }
     if (mPlugin->panel()->isHorizontal()){
         mLayout->setColumnCount(mLayout->count());
