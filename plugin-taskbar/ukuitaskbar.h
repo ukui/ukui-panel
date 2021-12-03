@@ -209,6 +209,7 @@ private:
     QVector <int> mBtncvd;
 
 private:
+    QWidget *mPlaceHolder;
     QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
     QList <WId> swid;
     UKUi::GridLayout *mLayout;
