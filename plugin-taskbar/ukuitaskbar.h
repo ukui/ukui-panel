@@ -245,6 +245,7 @@ private:
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
     QWidget *mAllFrame;
+    QWidget *mPlaceHolder;
 
 public slots:
     void WindowAddtoTaskBar(QString arg);

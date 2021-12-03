@@ -73,6 +73,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mCycleOnWheelScroll(true),
     mPlugin(plugin),
     mIgnoreWindow(),
+    mPlaceHolder(new QWidget(this)),
     mStyle(new LeftAlignedTextStyle())
 {
     mAllFrame=new QWidget(this);
@@ -93,6 +94,10 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mAllFrame->setLayout(mLayout);
     mLayout->setMargin(0);
     mLayout->setStretch(UKUi::GridLayout::StretchHorizontal | UKUi::GridLayout::StretchVertical);
+
+    mPlaceHolder->setMinimumSize(1,1);
+    mPlaceHolder->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
+    mPlaceHolder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     QString filename = QString::fromLocal8Bit(PANEL_CONFIG_PATH);
     QSettings m_settings(filename, QSettings::IniFormat);
@@ -140,6 +145,12 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
 
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "AddToTaskbar", this, SLOT(_AddToTaskbar(QString)));
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "RemoveFromTaskbar", this, SLOT(removeFromTaskbar(QString)));
+
+    if (mLayout->count() == 0) {
+        mLayout->addWidget(mPlaceHolder);
+    } else {
+        mPlaceHolder->setFixedSize(0,0);
+    }
 }
 
 /************************************************
@@ -404,7 +415,7 @@ void UKUITaskBar::addWindow(WId window)
         connect(group, SIGNAL(t_saveSettings()), this, SLOT(saveSettingsSlot()));
         connect(group, SIGNAL(WindowAddtoTaskBar(QString)), this, SLOT(WindowAddtoTaskBar(QString)));
         connect(group, SIGNAL(WindowRemovefromTaskBar(QString)), this, SLOT(WindowRemovefromTaskBar(QString)));
-        //connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
+        connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
         connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
         connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
             switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
@@ -531,6 +542,13 @@ void UKUITaskBar::refreshPlaceholderVisibility()
             haveVisibleWindow = true;
             break;
         }
+    }
+    mPlaceHolder->setVisible(!haveVisibleWindow);
+    if (haveVisibleWindow || mLayout->count() != 0) {
+        mPlaceHolder->setFixedSize(0,0);
+     } else {
+        mPlaceHolder->setMinimumSize(1,1);
+        mPlaceHolder->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
     }
 }
 
@@ -961,8 +979,10 @@ void UKUITaskBar::_AddToTaskbar(QString arg) {
     QFileInfo fi(fileName);
     XdgDesktopFile xdg;
     if (xdg.load(fileName)){
-        if(!checkButton(new QuickLaunchAction(&xdg, this)))
+        if(!checkButton(new QuickLaunchAction(&xdg, this))){
             addButton(new QuickLaunchAction(&xdg, this));
+            mPlaceHolder->hide();
+        }
     }else{
         qWarning() << "XdgDesktopFile" << fileName << "is not valid";
         QMessageBox::information(this, tr("Drop Error"),
