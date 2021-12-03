@@ -283,8 +283,8 @@ void UKUITaskGroup::initActionsInRightButtonMenu(){
     XdgDesktopFile xdg;
     if (xdg.load(fileName)){
         mAct = new QuickLaunchAction(&xdg, this);
+        setGroupIcon(mAct->getIconfromAction());
     }
-    setGroupIcon(mAct->getIconfromAction());
 }
 
 
