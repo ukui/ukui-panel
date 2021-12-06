@@ -93,11 +93,19 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         }
     });
 
+    /*Menu返回值：
+    无菜单项返回: "/NO_DBUSMENU"；
+    有菜单项返回: "/MenuBar"；
+    x-sni注册的返回: ""
+    */
     interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
-        if (!path.path().isEmpty())
+        if(path.path() == "/MenuBar")
         {
             mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
             mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+        }
+        else{
+           mMenu = nullptr;
         }
     });
 
@@ -365,6 +373,7 @@ void StatusNotifierButton::resetIcon()
         setIcon(mAttentionIcon);
     else
         setIcon(mFallbackIcon);
+
 
     mIconStatus=true;
     emit paramReady();
