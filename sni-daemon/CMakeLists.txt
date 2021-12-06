@@ -34,6 +34,7 @@ add_executable(sni-daemon
 target_link_libraries(sni-daemon
     Qt5::Widgets
     Qt5::DBus
+    -lukui-log4qt
     )
 
 add_definitions(-DQT_MESSAGELOGCONTEXT)
