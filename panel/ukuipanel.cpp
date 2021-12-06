@@ -1470,7 +1470,17 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
         menu->addAction(about);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
-            process->startDetached("ukui-control-center -m About");
+            process->start(
+                    "bash",
+                    QStringList() << "-c"
+                                  << "dpkg -l | grep ukui-control-center");
+                process->waitForFinished();
+                QString strResult = process->readAllStandardOutput() + process->readAllStandardError();
+                if (-1 != strResult.indexOf("3.0")) {
+                    QProcess::startDetached(QString("ukui-control-center -a"));
+                } else {
+                    QProcess::startDetached(QString("ukui-control-center -m About"));
+                }
         });
 
     }
