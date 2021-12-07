@@ -99,8 +99,9 @@ int main(int argc, char *argv[])
 #endif
     UKUIPanelApplication app(argc, argv);
     qDebug()<<"Main :: UKUIPanelApplication finished"<<QDateTime::currentDateTime();
-    /*旧版任务栏打印相关的函数*/
-//    qInstallMessageHandler(messageOutput);
+
+    QGuiApplication::setFallbackSessionManagementEnabled(true);
+    QGuiApplication::setQuitOnLastWindowClosed(false);
 
     /*单例+vnc模式*/
     QStringList homePath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
