@@ -160,14 +160,14 @@ void RepairDialogBox::initUI()
     label->setWordWrap(true);
     label->setTextFormat(Qt::RichText);
     if (devName) {
-        label->setText(tr(""
+        label->setText(tr(
                           "<h4>The system could not recognize the disk contents</h4>"
                           "<p>Check that the disk/drive '%1' is properly connected,"
                           "make sure the disk is not a read-only disk, and try again."
                           "For more information, search for help on read-only files and"
                           "how to change read-only files.</p>").arg (devName));
     } else {
-        label->setText(tr(""
+        label->setText(tr(
                           "<h4>The system could not recognize the disk contents</h4>"
                           "<p>Check that the disk/drive is properly connected,"
                           "make sure the disk is not a read-only disk, and try again."
@@ -181,14 +181,14 @@ void RepairDialogBox::initUI()
 //    scrollArea->setFrameStyle(0);
 //    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    scrollArea->setWidget(label);
-    mainLayout->addWidget(label, 0, 0, 1, 2, Qt::AlignTop);
+    mainLayout->addWidget(label, 0, 0, 6, 60, Qt::AlignTop);
 
     mFormatBtn = new QPushButton(tr("Format disk"));
     mRepairBtn = new QPushButton(tr("Repair"));
 
     btnGroup->addWidget(mRepairBtn);
     btnGroup->addWidget(mFormatBtn);
-    mainLayout->addLayout(btnGroup, 1, 1, 1, 1);
+    mainLayout->addLayout(btnGroup, 5, 30, 1, 30);
 
     connect(this, &QDialog::finished, this, [=] () {
         Q_EMIT repairOK(this);
@@ -810,19 +810,6 @@ void BaseDialogStyle::drawControl(QStyle::ControlElement element, const QStyleOp
             QProxyStyle::drawPrimitive(PE_IndicatorArrowDown, &arrow, painter, widget);
 
             painter->save();
-            if (!comboBox->currentIcon.isNull()) {
-                QIcon::Mode mode = comboBox->state & State_Enabled ? QIcon::Normal : QIcon::Disabled;
-                QPixmap pixmap = comboBox->currentIcon.pixmap(comboBox->iconSize, mode);
-                QRect iconRect;
-                if (comboBox->direction == Qt::RightToLeft) {
-                    iconRect.setRect(editRect.right() - comboBox->iconSize.width(), editRect.y(), comboBox->iconSize.width(), editRect.height());
-                    editRect.setRect(editRect.x(), editRect.y(), editRect.width() - iconRect.width() - 8, editRect.height());
-                } else {
-                    iconRect.setRect(editRect.x(), editRect.y(), comboBox->iconSize.width(), editRect.height());
-                    editRect.setRect(editRect.x() + iconRect.width() + 8, editRect.y(), editRect.width() - iconRect.width() - 8, editRect.height());
-                }
-                drawItemPixmap(painter, iconRect, Qt::AlignCenter, pixmap);
-            }
 
             if (!comboBox->currentText.isEmpty() && !comboBox->editable) {
                 drawItemText(painter, editRect, visualAlignment(option->direction, Qt::AlignLeft | Qt::AlignVCenter),
@@ -1172,6 +1159,7 @@ void BaseDialogStyle::drawControl(QStyle::ControlElement element, const QStyleOp
         QProxyStyle::drawControl (element, &opt, painter, widget);
         break;
     }
+    QProxyStyle::drawControl (element, option, painter, widget);
 }
 
 void BaseDialogStyle::drawPrimitive(PrimitiveElement elem, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
