@@ -59,10 +59,12 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                            tr("Lock Screen"),
                            this, SLOT(ScreenServer())
                            );                                     //锁屏
-    pUserAction->addAction(QIcon::fromTheme("stock-people-symbolic"),
-                           tr("Switch User"),
-                           this, SLOT(SessionSwitch())
-                           );                                     //切换用户
+    if (hasMultipleUsers()) {
+        pUserAction->addAction(QIcon::fromTheme("stock-people-symbolic"),
+                               tr("Switch User"),
+                               this, SLOT(SessionSwitch())
+                               );                                     //切换用户
+    }
     pUserAction->addAction(QIcon::fromTheme("system-logout-symbolic"),
                            tr("Logout"),
                            this, SLOT(SessionLogout())
@@ -179,6 +181,20 @@ QString StartMenuButton::getCanHibernateResult()
     } else {
         qCritical() << "Call Dbus method failed";
     }
+}
+
+bool StartMenuButton::hasMultipleUsers()
+{
+    QDBusInterface interface("org.freedesktop.Accounts",
+                             "/org/freedesktop/Accounts",
+                             "org.freedesktop.DBus.Properties",
+                             QDBusConnection::systemBus());
+    if (!interface.isValid()) {
+        qCritical() << QDBusConnection::systemBus().lastError().message();
+    }
+
+    QDBusReply<QVariant> reply = interface.call("Get","org.freedesktop.Accounts","HasMultipleUsers");
+    return reply.value().toBool();
 }
 
 void StartMenuButton::enterEvent(QEvent *) {

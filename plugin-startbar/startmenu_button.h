@@ -36,6 +36,7 @@ private:
 
     void getOsRelease();
     QString getCanHibernateResult();
+    bool hasMultipleUsers();
 
 private slots:
     void ScreenServer();
