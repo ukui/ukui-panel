@@ -658,5 +658,15 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 void CalendarActiveLabel::setControlTime()
 {
     QProcess *process =new QProcess(this);
-    process->startDetached("ukui-control-center -m Date");
+    process->start(
+            "bash",
+            QStringList() << "-c"
+                          << "dpkg -l | grep ukui-control-center");
+        process->waitForFinished();
+        QString strResult = process->readAllStandardOutput() + process->readAllStandardError();
+        if (-1 != strResult.indexOf("3.0")) {
+            QProcess::startDetached(QString("ukui-control-center -t"));
+        } else {
+            QProcess::startDetached(QString("ukui-control-center -m Date"));
+        }
 }
