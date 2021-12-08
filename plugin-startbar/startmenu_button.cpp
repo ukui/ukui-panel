@@ -191,6 +191,7 @@ bool StartMenuButton::hasMultipleUsers()
                              QDBusConnection::systemBus());
     if (!interface.isValid()) {
         qCritical() << QDBusConnection::systemBus().lastError().message();
+        return false;
     }
 
     QDBusReply<QVariant> reply = interface.call("Get","org.freedesktop.Accounts","HasMultipleUsers");
