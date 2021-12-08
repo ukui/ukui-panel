@@ -94,7 +94,9 @@ SNIProxy::SNIProxy(xcb_window_t wid, QObject* parent):
 
     m_dbus.registerObject(QStringLiteral("/StatusNotifierItem"), this,QDBusConnection::ExportAllContents);
 
+
     auto statusNotifierWatcher = new org::kde::StatusNotifierWatcher(QStringLiteral(SNI_WATCHER_SERVICE_NAME), QStringLiteral(SNI_WATCHER_PATH), QDBusConnection::sessionBus(), this);
+    qDebug()<<"sni-proxy:RegisterStatusNotifierItem = " <<m_dbus.baseService();
     auto reply = statusNotifierWatcher->RegisterStatusNotifierItem(m_dbus.baseService());
     reply.waitForFinished();
     if (reply.isError()) {

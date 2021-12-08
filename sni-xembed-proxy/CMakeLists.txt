@@ -21,6 +21,7 @@ find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(KF5WindowSystem REQUIRED)
+find_package(Qt5X11Extras REQUIRED)
 
 add_executable(sni-xembed-proxy
         main.cpp
@@ -48,6 +49,7 @@ target_link_libraries(sni-xembed-proxy
     xcb-image
     xcb-composite
     xcb-shape
+    -lukui-log4qt
     )
 
 add_definitions(-DQT_NO_KEYWORDS)
