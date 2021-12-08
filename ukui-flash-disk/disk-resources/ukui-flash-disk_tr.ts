@@ -146,6 +146,10 @@
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QClickWidget</name>
@@ -216,11 +220,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The repair completed. If the USB flash disk is not mounted, please try formatting the device!</source>
+        <source>Disk repair</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Disk repair</source>
+        <source>Repair failed. If the USB flash disk is not mounted, please try formatting the device!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

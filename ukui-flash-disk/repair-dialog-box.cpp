@@ -365,7 +365,15 @@ void RepairProgressBar::onStopRepair(bool success)
         Q_EMIT remountDevice();
         accept();
     } else {
-        MessageBox msg(tr("Disk repair"), tr("The repair completed. If the USB flash disk is not mounted, please try formatting the device!"), QMessageBox::Ok, this);
+        MessageBox msg(tr("Disk repair"), tr("Repair failed. If the USB flash disk is not mounted, please try formatting the device!"), QMessageBox::Ok | QMessageBox::Cancel, this);
+
+        connect(&msg, &MessageBox::format, this, [=](){
+            FormateDialog dlg(mVolume, this);
+            int ret = dlg.exec();
+            if (QDialog::Accepted == ret) {
+                accept();
+            }
+        });
         msg.setPalette(getPalette());
         msg.exec();
         reject();
@@ -748,7 +756,7 @@ MessageBox::MessageBox(QString title, QString text, QMessageBox::StandardButtons
     QPushButton* cancel = nullptr;
     if (bt & QMessageBox::Ok && bt & QMessageBox::Cancel) {
         ok = new QPushButton;
-        ok->setText(tr("OK"));
+        ok->setText(tr("Format"));
         mainLayout->addWidget(ok, 2, 3, 1, 1);
         cancel = new QPushButton;
         cancel->setText(tr("Cancel"));
@@ -763,8 +771,17 @@ MessageBox::MessageBox(QString title, QString text, QMessageBox::StandardButtons
         mainLayout->addWidget(cancel, 2, 4, 1, 1);
     }
 
-    if (ok)     connect(ok,     &QPushButton::clicked, this, [=] (bool) {done(QMessageBox::Ok);});
-    if (cancel) connect(cancel, &QPushButton::clicked, this, [=] (bool) {done(QMessageBox::Cancel);});
+    if (ok) {
+        connect(ok, &QPushButton::clicked, this, [=] (bool) {
+            Q_EMIT format();
+            done(QMessageBox::Ok);
+        });
+    }
+    if (cancel) {
+        connect(cancel, &QPushButton::clicked, this, [=] (bool) {
+            done(QMessageBox::Cancel);
+        });
+    }
 }
 
 BaseDialogStyle::BaseDialogStyle()

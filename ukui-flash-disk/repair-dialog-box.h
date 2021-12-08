@@ -204,9 +204,11 @@ private:
 class MessageBox : public BaseDialog
 {
     Q_OBJECT
+
 public:
     MessageBox(QString title, QString text, QMessageBox::StandardButtons bt, QWidget* parent = nullptr);
 
-private:
+Q_SIGNALS:
+    void format();
 };
 #endif // REPAIRDIALOGBOX_H
