@@ -120,6 +120,7 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setProperty("useIconHighlightEffect", 0x2);
     newToolTip();
+    systemThemeChanges();
 }
 
 StatusNotifierButton::~StatusNotifierButton()
@@ -375,6 +376,23 @@ void StatusNotifierButton::resetIcon()
     mIconStatus=true;
     emit paramReady();
 }
+
+void StatusNotifierButton::systemThemeChanges()
+{
+    //主题变化
+    const QByteArray styleId(ORG_UKUI_STYLE);
+    if(QGSettings::isSchemaInstalled(styleId)){
+        mThemeSettings = new QGSettings(styleId);
+
+        connect(mThemeSettings, &QGSettings::changed, this, [=] (const QString &key){
+            if(key == ICON_THEME_NAME){
+                //主题变化任务栏主动更新图标
+                refetchIcon(Passive);
+            }
+        });
+    }
+}
+
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
 {
