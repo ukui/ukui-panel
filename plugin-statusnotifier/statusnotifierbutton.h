@@ -40,6 +40,11 @@
 #include <QEvent>
 #include <QMenu>
 #include <QString>
+#include <QGSettings>
+
+#define ORG_UKUI_STYLE  "org.ukui.style"
+#define ICON_THEME_NAME "iconThemeName"
+
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
 template <typename T> inline T qFromUnaligned(const uchar *src)
@@ -98,6 +103,7 @@ private:
 
     uint mCount = 0;
     bool mParamInit=false;
+    QGSettings *mThemeSettings;
 
 signals:
     void switchButtons(StatusNotifierButton *from, StatusNotifierButton *to);
@@ -123,6 +129,10 @@ protected:
 
     void refetchIcon(Status status);
     void resetIcon();
+
+private:
+    void systemThemeChanges();
+
 };
 
 class StatusNotifierButtonMimeData: public QMimeData
