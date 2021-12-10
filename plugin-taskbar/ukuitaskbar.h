@@ -236,6 +236,7 @@ private:
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
     void settingsChanged();
+    QList<QMap<QString, QVariant> > verifyQuicklaunchConfig(QList<QMap<QString, QVariant> > apps);
 
     void wheelEvent(QWheelEvent* event);
     void changeEvent(QEvent* event);

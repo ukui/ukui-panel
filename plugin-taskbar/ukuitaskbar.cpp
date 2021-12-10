@@ -199,7 +199,9 @@ void UKUITaskBar::refreshQuickLaunch(){
     QString file;
 
     //gsetting的方式读取写入 apps
-    const auto apps = mPlugin->settings()->readArray("apps");
+    QList<QMap<QString, QVariant> > apps = mPlugin->settings()->readArray("apps");
+    apps = verifyQuicklaunchConfig(apps);
+
     for (const QMap<QString, QVariant> &app : apps)
     {
         desktop = app.value("desktop", "").toString();
@@ -217,6 +219,37 @@ void UKUITaskBar::refreshQuickLaunch(){
     }
 }
 
+QList<QMap<QString, QVariant> > UKUITaskBar::verifyQuicklaunchConfig(QList<QMap<QString, QVariant> > apps)
+{
+    QString filename = QDir::homePath() + "/.config/ukui/panel.conf";
+    //若taskbar中没有apps，则把quicklaunch中的内容复制到taskbar
+    if (apps.isEmpty()) {
+        qDebug()<<"Taskbar is empty, read apps from quicklaunch";
+        QSettings user_qsettings(filename,QSettings::IniFormat);
+        user_qsettings.beginGroup("quicklaunch");
+        //加入标志位,保证只读取一次
+        if (!user_qsettings.contains("readLock")) {
+            QList<QMap<QString, QVariant> > array;
+            int size = user_qsettings.beginReadArray("apps");
+            for (int i = 0; i < size; ++i)
+            {
+                user_qsettings.setArrayIndex(i);
+                QMap<QString, QVariant> hash;
+                const auto keys = user_qsettings.childKeys();
+                for (const QString &key : keys)
+                    hash[key] = user_qsettings.value(key);
+                array << hash;
+            }
+            apps = array;
+        }
+        user_qsettings.endArray();
+        user_qsettings.setValue("readLock", QString("Locked"));
+        user_qsettings.endGroup();
+        user_qsettings.sync();
+
+        return apps;
+    }
+}
 
 bool UKUITaskBar::acceptWindow(WId window) const
 {
