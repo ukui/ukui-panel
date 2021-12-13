@@ -200,7 +200,9 @@ void UKUITaskBar::refreshQuickLaunch(){
 
     //gsetting的方式读取写入 apps
     QList<QMap<QString, QVariant> > apps = mPlugin->settings()->readArray("apps");
-    apps = verifyQuicklaunchConfig(apps);
+    if (apps.isEmpty()) {
+        apps = verifyQuicklaunchConfig(apps);
+    }
 
     for (const QMap<QString, QVariant> &app : apps)
     {
