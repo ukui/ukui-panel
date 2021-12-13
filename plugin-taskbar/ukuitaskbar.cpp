@@ -199,9 +199,12 @@ void UKUITaskBar::refreshQuickLaunch(){
     QString file;
 
     //gsetting的方式读取写入 apps
-    QList<QMap<QString, QVariant> > apps = mPlugin->settings()->readArray("apps");
-    if (apps.isEmpty()) {
-        apps = verifyQuicklaunchConfig(apps);
+    QList<QMap<QString, QVariant> > taskbar_apps = mPlugin->settings()->readArray("apps");
+    QList<QMap<QString, QVariant> > apps;
+    if (taskbar_apps.isEmpty()) {
+        apps = verifyQuicklaunchConfig(taskbar_apps);
+    } else {
+        apps = taskbar_apps;
     }
 
     for (const QMap<QString, QVariant> &app : apps)
