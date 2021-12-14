@@ -203,8 +203,9 @@ void UKUITaskBar::refreshQuickLaunch(){
     QString filename = QDir::homePath() + "/.config/ukui/panel.conf";
     QSettings user_qsettings(filename,QSettings::IniFormat);
     QStringList groupname = user_qsettings.childGroups();
+    //为了兼容3.0版本和3.1版本，后续版本考虑删除
     if (apps.isEmpty() && groupname.contains("quicklaunch")) {
-        apps = verifyQuicklaunchConfig();
+        apps = copyQuicklaunchConfig();
     } else if (groupname.contains("quicklaunch")) {
             user_qsettings.remove("quicklaunch");
     }
@@ -226,7 +227,7 @@ void UKUITaskBar::refreshQuickLaunch(){
     }
 }
 
-QList<QMap<QString, QVariant> > UKUITaskBar::verifyQuicklaunchConfig()
+QList<QMap<QString, QVariant> > UKUITaskBar::copyQuicklaunchConfig()
 {
     QString filename = QDir::homePath() + "/.config/ukui/panel.conf";
     //若taskbar中没有apps，则把quicklaunch中的内容复制到taskbar
@@ -238,9 +239,9 @@ QList<QMap<QString, QVariant> > UKUITaskBar::verifyQuicklaunchConfig()
     for (int i = 0; i < size; ++i)
     {
         user_qsettings.setArrayIndex(i);
-        QMap<QString, QVariant> hash;
-        hash["desktop"] = user_qsettings.value("desktop");
-        array << hash;
+        QMap<QString, QVariant> map;
+        map["desktop"] = user_qsettings.value("desktop");
+        array << map;
 
     }
     user_qsettings.endArray();
