@@ -44,6 +44,7 @@ class UKUITaskWidget : public QWidget
 
 public:
     explicit UKUITaskWidget(const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
+    explicit UKUITaskWidget(QString iconName, const WId window, UKUITaskBar * taskbar, QWidget *parent = 0);
     virtual ~UKUITaskWidget();
 
     bool isApplicationHidden() const;
@@ -80,6 +81,9 @@ public:
     void setPixmap(QPixmap mPixmap);
     int getWidth();
     QPixmap getPixmap();
+
+    void wl_updateTitle(QString caption);
+    void wl_updateIcon(QString iconName);
 
 public slots:
     void raiseApplication();
@@ -151,6 +155,8 @@ private:
     enum TaskWidgetStatus{NORMAL, HOVER, PRESS};
     TaskWidgetStatus status;
     bool taskWidgetPress; //按钮左键是否按下
+
+    bool isWaylandWidget = false;
 
 private slots:
     void activateWithDraggable();

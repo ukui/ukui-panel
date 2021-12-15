@@ -4,12 +4,12 @@
 <context>
     <name>UKUITaskBar</name>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="968"/>
+        <location filename="../ukuitaskbar.cpp" line="1041"/>
         <source>Drop Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="969"/>
+        <location filename="../ukuitaskbar.cpp" line="1042"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation type="unfinished"></translation>
     </message>
@@ -120,22 +120,22 @@
 <context>
     <name>UKUITaskGroup</name>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="225"/>
+        <location filename="../ukuitaskgroup.cpp" line="255"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="232"/>
+        <location filename="../ukuitaskgroup.cpp" line="262"/>
         <source>delete from taskbar</source>
         <translation>从任务栏取消固定</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="234"/>
+        <location filename="../ukuitaskgroup.cpp" line="264"/>
         <source>add to taskbar</source>
         <translation>添加到任务栏</translation>
     </message>
     <message>
-        <location filename="../ukuitaskgroup.cpp" line="239"/>
+        <location filename="../ukuitaskgroup.cpp" line="269"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
@@ -143,37 +143,37 @@
 <context>
     <name>UKUITaskWidget</name>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="363"/>
+        <location filename="../ukuitaskwidget.cpp" line="448"/>
         <source>Widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="366"/>
+        <location filename="../ukuitaskwidget.cpp" line="451"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="367"/>
+        <location filename="../ukuitaskwidget.cpp" line="452"/>
         <source>restore</source>
         <translation>恢复</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="369"/>
+        <location filename="../ukuitaskwidget.cpp" line="454"/>
         <source>maximaze</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="371"/>
+        <location filename="../ukuitaskwidget.cpp" line="456"/>
         <source>minimize</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="372"/>
+        <location filename="../ukuitaskwidget.cpp" line="457"/>
         <source>above</source>
         <translation>置顶</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="373"/>
+        <location filename="../ukuitaskwidget.cpp" line="458"/>
         <source>clear</source>
         <translation>取消置顶</translation>
     </message>

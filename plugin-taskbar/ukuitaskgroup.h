@@ -100,6 +100,7 @@ public:
     bool hasbeenSaved = false;
     UKUITaskGroup(const QString & groupName, WId window, UKUITaskBar * parent);
     UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, UKUITaskBar *parent);
+    UKUITaskGroup(const QString & iconName, const QString & caption, WId window, UKUITaskBar *parent = 0);
     virtual ~UKUITaskGroup();
     QString groupName() const { return mGroupName; }
 
@@ -129,6 +130,12 @@ public:
     void setAutoRotation(bool value, IUKUIPanel::Position position);
     void setQckLchBtn(UKUITaskGroup *utgp) { if(statFlag) mpQckLchBtn = utgp; }
     UKUITaskGroup* getQckLchBtn() { return mpQckLchBtn; }
+
+    void setActivateState_wl(bool _state);
+    void wl_widgetUpdateTitle(QString caption);
+    QWidget * wl_addWindow(WId id);
+    bool CheckifWaylandGroup() {return isWaylandGroup;}
+
 
 public slots:
     void onWindowRemoved(WId window);
@@ -217,6 +224,11 @@ private:
     TaskGroupStatus quicklanuchstatus;
     CustomStyle toolbuttonstyle;
     QGSettings *mgsettings;
+
+    bool isWaylandGroup;
+
+    void winClickActivate_wl(bool _getActive);
+    void closeGroup_wl();
 
 };
 
