@@ -515,13 +515,15 @@ void LunarCalendarWidget::initWidget()
     }
     widgetmonthBody->hide();
 
+    QFont font;
+    font.setPointSize(12);
     labWidget = new QWidget();
     labBottom = new QLabel();
     yijichooseLabel = new QLabel();
     yijichooseLabel->setText("宜忌");
+    yijichooseLabel->setFont(font);
 
-    QFont font;
-    font.setPointSize(12);
+
     labBottom->setFont(font);
     yijichoose = new QCheckBox();
 
@@ -538,6 +540,8 @@ void LunarCalendarWidget::initWidget()
 
     yiLabel = new QLabel();
     jiLabel = new QLabel();
+    yiLabel->setFont(font);
+    jiLabel->setFont(font);
 
     yijiLayout->addWidget(yiLabel);
     yijiLayout->addWidget(jiLabel);
