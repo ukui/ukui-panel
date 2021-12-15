@@ -588,21 +588,21 @@ void LunarCalendarWidget::setLocaleCalendar()
     int isCN = res.at(0) == "zh_CN.UTF-8" ? 1 : 0;
     if(isCN){
         if (FirstdayisSun) {
-              labWeeks.at(0)->setText((tr("Sun")));
-              labWeeks.at(1)->setText((tr("Mon")));
-              labWeeks.at(2)->setText((tr("Tue")));
-              labWeeks.at(3)->setText((tr("Wed")));
-              labWeeks.at(4)->setText((tr("Thur")));
-              labWeeks.at(5)->setText((tr("Fri")));
-              labWeeks.at(6)->setText((tr("Sat")));
+              labWeeks.at(0)->setText("周日");
+              labWeeks.at(1)->setText("周一");
+              labWeeks.at(2)->setText("周二");
+              labWeeks.at(3)->setText("周三");
+              labWeeks.at(4)->setText("周四");
+              labWeeks.at(5)->setText("周五");
+              labWeeks.at(6)->setText("周六");
         } else {
-            labWeeks.at(0)->setText((tr("Mon")));
-            labWeeks.at(1)->setText((tr("Tue")));
-            labWeeks.at(2)->setText((tr("Wed")));
-            labWeeks.at(3)->setText((tr("Thur")));
-            labWeeks.at(4)->setText((tr("Fri")));
-            labWeeks.at(5)->setText((tr("Sat")));
-            labWeeks.at(6)->setText((tr("Sun")));
+            labWeeks.at(0)->setText("周一");
+            labWeeks.at(1)->setText("周二");
+            labWeeks.at(2)->setText("周三");
+            labWeeks.at(3)->setText("周四");
+            labWeeks.at(4)->setText("周五");
+            labWeeks.at(5)->setText("周六");
+            labWeeks.at(6)->setText("周日");
         }
     }else{
         if (FirstdayisSun){
