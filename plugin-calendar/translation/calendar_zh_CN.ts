@@ -62,52 +62,52 @@
         <translation type="unfinished">今天</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="616"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="836"/>
-        <source>解析json文件错误！</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1295"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1309"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="591"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="605"/>
         <source>Sun</source>
         <translation type="unfinished">周日</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1296"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1303"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="592"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="599"/>
         <source>Mon</source>
         <translation type="unfinished">周一</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1297"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1304"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="593"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="600"/>
         <source>Tue</source>
         <translation type="unfinished">周二</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1298"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1305"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="594"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="601"/>
         <source>Wed</source>
         <translation type="unfinished">周三</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1299"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1306"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="595"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="602"/>
         <source>Thur</source>
         <translation type="unfinished">周四</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1300"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1307"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="596"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="603"/>
         <source>Fri</source>
         <translation type="unfinished">周五</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1301"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="1308"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="597"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="604"/>
         <source>Sat</source>
         <translation type="unfinished">周六</translation>
+    </message>
+    <message>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="697"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="917"/>
+        <source>解析json文件错误！</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sunday</source>
