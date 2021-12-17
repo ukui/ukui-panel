@@ -70,8 +70,6 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
         compareCmdExec();
     }
 
-
-
     //第四种方法：匹配部分字段
     if (m_desktopfilePath.isEmpty()) {
         compareLastStrategy();
