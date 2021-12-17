@@ -182,6 +182,8 @@ private slots:
 
     void _AddToTaskbar(QString arg);
 
+    void wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption);
+
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
 
@@ -192,6 +194,7 @@ private:
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
     void doInitGroupButton(QString sname);
     void initRelationship();
+
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
     TaskStatus taskstatus;
@@ -247,6 +250,13 @@ private:
     UKUITaskBarIcon *mpTaskBarIcon;
     QWidget *mAllFrame;
     QWidget *mPlaceHolder;
+
+    QGSettings *changeTheme;
+    QHash<QString,QString> mAndroidIconHash;
+
+    QHash<QString,QString> matchAndroidIcon();
+    QString captionExchange(QString str);
+    void addWindow_wl(QString iconName, QString caption, WId window);
 
 public slots:
     void WindowAddtoTaskBar(QString arg);
