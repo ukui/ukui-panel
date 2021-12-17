@@ -261,8 +261,11 @@ QList<QMap<QString, QVariant> > UKUITaskBar::copyQuicklaunchConfig()
         user_qsettings.setArrayIndex(i);
         QMap<QString, QVariant> map;
         map["desktop"] = user_qsettings.value("desktop");
-        array << map;
-
+        if (array.contains(map)) {
+            continue;
+        } else {
+            array << map;
+        }
     }
     user_qsettings.endArray();
     user_qsettings.endGroup();
