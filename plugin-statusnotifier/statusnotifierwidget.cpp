@@ -101,6 +101,7 @@ void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
         if(m_HideButtons.keys().contains(button->mId)){
             m_HideButtons.remove(button->mId);
         }
+	mServices.remove(serviceAndPath);
         m_AllButtons.remove(button->mId);
         resetLayout();
         button->deleteLater();
