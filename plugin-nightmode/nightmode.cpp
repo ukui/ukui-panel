@@ -189,9 +189,18 @@ void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
 /*右键菜单选项　设置任务栏*/
 void NightModeButton::setUpNightMode()
 {
-    QProcess *process =new QProcess(this);
-    process->startDetached("ukui-control-center -m Display");
-    process->deleteLater();
+    QProcess process;
+    process.start(
+        "bash",
+        QStringList() << "-c"
+                      << "dpkg -l | grep ukui-control-center");
+    process.waitForFinished();
+    QString strResult = process.readAllStandardOutput() + process.readAllStandardError();
+    if (-1 != strResult.indexOf("3.0")) {
+        QProcess::startDetached(QString("ukui-control-center -m"));
+    } else {
+        QProcess::startDetached(QString("ukui-control-center -m Display"));
+    }
 }
 
 /*
