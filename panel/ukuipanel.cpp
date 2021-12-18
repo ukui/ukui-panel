@@ -293,6 +293,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
+    setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
+    setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
+    setPosition(0,intToPosition(gsettings->get(PANEL_POSITION_KEY).toInt(),PositionBottom),true);
+
     time = new QTimer(this);
     connect(time, &QTimer::timeout, this,[=] (){
         mShowDelayTimer.stop();

@@ -42,6 +42,7 @@
 #include <XdgDesktopFile>
 #include <XdgIcon>
 #include <QMessageBox>
+#include <unistd.h>
 #include "../panel/common/ukuigridlayout.h"
 
 #include "ukuitaskbar.h"
@@ -118,6 +119,23 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
         settings=new QGSettings(id);
     }
 
+    mAndroidIconHash=matchAndroidIcon();
+
+    const QByteArray id_Theme("org.ukui.style");
+    if(QGSettings::isSchemaInstalled(id_Theme)){
+        changeTheme = new QGSettings(id_Theme);
+    }
+    connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+        if(key=="iconThemeName"){
+            sleep(1);
+            for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+            {
+                UKUITaskGroup *group = it.value();
+                group->updateIcon();
+            }
+        }
+    });
+
     connect(mSignalMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped), this, &UKUITaskBar::activateTask);
 
     connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged)
@@ -151,6 +169,8 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     } else {
         mPlaceHolder->setFixedSize(0,0);
     }
+
+    QDBusConnection::sessionBus().connect(QString(), QString("/"), "com.ukui.panel", "event", this, SLOT(wl_kwinSigHandler(quint32,int, QString, QString)));
 }
 
 /************************************************
@@ -199,7 +219,17 @@ void UKUITaskBar::refreshQuickLaunch(){
     QString file;
 
     //gsetting的方式读取写入 apps
-    const auto apps = mPlugin->settings()->readArray("apps");
+    QList<QMap<QString, QVariant> > apps = mPlugin->settings()->readArray("apps");
+    QString filename = QDir::homePath() + "/.config/ukui/panel.conf";
+    QSettings user_qsettings(filename,QSettings::IniFormat);
+    QStringList groupname = user_qsettings.childGroups();
+    //为了兼容3.0版本和3.1版本，后续版本考虑删除
+    if (apps.isEmpty() && groupname.contains("quicklaunch")) {
+        apps = copyQuicklaunchConfig();
+    } else if (groupname.contains("quicklaunch")) {
+            user_qsettings.remove("quicklaunch");
+    }
+
     for (const QMap<QString, QVariant> &app : apps)
     {
         desktop = app.value("desktop", "").toString();
@@ -217,6 +247,32 @@ void UKUITaskBar::refreshQuickLaunch(){
     }
 }
 
+QList<QMap<QString, QVariant> > UKUITaskBar::copyQuicklaunchConfig()
+{
+    QString filename = QDir::homePath() + "/.config/ukui/panel.conf";
+    //若taskbar中没有apps，则把quicklaunch中的内容复制到taskbar
+    qDebug()<<"Taskbar is empty, read apps from quicklaunch";
+    QSettings user_qsettings(filename,QSettings::IniFormat);
+    user_qsettings.beginGroup("quicklaunch");
+    QList<QMap<QString, QVariant> > array;
+    int size = user_qsettings.beginReadArray("apps");
+    for (int i = 0; i < size; ++i)
+    {
+        user_qsettings.setArrayIndex(i);
+        QMap<QString, QVariant> map;
+        map["desktop"] = user_qsettings.value("desktop");
+        if (array.contains(map)) {
+            continue;
+        } else {
+            array << map;
+        }
+    }
+    user_qsettings.endArray();
+    user_qsettings.endGroup();
+    user_qsettings.remove("quicklaunch");
+    user_qsettings.sync();
+    return array;
+}
 
 bool UKUITaskBar::acceptWindow(WId window) const
 {
@@ -1083,4 +1139,145 @@ int UKUITaskBar::indexOfButton(UKUITaskGroup* button) const
 int UKUITaskBar::countOfButtons() const
 {
     return mLayout->count();
+}
+
+void UKUITaskBar::wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption) {
+    qDebug()<<"UKUITaskBar::wl_kwinSigHandler"<<wl_winId<<opNo<<wl_iconName<<wl_caption;
+    if (!opNo) {
+//        addWindow_wl(wl_iconName, wl_caption, wl_winId);
+    }
+    switch (opNo) {
+    case 1:
+        mKnownWindows.find(wl_winId).value()->setActivateState_wl(false);
+        break;
+    case 2:
+        onWindowRemoved(wl_winId);
+        break;
+    case 3:
+        mKnownWindows.find(wl_winId).value()->setActivateState_wl(true);
+        break;
+    case 4:
+        addWindow_wl(wl_iconName, wl_caption, wl_winId);
+        mKnownWindows.find(wl_winId).value()->wl_widgetUpdateTitle(wl_caption);
+        break;
+    }
+}
+
+void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
+{
+    // If grouping disabled group behaves like regular button
+//    QString temp_group_id=caption;
+//    QStringList strList = temp_group_id.split(" ");
+
+    const QString group_id = captionExchange(caption);
+    if(QIcon::fromTheme(group_id).isNull()){
+        iconName=QDir::homePath()+"/.local/share/icons/"+group_id+".png";
+    }else{
+        iconName=group_id;
+    }
+    UKUITaskGroup *group = nullptr;
+    auto i_group = mKnownWindows.find(window);
+    if (mKnownWindows.end() != i_group)
+    {
+        if ((*i_group)->groupName() == group_id)
+            group = *i_group;
+        else
+            (*i_group)->onWindowRemoved(window);
+    }
+
+    if (!group && mGroupingEnabled && group_id.compare("kylin-video"))
+    {
+        for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
+        {
+            if ((*i)->groupName() == group_id)
+            {
+                group = *i;
+                break;
+            }
+        }
+    }
+
+    if (!group)
+    {
+        group = new UKUITaskGroup(iconName, caption, window, this);
+        mPlaceHolder->hide();
+        connect(group, SIGNAL(groupBecomeEmpty(QString)), this, SLOT(groupBecomeEmptySlot()));
+        connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
+        connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
+        connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
+            buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
+        });
+
+        //wayland临时图标适配主题代码处理
+        /*********************************************/
+        if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
+            group->setIcon(QIcon::fromTheme(group_id));
+        }else{
+            group->setIcon(QIcon::fromTheme(QDir::homePath()+"/.local/share/icons/"+group_id+".png"));
+        }
+
+        connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+            if(key=="iconThemeName"){
+                sleep(1);
+                if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
+                    group->setIcon(QIcon::fromTheme(group_id));
+                }else{
+                    group->setIcon(QIcon::fromTheme(QDir::homePath()+"/.local/share/icons/"+group_id+".png"));
+                }
+            }
+        });
+        /*********************************************/
+
+//        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
+        //group->setFixedSize(40,40);
+        mLayout->addWidget(group) ;
+        group->wl_widgetUpdateTitle(caption);
+        group->setStyle(new CustomStyle("taskbutton"));
+        group->setToolButtonsStyle(mButtonStyle);
+    }
+
+    mKnownWindows[window] = group;
+    group->wl_addWindow(window);
+}
+
+
+QString UKUITaskBar::captionExchange(QString str)
+{
+    QString temp_group_id=str;
+    QStringList strList = temp_group_id.split(" ");
+    QString group_id = strList[0];
+    QStringList video_list;
+    if(mAndroidIconHash.keys().contains(temp_group_id)){
+        group_id=mAndroidIconHash.value(temp_group_id);
+    }else{
+        video_list<<"影音"<<"Video";
+        if(video_list.contains(group_id)) group_id ="kylin-video";
+        else group_id="application-x-desktop";
+    }
+    return group_id;
+}
+
+QHash<QString,QString> UKUITaskBar::matchAndroidIcon()
+{
+    QHash<QString,QString> hash;
+    printf("*************\n");
+    QFile file("/usr/share/ukui/ukui-panel/plugin-taskbar/name-icon.match");
+    if(!file.open(QIODevice::ReadOnly))  qDebug()<<"Read FIle failed";
+    while (!file.atEnd()){
+        QByteArray line= file.readLine();
+        QString str=file.readLine();
+        str.section('picture',1,1).trimmed().toStdString();
+        str.simplified();
+        QString str_name = str.section(QRegExp("[;]"),0,0);
+        str_name = str_name.simplified();
+        str_name = str_name.remove("name=");
+
+        QString str_icon = str.section(QRegExp("[;]"),1,1);
+        str_icon = str_icon.simplified();
+        str_icon = str_icon.remove("icon=");
+
+        hash.insert(str_name,str_icon);
+    }
+
+    return hash;
 }

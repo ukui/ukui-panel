@@ -36,6 +36,10 @@
 #include <QLocale>
 #include <QProcess>
 
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusReply>
+#include <unistd.h>
+
 
 class QLabel;
 class statelabel;
@@ -207,6 +211,9 @@ private:
     QGSettings *style_settings;
     bool dark_style;
 
+    QStringList getLocale();
+    void setLocaleCalendar();
+
 protected :
     void wheelEvent(QWheelEvent *event);
 
@@ -224,6 +231,7 @@ private Q_SLOTS:
     void customButtonsClicked(int x);
     void yearWidgetChange();
     void monthWidgetChange();
+
 
 public:
     CalendarStyle getCalendarStyle()    const;

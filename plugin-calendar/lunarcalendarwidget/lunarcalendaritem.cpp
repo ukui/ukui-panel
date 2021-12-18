@@ -78,7 +78,7 @@ LunarCalendarItem::LunarCalendarItem(QWidget *parent) : QWidget(parent)
 
     currentBgColor = QColor(255, 255, 255);
     otherBgColor = QColor(240, 240, 240);
-    selectBgColor = QColor(55,143,250);
+    selectBgColor = QColor(55,144,250);
     hoverBgColor = QColor(204, 183, 180);
 }
 

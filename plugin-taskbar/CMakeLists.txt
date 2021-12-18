@@ -43,6 +43,14 @@ set(LIBRARIES
     Qt5X11Extras
 )
 
+install(FILES
+    resources/name-icon.match
+    DESTINATION "/usr/share/ukui/ukui-panel/plugin-taskbar"
+    COMPONENT Runtime
+    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ GROUP_WRITE WORLD_READ WORLD_WRITE WORLD_EXECUTE
+    GROUP_EXECUTE GROUP_READ
+)
+
 include(../cmake/UkuiPluginTranslationTs.cmake)
 ukui_plugin_translate_ts(${PLUGIN})
 

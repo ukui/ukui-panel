@@ -29,10 +29,7 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
     m_list.removeAll(QFile(USR_SHARE_APP_CURRENT));
     m_list.removeAll(QFile(USR_SHARE_APP_UPER));
 
-    //第一种方法：获取点击应用时大部分desktop文件名
-    searchFromEnviron(info);
-
-    //第二种方法：比较名字一致性
+    //第一种方法：比较名字一致性
     if (m_desktopfilePath.isEmpty()) {
         m_classClass = info.windowClassClass().toLower();
         m_className = info.windowClassName();
@@ -53,6 +50,11 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
             }
         }
         compareClassName();
+    }
+
+    //第二种方法：获取点击应用时大部分desktop文件名
+    if (m_desktopfilePath.isEmpty()) {
+        searchFromEnviron(info);
     }
 
     //第三种方法：比较cmd命令行操作一致性

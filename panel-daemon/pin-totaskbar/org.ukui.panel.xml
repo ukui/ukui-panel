@@ -1,0 +1,17 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.ukui.panel">
+    <method name="AddToTaskbar">
+      <arg type="b" direction="out"/>
+      <arg name="desktop" type="s" direction="in"/>
+    </method>
+    <method name="RemoveFromTaskbar">
+      <arg type="b" direction="out"/>
+      <arg name="desktop" type="s" direction="in"/>
+    </method>
+    <method name="CheckIfExist">
+      <arg type="b" direction="out"/>
+      <arg name="desktop" type="s" direction="in"/>
+    </method>
+  </interface>
+</node>
