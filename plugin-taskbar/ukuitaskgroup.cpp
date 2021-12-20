@@ -322,25 +322,6 @@ QWidget * UKUITaskGroup::addWindow(WId id)
 
     changeTaskButtonStyle();
 
-    //龙芯最小化窗口预览的特殊处理——截图存储
-    if (!parentTaskBar()->getCpuInfoFlg()) {
-        XImage *img = NULL;
-        Display *display = NULL;
-        QPixmap thumbnail;
-        XWindowAttributes attr;
-
-        display = XOpenDisplay(nullptr);
-        XGetWindowAttributes(display, id, &attr);
-        img = XGetImage(display, id, 0, 0, attr.width, attr.height, 0xffffffff, ZPixmap);
-        QThread::sleep(1);
-        if (img) {
-            thumbnail = qimageFromXImage(img).scaled(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            thumbnail.save(QString("/tmp/%1.png").arg(id));  //存储在tmp下
-        }
-        if (img) XDestroyImage(img);
-        if (display) XCloseDisplay(display);
-    }
-
     return btn;
 }
 
