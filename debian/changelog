@@ -1,3 +1,15 @@
+ukui-panel (3.0.6.3-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Allen <zouchang@kylinos.cn>  Wed, 24 Nov 2021 09:42:43 +0800
+
+ukui-panel (3.0.6-1) focal; urgency=medium
+
+  * New upstream release.
+
+ -- Allen <zouchang@kylinos.cn>  Thu, 04 Nov 2021 17:19:50 +0800
+
 ukui-panel (3.0.5-1) unstable; urgency=medium
 
   * New upstream bugfix release.
