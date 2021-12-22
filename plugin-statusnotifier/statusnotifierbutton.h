@@ -40,6 +40,11 @@
 #include <QEvent>
 #include <QMenu>
 #include <QString>
+#include <QGSettings>
+
+#define ORG_UKUI_STYLE  "org.ukui.style"
+#define ICON_THEME_NAME "iconThemeName"
+
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
 template <typename T> inline T qFromUnaligned(const uchar *src)
@@ -68,6 +73,7 @@ public:
     };
     QString hideAbleStatusNotifierButton();
     static QString mimeDataFormat() { return QLatin1String("x-ukui/statusnotifier-button"); }
+    QImage getBlackThemeIcon(QImage image);
 
 public slots:
     void newIcon();
@@ -77,7 +83,9 @@ public slots:
     void newStatus(QString status);
 
 public:
-    QString mTitle;
+    QString mId;
+    bool mIdStatus=false;
+    bool mIconStatus=false;
 
 private:
     SniAsync *interface;
@@ -85,7 +93,6 @@ private:
     Status mStatus;
 
     QString mThemePath;
-//    QString mTitle;
     QIcon mIcon, mOverlayIcon, mAttentionIcon, mFallbackIcon;
 
     QPoint mDragStart;
@@ -94,17 +101,25 @@ private:
 
     QString drag_status_flag;
 
+    uint mCount = 0;
+    bool mParamInit=false;
+    QGSettings *mThemeSettings;
+
 signals:
     void switchButtons(StatusNotifierButton *from, StatusNotifierButton *to);
     void sendTitle(QString arg);
     void sendstatus(QString arg);
     void cleansignal();
+    void iconReady();
+    void layoutReady();
+    void paramReady();
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
     void dragEnterEvent(QDragEnterEvent *e);
+    void dragLeaveEvent(QDragLeaveEvent *e);
     void dragMoveEvent(QDragMoveEvent * e);
     void mouseMoveEvent(QMouseEvent *e);
     void mousePressEvent(QMouseEvent *e);
@@ -114,6 +129,10 @@ protected:
 
     void refetchIcon(Status status);
     void resetIcon();
+
+private:
+    void systemThemeChanges();
+
 };
 
 class StatusNotifierButtonMimeData: public QMimeData

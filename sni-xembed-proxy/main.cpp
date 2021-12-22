@@ -1,6 +1,7 @@
 #include "snixembedproxy.h"
 #include <QApplication>
 #include <QSessionManager>
+#include <ukui-log4qt.h>
 #include "xcbutilss.h"
 
 namespace Xcb {
@@ -9,6 +10,8 @@ namespace Xcb {
 
 int main(int argc, char *argv[])
 {
+    initUkuiLog4qt("sni-xembed-proxy");
+
     qputenv("QT_QPA_PLATFORM", "xcb");
 
     QGuiApplication::setDesktopSettingsAware(false);

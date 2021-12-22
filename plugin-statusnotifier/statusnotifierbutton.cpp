@@ -78,8 +78,28 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     connect(interface, &SniAsync::NewToolTip, this, &StatusNotifierButton::newToolTip);
     connect(interface, &SniAsync::NewStatus, this, &StatusNotifierButton::newStatus);
 
+    hideAbleStatusNotifierButton();
+    connect(this,&StatusNotifierButton::paramReady,this,[=](){
+        if(!this->mId.isEmpty() && this->mIconStatus && !mParamInit){
+            emit layoutReady();
+            mParamInit = true;
+        }
+        else{
+            if(this->mId.isEmpty()){
+                if(mCount < 5)      //超过5次将不再获取
+                    hideAbleStatusNotifierButton();
+                mCount++;
+            }
+        }
+    });
+
+    /*Menu返回值：
+    无菜单项返回: "/NO_DBUSMENU"；
+    有菜单项返回: "/MenuBar",其他；
+    x-sni注册的返回: ""
+    */
     interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
-        if (!path.path().isEmpty())
+        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
         {
             mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
             mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
@@ -100,6 +120,7 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setProperty("useIconHighlightEffect", 0x2);
     newToolTip();
+    systemThemeChanges();
 }
 
 StatusNotifierButton::~StatusNotifierButton()
@@ -208,7 +229,9 @@ void StatusNotifierButton::refetchIcon(Status status)
                         for (const uchar *src = image.constBits(); src < end; src += 4, dest += 4)
                             qToUnaligned(qToBigEndian<quint32>(qFromUnaligned<quint32>(src)), dest);
 
-                        nextIcon.addPixmap(QPixmap::fromImage(image));
+                        //图标反白
+                        QImage currentImage= getBlackThemeIcon(image);
+                        nextIcon.addPixmap(QPixmap::fromImage(currentImage));
                     }
                 }
 
@@ -224,7 +247,6 @@ void StatusNotifierButton::refetchIcon(Status status)
                         mIcon = nextIcon;
                         break;
                 }
-
                 resetIcon();
             });
         }
@@ -272,7 +294,6 @@ void StatusNotifierButton::contextMenuEvent(QContextMenuEvent* event)
 
 void StatusNotifierButton::mouseMoveEvent(QMouseEvent *e)
 {
-
     if (e->button() == Qt::RightButton)
         return;
     if (!(e->buttons() & Qt::LeftButton))
@@ -320,8 +341,10 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
     {
         if (mMenu)
         {
-            mPlugin->willShowWindow(mMenu);
-            mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+            if (!mMenu->isEmpty()){
+                mPlugin->willShowWindow(mMenu);
+                mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+            }
         } else
             interface->ContextMenu(QCursor::pos().x(), QCursor::pos().y());
     }
@@ -348,10 +371,32 @@ void StatusNotifierButton::resetIcon()
         setIcon(mAttentionIcon);
     else
         setIcon(mFallbackIcon);
+
+
+    mIconStatus=true;
+    emit paramReady();
 }
+
+void StatusNotifierButton::systemThemeChanges()
+{
+    //主题变化
+    const QByteArray styleId(ORG_UKUI_STYLE);
+    if(QGSettings::isSchemaInstalled(styleId)){
+        mThemeSettings = new QGSettings(styleId);
+
+        connect(mThemeSettings, &QGSettings::changed, this, [=] (const QString &key){
+            if(key == ICON_THEME_NAME){
+                //主题变化任务栏主动更新图标
+                refetchIcon(Passive);
+            }
+        });
+    }
+}
+
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
 {
+    update();
 //    if (e->mimeData()->hasFormat(MIMETYPE))
 //        e->acceptProposedAction();
 //    else
@@ -370,6 +415,12 @@ void StatusNotifierButton::dragEnterEvent(QDragEnterEvent *e)
     QToolButton::dragEnterEvent(e);
 }
 
+void StatusNotifierButton::dragLeaveEvent(QDragLeaveEvent *e)
+{
+    update();  //拖拽离开wigget时，需要updata
+    e->accept();
+}
+
 QMimeData * StatusNotifierButton::mimeData()
 {
     StatusNotifierButtonMimeData *mimeData = new StatusNotifierButtonMimeData();
@@ -381,13 +432,12 @@ QMimeData * StatusNotifierButton::mimeData()
 
 void StatusNotifierButton::mousePressEvent(QMouseEvent *e)
 {
-//    if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
-//    {
-//        mDragStart = e->pos();
-//        return;
-//    }
+    if (e->button() == Qt::LeftButton ) {
+        mDragStart = e->pos();
+        return;
+    }
 
-//    QToolButton::mousePressEvent(e);
+    QToolButton::mousePressEvent(e);
 }
 
 bool StatusNotifierButton::event(QEvent *e)
@@ -423,8 +473,33 @@ void StatusNotifierButton::resizeEvent(QResizeEvent *event){
 
 QString StatusNotifierButton::hideAbleStatusNotifierButton()
 {
-    interface->propertyGetAsync(QLatin1String("Title"), [this] (QString title) {
-        mTitle = title;
+    interface->propertyGetAsync(QLatin1String("Id"), [this] (QString title) {
+        mId = "";
+        mId = title;
+        emit paramReady();
+
     });
-    return mTitle;
+    return mId;
+}
+
+QImage StatusNotifierButton::getBlackThemeIcon(QImage image)
+{
+    QColor standard (31,32,34);
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            auto color = image.pixelColor(x, y);
+            if (color.alpha() > 0) {
+                if(qAbs(color.red()-standard.red())<20 && qAbs(color.green()-standard.green())<20 && qAbs(color.blue()-standard.blue())<20){
+                    color.setRed(255);
+                    color.setGreen(255);
+                    color.setBlue(255);
+                    image.setPixelColor(x, y, color);
+                }
+                else{
+                    image.setPixelColor(x, y, color);
+                }
+            }
+        }
+    }
+    return image;
 }

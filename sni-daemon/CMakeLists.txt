@@ -23,10 +23,10 @@ find_package(PkgConfig REQUIRED)
 
 add_executable(sni-daemon
         main.cpp
-        snideamo.cpp
+        snidaemon.cpp
         statusnotifieritem_interface.cpp
 
-        snideamo.h
+        snidaemon.h
         statusnotifieritem_interface.h
         systemtraytypedefs.h
 )
@@ -34,6 +34,7 @@ add_executable(sni-daemon
 target_link_libraries(sni-daemon
     Qt5::Widgets
     Qt5::DBus
+    -lukui-log4qt
     )
 
 add_definitions(-DQT_MESSAGELOGCONTEXT)

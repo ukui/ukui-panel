@@ -76,26 +76,16 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     QString serv = serviceAndPath.left(slash);
     QString path = serviceAndPath.mid(slash);
     StatusNotifierButton *button = new StatusNotifierButton(serv, path, mPlugin, this);
-    mServices.insert(serviceAndPath, button);
-    mStatusNotifierButtons.append(button);
     button->setStyle(new CustomStyle);
     connect(button, SIGNAL(switchButtons(StatusNotifierButton*,StatusNotifierButton*)), this, SLOT(switchButtons(StatusNotifierButton*,StatusNotifierButton*)));
-
-    //dbus异步调用，同步执行获取不到托盘名字，通过定时器进行异步刷新，后期可进行优化
-    for(int i=0;i<mStatusNotifierButtons.size();i++){
-        if(mStatusNotifierButtons.at(i))
-        {
-            if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()==""){
-                continue;
-            }
+    //QTimer::singleShot(200,this,[=](){resetLayout();});
+    connect(button,&StatusNotifierButton::layoutReady,this,[=](){
+        if(button->mIconStatus && !button->mId.isEmpty()) {  //Icon和ID都准备好后再加入布局
+            mServices.insert(serviceAndPath, button);
+            mStatusNotifierButtons.append(button);
+            resetLayout();
         }
-        else{
-            qDebug()<<"mStatusNotifierButtons add error   :  "<<mStatusNotifierButtons.at(i);
-        }
-    }
-
-    QTimer::singleShot(200,this,[=](){resetLayout();});
-
+    });
 }
 
 void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
@@ -105,13 +95,14 @@ void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
     {
         mStatusNotifierButtons.removeOne(button);
         mLayout->removeWidget(button);
-        if(m_ShowButtons.keys().contains(button->hideAbleStatusNotifierButton())){
-            m_ShowButtons.remove(button->hideAbleStatusNotifierButton());
+        if(m_ShowButtons.keys().contains(button->mId)){
+            m_ShowButtons.remove(button->mId);
         }
-        if(m_HideButtons.keys().contains(button->hideAbleStatusNotifierButton())){
-            m_HideButtons.remove(button->hideAbleStatusNotifierButton());
+        if(m_HideButtons.keys().contains(button->mId)){
+            m_HideButtons.remove(button->mId);
         }
-        m_AllButtons.remove(button->hideAbleStatusNotifierButton());
+	mServices.remove(serviceAndPath);
+        m_AllButtons.remove(button->mId);
         resetLayout();
         button->deleteLater();
     }
@@ -148,13 +139,13 @@ void StatusNotifierWidget::resetLayout(){
     for(int i=0;i<mStatusNotifierButtons.size();i++){
         if(mStatusNotifierButtons.at(i))
         {
-            m_AllButtons.insert(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton().toUtf8(),mStatusNotifierButtons.at(i));
-            if((!show.contains(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()))&&(!hide.contains(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()))){
-                if(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton()==""){
+            m_AllButtons.insert(mStatusNotifierButtons.at(i)->mId,mStatusNotifierButtons.at(i));
+            if((!show.contains(mStatusNotifierButtons.at(i)->mId))&&(!hide.contains(mStatusNotifierButtons.at(i)->mId))){
+                if(mStatusNotifierButtons.at(i)->mId==""){
                     continue;
                 }
-                hide.append(mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton());
-                saveSettings("",mStatusNotifierButtons.at(i)->hideAbleStatusNotifierButton());
+                hide.append(mStatusNotifierButtons.at(i)->mId);
+                saveSettings("",mStatusNotifierButtons.at(i)->mId);
                 continue;
             }
         }
@@ -196,13 +187,13 @@ void StatusNotifierWidget::switchButtons(StatusNotifierButton *button1, StatusNo
     mLayout->moveItem(l, m);
     mLayout->moveItem(m-1, l);
 
-    if(!(m_HideButtons.keys().contains(button1->hideAbleStatusNotifierButton())&&m_HideButtons.keys().contains(button2->hideAbleStatusNotifierButton()))){
-        m_HideButtons.remove(button1->hideAbleStatusNotifierButton());
+    if(!(m_HideButtons.keys().contains(button1->mId)&&m_HideButtons.keys().contains(button2->mId))){
+        m_HideButtons.remove(button1->mId);
     }
-    if(!(m_ShowButtons.keys().contains(button1->hideAbleStatusNotifierButton())&&m_ShowButtons.keys().contains(button2->hideAbleStatusNotifierButton()))){
-        m_ShowButtons.remove(button1->hideAbleStatusNotifierButton());
+    if(!(m_ShowButtons.keys().contains(button1->mId)&&m_ShowButtons.keys().contains(button2->mId))){
+        m_ShowButtons.remove(button1->mId);
     }
-    saveSettings(button1->hideAbleStatusNotifierButton(),button2->hideAbleStatusNotifierButton());
+    saveSettings(button1->mId,button2->mId);
     resetLayout();
 }
 

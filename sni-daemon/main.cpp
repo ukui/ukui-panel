@@ -1,10 +1,11 @@
-#include "snideamo.h"
-
+#include "snidaemon.h"
+#include <ukui-log4qt.h>
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
+    initUkuiLog4qt("sni-daemon");
     QApplication a(argc, argv);
-    SniDeamo w;
+    SniDaemon w;
     return a.exec();
 }
