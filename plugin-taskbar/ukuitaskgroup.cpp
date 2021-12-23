@@ -266,7 +266,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
         if (existSameQckBtn) menu->removeAction(mAddAct);
         else menu->removeAction(mDeleteAct);
     }
-    QAction *mCloseAct = menu->addAction(QIcon::fromTheme("process-stop"), tr("close"));
+    QAction *mCloseAct = menu->addAction(QIcon::fromTheme("application-exit-symbolic"), tr("close"));
     connect(mCloseAct, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {
         mPreventPopup = false;
