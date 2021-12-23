@@ -705,8 +705,9 @@ void UKUITaskGroup::setPopupVisible(bool visible, bool fast)
  ************************************************/
 void UKUITaskGroup::refreshIconsGeometry()
 {
+    float scale = qApp->devicePixelRatio();
     QRect rect = geometry();
-    rect.moveTo(mapToGlobal(QPoint(0, 0)));
+    rect.moveTo(mapToGlobal(QPoint(0, 0)).x() * scale, mapToGlobal(QPoint(0, 0)).y() * scale);
     if (mSingleButton)
     {
         refreshIconGeometry(rect);
