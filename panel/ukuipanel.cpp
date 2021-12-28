@@ -1466,8 +1466,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                   )->setDisabled(mLockPanel);
 */
 
-    if(QFileInfo::exists(QString("/usr/bin/ukui-about")))
-    {
         QAction *about;
         about=new QAction(this);
         about->setText(tr("About Kylin"));
@@ -1487,7 +1485,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                 }
         });
 
-    }
 #ifdef DEBUG
     menu->addSeparator();
     menu->addAction("Exit (debug only)", qApp, SLOT(quit()));
