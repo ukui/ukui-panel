@@ -131,29 +131,14 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     QTimer *timer = new QTimer(this);
     connect(timer,&QTimer::timeout,[this] {this->setEnabled(true);});
     timer->start(50);
-    connect(this,&NightModeButton::clicked,this, [this] { pressBitton();});
+    connect(this,&NightModeButton::clicked,this, [this] { onClick();});
 }
 NightModeButton::~NightModeButton(){
     delete mqtstyleGsettings;
     delete mgtkstyleGsettings;
 }
 
-/*NOTE:目前夜间模式的点击按钮实现的是　设置夜间模式＋切换主题*/
-//void NightModeButton::mousePressEvent(QMouseEvent *event)
-//{
-//    if(event->button()==Qt::LeftButton){
-//        getNightModeState();
-//        if(mode){
-//            setUkuiStyle(DEFAULT_STYLE);
-
-//        }else{
-//            setUkuiStyle(BLACK_STYLE);
-//        }
-//        setNightMode(!mode);
-//    }
-//}
-
-void NightModeButton::pressBitton()
+void NightModeButton::onClick()
 {
     getNightModeState();
     if(mode){
@@ -165,42 +150,9 @@ void NightModeButton::pressBitton()
     setNightMode(!mode);
     this->setEnabled(true);
 }
-/*夜间模式右键菜单*/
+
 void NightModeButton::contextMenuEvent(QContextMenuEvent *event)
 {
-    nightModeMenu=new QMenu();
-    nightModeMenu->setAttribute(Qt::WA_DeleteOnClose);
-    nightModeMenu->setWindowOpacity(0.7);
-
-    QAction * opennightmode = nightModeMenu->addAction(tr("Turn On NightMode"));
-
-    opennightmode->setCheckable(true);
-    opennightmode->setChecked(mode);
-    connect(opennightmode, &QAction::triggered, [this] { setNightMode(!mode); });
-
-    nightModeMenu->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
-                             tr("Set Up NightMode"),
-                             this, SLOT(setUpNightMode())
-                             );
-    nightModeMenu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), nightModeMenu->sizeHint()));
-    nightModeMenu->show();
-}
-
-/*右键菜单选项　设置任务栏*/
-void NightModeButton::setUpNightMode()
-{
-    QProcess process;
-    process.start(
-        "bash",
-        QStringList() << "-c"
-                      << "dpkg -l | grep ukui-control-center");
-    process.waitForFinished();
-    QString strResult = process.readAllStandardOutput() + process.readAllStandardError();
-    if (-1 != strResult.indexOf("3.0")) {
-        QProcess::startDetached(QString("ukui-control-center -m"));
-    } else {
-        QProcess::startDetached(QString("ukui-control-center -m Display"));
-    }
 }
 
 /*
