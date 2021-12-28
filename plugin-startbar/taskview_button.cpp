@@ -29,8 +29,8 @@ void TaskViewButton::realign()
 void TaskViewButton::mousePressEvent(QMouseEvent *event)
 {
     const Qt::MouseButton b = event->button();
-    //调用dbus接口
 #if 0
+    //调用dbus接口
     QString object = QString(getenv("DISPLAY"));
     object = object.trimmed().replace(":", "_").replace(".", "_").replace("-", "_");
     object = "/org/ukui/WindowSwitch/display/" + object;
@@ -57,6 +57,7 @@ void TaskViewButton::mousePressEvent(QMouseEvent *event)
         }
     }
 #endif
+
     //调用命令
     if (Qt::LeftButton == b){
         system("ukui-window-switch --show-workspace");

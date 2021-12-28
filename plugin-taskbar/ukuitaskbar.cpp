@@ -144,16 +144,6 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged()));
 
-    //龙芯机器的最小化任务窗口的预览窗口的特殊处理
-    system("cat /proc/cpuinfo >> /tmp/_tmp_cpu_info_cat_");
-    QFile file("/tmp/_tmp_cpu_info_cat_");
-    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read CpuInfo Failed.";
-    while (CpuInfoFlg && !file.atEnd()) {
-        QByteArray line = file.readLine();
-        QString str(line);
-        if (str.contains("Loongson")) CpuInfoFlg = false;
-    }
-    file.close();
     saveSettings();
 
     /**/
@@ -261,8 +251,11 @@ QList<QMap<QString, QVariant> > UKUITaskBar::copyQuicklaunchConfig()
         user_qsettings.setArrayIndex(i);
         QMap<QString, QVariant> map;
         map["desktop"] = user_qsettings.value("desktop");
-        array << map;
-
+        if (array.contains(map)) {
+            continue;
+        } else {
+            array << map;
+        }
     }
     user_qsettings.endArray();
     user_qsettings.endGroup();

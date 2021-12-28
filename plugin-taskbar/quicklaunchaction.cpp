@@ -26,6 +26,7 @@
 
 #include <gio/gdesktopappinfo.h>
 #include "quicklaunchaction.h"
+#include <QApplication>
 #include <QDesktopServices>
 #include <QFileIconProvider>
 #include <QMimeDatabase>
@@ -123,8 +124,9 @@ void QuickLaunchAction::execAction(QString additionalAction)
 #if USE_STARTUP_INFO
                     bool needCleanup = true;
                     QWidget * pw = static_cast<QWidget*>(parent());
+                    float scale = qApp->devicePixelRatio();
                     QRect rect = pw->geometry();
-                    rect.moveTo(pw->mapToGlobal(QPoint(0, 0)));
+                    rect.moveTo(pw->mapToGlobal(QPoint(0, 0)).x() * scale, pw->mapToGlobal(QPoint(0, 0)).y() * scale);
 
                     quint32 timeStamp = QX11Info::isPlatformX11() ? QX11Info::appUserTime() : 0;
                     KStartupInfoId* startInfoId = new KStartupInfoId();

@@ -97,9 +97,10 @@ FDClickWidget::FDClickWidget(QWidget *parent,
 
         m_eject_button = new QPushButton(this);
         m_eject_button->setProperty("useIconHighlightEffect", 0x2);
+        m_eject_button->setProperty("useButtonPalette", true);
         m_eject_button->setFlat(true);   //this property set that when the mouse is hovering in the icon the icon will move up a litte
         m_eject_button->move(m_eject_button->x()+234,m_eject_button->y());
-        m_eject_button->installEventFilter(this);
+        //m_eject_button->installEventFilter(this);
         m_eject_button->setIcon(QIcon::fromTheme("media-eject-symbolic"));
         m_eject_button->setFixedSize(36,36);
         m_eject_button->setToolTip(tr("Eject"));
@@ -113,8 +114,8 @@ FDClickWidget::FDClickWidget(QWidget *parent,
     }    
 
     QVBoxLayout *main_V_BoxLayout = new QVBoxLayout(this);
-    main_V_BoxLayout->setContentsMargins(0,0,0,0);
-    main_V_BoxLayout->setMargin(0);
+    main_V_BoxLayout->setContentsMargins(8,0,8,0);
+    //main_V_BoxLayout->setMargin(0);
     disWidgetNumOne = new QWidget(this);
     QHBoxLayout *onevolume_h_BoxLayout = new QHBoxLayout();
     m_nameDis1_label = new ClickLabel(disWidgetNumOne);
@@ -433,12 +434,14 @@ bool FDClickWidget::eventFilter(QObject *obj, QEvent *event)
             || currentThemeMode == "ukui")
            {
                disWidgetNumOne->setStyleSheet(
-                           "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);}");
+                           "QWidget#OriginObjectOnly{background:rgba(255,255,255,0.12);"
+                           "border-radius: 6px;}");
            }
            else
            {
                disWidgetNumOne->setStyleSheet(
-                           "QWidget#OriginObjectOnly{background:rgba(0,0,0,0.12);}");
+                           "QWidget#OriginObjectOnly{background:rgba(0,0,0,0.12);"
+                           "border-radius: 6px;}");
            }
        }
 
