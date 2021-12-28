@@ -71,7 +71,7 @@ private:
     bool mode;
 
 public slots:
-        void pressButton();
+        void onClick();
 private slots:
     void nightChangedSlot(QHash<QString,QVariant> nightArg);
 };

@@ -131,14 +131,14 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     QTimer *timer = new QTimer(this);
     connect(timer,&QTimer::timeout,[this] {this->setEnabled(true);});
     timer->start(50);
-    connect(this,&NightModeButton::clicked,this, [this] { pressButton();});
+    connect(this,&NightModeButton::clicked,this, [this] { onClick();});
 }
 NightModeButton::~NightModeButton(){
     delete mqtstyleGsettings;
     delete mgtkstyleGsettings;
 }
 
-void NightModeButton::pressButton()
+void NightModeButton::onClick()
 {
     getNightModeState();
     if(mode){
