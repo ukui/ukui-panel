@@ -368,7 +368,7 @@ void RepairProgressBar::onStopRepair(bool success)
         MessageBox msg(tr("Disk repair"), tr("Repair failed. If the USB flash disk is not mounted, please try formatting the device!"), QMessageBox::Ok | QMessageBox::Cancel, this);
 
         connect(&msg, &MessageBox::format, this, [=](){
-            FormateDialog dlg(mVolume, this);
+            FormateDialog dlg(mDrive);
             int ret = dlg.exec();
             if (QDialog::Accepted == ret) {
                 accept();
@@ -486,7 +486,6 @@ void FormateDialog::initUI()
     mainLayout->addWidget(mNameEdit, 3, 3, 1, 6);
 
     QLabel* eraseLabel = new QLabel;
-    eraseLabel->setWordWrap(true);
     eraseLabel->setText(tr("Completely erase(Time is longer, please confirm!)"));
     mEraseCkbox = new QCheckBox;
     mainLayout->addWidget(mEraseCkbox, 4, 1, 1, 1, Qt::AlignRight);
