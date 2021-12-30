@@ -443,6 +443,9 @@ void UKUITaskWidget::closeGroup() {
 
 void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 {
+    KWindowInfo info(mWindow, 0, NET::WM2AllowedActions);
+    unsigned long state = KWindowInfo(mWindow, NET::WMState).state();
+
     if (!mPlugin || isWaylandWidget)
         return;
     QMenu * menu = new QMenu(tr("Widget"));
@@ -452,6 +455,7 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
     QAction *restore = menu->addAction(QIcon::fromTheme("window-restore-symbolic"), tr("restore"));
 
     QAction *maxim = menu->addAction(QIcon::fromTheme("window-maximize-symbolic"), tr("maximaze"));
+    maxim->setEnabled(info.actionSupported(NET::ActionMax) && (!(state & NET::Max) || (state & NET::Hidden)));
 
     QAction *minim = menu->addAction(QIcon::fromTheme("window-minimize-symbolic"), tr("minimize"));
     QAction *above = menu->addAction(QIcon::fromTheme("ukui-fixed"), tr("above"));
@@ -467,7 +471,6 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
         emit closeSigtoPop();
 
     });
-    KWindowInfo info(mWindow, NET::WMState);
     above->setEnabled(!(info.state() & NET::KeepAbove));
     clear->setEnabled(info.state() & NET::KeepAbove);
     menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
