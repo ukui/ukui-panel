@@ -1567,8 +1567,8 @@ void MainWindow::newarea(unsigned uDiskNo,
     }
 
     vboxlayout->setContentsMargins(2,4,2,4);
-    vboxlayout->setSpacing(0);
-    vboxlayout->setMargin(0);
+    //vboxlayout->setSpacing(0);
+    //vboxlayout->setMargin(0);
     this->vboxlayout->addWidget(m_fdClickWidget);
 
     if (linestatus == 0) {

@@ -114,7 +114,7 @@ FDClickWidget::FDClickWidget(QWidget *parent,
     }    
 
     QVBoxLayout *main_V_BoxLayout = new QVBoxLayout(this);
-    main_V_BoxLayout->setContentsMargins(8,0,8,0);
+    main_V_BoxLayout->setContentsMargins(6, 0, 6, 0);
     //main_V_BoxLayout->setMargin(0);
     disWidgetNumOne = new QWidget(this);
     QHBoxLayout *onevolume_h_BoxLayout = new QHBoxLayout();
