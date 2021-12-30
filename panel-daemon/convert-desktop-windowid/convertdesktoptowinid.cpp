@@ -29,6 +29,12 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
     m_list.removeAll(QFile(USR_SHARE_APP_CURRENT));
     m_list.removeAll(QFile(USR_SHARE_APP_UPER));
 
+    //加入自启动目录下的desktop文件,优先使用/usr/share/applications/下的desktop
+    QDir dir(AUTOSTART_DEKSTOP_FILE_PATH);
+    QFileInfoList autostartList = dir.entryInfoList();
+    m_list.append(autostartList);
+
+
     //第一种方法：比较名字一致性
     if (m_desktopfilePath.isEmpty()) {
         m_classClass = info.windowClassClass().toLower();

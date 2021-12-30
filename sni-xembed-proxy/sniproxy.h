@@ -33,6 +33,7 @@
 #include <xcb/xcb_image.h>
 
 #include "snidbus.h"
+#include "../panel-daemon/convert-desktop-windowid/convertdesktoptowinid.h"
 
 class SNIProxy : public QObject
 {

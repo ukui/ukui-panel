@@ -6,6 +6,7 @@
 #include <KWindowSystem>
 #include <QDir>
 
+#define AUTOSTART_DEKSTOP_FILE_PATH     "/etc/xdg/autostart/"
 #define DEKSTOP_FILE_PATH       "/usr/share/applications/"
 #define USR_SHARE_APP_CURRENT   "/usr/share/applications/."
 #define USR_SHARE_APP_UPER      "/usr/share/applications/.."

@@ -29,6 +29,7 @@ add_executable(sni-xembed-proxy
         sniproxy.cpp
         snidbus.cpp
         statusnotifierwatcher_interface.cpp
+        ../panel-daemon/convert-desktop-windowid/convertdesktoptowinid.cpp
 
         snixembedproxy.h
         sniproxy.h
@@ -36,6 +37,7 @@ add_executable(sni-xembed-proxy
         statusnotifierwatcher_interface.h
         systemtraytypedefs.h
         xcbutilss.h
+        ../panel-daemon/convert-desktop-windowid/convertdesktoptowinid.h
 )
 
 target_link_libraries(sni-xembed-proxy
@@ -50,6 +52,7 @@ target_link_libraries(sni-xembed-proxy
     xcb-composite
     xcb-shape
     -lukui-log4qt
+    -lQt5Xdg
     )
 
 add_definitions(-DQT_NO_KEYWORDS)
