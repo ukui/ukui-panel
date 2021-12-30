@@ -76,7 +76,7 @@ LunarCalendarYearItem::LunarCalendarYearItem(QWidget *parent) : QWidget(parent)
 
     currentBgColor = QColor(255, 255, 255);
     otherBgColor = QColor(240, 240, 240);
-    selectBgColor = QColor(55,143,250);
+    selectBgColor = QColor(55,144,250);
     hoverBgColor = QColor(204, 183, 180);
 }
 
@@ -199,7 +199,7 @@ void LunarCalendarYearItem::drawYear(QPainter *painter)
     painter->setFont(font);
 
     QRect dayRect = QRect(0, 0, width, height / 1.7);
-    QString arg = QString::number(date.year()) + "年";
+    QString arg = QString::number(date.year()) /*+ "年"*/;
     painter->drawText(dayRect, Qt::AlignHCenter | Qt::AlignBottom, arg);
     painter->restore();
 }

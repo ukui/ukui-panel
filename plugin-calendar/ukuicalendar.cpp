@@ -119,15 +119,15 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
                 hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal_CN;
                 hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical_CN;
                 current_date=CURRENT_DATE_CN;
-            }
-            else
-            {
-                hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
-                hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
-                hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
-                hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
-                current_date=CURRENT_DATE;
-            }
+        }
+        else
+        {
+            hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal;
+            hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical;
+            hourSystem_12_horzontal=HOUR_SYSTEM_12_Horizontal;
+            hourSystem_12_vartical=HOUR_SYSTEM_12_Vertical;
+            current_date=CURRENT_DATE;
+        }
     } else {
         hourSystem_24_horzontal=HOUR_SYSTEM_24_Horizontal_CN;
         hourSystem_24_vartical=HOUR_SYSTEM_24_Vertical_CN;
@@ -651,10 +651,6 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
                    tr("Time and Date Setting"),
                    this, SLOT(setControlTime())
                   );
-    menuCalender->addAction(QIcon::fromTheme("document-page-setup-symbolic"),
-                   tr("Config panel"),
-                   this, SLOT(setUpPanel())
-                  );
     menuCalender->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menuCalender->sizeHint()));
     menuCalender->show();
 }
@@ -662,12 +658,15 @@ void CalendarActiveLabel::contextMenuEvent(QContextMenuEvent *event)
 void CalendarActiveLabel::setControlTime()
 {
     QProcess *process =new QProcess(this);
-    process->startDetached("ukui-control-center -t");
+    process->start(
+            "bash",
+            QStringList() << "-c"
+                          << "dpkg -l | grep ukui-control-center");
+        process->waitForFinished();
+        QString strResult = process->readAllStandardOutput() + process->readAllStandardError();
+        if (-1 != strResult.indexOf("3.0")) {
+            QProcess::startDetached(QString("ukui-control-center -t"));
+        } else {
+            QProcess::startDetached(QString("ukui-control-center -m Date"));
+        }
 }
-
-void CalendarActiveLabel::setUpPanel()
-{
-    QProcess *process =new QProcess(this);
-    process->startDetached("ukui-control-center -d");
-}
-

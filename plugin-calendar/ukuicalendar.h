@@ -149,11 +149,6 @@ private Q_SLOTS:
      * @brief setControlTime 右键菜单选项，在控制面板设置时间
      */
     void setControlTime();
-    /**
-     * @brief setUpPanel 设置任务栏选项
-     */
-    void setUpPanel();
-
 
 };
 
