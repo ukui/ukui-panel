@@ -496,6 +496,7 @@ QString SNIProxy::Title() const
     QString toolTip;
     ConvertDesktopToWinId *getDesktop = new ConvertDesktopToWinId();
     QString appDesktopPath = getDesktop->tranIdToDesktop(window.win());
+    delete getDesktop;
     if(QFile::exists(appDesktopPath)){
         XdgDesktopFile xdg;
         xdg.load(appDesktopPath);
