@@ -99,6 +99,7 @@ void ConvertDesktopToWinId::searchAndroidApp(KWindowInfo info)
         desktopName = desktopName.left(desktopName.lastIndexOf("."));
         if(desktopName == cmdList.at(10)){
             m_desktopfilePath = fileInfo.filePath();
+            break;
         }
     }
 }
@@ -116,6 +117,7 @@ void ConvertDesktopToWinId::searchFromEnviron(KWindowInfo info)
             m_desktopfilePath = m_desktopfilePath.mid(m_desktopfilePath.indexOf("=") + 1);
             //desktop文件地址需要重写
             m_desktopfilePath = m_desktopfilePath.mid(m_desktopfilePath.lastIndexOf("/") + 1);
+            break;
         }
     }
     //desktop文件地址重写
@@ -124,6 +126,7 @@ void ConvertDesktopToWinId::searchFromEnviron(KWindowInfo info)
             QFileInfo fileInfo = m_list.at(i);;
             if (fileInfo.filePath() == DEKSTOP_FILE_PATH + m_desktopfilePath) {
                 m_desktopfilePath = fileInfo.filePath();
+                break;
             }
         }
     }
@@ -142,6 +145,7 @@ void ConvertDesktopToWinId::compareClassName()
         path_desktop_name = path_desktop_name.left(path_desktop_name.lastIndexOf("."));
         if (path_desktop_name == m_classClass || path_desktop_name == m_className || path_desktop_name == m_statusName)  {
             m_desktopfilePath = fileInfo.filePath();
+            break;
         }
     }
 }
@@ -163,6 +167,7 @@ void ConvertDesktopToWinId::compareCmdExec()
 
         if (desktopFileExeName == m_cmdLine || desktopFileExeName.startsWith(m_cmdLine) || m_cmdLine.startsWith(desktopFileExeName)) {
             m_desktopfilePath = fileInfo.filePath();
+            break;
         }
 
         //仅仅是为了适配微信
@@ -206,6 +211,7 @@ void ConvertDesktopToWinId::compareCmdName()
 
         if (desktopFileExeName.startsWith(m_className) || desktopFileExeName.endsWith(m_className)) {
             m_desktopfilePath = fileInfo.filePath();
+            break;
         }
     }
 }
@@ -223,9 +229,11 @@ void ConvertDesktopToWinId::compareDesktopClass()
 
         if (path_desktop_name.startsWith(m_className) || path_desktop_name.endsWith(m_className)) {
             m_desktopfilePath = fileInfo.filePath();
+            break;
         }
         else if (m_className.startsWith(path_desktop_name) || m_className.endsWith(path_desktop_name)) {
             m_desktopfilePath = fileInfo.filePath();
+            break;
         }
     }
 }
@@ -249,6 +257,7 @@ void ConvertDesktopToWinId::containsName()
 
         if (path_desktop_name.contains(m_className) || desktopFileExeName.contains(m_className)) {
             m_desktopfilePath = fileInfo.filePath();
+            break;
         }
     }
 }

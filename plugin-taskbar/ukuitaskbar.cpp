@@ -896,6 +896,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
     }
     if (isNeedAddNewWidget) {
         mLayout->addWidget(btn);
+        btn->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
         mVBtn.push_back(btn);
         mLayout->moveItem(mLayout->indexOf(btn), countOfButtons() - 1);
     }
