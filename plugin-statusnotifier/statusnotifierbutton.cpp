@@ -343,12 +343,12 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
         {
             if (!mMenu->isEmpty()){
                 mPlugin->willShowWindow(mMenu);
-                mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+                mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
             }
         } else
             interface->ContextMenu(QCursor::pos().x(), QCursor::pos().y());
     }
-
+    update();
     QToolButton::mouseReleaseEvent(event);
 }
 
@@ -436,7 +436,6 @@ void StatusNotifierButton::mousePressEvent(QMouseEvent *e)
         mDragStart = e->pos();
         return;
     }
-
     QToolButton::mousePressEvent(e);
 }
 
