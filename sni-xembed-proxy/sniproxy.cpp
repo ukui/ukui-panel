@@ -44,6 +44,9 @@
 #include <math.h>
 #include <stdio.h>
 
+#include <qt5xdg/XdgDesktopFile>
+#include <qt5xdg/XdgIcon>
+
 //#include "statusnotifieritemadaptor.h"
 #include "statusnotifierwatcher_interface.h"
 
@@ -461,7 +464,8 @@ QString SNIProxy::Category() const
 
 QString SNIProxy::Id() const
 {
-    const auto title = Title();
+    KWindowInfo window (m_windowId, NET::WMName,NET::WM2WindowClass);
+    const auto title =  window.windowClassClass();
     //we always need /some/ ID so if no window title exists, just use the winId.
     if (title.isEmpty()) {
         return QString::number(m_windowId);
@@ -488,7 +492,21 @@ QString SNIProxy::Status() const
 QString SNIProxy::Title() const
 {
     KWindowInfo window (m_windowId, NET::WMName,NET::WM2WindowClass);
-    return window.windowClassClass();
+    //根据应用的dekstop文件查找中文名
+    QString toolTip;
+    ConvertDesktopToWinId *getDesktop = new ConvertDesktopToWinId();
+    QString appDesktopPath = getDesktop->tranIdToDesktop(window.win());
+    delete getDesktop;
+    if(QFile::exists(appDesktopPath)){
+        XdgDesktopFile xdg;
+        xdg.load(appDesktopPath);
+        toolTip = xdg.localizedValue("Name").toString();
+        if(!toolTip.isEmpty()){
+            return toolTip;
+        }
+    }
+    toolTip = QString(window.windowClassClass());
+    return toolTip;
 }
 
 int SNIProxy::WindowId() const
