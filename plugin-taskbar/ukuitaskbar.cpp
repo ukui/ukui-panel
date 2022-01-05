@@ -85,9 +85,10 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     this->verticalScrollBar()->setVisible(false);
     this->setFrameShape(QFrame::NoFrame);//去掉边框
     this->setWidgetResizable(true);
-    this->viewport()->setStyleSheet("background-color:transparent;");
-    horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
-    verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
+
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Window, QColor(Qt::transparent));
+    this->setPalette(pal);
 
     taskstatus=NORMAL;
 
@@ -824,6 +825,23 @@ void UKUITaskBar::paintEvent(QPaintEvent *)
         opt.initFrom(this);
         QPainter p(this);
 
+        p.setRenderHint(QPainter::Antialiasing);
+        QPainterPath rectPath;
+        rectPath.addRoundedRect(this->rect(),6,6);
+        // 画一个黑底
+        QPixmap pixmap(this->rect().size());
+        pixmap.fill(Qt::transparent);
+        QPainter pixmapPainter(&pixmap);
+        pixmapPainter.setRenderHint(QPainter::Antialiasing);
+
+        pixmapPainter.drawPath(rectPath);
+        pixmapPainter.end();
+
+        // 模糊这个黑底
+        extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+        QImage img = pixmap.toImage();
+        qt_blurImage(img, 10, false, false);
+
         switch(taskstatus)
           {
           case NORMAL:
@@ -842,6 +860,13 @@ void UKUITaskBar::paintEvent(QPaintEvent *)
                   break;
               }
           }
+
+        QPalette pal = this->palette();
+        pal.setBrush(QPalette::Base, QColor(0,0,0,0));        //背景透明
+        this->viewport()->setPalette(pal);
+        this->setPalette(pal);
+        mAllFrame->setPalette(pal);
+
         p.setRenderHint(QPainter::Antialiasing);
         p.drawRoundedRect(opt.rect,6,6);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
