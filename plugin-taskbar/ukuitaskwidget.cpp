@@ -758,12 +758,7 @@ bool UKUITaskWidget::isOnCurrentScreen() const
 
 bool UKUITaskWidget::isMinimized() const
 {
-    //    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-    return NET::Focused == (KWindowInfo(mWindow,NET::WMState).state()&NET::Focused);
-#else
-    return isApplicationActive();
-#endif
+    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
 }
 
 bool UKUITaskWidget::isFocusState() const
