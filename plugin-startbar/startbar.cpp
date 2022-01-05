@@ -60,12 +60,13 @@ UKUIStartBarWidget::UKUIStartBarWidget( IUKUIPanelPlugin *plugin, QWidget* paren
 {
     translator();
     mStartMenuButton=new StartMenuButton(plugin,this);
-    mTaskViewButton=new TaskViewButton(plugin,this);
     mLayout=new UKUi::GridLayout(this);
     mLayout->addWidget(mStartMenuButton);
+    mLayoutCount = mLayout->count() +1;
     const QByteArray id(UKUI_PANEL_SETTINGS);
-    if(QGSettings::isSchemaInstalled(id))
+    if(QGSettings::isSchemaInstalled(id)) {
         mGsettings = new QGSettings(id);
+    }
     connect(mGsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==SHOW_TASKVIEW)
             realign();
@@ -87,19 +88,26 @@ void UKUIStartBarWidget::translator(){
 
 UKUIStartBarWidget::~UKUIStartBarWidget()
 {
+    mStartMenuButton->deleteLater();
+    mTaskViewButton->deleteLater();
 }
 
 /*plugin-startmenu refresh function*/
 void UKUIStartBarWidget::realign()
 {
     if(mGsettings->get(SHOW_TASKVIEW).toBool()){
-        if (mLayout->count() == 1) {
+        if (mLayout->count() == mLayoutCount - 1) {
+            mTaskViewButton=new TaskViewButton(mPlugin,this);
             mLayout->addWidget(mTaskViewButton);
         }
     } else {
-        if (mLayout->count() == 2) {
-            mLayout->removeWidget(mTaskViewButton);
+        if (mLayout->count() == mLayoutCount) {
+            if (mTaskViewButton != nullptr) {
+                mLayout->removeWidget(mTaskViewButton);
+                mTaskViewButton->deleteLater();
+            }
         } else {
+            mStartMenuButton->realign();
             return;
         }
     }
