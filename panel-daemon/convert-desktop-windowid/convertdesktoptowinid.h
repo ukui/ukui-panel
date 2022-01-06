@@ -16,6 +16,7 @@
 #define PEONY_MAIN              "/usr/share/applications/peony.desktop"
 
 #define GET_DESKTOP_EXEC_NAME_MAIN          "cat %s | awk '{if($1~\"Exec=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
+#define GET_DESKTOP_NAME_MAIN          "cat %s | awk '{if($1~\"Name=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
 #define ANDROID_FILE_PATH       "/.local/share/applications/"
 #define ANDROID_APP_CURRENT     "/.local/share/applications/."
 #define ANDROID_APP_UPER        "/.local/share/applications/.."
@@ -51,9 +52,10 @@ public:
     QString tranIdToDesktop(WId id);
 
 private:
-    QString confirmDesktopFile(KWindowInfo info);
+    QString confirmDesktopFile(WId id);
     void searchFromEnviron(KWindowInfo info);
     void searchAndroidApp(KWindowInfo info);
+    void searchTXeduApp(WId id);
     void compareClassName();
     void compareCmdExec();
     void compareLastStrategy();

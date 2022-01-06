@@ -12,15 +12,14 @@ ConvertDesktopToWinId::ConvertDesktopToWinId()
 
 QString ConvertDesktopToWinId::tranIdToDesktop(WId id)
 {
-	
-    KWindowInfo info(id, 0, NET::WM2AllProperties);
-    QString desktopName = confirmDesktopFile(info);
+    QString desktopName = confirmDesktopFile(id);
     qDebug() << "desktopName is :" << desktopName;
     return desktopName;
 }
 
-QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
+QString ConvertDesktopToWinId::confirmDesktopFile(WId id)
 {
+    KWindowInfo info(id, 0, NET::WM2AllProperties);
     m_desktopfilePath = "";
 
     m_dir = new QDir(DEKSTOP_FILE_PATH);
@@ -41,11 +40,16 @@ QString ConvertDesktopToWinId::confirmDesktopFile(KWindowInfo info)
         m_className = info.windowClassName();
 
         //匹配安卓兼容
-        if(m_className == "kylin-kmre-window"){
+        if (m_className == "kylin-kmre-window") {
             searchAndroidApp(info);
             return m_desktopfilePath;
         }
 
+        //匹配Inter端腾讯教育
+        if (m_className == "txeduplatform") {
+            searchTXeduApp(id);
+            return m_desktopfilePath;
+        }
 
         QFile file(QString("/proc/%1/status").arg(info.pid()));
         if (file.open(QIODevice::ReadOnly)) {
@@ -104,6 +108,26 @@ void ConvertDesktopToWinId::searchAndroidApp(KWindowInfo info)
         desktopName = desktopName.mid(desktopName.lastIndexOf("/") + 1);
         desktopName = desktopName.left(desktopName.lastIndexOf("."));
         if(desktopName == cmdList.at(10)){
+            m_desktopfilePath = fileInfo.filePath();
+            break;
+        }
+    }
+}
+
+void ConvertDesktopToWinId::searchTXeduApp(WId id)
+{
+    KWindowInfo info(id, NET::WMAllProperties);
+    QString name = info.name();
+    for (int i = 0; i < m_list.size(); i++) {
+        QString cmd;
+        QFileInfo fileInfo = m_list.at(i);
+        if (!fileInfo.filePath().endsWith(".desktop")) {
+            continue;
+        }
+        cmd.sprintf(GET_DESKTOP_NAME_MAIN, fileInfo.filePath().toStdString().data());
+        QString desktopName = getDesktopFileName(cmd).remove("\n");
+
+        if (desktopName == name) {
             m_desktopfilePath = fileInfo.filePath();
             break;
         }
