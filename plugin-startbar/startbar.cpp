@@ -62,7 +62,6 @@ UKUIStartBarWidget::UKUIStartBarWidget( IUKUIPanelPlugin *plugin, QWidget* paren
     mStartMenuButton=new StartMenuButton(plugin,this);
     mLayout=new UKUi::GridLayout(this);
     mLayout->addWidget(mStartMenuButton);
-    mLayoutCount = mLayout->count() +1;
     const QByteArray id(UKUI_PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id)) {
         mGsettings = new QGSettings(id);
@@ -96,12 +95,13 @@ UKUIStartBarWidget::~UKUIStartBarWidget()
 void UKUIStartBarWidget::realign()
 {
     if(mGsettings->get(SHOW_TASKVIEW).toBool()){
-        if (mLayout->count() == mLayoutCount - 1) {
+        if (!this->findChild<TaskViewButton *>("TaskViewButton")) {
             mTaskViewButton=new TaskViewButton(mPlugin,this);
+            mTaskViewButton->setObjectName("TaskViewButton");
             mLayout->addWidget(mTaskViewButton);
         }
     } else {
-        if (mLayout->count() == mLayoutCount) {
+        if (this->findChild<TaskViewButton *>("TaskViewButton")) {
             if (mTaskViewButton != nullptr) {
                 mLayout->removeWidget(mTaskViewButton);
                 mTaskViewButton->deleteLater();

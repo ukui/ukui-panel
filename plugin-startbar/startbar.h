@@ -93,7 +93,6 @@ private:
     UKUi::GridLayout *mLayout;
     QTranslator *m_translator;
     QGSettings *mGsettings;
-    int mLayoutCount;
 private:
     void translator();
 
