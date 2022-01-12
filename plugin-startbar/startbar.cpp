@@ -33,40 +33,40 @@
 UKUIStartbarPlugin::UKUIStartbarPlugin(const IUKUIPanelPluginStartupInfo &startupInfo):
     QObject(),
     IUKUIPanelPlugin(startupInfo),
-    mWidget(new UKUIStartBarWidget(this))
+    m_widget(new UKUIStartBarWidget(this))
 {
 
-    mWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 }
 
 UKUIStartbarPlugin::~UKUIStartbarPlugin()
 {
-    delete mWidget;
+    delete m_widget;
 }
 
 QWidget *UKUIStartbarPlugin::widget()
 {
-    return mWidget;
+    return m_widget;
 }
 
 void UKUIStartbarPlugin::realign()
 {
-    mWidget->realign();
+    m_widget->realign();
 }
 
 UKUIStartBarWidget::UKUIStartBarWidget( IUKUIPanelPlugin *plugin, QWidget* parent ):
-    mPlugin(plugin)
+    m_plugin(plugin)
 {
     translator();
-    mStartMenuButton=new StartMenuButton(plugin,this);
-    mLayout=new UKUi::GridLayout(this);
-    mLayout->addWidget(mStartMenuButton);
+    m_startMenuButton=new StartMenuButton(plugin,this);
+    m_layout=new UKUi::GridLayout(this);
+    m_layout->addWidget(m_startMenuButton);
     const QByteArray id(UKUI_PANEL_SETTINGS);
     if(QGSettings::isSchemaInstalled(id)) {
-        mGsettings = new QGSettings(id);
+        m_gsettings = new QGSettings(id);
     }
-    connect(mGsettings, &QGSettings::changed, this, [=] (const QString &key){
+    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==SHOW_TASKVIEW)
             realign();
     });
@@ -87,39 +87,39 @@ void UKUIStartBarWidget::translator(){
 
 UKUIStartBarWidget::~UKUIStartBarWidget()
 {
-    mStartMenuButton->deleteLater();
-    mTaskViewButton->deleteLater();
+    m_startMenuButton->deleteLater();
+    m_taskViewButton->deleteLater();
 }
 
 /*plugin-startmenu refresh function*/
 void UKUIStartBarWidget::realign()
 {
-    if(mGsettings->get(SHOW_TASKVIEW).toBool()){
+    if(m_gsettings->get(SHOW_TASKVIEW).toBool()){
         if (!this->findChild<TaskViewButton *>("TaskViewButton")) {
-            mTaskViewButton=new TaskViewButton(mPlugin,this);
-            mTaskViewButton->setObjectName("TaskViewButton");
-            mLayout->addWidget(mTaskViewButton);
+            m_taskViewButton=new TaskViewButton(m_plugin,this);
+            m_taskViewButton->setObjectName("TaskViewButton");
+            m_layout->addWidget(m_taskViewButton);
         }
     } else {
         if (this->findChild<TaskViewButton *>("TaskViewButton")) {
-            if (mTaskViewButton != nullptr) {
-                mLayout->removeWidget(mTaskViewButton);
-                mTaskViewButton->deleteLater();
+            if (m_taskViewButton != nullptr) {
+                m_layout->removeWidget(m_taskViewButton);
+                m_taskViewButton->deleteLater();
             }
         } else {
-            mStartMenuButton->realign();
+            m_startMenuButton->realign();
             return;
         }
     }
-    if (mPlugin->panel()->isHorizontal()){
-        mLayout->setColumnCount(mLayout->count());
-        mLayout->setRowCount(0);
-//        this->setFixedSize(mPlugin->panel()->panelSize()*2.3,mPlugin->panel()->panelSize());
+    if (m_plugin->panel()->isHorizontal()){
+        m_layout->setColumnCount(m_layout->count());
+        m_layout->setRowCount(0);
+//        this->setFixedSize(m_plugin->panel()->panelSize()*2.3,m_plugin->panel()->panelSize());
     }else{
-        mLayout->setRowCount(mLayout->count());
-        mLayout->setColumnCount(0);
-//        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*2.3);
+        m_layout->setRowCount(m_layout->count());
+        m_layout->setColumnCount(0);
+//        this->setFixedSize(m_plugin->panel()->panelSize(),m_plugin->panel()->panelSize()*2.3);
     }
-    mStartMenuButton->realign();
-    mTaskViewButton->realign();
+    m_startMenuButton->realign();
+    m_taskViewButton->realign();
 }

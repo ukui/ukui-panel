@@ -30,9 +30,9 @@ protected:
 
 private:
     QMenu *rightPressMenu;
-    IUKUIPanelPlugin * mPlugin;
+    IUKUIPanelPlugin * m_plugin;
     QString version;
-    QWidget *mParent;
+    QWidget *m_parent;
 
     void getOsRelease();
     QString getCanHibernateResult();
