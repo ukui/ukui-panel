@@ -58,7 +58,7 @@ public:
 
 
 private:
-    UKUIStartBarWidget *mWidget;
+    UKUIStartBarWidget *m_widget;
 
 };
 
@@ -69,7 +69,7 @@ class StartBarLibrary: public QObject, public IUKUIPanelPluginLibrary
     Q_PLUGIN_METADATA(IID "ukui.org/Panel/PluginInterface/3.0")
     Q_INTERFACES(IUKUIPanelPluginLibrary)
 public:
-    IUKUIPanelPlugin *mPlugin;
+    IUKUIPanelPlugin *m_plugin;
     IUKUIPanelPlugin *instance(const IUKUIPanelPluginStartupInfo &startupInfo) const
     {
         return new UKUIStartbarPlugin(startupInfo);
@@ -87,12 +87,12 @@ protected:
 
 
 private:
-    IUKUIPanelPlugin *mPlugin;
-    StartMenuButton *mStartMenuButton;
-    TaskViewButton *mTaskViewButton;
-    UKUi::GridLayout *mLayout;
+    IUKUIPanelPlugin *m_plugin;
+    StartMenuButton *m_startMenuButton;
+    TaskViewButton *m_taskViewButton;
+    UKUi::GridLayout *m_layout;
     QTranslator *m_translator;
-    QGSettings *mGsettings;
+    QGSettings *m_gsettings;
 private:
     void translator();
 

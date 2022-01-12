@@ -2,8 +2,8 @@
 
 
 TaskViewButton::TaskViewButton(IUKUIPanelPlugin *plugin,QWidget *parent):
-    mParent(parent),
-    mPlugin(plugin)
+    m_parent(parent),
+    m_plugin(plugin)
 {
     this->setParent(parent);
     setFocusPolicy(Qt::NoFocus);
@@ -11,19 +11,19 @@ TaskViewButton::TaskViewButton(IUKUIPanelPlugin *plugin,QWidget *parent):
     this->setToolTip(tr("Show Taskview"));
     this->setStyle(new CustomStyle());
     this->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
-    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+    this->setIconSize(QSize(m_plugin->panel()->iconSize(),m_plugin->panel()->iconSize()));
 }
 TaskViewButton::~TaskViewButton(){
 }
 
 void TaskViewButton::realign()
 {
-    if (mPlugin->panel()->isHorizontal()) {
-        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+    if (m_plugin->panel()->isHorizontal()) {
+        this->setFixedSize(m_plugin->panel()->panelSize(),m_plugin->panel()->panelSize());
     } else {
-        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize());
+        this->setFixedSize(m_plugin->panel()->panelSize(),m_plugin->panel()->panelSize());
     }
-    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+    this->setIconSize(QSize(m_plugin->panel()->iconSize(),m_plugin->panel()->iconSize()));
 }
 
 void TaskViewButton::mousePressEvent(QMouseEvent *event)

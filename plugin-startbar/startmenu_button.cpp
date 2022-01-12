@@ -2,14 +2,14 @@
 
 StartMenuButton::StartMenuButton(IUKUIPanelPlugin *plugin, QWidget* parent ):
     QToolButton(parent),
-    mParent(parent),
-    mPlugin(plugin)
+    m_parent(parent),
+    m_plugin(plugin)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setIcon(QIcon::fromTheme("kylin-startmenu",QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg")));
     this->setStyle(new CustomStyle());
     QTimer::singleShot(5000,[this] {this->setToolTip(tr("UKUI Menu")); });
-    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+    this->setIconSize(QSize(m_plugin->panel()->iconSize(),m_plugin->panel()->iconSize()));
 }
 
 StartMenuButton::~StartMenuButton()
@@ -19,11 +19,11 @@ StartMenuButton::~StartMenuButton()
 /*plugin-startmenu refresh function*/
 void StartMenuButton::realign()
 {
-    if (mPlugin->panel()->isHorizontal())
-        this->setFixedSize(mPlugin->panel()->panelSize()*1.3,mPlugin->panel()->panelSize());
+    if (m_plugin->panel()->isHorizontal())
+        this->setFixedSize(m_plugin->panel()->panelSize()*1.3,m_plugin->panel()->panelSize());
     else
-        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*1.3);
-    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+        this->setFixedSize(m_plugin->panel()->panelSize(),m_plugin->panel()->panelSize()*1.3);
+    this->setIconSize(QSize(m_plugin->panel()->iconSize(),m_plugin->panel()->iconSize()));
 }
 
 void StartMenuButton::mousePressEvent(QMouseEvent* event)
@@ -95,7 +95,7 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                             this, SLOT(SessionShutdown())
                             );                                      //关机
 
-    rightPressMenu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), rightPressMenu->sizeHint()));
+    rightPressMenu->setGeometry(m_plugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), rightPressMenu->sizeHint()));
     rightPressMenu->show();
 }
 

@@ -17,8 +17,8 @@ protected:
     void mousePressEvent(QMouseEvent* event);
 
 private:
-    QWidget *mParent;
-    IUKUIPanelPlugin * mPlugin;
+    QWidget *m_parent;
+    IUKUIPanelPlugin * m_plugin;
 
 };
 
