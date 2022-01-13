@@ -42,6 +42,7 @@
 #include <XdgDesktopFile>
 #include <XdgIcon>
 #include <QMessageBox>
+#include <QPainterPath>
 #include <unistd.h>
 #include "../panel/common/ukuigridlayout.h"
 
