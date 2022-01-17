@@ -51,20 +51,20 @@ void StatusNotifierStorageArrow::mousePressEvent(QMouseEvent *)
 {
     if(mParent->Direction){
         if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
-            setIcon(QIcon::fromTheme("pan-start-symbolic"));
+            setIcon(QIcon::fromTheme("ukui-start-symbolic"));
             mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
         }
         else{
-            setIcon(QIcon::fromTheme("pan-end-symbolic"));
+            setIcon(QIcon::fromTheme("ukui-end-symbolic"));
             mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
         }
     }else{
         if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
-            setIcon(QIcon::fromTheme("pan-up-symbolic"));
+            setIcon(QIcon::fromTheme("ukui-up-symbolic"));
             mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
         }
         else{
-            setIcon(QIcon::fromTheme("pan-down-symbolic"));
+            setIcon(QIcon::fromTheme("ukui-down-symbolic"));
             mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
         }
     }
@@ -74,17 +74,17 @@ void StatusNotifierStorageArrow::setArrowIcon()
 {
     if(mParent->Direction){
         if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
-            setIcon(QIcon::fromTheme("pan-end-symbolic"));
+            setIcon(QIcon::fromTheme("ukui-end-symbolic"));
         }
         else{
-            setIcon(QIcon::fromTheme("pan-start-symbolic"));
+            setIcon(QIcon::fromTheme("ukui-start-symbolic"));
         }
     }else{
         if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
-            setIcon(QIcon::fromTheme("pan-down-symbolic"));
+            setIcon(QIcon::fromTheme("ukui-down-symbolic"));
         }
         else{
-            setIcon(QIcon::fromTheme("pan-up-symbolic"));
+            setIcon(QIcon::fromTheme("ukui-up-symbolic"));
         }
     }
 }
