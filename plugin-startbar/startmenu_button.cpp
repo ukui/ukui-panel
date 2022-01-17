@@ -65,7 +65,7 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                                this, SLOT(SessionSwitch())
                                );                                     //切换用户
     }
-    pUserAction->addAction(QIcon::fromTheme("system-logout-symbolic"),
+    pUserAction->addAction(QIcon::fromTheme("ukui-system-logout-symbolic"),
                            tr("Logout"),
                            this, SLOT(SessionLogout())
                            );                                     //注销
@@ -76,11 +76,11 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                                    this, SLOT(SessionHibernate())
                                    );                              //休眠
     }
-    pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
+    pSleepHibernate->addAction(QIcon::fromTheme("ukui-hebernate-symbolic"),
                                tr("Sleep Mode"),
                                this, SLOT(SessionSuspend())
                                );                                   //睡眠
-    pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
+    pPowerSupply->addAction(QIcon::fromTheme("ukui-system-restart-symbolic"),
                             tr("Restart"),
                             this, SLOT(SessionReboot())
                             );                                      //重启
