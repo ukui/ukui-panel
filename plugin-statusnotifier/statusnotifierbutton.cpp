@@ -38,6 +38,7 @@
 #include "../panel/customstyle.h"
 #include "../panel/highlight-effect.h"
 #include <QDebug>
+#include <KWindowEffects>
 //#include <XdgIcon>
 
 #define MIMETYPE "ukui/UkuiTaskBar"
@@ -102,7 +103,10 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
         {
             mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
-            mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+            if(mMenu){
+                mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+                KWindowEffects::enableBlurBehind(mMenu->winId(), true);
+            }
         }
     });
 

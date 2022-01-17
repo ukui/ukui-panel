@@ -532,13 +532,13 @@ void UKUITaskGroup::singleWindowClick()
     UKUITaskWidget *btn = mVisibleHash.begin().value();
     if(btn)
     {
-        if(!btn->isFocusState())
+        if(btn->isMinimized())
         {
             if(mPopup->isVisible())
             {
                 mPopup->hide();
             }
-            KWindowSystem::activateWindow(mVisibleHash.begin().key());
+            KWindowSystem::forceActiveWindow(mVisibleHash.begin().key());
         }
         else
         {
