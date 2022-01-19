@@ -443,7 +443,7 @@ void UKUITaskWidget::closeGroup() {
 
 void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    KWindowInfo info(mWindow, 0, NET::WM2AllowedActions);
+    KWindowInfo info(mWindow, NET::WMAllProperties, NET::WM2AllowedActions);
     unsigned long state = KWindowInfo(mWindow, NET::WMState).state();
 
     if (!mPlugin || isWaylandWidget)
