@@ -59,7 +59,8 @@ void StatusNotifierStorageArrow::mousePressEvent(QMouseEvent *e)
                 setIcon(QIcon::fromTheme("ukui-end-symbolic"));
                 mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
             }
-        }else{
+        }
+        else{
             if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
                 setIcon(QIcon::fromTheme("ukui-up-symbolic"));
                 mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
