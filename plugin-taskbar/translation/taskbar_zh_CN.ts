@@ -4,12 +4,12 @@
 <context>
     <name>UKUITaskBar</name>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="1061"/>
+        <location filename="../ukuitaskbar.cpp" line="1034"/>
         <source>Drop Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskbar.cpp" line="1062"/>
+        <location filename="../ukuitaskbar.cpp" line="1035"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation type="unfinished"></translation>
     </message>
@@ -143,37 +143,37 @@
 <context>
     <name>UKUITaskWidget</name>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="451"/>
+        <location filename="../ukuitaskwidget.cpp" line="448"/>
         <source>Widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="454"/>
+        <location filename="../ukuitaskwidget.cpp" line="451"/>
         <source>close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="455"/>
+        <location filename="../ukuitaskwidget.cpp" line="452"/>
         <source>restore</source>
         <translation>恢复</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="457"/>
+        <location filename="../ukuitaskwidget.cpp" line="454"/>
         <source>maximaze</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="460"/>
+        <location filename="../ukuitaskwidget.cpp" line="456"/>
         <source>minimize</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="461"/>
+        <location filename="../ukuitaskwidget.cpp" line="457"/>
         <source>above</source>
         <translation>置顶</translation>
     </message>
     <message>
-        <location filename="../ukuitaskwidget.cpp" line="462"/>
+        <location filename="../ukuitaskwidget.cpp" line="458"/>
         <source>clear</source>
         <translation>取消置顶</translation>
     </message>

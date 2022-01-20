@@ -33,37 +33,37 @@
         <translation>锁定屏幕</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="64"/>
+        <location filename="../startmenu_button.cpp" line="63"/>
         <source>Switch User</source>
         <translation>切换用户</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="69"/>
+        <location filename="../startmenu_button.cpp" line="67"/>
         <source>Logout</source>
         <translation>注销</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="75"/>
+        <location filename="../startmenu_button.cpp" line="73"/>
         <source>Hibernate Mode</source>
         <translation>休眠</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="80"/>
+        <location filename="../startmenu_button.cpp" line="78"/>
         <source>Sleep Mode</source>
         <translation>睡眠</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="84"/>
+        <location filename="../startmenu_button.cpp" line="82"/>
         <source>Restart</source>
         <translation>重启</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="90"/>
+        <location filename="../startmenu_button.cpp" line="88"/>
         <source>TimeShutdown</source>
         <translation>定时关机</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="94"/>
+        <location filename="../startmenu_button.cpp" line="92"/>
         <source>Power Off</source>
         <translation>关机</translation>
     </message>

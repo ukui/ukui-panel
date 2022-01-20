@@ -12,23 +12,23 @@
         <translation type="vanished">设置夜间模式</translation>
     </message>
     <message>
-        <location filename="../nightmode.cpp" line="182"/>
+        <location filename="../nightmode.cpp" line="179"/>
         <source>nightmode opened</source>
         <translation>夜间模式开启</translation>
     </message>
     <message>
-        <location filename="../nightmode.cpp" line="188"/>
+        <location filename="../nightmode.cpp" line="185"/>
         <source>nightmode closed</source>
         <translation>夜间模式关闭</translation>
     </message>
     <message>
-        <location filename="../nightmode.cpp" line="210"/>
+        <location filename="../nightmode.cpp" line="207"/>
         <source>night mode open</source>
         <translation>夜间模式开启</translation>
     </message>
     <message>
         <location filename="../nightmode.cpp" line="127"/>
-        <location filename="../nightmode.cpp" line="216"/>
+        <location filename="../nightmode.cpp" line="213"/>
         <source>night mode close</source>
         <translation>夜间模式关闭</translation>
     </message>
