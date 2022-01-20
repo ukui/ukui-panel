@@ -443,7 +443,7 @@ void UKUITaskWidget::closeGroup() {
 
 void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    KWindowInfo info(mWindow, NET::WMAllProperties, NET::WM2AllowedActions);
+    KWindowInfo info(mWindow, 0, NET::WM2AllowedActions);
     unsigned long state = KWindowInfo(mWindow, NET::WMState).state();
 
     if (!mPlugin || isWaylandWidget)
@@ -471,8 +471,8 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
         emit closeSigtoPop();
 
     });
-    above->setEnabled(!(info.state() & NET::KeepAbove));
-    clear->setEnabled(info.state() & NET::KeepAbove);
+    above->setEnabled(!(state & NET::KeepAbove));
+    clear->setEnabled(state & NET::KeepAbove);
     menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
     plugin()->willShowWindow(menu);
     if (!isWaylandWidget)

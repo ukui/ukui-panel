@@ -188,6 +188,12 @@ QString UKUITaskBar::readFile(const QString &filename) {
     }
 }
 
+bool UKUITaskBar::isFileExit(const QString &filename)
+{
+    QFile f(filename);
+    return f.exists();
+}
+
 void UKUITaskBar::onDesktopChanged() {
     for (auto i = mKnownWindows.begin(); mKnownWindows.end() != i; ++i)
     {
@@ -1187,10 +1193,16 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
 //    QStringList strList = temp_group_id.split(" ");
 
     const QString group_id = captionExchange(caption);
-    if(QIcon::fromTheme(group_id).isNull()){
-        iconName=QDir::homePath()+"/.local/share/icons/"+group_id+".png";
-    }else{
-        iconName=group_id;
+    if (QIcon::fromTheme(group_id).isNull()) {
+        iconName = QDir::homePath() + "/.local/share/icons/" + group_id + ".svg";
+        if (!isFileExit(iconName)) {
+            iconName = QDir::homePath() + "/.local/share/icons/" + group_id + ".png";
+            if (!isFileExit(iconName)) {
+                iconName = group_id;
+            }
+        }
+    }else {
+        iconName = group_id;
     }
     UKUITaskGroup *group = nullptr;
     auto i_group = mKnownWindows.find(window);
@@ -1230,7 +1242,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
         if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
             group->setIcon(QIcon::fromTheme(group_id));
         }else{
-            group->setIcon(QIcon::fromTheme(QDir::homePath()+"/.local/share/icons/"+group_id+".png"));
+            group->setIcon(QIcon::fromTheme(iconName));
         }
 
         connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
@@ -1239,7 +1251,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
                 if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
                     group->setIcon(QIcon::fromTheme(group_id));
                 }else{
-                    group->setIcon(QIcon::fromTheme(QDir::homePath()+"/.local/share/icons/"+group_id+".png"));
+                    group->setIcon(QIcon::fromTheme(iconName));
                 }
             }
         });

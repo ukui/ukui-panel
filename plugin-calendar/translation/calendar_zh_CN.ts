@@ -90,8 +90,8 @@
         <translation type="obsolete">周六</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="700"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="920"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="701"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="921"/>
         <source>解析json文件错误！</source>
         <translation type="unfinished"></translation>
     </message>
