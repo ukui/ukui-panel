@@ -47,25 +47,28 @@ void StatusNotifierStorageArrow::dragEnterEvent(QDragEnterEvent *event){
     QToolButton::dragEnterEvent(event);
 }
 
-void StatusNotifierStorageArrow::mousePressEvent(QMouseEvent *)
+void StatusNotifierStorageArrow::mousePressEvent(QMouseEvent *e)
 {
-    if(mParent->Direction){
-        if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
-            setIcon(QIcon::fromTheme("ukui-start-symbolic"));
-            mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
+    if(e->button() == Qt::LeftButton){
+        if(mParent->Direction){
+            if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
+                setIcon(QIcon::fromTheme("ukui-start-symbolic"));
+                mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
+            }
+            else{
+                setIcon(QIcon::fromTheme("ukui-end-symbolic"));
+                mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
+            }
         }
         else{
-            setIcon(QIcon::fromTheme("ukui-end-symbolic"));
-            mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
-        }
-    }else{
-        if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
-            setIcon(QIcon::fromTheme("ukui-up-symbolic"));
-            mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
-        }
-        else{
-            setIcon(QIcon::fromTheme("ukui-down-symbolic"));
-            mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
+            if(mGsettings->get(SHOW_STATUSNOTIFIER_BUTTON).toBool()){
+                setIcon(QIcon::fromTheme("ukui-up-symbolic"));
+                mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,false);
+            }
+            else{
+                setIcon(QIcon::fromTheme("ukui-down-symbolic"));
+                mGsettings->set(SHOW_STATUSNOTIFIER_BUTTON,true);
+            }
         }
     }
 }
