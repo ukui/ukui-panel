@@ -188,7 +188,7 @@ QString UKUITaskBar::readFile(const QString &filename) {
     }
 }
 
-bool UKUITaskBar::isFileExit(const QString &filename)
+inline bool UKUITaskBar::isFileExit(const QString &filename)
 {
     QFile f(filename);
     return f.exists();
@@ -1201,7 +1201,7 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
                 iconName = group_id;
             }
         }
-    }else {
+    } else {
         iconName = group_id;
     }
     UKUITaskGroup *group = nullptr;
