@@ -135,6 +135,7 @@ StatusNotifierButton::~StatusNotifierButton()
 void StatusNotifierButton::newIcon()
 {
     refetchIcon(Passive);
+    updataItemMenu();
 }
 
 void StatusNotifierButton::newOverlayIcon()
@@ -348,6 +349,7 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
             if (!mMenu->isEmpty()){
                 mPlugin->willShowWindow(mMenu);
                 mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+
             }
         } else
             interface->ContextMenu(QCursor::pos().x(), QCursor::pos().y());
@@ -395,6 +397,20 @@ void StatusNotifierButton::systemThemeChanges()
             }
         });
     }
+}
+
+void StatusNotifierButton::updataItemMenu()
+{
+    interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
+        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
+        {
+            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
+            if(mMenu){
+                mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+                KWindowEffects::enableBlurBehind(mMenu->winId(), true);
+            }
+        }
+    });
 }
 
 
