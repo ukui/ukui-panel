@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication::setDesktopSettingsAware(false);
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     auto disableSessionManagement = [](QSessionManager &sm) {
         sm.setRestartHint(QSessionManager::RestartNever);
