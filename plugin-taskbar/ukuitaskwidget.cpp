@@ -473,7 +473,7 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
     });
     above->setEnabled(!(state & NET::KeepAbove));
     clear->setEnabled(state & NET::KeepAbove);
-    menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
+    menu->exec(cursor().pos());
     plugin()->willShowWindow(menu);
     if (!isWaylandWidget)
         menu->show();
