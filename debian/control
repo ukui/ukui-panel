@@ -40,7 +40,8 @@ Build-Depends: debhelper-compat (= 12),
 	       libxcb-render-util0-dev,
 	       libxcb-image0-dev,
 	       libxcb-composite0-dev,
-	       libxcb-shape0-dev
+	       libxcb-shape0-dev,
+	       libkysdk-system
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/ukui/ukui-panel

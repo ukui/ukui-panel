@@ -188,7 +188,7 @@ QString UKUITaskBar::readFile(const QString &filename) {
     }
 }
 
-inline bool UKUITaskBar::isFileExit(const QString &filename)
+bool UKUITaskBar::isFileExit(const QString &filename)
 {
     QFile f(filename);
     return f.exists();

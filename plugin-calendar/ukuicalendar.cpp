@@ -73,6 +73,10 @@
 #define SYSTEM_FONT_SIZE "systemFontSize"
 #define SYSTEM_FONT_SET  "org.ukui.style"
 
+#define KYSDK_TIMERSERVER "com.kylin.kysdk.TimeServer"
+#define KYSDK_TIMERPATH "/com/kylin/kysdk/Timer"
+#define KYSDK_TIMERINTERFACE "com.kylin.kysdk.TimeInterface"
+
 QString calendar_version;
 extern UkuiWebviewDialogStatus status;
 
@@ -229,12 +233,29 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     //监听手动更改时间,后期找到接口进行替换
     QTimer::singleShot(1000,this,[=](){ListenForManualSettingTime();});
 
-        //实时监听系统字体的改变
-        const QByteArray id1("org.ukui.style");
-        QGSettings * fontSetting = new QGSettings(id1, QByteArray(), this);
-        connect(fontSetting, &QGSettings::changed,[=](QString key) {
-            updateTimeText();
-        });
+    //实时监听系统字体的改变
+    const QByteArray id1("org.ukui.style");
+    QGSettings * fontSetting = new QGSettings(id1, QByteArray(), this);
+    connect(fontSetting, &QGSettings::changed,[=](QString key) {
+        updateTimeText();
+    });
+
+    //使用系统提供的sdk刷新时间显示
+    QDBusConnection::systemBus().connect(KYSDK_TIMERSERVER,
+                                         KYSDK_TIMERPATH,
+                                         KYSDK_TIMERINTERFACE,
+                                         "TimeSignal",
+                                         this,
+                                         SLOT(timeChange(QString))
+                                         );
+
+    QDBusConnection::systemBus().connect(KYSDK_TIMERSERVER,
+                                         KYSDK_TIMERPATH,
+                                         KYSDK_TIMERINTERFACE,
+                                         "TimeChangeSignal",
+                                         this,
+                                         SLOT(timeChange(QString))
+                                         );
 
 }
 
@@ -579,6 +600,11 @@ void IndicatorCalendar::ListenForManualSettingTime(){
     connect(mProcess,&QProcess::readyReadStandardOutput,this,[=](){
         updateTimeText();
     });
+}
+
+void IndicatorCalendar::timeChange(QString time)
+{
+    updateTimeText();
 }
 
 CalendarActiveLabel::CalendarActiveLabel(IUKUIPanelPlugin *plugin, QWidget *parent) :

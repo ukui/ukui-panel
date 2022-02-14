@@ -184,7 +184,7 @@ private slots:
 
     void wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption);
 
-    inline bool isFileExit(const QString &filename);
+    bool isFileExit(const QString &filename);
 
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
