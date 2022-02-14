@@ -233,13 +233,6 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     //监听手动更改时间,后期找到接口进行替换
     QTimer::singleShot(1000,this,[=](){ListenForManualSettingTime();});
 
-    //实时监听系统字体的改变
-    const QByteArray id1("org.ukui.style");
-    QGSettings * fontSetting = new QGSettings(id1, QByteArray(), this);
-    connect(fontSetting, &QGSettings::changed,[=](QString key) {
-        updateTimeText();
-    });
-
     //使用系统提供的sdk刷新时间显示
     QDBusConnection::systemBus().connect(KYSDK_TIMERSERVER,
                                          KYSDK_TIMERPATH,
