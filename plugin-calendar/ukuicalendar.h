@@ -71,6 +71,7 @@ private Q_SLOTS:
     void hidewebview();
     void CalendarWidgetShow();
     void ListenForManualSettingTime();
+    void timeChange(QString time);
 
 private:
     QWidget *mMainWidget;
