@@ -23,6 +23,7 @@ StatusNotifierStorageArrow::StatusNotifierStorageArrow(StatusNotifierWidget *par
        setArrowIcon();
     });
     this->setProperty("useIconHighlightEffect", 0x2);
+    this->setContextMenuPolicy(Qt::PreventContextMenu); //不显示右键菜单并且不将事件往基类传递
 }
 
 StatusNotifierStorageArrow::~StatusNotifierStorageArrow()
@@ -103,11 +104,6 @@ void StatusNotifierStorageArrow::resizeEvent(QResizeEvent *event){
     }
 
      QToolButton::resizeEvent(event);
-}
-
-void StatusNotifierStorageArrow::contextMenuEvent(QContextMenuEvent *event)
-{
-    //收纳按钮暂时没有菜单的需求，重写contextMenuEvent方法是为了避免显示父类的上下文菜单
 }
 
 void StatusNotifierStorageArrow::mouseMoveEvent(QMouseEvent *e)

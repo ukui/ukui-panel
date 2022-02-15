@@ -24,7 +24,6 @@ protected:
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
     void resizeEvent(QResizeEvent *event);
-    void contextMenuEvent(QContextMenuEvent * event);
 
 private:
     void setArrowIcon();
