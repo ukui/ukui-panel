@@ -105,6 +105,11 @@ void StatusNotifierStorageArrow::resizeEvent(QResizeEvent *event){
      QToolButton::resizeEvent(event);
 }
 
+void StatusNotifierStorageArrow::contextMenuEvent(QContextMenuEvent *event)
+{
+    //收纳按钮暂时没有菜单的需求，重写contextMenuEvent方法是为了避免显示父类的上下文菜单
+}
+
 void StatusNotifierStorageArrow::mouseMoveEvent(QMouseEvent *e)
 {
     QDrag *drag = new QDrag(this);
