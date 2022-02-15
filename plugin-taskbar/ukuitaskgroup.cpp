@@ -532,7 +532,7 @@ void UKUITaskGroup::singleWindowClick()
     UKUITaskWidget *btn = mVisibleHash.begin().value();
     if(btn)
     {
-        if(btn->isMinimized())
+        if(!btn->isFocusState() || btn->isMinimized())
         {
             if(mPopup->isVisible())
             {
