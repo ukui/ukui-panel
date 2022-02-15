@@ -762,10 +762,8 @@ void UKUITaskBar::realign()
     emit showOnlySettingChanged();
     emit refreshIconGeometry();
 
-    int hMaxValue = mAllFrame->width() - this->width();
-    horizontalScrollBar()->setMaximum(hMaxValue);
-    int vMaxValue = mAllFrame->height() - this->height();
-    verticalScrollBar()->setMaximum(vMaxValue);
+    horizontalScrollBar()->setMaximum(mAllFrame->width() - this->width());
+    verticalScrollBar()->setMaximum(mAllFrame->height() - this->height());
 }
 
 void UKUITaskBar::wheelEvent(QWheelEvent* event)
