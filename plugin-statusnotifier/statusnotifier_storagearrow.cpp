@@ -23,6 +23,7 @@ StatusNotifierStorageArrow::StatusNotifierStorageArrow(StatusNotifierWidget *par
        setArrowIcon();
     });
     this->setProperty("useIconHighlightEffect", 0x2);
+    this->setContextMenuPolicy(Qt::PreventContextMenu); //不显示右键菜单并且不将事件往基类传递
 }
 
 StatusNotifierStorageArrow::~StatusNotifierStorageArrow()
