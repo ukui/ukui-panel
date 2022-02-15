@@ -52,6 +52,7 @@
 #define PANEL_SETTINGS     "org.ukui.panel.settings"
 #define PANEL_LINES        "panellines"
 #define PANEL_CONFIG_PATH  "/usr/share/ukui/ukui-panel/panel-commission.ini"
+#define PANEL_POSITION_KEY  "panelposition"
 using namespace UKUi;
 /************************************************
 
@@ -86,6 +87,9 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     this->verticalScrollBar()->setVisible(false);
     this->setFrameShape(QFrame::NoFrame);//去掉边框
     this->setWidgetResizable(true);
+    //临时方案解决任务栏出现滚动时有滑动条区域遮挡图标,待滚动提示样式确认后再进行替换
+    horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
+    verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
 
     QPalette pal = this->palette();
     pal.setBrush(QPalette::Window, QColor(Qt::transparent));
@@ -135,6 +139,9 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
                 UKUITaskGroup *group = it.value();
                 group->updateIcon();
             }
+        }
+        if(key == PANEL_POSITION_KEY) {
+            realign();
         }
     });
 
@@ -188,7 +195,7 @@ QString UKUITaskBar::readFile(const QString &filename) {
     }
 }
 
-inline bool UKUITaskBar::isFileExit(const QString &filename)
+bool UKUITaskBar::isFileExit(const QString &filename)
 {
     QFile f(filename);
     return f.exists();
@@ -695,7 +702,7 @@ void UKUITaskBar::realign()
     {
         this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        mAllFrame->setMinimumSize(QSize((mLayout->count()+3)*panel->panelSize(),panel->panelSize()));
+        mAllFrame->setMinimumSize(QSize((mLayout->count()+5)*panel->panelSize(),panel->panelSize()));
         if (mAllFrame->width() < this->width()) {
             mAllFrame->setFixedWidth(this->width());
         }
@@ -754,6 +761,11 @@ void UKUITaskBar::realign()
     //our placement on screen could have been changed
     emit showOnlySettingChanged();
     emit refreshIconGeometry();
+
+    int hMaxValue = mAllFrame->width() - this->width();
+    horizontalScrollBar()->setMaximum(hMaxValue);
+    int vMaxValue = mAllFrame->height() - this->height();
+    verticalScrollBar()->setMaximum(vMaxValue);
 }
 
 void UKUITaskBar::wheelEvent(QWheelEvent* event)
@@ -768,9 +780,7 @@ void UKUITaskBar::wheelEvent(QWheelEvent* event)
                 horizontalScrollBar()->setValue(mAllFrame->width());
             }
             qDebug()<<"+40+horizontalScrollBar()->value()"<<horizontalScrollBar()->value();
-            //                qDebug()<<"scrollArea->horizontalScrollBar()->width()"<<horizontalScrollBar()->width();
         }
-        //            qDebug()<<"scrollArea->horizontalScrollBar()->width()"<<horizontalScrollBar()->width();
     } else {
         if (event->delta()>=0) {
             verticalScrollBar()->setValue(verticalScrollBar()->value()-40);
@@ -954,6 +964,7 @@ void UKUITaskBar::switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_bu
         return;
     }
     mLayout->moveItem(src, dst, true);
+    saveSettings();
 }
 
 bool UKUITaskBar::checkButton(QuickLaunchAction* action)
