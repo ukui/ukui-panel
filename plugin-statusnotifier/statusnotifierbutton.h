@@ -132,6 +132,7 @@ protected:
 
 private:
     void systemThemeChanges();
+    void updataItemMenu();
 
 };
 

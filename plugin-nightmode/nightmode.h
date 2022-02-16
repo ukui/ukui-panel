@@ -48,7 +48,6 @@ public:
     void setupSettings();
 
 protected:
-//    void mousePressEvent(QMouseEvent* event);
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     void contextMenuEvent(QContextMenuEvent *event);
@@ -64,7 +63,6 @@ private:
     void getNightModeState();
 
     IUKUIPanelPlugin * mPlugin;
-    QMenu *nightModeMenu;
     QGSettings *mqtstyleGsettings;
     QGSettings *mgtkstyleGsettings;
     QSettings *mqsettings;
@@ -73,9 +71,8 @@ private:
     bool mode;
 
 public slots:
-        void pressBitton();
+        void onClick();
 private slots:
-    void setUpNightMode();
     void nightChangedSlot(QHash<QString,QVariant> nightArg);
 };
 

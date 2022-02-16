@@ -35,6 +35,10 @@ add_executable(panel-daemon
     filewatcher/filewatcher.h
     convert-desktop-windowid/convertdesktoptowinid.cpp
     convert-desktop-windowid/convertdesktoptowinid.h
+    pin-totaskbar/pintotaskbar.cpp
+    pin-totaskbar/pintotaskbar.h
+    pin-totaskbar/taskbar-dbus-adaptor.cpp
+    pin-totaskbar/taskbar-dbus-adaptor.h
     dbus-server/server.cpp
     dbus-server/server.h
     dbus-server/dbus-adaptor.cpp

@@ -19,7 +19,7 @@ public:
     StatusNotifierStorageArrow(StatusNotifierWidget *parent = nullptr);
     ~StatusNotifierStorageArrow();
 protected:
-    void mousePressEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);

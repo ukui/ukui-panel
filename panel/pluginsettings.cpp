@@ -121,12 +121,18 @@ QList<QMap<QString, QVariant> > PluginSettings::readArray(const QString& prefix)
     for (int i = 0; i < size; ++i)
     {
         d->mSettings->setArrayIndex(i);
-        QMap<QString, QVariant> hash;
+        QMap<QString, QVariant> map;
         const auto keys = d->mSettings->childKeys();
-        for (const QString &key : keys)
-            hash[key] = d->mSettings->value(key);
-        array << hash;
+        for (const QString &key : keys) {
+            map[key] = d->mSettings->value(key);
+        }
+        if (array.contains(map)) {
+            continue;
+        } else {
+            array << map;
+        }
     }
+
     d->mSettings->endArray();
     d->mSettings->endGroup();
     return array;

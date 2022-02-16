@@ -58,6 +58,8 @@
 #include <QtCore/QObject>
 #include <QPushButton>
 #include <QToolButton>
+#include <QScrollArea>
+#include <QScrollBar>
 
 QT_BEGIN_NAMESPACE
 class QByteArray;
@@ -81,7 +83,7 @@ namespace UKUi {
 class GridLayout;
 }
 
-class UKUITaskBar : public QFrame
+class UKUITaskBar : public QScrollArea
 {
     Q_OBJECT
 
@@ -106,7 +108,6 @@ public:
     int showDesktopNum() const { return mShowDesktopNum; }
     bool getCpuInfoFlg() const { return CpuInfoFlg; }
     bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
-    bool ignoreSymbolCMP(QString filename,QString groupname);
     bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
     bool isAutoRotate() const { return mAutoRotate; }
     bool isGroupingEnabled() const { return mGroupingEnabled; }
@@ -118,8 +119,6 @@ public:
     inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
     void pubAddButton(QuickLaunchAction* action) { addButton(action); }
     void pubSaveSettings() { saveSettings(); }
-    QString isComputerOrTrash(QString urlName);
-    bool pubCheckIfExist(QString name);
 
 
     ////////////////////////////////////////////////
@@ -131,8 +130,8 @@ public:
     //virtual QLayoutItem *takeAt(int index) = 0;
     void saveSettings();
     void refreshQuickLaunch();
-    bool isDesktopFile(QString urlName);
     friend class FilectrlAdaptor;
+    QStringList mIgnoreWindow;
 
 
 signals:
@@ -177,10 +176,15 @@ private slots:
     void removeButton(QuickLaunchAction* action);
     void removeButton(QString exec);
     void buttonDeleted();
+    void removeFromTaskbar(QString arg);
     void switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button);
     QString readFile(const QString &filename);
 
     void _AddToTaskbar(QString arg);
+
+    void wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption);
+
+    bool isFileExit(const QString &filename);
 
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
@@ -192,6 +196,7 @@ private:
     void buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos);
     void doInitGroupButton(QString sname);
     void initRelationship();
+
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
     TaskStatus taskstatus;
@@ -209,7 +214,6 @@ private:
     QVector <int> mBtncvd;
 
 private:
-    QWidget *mPlaceHolder;
     QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
     QList <WId> swid;
     UKUi::GridLayout *mLayout;
@@ -237,6 +241,7 @@ private:
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
     void settingsChanged();
+    QList<QMap<QString, QVariant> > copyQuicklaunchConfig();
 
     void wheelEvent(QWheelEvent* event);
     void changeEvent(QEvent* event);
@@ -245,6 +250,15 @@ private:
     IUKUIPanelPlugin *mPlugin;
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
+    QWidget *mAllFrame;
+    QWidget *mPlaceHolder;
+
+    QGSettings *changeTheme;
+    QHash<QString,QString> mAndroidIconHash;
+
+    QHash<QString,QString> matchAndroidIcon();
+    QString captionExchange(QString str);
+    void addWindow_wl(QString iconName, QString caption, WId window);
 
 public slots:
     void WindowAddtoTaskBar(QString arg);

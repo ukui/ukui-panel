@@ -2,14 +2,14 @@
 
 StartMenuButton::StartMenuButton(IUKUIPanelPlugin *plugin, QWidget* parent ):
     QToolButton(parent),
-    mParent(parent),
-    mPlugin(plugin)
+    m_parent(parent),
+    m_plugin(plugin)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg"));
+    this->setIcon(QIcon::fromTheme("kylin-startmenu",QIcon("/usr/share/ukui-panel/panel/img/startmenu.svg")));
     this->setStyle(new CustomStyle());
     QTimer::singleShot(5000,[this] {this->setToolTip(tr("UKUI Menu")); });
-    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+    this->setIconSize(QSize(m_plugin->panel()->iconSize(),m_plugin->panel()->iconSize()));
 }
 
 StartMenuButton::~StartMenuButton()
@@ -19,11 +19,11 @@ StartMenuButton::~StartMenuButton()
 /*plugin-startmenu refresh function*/
 void StartMenuButton::realign()
 {
-    if (mPlugin->panel()->isHorizontal())
-        this->setFixedSize(mPlugin->panel()->panelSize()*1.3,mPlugin->panel()->panelSize());
+    if (m_plugin->panel()->isHorizontal())
+        this->setFixedSize(m_plugin->panel()->panelSize()*1.3,m_plugin->panel()->panelSize());
     else
-        this->setFixedSize(mPlugin->panel()->panelSize(),mPlugin->panel()->panelSize()*1.3);
-    this->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
+        this->setFixedSize(m_plugin->panel()->panelSize(),m_plugin->panel()->panelSize()*1.3);
+    this->setIconSize(QSize(m_plugin->panel()->iconSize(),m_plugin->panel()->iconSize()));
 }
 
 void StartMenuButton::mousePressEvent(QMouseEvent* event)
@@ -59,46 +59,28 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                            tr("Lock Screen"),
                            this, SLOT(ScreenServer())
                            );                                     //锁屏
-    pUserAction->addAction(QIcon::fromTheme("stock-people-symbolic"),
-                           tr("Switch User"),
-                           this, SLOT(SessionSwitch())
-                           );                                     //切换用户
-    pUserAction->addAction(QIcon::fromTheme("system-logout-symbolic"),
+    if (hasMultipleUsers()) {
+        pUserAction->addAction(QIcon::fromTheme("stock-people-symbolic"),
+                               tr("Switch User"),
+                               this, SLOT(SessionSwitch())
+                               );                                     //切换用户
+    }
+    pUserAction->addAction(QIcon::fromTheme("ukui-system-logout-symbolic"),
                            tr("Logout"),
                            this, SLOT(SessionLogout())
                            );                                     //注销
-    /*
-    //社区版本 安装时未强求建立 swap分区，若未建swap分区,会导致休眠(hibernate)失败，所以在20.04上屏蔽该功能
-    getOsRelease();
-    if(QString::compare(version,"Ubuntu"))
-    或使用!QString::compare(getCanHibernateResult(),"yes") 【目前该接口有bug】
-    */
 
-    //检测CanHibernate接口的返回值，判断是否可以执行挂起操作
-
-
-    QString filename = QDir::homePath() + "/.config/ukui/panel-commission.ini";
-    QSettings m_settings(filename, QSettings::IniFormat);
-    m_settings.setIniCodec("UTF-8");
-
-    m_settings.beginGroup("Hibernate");
-    QString hibernate_action = m_settings.value("hibernate", "").toString();
-    if (hibernate_action.isEmpty()) {
-        hibernate_action = "show";
-    }
-    m_settings.endGroup();
-
-    if(QString::compare(version,"Ubuntu") && hibernate_action != "hide"){
+    if(QString::compare(getCanHibernateResult(),"yes") == 0){
         pSleepHibernate->addAction(QIcon::fromTheme("kylin-sleep-symbolic"),
                                    tr("Hibernate Mode"),
                                    this, SLOT(SessionHibernate())
                                    );                              //休眠
     }
-    pSleepHibernate->addAction(QIcon::fromTheme("system-sleep"),
+    pSleepHibernate->addAction(QIcon::fromTheme("ukui-hebernate-symbolic"),
                                tr("Sleep Mode"),
                                this, SLOT(SessionSuspend())
                                );                                   //睡眠
-    pPowerSupply->addAction(QIcon::fromTheme("system-restart-symbolic"),
+    pPowerSupply->addAction(QIcon::fromTheme("ukui-system-restart-symbolic"),
                             tr("Restart"),
                             this, SLOT(SessionReboot())
                             );                                      //重启
@@ -113,7 +95,7 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                             this, SLOT(SessionShutdown())
                             );                                      //关机
 
-    rightPressMenu->setGeometry(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), rightPressMenu->sizeHint()));
+    rightPressMenu->setGeometry(m_plugin->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), rightPressMenu->sizeHint()));
     rightPressMenu->show();
 }
 
@@ -199,6 +181,21 @@ QString StartMenuButton::getCanHibernateResult()
     } else {
         qCritical() << "Call Dbus method failed";
     }
+}
+
+bool StartMenuButton::hasMultipleUsers()
+{
+    QDBusInterface interface("org.freedesktop.Accounts",
+                             "/org/freedesktop/Accounts",
+                             "org.freedesktop.DBus.Properties",
+                             QDBusConnection::systemBus());
+    if (!interface.isValid()) {
+        qCritical() << QDBusConnection::systemBus().lastError().message();
+        return false;
+    }
+
+    QDBusReply<QVariant> reply = interface.call("Get","org.freedesktop.Accounts","HasMultipleUsers");
+    return reply.value().toBool();
 }
 
 void StartMenuButton::enterEvent(QEvent *) {

@@ -87,9 +87,9 @@ void FDFrame::paintEvent(QPaintEvent * event)
     painter.setClipping(true);
     painter.setPen(Qt::transparent);
 
-    path.addRoundedRect(this->rect(), 6, 6);
+    path.addRoundedRect(this->rect(), 12, 12);
     path.setFillRule(Qt::WindingFill);
-    painter.setBrush(this->palette().base());
+    painter.setBrush(this->palette().color(QPalette::Base));
     painter.setPen(Qt::transparent);
 
     painter.drawPath(path);

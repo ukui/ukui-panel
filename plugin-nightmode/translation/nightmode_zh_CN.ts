@@ -4,33 +4,31 @@
 <context>
     <name>NightModeButton</name>
     <message>
-        <location filename="../nightmode.cpp" line="175"/>
         <source>Turn On NightMode</source>
-        <translation>夜间模式</translation>
+        <translation type="vanished">夜间模式</translation>
+    </message>
+    <message>
+        <source>Set Up NightMode</source>
+        <translation type="vanished">设置夜间模式</translation>
     </message>
     <message>
         <location filename="../nightmode.cpp" line="182"/>
-        <source>Set Up NightMode</source>
-        <translation>设置夜间模式</translation>
-    </message>
-    <message>
-        <location filename="../nightmode.cpp" line="221"/>
         <source>nightmode opened</source>
         <translation>夜间模式开启</translation>
     </message>
     <message>
-        <location filename="../nightmode.cpp" line="227"/>
+        <location filename="../nightmode.cpp" line="188"/>
         <source>nightmode closed</source>
         <translation>夜间模式关闭</translation>
     </message>
     <message>
-        <location filename="../nightmode.cpp" line="249"/>
+        <location filename="../nightmode.cpp" line="210"/>
         <source>night mode open</source>
         <translation>夜间模式开启</translation>
     </message>
     <message>
         <location filename="../nightmode.cpp" line="127"/>
-        <location filename="../nightmode.cpp" line="255"/>
+        <location filename="../nightmode.cpp" line="216"/>
         <source>night mode close</source>
         <translation>夜间模式关闭</translation>
     </message>

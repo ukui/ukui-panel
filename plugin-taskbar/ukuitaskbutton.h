@@ -80,6 +80,7 @@ class UKUITaskButton : public QToolButton
 
 public:
     explicit UKUITaskButton(QString appName,const WId window, UKUITaskBar * taskBar, QWidget *parent = 0);
+    explicit UKUITaskButton(QString iconName, QString caption, const WId window, UKUITaskBar * taskbar, QWidget *parent = 0);
     UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, QWidget* parent = 0);
     virtual ~UKUITaskButton();
 
@@ -116,6 +117,10 @@ public:
     QString exec;
 
     void toDomodifyQuicklaunchMenuAction(bool direction) { modifyQuicklaunchMenuAction(direction);}
+
+    bool isWinActivate;  //1为激活状态，0为隐藏状态
+    QString mIconName;
+    QString mCaption;
 
 public slots:
     void raiseApplication();

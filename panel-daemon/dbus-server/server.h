@@ -13,7 +13,7 @@
 class Server : public QObject
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface","org.ukui.panel.deamon")
+    Q_CLASSINFO("D-Bus Interface","org.ukui.panel.daemon")
 public:
     explicit Server(QObject *parent = 0);
 

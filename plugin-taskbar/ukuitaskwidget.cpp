@@ -49,6 +49,10 @@
 #include <KWindowSystem/NETWM>
 #include <QtX11Extras/QX11Info>
 
+#define WAYLAND_GROUP_HIDE     0
+#define WAYLAND_GROUP_ACTIVATE 1
+#define WAYLAND_GROUP_CLOSE    2
+
 bool UKUITaskWidget::sDraggging = false;
 
 /************************************************
@@ -154,6 +158,85 @@ UKUITaskWidget::UKUITaskWidget(const WId window, UKUITaskBar * taskbar, QWidget 
     connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
 }
 
+UKUITaskWidget::UKUITaskWidget(QString iconName, const WId window, UKUITaskBar * taskbar, QWidget *parent) :
+    QWidget(parent),
+    mParentTaskBar(taskbar),
+    mWindow(window),
+    mDNDTimer(new QTimer(this))
+{
+    isWaylandWidget = true;
+    //setMinimumWidth(400);
+    //setMinimumHeight(400);
+    status=NORMAL;
+    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
+    setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
+
+    //for layout
+    mCloseBtn =  new UKUITaskCloseButton(mWindow, this);
+//    mCloseBtn->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    mCloseBtn->setIconSize(QSize(19,19));
+    mCloseBtn->setFixedSize(QSize(19,19));
+    mTitleLabel = new QLabel(this);
+    mTitleLabel->setMargin(0);
+    //    mTitleLabel->setContentsMargins(0,0,0,10);
+    //    mTitleLabel->adjustSize();
+    //    mTitleLabel->setStyleSheet("QLabel{background-color: red;}");
+
+    mThumbnailLabel = new QLabel(this);
+    mAppIcon = new QLabel(this);
+    mVWindowsLayout = new QVBoxLayout(this);
+    mTopBarLayout = new QHBoxLayout(this);
+    mTopBarLayout->setContentsMargins(0,0,0,0);
+    //    mTopBarLayout->setAlignment(Qt::AlignVCenter);
+    //    mTopBarLayout->setDirection(QBoxLayout::LeftToRight);
+
+    mTitleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    mAppIcon->setAlignment(Qt::AlignLeft);
+    mAppIcon->setScaledContents(false);
+
+
+    // 自动缩放图片
+    //	titleLabel->setScaledContents(true);
+    mThumbnailLabel->setScaledContents(true);
+
+    // 设置控件缩放方式
+    QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    sizePolicy.setHorizontalPolicy(QSizePolicy::Expanding);
+    mTitleLabel->setSizePolicy(sizePolicy);
+    mAppIcon->setSizePolicy(sizePolicy);
+    sizePolicy.setVerticalPolicy(QSizePolicy::Expanding);
+
+    //    mTitleLabel->setAttribute(Qt::WA_TranslucentBackground, true);
+    //    mAppIcon->setAttribute(Qt::WA_TranslucentBackground, true);
+    //    mAppIcon->resize(QSize(32,32));
+
+    // 设置控件最大尺寸
+    //mTitleLabel->setFixedHeight(32);
+    mTitleLabel->setMinimumWidth(1);
+    mThumbnailLabel->setMinimumSize(QSize(1, 1));
+    mThumbnailLabel->setMaximumSize(QSize(this->width()*2,this->height()*8));
+
+    mTitleLabel->setContentsMargins(0, 0, 5, 0);
+    //    mTopBarLayout->setSpacing(5);
+    mTopBarLayout->addWidget(mAppIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    mTopBarLayout->addWidget(mTitleLabel, 10, Qt::AlignLeft);
+    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight);
+    //    mTopBarLayout->addStretch();
+//    mTopBarLayout->addWidget(mCloseBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
+    //    mVWindowsLayout->setAlignment(Qt::AlignCenter);
+    mVWindowsLayout->addLayout(mTopBarLayout);
+    mVWindowsLayout->addWidget(mThumbnailLabel, Qt::AlignCenter, Qt::AlignCenter);
+    mVWindowsLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    this->setLayout(mVWindowsLayout);
+    updateText();
+    updateIcon();
+    mDNDTimer->setSingleShot(true);
+    mDNDTimer->setInterval(700);
+    connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
+    connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
+    connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskWidget::updateIcon);
+    connect(mCloseBtn, SIGNAL(sigClicked()), this, SLOT(closeApplication()));
+}
 /************************************************
 
 ************************************************/
@@ -172,7 +255,7 @@ void UKUITaskWidget::updateText()
 
     mTitleLabel->setToolTip(title);
     QTimer::singleShot(0,this,[=](){
-        QString formatAppName = mTitleLabel->fontMetrics().elidedText(title,Qt::ElideRight, mTitleLabel->width()*2/3);
+        QString formatAppName = mTitleLabel->fontMetrics().elidedText(title,Qt::ElideRight, mTitleLabel->width());
         mTitleLabel->setText(formatAppName);
         QPalette pa;
         pa.setColor(QPalette::WindowText,Qt::white);
@@ -360,6 +443,11 @@ void UKUITaskWidget::closeGroup() {
 
 void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
 {
+    KWindowInfo info(mWindow, 0, NET::WM2AllowedActions);
+    unsigned long state = KWindowInfo(mWindow, NET::WMState).state();
+
+    if (!mPlugin || isWaylandWidget)
+        return;
     QMenu * menu = new QMenu(tr("Widget"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
     /* 对应预览图右键功能 关闭 还原 最大化  最小化 置顶 取消置顶*/
@@ -367,6 +455,7 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
     QAction *restore = menu->addAction(QIcon::fromTheme("window-restore-symbolic"), tr("restore"));
 
     QAction *maxim = menu->addAction(QIcon::fromTheme("window-maximize-symbolic"), tr("maximaze"));
+    maxim->setEnabled(info.actionSupported(NET::ActionMax) && (!(state & NET::Max) || (state & NET::Hidden)));
 
     QAction *minim = menu->addAction(QIcon::fromTheme("window-minimize-symbolic"), tr("minimize"));
     QAction *above = menu->addAction(QIcon::fromTheme("ukui-fixed"), tr("above"));
@@ -382,12 +471,12 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
         emit closeSigtoPop();
 
     });
-    KWindowInfo info(mWindow, NET::WMState);
-    above->setEnabled(!(info.state() & NET::KeepAbove));
-    clear->setEnabled(info.state() & NET::KeepAbove);
-    menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
+    above->setEnabled(!(state & NET::KeepAbove));
+    clear->setEnabled(state & NET::KeepAbove);
+    menu->exec(cursor().pos());
     plugin()->willShowWindow(menu);
-    menu->show();
+    if (!isWaylandWidget)
+        menu->show();
 }
 /************************************************
 
@@ -423,6 +512,22 @@ void UKUITaskWidget::activateWithDraggable()
  ************************************************/
 void UKUITaskWidget::raiseApplication()
 {
+    KWindowSystem::clearState(mWindow, NET::Hidden);
+    if (isWaylandWidget) {
+        QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
+        QList<QVariant> args;
+        quint32 m_wid=windowId();
+        args.append(m_wid);
+        args.append(WAYLAND_GROUP_ACTIVATE);
+        repaint();
+        message.setArguments(args);
+        QDBusConnection::sessionBus().send(message);
+        emit windowMaximize();
+
+        setUrgencyHint(false);
+        return;
+    }
+
     KWindowInfo info(mWindow, NET::WMDesktop | NET::WMState | NET::XAWMState);
     if (parentTaskBar()->raiseOnCurrentDesktop() && info.isMinimized())
     {
@@ -522,10 +627,18 @@ void UKUITaskWidget::unShadeApplication()
 //void UKUITaskWidget::priv_closeApplication() {
 
 //}
-
 void UKUITaskWidget::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
+    if (isWaylandWidget) {
+        QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
+        QList<QVariant> args;
+        quint32 m_wid=windowId();
+        args.append(m_wid);
+        args.append(WAYLAND_GROUP_CLOSE);
+        message.setArguments(args);
+        QDBusConnection::sessionBus().send(message);
+    }
     NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(mWindow);
 }
 
@@ -645,12 +758,7 @@ bool UKUITaskWidget::isOnCurrentScreen() const
 
 bool UKUITaskWidget::isMinimized() const
 {
-    //    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-    return NET::Focused == (KWindowInfo(mWindow,NET::WMState).state()&NET::Focused);
-#else
-    return isApplicationActive();
-#endif
+    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
 }
 
 bool UKUITaskWidget::isFocusState() const
@@ -869,4 +977,16 @@ void UKUITaskWidget::setThumbMaximumSize(int w) {
 
 void UKUITaskWidget::setThumbScale(bool val) {
     this->mThumbnailLabel->setScaledContents(val);
+}
+
+void UKUITaskWidget::wl_updateIcon(QString iconName){
+    mAppIcon->setPixmap(QIcon::fromTheme(iconName).pixmap(QSize(19,19)));
+}
+
+void UKUITaskWidget::wl_updateTitle(QString caption) {
+    mTitleLabel->setText(caption);
+    printf("\n%s\n", caption.toStdString().data());
+    QPalette pa;
+    pa.setColor(QPalette::WindowText,Qt::white);
+    mTitleLabel->setPalette(pa);
 }

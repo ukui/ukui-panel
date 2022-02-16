@@ -33,37 +33,37 @@
         <translation>锁定屏幕</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="63"/>
+        <location filename="../startmenu_button.cpp" line="64"/>
         <source>Switch User</source>
         <translation>切换用户</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="67"/>
+        <location filename="../startmenu_button.cpp" line="69"/>
         <source>Logout</source>
         <translation>注销</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="93"/>
+        <location filename="../startmenu_button.cpp" line="75"/>
         <source>Hibernate Mode</source>
         <translation>休眠</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="98"/>
+        <location filename="../startmenu_button.cpp" line="80"/>
         <source>Sleep Mode</source>
         <translation>睡眠</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="102"/>
+        <location filename="../startmenu_button.cpp" line="84"/>
         <source>Restart</source>
         <translation>重启</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="108"/>
+        <location filename="../startmenu_button.cpp" line="90"/>
         <source>TimeShutdown</source>
         <translation>定时关机</translation>
     </message>
     <message>
-        <location filename="../startmenu_button.cpp" line="112"/>
+        <location filename="../startmenu_button.cpp" line="94"/>
         <source>Power Off</source>
         <translation>关机</translation>
     </message>
@@ -71,7 +71,7 @@
 <context>
     <name>TaskViewButton</name>
     <message>
-        <location filename="../taskview_button.cpp" line="10"/>
+        <location filename="../taskview_button.cpp" line="11"/>
         <source>Show Taskview</source>
         <translation>显示任务视图</translation>
     </message>

@@ -38,6 +38,7 @@
 #include "../panel/customstyle.h"
 #include "../panel/highlight-effect.h"
 #include <QDebug>
+#include <KWindowEffects>
 //#include <XdgIcon>
 
 #define MIMETYPE "ukui/UkuiTaskBar"
@@ -102,7 +103,10 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
         {
             mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
-            mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+            if(mMenu){
+                mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+                KWindowEffects::enableBlurBehind(mMenu->winId(), true);
+            }
         }
     });
 
@@ -131,6 +135,7 @@ StatusNotifierButton::~StatusNotifierButton()
 void StatusNotifierButton::newIcon()
 {
     refetchIcon(Passive);
+    updataItemMenu();
 }
 
 void StatusNotifierButton::newOverlayIcon()
@@ -343,12 +348,13 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
         {
             if (!mMenu->isEmpty()){
                 mPlugin->willShowWindow(mMenu);
-                mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+                mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+
             }
         } else
             interface->ContextMenu(QCursor::pos().x(), QCursor::pos().y());
     }
-
+    update();
     QToolButton::mouseReleaseEvent(event);
 }
 
@@ -391,6 +397,20 @@ void StatusNotifierButton::systemThemeChanges()
             }
         });
     }
+}
+
+void StatusNotifierButton::updataItemMenu()
+{
+    interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
+        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
+        {
+            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
+            if(mMenu){
+                mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+                KWindowEffects::enableBlurBehind(mMenu->winId(), true);
+            }
+        }
+    });
 }
 
 
@@ -436,7 +456,6 @@ void StatusNotifierButton::mousePressEvent(QMouseEvent *e)
         mDragStart = e->pos();
         return;
     }
-
     QToolButton::mousePressEvent(e);
 }
 

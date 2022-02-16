@@ -293,6 +293,10 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
         }
     });
 
+    setPanelSize(gsettings->get(PANEL_SIZE_KEY).toInt(),true);
+    setIconSize(gsettings->get(ICON_SIZE_KEY).toInt(),true);
+    setPosition(0,intToPosition(gsettings->get(PANEL_POSITION_KEY).toInt(),PositionBottom),true);
+
     time = new QTimer(this);
     connect(time, &QTimer::timeout, this,[=] (){
         mShowDelayTimer.stop();
@@ -1462,18 +1466,25 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
                   )->setDisabled(mLockPanel);
 */
 
-    if(QFileInfo::exists(QString("/usr/bin/ukui-about")))
-    {
         QAction *about;
         about=new QAction(this);
         about->setText(tr("About Kylin"));
         menu->addAction(about);
         connect(about,&QAction::triggered, [this] {
             QProcess *process =new QProcess(this);
-            process->startDetached("ukui-control-center -m About");
+            process->start(
+                    "bash",
+                    QStringList() << "-c"
+                                  << "dpkg -l | grep ukui-control-center");
+                process->waitForFinished();
+                QString strResult = process->readAllStandardOutput() + process->readAllStandardError();
+                if (-1 != strResult.indexOf("3.0")) {
+                    QProcess::startDetached(QString("ukui-control-center -a"));
+                } else {
+                    QProcess::startDetached(QString("ukui-control-center -m About"));
+                }
         });
 
-    }
 #ifdef DEBUG
     menu->addSeparator();
     menu->addAction("Exit (debug only)", qApp, SLOT(quit()));

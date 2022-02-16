@@ -101,7 +101,7 @@
     </message>
     <message>
         <source>ukui-flash-disk</source>
-        <translation>U盘管理工具</translation>
+        <translation type="vanished">U盘管理工具</translation>
     </message>
     <message>
         <source>kindly reminder</source>
@@ -143,6 +143,14 @@
         <source>Storage device removed</source>
         <translation>存储设备已移除</translation>
     </message>
+    <message>
+        <source>MainWindow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ukui flash disk</source>
+        <translation>U盘管理工具</translation>
+    </message>
 </context>
 <context>
     <name>MessageBox</name>
@@ -153,6 +161,10 @@
     <message>
         <source>Cancel</source>
         <translation>取消</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>格式化</translation>
     </message>
 </context>
 <context>
@@ -229,7 +241,7 @@
     </message>
     <message>
         <source>The repair completed. If the USB flash disk is not mounted, please try formatting the device!</source>
-        <translation>修复失败，如果设备没有成功挂载，请尝试格式化修复！</translation>
+        <translation type="vanished">修复失败，如果设备没有成功挂载，请尝试格式化修复！</translation>
     </message>
     <message>
         <source>Disk test</source>
@@ -238,6 +250,10 @@
     <message>
         <source>Disk repair</source>
         <translation>设备检测</translation>
+    </message>
+    <message>
+        <source>Repair failed. If the USB flash disk is not mounted, please try formatting the device!</source>
+        <translation>修复失败，如果设备没有成功挂载，请尝试格式化修复！</translation>
     </message>
 </context>
 <context>

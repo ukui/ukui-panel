@@ -42,19 +42,22 @@
 #include <XdgDesktopFile>
 #include <XdgIcon>
 #include <QMessageBox>
+#include <QPainterPath>
+#include <unistd.h>
 #include "../panel/common/ukuigridlayout.h"
 
 #include "ukuitaskbar.h"
 #include "ukuitaskgroup.h"
 #include "quicklaunchaction.h"
-#define PANEL_SETTINGS "org.ukui.panel.settings"
-#define PANEL_LINES    "panellines"
+#define PANEL_SETTINGS     "org.ukui.panel.settings"
+#define PANEL_LINES        "panellines"
+#define PANEL_CONFIG_PATH  "/usr/share/ukui/ukui-panel/panel-commission.ini"
 using namespace UKUi;
 /************************************************
 
 ************************************************/
 UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
-    QFrame(parent),
+    QScrollArea(parent),
     mSignalMapper(new QSignalMapper(this)),
     mButtonStyle(Qt::ToolButtonIconOnly),
     mButtonWidth(400),
@@ -71,20 +74,40 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     mIconByClass(false),
     mCycleOnWheelScroll(true),
     mPlugin(plugin),
+    mIgnoreWindow(),
     mPlaceHolder(new QWidget(this)),
     mStyle(new LeftAlignedTextStyle())
 {
+    mAllFrame=new QWidget(this);
+    mAllFrame->setAttribute(Qt::WA_TranslucentBackground);
+
+    this->setWidget(mAllFrame);
+    this->horizontalScrollBar()->setVisible(false);
+    this->verticalScrollBar()->setVisible(false);
+    this->setFrameShape(QFrame::NoFrame);//去掉边框
+    this->setWidgetResizable(true);
+
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Window, QColor(Qt::transparent));
+    this->setPalette(pal);
+
     taskstatus=NORMAL;
-    setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
-    setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
-    mLayout = new UKUi::GridLayout(this);
-    setLayout(mLayout);
+
+    mLayout = new UKUi::GridLayout(mAllFrame);
+    mAllFrame->setLayout(mLayout);
     mLayout->setMargin(0);
     mLayout->setStretch(UKUi::GridLayout::StretchHorizontal | UKUi::GridLayout::StretchVertical);
 
     mPlaceHolder->setMinimumSize(1,1);
-    mPlaceHolder->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    mPlaceHolder->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
     mPlaceHolder->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+
+    QString filename = QString::fromLocal8Bit(PANEL_CONFIG_PATH);
+    QSettings m_settings(filename, QSettings::IniFormat);
+    m_settings.setIniCodec("UTF-8");
+    m_settings.beginGroup("IgnoreWindow");
+    mIgnoreWindow = m_settings.value("ignoreWindow", "").toStringList();
+    m_settings.endGroup();
 
     //往任务栏中加入快速启动按钮
     refreshQuickLaunch();
@@ -94,9 +117,26 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     setAcceptDrops(true);
 
     const QByteArray id(PANEL_SETTINGS);
-    if(QGSettings::isSchemaInstalled(id)){
+    if (QGSettings::isSchemaInstalled(id)) {
         settings=new QGSettings(id);
     }
+
+    mAndroidIconHash=matchAndroidIcon();
+
+    const QByteArray id_Theme("org.ukui.style");
+    if(QGSettings::isSchemaInstalled(id_Theme)){
+        changeTheme = new QGSettings(id_Theme);
+    }
+    connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+        if(key=="iconThemeName"){
+            sleep(1);
+            for(auto it= mKnownWindows.begin(); it != mKnownWindows.end();it++)
+            {
+                UKUITaskGroup *group = it.value();
+                group->updateIcon();
+            }
+        }
+    });
 
     connect(mSignalMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped), this, &UKUITaskBar::activateTask);
 
@@ -106,16 +146,6 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &UKUITaskBar::onWindowRemoved);
     connect(KWindowSystem::self(), SIGNAL(currentDesktopChanged(int)), this, SLOT(onDesktopChanged()));
 
-    //龙芯机器的最小化任务窗口的预览窗口的特殊处理
-    system("cat /proc/cpuinfo >> /tmp/_tmp_cpu_info_cat_");
-    QFile file("/tmp/_tmp_cpu_info_cat_");
-    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read CpuInfo Failed.";
-    while (CpuInfoFlg && !file.atEnd()) {
-        QByteArray line = file.readLine();
-        QString str(line);
-        if (str.contains("Loongson")) CpuInfoFlg = false;
-    }
-    file.close();
     saveSettings();
 
     /**/
@@ -124,12 +154,15 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QDBusConnection::sessionBus().registerObject("/taskbar/click", this,QDBusConnection :: ExportAllSlots | QDBusConnection :: ExportAllSignals);
 
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "AddToTaskbar", this, SLOT(_AddToTaskbar(QString)));
+    QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "RemoveFromTaskbar", this, SLOT(removeFromTaskbar(QString)));
 
     if (mLayout->count() == 0) {
         mLayout->addWidget(mPlaceHolder);
     } else {
         mPlaceHolder->setFixedSize(0,0);
     }
+
+    QDBusConnection::sessionBus().connect(QString(), QString("/"), "com.ukui.panel", "event", this, SLOT(wl_kwinSigHandler(quint32,int, QString, QString)));
 }
 
 /************************************************
@@ -155,6 +188,12 @@ QString UKUITaskBar::readFile(const QString &filename) {
     }
 }
 
+bool UKUITaskBar::isFileExit(const QString &filename)
+{
+    QFile f(filename);
+    return f.exists();
+}
+
 void UKUITaskBar::onDesktopChanged() {
     for (auto i = mKnownWindows.begin(); mKnownWindows.end() != i; ++i)
     {
@@ -168,7 +207,6 @@ void UKUITaskBar::onDesktopChanged() {
 }
 
 void UKUITaskBar::refreshQuickLaunch(){
-    qDebug()<<"desktop  ******";
     for(auto it = mVBtn.begin(); it != mVBtn.end();)
     {
         (*it)->deleteLater();
@@ -179,7 +217,17 @@ void UKUITaskBar::refreshQuickLaunch(){
     QString file;
 
     //gsetting的方式读取写入 apps
-    const auto apps = mPlugin->settings()->readArray("apps");
+    QList<QMap<QString, QVariant> > apps = mPlugin->settings()->readArray("apps");
+    QString filename = QDir::homePath() + "/.config/ukui/panel.conf";
+    QSettings user_qsettings(filename,QSettings::IniFormat);
+    QStringList groupname = user_qsettings.childGroups();
+    //为了兼容3.0版本和3.1版本，后续版本考虑删除
+    if (apps.isEmpty() && groupname.contains("quicklaunch")) {
+        apps = copyQuicklaunchConfig();
+    } else if (groupname.contains("quicklaunch")) {
+            user_qsettings.remove("quicklaunch");
+    }
+
     for (const QMap<QString, QVariant> &app : apps)
     {
         desktop = app.value("desktop", "").toString();
@@ -197,10 +245,33 @@ void UKUITaskBar::refreshQuickLaunch(){
     }
 }
 
+QList<QMap<QString, QVariant> > UKUITaskBar::copyQuicklaunchConfig()
+{
+    QString filename = QDir::homePath() + "/.config/ukui/panel.conf";
+    //若taskbar中没有apps，则把quicklaunch中的内容复制到taskbar
+    qDebug()<<"Taskbar is empty, read apps from quicklaunch";
+    QSettings user_qsettings(filename,QSettings::IniFormat);
+    user_qsettings.beginGroup("quicklaunch");
+    QList<QMap<QString, QVariant> > array;
+    int size = user_qsettings.beginReadArray("apps");
+    for (int i = 0; i < size; ++i)
+    {
+        user_qsettings.setArrayIndex(i);
+        QMap<QString, QVariant> map;
+        map["desktop"] = user_qsettings.value("desktop");
+        if (array.contains(map)) {
+            continue;
+        } else {
+            array << map;
+        }
+    }
+    user_qsettings.endArray();
+    user_qsettings.endGroup();
+    user_qsettings.remove("quicklaunch");
+    user_qsettings.sync();
+    return array;
+}
 
-/************************************************
-
- ************************************************/
 bool UKUITaskBar::acceptWindow(WId window) const
 {
     QFlags<NET::WindowTypeMask> ignoreList;
@@ -237,35 +308,18 @@ bool UKUITaskBar::acceptWindow(WId window) const
     return !NET::typeMatchesMask(info.windowType(NET::AllTypesMask), normalFlag);
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::dragEnterEvent(QDragEnterEvent* event)
 {
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::dragMoveEvent(QDragMoveEvent * event)
 {
-}
-
-QString UKUITaskBar::isComputerOrTrash(QString urlName) {
-    if (!urlName.compare("computer:///"))
-        return QString("/usr/share/applications/peony-computer.desktop");
-    if (!urlName.compare("trash:///"))
-        return QString("/usr/share/applications/peony-trash.desktop");
-    return urlName;
 }
 
 void UKUITaskBar::dropEvent(QDropEvent *e)
 {
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos)
 {
     int src_index;
@@ -339,9 +393,6 @@ void UKUITaskBar::buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint co
     mLayout->moveItem(src_index, dst_index, true);
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::groupBecomeEmptySlot()
 {
     //group now contains no buttons - clean up in hash and delete the group
@@ -362,7 +413,7 @@ void UKUITaskBar::groupBecomeEmptySlot()
     {
         UKUITaskGroup *pQuickBtn = *it;
         if(pQuickBtn->file_name == group->file_name
-           &&(layout()->indexOf(pQuickBtn) >= 0 ))
+           &&(mLayout->indexOf(pQuickBtn) >= 0 ))
         {
             pQuickBtn->setHidden(false);
             mLayout->moveItem(mLayout->indexOf(pQuickBtn), mLayout->indexOf(group));
@@ -374,14 +425,14 @@ void UKUITaskBar::groupBecomeEmptySlot()
     group->deleteLater();
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::addWindow(WId window)
 {
-    qDebug()<<"^^^^^^^^^^^^^^^";
     // If grouping disabled group behaves like regular button
     const QString group_id = mGroupingEnabled ? KWindowInfo(window, 0, NET::WM2WindowClass).windowClassClass() : QString("%1").arg(window);
+    if (mIgnoreWindow.contains(group_id)) {
+        return;
+    }
+
     UKUITaskGroup *group = nullptr;
     bool isNeedAddNewWidget = true;
     auto i_group = mKnownWindows.find(window);
@@ -427,7 +478,7 @@ void UKUITaskBar::addWindow(WId window)
         {
             UKUITaskGroup *pQuickBtn = *it;
             if(pQuickBtn->file_name == group->file_name
-               &&(layout()->indexOf(pQuickBtn) >= 0 ))
+               &&(mLayout->indexOf(pQuickBtn) >= 0 ))
             {
                 mLayout->addWidget(group);
                 mLayout->moveItem(mLayout->indexOf(group), mLayout->indexOf(pQuickBtn));
@@ -450,40 +501,9 @@ void UKUITaskBar::addWindow(WId window)
 
     group->addWindow(window);
     group->groupName();
+    group->updateIcon();
 }
 
-bool UKUITaskBar::ignoreSymbolCMP(QString filename,QString groupname) {
-    if (filename.isEmpty()) return false;
-    groupname.replace(" ", "");
-    groupname.replace("-", ".");
-    groupname.replace(".demo", "");
-    groupname.replace(".py", "");
-    groupname.replace("org.", "");
-    groupname.replace(".qt", "");
-    filename.replace(" ", "");
-    filename.replace("-", ".");
-    filename.replace("org.", "");
-    filename.replace(".desktop", "");
-    if (groupname.toLower().contains(filename.toLower(), Qt::CaseInsensitive))
-        return true;
-    if (filename.toLower().contains(groupname.toLower(), Qt::CaseInsensitive))
-        return true;
-    if (groupname.toLower().contains("kylinweather") && filename.toLower().contains("china.weather"))
-        return true;
-    if (groupname.toLower().contains("srhuijian") && filename.toLower().contains("huijian"))
-        return true;
-    if (groupname.contains("用户手册") && filename.toLower().contains("kylin.user.guid"))
-        return true;
-    if (groupname.toLower().contains("wpsoffice") && filename.toLower().contains("wps.office.prometheus"))
-        return true;
-    if (groupname.toLower().contains("ukuisystemmonitor") && filename.toLower().contains("ukui.system.monitor"))
-        return true;
-    return false;
-}
-
-/************************************************
-
- ************************************************/
 auto UKUITaskBar::removeWindow(windowMap_t::iterator pos) -> windowMap_t::iterator
 {
     WId const window = pos.key();
@@ -495,9 +515,6 @@ auto UKUITaskBar::removeWindow(windowMap_t::iterator pos) -> windowMap_t::iterat
     return ret;
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::refreshTaskList()
 {
     QList<WId> new_list;
@@ -526,9 +543,7 @@ void UKUITaskBar::refreshTaskList()
     refreshPlaceholderVisibility();
 }
 
-/************************************************
 
- ************************************************/
 void UKUITaskBar::onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2)
 {
 
@@ -545,29 +560,12 @@ void UKUITaskBar::onWindowChanged(WId window, NET::Properties prop, NET::Propert
 
 void UKUITaskBar::onWindowAdded(WId window)
 {
+    qDebug()<<"window    is :  ******"<<window;
     auto const pos = mKnownWindows.find(window);
     if (mKnownWindows.end() == pos && acceptWindow(window))
         addWindow(window);
 }
 
-bool UKUITaskBar::isDesktopFile(QString urlName) {
-   return urlName.section('/', -1, -1).section('.', -1, -1) == QString("desktop");
-}
-
-bool UKUITaskBar::pubCheckIfExist(QString name) {
-    for (int i = 0; i < mVBtn.size(); i++) {
-        QString cmpName;
-        cmpName = (!mVBtn.value(i)->file_name.isEmpty() ? mVBtn.value(i)->file_name :
-                   (!mVBtn.value(i)->file.isEmpty() ? mVBtn.value(i)->file :
-                    (!mVBtn.value(i)->name.isEmpty() ? mVBtn.value(i)->name : mVBtn.value(i)->exec)));
-        if (cmpName.isEmpty()) return false;
-        if (cmpName.compare(name) == 0) return true;
-    }
-    return false;
-}
-/************************************************
-
- ************************************************/
 void UKUITaskBar::onWindowRemoved(WId window)
 {
     auto const pos = mKnownWindows.find(window);
@@ -577,9 +575,6 @@ void UKUITaskBar::onWindowRemoved(WId window)
     }
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::refreshButtonRotation()
 {
     bool autoRotate = mAutoRotate && (mButtonStyle != Qt::ToolButtonIconOnly);
@@ -698,11 +693,25 @@ void UKUITaskBar::realign()
     bool rotated = false;
     if (panel->isHorizontal())
     {
+        this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        mAllFrame->setMinimumSize(QSize((mLayout->count()+3)*panel->panelSize(),panel->panelSize()));
+        if (mAllFrame->width() < this->width()) {
+            mAllFrame->setFixedWidth(this->width());
+        }
+
         mLayout->setRowCount(panel->lineCount());
         mLayout->setColumnCount(0);
     }
     else
     {
+        this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        this->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        mAllFrame->setMinimumSize(QSize(panel->panelSize(),(mLayout->count()+3)*panel->panelSize()));
+        if (mAllFrame->height() < this->height()) {
+            mAllFrame->setFixedHeight(this->height());
+        }
+
         mLayout->setRowCount(0);
 
         if (mButtonStyle == Qt::ToolButtonIconOnly)
@@ -747,25 +756,36 @@ void UKUITaskBar::realign()
     emit refreshIconGeometry();
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::wheelEvent(QWheelEvent* event)
 {
+    if (this->verticalScrollBarPolicy()==Qt::ScrollBarAlwaysOff) {
+        if (event->delta()>=0) {
+            horizontalScrollBar()->setValue(horizontalScrollBar()->value()-40);
+            qDebug()<<"-40-horizontalScrollBar()->value()"<<horizontalScrollBar()->value();
+        } else {
+            horizontalScrollBar()->setValue(horizontalScrollBar()->value()+40);
+            if (horizontalScrollBar()->value()>mAllFrame->width()) {
+                horizontalScrollBar()->setValue(mAllFrame->width());
+            }
+            qDebug()<<"+40+horizontalScrollBar()->value()"<<horizontalScrollBar()->value();
+            //                qDebug()<<"scrollArea->horizontalScrollBar()->width()"<<horizontalScrollBar()->width();
+        }
+        //            qDebug()<<"scrollArea->horizontalScrollBar()->width()"<<horizontalScrollBar()->width();
+    } else {
+        if (event->delta()>=0) {
+            verticalScrollBar()->setValue(verticalScrollBar()->value()-40);
+        } else {
+            verticalScrollBar()->setValue(verticalScrollBar()->value()+40);
+        }
+    }
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::resizeEvent(QResizeEvent* event)
 {
     emit refreshIconGeometry();
     return QWidget::resizeEvent(event);
 }
 
-/************************************************
-
- ************************************************/
 void UKUITaskBar::changeEvent(QEvent* event)
 {
     // if current style is changed, reset the base style of the proxy style
@@ -812,6 +832,23 @@ void UKUITaskBar::paintEvent(QPaintEvent *)
         opt.initFrom(this);
         QPainter p(this);
 
+        p.setRenderHint(QPainter::Antialiasing);
+        QPainterPath rectPath;
+        rectPath.addRoundedRect(this->rect(),6,6);
+        // 画一个黑底
+        QPixmap pixmap(this->rect().size());
+        pixmap.fill(Qt::transparent);
+        QPainter pixmapPainter(&pixmap);
+        pixmapPainter.setRenderHint(QPainter::Antialiasing);
+
+        pixmapPainter.drawPath(rectPath);
+        pixmapPainter.end();
+
+        // 模糊这个黑底
+        extern void qt_blurImage(QImage &blurImage, qreal radius, bool quality, int transposed);
+        QImage img = pixmap.toImage();
+        qt_blurImage(img, 10, false, false);
+
         switch(taskstatus)
           {
           case NORMAL:
@@ -830,6 +867,13 @@ void UKUITaskBar::paintEvent(QPaintEvent *)
                   break;
               }
           }
+
+        QPalette pal = this->palette();
+        pal.setBrush(QPalette::Base, QColor(0,0,0,0));        //背景透明
+        this->viewport()->setPalette(pal);
+        this->setPalette(pal);
+        mAllFrame->setPalette(pal);
+
         p.setRenderHint(QPainter::Antialiasing);
         p.drawRoundedRect(opt.rect,6,6);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
@@ -842,14 +886,7 @@ void UKUITaskBar::mouseMoveEvent(QMouseEvent *e) {
 
 void UKUITaskBar::mousePressEvent(QMouseEvent *)
 {
-    /*创建QT的DBus信号*/
     QDBusMessage message =QDBusMessage::createSignal("/taskbar/click", "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp");
-    /*
-     * 需要此点击信号的应用需要做如下绑定
-     * QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/click"), "com.ukui.panel.plugins.taskbar", "sendToUkuiDEApp", this, SLOT(client_get(void)));
-     * 在槽函数client_get(void)　中处理接受到的点击信号
-     * NOTE:https://blog.csdn.net/czhzasui/article/details/81071383
-　　　*/
     QDBusConnection::sessionBus().send(message);
 }
 
@@ -876,7 +913,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
     {
         UKUITaskGroup *group = *it;
         if(btn->file_name == group->file_name
-           &&(layout()->indexOf(group) >= 0))
+           &&(mLayout->indexOf(group) >= 0))
         {
             mLayout->addWidget(btn);
             mLayout->moveItem(mLayout->indexOf(btn), mLayout->indexOf(group));
@@ -891,6 +928,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
     }
     if (isNeedAddNewWidget) {
         mLayout->addWidget(btn);
+        btn->setIconSize(QSize(mPlugin->panel()->iconSize(),mPlugin->panel()->iconSize()));
         mVBtn.push_back(btn);
         mLayout->moveItem(mLayout->indexOf(btn), countOfButtons() - 1);
     }
@@ -1002,7 +1040,7 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
     {
         UKUITaskGroup *pQuickBtn = *it;
         if(pQuickBtn->file_name == arg
-           && (layout()->indexOf(pQuickBtn) >= 0 ))
+           && (mLayout->indexOf(pQuickBtn) >= 0 ))
         {
             doInitGroupButton(pQuickBtn->file_name);
             mVBtn.removeOne(pQuickBtn);
@@ -1015,13 +1053,12 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
 }
 
 void UKUITaskBar::_AddToTaskbar(QString arg) {
-    qDebug()<<"add To taskbar  "<<arg;
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
     XdgDesktopFile xdg;
     if (xdg.load(fileName)){
-        if(!checkButton(new QuickLaunchAction(&xdg, this))) {
+        if(!checkButton(new QuickLaunchAction(&xdg, this))){
             addButton(new QuickLaunchAction(&xdg, this));
             mPlaceHolder->hide();
         }
@@ -1032,6 +1069,13 @@ void UKUITaskBar::_AddToTaskbar(QString arg) {
                                  );
     }
     saveSettings();
+}
+
+void UKUITaskBar::removeFromTaskbar(QString arg)
+{
+    XdgDesktopFile xdg;
+    xdg.load(arg);
+    removeButton(new QuickLaunchAction(&xdg, this));
 }
 
 void UKUITaskBar::doInitGroupButton(QString sname) {
@@ -1048,8 +1092,6 @@ void UKUITaskBar::doInitGroupButton(QString sname) {
     }
 }
 
-
-/*快速启动栏的按钮删除 右键删除*/
 void UKUITaskBar::buttonDeleted()
 {
     UKUITaskGroup *btn = qobject_cast<UKUITaskGroup*>(sender());
@@ -1082,7 +1124,6 @@ void UKUITaskBar::saveSettingsSlot() {
     saveSettings();
 }
 
-/*保持设置*/
 void UKUITaskBar::saveSettings()
 {
     PluginSettings *settings = mPlugin->settings();
@@ -1113,14 +1154,159 @@ void UKUITaskBar::saveSettings()
     settings->setArray("apps", hashList);
 }
 
-
 int UKUITaskBar::indexOfButton(UKUITaskGroup* button) const
 {
     return mLayout->indexOf(button);
 }
 
-/*快速启动栏上应用的数量*/
 int UKUITaskBar::countOfButtons() const
 {
     return mLayout->count();
+}
+
+void UKUITaskBar::wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption) {
+    qDebug()<<"UKUITaskBar::wl_kwinSigHandler"<<wl_winId<<opNo<<wl_iconName<<wl_caption;
+    if (!opNo) {
+//        addWindow_wl(wl_iconName, wl_caption, wl_winId);
+    }
+    switch (opNo) {
+    case 1:
+        mKnownWindows.find(wl_winId).value()->setActivateState_wl(false);
+        break;
+    case 2:
+        onWindowRemoved(wl_winId);
+        break;
+    case 3:
+        mKnownWindows.find(wl_winId).value()->setActivateState_wl(true);
+        break;
+    case 4:
+        addWindow_wl(wl_iconName, wl_caption, wl_winId);
+        mKnownWindows.find(wl_winId).value()->wl_widgetUpdateTitle(wl_caption);
+        break;
+    }
+}
+
+void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
+{
+    // If grouping disabled group behaves like regular button
+//    QString temp_group_id=caption;
+//    QStringList strList = temp_group_id.split(" ");
+
+    const QString group_id = captionExchange(caption);
+    if (QIcon::fromTheme(group_id).isNull()) {
+        iconName = QDir::homePath() + "/.local/share/icons/" + group_id + ".svg";
+        if (!isFileExit(iconName)) {
+            iconName = QDir::homePath() + "/.local/share/icons/" + group_id + ".png";
+            if (!isFileExit(iconName)) {
+                iconName = group_id;
+            }
+        }
+    } else {
+        iconName = group_id;
+    }
+    UKUITaskGroup *group = nullptr;
+    auto i_group = mKnownWindows.find(window);
+    if (mKnownWindows.end() != i_group)
+    {
+        if ((*i_group)->groupName() == group_id)
+            group = *i_group;
+        else
+            (*i_group)->onWindowRemoved(window);
+    }
+
+    if (!group && mGroupingEnabled && group_id.compare("kylin-video"))
+    {
+        for (auto i = mKnownWindows.cbegin(), i_e = mKnownWindows.cend(); i != i_e; ++i)
+        {
+            if ((*i)->groupName() == group_id)
+            {
+                group = *i;
+                break;
+            }
+        }
+    }
+
+    if (!group)
+    {
+        group = new UKUITaskGroup(iconName, caption, window, this);
+        mPlaceHolder->hide();
+        connect(group, SIGNAL(groupBecomeEmpty(QString)), this, SLOT(groupBecomeEmptySlot()));
+        connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
+        connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
+        connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
+            buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
+        });
+
+        //wayland临时图标适配主题代码处理
+        /*********************************************/
+        if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
+            group->setIcon(QIcon::fromTheme(group_id));
+        }else{
+            group->setIcon(QIcon::fromTheme(iconName));
+        }
+
+        connect(changeTheme, &QGSettings::changed, this, [=] (const QString &key){
+            if(key=="iconThemeName"){
+                sleep(1);
+                if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
+                    group->setIcon(QIcon::fromTheme(group_id));
+                }else{
+                    group->setIcon(QIcon::fromTheme(iconName));
+                }
+            }
+        });
+        /*********************************************/
+
+//        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
+        //group->setFixedSize(40,40);
+        mLayout->addWidget(group) ;
+        group->wl_widgetUpdateTitle(caption);
+        group->setStyle(new CustomStyle("taskbutton"));
+        group->setToolButtonsStyle(mButtonStyle);
+    }
+
+    mKnownWindows[window] = group;
+    group->wl_addWindow(window);
+}
+
+
+QString UKUITaskBar::captionExchange(QString str)
+{
+    QString temp_group_id=str;
+    QStringList strList = temp_group_id.split(" ");
+    QString group_id = strList[0];
+    QStringList video_list;
+    if(mAndroidIconHash.keys().contains(temp_group_id)){
+        group_id=mAndroidIconHash.value(temp_group_id);
+    }else{
+        video_list<<"影音"<<"Video";
+        if(video_list.contains(group_id)) group_id ="kylin-video";
+        else group_id="application-x-desktop";
+    }
+    return group_id;
+}
+
+QHash<QString,QString> UKUITaskBar::matchAndroidIcon()
+{
+    QHash<QString,QString> hash;
+    printf("*************\n");
+    QFile file("/usr/share/ukui/ukui-panel/plugin-taskbar/name-icon.match");
+    if(!file.open(QIODevice::ReadOnly))  qDebug()<<"Read FIle failed";
+    while (!file.atEnd()){
+        QByteArray line= file.readLine();
+        QString str=file.readLine();
+        str.section('picture',1,1).trimmed().toStdString();
+        str.simplified();
+        QString str_name = str.section(QRegExp("[;]"),0,0);
+        str_name = str_name.simplified();
+        str_name = str_name.remove("name=");
+
+        QString str_icon = str.section(QRegExp("[;]"),1,1);
+        str_icon = str_icon.simplified();
+        str_icon = str_icon.remove("icon=");
+
+        hash.insert(str_name,str_icon);
+    }
+
+    return hash;
 }

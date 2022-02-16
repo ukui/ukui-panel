@@ -6,6 +6,7 @@
 #include <KWindowSystem>
 #include <QDir>
 
+#define AUTOSTART_DEKSTOP_FILE_PATH     "/etc/xdg/autostart/"
 #define DEKSTOP_FILE_PATH       "/usr/share/applications/"
 #define USR_SHARE_APP_CURRENT   "/usr/share/applications/."
 #define USR_SHARE_APP_UPER      "/usr/share/applications/.."
@@ -15,6 +16,11 @@
 #define PEONY_MAIN              "/usr/share/applications/peony.desktop"
 
 #define GET_DESKTOP_EXEC_NAME_MAIN          "cat %s | awk '{if($1~\"Exec=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
+#define GET_DESKTOP_NAME_MAIN          "cat %s | awk '{if($1~\"Name=\")if($2~\"\%\"){print $1} else print}' | cut -d '=' -f 2"
+#define ANDROID_FILE_PATH       "/.local/share/applications/"
+#define ANDROID_APP_CURRENT     "/.local/share/applications/."
+#define ANDROID_APP_UPER        "/.local/share/applications/.."
+
 
 /**
  * @brief The ConvertDesktopToWinId class
@@ -32,24 +38,30 @@ public:
     ConvertDesktopToWinId();
     ~ConvertDesktopToWinId();
     //QList<int> InfoPidList;
-    QString desktop_file_path = nullptr;
-    QString classClass = nullptr;
-    QString className = nullptr;
-    QString statusName = nullptr;
-    QString cmd_line = nullptr;
+    QString m_desktopfilePath = nullptr;
+    QString m_classClass = nullptr;
+    QString m_className = nullptr;
+    QString m_statusName = nullptr;
+    QString m_cmdLine = nullptr;
 
-    QDir *dir = nullptr;
-    QFileInfoList list;
+    QDir *m_dir = nullptr;
+    QDir *m_androidDir = nullptr;
+    QFileInfoList m_list;
+    QFileInfoList m_androidList;
 
     QString tranIdToDesktop(WId id);
 
 private:
-    QString onWindowAdded(WId windowId);
-    QString confirmDesktopFileName(KWindowInfo info);
+    QString confirmDesktopFile(WId id);
     void searchFromEnviron(KWindowInfo info);
+    void searchAndroidApp(KWindowInfo info);
+    void searchTXeduApp(WId id);
     void compareClassName();
     void compareCmdExec();
     void compareLastStrategy();
+    void compareCmdName();
+    void compareDesktopClass();
+    void containsName();
     QString getDesktopFileName(QString cmd);
 };
 

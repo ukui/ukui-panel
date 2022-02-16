@@ -10,21 +10,6 @@ else
   echo "file exit"
 fi
 
-## 龙芯机器屏蔽夜间模式
-grep  -nr  "Loongson"     /proc/cpuinfo
-if [ $? -ne 0 ]; then
-  echo "not Loongarch"
-else
-  echo "龙芯机器 屏幕夜间模式"
-  while read line
-  do
-    echo $line
-    if [[ $line == *nightmode* ]];then
-      sed -i 's/nightmode=show/nightmode=hide/' ${HOME}/.config/ukui/panel-commission.ini
-    fi
-  done < ${HOME}/.config/ukui/panel-commission.ini
-fi
-
 ## 华为990 屏蔽休眠接口
 env | grep "XDG_SESSION_TYPE=wayland"
 if [ $? -ne 0 ]; then
