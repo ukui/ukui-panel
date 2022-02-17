@@ -1,2 +1,5 @@
 man/ukui-panel.1
 man/ukui-flash-disk.1
+man/panel-daemon.1
+man/sni-daemon.1
+man/sni-xembed-proxy.1
