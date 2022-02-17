@@ -43,7 +43,7 @@
 #include <QtX11Extras/QX11Info>
 #include <kstartupinfo.h>
 
-#define USE_STARTUP_INFO true
+#define USE_STARTUP_INFO false
 
 /*用xdg的方式解析*/
 QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
