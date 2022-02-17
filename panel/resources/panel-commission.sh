@@ -33,11 +33,3 @@ else
   done < ${HOME}/.config/ukui/panel-commission.ini
 fi
 
-##拷贝配置文件到用户目录
-panelConfigFile="${HOME}/.config/ukui/panel.conf"
-echo $panelConfigFile
-if [ ! -f "$panelConfigFile" ]; then
-  cp /usr/share/ukui/panel.conf ${HOME}/.config/ukui
-else
-fi
-
