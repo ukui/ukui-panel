@@ -47,8 +47,6 @@ install(FILES
     resources/name-icon.match
     DESTINATION "/usr/share/ukui/ukui-panel/plugin-taskbar"
     COMPONENT Runtime
-    PERMISSIONS OWNER_WRITE OWNER_READ  GROUP_READ GROUP_WRITE WORLD_READ WORLD_WRITE
-    GROUP_EXECUTE GROUP_READ
 )
 
 include(../cmake/UkuiPluginTranslationTs.cmake)
