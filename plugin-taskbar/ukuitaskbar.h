@@ -246,13 +246,18 @@ private:
     void wheelEvent(QWheelEvent* event);
     void changeEvent(QEvent* event);
     void resizeEvent(QResizeEvent *event);
+    void directoryUpdated(const QString &path);
+
+    QFileSystemWatcher *m_fsWatcher;
+    QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
+    QString m_desfktopFilePath ="/usr/share/applications/";
+    QString m_androidDesktopFilePath =QDir::homePath()+"/.local/share/applications/";
 
     IUKUIPanelPlugin *mPlugin;
     LeftAlignedTextStyle *mStyle;
     UKUITaskBarIcon *mpTaskBarIcon;
     QWidget *mAllFrame;
     QWidget *mPlaceHolder;
-
     QGSettings *changeTheme;
     QHash<QString,QString> mAndroidIconHash;
 
