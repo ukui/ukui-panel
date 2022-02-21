@@ -1093,30 +1093,15 @@ void UKUITaskBar::directoryUpdated(const QString &path)
     // 更新当前设置
     m_currentContentsMap[path] = newentrylist;
 
-    if (!newfile.isEmpty() && !deletefile.isEmpty())
-    {
+    if (!newfile.isEmpty() && !deletefile.isEmpty()) {
         // 文件/目录重命名
-        if ((newfile.count() == 1) && (deletefile.count() == 1))
-        {
+        if ((newfile.count() == 1) && (deletefile.count() == 1)) {
 //            qDebug() << QString("File Renamed from %1 to %2").arg(deleteFile.first()).arg(newFile.first());
         }
-    }
-    else
-    {
-        // 添加新文件/目录至Dir
-        if (!newfile.isEmpty())
-        {
-            foreach (QString file, newfile)
-            {
-                // 处理操作每个新文件....
-            }
-        }
+    } else {
         // 从Dir中删除文件/目录
-        if (!deletefile.isEmpty())
-        {
-            foreach(QString file, deletefile)
-            {
-                // 处理操作每个被删除的文件....
+        if (!deletefile.isEmpty()) {
+            foreach(QString file, deletefile) {
                 removeButton(path+file);
             }
         }

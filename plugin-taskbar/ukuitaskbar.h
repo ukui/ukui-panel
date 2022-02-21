@@ -61,6 +61,9 @@
 #include <QScrollArea>
 #include <QScrollBar>
 
+#define DESKTOP_FILE_PATH          "/usr/share/applications/"
+#define ANDROID_DESKTOP_FILE_PATH  "/.local/share/applications/"
+
 QT_BEGIN_NAMESPACE
 class QByteArray;
 template<class T> class QList;
@@ -250,8 +253,8 @@ private:
 
     QFileSystemWatcher *m_fsWatcher;
     QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
-    QString m_desfktopFilePath ="/usr/share/applications/";
-    QString m_androidDesktopFilePath =QDir::homePath()+"/.local/share/applications/";
+    QString m_desfktopFilePath =DESKTOP_FILE_PATH;
+    QString m_androidDesktopFilePath =QDir::homePath()+ANDROID_DESKTOP_FILE_PATH;
 
     IUKUIPanelPlugin *mPlugin;
     LeftAlignedTextStyle *mStyle;
