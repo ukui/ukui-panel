@@ -46,7 +46,7 @@
  ************************************************/
 UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     QFrame(group),
-    mGroup(group)
+    m_group(group)
 {
     Q_ASSERT(group);
     setAcceptDrops(true);
@@ -58,11 +58,11 @@ UKUIGroupPopup::UKUIGroupPopup(UKUITaskGroup *group):
     setLayout(new QHBoxLayout);
     layout()->setSpacing(3);
     layout()->setMargin(0);
-    rightclick = false;
+    m_rightclick = false;
 
-    connect(&mCloseTimer, &QTimer::timeout, this, &UKUIGroupPopup::closeTimerSlot);
-    mCloseTimer.setSingleShot(true);
-    mCloseTimer.setInterval(400);
+    connect(&m_closeTimer, &QTimer::timeout, this, &UKUIGroupPopup::closeTimerSlot);
+    m_closeTimer.setSingleShot(true);
+    m_closeTimer.setInterval(400);
     setMaximumWidth(QApplication::screens().at(0)->size().width());
     setMaximumHeight(QApplication::screens().at(0)->size().height());
 }
@@ -138,11 +138,11 @@ void UKUIGroupPopup::dragLeaveEvent(QDragLeaveEvent *event)
  ************************************************/
 void UKUIGroupPopup::leaveEvent(QEvent *event)
 {
-    if (!rightclick) {
+    if (!m_rightclick) {
         QTimer::singleShot(300, this,SLOT(closeWindowDelay()));
-        rightclick = false;
+        m_rightclick = false;
     } else {
-        rightclick = false;
+        m_rightclick = false;
     }
 }
 
@@ -152,27 +152,27 @@ void UKUIGroupPopup::leaveEvent(QEvent *event)
 void UKUIGroupPopup::enterEvent(QEvent *event)
 {
     QTimer::singleShot(300, this,SLOT(killTimerDelay()));
-//    mCloseTimer.stop();
+//    m_closeTimer.stop();
 }
 
 void UKUIGroupPopup::killTimerDelay()
 {
-      mCloseTimer.stop();
+      m_closeTimer.stop();
 }
 
 void UKUIGroupPopup::closeWindowDelay()
 {
-    if(mCloseTimer.isActive())
+    if(m_closeTimer.isActive())
     {
-        mCloseTimer.stop();
+        m_closeTimer.stop();
     }
     close();
 }
 
 void UKUIGroupPopup::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::RightButton)
-        rightclick = true;
-    else rightclick = false;
+        m_rightclick = true;
+    else m_rightclick = false;
 }
 
 void UKUIGroupPopup::paintEvent(QPaintEvent *event)
@@ -189,12 +189,12 @@ void UKUIGroupPopup::hide(bool fast)
     if (fast)
         close();
     else
-        mCloseTimer.start();
+        m_closeTimer.start();
 }
 
 void UKUIGroupPopup::show()
 {
-    mCloseTimer.stop();
+    m_closeTimer.stop();
     QFrame::show();
 }
 
