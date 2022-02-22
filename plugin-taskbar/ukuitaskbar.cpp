@@ -163,6 +163,17 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "AddToTaskbar", this, SLOT(_AddToTaskbar(QString)));
     QDBusConnection::sessionBus().connect(QString(), QString("/taskbar/quicklaunch"), "org.ukui.panel.taskbar", "RemoveFromTaskbar", this, SLOT(removeFromTaskbar(QString)));
 
+    /*监听系统应用的目录以及安卓兼容应用的目录*/
+    m_fsWatcher=new QFileSystemWatcher(this);
+    m_fsWatcher->addPath(m_desfktopFilePath);
+    m_fsWatcher->addPath(m_androidDesktopFilePath);
+    directoryUpdated(m_desfktopFilePath);
+    directoryUpdated(m_androidDesktopFilePath);
+    connect(m_fsWatcher,&QFileSystemWatcher::directoryChanged,[this](){
+        directoryUpdated(m_desfktopFilePath);
+        directoryUpdated(m_androidDesktopFilePath);
+    });
+
     if (mLayout->count() == 0) {
         mLayout->addWidget(mPlaceHolder);
     } else {
@@ -1060,6 +1071,43 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
         }
     }
 }
+
+// 只要任何监控的目录更新（添加、删除、重命名），就会调用。
+void UKUITaskBar::directoryUpdated(const QString &path)
+{
+    // 比较最新的内容和保存的内容找出区别(变化)
+    QStringList currentrylist = m_currentContentsMap[path];
+    const QDir dir(path);
+    QStringList newentrylist = dir.entryList(QDir::NoDotAndDotDot  | QDir::AllDirs | QDir::Files, QDir::DirsFirst);
+    QSet<QString> newdirset = QSet<QString>::fromList(newentrylist);
+    QSet<QString> currentdirset = QSet<QString>::fromList(currentrylist);
+
+    // 添加了文件
+    QSet<QString> newfiles = newdirset - currentdirset;
+    QStringList newfile = newfiles.toList();
+
+    // 文件已被移除
+    QSet<QString> deletedfiles = currentdirset - newdirset;
+    QStringList deletefile = deletedfiles.toList();
+
+    // 更新当前设置
+    m_currentContentsMap[path] = newentrylist;
+
+    if (!newfile.isEmpty() && !deletefile.isEmpty()) {
+        // 文件/目录重命名
+        if ((newfile.count() == 1) && (deletefile.count() == 1)) {
+//            qDebug() << QString("File Renamed from %1 to %2").arg(deleteFile.first()).arg(newFile.first());
+        }
+    } else {
+        // 从Dir中删除文件/目录
+        if (!deletefile.isEmpty()) {
+            foreach(QString file, deletefile) {
+                removeButton(path+file);
+            }
+        }
+    }
+}
+
 
 void UKUITaskBar::_AddToTaskbar(QString arg) {
     const auto url=QUrl(arg);
