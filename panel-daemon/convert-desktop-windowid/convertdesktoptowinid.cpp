@@ -105,8 +105,8 @@ QString ConvertDesktopToWinId::confirmDesktopFile(WId id)
 
 void ConvertDesktopToWinId::searchAndroidApp(KWindowInfo info)
 {
-    QDir m_androidDir(QString(QDir::homePath() + ANDROID_FILE_PATH));
-    m_androidList = m_androidDir.entryInfoList();
+    QDir androidDir(QString(QDir::homePath() + ANDROID_FILE_PATH));
+    m_androidList = androidDir.entryInfoList();
     m_androidList.removeAll(QDir::homePath() + ANDROID_APP_CURRENT);
     m_androidList.removeAll(QDir::homePath() + ANDROID_APP_UPER);
 
