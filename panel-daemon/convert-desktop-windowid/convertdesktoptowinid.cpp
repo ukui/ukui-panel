@@ -41,6 +41,7 @@ QString ConvertDesktopToWinId::confirmDesktopFile(WId id)
 
     m_dir = new QDir(DEKSTOP_FILE_PATH);
     m_list = m_dir->entryInfoList();
+    delete m_dir;
     //跳过 ./ 和 ../ 目录
     m_list.removeAll(QFile(USR_SHARE_APP_CURRENT));
     m_list.removeAll(QFile(USR_SHARE_APP_UPER));
@@ -108,6 +109,7 @@ void ConvertDesktopToWinId::searchAndroidApp(KWindowInfo info)
 {
     m_androidDir = new QDir(QString(QDir::homePath() + ANDROID_FILE_PATH));
     m_androidList = m_androidDir->entryInfoList();
+    delete m_androidDir;
     m_androidList.removeAll(QDir::homePath() + ANDROID_APP_CURRENT);
     m_androidList.removeAll(QDir::homePath() + ANDROID_APP_UPER);
 
