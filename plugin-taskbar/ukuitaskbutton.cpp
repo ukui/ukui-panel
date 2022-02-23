@@ -77,7 +77,7 @@
 #define ICON_SIZE_KEY       "iconsize"
 #define PANEL_POSITION_KEY  "panelposition"
 
-bool UKUITaskButton::sDraggging = false;
+bool UKUITaskButton::m_draggging = false;
 
 /************************************************
 
@@ -96,17 +96,17 @@ void LeftAlignedTextStyle::drawItemText(QPainter * painter, const QRect & rect, 
 ************************************************/
 UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * taskbar, QWidget *parent) :
     QToolButton(parent),
-    mWindow(window),
-    mAppName(appName),
-    mUrgencyHint(false),
-    mOrigin(Qt::TopLeftCorner),
-    mDrawPixmap(false),
-    mParentTaskBar(taskbar),
-    mPlugin(mParentTaskBar->plugin()),
-    mDNDTimer(new QTimer(this))
+    m_window(window),
+    m_appName(appName),
+    m_urgencyHint(false),
+    m_origin(Qt::TopLeftCorner),
+    m_drawPixmap(false),
+    m_parentTaskBar(taskbar),
+    m_plugin(m_parentTaskBar->plugin()),
+    m_DNDTimer(new QTimer(this))
 {
     Q_ASSERT(taskbar);
-    taskbuttonstatus=NORMAL;
+    m_taskButtonStatus=NORMAL;
     setCheckable(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -118,15 +118,15 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
     updateText();
     updateIcon();
 
-    mDNDTimer->setSingleShot(true);
-    mDNDTimer->setInterval(700);
-    connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
+    m_DNDTimer->setSingleShot(true);
+    m_DNDTimer->setInterval(700);
+    connect(m_DNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
     connect(UKUi::Settings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(updateIcon()));
-    connect(mParentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskButton::updateIcon);
+    connect(m_parentTaskBar, &UKUITaskBar::iconByClassChanged, this, &UKUITaskButton::updateIcon);
 
     const QByteArray id(PANEL_SETTINGS);
-    gsettings = new QGSettings(id);
-    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+    m_gsettings = new QGSettings(id);
+    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if (key == PANEL_SIZE_KEY)
         {
             updateIcon();
@@ -136,15 +136,15 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
 
 UKUITaskButton::UKUITaskButton(QString iconName,QString caption, const WId window, UKUITaskBar * taskbar, QWidget *parent) :
     QToolButton(parent),
-    mIconName(iconName),
-    mCaption(caption),
-    mWindow(window),
-    mParentTaskBar(taskbar),
-    mPlugin(mParentTaskBar->plugin())
+    m_iconName(iconName),
+    m_caption(caption),
+    m_window(window),
+    m_parentTaskBar(taskbar),
+    m_plugin(m_parentTaskBar->plugin())
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    isWinActivate = true;
-    mIcon = QIcon::fromTheme("application-x-desktop");
+    m_isWinActivate = true;
+    m_icon = QIcon::fromTheme("application-x-desktop");
 }
 /************************************************
 
@@ -158,30 +158,30 @@ UKUITaskButton::~UKUITaskButton()
  ************************************************/
 void UKUITaskButton::updateText()
 {
-    KWindowInfo info(mWindow, NET::WMVisibleName | NET::WMName);
+    KWindowInfo info(m_window, NET::WMVisibleName | NET::WMName);
     QString title = info.visibleName().isEmpty() ? info.name() : info.visibleName();
     setText(title.replace("&", "&&"));
     setToolTip(title);
 }
 
 void UKUITaskButton::setLeaderWindow(WId leaderWindow) {
-    mWindow = leaderWindow;
+    m_window = leaderWindow;
 }
 
-/* int devicePixels = mPlugin->panel()->iconSize() * devicePixelRatioF()是由ico =KWindowSystem:ico(mwindow)更改的
+/* int devicePixels = m_plugin->panel()->iconSize() * devicePixelRatioF()是由ico =KWindowSystem:ico(mwindow)更改的
  * 目的是为了能够显示正确的application-x-desktop的图标的大小
  *
 */
 void UKUITaskButton::updateIcon()
 {
-    if (mAppName == QString("emo-system-ShellMethods") ||
-        mAppName == QString("Qq"))
+    if (m_appName == QString("emo-system-ShellMethods") ||
+        m_appName == QString("Qq"))
         sleep(1);
     QIcon ico;
-    int mIconSize=mPlugin->panel()->iconSize();
-    if (mParentTaskBar->isIconByClass())
+    int mIconSize=m_plugin->panel()->iconSize();
+    if (m_parentTaskBar->isIconByClass())
     {
-        ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{mWindow, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
+        ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{m_window, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
     }
     if (ico.isNull())
     {
@@ -190,17 +190,17 @@ void UKUITaskButton::updateIcon()
 #else
         int devicePixels = mIconSize * devicePixelRatio();
 #endif
-        ico = KWindowSystem::icon(mWindow, devicePixels, devicePixels);
+        ico = KWindowSystem::icon(m_window, devicePixels, devicePixels);
     }
-    if (mIcon.isNull())
-        mIcon = QIcon::fromTheme("application-x-desktop");
-    setIcon(ico.isNull() ? mIcon : ico);
+    if (m_icon.isNull())
+        m_icon = QIcon::fromTheme("application-x-desktop");
+    setIcon(ico.isNull() ? m_icon : ico);
     setIconSize(QSize(mIconSize,mIconSize));
 }
 
 void UKUITaskButton::setGroupIcon(QIcon ico)
 {
-    mIcon = ico;
+    m_icon = ico;
 }
 
 /************************************************
@@ -240,7 +240,7 @@ void UKUITaskButton::dragEnterEvent(QDragEnterEvent *event)
         setAttribute(Qt::WA_UnderMouse, false);
     } else
     {
-        mDNDTimer->start();
+        m_DNDTimer->start();
     }
     QToolButton::dragEnterEvent(event);
 }
@@ -256,13 +256,13 @@ void UKUITaskButton::dragMoveEvent(QDragMoveEvent * event)
 
 void UKUITaskButton::dragLeaveEvent(QDragLeaveEvent *event)
 {
-    mDNDTimer->stop();
+    m_DNDTimer->stop();
     QToolButton::dragLeaveEvent(event);
 }
 
 void UKUITaskButton::dropEvent(QDropEvent *event)
 {
-    mDNDTimer->stop();
+    m_DNDTimer->stop();
     if (event->mimeData()->hasFormat(mimeDataFormat()))
     {
         //emit dropped(event->source(), event->pos());
@@ -279,9 +279,9 @@ void UKUITaskButton::mousePressEvent(QMouseEvent* event)
     const Qt::MouseButton b = event->button();
 
     if (Qt::LeftButton == b) {
-        mDragStartPosition = event->pos();
+        m_dragStartPosition = event->pos();
     }
-    else if (statFlag && Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick()) {
+    else if (m_statFlag && Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick()) {
         closeApplication();
     }
 
@@ -314,7 +314,7 @@ QMimeData * UKUITaskButton::mimeData()
     QMimeData *mimedata = new QMimeData;
     QByteArray ba;
     QDataStream stream(&ba,QIODevice::WriteOnly);
-    stream << (qlonglong)(mWindow);
+    stream << (qlonglong)(m_window);
     mimedata->setData(mimeDataFormat(), ba);
     return mimedata;
 }
@@ -327,14 +327,14 @@ void UKUITaskButton::mouseMoveEvent(QMouseEvent* event)
     if (!(event->buttons() & Qt::LeftButton))
         return;
 
-    if ((event->pos() - mDragStartPosition).manhattanLength() < QApplication::startDragDistance())
+    if ((event->pos() - m_dragStartPosition).manhattanLength() < QApplication::startDragDistance())
         return;
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData());
     QIcon ico = icon();
     QPixmap img = ico.pixmap(ico.actualSize({32, 32}));
     drag->setPixmap(img);
-    switch (mPlugin->panel()->position())
+    switch (m_plugin->panel()->position())
     {
         case IUKUIPanel::PositionLeft:
         case IUKUIPanel::PositionTop:
@@ -345,13 +345,13 @@ void UKUITaskButton::mouseMoveEvent(QMouseEvent* event)
             drag->setHotSpot(img.rect().bottomRight());
             break;
     }
-    sDraggging = true;
+    m_draggging = true;
     drag->exec();
 
     // if button is dropped out of panel (e.g. on desktop)
     // it is not deleted automatically by Qt
     drag->deleteLater();
-    sDraggging = false;
+    m_draggging = false;
 
     QAbstractButton::mouseMoveEvent(event);
 }
@@ -361,7 +361,7 @@ void UKUITaskButton::mouseMoveEvent(QMouseEvent* event)
  ************************************************/
 bool UKUITaskButton::isApplicationHidden() const
 {
-    KWindowInfo info(mWindow, NET::WMState);
+    KWindowInfo info(m_window, NET::WMState);
     return (info.state() & NET::Hidden);
 }
 
@@ -370,7 +370,7 @@ bool UKUITaskButton::isApplicationHidden() const
  ************************************************/
 bool UKUITaskButton::isApplicationActive() const
 {
-    return KWindowSystem::activeWindow() == mWindow;
+    return KWindowSystem::activeWindow() == m_window;
 }
 
 /************************************************
@@ -380,9 +380,9 @@ void UKUITaskButton::activateWithDraggable()
 {
     // raise app in any time when there is a drag
     // in progress to allow drop it into an app
-    if (statFlag) {
+    if (m_statFlag) {
         raiseApplication();
-        KWindowSystem::forceActiveWindow(mWindow);
+        KWindowSystem::forceActiveWindow(m_window);
     }
 }
 
@@ -391,10 +391,10 @@ void UKUITaskButton::activateWithDraggable()
  ************************************************/
 void UKUITaskButton::raiseApplication()
 {
-    KWindowInfo info(mWindow, NET::WMDesktop | NET::WMState | NET::XAWMState);
+    KWindowInfo info(m_window, NET::WMDesktop | NET::WMState | NET::XAWMState);
     if (parentTaskBar()->raiseOnCurrentDesktop() && info.isMinimized())
     {
-        KWindowSystem::setOnDesktop(mWindow, KWindowSystem::currentDesktop());
+        KWindowSystem::setOnDesktop(m_window, KWindowSystem::currentDesktop());
     }
     else
     {
@@ -402,7 +402,7 @@ void UKUITaskButton::raiseApplication()
         if (KWindowSystem::currentDesktop() != winDesktop)
             KWindowSystem::setCurrentDesktop(winDesktop);
     }
-    KWindowSystem::activateWindow(mWindow);
+    KWindowSystem::activateWindow(m_window);
 
     setUrgencyHint(false);
 }
@@ -412,7 +412,7 @@ void UKUITaskButton::raiseApplication()
  ************************************************/
 void UKUITaskButton::minimizeApplication()
 {
-    KWindowSystem::minimizeWindow(mWindow);
+    KWindowSystem::minimizeWindow(m_window);
 }
 
 /************************************************
@@ -428,15 +428,15 @@ void UKUITaskButton::maximizeApplication()
     switch (state)
     {
         case NET::MaxHoriz:
-            KWindowSystem::setState(mWindow, NET::MaxHoriz);
+            KWindowSystem::setState(m_window, NET::MaxHoriz);
             break;
 
         case NET::MaxVert:
-            KWindowSystem::setState(mWindow, NET::MaxVert);
+            KWindowSystem::setState(m_window, NET::MaxVert);
             break;
 
         default:
-            KWindowSystem::setState(mWindow, NET::Max);
+            KWindowSystem::setState(m_window, NET::Max);
             break;
     }
 
@@ -449,7 +449,7 @@ void UKUITaskButton::maximizeApplication()
  ************************************************/
 void UKUITaskButton::deMaximizeApplication()
 {
-    KWindowSystem::clearState(mWindow, NET::Max);
+    KWindowSystem::clearState(m_window, NET::Max);
 
     if (!isApplicationActive())
         raiseApplication();
@@ -460,7 +460,7 @@ void UKUITaskButton::deMaximizeApplication()
  ************************************************/
 void UKUITaskButton::shadeApplication()
 {
-    KWindowSystem::setState(mWindow, NET::Shaded);
+    KWindowSystem::setState(m_window, NET::Shaded);
 }
 
 /************************************************
@@ -468,7 +468,7 @@ void UKUITaskButton::shadeApplication()
  ************************************************/
 void UKUITaskButton::unShadeApplication()
 {
-    KWindowSystem::clearState(mWindow, NET::Shaded);
+    KWindowSystem::clearState(m_window, NET::Shaded);
 }
 
 /************************************************
@@ -477,7 +477,7 @@ void UKUITaskButton::unShadeApplication()
 void UKUITaskButton::closeApplication()
 {
     // FIXME: Why there is no such thing in KWindowSystem??
-    NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(mWindow);
+    NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(m_window);
 }
 
 /************************************************
@@ -493,18 +493,18 @@ void UKUITaskButton::setApplicationLayer()
     switch(layer)
     {
         case NET::KeepAbove:
-            KWindowSystem::clearState(mWindow, NET::KeepBelow);
-            KWindowSystem::setState(mWindow, NET::KeepAbove);
+            KWindowSystem::clearState(m_window, NET::KeepBelow);
+            KWindowSystem::setState(m_window, NET::KeepAbove);
             break;
 
         case NET::KeepBelow:
-            KWindowSystem::clearState(mWindow, NET::KeepAbove);
-            KWindowSystem::setState(mWindow, NET::KeepBelow);
+            KWindowSystem::clearState(m_window, NET::KeepAbove);
+            KWindowSystem::setState(m_window, NET::KeepBelow);
             break;
 
         default:
-            KWindowSystem::clearState(mWindow, NET::KeepBelow);
-            KWindowSystem::clearState(mWindow, NET::KeepAbove);
+            KWindowSystem::clearState(m_window, NET::KeepBelow);
+            KWindowSystem::clearState(m_window, NET::KeepAbove);
             break;
     }
 }
@@ -524,7 +524,7 @@ void UKUITaskButton::moveApplicationToDesktop()
     if (!ok)
         return;
 
-    KWindowSystem::setOnDesktop(mWindow, desk);
+    KWindowSystem::setOnDesktop(m_window, desk);
 }
 
 /************************************************
@@ -532,17 +532,17 @@ void UKUITaskButton::moveApplicationToDesktop()
  ************************************************/
 void UKUITaskButton::moveApplication()
 {
-    KWindowInfo info(mWindow, NET::WMDesktop);
+    KWindowInfo info(m_window, NET::WMDesktop);
     if (!info.isOnCurrentDesktop())
         KWindowSystem::setCurrentDesktop(info.desktop());
     if (isMinimized())
-        KWindowSystem::unminimizeWindow(mWindow);
-    KWindowSystem::forceActiveWindow(mWindow);
-    const QRect& g = KWindowInfo(mWindow, NET::WMGeometry).geometry();
+        KWindowSystem::unminimizeWindow(m_window);
+    KWindowSystem::forceActiveWindow(m_window);
+    const QRect& g = KWindowInfo(m_window, NET::WMGeometry).geometry();
     int X = g.center().x();
     int Y = g.center().y();
     QCursor::setPos(X, Y);
-    NETRootInfo(QX11Info::connection(), NET::WMMoveResize).moveResizeRequest(mWindow, X, Y, NET::Move);
+    NETRootInfo(QX11Info::connection(), NET::WMMoveResize).moveResizeRequest(m_window, X, Y, NET::Move);
 }
 
 /************************************************
@@ -550,17 +550,17 @@ void UKUITaskButton::moveApplication()
  ************************************************/
 void UKUITaskButton::resizeApplication()
 {
-    KWindowInfo info(mWindow, NET::WMDesktop);
+    KWindowInfo info(m_window, NET::WMDesktop);
     if (!info.isOnCurrentDesktop())
         KWindowSystem::setCurrentDesktop(info.desktop());
     if (isMinimized())
-        KWindowSystem::unminimizeWindow(mWindow);
-    KWindowSystem::forceActiveWindow(mWindow);
-    const QRect& g = KWindowInfo(mWindow, NET::WMGeometry).geometry();
+        KWindowSystem::unminimizeWindow(m_window);
+    KWindowSystem::forceActiveWindow(m_window);
+    const QRect& g = KWindowInfo(m_window, NET::WMGeometry).geometry();
     int X = g.bottomRight().x();
     int Y = g.bottomRight().y();
     QCursor::setPos(X, Y);
-    NETRootInfo(QX11Info::connection(), NET::WMMoveResize).moveResizeRequest(mWindow, X, Y, NET::BottomRight);
+    NETRootInfo(QX11Info::connection(), NET::WMMoveResize).moveResizeRequest(m_window, X, Y, NET::BottomRight);
 }
 
 /************************************************
@@ -568,7 +568,7 @@ void UKUITaskButton::resizeApplication()
  ************************************************/
 void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
 {
-    if (!statFlag) {
+    if (!m_statFlag) {
         return;
     }
     if (event->modifiers().testFlag(Qt::ControlModifier))
@@ -577,8 +577,8 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
         return;
     }
 
-    KWindowInfo info(mWindow, 0, NET::WM2AllowedActions);
-    unsigned long state = KWindowInfo(mWindow, NET::WMState).state();
+    KWindowInfo info(m_window, 0, NET::WM2AllowedActions);
+    unsigned long state = KWindowInfo(m_window, NET::WMState).state();
 
     QMenu * menu = new QMenu(tr("Application"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
@@ -613,7 +613,7 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
     int deskNum = KWindowSystem::numberOfDesktops();
     if (deskNum > 1)
     {
-        int winDesk = KWindowInfo(mWindow, NET::WMDesktop).desktop();
+        int winDesk = KWindowInfo(m_window, NET::WMDesktop).desktop();
         QMenu* deskMenu = menu->addMenu(tr("To &Desktop"));
 
         a = deskMenu->addAction(tr("&All Desktops"));
@@ -715,8 +715,8 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
     menu->addSeparator();
     a = menu->addAction(QIcon::fromTheme("process-stop"), tr("&Close"));
     connect(a, SIGNAL(triggered(bool)), this, SLOT(closeApplication()));
-    menu->setGeometry(mParentTaskBar->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
-    mPlugin->willShowWindow(menu);
+    menu->setGeometry(m_parentTaskBar->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
+    m_plugin->willShowWindow(menu);
     menu->show();
 }
 
@@ -725,13 +725,13 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
  ************************************************/
 void UKUITaskButton::setUrgencyHint(bool set)
 {
-    if (mUrgencyHint == set)
+    if (m_urgencyHint == set)
         return;
 
     if (!set)
-        KWindowSystem::demandAttention(mWindow, false);
+        KWindowSystem::demandAttention(m_window, false);
 
-    mUrgencyHint = set;
+    m_urgencyHint = set;
     setProperty("urgent", set);
     style()->unpolish(this);
     style()->polish(this);
@@ -740,29 +740,29 @@ void UKUITaskButton::setUrgencyHint(bool set)
 
 bool UKUITaskButton::isOnDesktop(int desktop) const
 {
-    return KWindowInfo(mWindow, NET::WMDesktop).isOnDesktop(desktop);
+    return KWindowInfo(m_window, NET::WMDesktop).isOnDesktop(desktop);
 }
 
 bool UKUITaskButton::isOnCurrentScreen() const
 {
-    return QApplication::desktop()->screenGeometry(parentTaskBar()).intersects(KWindowInfo(mWindow, NET::WMFrameExtents).frameGeometry());
+    return QApplication::desktop()->screenGeometry(parentTaskBar()).intersects(KWindowInfo(m_window, NET::WMFrameExtents).frameGeometry());
 }
 
 bool UKUITaskButton::isMinimized() const
 {
-    return KWindowInfo(mWindow,NET::WMState | NET::XAWMState).isMinimized();
+    return KWindowInfo(m_window,NET::WMState | NET::XAWMState).isMinimized();
 }
 
 Qt::Corner UKUITaskButton::origin() const
 {
-    return mOrigin;
+    return m_origin;
 }
 
 void UKUITaskButton::setOrigin(Qt::Corner newOrigin)
 {
-    if (mOrigin != newOrigin)
+    if (m_origin != newOrigin)
     {
-        mOrigin = newOrigin;
+        m_origin = newOrigin;
         update();
     }
 }
@@ -793,13 +793,13 @@ void UKUITaskButton::setAutoRotation(bool value, IUKUIPanel::Position position)
 
 void UKUITaskButton::enterEvent(QEvent *)
 {
-    taskbuttonstatus=HOVER;
+    m_taskButtonStatus=HOVER;
     update();
 }
 
 void UKUITaskButton::leaveEvent(QEvent *)
 {
-    taskbuttonstatus=NORMAL;
+    m_taskButtonStatus=NORMAL;
     update();
 }
 
@@ -814,32 +814,32 @@ void UKUITaskButton::paintEvent(QPaintEvent *event)
 
 bool UKUITaskButton::hasDragAndDropHover() const
 {
-    return mDNDTimer->isActive();
+    return m_DNDTimer->isActive();
 }
 
 
 
 UKUITaskButton::UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, QWidget * parent)
     : QToolButton(parent),
-      mAct(act),
-      mPlugin(plugin)
+      m_act(act),
+      m_plugin(plugin)
 {
-    mDNDTimer = new QTimer(this);
-    statFlag = false;
+    m_DNDTimer = new QTimer(this);
+    m_statFlag = false;
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     /*设置快速启动栏的按键不接受焦点*/
     setFocusPolicy(Qt::NoFocus);
     setAutoRaise(true);
-    quicklanuchstatus = NORMAL;
+    m_quickLanuchStatus = NORMAL;
 
-    setDefaultAction(mAct);
-    mAct->setParent(this);
+    setDefaultAction(m_act);
+    m_act->setParent(this);
 
     /*设置快速启动栏的菜单项*/
     const QByteArray id(UKUI_PANEL_SETTINGS);
-    mgsettings = new QGSettings(id);
+    m_gsettingsQuickLaunch = new QGSettings(id);
     modifyQuicklaunchMenuAction(true);
-    connect(mgsettings, &QGSettings::changed, this, [=] (const QString &key){
+    connect(m_gsettingsQuickLaunch, &QGSettings::changed, this, [=] (const QString &key){
         if(key==PANELPOSITION){
             modifyQuicklaunchMenuAction(true);
         }
@@ -848,10 +848,10 @@ UKUITaskButton::UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugi
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(this_customContextMenuRequested(const QPoint&)));
-    mDNDTimer->setSingleShot(true);
-    mDNDTimer->setInterval(700);
-    connect(mDNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
-    file_name=act->m_settingsMap["desktop"];
+    m_DNDTimer->setSingleShot(true);
+    m_DNDTimer->setInterval(700);
+    connect(m_DNDTimer, SIGNAL(timeout()), this, SLOT(activateWithDraggable()));
+    m_fileName=act->m_settingsMap["desktop"];
     this->setStyle(new CustomStyle());
     repaint();
 
@@ -860,30 +860,30 @@ UKUITaskButton::UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugi
 
 QHash<QString,QString> UKUITaskButton::settingsMap()
 {
-    Q_ASSERT(mAct);
-    return mAct->settingsMap();
+    Q_ASSERT(m_act);
+    return m_act->settingsMap();
 }
 
 /*与鼠标右键的选项有关*/
 void UKUITaskButton::this_customContextMenuRequested(const QPoint & pos)
 {
-    mPlugin->willShowWindow(mMenu);
-    mMenu->popup(mPlugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), mMenu->sizeHint()).topLeft());
+    m_plugin->willShowWindow(m_menu);
+    m_menu->popup(m_plugin->panel()->calculatePopupWindowPos(mapToGlobal({0, 0}), m_menu->sizeHint()).topLeft());
 }
 
 /*调整快速启动栏的菜单项*/
 void UKUITaskButton::modifyQuicklaunchMenuAction(bool direction)
 {
 
-    mDeleteAct = new QAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-unfixed")), tr("delete from quicklaunch"), this);
-    connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
-    //addAction(mDeleteAct);
-    mMenu = new QuicklaunchMenu();
-    mMenu->addAction(mAct);
-    mMenu->addActions(mAct->addtitionalActions());
-    mMenu->addSeparator();
-    mMenu->addSeparator();
-    mMenu->addAction(mDeleteAct);
+    m_deleteAct = new QAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-unfixed")), tr("delete from quicklaunch"), this);
+    connect(m_deleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
+    //addAction(m_deleteAct);
+    m_menu = new QuicklaunchMenu();
+    m_menu->addAction(m_act);
+    m_menu->addActions(m_act->addtitionalActions());
+    m_menu->addSeparator();
+    m_menu->addSeparator();
+    m_menu->addAction(m_deleteAct);
 }
 
 void UKUITaskButton::selfRemove()

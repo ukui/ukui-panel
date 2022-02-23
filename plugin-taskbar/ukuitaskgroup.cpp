@@ -130,7 +130,7 @@ UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin,
       mAct(act),
       mParent(parent)
 {
-    statFlag = false;
+    m_statFlag = false;
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAcceptDrops(true);
     /*设置快速启动栏的按键不接受焦点*/
@@ -152,10 +152,10 @@ UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin,
     });
     setContextMenuPolicy(Qt::CustomContextMenu);
 
-    file_name=act->m_settingsMap["desktop"];
-    file = act->m_settingsMap["file"];
-    exec = act->m_settingsMap["exec"];
-    name = act->m_settingsMap["name"];
+    m_fileName=act->m_settingsMap["desktop"];
+    m_file = act->m_settingsMap["file"];
+    m_exec = act->m_settingsMap["exec"];
+    m_name = act->m_settingsMap["name"];
     this->setStyle(new CustomStyle());
     repaint();
 }
@@ -202,9 +202,9 @@ UKUITaskGroup::UKUITaskGroup(const QString & iconName, const QString & caption, 
     //setObjectName(caption);
     //setText(caption);
     Q_ASSERT(parent);
-    mIconName=iconName;
+    m_iconName=iconName;
     taskgroupStatus = NORMAL;
-    isWinActivate = true;
+    m_isWinActivate = true;
     setIcon(QIcon::fromTheme(iconName));
     connect(this, SIGNAL(clicked(bool)), this, SLOT(onClicked(bool)));
     connect(parent, &UKUITaskBar::buttonStyleRefreshed, this, &UKUITaskGroup::setToolButtonsStyle);
@@ -226,13 +226,13 @@ void UKUITaskGroup::initDesktopFileName(int window) {
     QDBusReply<QString> reply = iface.call(UKUI_PANEL_DAEMON_METHOD, window);
     QString processExeName = reply.value();
     if (!processExeName.isEmpty()) {
-        file_name = processExeName;
+        m_fileName = processExeName;
     }
 }
 
 void UKUITaskGroup::initActionsInRightButtonMenu(){
-    if (file_name.isEmpty()) return;
-    const auto url=QUrl(file_name);
+    if (m_fileName.isEmpty()) return;
+    const auto url=QUrl(m_fileName);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     XdgDesktopFile xdg;
     if (xdg.load(fileName)){
@@ -254,7 +254,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    if (!file_name.isEmpty()) {
+    if (!m_fileName.isEmpty()) {
         menu->addAction(mAct);
         menu->addActions(mAct->addtitionalActions());
         menu->addSeparator();
@@ -277,7 +277,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 }
 void UKUITaskGroup::RemovefromTaskBar()
 {
-    emit WindowRemovefromTaskBar(file_name);
+    emit WindowRemovefromTaskBar(m_fileName);
 }
 void UKUITaskGroup::AddtoTaskBar()
 {
@@ -495,7 +495,7 @@ void UKUITaskGroup::draggingTimerTimeout()
 void UKUITaskGroup::onClicked(bool)
 {
     if (isWaylandGroup) {
-        winClickActivate_wl(!isWinActivate);
+        winClickActivate_wl(!m_isWinActivate);
         return;
     }
     if (1 == mVisibleHash.size())
@@ -686,7 +686,7 @@ QMimeData * UKUITaskGroup::mimeData()
  ************************************************/
 void UKUITaskGroup::setPopupVisible(bool visible, bool fast)
 {
-    if (!statFlag) return;
+    if (!m_statFlag) return;
     if (visible && !mPreventPopup && !mSingleButton)
     {
 //        QTimer::singleShot(400, this,SLOT(showPreview()));
@@ -788,7 +788,7 @@ void UKUITaskGroup::leaveEvent(QEvent *event)
 {
     //QTimer::singleShot(300, this,SLOT(mouseLeaveOut()));
     mTaskGroupEvent = LEAVEEVENT;
-    if (!statFlag) {
+    if (!m_statFlag) {
         update();
         return;
     }
@@ -807,7 +807,7 @@ void UKUITaskGroup::enterEvent(QEvent *event)
 {
     //QToolButton::enterEvent(event);
     mTaskGroupEvent = ENTEREVENT;
-    if (!statFlag) {
+    if (!m_statFlag) {
         update();
         return;
     }
@@ -817,10 +817,10 @@ void UKUITaskGroup::enterEvent(QEvent *event)
 
 void UKUITaskGroup::handleSavedEvent()
 {
-    if (sDraggging)
+    if (m_draggging)
         return;
-    if (!statFlag) return;
-    if (statFlag && parentTaskBar()->isShowGroupOnHover())
+    if (!m_statFlag) return;
+    if (m_statFlag && parentTaskBar()->isShowGroupOnHover())
     {
         setPopupVisible(true);
     }
@@ -853,7 +853,7 @@ void UKUITaskGroup::dragLeaveEvent(QDragLeaveEvent *event)
 {
     // if draggind something into the taskgroup or the taskgroups' popup,
     // do not close the popup
-    if (!sDraggging)
+    if (!m_draggging)
         setPopupVisible(false);
     UKUITaskButton::dragLeaveEvent(event);
 }
@@ -1230,10 +1230,10 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         {
             QPixmap thumbnail;
             UKUITaskWidget *btn = it.value();
-            thumbnail = QIcon::fromTheme(mIconName).pixmap(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT - 160);
+            thumbnail = QIcon::fromTheme(m_iconName).pixmap(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT - 160);
             btn->setThumbNail(thumbnail);
-            btn->wl_updateTitle(mCaption);
-            btn->wl_updateIcon(mIconName);
+            btn->wl_updateTitle(m_caption);
+            btn->wl_updateIcon(m_iconName);
             btn->setFixedSize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT - 160);
             //mpWidget->layout()->setContentsMargins(0,0,0,0);
             //mpWidget->layout()->addWidget(btn);
@@ -1493,7 +1493,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
 }
 
 void UKUITaskGroup::setActivateState_wl(bool _state) {
-    isWinActivate = _state;
+    m_isWinActivate = _state;
     taskgroupStatus = (_state ? HOVER : NORMAL);
     repaint();
 }
@@ -1504,7 +1504,7 @@ void UKUITaskGroup::winClickActivate_wl(bool _getActive) {
     quint32 m_wid=windowId();
     args.append(m_wid);
     args.append((_getActive ? WAYLAND_GROUP_ACTIVATE : WAYLAND_GROUP_HIDE));
-    isWinActivate = _getActive;
+    m_isWinActivate = _getActive;
     taskgroupStatus = (_getActive ? HOVER : NORMAL);
     repaint();
     message.setArguments(args);

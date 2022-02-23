@@ -424,7 +424,7 @@ void UKUITaskBar::groupBecomeEmptySlot()
     for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it)
     {
         UKUITaskGroup *pQuickBtn = *it;
-        if(pQuickBtn->file_name == group->file_name
+        if(pQuickBtn->m_fileName == group->m_fileName
            &&(m_layout->indexOf(pQuickBtn) >= 0 ))
         {
             pQuickBtn->setHidden(false);
@@ -489,7 +489,7 @@ void UKUITaskBar::addWindow(WId window)
         for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it)
         {
             UKUITaskGroup *pQuickBtn = *it;
-            if(pQuickBtn->file_name == group->file_name
+            if(pQuickBtn->m_fileName == group->m_fileName
                &&(m_layout->indexOf(pQuickBtn) >= 0 ))
             {
                 m_layout->addWidget(group);
@@ -925,7 +925,7 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
     for (auto it = m_knownWindows.begin(); it!=m_knownWindows.end(); ++it)
     {
         UKUITaskGroup *group = *it;
-        if(btn->file_name == group->file_name
+        if(btn->m_fileName == group->m_fileName
            &&(m_layout->indexOf(group) >= 0))
         {
             m_layout->addWidget(btn);
@@ -980,7 +980,7 @@ bool UKUITaskBar::checkButton(QuickLaunchAction* action)
         while (i != counts) {
             UKUITaskGroup *b = m_vBtn.value(i);
             qDebug()<<"m_layout->itemAt("<<i<<") ";
-            if(b->file_name == btn->file_name) {
+            if(b->m_fileName == btn->m_fileName) {
                 checkresult=true;
                 break;
             } else {
@@ -1008,8 +1008,8 @@ void UKUITaskBar::removeButton(QuickLaunchAction* action)
         return;
     while (i < m_vBtn.size()) {
         UKUITaskGroup *tmp = m_vBtn.value(i);
-        if (QString::compare(btn->file_name, tmp->file_name) == 0) {
-            doInitGroupButton(tmp->file_name);
+        if (QString::compare(btn->m_fileName, tmp->m_fileName) == 0) {
+            doInitGroupButton(tmp->m_fileName);
             tmp->deleteLater();
             m_layout->removeWidget(tmp);
             m_vBtn.remove(i);
@@ -1027,8 +1027,8 @@ void UKUITaskBar::removeButton(QString file)
     int i = 0;
     while (i < m_vBtn.size()) {
         UKUITaskGroup *tmp = m_vBtn.value(i);
-        if (QString::compare(file, tmp->file_name) == 0) {
-            doInitGroupButton(tmp->file_name);
+        if (QString::compare(file, tmp->m_fileName) == 0) {
+            doInitGroupButton(tmp->m_fileName);
             tmp->deleteLater();
             m_layout->removeWidget(tmp);
             m_vBtn.remove(i);
@@ -1043,7 +1043,7 @@ void UKUITaskBar::WindowAddtoTaskBar(QString arg) {
     {
         UKUITaskGroup *group = it.value();
             if (arg.compare(group->groupName()) == 0) {
-                addToTaskbar(group->file_name);
+                addToTaskbar(group->m_fileName);
                 break;
         }
     }
@@ -1053,10 +1053,10 @@ void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
     for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it)
     {
         UKUITaskGroup *pQuickBtn = *it;
-        if(pQuickBtn->file_name == arg
+        if(pQuickBtn->m_fileName == arg
            && (m_layout->indexOf(pQuickBtn) >= 0 ))
         {
-            doInitGroupButton(pQuickBtn->file_name);
+            doInitGroupButton(pQuickBtn->m_fileName);
             m_vBtn.removeOne(pQuickBtn);
             pQuickBtn->deleteLater();
             m_layout->removeWidget(pQuickBtn);
@@ -1134,7 +1134,7 @@ void UKUITaskBar::doInitGroupButton(QString sname) {
     {
         UKUITaskGroup *group = it.value();
         if (group->existSameQckBtn) {
-            if (sname == group->file_name) {
+            if (sname == group->m_fileName) {
                     group->existSameQckBtn = false;
                     group->setQckLchBtn(NULL);
                     break;
@@ -1156,7 +1156,7 @@ void UKUITaskBar::buttonDeleted()
             {
                 UKUITaskGroup *group = it.value();
                 if (group->existSameQckBtn) {
-                    if (btn->file_name == group->file_name) {
+                    if (btn->m_fileName == group->m_fileName) {
                             group->existSameQckBtn = false;
                             group->setQckLchBtn(NULL);
                     }
@@ -1185,12 +1185,12 @@ void UKUITaskBar::saveSettings()
     {
         UKUITaskGroup *b = qobject_cast<UKUITaskGroup*>(m_layout->itemAt(j)->widget());
         if (!(m_vBtn.contains(b) || m_knownWindows.contains(m_knownWindows.key(b)))) continue;
-        if (!b->statFlag && b->existSameQckBtn) continue;
+        if (!b->m_statFlag && b->existSameQckBtn) continue;
         if (!b) continue;
-        if (b->statFlag && b->existSameQckBtn){
+        if (b->m_statFlag && b->existSameQckBtn){
             b = b->getQckLchBtn();
         }
-        if (!b || b->statFlag)
+        if (!b || b->m_statFlag)
             continue;
         // convert QHash<QString, QString> to QMap<QString, QVariant>
         QMap<QString, QVariant> map;

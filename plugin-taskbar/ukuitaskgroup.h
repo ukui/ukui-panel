@@ -94,7 +94,7 @@ class UKUITaskGroup: public UKUITaskButton
     Q_OBJECT
 
 public:
-    bool statFlag = true;
+    bool m_statFlag = true;
     bool existSameQckBtn = false;
     int QckBtnIndex = -1;
     bool hasbeenSaved = false;
@@ -128,7 +128,7 @@ public:
     void singleWindowClick();
     void VisibleWndRemoved(WId window);
     void setAutoRotation(bool value, IUKUIPanel::Position position);
-    void setQckLchBtn(UKUITaskGroup *utgp) { if(statFlag) mpQckLchBtn = utgp; }
+    void setQckLchBtn(UKUITaskGroup *utgp) { if(m_statFlag) mpQckLchBtn = utgp; }
     UKUITaskGroup* getQckLchBtn() { return mpQckLchBtn; }
 
     void setActivateState_wl(bool _state);
@@ -222,7 +222,7 @@ private:
     QuicklaunchMenu *mMenu;
     QPoint mDragStart;
     TaskGroupStatus quicklanuchstatus;
-    CustomStyle toolbuttonstyle;
+    CustomStyle m_toolButtonStyle;
     QGSettings *mgsettings;
 
     bool isWaylandGroup;

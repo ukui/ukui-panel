@@ -34,19 +34,19 @@ UKUITaskBarPlugin::UKUITaskBarPlugin(const IUKUIPanelPluginStartupInfo &startupI
 
 {
     translator();
-    mTaskBar = new UKUITaskBar(this);
+    m_taskBar = new UKUITaskBar(this);
 
 }
 
 
 UKUITaskBarPlugin::~UKUITaskBarPlugin()
 {
-    delete mTaskBar;
+    delete m_taskBar;
 }
 
 void UKUITaskBarPlugin::realign()
 {
-    mTaskBar->realign();
+    m_taskBar->realign();
 }
 
 void UKUITaskBarPlugin::translator(){

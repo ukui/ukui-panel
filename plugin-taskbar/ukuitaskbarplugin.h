@@ -45,14 +45,14 @@ public:
     QString themeId() const { return "TaskBar"; }
     virtual Flags flags() const { return HaveConfigDialog | NeedsHandle; }
 
-    QWidget *widget() { return mTaskBar; }
+    QWidget *widget() { return m_taskBar; }
 
     void realign();
 
     bool isSeparate() const { return true; }
     bool isExpandable() const { return true; }
 private:
-    UKUITaskBar *mTaskBar;
+    UKUITaskBar *m_taskBar;
     QTranslator *m_translator;
 private:
     void translator();
