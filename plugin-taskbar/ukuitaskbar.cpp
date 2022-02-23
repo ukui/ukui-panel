@@ -210,7 +210,7 @@ void UKUITaskBar::onDesktopChanged() {
     for (auto i = m_knownWindows.begin(); m_knownWindows.end() != i; ++i)
     {
         (*i)->onDesktopChanged();
-        if ((*i)->existSameQckBtn) {
+        if ((*i)->m_existSameQckBtn) {
             UKUITaskGroup* btn = (*i)->getOwnQckBtn();
             if (m_vBtn.contains(btn))
                 btn->setVisible((*i)->isHidden());
@@ -429,7 +429,7 @@ void UKUITaskBar::groupBecomeEmptySlot()
         {
             pQuickBtn->setHidden(false);
             m_layout->moveItem(m_layout->indexOf(pQuickBtn), m_layout->indexOf(group));
-            pQuickBtn->existSameQckBtn = false;
+            pQuickBtn->m_existSameQckBtn = false;
             break;
         }
     }
@@ -496,8 +496,8 @@ void UKUITaskBar::addWindow(WId window)
                 m_layout->moveItem(m_layout->indexOf(group), m_layout->indexOf(pQuickBtn));
                 pQuickBtn->setHidden(true);
                 isNeedAddNewWidget = false;
-                group->existSameQckBtn = true;
-                pQuickBtn->existSameQckBtn = true;
+                group->m_existSameQckBtn = true;
+                pQuickBtn->m_existSameQckBtn = true;
                 group->setQckLchBtn(pQuickBtn);
                 break;
             }
@@ -931,8 +931,8 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
             m_layout->addWidget(btn);
             m_layout->moveItem(m_layout->indexOf(btn), m_layout->indexOf(group));
             isNeedAddNewWidget = false;
-            group->existSameQckBtn = true;
-            btn->existSameQckBtn = true;
+            group->m_existSameQckBtn = true;
+            btn->m_existSameQckBtn = true;
             m_vBtn.push_back(btn);
             group->setQckLchBtn(btn);
             btn->setHidden(group->isVisible());
@@ -1133,9 +1133,9 @@ void UKUITaskBar::doInitGroupButton(QString sname) {
     for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++)
     {
         UKUITaskGroup *group = it.value();
-        if (group->existSameQckBtn) {
+        if (group->m_existSameQckBtn) {
             if (sname == group->m_fileName) {
-                    group->existSameQckBtn = false;
+                    group->m_existSameQckBtn = false;
                     group->setQckLchBtn(NULL);
                     break;
             }
@@ -1155,9 +1155,9 @@ void UKUITaskBar::buttonDeleted()
             for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++)
             {
                 UKUITaskGroup *group = it.value();
-                if (group->existSameQckBtn) {
+                if (group->m_existSameQckBtn) {
                     if (btn->m_fileName == group->m_fileName) {
-                            group->existSameQckBtn = false;
+                            group->m_existSameQckBtn = false;
                             group->setQckLchBtn(NULL);
                     }
                 }
@@ -1185,9 +1185,9 @@ void UKUITaskBar::saveSettings()
     {
         UKUITaskGroup *b = qobject_cast<UKUITaskGroup*>(m_layout->itemAt(j)->widget());
         if (!(m_vBtn.contains(b) || m_knownWindows.contains(m_knownWindows.key(b)))) continue;
-        if (!b->m_statFlag && b->existSameQckBtn) continue;
+        if (!b->m_statFlag && b->m_existSameQckBtn) continue;
         if (!b) continue;
-        if (b->m_statFlag && b->existSameQckBtn){
+        if (b->m_statFlag && b->m_existSameQckBtn){
             b = b->getQckLchBtn();
         }
         if (!b || b->m_statFlag)

@@ -21,7 +21,7 @@
 #include "../panel/highlight-effect.h"
 UKUITaskCloseButton::UKUITaskCloseButton(const WId window, QWidget *parent):
     QToolButton(parent),
-    mWindow(window)
+    m_window(window)
 {
     this->setStyle(new CustomStyle("closebutton"));
     this->setIcon(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("window-close-symbolic").pixmap(24,24).toImage()))));
