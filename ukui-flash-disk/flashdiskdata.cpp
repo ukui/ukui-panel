@@ -191,7 +191,7 @@ int FlashDiskData::removeDriveInfo(FDDriveInfo driveInfo)
     }
     if (m_devInfoWithDrive.find(driveInfo.strId) != m_devInfoWithDrive.end()) {
         if (getAttachedVolumeCount(driveInfo.strId) > 0) {
-            Q_EMIT notifyDeviceRemoved(QString::fromStdString(driveInfo.strId));
+            //Q_EMIT notifyDeviceRemoved(QString::fromStdString(driveInfo.strId));
         }
         m_devInfoWithDrive.erase(driveInfo.strId);
         return 0;
@@ -206,7 +206,7 @@ int FlashDiskData::removeVolumeInfo(FDVolumeInfo volumeInfo)
     }
     if (m_devInfoWithVolume.find(volumeInfo.strId) != m_devInfoWithVolume.end()) {
         if (getAttachedVolumeCount(volumeInfo.strId) == 1) {
-            Q_EMIT notifyDeviceRemoved(QString::fromStdString(volumeInfo.strId));
+            //Q_EMIT notifyDeviceRemoved(QString::fromStdString(volumeInfo.strId));
         }
         m_devInfoWithVolume.erase(volumeInfo.strId);
         return 0;
@@ -216,7 +216,7 @@ int FlashDiskData::removeVolumeInfo(FDVolumeInfo volumeInfo)
             map<string, FDVolumeInfo>::iterator itVolumeInfo = itDriveInfo->second.listVolumes.find(volumeInfo.strId);
             if (itVolumeInfo != itDriveInfo->second.listVolumes.end()) {
                 if (getAttachedVolumeCount(volumeInfo.strId) == 1) {
-                    Q_EMIT notifyDeviceRemoved(QString::fromStdString(volumeInfo.strId));
+                    //Q_EMIT notifyDeviceRemoved(QString::fromStdString(volumeInfo.strId));
                 }
                 if (itVolumeInfo->second.mountInfo.strId.empty()) {
                     itDriveInfo->second.listVolumes.erase(volumeInfo.strId);

@@ -236,6 +236,31 @@ bool MainWindow::isSystemRootDev(QString strDev)
     return m_strSysRootDev.startsWith(strDev);
 }
 
+bool MainWindow::getDevInterface(QString strDev)
+{
+
+    QString cmd = "udevadm info -n ";
+    cmd.append(strDev);
+    QProcess *p = new QProcess();
+    p->start(cmd);
+    p->waitForFinished();
+    while(p->canReadLine()) {
+        QString str = p->readLine();
+        qDebug()<<"-----TT1-"<<str<<endl;
+        QStringList infoList = str.split('\n');
+        QStringList::Iterator it = infoList.begin();
+        for (; it != infoList.end(); it++){
+            if(*it==("E: ID_BUS=ata")){
+            return false;
+            }
+
+        }
+    }
+    delete p;
+    p = nullptr;
+    return true;
+}
+
 void MainWindow::getDeviceInfo()
 {
     // setting
@@ -284,7 +309,7 @@ void MainWindow::getDeviceInfo()
             driveInfo.isCanStop = g_drive_can_stop(gdrive);
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
-            if(!isSystemRootDev(driveInfo.strId.c_str()) && (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
+            if(!isSystemRootDev(driveInfo.strId.c_str()) && getDevInterface(driveInfo.strId.c_str()) && (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
                 if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
                     || g_str_has_prefix(devPath,"/dev/mmcblk")) {
                     GList* gdriveVolumes = g_drive_get_volumes(gdrive);
@@ -802,6 +827,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
         }
     }
     p_this->m_dataFlashDisk->removeDriveInfo(driveInfo);
+    Q_EMIT p_this->notifyDeviceRemoved(QString::fromStdString(driveInfo.strId));
     if(p_this->m_dataFlashDisk->getValidInfoCount() == 0) {
         p_this->ui->centralWidget->hide();
         p_this->m_systray->hide();
