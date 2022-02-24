@@ -104,6 +104,7 @@ private:
     uint mCount = 0;
     bool mParamInit=false;
     QGSettings *mThemeSettings;
+    QPoint cursorLeftPos;
 
 signals:
     void switchButtons(StatusNotifierButton *from, StatusNotifierButton *to);
@@ -113,6 +114,7 @@ signals:
     void iconReady();
     void layoutReady();
     void paramReady();
+    void itemMenu(bool exist);
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
@@ -133,6 +135,7 @@ protected:
 private:
     void systemThemeChanges();
     void updataItemMenu();
+    void getItemMenu();
 
 };
 

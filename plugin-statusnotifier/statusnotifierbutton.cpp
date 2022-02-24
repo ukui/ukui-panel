@@ -94,20 +94,22 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         }
     });
 
-    /*Menu返回值：
-    无菜单项返回: "/NO_DBUSMENU"；
-    有菜单项返回: "/MenuBar",其他；
-    x-sni注册的返回: ""
-    */
-    interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
-        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
-        {
-            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
-            if(mMenu){
-                mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
-                KWindowEffects::enableBlurBehind(mMenu->winId(), true);
+    //显示托盘图标右键菜单
+    connect(this, &StatusNotifierButton::itemMenu, this, [=](bool exist){
+        //延时5ms后再判断mMenu->isEmpty()
+        QTimer::singleShot(5,this,[=]{
+            if(exist){
+                if (mMenu && !mMenu->isEmpty()){
+                    mPlugin->willShowWindow(mMenu);
+                    mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(cursorLeftPos, mMenu->sizeHint()).topLeft());
+                }
             }
-        }
+            else
+                interface->ContextMenu(cursorLeftPos.x(), cursorLeftPos.y());
+        });
+
+
+
     });
 
     interface->propertyGetAsync(QLatin1String("Status"), [this] (QString status) {
@@ -135,7 +137,6 @@ StatusNotifierButton::~StatusNotifierButton()
 void StatusNotifierButton::newIcon()
 {
     refetchIcon(Passive);
-    updataItemMenu();
 }
 
 void StatusNotifierButton::newOverlayIcon()
@@ -344,15 +345,8 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
         interface->SecondaryActivate(QCursor::pos().x(), QCursor::pos().y());
     else if (Qt::RightButton == event->button())
     {
-        if (mMenu)
-        {
-            if (!mMenu->isEmpty()){
-                mPlugin->willShowWindow(mMenu);
-                mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
-
-            }
-        } else
-            interface->ContextMenu(QCursor::pos().x(), QCursor::pos().y());
+        cursorLeftPos = QCursor::pos();
+        getItemMenu();
     }
     update();
     QToolButton::mouseReleaseEvent(event);
@@ -410,6 +404,24 @@ void StatusNotifierButton::updataItemMenu()
                 KWindowEffects::enableBlurBehind(mMenu->winId(), true);
             }
         }
+    });
+}
+
+void StatusNotifierButton::getItemMenu()
+{
+    /*Menu返回值：
+        无菜单项返回 - "/NO_DBUSMENU"；
+        有菜单项返回 - "/MenuBar",其他；
+        x-sni注册的图标返回 - ""
+    */
+    interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
+        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
+        {
+            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
+            emit itemMenu(true);
+        }
+        else
+            emit itemMenu(false);
     });
 }
 
