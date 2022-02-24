@@ -104,7 +104,7 @@ private:
     uint mCount = 0;
     bool mParamInit=false;
     QGSettings *mThemeSettings;
-    QPoint cursorLeftPos;
+    QPoint mCursorLeftPos;
 
 signals:
     void switchButtons(StatusNotifierButton *from, StatusNotifierButton *to);

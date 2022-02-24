@@ -101,11 +101,11 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
             if(exist){
                 if (mMenu && !mMenu->isEmpty()){
                     mPlugin->willShowWindow(mMenu);
-                    mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(cursorLeftPos, mMenu->sizeHint()).topLeft());
+                    mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(mCursorLeftPos, mMenu->sizeHint()).topLeft());
                 }
             }
             else
-                interface->ContextMenu(cursorLeftPos.x(), cursorLeftPos.y());
+                interface->ContextMenu(mCursorLeftPos.x(), mCursorLeftPos.y());
         });
 
 
@@ -345,7 +345,7 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
         interface->SecondaryActivate(QCursor::pos().x(), QCursor::pos().y());
     else if (Qt::RightButton == event->button())
     {
-        cursorLeftPos = QCursor::pos();
+        mCursorLeftPos = QCursor::pos();
         getItemMenu();
     }
     update();
