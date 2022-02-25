@@ -41,6 +41,7 @@
 #include <QMenu>
 #include <QString>
 #include <QGSettings>
+#include <dbusmenu-qt5/dbusmenuimporter.h>
 
 #define ORG_UKUI_STYLE  "org.ukui.style"
 #define ICON_THEME_NAME "iconThemeName"
@@ -56,8 +57,25 @@ template <typename T> inline T qFromUnaligned(const uchar *src)
 }
 #endif
 
+/*! \brief specialized DBusMenuImporter to correctly create actions' icons based
+ * on name
+ */
+class MenuImporter : public DBusMenuImporter
+{
+public:
+    using DBusMenuImporter::DBusMenuImporter;
+
+protected:
+    virtual QIcon iconForName(const QString & name) override
+    {
+        return QIcon::fromTheme(name);
+    }
+};
+
+
 class IUKUIPanelPlugin;
 class SniAsync;
+class MenuImporter;
 
 class StatusNotifierButton : public QToolButton
 {
@@ -89,6 +107,7 @@ public:
 
 private:
     SniAsync *interface;
+    MenuImporter *mMenuImporter;
     QMenu *mMenu;
     Status mStatus;
 
@@ -106,6 +125,7 @@ private:
     QGSettings *mThemeSettings;
     QPoint mCursorLeftPos;
 
+
 signals:
     void switchButtons(StatusNotifierButton *from, StatusNotifierButton *to);
     void sendTitle(QString arg);
@@ -114,7 +134,6 @@ signals:
     void iconReady();
     void layoutReady();
     void paramReady();
-    void itemMenu(bool exist);
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
@@ -135,7 +154,6 @@ protected:
 private:
     void systemThemeChanges();
     void updataItemMenu();
-    void getItemMenu();
 
 };
 

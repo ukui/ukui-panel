@@ -32,7 +32,6 @@
 #include <QFile>
 #include <QApplication>
 #include <QDrag>
-#include <dbusmenu-qt5/dbusmenuimporter.h>
 #include "../panel/iukuipanelplugin.h"
 #include "sniasync.h"
 #include "../panel/customstyle.h"
@@ -43,27 +42,10 @@
 
 #define MIMETYPE "ukui/UkuiTaskBar"
 
-namespace
-{
-    /*! \brief specialized DBusMenuImporter to correctly create actions' icons based
-     * on name
-     */
-    class MenuImporter : public DBusMenuImporter
-    {
-    public:
-        using DBusMenuImporter::DBusMenuImporter;
-
-    protected:
-        virtual QIcon iconForName(const QString & name) override
-        {
-            return QIcon::fromTheme(name);
-        }
-    };
-}
-
 StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, IUKUIPanelPlugin* plugin, QWidget *parent)
     : QToolButton(parent),
     mMenu(nullptr),
+    mMenuImporter(nullptr),
     mStatus(Passive),
     mFallbackIcon(QIcon::fromTheme("application-x-executable")),
     mPlugin(plugin)
@@ -94,22 +76,25 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         }
     });
 
-    //显示托盘图标右键菜单
-    connect(this, &StatusNotifierButton::itemMenu, this, [=](bool exist){
-        //延时5ms后再判断mMenu->isEmpty()
-        QTimer::singleShot(5,this,[=]{
-            if(exist){
-                if (mMenu && !mMenu->isEmpty()){
-                    mPlugin->willShowWindow(mMenu);
-                    mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(mCursorLeftPos, mMenu->sizeHint()).topLeft());
+
+    /*Menu返回值：
+        无菜单项返回 - "/NO_DBUSMENU"；
+        有菜单项返回 - "/MenuBar",其他；
+        x-sni注册的图标返回 - ""
+    */
+    interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
+        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
+        {
+            mMenuImporter = new MenuImporter(interface->service(), path.path(), this);
+            if(mMenuImporter){
+                connect(mMenuImporter, &MenuImporter::menuUpdated, this, &StatusNotifierButton::updataItemMenu);
+                mMenu = mMenuImporter->menu();
+                if(mMenu){
+                    mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+                    KWindowEffects::enableBlurBehind(mMenu->winId(), true);
                 }
             }
-            else
-                interface->ContextMenu(mCursorLeftPos.x(), mCursorLeftPos.y());
-        });
-
-
-
+        }
     });
 
     interface->propertyGetAsync(QLatin1String("Status"), [this] (QString status) {
@@ -346,7 +331,13 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
     else if (Qt::RightButton == event->button())
     {
         mCursorLeftPos = QCursor::pos();
-        getItemMenu();
+        if(mMenuImporter) {
+            mMenuImporter->updateMenu();
+        }
+        else {
+            interface->ContextMenu(mCursorLeftPos.x(), mCursorLeftPos.y());
+        }
+
     }
     update();
     QToolButton::mouseReleaseEvent(event);
@@ -395,36 +386,15 @@ void StatusNotifierButton::systemThemeChanges()
 
 void StatusNotifierButton::updataItemMenu()
 {
-    interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
-        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
-        {
-            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
-            if(mMenu){
-                mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
-                KWindowEffects::enableBlurBehind(mMenu->winId(), true);
-            }
-        }
-    });
+    mMenu = mMenuImporter->menu();
+    if (mMenu && !mMenu->isEmpty()){
+        mPlugin->willShowWindow(mMenu);
+        mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(mCursorLeftPos, mMenu->sizeHint()).topLeft()); //任务栏显示右键菜单
+    }
+    else{
+        interface->ContextMenu(mCursorLeftPos.x(), mCursorLeftPos.y()); //应用显示右键菜单
+    }
 }
-
-void StatusNotifierButton::getItemMenu()
-{
-    /*Menu返回值：
-        无菜单项返回 - "/NO_DBUSMENU"；
-        有菜单项返回 - "/MenuBar",其他；
-        x-sni注册的图标返回 - ""
-    */
-    interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
-        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
-        {
-            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
-            emit itemMenu(true);
-        }
-        else
-            emit itemMenu(false);
-    });
-}
-
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
 {
