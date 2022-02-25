@@ -185,6 +185,7 @@ private:
     void getDriveIconsInfo(GDrive* drive, FDDriveInfo& driveInfo);
     void getVolumeIconsInfo(GVolume* volume, FDVolumeInfo& volumeInfo);
     void getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo);
+    bool getDevInterface(QString strDev);
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    
