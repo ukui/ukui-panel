@@ -30,6 +30,7 @@ TaskViewButton::TaskViewButton(IUKUIPanelPlugin *plugin,QWidget *parent):
     this->setStyle(new CustomStyle());
     this->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
     this->setIconSize(QSize(m_plugin->panel()->iconSize(),m_plugin->panel()->iconSize()));
+    this->setContextMenuPolicy(Qt::PreventContextMenu);
 }
 TaskViewButton::~TaskViewButton(){
 }

@@ -126,7 +126,7 @@ public:
      * @brief Returns the name of this panel which is also used as identifier
      * in the config file.
      */
-    QString name() { return mConfigGroup; }
+    QString name() { return m_configGroup; }
 
     /**
      * @brief Reads all the necessary settings from mSettings and stores them
@@ -146,7 +146,7 @@ public:
     void showPopupMenu(Plugin *plugin = 0);
 
     // IUKUIPanel overrides ........
-    IUKUIPanel::Position position() const override { return mPosition; }
+    IUKUIPanel::Position position() const override { return m_position; }
     QRect globalGeometry() const override;
     /**
      * @brief calculatePopupWindowPos 计算任务栏弹窗的位置
@@ -221,22 +221,19 @@ public:
 
 
     // Settings
-    int iconSize() const override { return mIconSize; } //!< Implement IUKUIPanel::iconSize().
-    int lineCount() const override { return mLineCount; } //!< Implement IUKUIPanel::lineCount().
-    int panelSize() const override{ return mPanelSize; }
-    int length() const { return mLength; }
-    bool lengthInPercents() const { return mLengthInPercents; }
-    UKUIPanel::Alignment alignment() const { return mAlignment; }
-    int screenNum() const { return mScreenNum; }
-    QColor fontColor() const { return mFontColor; }
-    QColor backgroundColor() const { return mBackgroundColor; }
-    QString backgroundImage() const { return mBackgroundImage; }
-    int opacity() const { return mOpacity; }
-    int reserveSpace() const { return mReserveSpace; }
-    bool hidable() const { return mHidable; }
-    bool visibleMargin() const { return mVisibleMargin; }
-    int animationTime() const { return mAnimationTime; }
-    int showDelay() const { return mShowDelayTimer.interval(); }
+    int iconSize() const override { return m_iconSize; } //!< Implement IUKUIPanel::iconSize().
+    int lineCount() const override { return m_lineCount; } //!< Implement IUKUIPanel::lineCount().
+    int panelSize() const override{ return m_panelSize; }
+    int length() const { return m_length; }
+    bool lengthInPercents() const { return m_lengthInPercents; }
+    UKUIPanel::Alignment alignment() const { return m_alignment; }
+    int screenNum() const { return m_screenNum; }
+    QColor fontColor() const { return m_fontColor; }
+    int reserveSpace() const { return m_reserveSpace; }
+    bool hidable() const { return m_hidable; }
+    bool visibleMargin() const { return m_visibleMargin; }
+    int animationTime() const { return m_animationTime; }
+    int showDelay() const { return m_showDelayTimer.interval(); }
     QString iconTheme() const;
 
     /*!
@@ -313,7 +310,6 @@ public slots:
     void setPosition(int screen, IUKUIPanel::Position position, bool save); //!< \sa setPanelSize()
     void setAlignment(UKUIPanel::Alignment value, bool save); //!< \sa setPanelSize()
     void setFontColor(QColor color, bool save); //!< \sa setPanelSize()
-    void setBackgroundColor(QColor color, bool save); //!< \sa setPanelSize()
     void setReserveSpace(bool reserveSpace, bool save); //!< \sa setPanelSize()
     void setHidable(bool hidable, bool save); //!< \sa setPanelSize()
     void setVisibleMargin(bool visibleMargin, bool save); //!< \sa setPanelSize()
@@ -464,17 +460,16 @@ private slots:
     void userRequestForDeletion();
 
 private:
-    int scale;
     /**
      * @brief The UKUIPanelLayout of this panel. All the Plugins will be added
      * to the UI via this layout.
      */
-    UKUIPanelLayout* mLayout;
+    UKUIPanelLayout* m_layout;
     /**
      * @brief The UKUi::Settings instance as retrieved from
      * UKUIPanelApplication.
      */
-    UKUi::Settings *mSettings;
+    UKUi::Settings *m_settings;
     /**
      * @brief The background widget for the panel. This background widget will
      * have the background color or the background image if any of these is
@@ -486,17 +481,17 @@ private:
      * @brief The name of the panel which will also be used as an identifier
      * for config files.
      */
-    QString mConfigGroup;
+    QString m_configGroup;
     /**
      * @brief Pointer to the PanelPluginsModel which will store all the Plugins
      * that are loaded.
      */
-    QScopedPointer<PanelPluginsModel> mPlugins;
+    QScopedPointer<PanelPluginsModel> m_plugins;
     /**
      * @brief object for storing info if some standalone window is shown
      * (for preventing hide)
      */
-    QScopedPointer<WindowNotifier> mStandaloneWindows;
+    QScopedPointer<WindowNotifier> m_standaloneWindows;
 
     /**
      * @brief Returns the screen index of a screen on which this panel could
@@ -562,19 +557,19 @@ private:
      * \sa panelSize(), setPanelSize().
      */
     void styleAdjust();
-    int mPanelSize;
+    int m_panelSize;
     /**
      * @brief Stores the edge length of the panel icons in pixels.
      *
      * \sa IUKUIPanel::iconSize(), setIconSize().
      */
-    int mIconSize;
+    int m_iconSize;
     /**
      * @brief Stores the number of lines/rows of the panel.
      *
      * \sa IUKUIPanel::lineCount(), setLineCount().
      */
-    int mLineCount;
+    int m_lineCount;
 
     /**
      * @brief Stores the length of the panel, i.e. the width of a horizontal
@@ -583,7 +578,7 @@ private:
      *
      * \sa mLengthInPercents
      */
-    int mLength;
+    int m_length;
     /**
      * @brief Stores if mLength is stored in pixels or relative to the
      * screen size in percents. If true, the length is stored in percents,
@@ -591,7 +586,7 @@ private:
      *
      * \sa mLength
      */
-    bool mLengthInPercents;
+    bool m_lengthInPercents;
 
     /**
      * @brief Stores how this panel is aligned. The meaning of this value
@@ -599,12 +594,12 @@ private:
      *
      * \sa Alignment.
      */
-    Alignment mAlignment;
+    Alignment m_alignment;
 
     /**
      * @brief Stores the position where the panel is shown
      */
-    IUKUIPanel::Position mPosition;
+    IUKUIPanel::Position m_position;
     /**
      * @brief Returns the index of the screen on which this panel should be
      * shown. This is the user configured value which can differ from the
@@ -617,14 +612,14 @@ private:
      *
      * \sa mActualScreenNum, canPlacedOn(), findAvailableScreen().
      */
-    int mScreenNum;
+    int m_screenNum;
     /**
      * @brief screen that the panel is currently shown at (this could
      * differ from mScreenNum).
      *
      * \sa mScreenNum, canPlacedOn(), findAvailableScreen().
      */
-    int mActualScreenNum;
+    int m_actualScreenNum;
     /**
      * @brief QTimer for delayed saving of changed settings. In many cases,
      * instead of storing changes to disk immediately we start this timer.
@@ -641,19 +636,19 @@ private:
      *
      * \sa mVisibleMargin, mHidden, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
-    bool mHidable;
+    bool m_hidable;
     /**
      * @brief Stores if the hidable panel should have a visible margin.
      *
      * \sa mHidable, mHidden, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
-    bool mVisibleMargin;
+    bool m_visibleMargin;
     /**
      * @brief Stores if the panel is currently hidden.
      *
      * \sa mHidable, mVisibleMargin, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
-    bool mHidden;
+    bool m_hidden;
     /**
      * @brief QTimer for hiding the panel. When the cursor leaves the panel
      * area, this timer will be started. After this timer has timed out, the
@@ -667,17 +662,15 @@ private:
      *
      * \sa mHidden, mHideTimer, showPanel(), hidePanel(), hidePanelWork()
      */
-    int mAnimationTime;
+    int m_animationTime;
     /**
      * @brief The timer used for showing an auto-hiding panel wih delay.
      *
      * \sa showPanel()
      */
-    QTimer mShowDelayTimer;
+    QTimer m_showDelayTimer;
 
-    QColor mFontColor; //!< Font color that is used in the style sheet.
-    QColor mBackgroundColor; //!< Background color that is used in the style sheet.
-    QString mBackgroundImage; //!< Background image that is used in the style sheet.
+    QColor m_fontColor; //!< Font color that is used in the style sheet.
     /**
      * @brief Determines the opacity of the background color. The value
      * should be in the range from 0 to 100. This will not affect the opacity
@@ -691,7 +684,7 @@ private:
      *
      * \sa updateWmStrut()
      */
-    bool mReserveSpace;
+    bool m_reserveSpace;
 
     /**
      * @brief Pointer to the current ConfigPanelDialog if there is any. Make
@@ -704,33 +697,27 @@ private:
     /**
      * @brief The animation used for showing/hiding an auto-hiding panel.
      */
-    QPropertyAnimation *mAnimation;
+    QPropertyAnimation *m_animation;
 
     /**
      * @brief Flag for providing the configuration options in panel's context menu
      */
-    bool mLockPanel;
-    double transparency;
+    bool m_lockPanel;
+    double m_transparency;
 
     // settings should be kept private for security
-    UKUi::Settings *settings() const { return mSettings; }
+    UKUi::Settings *settings() const { return m_settings; }
 
     QDBusInterface *m_cloudInterface;
 
-    IUKUIPanel::Position oldpos;
+    IUKUIPanel::Position m_oldPos;
 
-    QMenu * menu;
+    QMenu * m_menu;
     QAction * m_lockAction;
-    /**
-     * @brief mDbusXrandInter
-     * 华为990双屏的dbus
-     */
-    QDBusInterface  *mDbusXrandInter;
-    QRect mcurrentScreenRect;
-    QString flag_hw990;
+    QRect m_currentScreenRect;
 
     IUKUIPanel::Position areaDivid(QPoint globalpos);
-    int movelock = -1;
+    int m_moveLock = -1;
 
     void connectToServer();
 
@@ -741,11 +728,9 @@ private slots:
 
 
 public:
-    QGSettings *gsettings;
-    QGSettings *transparency_gsettings;
-    QGSettings *scale_gsetting;
-    int scale_flag;
-    QTimer *time;
+    QGSettings *m_gsettings;
+    QGSettings *m_transparencyGsettings;
+    QTimer *m_time;
 
 };
 
