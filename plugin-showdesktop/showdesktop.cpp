@@ -50,6 +50,7 @@ ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
     state=NORMAL;
     this->setToolTip(tr("Show Desktop"));
     realign();
+    this->setContextMenuPolicy(Qt::PreventContextMenu);
 
 }
 
