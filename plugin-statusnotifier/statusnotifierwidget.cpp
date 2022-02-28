@@ -120,12 +120,16 @@ void StatusNotifierWidget::realign()
         layout->setRowCount(panel->lineCount());
         layout->setColumnCount(0);
         layout->setCellFixedSize(QSize(panel->panelSize()*0.7,panel->panelSize()));
+        this->setMinimumHeight(panel->panelSize());
+
     }
     else
     {
         layout->setColumnCount(panel->lineCount());
         layout->setRowCount(0);
         layout->setCellFixedSize(QSize(panel->panelSize(),panel->panelSize()*0.7));
+        this->setMinimumWidth(panel->panelSize());
+
     }
     Direction=panel->isHorizontal();
     layout->setEnabled(true);
