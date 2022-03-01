@@ -246,7 +246,6 @@ bool MainWindow::getDevInterface(QString strDev)
     p->waitForFinished();
     while(p->canReadLine()) {
         QString str = p->readLine();
-        qDebug()<<"-----TT1-"<<str<<endl;
         QStringList infoList = str.split('\n');
         QStringList::Iterator it = infoList.begin();
         for (; it != infoList.end(); it++){
@@ -981,7 +980,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
 
-            if(!p_this->isSystemRootDev(driveInfo.strId.c_str()) &&
+            if(!p_this->isSystemRootDev(driveInfo.strId.c_str()) && p_this->getDevInterface(driveInfo.strId.c_str()) &&
                 (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
                 if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
                     || g_str_has_prefix(devPath,"/dev/mmcblk")) {
