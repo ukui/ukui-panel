@@ -274,12 +274,10 @@ void UKUITaskWidget::updateText()
 void UKUITaskWidget::updateIcon()
 {
     QIcon ico;
-    if (m_parentTaskBar->isIconByClass())
-    {
+    if (m_parentTaskBar->isIconByClass()) {
         ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{m_window, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
     }
-    if (ico.isNull())
-    {
+    if (ico.isNull()) {
         ico = KWindowSystem::icon(m_window);
     }
     m_appIcon->setPixmap(ico.pixmap(QSize(19,19)));
@@ -313,8 +311,7 @@ void UKUITaskWidget::refreshIconGeometry(QRect const & geom)
                     0);
     NETRect const curr = info.iconGeometry();
     if (curr.pos.x != geom.x() || curr.pos.y != geom.y()
-            || curr.size.width != geom.width() || curr.size.height != geom.height())
-    {
+            || curr.size.width != geom.width() || curr.size.height != geom.height()) {
         NETRect nrect;
         nrect.pos.x = geom.x();
         nrect.pos.y = geom.y();
@@ -332,12 +329,10 @@ void UKUITaskWidget::dragEnterEvent(QDragEnterEvent *event)
     // It must be here otherwise dragLeaveEvent and dragMoveEvent won't be called
     // on the other hand drop and dragmove events of parent widget won't be called
     event->acceptProposedAction();
-    if (event->mimeData()->hasFormat(mimeDataFormat()))
-    {
+    if (event->mimeData()->hasFormat(mimeDataFormat())) {
         emit dragging(event->source(), event->pos());
         setAttribute(Qt::WA_UnderMouse, false);
-    } else
-    {
+    } else {
         m_DNDTimer->start();
     }
 
@@ -346,8 +341,7 @@ void UKUITaskWidget::dragEnterEvent(QDragEnterEvent *event)
 
 void UKUITaskWidget::dragMoveEvent(QDragMoveEvent * event)
 {
-    if (event->mimeData()->hasFormat(mimeDataFormat()))
-    {
+    if (event->mimeData()->hasFormat(mimeDataFormat())) {
         emit dragging(event->source(), event->pos());
         setAttribute(Qt::WA_UnderMouse, false);
     }
@@ -362,8 +356,7 @@ void UKUITaskWidget::dragLeaveEvent(QDragLeaveEvent *event)
 void UKUITaskWidget::dropEvent(QDropEvent *event)
 {
     m_DNDTimer->stop();
-    if (event->mimeData()->hasFormat(mimeDataFormat()))
-    {
+    if (event->mimeData()->hasFormat(mimeDataFormat())) {
         emit dropped(event->source(), event->pos());
         setAttribute(Qt::WA_UnderMouse, false);
     }
@@ -377,12 +370,11 @@ void UKUITaskWidget::mousePressEvent(QMouseEvent* event)
 {
     const Qt::MouseButton b = event->button();
 
-    if (Qt::LeftButton == b)
-    {
+    if (Qt::LeftButton == b) {
         m_dragStartPosition = event->pos();
-    }
-    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
+    } else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick()) {
         closeApplication();
+    }
 
     QWidget::mousePressEvent(event);
 }
@@ -392,8 +384,7 @@ void UKUITaskWidget::mousePressEvent(QMouseEvent* event)
  ************************************************/
 void UKUITaskWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
+    if (event->button() == Qt::LeftButton) {
         //        if (isChecked())
         //            minimizeApplication();
         //        else
@@ -446,8 +437,9 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
     KWindowInfo info(m_window, 0, NET::WM2AllowedActions);
     unsigned long state = KWindowInfo(m_window, NET::WMState).state();
 
-    if (!m_plugin || m_isWaylandWidget)
+    if (!m_plugin || m_isWaylandWidget) {
         return;
+    }
     QMenu * menu = new QMenu(tr("Widget"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
     /* 对应预览图右键功能 关闭 还原 最大化  最小化 置顶 取消置顶*/
@@ -467,16 +459,14 @@ void UKUITaskWidget::contextMenuEvent(QContextMenuEvent *event)
     connect(minim, SIGNAL(triggered()), this, SLOT(minimizeApplication()));
     connect(above, SIGNAL(triggered()), this, SLOT(setWindowKeepAbove()));
     connect(clear, SIGNAL(triggered()), this, SLOT(setWindowStatusClear()));
-    connect(menu, &QMenu::aboutToHide, [this] {
-        emit closeSigtoPop();
-
-    });
+    connect(menu, &QMenu::aboutToHide, [this] {emit closeSigtoPop();});
     above->setEnabled(!(state & NET::KeepAbove));
     clear->setEnabled(state & NET::KeepAbove);
     menu->exec(cursor().pos());
     plugin()->willShowWindow(menu);
-    if (!m_isWaylandWidget)
+    if (!m_isWaylandWidget) {
         menu->show();
+    }
 }
 /************************************************
 
@@ -529,15 +519,13 @@ void UKUITaskWidget::raiseApplication()
     }
 
     KWindowInfo info(m_window, NET::WMDesktop | NET::WMState | NET::XAWMState);
-    if (parentTaskBar()->raiseOnCurrentDesktop() && info.isMinimized())
-    {
+    if (parentTaskBar()->raiseOnCurrentDesktop() && info.isMinimized()) {
         KWindowSystem::setOnDesktop(m_window, KWindowSystem::currentDesktop());
-    }
-    else
-    {
+    } else {
         int winDesktop = info.desktop();
-        if (KWindowSystem::currentDesktop() != winDesktop)
+        if (KWindowSystem::currentDesktop() != winDesktop) {
             KWindowSystem::setCurrentDesktop(winDesktop);
+        }
     }
     KWindowSystem::activateWindow(m_window);
     emit windowMaximize();
@@ -559,27 +547,28 @@ void UKUITaskWidget::minimizeApplication()
 void UKUITaskWidget::maximizeApplication()
 {
     QAction* act = qobject_cast<QAction*>(sender());
-    if (!act)
+    if (!act) {
         return;
-
-    int state = act->data().toInt();
-    switch (state)
-    {
-    case NET::MaxHoriz:
-        KWindowSystem::setState(m_window, NET::MaxHoriz);
-        break;
-
-    case NET::MaxVert:
-        KWindowSystem::setState(m_window, NET::MaxVert);
-        break;
-
-    default:
-        KWindowSystem::setState(m_window, NET::Max);
-        break;
     }
 
-    if (!isApplicationActive())
+    int state = act->data().toInt();
+    switch (state) {
+        case NET::MaxHoriz:
+            KWindowSystem::setState(m_window, NET::MaxHoriz);
+            break;
+
+        case NET::MaxVert:
+            KWindowSystem::setState(m_window, NET::MaxVert);
+            break;
+
+        default:
+            KWindowSystem::setState(m_window, NET::Max);
+            break;
+    }
+
+    if (!isApplicationActive()) {
         raiseApplication();
+    }
 }
 
 /************************************************
@@ -589,15 +578,17 @@ void UKUITaskWidget::deMaximizeApplication()
 {
     KWindowSystem::clearState(m_window, NET::Max);
 
-    if (!isApplicationActive())
+    if (!isApplicationActive()) {
         raiseApplication();
+    }
 }
 
 
 void UKUITaskWidget::setWindowKeepAbove()
 {
-    if (!isApplicationActive())
+    if (!isApplicationActive()) {
         raiseApplication();
+    }
     KWindowSystem::setState(m_window, NET::KeepAbove);
 }
 
@@ -648,26 +639,26 @@ void UKUITaskWidget::closeApplication()
 void UKUITaskWidget::setApplicationLayer()
 {
     QAction* act = qobject_cast<QAction*>(sender());
-    if (!act)
+    if (!act) {
         return;
+    }
 
     int layer = act->data().toInt();
-    switch(layer)
-    {
-    case NET::KeepAbove:
-        KWindowSystem::clearState(m_window, NET::KeepBelow);
-        KWindowSystem::setState(m_window, NET::KeepAbove);
-        break;
+    switch (layer) {
+        case NET::KeepAbove:
+            KWindowSystem::clearState(m_window, NET::KeepBelow);
+            KWindowSystem::setState(m_window, NET::KeepAbove);
+            break;
 
-    case NET::KeepBelow:
-        KWindowSystem::clearState(m_window, NET::KeepAbove);
-        KWindowSystem::setState(m_window, NET::KeepBelow);
-        break;
+        case NET::KeepBelow:
+            KWindowSystem::clearState(m_window, NET::KeepAbove);
+            KWindowSystem::setState(m_window, NET::KeepBelow);
+            break;
 
-    default:
-        KWindowSystem::clearState(m_window, NET::KeepBelow);
-        KWindowSystem::clearState(m_window, NET::KeepAbove);
-        break;
+        default:
+            KWindowSystem::clearState(m_window, NET::KeepBelow);
+            KWindowSystem::clearState(m_window, NET::KeepAbove);
+            break;
     }
 }
 
@@ -677,14 +668,16 @@ void UKUITaskWidget::setApplicationLayer()
 void UKUITaskWidget::moveApplicationToDesktop()
 {
     QAction* act = qobject_cast<QAction*>(sender());
-    if (!act)
+    if (!act) {
         return;
+    }
 
     bool ok;
     int desk = act->data().toInt(&ok);
 
-    if (!ok)
+    if (!ok) {
         return;
+    }
 
     KWindowSystem::setOnDesktop(m_window, desk);
 }
@@ -695,10 +688,12 @@ void UKUITaskWidget::moveApplicationToDesktop()
 void UKUITaskWidget::moveApplication()
 {
     KWindowInfo info(m_window, NET::WMDesktop);
-    if (!info.isOnCurrentDesktop())
+    if (!info.isOnCurrentDesktop()) {
         KWindowSystem::setCurrentDesktop(info.desktop());
-    if (isMinimized())
+    }
+    if (isMinimized()) {
         KWindowSystem::unminimizeWindow(m_window);
+    }
     KWindowSystem::forceActiveWindow(m_window);
     const QRect& g = KWindowInfo(m_window, NET::WMGeometry).geometry();
     int X = g.center().x();
@@ -713,10 +708,12 @@ void UKUITaskWidget::moveApplication()
 void UKUITaskWidget::resizeApplication()
 {
     KWindowInfo info(m_window, NET::WMDesktop);
-    if (!info.isOnCurrentDesktop())
+    if (!info.isOnCurrentDesktop()) {
         KWindowSystem::setCurrentDesktop(info.desktop());
-    if (isMinimized())
+    }
+    if (isMinimized()) {
         KWindowSystem::unminimizeWindow(m_window);
+    }
     KWindowSystem::forceActiveWindow(m_window);
     const QRect& g = KWindowInfo(m_window, NET::WMGeometry).geometry();
     int X = g.bottomRight().x();
@@ -730,11 +727,13 @@ void UKUITaskWidget::resizeApplication()
  ************************************************/
 void UKUITaskWidget::setUrgencyHint(bool set)
 {
-    if (m_urgencyHint == set)
+    if (m_urgencyHint == set) {
         return;
+    }
 
-    if (!set)
+    if (!set) {
         KWindowSystem::demandAttention(m_window, false);
+    }
 
     m_urgencyHint = set;
     setProperty("urgent", set);
@@ -778,8 +777,7 @@ Qt::Corner UKUITaskWidget::origin() const
 
 void UKUITaskWidget::setOrigin(Qt::Corner newOrigin)
 {
-    if (m_origin != newOrigin)
-    {
+    if (m_origin != newOrigin) {
         m_origin = newOrigin;
         update();
     }
@@ -787,26 +785,24 @@ void UKUITaskWidget::setOrigin(Qt::Corner newOrigin)
 
 void UKUITaskWidget::setAutoRotation(bool value, IUKUIPanel::Position position)
 {
-    if (value)
-    {
-        switch (position)
-        {
-        case IUKUIPanel::PositionTop:
-        case IUKUIPanel::PositionBottom:
-            setOrigin(Qt::TopLeftCorner);
-            break;
+    if (value) {
+        switch (position) {
+            case IUKUIPanel::PositionTop:
+            case IUKUIPanel::PositionBottom:
+                setOrigin(Qt::TopLeftCorner);
+                break;
 
-        case IUKUIPanel::PositionLeft:
-            setOrigin(Qt::BottomLeftCorner);
-            break;
+            case IUKUIPanel::PositionLeft:
+                setOrigin(Qt::BottomLeftCorner);
+                break;
 
-        case IUKUIPanel::PositionRight:
-            setOrigin(Qt::TopRightCorner);
-            break;
+            case IUKUIPanel::PositionRight:
+                setOrigin(Qt::TopRightCorner);
+                break;
         }
-    }
-    else
+    } else {
         setOrigin(Qt::TopLeftCorner);
+    }
 }
 
 void UKUITaskWidget::paintEvent(QPaintEvent *event)
@@ -890,24 +886,19 @@ void UKUITaskWidget::paintEvent(QPaintEvent *event)
 
     // 绘制底色
     p.save();
-    switch(m_status)
+    switch (m_status)
     {
-    case NORMAL:
-    {
-        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
-        break;
-    }
-    case HOVER:
-    {
-        p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
-        break;
-    }
-    case PRESS:
-    {
-        p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+        case NORMAL:
+            p.fillPath(rectPath, QColor(0x13,0x14,0x14,0xb2));
+            break;
 
-        break;
-    }
+        case HOVER:
+            p.fillPath(rectPath, QColor(0x13,0x14,0x14,0x66));
+            break;
+
+        case PRESS:
+            p.fillPath(rectPath, QColor(0xFF,0xFF,0xFF,0x19));
+            break;
     }
     p.restore();
 #endif
@@ -930,8 +921,7 @@ void UKUITaskWidget::setThumbNail(QPixmap _pixmap)
 
 void UKUITaskWidget::removeThumbNail()
 {
-    if(m_thumbnailLabel)
-    {
+    if (m_thumbnailLabel) {
         m_vWindowsLayout->removeWidget(m_thumbnailLabel);
         m_thumbnailLabel->setParent(NULL);
         m_thumbnailLabel->deleteLater();
@@ -941,16 +931,13 @@ void UKUITaskWidget::removeThumbNail()
 
 void UKUITaskWidget::addThumbNail()
 {
-    if(!m_thumbnailLabel)
-    {
+    if (!m_thumbnailLabel) {
         m_thumbnailLabel = new QLabel(this);
         m_thumbnailLabel->setScaledContents(true);
         m_thumbnailLabel->setMinimumSize(QSize(1, 1));
         //        m_vWindowsLayout->addLayout(m_topBarLayout, 100);
         m_vWindowsLayout->addWidget(m_thumbnailLabel, 0, Qt::AlignCenter);
-    }
-    else
-    {
+    } else {
         return;
     }
 }

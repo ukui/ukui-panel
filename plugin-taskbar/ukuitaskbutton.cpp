@@ -126,12 +126,11 @@ UKUITaskButton::UKUITaskButton(QString appName,const WId window, UKUITaskBar * t
 
     const QByteArray id(PANEL_SETTINGS);
     m_gsettings = new QGSettings(id);
-    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if (key == PANEL_SIZE_KEY)
-        {
-            updateIcon();
-        }
-    });
+    connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
+                if (key == PANEL_SIZE_KEY) {
+                    updateIcon();
+                }
+            });
 }
 
 UKUITaskButton::UKUITaskButton(QString iconName,QString caption, const WId window, UKUITaskBar * taskbar, QWidget *parent) :
@@ -174,17 +173,15 @@ void UKUITaskButton::setLeaderWindow(WId leaderWindow) {
 */
 void UKUITaskButton::updateIcon()
 {
-    if (m_appName == QString("emo-system-ShellMethods") ||
-        m_appName == QString("Qq"))
+    if (m_appName == QString("emo-system-ShellMethods") || m_appName == QString("Qq")) {
         sleep(1);
+    }
     QIcon ico;
     int mIconSize=m_plugin->panel()->iconSize();
-    if (m_parentTaskBar->isIconByClass())
-    {
+    if (m_parentTaskBar->isIconByClass()) {
         ico = QIcon::fromTheme(QString::fromUtf8(KWindowInfo{m_window, 0, NET::WM2WindowClass}.windowClassClass()).toLower());
     }
-    if (ico.isNull())
-    {
+    if (ico.isNull()) {
 #if QT_VERSION >= 0x050600
         int devicePixels = mIconSize * devicePixelRatioF();
 #else
@@ -192,8 +189,9 @@ void UKUITaskButton::updateIcon()
 #endif
         ico = KWindowSystem::icon(m_window, devicePixels, devicePixels);
     }
-    if (m_icon.isNull())
+    if (m_icon.isNull()) {
         m_icon = QIcon::fromTheme("application-x-desktop");
+    }
     setIcon(ico.isNull() ? m_icon : ico);
     setIconSize(QSize(mIconSize,mIconSize));
 }
@@ -215,8 +213,7 @@ void UKUITaskButton::refreshIconGeometry(QRect const & geom)
                     0);
     NETRect const curr = info.iconGeometry();
     if (curr.pos.x != geom.x() || curr.pos.y != geom.y()
-            || curr.size.width != geom.width() || curr.size.height != geom.height())
-    {
+       || curr.size.width != geom.width() || curr.size.height != geom.height()) {
         NETRect nrect;
         nrect.pos.x = geom.x();
         nrect.pos.y = geom.y();
@@ -234,12 +231,10 @@ void UKUITaskButton::dragEnterEvent(QDragEnterEvent *event)
     // It must be here otherwise dragLeaveEvent and dragMoveEvent won't be called
     // on the other hand drop and dragmove events of parent widget won't be called
     event->acceptProposedAction();
-    if (event->mimeData()->hasFormat(mimeDataFormat()))
-    {
+    if (event->mimeData()->hasFormat(mimeDataFormat())) {
         emit dragging(event->source(), event->pos());
         setAttribute(Qt::WA_UnderMouse, false);
-    } else
-    {
+    } else {
         m_DNDTimer->start();
     }
     QToolButton::dragEnterEvent(event);
@@ -247,8 +242,7 @@ void UKUITaskButton::dragEnterEvent(QDragEnterEvent *event)
 
 void UKUITaskButton::dragMoveEvent(QDragMoveEvent * event)
 {
-    if (event->mimeData()->hasFormat(mimeDataFormat()))
-    {
+    if (event->mimeData()->hasFormat(mimeDataFormat())) {
         emit dragging(event->source(), event->pos());
         setAttribute(Qt::WA_UnderMouse, false);
     }
@@ -263,8 +257,7 @@ void UKUITaskButton::dragLeaveEvent(QDragLeaveEvent *event)
 void UKUITaskButton::dropEvent(QDropEvent *event)
 {
     m_DNDTimer->stop();
-    if (event->mimeData()->hasFormat(mimeDataFormat()))
-    {
+    if (event->mimeData()->hasFormat(mimeDataFormat())) {
         //emit dropped(event->source(), event->pos());
         setAttribute(Qt::WA_UnderMouse, false);
     }
@@ -280,8 +273,7 @@ void UKUITaskButton::mousePressEvent(QMouseEvent* event)
 
     if (Qt::LeftButton == b) {
         m_dragStartPosition = event->pos();
-    }
-    else if (m_statFlag && Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick()) {
+    } else if (m_statFlag && Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick()) {
         closeApplication();
     }
 
@@ -324,18 +316,20 @@ QMimeData * UKUITaskButton::mimeData()
  ************************************************/
 void UKUITaskButton::mouseMoveEvent(QMouseEvent* event)
 {
-    if (!(event->buttons() & Qt::LeftButton))
+    if (!(event->buttons() & Qt::LeftButton)) {
         return;
+    }
 
-    if ((event->pos() - m_dragStartPosition).manhattanLength() < QApplication::startDragDistance())
+    if ((event->pos() - m_dragStartPosition).manhattanLength() < QApplication::startDragDistance()) {
         return;
+    }
+
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData());
     QIcon ico = icon();
     QPixmap img = ico.pixmap(ico.actualSize({32, 32}));
     drag->setPixmap(img);
-    switch (m_plugin->panel()->position())
-    {
+    switch (m_plugin->panel()->position()) {
         case IUKUIPanel::PositionLeft:
         case IUKUIPanel::PositionTop:
             drag->setHotSpot({0, 0});
@@ -392,15 +386,13 @@ void UKUITaskButton::activateWithDraggable()
 void UKUITaskButton::raiseApplication()
 {
     KWindowInfo info(m_window, NET::WMDesktop | NET::WMState | NET::XAWMState);
-    if (parentTaskBar()->raiseOnCurrentDesktop() && info.isMinimized())
-    {
+    if (parentTaskBar()->raiseOnCurrentDesktop() && info.isMinimized()) {
         KWindowSystem::setOnDesktop(m_window, KWindowSystem::currentDesktop());
-    }
-    else
-    {
+    } else {
         int winDesktop = info.desktop();
-        if (KWindowSystem::currentDesktop() != winDesktop)
+        if (KWindowSystem::currentDesktop() != winDesktop) {
             KWindowSystem::setCurrentDesktop(winDesktop);
+        }
     }
     KWindowSystem::activateWindow(m_window);
 
@@ -421,12 +413,12 @@ void UKUITaskButton::minimizeApplication()
 void UKUITaskButton::maximizeApplication()
 {
     QAction* act = qobject_cast<QAction*>(sender());
-    if (!act)
+    if (!act) {
         return;
+    }
 
     int state = act->data().toInt();
-    switch (state)
-    {
+    switch (state) {
         case NET::MaxHoriz:
             KWindowSystem::setState(m_window, NET::MaxHoriz);
             break;
@@ -440,8 +432,9 @@ void UKUITaskButton::maximizeApplication()
             break;
     }
 
-    if (!isApplicationActive())
+    if (!isApplicationActive()) {
         raiseApplication();
+    }
 }
 
 /************************************************
@@ -451,8 +444,9 @@ void UKUITaskButton::deMaximizeApplication()
 {
     KWindowSystem::clearState(m_window, NET::Max);
 
-    if (!isApplicationActive())
+    if (!isApplicationActive()) {
         raiseApplication();
+    }
 }
 
 /************************************************
@@ -486,12 +480,12 @@ void UKUITaskButton::closeApplication()
 void UKUITaskButton::setApplicationLayer()
 {
     QAction* act = qobject_cast<QAction*>(sender());
-    if (!act)
+    if (!act) {
         return;
+    }
 
     int layer = act->data().toInt();
-    switch(layer)
-    {
+    switch(layer) {
         case NET::KeepAbove:
             KWindowSystem::clearState(m_window, NET::KeepBelow);
             KWindowSystem::setState(m_window, NET::KeepAbove);
@@ -515,14 +509,16 @@ void UKUITaskButton::setApplicationLayer()
 void UKUITaskButton::moveApplicationToDesktop()
 {
     QAction* act = qobject_cast<QAction*>(sender());
-    if (!act)
+    if (!act) {
         return;
+    }
 
     bool ok;
     int desk = act->data().toInt(&ok);
 
-    if (!ok)
+    if (!ok) {
         return;
+    }
 
     KWindowSystem::setOnDesktop(m_window, desk);
 }
@@ -533,10 +529,12 @@ void UKUITaskButton::moveApplicationToDesktop()
 void UKUITaskButton::moveApplication()
 {
     KWindowInfo info(m_window, NET::WMDesktop);
-    if (!info.isOnCurrentDesktop())
+    if (!info.isOnCurrentDesktop()) {
         KWindowSystem::setCurrentDesktop(info.desktop());
-    if (isMinimized())
+    }
+    if (isMinimized()) {
         KWindowSystem::unminimizeWindow(m_window);
+    }
     KWindowSystem::forceActiveWindow(m_window);
     const QRect& g = KWindowInfo(m_window, NET::WMGeometry).geometry();
     int X = g.center().x();
@@ -551,10 +549,12 @@ void UKUITaskButton::moveApplication()
 void UKUITaskButton::resizeApplication()
 {
     KWindowInfo info(m_window, NET::WMDesktop);
-    if (!info.isOnCurrentDesktop())
+    if (!info.isOnCurrentDesktop()) {
         KWindowSystem::setCurrentDesktop(info.desktop());
-    if (isMinimized())
+    }
+    if (isMinimized()) {
         KWindowSystem::unminimizeWindow(m_window);
+    }
     KWindowSystem::forceActiveWindow(m_window);
     const QRect& g = KWindowInfo(m_window, NET::WMGeometry).geometry();
     int X = g.bottomRight().x();
@@ -571,8 +571,7 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
     if (!m_statFlag) {
         return;
     }
-    if (event->modifiers().testFlag(Qt::ControlModifier))
-    {
+    if (event->modifiers().testFlag(Qt::ControlModifier)) {
         event->ignore();
         return;
     }
@@ -611,8 +610,7 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
 
     /********** Desktop menu **********/
     int deskNum = KWindowSystem::numberOfDesktops();
-    if (deskNum > 1)
-    {
+    if (deskNum > 1) {
         int winDesk = KWindowInfo(m_window, NET::WMDesktop).desktop();
         QMenu* deskMenu = menu->addMenu(tr("To &Desktop"));
 
@@ -622,8 +620,7 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
         connect(a, SIGNAL(triggered(bool)), this, SLOT(moveApplicationToDesktop()));
         deskMenu->addSeparator();
 
-        for (int i = 0; i < deskNum; ++i)
-        {
+        for (int i = 0; i < deskNum; ++i) {
             a = deskMenu->addAction(tr("Desktop &%1").arg(i + 1));
             a->setData(i + 1);
             a->setEnabled(i + 1 != winDesk);
@@ -654,8 +651,7 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
     a->setData(NET::Max);
     connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
 
-    if (event->modifiers() & Qt::ShiftModifier)
-    {
+    if (event->modifiers() & Qt::ShiftModifier) {
         a = menu->addAction(tr("Maximize vertically"));
         a->setEnabled(info.actionSupported(NET::ActionMaxVert) && !((state & NET::MaxVert) || (state & NET::Hidden)));
         a->setData(NET::MaxVert);
@@ -675,14 +671,11 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
     a->setEnabled(info.actionSupported(NET::ActionMinimize) && !(state & NET::Hidden));
     connect(a, SIGNAL(triggered(bool)), this, SLOT(minimizeApplication()));
 
-    if (state & NET::Shaded)
-    {
+    if (state & NET::Shaded) {
         a = menu->addAction(tr("Roll down"));
         a->setEnabled(info.actionSupported(NET::ActionShade) && !(state & NET::Hidden));
         connect(a, SIGNAL(triggered(bool)), this, SLOT(unShadeApplication()));
-    }
-    else
-    {
+    } else {
         a = menu->addAction(tr("Roll up"));
         a->setEnabled(info.actionSupported(NET::ActionShade) && !(state & NET::Hidden));
         connect(a, SIGNAL(triggered(bool)), this, SLOT(shadeApplication()));
@@ -725,11 +718,13 @@ void UKUITaskButton::contextMenuEvent(QContextMenuEvent* event)
  ************************************************/
 void UKUITaskButton::setUrgencyHint(bool set)
 {
-    if (m_urgencyHint == set)
+    if (m_urgencyHint == set) {
         return;
+    }
 
-    if (!set)
+    if (!set) {
         KWindowSystem::demandAttention(m_window, false);
+    }
 
     m_urgencyHint = set;
     setProperty("urgent", set);
@@ -760,8 +755,7 @@ Qt::Corner UKUITaskButton::origin() const
 
 void UKUITaskButton::setOrigin(Qt::Corner newOrigin)
 {
-    if (m_origin != newOrigin)
-    {
+    if (m_origin != newOrigin) {
         m_origin = newOrigin;
         update();
     }
@@ -769,26 +763,24 @@ void UKUITaskButton::setOrigin(Qt::Corner newOrigin)
 
 void UKUITaskButton::setAutoRotation(bool value, IUKUIPanel::Position position)
 {
-    if (value)
-    {
-        switch (position)
-        {
-        case IUKUIPanel::PositionTop:
-        case IUKUIPanel::PositionBottom:
-            setOrigin(Qt::TopLeftCorner);
-            break;
+    if (value) {
+        switch (position) {
+            case IUKUIPanel::PositionTop:
+            case IUKUIPanel::PositionBottom:
+                setOrigin(Qt::TopLeftCorner);
+                break;
 
-        case IUKUIPanel::PositionLeft:
-            setOrigin(Qt::BottomLeftCorner);
-            break;
+            case IUKUIPanel::PositionLeft:
+                setOrigin(Qt::BottomLeftCorner);
+                break;
 
-        case IUKUIPanel::PositionRight:
-            setOrigin(Qt::TopRightCorner);
-            break;
+            case IUKUIPanel::PositionRight:
+                setOrigin(Qt::TopRightCorner);
+                break;
         }
-    }
-    else
+    } else {
         setOrigin(Qt::TopLeftCorner);
+    }
 }
 
 void UKUITaskButton::enterEvent(QEvent *)
@@ -840,10 +832,10 @@ UKUITaskButton::UKUITaskButton(QuickLaunchAction * act, IUKUIPanelPlugin * plugi
     m_gsettingsQuickLaunch = new QGSettings(id);
     modifyQuicklaunchMenuAction(true);
     connect(m_gsettingsQuickLaunch, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==PANELPOSITION){
-            modifyQuicklaunchMenuAction(true);
-        }
-    });
+                if (key==PANELPOSITION) {
+                    modifyQuicklaunchMenuAction(true);
+                }
+            });
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),

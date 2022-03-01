@@ -31,11 +31,9 @@
 UKUITaskBarPlugin::UKUITaskBarPlugin(const IUKUIPanelPluginStartupInfo &startupInfo):
     QObject(),
     IUKUIPanelPlugin(startupInfo)
-
 {
     translator();
     m_taskBar = new UKUITaskBar(this);
-
 }
 
 
@@ -49,13 +47,15 @@ void UKUITaskBarPlugin::realign()
     m_taskBar->realign();
 }
 
-void UKUITaskBarPlugin::translator(){
+void UKUITaskBarPlugin::translator()
+{
     m_translator = new QTranslator(this);
-     QString locale = QLocale::system().name();
-     if (locale == "zh_CN"){
-         if (m_translator->load(QM_INSTALL))
-             qApp->installTranslator(m_translator);
-         else
-             qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
-     }
+    QString locale = QLocale::system().name();
+    if (locale == "zh_CN") {
+        if (m_translator->load(QM_INSTALL)) {
+            qApp->installTranslator(m_translator);
+        } else {
+            qDebug() <<PLUGINNAME<<"Load translations file" << locale << "failed!";
+        }
+    }
 }

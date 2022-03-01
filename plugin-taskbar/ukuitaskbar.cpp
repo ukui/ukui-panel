@@ -125,22 +125,21 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
         m_settings=new QGSettings(id);
     }
 
-    m_androidIconHash=matchAndroidIcon();
+    m_androidIconHash = matchAndroidIcon();
 
     const QByteArray id_Theme("org.ukui.style");
-    if(QGSettings::isSchemaInstalled(id_Theme)){
+    if (QGSettings::isSchemaInstalled(id_Theme)) {
         m_changeTheme = new QGSettings(id_Theme);
     }
-    connect(m_changeTheme, &QGSettings::changed, this, [=] (const QString &key){
-        if(key=="iconThemeName"){
+    connect(m_changeTheme, &QGSettings::changed, this, [=] (const QString &key) {
+        if (key=="iconThemeName") {
             sleep(1);
-            for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++)
-            {
+            for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++) {
                 UKUITaskGroup *group = it.value();
                 group->updateIcon();
             }
         }
-        if(key == PANEL_POSITION_KEY) {
+        if (key == PANEL_POSITION_KEY) {
             realign();
         }
     });
@@ -188,15 +187,15 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
  ************************************************/
 UKUITaskBar::~UKUITaskBar()
 {
-    for(auto it = m_vBtn.begin(); it != m_vBtn.end();)
-    {
+    for(auto it = m_vBtn.begin(); it != m_vBtn.end();) {
         (*it)->deleteLater();
         m_vBtn.erase(it);
     }
     m_vBtn.clear();
 }
 
-QString UKUITaskBar::readFile(const QString &filename) {
+QString UKUITaskBar::readFile(const QString &filename)
+{
     QFile f(filename);
     if (!f.open(QFile::ReadOnly)) {
         return QString();
@@ -206,9 +205,9 @@ QString UKUITaskBar::readFile(const QString &filename) {
     }
 }
 
-void UKUITaskBar::onDesktopChanged() {
-    for (auto i = m_knownWindows.begin(); m_knownWindows.end() != i; ++i)
-    {
+void UKUITaskBar::onDesktopChanged()
+{
+    for (auto i = m_knownWindows.begin(); m_knownWindows.end() != i; ++i) {
         (*i)->onDesktopChanged();
         if ((*i)->m_existSameQckBtn) {
             UKUITaskGroup* btn = (*i)->getOwnQckBtn();
@@ -218,9 +217,9 @@ void UKUITaskBar::onDesktopChanged() {
     }
 }
 
-void UKUITaskBar::refreshQuickLaunch(){
-    for(auto it = m_vBtn.begin(); it != m_vBtn.end();)
-    {
+void UKUITaskBar::refreshQuickLaunch()
+{
+    for(auto it = m_vBtn.begin(); it != m_vBtn.end();) {
         (*it)->deleteLater();
         m_vBtn.erase(it);
     }
@@ -240,18 +239,17 @@ void UKUITaskBar::refreshQuickLaunch(){
             user_qsettings.remove("quicklaunch");
     }
 
-    for (const QMap<QString, QVariant> &app : apps)
-    {
+    for (const QMap<QString, QVariant> &app : apps) {
         desktop = app.value("desktop", "").toString();
         qDebug()<<"desktop  ******"<<desktop;
 
         file = app.value("file", "").toString();
-        if (!desktop.isEmpty())
-        {
+        if (!desktop.isEmpty()) {
             XdgDesktopFile xdg;
-            if (xdg.load(desktop))
+            if (xdg.load(desktop)) {
                 addButton(new QuickLaunchAction(&xdg, this));
-        }else{
+            }
+        } else {
             qDebug()<<"error desktop file";
         }
     }
@@ -266,8 +264,7 @@ QList<QMap<QString, QVariant> > UKUITaskBar::copyQuicklaunchConfig()
     user_qsettings.beginGroup("quicklaunch");
     QList<QMap<QString, QVariant> > array;
     int size = user_qsettings.beginReadArray("apps");
-    for (int i = 0; i < size; ++i)
-    {
+    for (int i = 0; i < size; ++i) {
         user_qsettings.setArrayIndex(i);
         QMap<QString, QVariant> map;
         map["desktop"] = user_qsettings.value("desktop");
@@ -296,19 +293,23 @@ bool UKUITaskBar::acceptWindow(WId window) const
     ignoreList |= NET::NotificationMask;
 
     KWindowInfo info(window, NET::WMWindowType | NET::WMState, NET::WM2TransientFor);
-    if (!info.valid())
+    if (!info.valid()) {
         return false;
+    }
 
-    if (NET::typeMatchesMask(info.windowType(NET::AllTypesMask), ignoreList))
+    if (NET::typeMatchesMask(info.windowType(NET::AllTypesMask), ignoreList)) {
         return false;
+    }
 
-    if (info.state() & NET::SkipTaskbar)
+    if (info.state() & NET::SkipTaskbar) {
         return false;
+    }
 
     // WM_TRANSIENT_FOR hint not set - normal window
     WId transFor = info.transientFor();
-    if (transFor == 0 || transFor == window || transFor == (WId) QX11Info::appRootWindow())
+    if (transFor == 0 || transFor == window || transFor == (WId) QX11Info::appRootWindow()) {
         return true;
+    }
 
     info = KWindowInfo(transFor, NET::WMWindowType);
 
@@ -335,8 +336,7 @@ void UKUITaskBar::dropEvent(QDropEvent *e)
 void UKUITaskBar::buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint const & pos)
 {
     int src_index;
-    if (!src || -1 == (src_index = m_layout->indexOf(src)))
-    {
+    if (!src || -1 == (src_index = m_layout->indexOf(src))) {
         return;
     }
 
@@ -344,28 +344,21 @@ void UKUITaskBar::buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint co
     Q_ASSERT(0 < size);
     //dst is nullptr in case the drop occured on empty space in taskbar
     int dst_index;
-    if (nullptr == dst)
-    {
+    if (nullptr == dst) {
         //moving based on taskbar (not signaled by button)
         QRect occupied = m_layout->occupiedGeometry();
         QRect last_empty_row{occupied};
         const QRect last_item_geometry = m_layout->itemAt(size - 1)->geometry();
-        if (m_plugin->panel()->isHorizontal())
-        {
-            if (isRightToLeft())
-            {
+        if (m_plugin->panel()->isHorizontal()) {
+            if (isRightToLeft()) {
                 last_empty_row.setTopRight(last_item_geometry.topLeft());
-            } else
-            {
+            } else {
                 last_empty_row.setTopLeft(last_item_geometry.topRight());
             }
-        } else
-        {
-            if (isRightToLeft())
-            {
+        } else {
+            if (isRightToLeft()) {
                 last_empty_row.setTopRight(last_item_geometry.topRight());
-            } else
-            {
+            } else {
                 last_empty_row.setTopLeft(last_item_geometry.topLeft());
             }
         }
@@ -374,21 +367,16 @@ void UKUITaskBar::buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint co
         }
 
         dst_index = size;
-    } else
-    {
+    } else {
         //moving based on signal from child button
         dst_index = m_layout->indexOf(dst);
     }
 
     //moving lower index to higher one => consider as the QList::move => insert(to, takeAt(from))
-    if (src_index < dst_index)
-    {
-        if (size == dst_index
-                || src_index + 1 != dst_index)
-        {
+    if (src_index < dst_index) {
+        if (size == dst_index || src_index + 1 != dst_index) {
             --dst_index;
-        } else
-        {
+        } else {
             //switching positions of next standing
             const int tmp_index = src_index;
             src_index = dst_index;
@@ -396,9 +384,7 @@ void UKUITaskBar::buttonMove(UKUITaskGroup * dst, UKUITaskGroup * src, QPoint co
         }
     }
 
-    if (dst_index == src_index
-            || m_layout->animatedMoveInProgress()
-       ) {
+    if (dst_index == src_index || m_layout->animatedMoveInProgress()) {
         return;
     }
 
@@ -411,22 +397,19 @@ void UKUITaskBar::groupBecomeEmptySlot()
     UKUITaskGroup * const group = qobject_cast<UKUITaskGroup*>(sender());
     Q_ASSERT(group);
 
-    for (auto i = m_knownWindows.begin(); m_knownWindows.end() != i; )
-    {
+    for (auto i = m_knownWindows.begin(); m_knownWindows.end() != i; ) {
         if (group == *i) {
             m_swid.removeOne(i.key());
             i = m_knownWindows.erase(i);
             break;
-        }
-        else
+        } else {
             ++i;
+        }
     }
-    for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it)
-    {
+    for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it) {
         UKUITaskGroup *pQuickBtn = *it;
         if(pQuickBtn->m_fileName == group->m_fileName
-           &&(m_layout->indexOf(pQuickBtn) >= 0 ))
-        {
+           &&(m_layout->indexOf(pQuickBtn) >= 0 )) {
             pQuickBtn->setHidden(false);
             m_layout->moveItem(m_layout->indexOf(pQuickBtn), m_layout->indexOf(group));
             pQuickBtn->m_existSameQckBtn = false;
@@ -448,12 +431,12 @@ void UKUITaskBar::addWindow(WId window)
     UKUITaskGroup *group = nullptr;
     bool isNeedAddNewWidget = true;
     auto i_group = m_knownWindows.find(window);
-    if (m_knownWindows.end() != i_group)
-    {
-        if ((*i_group)->groupName() == group_id)
+    if (m_knownWindows.end() != i_group) {
+        if ((*i_group)->groupName() == group_id) {
             group = *i_group;
-        else
+        } else {
             (*i_group)->onWindowRemoved(window);
+        }
     }
 
     /*check if window belongs to some existing group
@@ -463,19 +446,15 @@ void UKUITaskBar::addWindow(WId window)
 
     QStringList andriod_window_list;
     andriod_window_list<<"kydroid-display-window"<<"kylin-kmre-window"<<"";
-    if (!group && m_groupingEnabled && !andriod_window_list.contains(group_id))
-    {
-        for (auto i = m_knownWindows.cbegin(), i_e = m_knownWindows.cend(); i != i_e; ++i)
-        {
-            if ((*i)->groupName() == group_id)
-            {
+    if (!group && m_groupingEnabled && !andriod_window_list.contains(group_id)) {
+        for (auto i = m_knownWindows.cbegin(), i_e = m_knownWindows.cend(); i != i_e; ++i) {
+            if ((*i)->groupName() == group_id) {
                 group = *i;
                 break;
             }
         }
     }
-    if (!group)
-    {
+    if (!group) {
         group = new UKUITaskGroup(group_id, window, this);
         connect(group, SIGNAL(groupBecomeEmpty(QString)), this, SLOT(groupBecomeEmptySlot()));
         connect(group, SIGNAL(t_saveSettings()), this, SLOT(saveSettingsSlot()));
@@ -484,14 +463,12 @@ void UKUITaskBar::addWindow(WId window)
         connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
         connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
         connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
-            switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
-        });
-        for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it)
-        {
+                switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
+                });
+        for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it) {
             UKUITaskGroup *pQuickBtn = *it;
             if(pQuickBtn->m_fileName == group->m_fileName
-               &&(m_layout->indexOf(pQuickBtn) >= 0 ))
-            {
+               &&(m_layout->indexOf(pQuickBtn) >= 0 )) {
                 m_layout->addWidget(group);
                 m_layout->moveItem(m_layout->indexOf(group), m_layout->indexOf(pQuickBtn));
                 pQuickBtn->setHidden(true);
@@ -502,8 +479,7 @@ void UKUITaskBar::addWindow(WId window)
                 break;
             }
         }
-        if(isNeedAddNewWidget)
-        {
+        if(isNeedAddNewWidget) {
             m_layout->addWidget(group);
         }
         group->setToolButtonsStyle(m_buttonStyle);
@@ -532,10 +508,8 @@ void UKUITaskBar::refreshTaskList()
     QList<WId> new_list;
     // Just add new windows to groups, deleting is up to the groups
     const auto wnds = KWindowSystem::stackingOrder();
-    for (auto const wnd: wnds)
-    {
-        if (acceptWindow(wnd))
-        {
+    for (auto const wnd: wnds) {
+        if (acceptWindow(wnd)) {
             new_list << wnd;
             addWindow(wnd);
         }
@@ -543,13 +517,12 @@ void UKUITaskBar::refreshTaskList()
   //  m_layout->addWidget(m_tmpWidget);
 
     //emulate windowRemoved if known window not reported by KWindowSystem
-    for (auto i = m_knownWindows.begin(), i_e = m_knownWindows.end(); i != i_e; )
-    {
-        if (0 > new_list.indexOf(i.key()))
-        {
+    for (auto i = m_knownWindows.begin(), i_e = m_knownWindows.end(); i != i_e; ) {
+        if (0 > new_list.indexOf(i.key())) {
             i = removeWindow(i);
-        } else
+        } else {
             ++i;
+        }
     }
 
     refreshPlaceholderVisibility();
@@ -558,14 +531,11 @@ void UKUITaskBar::refreshTaskList()
 
 void UKUITaskBar::onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2)
 {
-
     auto i = m_knownWindows.find(window);
-    if (m_knownWindows.end() != i)
-    {
-        if (!(*i)->onWindowChanged(window, prop, prop2) && acceptWindow(window))
-        { // window is removed from a group because of class change, so we should add it again
+    if (m_knownWindows.end() != i) {
+        if (!(*i)->onWindowChanged(window, prop, prop2) && acceptWindow(window)) {
+            // window is removed from a group because of class change, so we should add it again
             addWindow(window);
-
         }
     }
 }
@@ -574,15 +544,15 @@ void UKUITaskBar::onWindowAdded(WId window)
 {
     qDebug()<<"window    is :  ******"<<window;
     auto const pos = m_knownWindows.find(window);
-    if (m_knownWindows.end() == pos && acceptWindow(window))
+    if (m_knownWindows.end() == pos && acceptWindow(window)) {
         addWindow(window);
+    }
 }
 
 void UKUITaskBar::onWindowRemoved(WId window)
 {
     auto const pos = m_knownWindows.find(window);
-    if (m_knownWindows.end() != pos)
-    {
+    if (m_knownWindows.end() != pos) {
         removeWindow(pos);
     }
 }
@@ -601,10 +571,8 @@ void UKUITaskBar::refreshButtonRotation()
 void UKUITaskBar::refreshPlaceholderVisibility()
 {
     bool haveVisibleWindow = false;
-    for (auto i = m_knownWindows.cbegin(), i_e = m_knownWindows.cend(); i_e != i; ++i)
-    {
-        if ((*i)->isVisible())
-        {
+    for (auto i = m_knownWindows.cbegin(), i_e = m_knownWindows.cend(); i_e != i; ++i) {
+        if ((*i)->isVisible()) {
             haveVisibleWindow = true;
             break;
         }
@@ -639,12 +607,13 @@ void UKUITaskBar::settingsChanged()
     m_buttonHeight = m_plugin->settings()->value("buttonHeight", 100).toInt();
     QString s = m_plugin->settings()->value("buttonStyle").toString().toUpper();
 
-    if (s == "ICON")
+    if (s == "ICON") {
         setButtonStyle(Qt::ToolButtonIconOnly);
-    else if (s == "TEXT")
+    } else if (s == "TEXT") {
         setButtonStyle(Qt::ToolButtonTextOnly);
-    else
+    } else {
         setButtonStyle(Qt::ToolButtonIconOnly);
+    }
 
     m_showOnlyOneDesktopTasks = m_plugin->settings()->value("showOnlyOneDesktopTasks", m_showOnlyOneDesktopTasks).toBool();
     m_showDesktopNum = m_plugin->settings()->value("showDesktopNum", m_showDesktopNum).toInt();
@@ -659,13 +628,10 @@ void UKUITaskBar::settingsChanged()
     m_cycleOnWheelScroll = m_plugin->settings()->value("cycleOnWheelScroll", true).toBool();
 
     // Delete all groups if grouping feature toggled and start over
-    if (groupingEnabledOld != m_groupingEnabled)
-    {
-        for (int i = m_knownWindows.size() - 1; 0 <= i; --i)
-        {
+    if (groupingEnabledOld != m_groupingEnabled) {
+        for (int i = m_knownWindows.size() - 1; 0 <= i; --i) {
             UKUITaskGroup * group = m_knownWindows.value(m_swid.value(i));
-            if (nullptr != group)
-            {
+            if (nullptr != group) {
                 m_layout->takeAt(i);
                 group->deleteLater();
             }
@@ -678,10 +644,12 @@ void UKUITaskBar::settingsChanged()
             || (m_showOnlyOneDesktopTasks && showDesktopNumOld != m_showDesktopNum)
             || showOnlyCurrentScreenTasksOld != m_showOnlyCurrentScreenTasks
             || showOnlyMinimizedTasksOld != m_showOnlyMinimizedTasks
-            )
+            ) {
         emit showOnlySettingChanged();
-    if (iconByClassOld != m_iconByClass)
+    }
+    if (iconByClassOld != m_iconByClass) {
         emit iconByClassChanged();
+    }
 
     refreshTaskList();
 }
@@ -703,8 +671,7 @@ void UKUITaskBar::realign()
     int iconsize = panel->iconSize();
 
     bool rotated = false;
-    if (panel->isHorizontal())
-    {
+    if (panel->isHorizontal()) {
         this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         m_allFrame->setMinimumSize(QSize((m_layout->count()+5)*panel->panelSize(),panel->panelSize()));
@@ -714,9 +681,7 @@ void UKUITaskBar::realign()
 
         m_layout->setRowCount(panel->lineCount());
         m_layout->setColumnCount(0);
-    }
-    else
-    {
+    } else {
         this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         this->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         m_allFrame->setMinimumSize(QSize(panel->panelSize(),(m_layout->count()+3)*panel->panelSize()));
@@ -726,32 +691,25 @@ void UKUITaskBar::realign()
 
         m_layout->setRowCount(0);
 
-        if (m_buttonStyle == Qt::ToolButtonIconOnly)
-        {
+        if (m_buttonStyle == Qt::ToolButtonIconOnly) {
             // Vertical + Icons
             m_layout->setColumnCount(panel->lineCount());
-        }
-        else
-        {
+        } else {
             rotated = m_autoRotate && (panel->position() == IUKUIPanel::PositionLeft || panel->position() == IUKUIPanel::PositionRight);
 
             // Vertical + Text
-            if (rotated)
-            {
+            if (rotated) {
                 maxSize.rwidth()  = m_buttonHeight;
                 maxSize.rheight() = m_buttonWidth;
 
                 m_layout->setColumnCount(panel->lineCount());
-            }
-            else
-            {
+            } else {
                 m_layout->setColumnCount(1);
             }
         }
     }
 
-    for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++)
-    {
+    for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++) {
         UKUITaskGroup *group = it.value();
         group->setIconSize(QSize(iconsize,iconsize));
     }
@@ -812,14 +770,11 @@ void UKUITaskBar::changeEvent(QEvent* event)
 
 void UKUITaskBar::activateTask(int pos)
 {
-    for (int i = 0; i < m_knownWindows.size(); ++i)
-    {
+    for (int i = 0; i < m_knownWindows.size(); ++i) {
         UKUITaskGroup * g = m_knownWindows.value(m_swid.value(i));
-        if (g && g->isVisible())
-        {
+        if (g && g->isVisible()) {
             pos--;
-            if (pos == 0)
-            {
+            if (pos == 0) {
                 g->raiseApplication();
                 break;
             }
@@ -862,8 +817,7 @@ void UKUITaskBar::paintEvent(QPaintEvent *)
         QImage img = pixmap.toImage();
         qt_blurImage(img, 10, false, false);
 
-        switch(m_taskStatus)
-          {
+        switch(m_taskStatus) {
           case NORMAL:
               {
                   p.setPen(Qt::NoPen);
@@ -892,7 +846,8 @@ void UKUITaskBar::paintEvent(QPaintEvent *)
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void UKUITaskBar::mouseMoveEvent(QMouseEvent *e) {
+void UKUITaskBar::mouseMoveEvent(QMouseEvent *e)
+{
     QFrame::mouseMoveEvent(e);
 }
 
@@ -922,12 +877,10 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
      * 后跟随主题框架之后置灰效果消失，可能与此属性相关
      */
     //        btn->setMenu(Qt::InstantPopup);
-    for (auto it = m_knownWindows.begin(); it!=m_knownWindows.end(); ++it)
-    {
+    for (auto it = m_knownWindows.begin(); it!=m_knownWindows.end(); ++it) {
         UKUITaskGroup *group = *it;
         if(btn->m_fileName == group->m_fileName
-           &&(m_layout->indexOf(group) >= 0))
-        {
+           &&(m_layout->indexOf(group) >= 0)) {
             m_layout->addWidget(btn);
             m_layout->moveItem(m_layout->indexOf(btn), m_layout->indexOf(group));
             isNeedAddNewWidget = false;
@@ -946,8 +899,8 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
         m_layout->moveItem(m_layout->indexOf(btn), countOfButtons() - 1);
     }
     connect(btn, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
-        switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
-    });
+            switchButtons(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource));//, pos);
+            });
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
     connect(btn, SIGNAL(t_saveSettings()), this, SLOT(saveSettingsSlot()));
     m_layout->setEnabled(true);
@@ -955,15 +908,22 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
 
 void UKUITaskBar::switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button)
 {
-    if (dst_button == src_button)
+#if 0
+    if (dst_button == src_button) {
         return;
-    if (!dst_button || !src_button)
+    }
+    if (!dst_button || !src_button) {
         return;
+    }
+#else
+    if (dst_button && src_button) {
+        return;
+    }
+#endif
+
     int dst = m_layout->indexOf(dst_button);
     int src = m_layout->indexOf(src_button);
-    if (dst == src
-            || m_layout->animatedMoveInProgress()
-       ) {
+    if (dst == src || m_layout->animatedMoveInProgress()) {
         return;
     }
     m_layout->moveItem(src, dst, true);
@@ -976,7 +936,7 @@ bool UKUITaskBar::checkButton(QuickLaunchAction* action)
     UKUITaskGroup* btn = new UKUITaskGroup(action, m_plugin, this);
     int i = 0;
     int counts = m_vBtn.size();
-    if(m_vBtn.size()>0){
+    if (m_vBtn.size()>0) {
         while (i != counts) {
             UKUITaskGroup *b = m_vBtn.value(i);
             qDebug()<<"m_layout->itemAt("<<i<<") ";
@@ -987,12 +947,10 @@ bool UKUITaskBar::checkButton(QuickLaunchAction* action)
                 checkresult=false;
                 ++i;
             }
-
         }
         delete btn;
         return checkresult;
-    }
-    else{
+    } else {
         qDebug()<<"countOfButtons =  "<<countOfButtons();
         delete btn;
         return false;
@@ -1004,8 +962,9 @@ void UKUITaskBar::removeButton(QuickLaunchAction* action)
 {
     int i = 0;
     UKUITaskGroup* btn = new UKUITaskGroup(action, m_plugin, this);
-    if (!btn)
+    if (!btn) {
         return;
+    }
     while (i < m_vBtn.size()) {
         UKUITaskGroup *tmp = m_vBtn.value(i);
         if (QString::compare(btn->m_fileName, tmp->m_fileName) == 0) {
@@ -1038,9 +997,9 @@ void UKUITaskBar::removeButton(QString file)
     }
 }
 
-void UKUITaskBar::WindowAddtoTaskBar(QString arg) {
-    for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++)
-    {
+void UKUITaskBar::WindowAddtoTaskBar(QString arg)
+{
+    for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++) {
         UKUITaskGroup *group = it.value();
             if (arg.compare(group->groupName()) == 0) {
                 addToTaskbar(group->m_fileName);
@@ -1049,13 +1008,11 @@ void UKUITaskBar::WindowAddtoTaskBar(QString arg) {
     }
 }
 
-void UKUITaskBar::WindowRemovefromTaskBar(QString arg) {
-    for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it)
-    {
+void UKUITaskBar::WindowRemovefromTaskBar(QString arg)
+{
+    for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it) {
         UKUITaskGroup *pQuickBtn = *it;
-        if(pQuickBtn->m_fileName == arg
-           && (m_layout->indexOf(pQuickBtn) >= 0 ))
-        {
+        if(pQuickBtn->m_fileName == arg && (m_layout->indexOf(pQuickBtn) >= 0 )) {
             doInitGroupButton(pQuickBtn->m_fileName);
             m_vBtn.removeOne(pQuickBtn);
             pQuickBtn->deleteLater();
@@ -1095,7 +1052,7 @@ void UKUITaskBar::directoryUpdated(const QString &path)
     } else {
         // 从Dir中删除文件/目录
         if (!deletefile.isEmpty()) {
-            foreach(QString file, deletefile) {
+            foreach (QString file, deletefile) {
                 removeButton(path+file);
             }
         }
@@ -1103,17 +1060,18 @@ void UKUITaskBar::directoryUpdated(const QString &path)
 }
 
 
-void UKUITaskBar::addToTaskbar(QString arg) {
+void UKUITaskBar::addToTaskbar(QString arg)
+{
     const auto url=QUrl(arg);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     QFileInfo fi(fileName);
     XdgDesktopFile xdg;
-    if (xdg.load(fileName)){
-        if(!checkButton(new QuickLaunchAction(&xdg, this))){
+    if (xdg.load(fileName)) {
+        if (!checkButton(new QuickLaunchAction(&xdg, this))) {
             addButton(new QuickLaunchAction(&xdg, this));
             m_placeHolder->hide();
         }
-    }else{
+    } else {
         qWarning() << "XdgDesktopFile" << fileName << "is not valid";
         QMessageBox::information(this, tr("Drop Error"),
                                  tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
@@ -1129,9 +1087,9 @@ void UKUITaskBar::removeFromTaskbar(QString arg)
     removeButton(new QuickLaunchAction(&xdg, this));
 }
 
-void UKUITaskBar::doInitGroupButton(QString sname) {
-    for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++)
-    {
+void UKUITaskBar::doInitGroupButton(QString sname)
+{
+    for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++) {
         UKUITaskGroup *group = it.value();
         if (group->m_existSameQckBtn) {
             if (sname == group->m_fileName) {
@@ -1146,14 +1104,12 @@ void UKUITaskBar::doInitGroupButton(QString sname) {
 void UKUITaskBar::buttonDeleted()
 {
     UKUITaskGroup *btn = qobject_cast<UKUITaskGroup*>(sender());
-    if (!btn)
+    if (!btn) {
         return;
-    for(auto it = m_vBtn.begin();it != m_vBtn.end();it++)
-    {
-        if(*it == btn)
-        {
-            for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++)
-            {
+    }
+    for (auto it = m_vBtn.begin(); it != m_vBtn.end(); it++) {
+        if (*it == btn) {
+            for (auto it= m_knownWindows.begin(); it != m_knownWindows.end(); it++) {
                 UKUITaskGroup *group = it.value();
                 if (group->m_existSameQckBtn) {
                     if (btn->m_fileName == group->m_fileName) {
@@ -1171,7 +1127,8 @@ void UKUITaskBar::buttonDeleted()
     saveSettings();
 }
 
-void UKUITaskBar::saveSettingsSlot() {
+void UKUITaskBar::saveSettingsSlot()
+{
     saveSettings();
 }
 
@@ -1179,24 +1136,29 @@ void UKUITaskBar::saveSettings()
 {
     PluginSettings *settings = m_plugin->settings();
     settings->remove("apps");
-    QList<QMap<QString, QVariant> > hashList;
+    QList<QMap<QString, QVariant>> hashList;
     int size = m_layout->count();
-    for (int j = 0; j < size; ++j)
-    {
+    for (int j = 0; j < size; ++j) {
         UKUITaskGroup *b = qobject_cast<UKUITaskGroup*>(m_layout->itemAt(j)->widget());
-        if (!(m_vBtn.contains(b) || m_knownWindows.contains(m_knownWindows.key(b)))) continue;
-        if (!b->m_statFlag && b->m_existSameQckBtn) continue;
-        if (!b) continue;
-        if (b->m_statFlag && b->m_existSameQckBtn){
+        if (!(m_vBtn.contains(b) || m_knownWindows.contains(m_knownWindows.key(b)))) {
+            continue;
+        }
+        if (!b->m_statFlag && b->m_existSameQckBtn) {
+            continue;
+        }
+        if (!b) {
+            continue;
+        }
+        if (b->m_statFlag && b->m_existSameQckBtn) {
             b = b->getQckLchBtn();
         }
-        if (!b || b->m_statFlag)
+        if (!b || b->m_statFlag) {
             continue;
+        }
         // convert QHash<QString, QString> to QMap<QString, QVariant>
         QMap<QString, QVariant> map;
         QHashIterator<QString, QString> it(b->settingsMap());
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             it.next();
             map[it.key()] = it.value();
         }
@@ -1215,25 +1177,26 @@ int UKUITaskBar::countOfButtons() const
     return m_layout->count();
 }
 
-void UKUITaskBar::wlKwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption) {
+void UKUITaskBar::wlKwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption)
+{
     qDebug()<<"UKUITaskBar::wlKwinSigHandler"<<wl_winId<<opNo<<wl_iconName<<wl_caption;
     if (!opNo) {
 //        addWindow_wl(wl_iconName, wl_caption, wl_winId);
     }
     switch (opNo) {
-    case 1:
-        m_knownWindows.find(wl_winId).value()->setActivateState_wl(false);
-        break;
-    case 2:
-        onWindowRemoved(wl_winId);
-        break;
-    case 3:
-        m_knownWindows.find(wl_winId).value()->setActivateState_wl(true);
-        break;
-    case 4:
-        addWindow_wl(wl_iconName, wl_caption, wl_winId);
-        m_knownWindows.find(wl_winId).value()->wl_widgetUpdateTitle(wl_caption);
-        break;
+        case 1:
+            m_knownWindows.find(wl_winId).value()->setActivateState_wl(false);
+            break;
+        case 2:
+            onWindowRemoved(wl_winId);
+            break;
+        case 3:
+            m_knownWindows.find(wl_winId).value()->setActivateState_wl(true);
+            break;
+        case 4:
+            addWindow_wl(wl_iconName, wl_caption, wl_winId);
+            m_knownWindows.find(wl_winId).value()->wl_widgetUpdateTitle(wl_caption);
+            break;
     }
 }
 
@@ -1257,55 +1220,51 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
     }
     UKUITaskGroup *group = nullptr;
     auto i_group = m_knownWindows.find(window);
-    if (m_knownWindows.end() != i_group)
-    {
-        if ((*i_group)->groupName() == group_id)
+    if (m_knownWindows.end() != i_group) {
+        if ((*i_group)->groupName() == group_id) {
             group = *i_group;
-        else
+        } else {
             (*i_group)->onWindowRemoved(window);
+        }
     }
 
-    if (!group && m_groupingEnabled && group_id.compare("kylin-video"))
-    {
-        for (auto i = m_knownWindows.cbegin(), i_e = m_knownWindows.cend(); i != i_e; ++i)
-        {
-            if ((*i)->groupName() == group_id)
-            {
+    if (!group && m_groupingEnabled && group_id.compare("kylin-video")) {
+        for (auto i = m_knownWindows.cbegin(), i_e = m_knownWindows.cend(); i != i_e; ++i) {
+            if ((*i)->groupName() == group_id) {
                 group = *i;
                 break;
             }
         }
     }
 
-    if (!group)
-    {
+    if (!group) {
         group = new UKUITaskGroup(iconName, caption, window, this);
         m_placeHolder->hide();
         connect(group, SIGNAL(groupBecomeEmpty(QString)), this, SLOT(groupBecomeEmptySlot()));
         connect(group, SIGNAL(visibilityChanged(bool)), this, SLOT(refreshPlaceholderVisibility()));
         connect(group, &UKUITaskGroup::popupShown, this, &UKUITaskBar::popupShown);
         connect(group, &UKUITaskButton::dragging, this, [this] (QObject * dragSource, QPoint const & pos) {
-            buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
-        });
+                buttonMove(qobject_cast<UKUITaskGroup *>(sender()), qobject_cast<UKUITaskGroup *>(dragSource), pos);
+                });
 
         //wayland临时图标适配主题代码处理
         /*********************************************/
-        if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
+        if (QIcon::fromTheme(group_id).hasThemeIcon(group_id)) {
             group->setIcon(QIcon::fromTheme(group_id));
-        }else{
+        } else {
             group->setIcon(QIcon::fromTheme(iconName));
         }
 
-        connect(m_changeTheme, &QGSettings::changed, this, [=] (const QString &key){
-            if(key=="iconThemeName"){
-                sleep(1);
-                if(QIcon::fromTheme(group_id).hasThemeIcon(group_id)){
-                    group->setIcon(QIcon::fromTheme(group_id));
-                }else{
-                    group->setIcon(QIcon::fromTheme(iconName));
-                }
-            }
-        });
+        connect(m_changeTheme, &QGSettings::changed, this, [=] (const QString &key) {
+                    if (key=="iconThemeName") {
+                        sleep(1);
+                        if (QIcon::fromTheme(group_id).hasThemeIcon(group_id)) {
+                            group->setIcon(QIcon::fromTheme(group_id));
+                        } else {
+                            group->setIcon(QIcon::fromTheme(iconName));
+                        }
+                    }
+                });
         /*********************************************/
 
 //        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
@@ -1350,9 +1309,9 @@ QString UKUITaskBar::captionExchange(QString str)
     QStringList strList = temp_group_id.split(" ");
     QString group_id = strList[0];
     QStringList video_list;
-    if(m_androidIconHash.keys().contains(temp_group_id)){
+    if (m_androidIconHash.keys().contains(temp_group_id)) {
         group_id=m_androidIconHash.value(temp_group_id);
-    }else{
+    } else {
         video_list<<"影音"<<"Video";
         if(video_list.contains(group_id)) group_id ="kylin-video";
         else group_id="application-x-desktop";
@@ -1365,8 +1324,10 @@ QHash<QString,QString> UKUITaskBar::matchAndroidIcon()
     QHash<QString,QString> hash;
     printf("*************\n");
     QFile file("/usr/share/ukui/ukui-panel/plugin-taskbar/name-icon.match");
-    if(!file.open(QIODevice::ReadOnly))  qDebug()<<"Read FIle failed";
-    while (!file.atEnd()){
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug()<<"Read FIle failed";
+    }
+    while (!file.atEnd()) {
         QByteArray line= file.readLine();
         QString str=file.readLine();
         str.section('picture',1,1).trimmed().toStdString();

@@ -81,38 +81,38 @@ void UKUIGroupPopup::dropEvent(QDropEvent *event)
     UKUITaskButton *button = nullptr;
     int oldIndex(0);
     // get current position of the button being dragged
-    for (int i = 0; i < layout()->count(); i++)
-    {
+    for (int i = 0; i < layout()->count(); i++) {
         UKUITaskButton *b = qobject_cast<UKUITaskButton*>(layout()->itemAt(i)->widget());
-        if (b && b->windowId() == window)
-        {
+        if (b && b->windowId() == window) {
             button = b;
             oldIndex = i;
             break;
         }
     }
 
-    if (button == nullptr)
+    if (button == nullptr) {
         return;
+    }
 
     int newIndex = -1;
     // find the new position to place it in
-    for (int i = 0; i < oldIndex && newIndex == -1; i++)
-    {
+    for (int i = 0; i < oldIndex && newIndex == -1; i++) {
         QWidget *w = layout()->itemAt(i)->widget();
-        if (w && w->pos().y() + w->height() / 2 > event->pos().y())
+        if (w && w->pos().y() + w->height() / 2 > event->pos().y()) {
             newIndex = i;
+        }
     }
     const int size = layout()->count();
-    for (int i = size - 1; i > oldIndex && newIndex == -1; i--)
-    {
+    for (int i = size - 1; i > oldIndex && newIndex == -1; i--) {
         QWidget *w = layout()->itemAt(i)->widget();
-        if (w && w->pos().y() + w->height() / 2 < event->pos().y())
+        if (w && w->pos().y() + w->height() / 2 < event->pos().y()) {
             newIndex = i;
+        }
     }
 
-    if (newIndex == -1 || newIndex == oldIndex)
+    if (newIndex == -1 || newIndex == oldIndex) {
         return;
+    }
 
     QVBoxLayout * l = qobject_cast<QVBoxLayout *>(layout());
     l->takeAt(oldIndex);
@@ -162,17 +162,19 @@ void UKUIGroupPopup::killTimerDelay()
 
 void UKUIGroupPopup::closeWindowDelay()
 {
-    if(m_closeTimer.isActive())
-    {
+    if(m_closeTimer.isActive()) {
         m_closeTimer.stop();
     }
     close();
 }
 
-void UKUIGroupPopup::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::RightButton)
+void UKUIGroupPopup::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton) {
         m_rightclick = true;
-    else m_rightclick = false;
+    } else {
+        m_rightclick = false;
+    }
 }
 
 void UKUIGroupPopup::paintEvent(QPaintEvent *event)
@@ -186,10 +188,12 @@ void UKUIGroupPopup::paintEvent(QPaintEvent *event)
 
 void UKUIGroupPopup::hide(bool fast)
 {
-    if (fast)
+    if (fast) {
         close();
-    else
+    }
+    else {
         m_closeTimer.start();
+    }
 }
 
 void UKUIGroupPopup::show()
@@ -202,15 +206,14 @@ void UKUIGroupPopup::closeTimerSlot()
 {
     bool button_has_dnd_hover = false;
     QLayout* l = layout();
-    for (int i = 0; l->count() > i; ++i)
-    {
+    for (int i = 0; l->count() > i; ++i) {
         UKUITaskWidget const * const button = dynamic_cast<UKUITaskWidget const *>(l->itemAt(i)->widget());
-        if (0 != button && button->hasDragAndDropHover())
-        {
+        if (0 != button && button->hasDragAndDropHover()) {
             button_has_dnd_hover = true;
             break;
         }
     }
-    if (!button_has_dnd_hover)
+    if (!button_has_dnd_hover) {
         close();
+    }
 }

@@ -76,10 +76,11 @@
 QPixmap qimageFromXImage(XImage* ximage)
 {
     QImage::Format format = QImage::Format_ARGB32_Premultiplied;
-    if (ximage->depth == 24)
+    if (ximage->depth == 24) {
         format = QImage::Format_RGB32;
-    else if (ximage->depth == 16)
+    } else if (ximage->depth == 16) {
         format = QImage::Format_RGB16;
+    }
 
     QImage image = QImage(reinterpret_cast<uchar*>(ximage->data),
                           ximage->width, ximage->height,
@@ -146,10 +147,10 @@ UKUITaskGroup::UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin,
     m_gsettings = new QGSettings(id);
     toDomodifyQuicklaunchMenuAction(true);
     connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key){
-        if(key==PANELPOSITION){
-            toDomodifyQuicklaunchMenuAction(true);
-        }
-    });
+                if(key==PANELPOSITION){
+                    toDomodifyQuicklaunchMenuAction(true);
+                }
+            });
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     m_fileName=act->m_settingsMap["desktop"];
@@ -235,7 +236,7 @@ void UKUITaskGroup::initActionsInRightButtonMenu(){
     const auto url=QUrl(m_fileName);
     QString fileName(url.isLocalFile() ? url.toLocalFile() : url.url());
     XdgDesktopFile xdg;
-    if (xdg.load(fileName)){
+    if (xdg.load(fileName)) {
         m_act = new QuickLaunchAction(&xdg, this);
         setGroupIcon(m_act->getIconfromAction());
     }
@@ -246,8 +247,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 {
     setPopupVisible(false, true);
     m_preventPopup = true;
-    if (m_singleButton && !m_isWaylandGroup)
-    {
+    if (m_singleButton && !m_isWaylandGroup) {
         UKUITaskButton::contextMenuEvent(event);
         return;
     }
@@ -263,14 +263,17 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
         connect(m_deleteAct, SIGNAL(triggered()), this, SLOT(RemovefromTaskBar()));
         QAction *mAddAct = menu->addAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-fixed")), tr("add to taskbar"));
         connect(mAddAct, SIGNAL(triggered()), this, SLOT(AddtoTaskBar()));
-        if (m_existSameQckBtn) menu->removeAction(mAddAct);
-        else menu->removeAction(m_deleteAct);
+        if (m_existSameQckBtn) {
+            menu->removeAction(mAddAct);
+        } else {
+            menu->removeAction(m_deleteAct);
+        }
     }
     QAction *mCloseAct = menu->addAction(QIcon::fromTheme("application-exit-symbolic"), tr("close"));
     connect(mCloseAct, SIGNAL(triggered()), this, SLOT(closeGroup()));
     connect(menu, &QMenu::aboutToHide, [this] {
-        m_preventPopup = false;
-    });
+                m_preventPopup = false;
+            });
     menu->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(event->pos()), menu->sizeHint()));
     plugin()->willShowWindow(menu);
     menu->show();
@@ -300,9 +303,11 @@ void UKUITaskGroup::closeGroup()
             button->closeApplication();
     }
 #else
-    for (UKUITaskWidget *button : qAsConst(m_buttonHash) )
-        if (button->isOnDesktop(KWindowSystem::currentDesktop()))
+    for (UKUITaskWidget *button : qAsConst(m_buttonHash) ) {
+        if (button->isOnDesktop(KWindowSystem::currentDesktop())) {
             button->closeApplication();
+        }
+    }
 #endif
 }
 
@@ -311,9 +316,9 @@ void UKUITaskGroup::closeGroup()
  ************************************************/
 QWidget * UKUITaskGroup::addWindow(WId id)
 {
-
-    if (m_buttonHash.contains(id))
+    if (m_buttonHash.contains(id)) {
         return m_buttonHash.value(id);
+    }
     UKUITaskWidget *btn = new UKUITaskWidget(id, parentTaskBar(), m_popup);
     m_buttonHash.insert(id, btn);
     connect(btn, SIGNAL(clicked()), this, SLOT(onChildButtonClicked()));
@@ -331,10 +336,11 @@ QWidget * UKUITaskGroup::addWindow(WId id)
  */
 void UKUITaskGroup::changeTaskButtonStyle()
 {
-    if(m_visibleHash.size()>1)
+    if (m_visibleHash.size()>1) {
         this->setStyle(new CustomStyle("taskbutton",true));
-    else
+    } else {
         this->setStyle(new CustomStyle("taskbutton",false));
+    }
 }
 
 void UKUITaskGroup::onActiveWindowChanged(WId window)
@@ -366,8 +372,7 @@ void UKUITaskGroup::onDesktopChanged()
  ************************************************/
 void UKUITaskGroup::onWindowRemoved(WId window)
 {
-    if (m_buttonHash.contains(window))
-    {
+    if (m_buttonHash.contains(window)) {
         UKUITaskWidget *button = m_buttonHash.value(window);
         m_buttonHash.remove(window);
         if (m_visibleHash.contains(window)) {
@@ -376,29 +381,25 @@ void UKUITaskGroup::onWindowRemoved(WId window)
         }
         m_popup->removeWidget(button);
         button->deleteLater();
-        if (!parentTaskBar()->getCpuInfoFlg())
+        if (!parentTaskBar()->getCpuInfoFlg()) {
             system(QString("rm -f /tmp/%1.png").arg(window).toLatin1());
-        if (isLeaderWindow(window) && (m_showInTurn.size() > 0))
+        }
+        if (isLeaderWindow(window) && (m_showInTurn.size() > 0)) {
             setLeaderWindow(m_buttonHash.key(m_showInTurn.at(0)));
-        if (m_buttonHash.count())
-        {
-            if(m_popup->isVisible())
-            {
+        }
+        if (m_buttonHash.count()) {
+            if(m_popup->isVisible()) {
 //                m_popup->hide(true);
                 showPreview();
-            }
-            else
-            {
+            } else {
                 regroup();
             }
-        }
-        else
-        {
-            if (isVisible())
+        } else {
+            if (isVisible()) {
                 emit visibilityChanged(false);
+            }
             hide();
             emit groupBecomeEmpty(groupName());
-
         }
         changeTaskButtonStyle();
     }
@@ -473,9 +474,11 @@ int UKUITaskGroup::visibleButtonsCount() const
             i++;
     }
 #else
-    for (UKUITaskWidget *btn : qAsConst(m_buttonHash))
-        if (btn->isVisibleTo(m_popup))
+    for (UKUITaskWidget *btn : qAsConst(m_buttonHash)) {
+        if (btn->isVisibleTo(m_popup)) {
             i++;
+        }
+    }
 #endif
     return i;
 }
@@ -485,8 +488,9 @@ int UKUITaskGroup::visibleButtonsCount() const
  ************************************************/
 void UKUITaskGroup::draggingTimerTimeout()
 {
-    if (m_singleButton)
+    if (m_singleButton) {
         setPopupVisible(false);
+    }
 }
 
 /************************************************
@@ -498,30 +502,22 @@ void UKUITaskGroup::onClicked(bool)
         winClickActivate_wl(!m_isWinActivate);
         return;
     }
-    if (1 == m_visibleHash.size())
-    {
+    if (1 == m_visibleHash.size()) {
         return singleWindowClick();
     }
-    if(m_popup->isVisible())
-    {
-        if(HOVER == m_taskGroupStatus)
-        {
+    if (m_popup->isVisible()) {
+        if(HOVER == m_taskGroupStatus) {
             m_taskGroupStatus = NORMAL;
             return;
-        }
-        else
-        {
+        } else {
             m_popup->hide();
             return;
         }
-    }
-    else
-    {
+    } else {
         showPreview();
     }
     m_taskGroupEvent = OTHEREVENT;
-    if(m_timer->isActive())
-    {
+    if (m_timer->isActive()) {
        m_timer->stop();
     }
 }
@@ -530,28 +526,21 @@ void UKUITaskGroup::onClicked(bool)
 void UKUITaskGroup::singleWindowClick()
 {
     UKUITaskWidget *btn = m_visibleHash.begin().value();
-    if(btn)
-    {
-        if(!btn->isFocusState() || btn->isMinimized())
-        {
-            if(m_popup->isVisible())
-            {
+    if (btn) {
+        if (!btn->isFocusState() || btn->isMinimized()) {
+            if (m_popup->isVisible()) {
                 m_popup->hide();
             }
             KWindowSystem::forceActiveWindow(m_visibleHash.begin().key());
-        }
-        else
-        {
+        } else {
             btn->minimizeApplication();
-            if(m_popup->isVisible())
-            {
+            if (m_popup->isVisible()) {
                 m_popup->hide();
             }
         }
     }
     m_taskGroupEvent = OTHEREVENT;
-    if(m_timer->isActive())
-    {
+    if (m_timer->isActive()) {
        m_timer->stop();
     }
 }
@@ -586,12 +575,11 @@ void UKUITaskGroup::regroup()
 
 //        }
 //    }
-    /*else*/ if (cont == 0) {
+    /*else*/
+    if (cont == 0) {
        // emit groupHidden(groupName());
         hide();
-    }
-    else
-    {
+    } else {
         m_singleButton = false;
         QString t = QString("%1 - %2 windows").arg(m_groupName).arg(cont);
         setText(t);
@@ -605,11 +593,11 @@ void UKUITaskGroup::regroup()
  ************************************************/
 void UKUITaskGroup::recalculateFrameIfVisible()
 {
-    if (m_popup->isVisible())
-    {
+    if (m_popup->isVisible()) {
         recalculateFrameSize();
-        if (plugin()->panel()->position() == IUKUIPanel::PositionBottom)
+        if (plugin()->panel()->position() == IUKUIPanel::PositionBottom) {
             recalculateFramePosition();
+        }
     }
 }
 
@@ -633,8 +621,7 @@ void UKUITaskGroup::refreshVisibility()
     UKUITaskBar const * taskbar = parentTaskBar();
     const int showDesktop = taskbar->showDesktopNum();
 
-    for(UKUITaskButtonHash::const_iterator i=m_buttonHash.begin();i!=m_buttonHash.end();i++)
-    {
+    for(UKUITaskButtonHash::const_iterator i=m_buttonHash.begin(); i!=m_buttonHash.end(); i++) {
         UKUITaskWidget * btn=i.value();
         bool visible = taskbar->isShowOnlyOneDesktopTasks() ? btn->isOnDesktop(0 == showDesktop ? KWindowSystem::currentDesktop() : showDesktop) : true;
         visible &= taskbar->isShowOnlyCurrentScreenTasks() ? btn->isOnCurrentScreen() : true;
@@ -649,23 +636,25 @@ void UKUITaskGroup::refreshVisibility()
         }
         will |= visible;
     }
-    if (!m_showInTurn.isEmpty())
+    if (!m_showInTurn.isEmpty()) {
         setLeaderWindow(m_visibleHash.key(m_showInTurn.at(0)));
+    }
 
     bool is = isVisible();
   //  emit groupVisible(groupName(), will);
    // else setVisible(will);
   //  will &= this->isVisible();
     setVisible(will);
-    if (this->m_existSameQckBtn)
+    if (this->m_existSameQckBtn) {
         m_qckLchBtn->setHidden(will);
-    if(!m_popup->isVisible())
-    {
+    }
+    if (!m_popup->isVisible()) {
         regroup();
     }
 
-    if (is != will)
+    if (is != will) {
         emit visibilityChanged(will);
+    }
 }
 
 /************************************************
@@ -686,9 +675,10 @@ QMimeData * UKUITaskGroup::mimeData()
  ************************************************/
 void UKUITaskGroup::setPopupVisible(bool visible, bool fast)
 {
-    if (!m_statFlag) return;
-    if (visible && !m_preventPopup && !m_singleButton)
-    {
+    if (!m_statFlag) {
+        return;
+    }
+    if (visible && !m_preventPopup && !m_singleButton) {
 //        QTimer::singleShot(400, this,SLOT(showPreview()));
         showPreview();
         /* for origin preview
@@ -696,9 +686,9 @@ void UKUITaskGroup::setPopupVisible(bool visible, bool fast)
         m_popup->show();
         qDebug()<<"setPopupVisible ********";
         emit popupShown(this);*/
-    }
-    else
+    } else {
         m_popup->hide(fast);
+    }
 }
 /************************************************
 
@@ -708,14 +698,12 @@ void UKUITaskGroup::refreshIconsGeometry()
     float scale = qApp->devicePixelRatio();
     QRect rect = geometry();
     rect.moveTo(mapToGlobal(QPoint(0, 0)).x() * scale, mapToGlobal(QPoint(0, 0)).y() * scale);
-    if (m_singleButton)
-    {
+    if (m_singleButton) {
         refreshIconGeometry(rect);
         return;
     }
 
-    for(UKUITaskWidget *but : qAsConst(m_buttonHash))
-    {
+    for(UKUITaskWidget *but : qAsConst(m_buttonHash)) {
         but->refreshIconGeometry(rect);
 //        but->setIconSize(QSize(plugin()->panel()->iconSize(), plugin()->panel()->iconSize()));
     }
@@ -762,20 +750,19 @@ QPoint UKUITaskGroup::recalculateFramePosition()
 {
     // Set position
     int x_offset = 0, y_offset = 0;
-    switch (plugin()->panel()->position())
-    {
-    case IUKUIPanel::PositionTop:
-        y_offset += height();
-        break;
-    case IUKUIPanel::PositionBottom:
-        y_offset = -120;
-        break;
-    case IUKUIPanel::PositionLeft:
-        x_offset += width();
-        break;
-    case IUKUIPanel::PositionRight:
-        x_offset = -recalculateFrameWidth();
-        break;
+    switch (plugin()->panel()->position()) {
+        case IUKUIPanel::PositionTop:
+            y_offset += height();
+            break;
+        case IUKUIPanel::PositionBottom:
+            y_offset = -120;
+            break;
+        case IUKUIPanel::PositionLeft:
+            x_offset += width();
+            break;
+        case IUKUIPanel::PositionRight:
+            x_offset = -recalculateFrameWidth();
+            break;
     }
 
     QPoint pos = mapToGlobal(QPoint(x_offset, y_offset));
@@ -793,12 +780,9 @@ void UKUITaskGroup::leaveEvent(QEvent *event)
         return;
     }
     m_event = event;
-    if(m_timer->isActive())
-    {
+    if (m_timer->isActive()) {
         m_timer->stop();//stay time is no more than 400 ms need kill timer
-    }
-    else
-    {
+    } else {
         m_timer->start(300);
     }
 }
@@ -817,11 +801,16 @@ void UKUITaskGroup::enterEvent(QEvent *event)
 
 void UKUITaskGroup::handleSavedEvent()
 {
+#if 0
     if (m_draggging)
         return;
     if (!m_statFlag) return;
-    if (m_statFlag && parentTaskBar()->isShowGroupOnHover())
-    {
+#else
+    if (m_draggging || !m_statFlag) {
+        return;
+    }
+#endif
+    if (m_statFlag && parentTaskBar()->isShowGroupOnHover()) {
         setPopupVisible(true);
     }
     m_taskGroupStatus = HOVER;
@@ -832,8 +821,7 @@ void UKUITaskGroup::handleSavedEvent()
 void UKUITaskGroup::dragEnterEvent(QDragEnterEvent *event)
 {
     // only show the popup if we aren't dragging a taskgroup
-    if (!event->mimeData()->hasFormat(mimeDataFormat()))
-    {
+    if (!event->mimeData()->hasFormat(mimeDataFormat())) {
         setPopupVisible(true);
     }
     UKUITaskButton::dragEnterEvent(event);
@@ -853,8 +841,9 @@ void UKUITaskGroup::dragLeaveEvent(QDragLeaveEvent *event)
 {
     // if draggind something into the taskgroup or the taskgroups' popup,
     // do not close the popup
-    if (!m_draggging)
+    if (!m_draggging) {
         setPopupVisible(false);
+    }
     UKUITaskButton::dragLeaveEvent(event);
 }
 
@@ -871,31 +860,28 @@ bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
 { // returns true if the class is preserved
     bool needsRefreshVisibility{false};
     QVector<QWidget *> buttons;
-    if (m_buttonHash.contains(window))
+    if (m_buttonHash.contains(window)) {
         buttons.append(m_buttonHash.value(window));
+    }
 
     // If group is based on that window properties must be changed also on button group
-    if (window == windowId())
+    if (window == windowId()) {
         buttons.append(this);
+    }
 
-    if (!buttons.isEmpty())
-    {
+    if (!buttons.isEmpty()) {
         // if class is changed the window won't belong to our group any more
-        if (parentTaskBar()->isGroupingEnabled() && prop2.testFlag(NET::WM2WindowClass))
-        {
+        if (parentTaskBar()->isGroupingEnabled() && prop2.testFlag(NET::WM2WindowClass)) {
             KWindowInfo info(window, 0, NET::WM2WindowClass);
-            if (info.windowClassClass() != m_groupName)
-            {
+            if (info.windowClassClass() != m_groupName) {
                 onWindowRemoved(window);
                 return false;
             }
         }
         // window changed virtual desktop
-        if (prop.testFlag(NET::WMDesktop) || prop.testFlag(NET::WMGeometry))
-        {
+        if (prop.testFlag(NET::WMDesktop) || prop.testFlag(NET::WMGeometry)) {
             if (parentTaskBar()->isShowOnlyOneDesktopTasks()
-                    || parentTaskBar()->isShowOnlyCurrentScreenTasks())
-            {
+                    || parentTaskBar()->isShowOnlyCurrentScreenTasks()) {
                 needsRefreshVisibility = true;
             }
         }
@@ -909,26 +895,26 @@ bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
 //            std::for_each(buttons.begin(), buttons.end(), std::mem_fn(&UKUITaskButton::updateIcon));
         if (prop.testFlag(NET::WMIcon) || prop2.testFlag(NET::WM2WindowClass)){
             updateIcon();
-            for(UKUITaskButtonHash::const_iterator i=m_visibleHash.begin();i!= m_visibleHash.end();i++)
+            for(UKUITaskButtonHash::const_iterator i = m_visibleHash.begin(); i != m_visibleHash.end(); i++) {
                 i.value()->updateIcon();
-
+            }
         }
 
-        if (prop.testFlag(NET::WMState))
-        {
+        if (prop.testFlag(NET::WMState)) {
             KWindowInfo info{window, NET::WMState};
-            if (info.hasState(NET::SkipTaskbar))
+            if (info.hasState(NET::SkipTaskbar)) {
                 onWindowRemoved(window);
+            }
 //            std::for_each(buttons.begin(), buttons.end(), std::bind(&UKUITaskButton::setUrgencyHint, std::placeholders::_1, info.hasState(NET::DemandsAttention)));
 
-            if (parentTaskBar()->isShowOnlyMinimizedTasks())
-            {
+            if (parentTaskBar()->isShowOnlyMinimizedTasks()) {
                 needsRefreshVisibility = true;
             }
         }
     }
-    if (needsRefreshVisibility)
+    if (needsRefreshVisibility) {
         refreshVisibility();
+    }
 
     return true;
 }
@@ -939,28 +925,25 @@ bool UKUITaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
 void UKUITaskGroup::groupPopupShown(UKUITaskGroup * const sender)
 {
     //close all popups (should they be visible because of close delay)
-    if (this != sender && isVisible())
+    if (this != sender && isVisible()) {
             setPopupVisible(false, true/*fast*/);
+    }
 }
 
 void UKUITaskGroup::removeWidget()
 {
-    if(m_scrollArea)
-    {
+    if (m_scrollArea) {
         removeSrollWidget();
     }
-    if(m_widget)
-    {
+    if (m_widget) {
         m_popup->layout()->removeWidget(m_widget);
         QHBoxLayout *hLayout = dynamic_cast<QHBoxLayout*>(m_widget->layout());
         QVBoxLayout *vLayout = dynamic_cast<QVBoxLayout*>(m_widget->layout());
-        if(hLayout != NULL)
-        {
+        if (hLayout != NULL) {
             hLayout->deleteLater();
             hLayout = NULL;
         }
-        if(vLayout != NULL)
-        {
+        if (vLayout != NULL) {
             vLayout->deleteLater();
             vLayout = NULL;
         }
@@ -973,23 +956,19 @@ void UKUITaskGroup::removeWidget()
 
 void UKUITaskGroup::removeSrollWidget()
 {
-    if(m_scrollArea)
-    {
+    if (m_scrollArea) {
         m_popup->layout()->removeWidget(m_scrollArea);
         m_popup->layout()->removeWidget(m_scrollArea->takeWidget());
     }
-    if(m_widget)
-    {
+    if (m_widget) {
         m_popup->layout()->removeWidget(m_widget);
         QHBoxLayout *hLayout = dynamic_cast<QHBoxLayout*>(m_widget->layout());
         QVBoxLayout *vLayout = dynamic_cast<QVBoxLayout*>(m_widget->layout());
-        if(hLayout != NULL)
-        {
+        if (hLayout != NULL) {
             hLayout->deleteLater();
             hLayout = NULL;
         }
-        if(vLayout != NULL)
-        {
+        if (vLayout != NULL) {
             vLayout->deleteLater();
             vLayout = NULL;
         }
@@ -997,18 +976,16 @@ void UKUITaskGroup::removeSrollWidget()
         m_widget->deleteLater();
         m_widget = NULL;
     }
-    if(m_scrollArea)
-    {
+    if (m_scrollArea) {
         m_scrollArea->deleteLater();
         m_scrollArea = NULL;
     }
-
 }
 
 void UKUITaskGroup::setLayOutForPostion()
 {
-    if(m_visibleHash.size() > 10)//more than 10 need
-    {
+    //more than 10 need
+    if (m_visibleHash.size() > 10) {
         m_widget->setLayout(new QVBoxLayout);
         m_widget->layout()->setAlignment(Qt::AlignTop);
         m_widget->layout()->setSpacing(3);
@@ -1016,14 +993,11 @@ void UKUITaskGroup::setLayOutForPostion()
         return;
     }
 
-    if(plugin()->panel()->isHorizontal())
-    {
+    if (plugin()->panel()->isHorizontal()) {
         m_widget->setLayout(new QHBoxLayout);
         m_widget->layout()->setSpacing(3);
         m_widget->layout()->setMargin(3);
-    }
-    else
-    {
+    } else {
         m_widget->setLayout(new QVBoxLayout);
         m_widget->layout()->setSpacing(3);
         m_widget->layout()->setMargin(3);
@@ -1034,12 +1008,11 @@ bool UKUITaskGroup::isSetMaxWindow()
 {
     int iScreenWidth = QApplication::screens().at(0)->size().width();
     int iScreenHeight = QApplication::screens().at(0)->size().height();
-    if((iScreenWidth >= SCREEN_MID_WIDTH_SIZE)||((iScreenWidth > SCREEN_MAX_WIDTH_SIZE) && (iScreenHeight > SCREEN_MAX_HEIGHT_SIZE)))
-    {
+    if ((iScreenWidth >= SCREEN_MID_WIDTH_SIZE)
+       || ((iScreenWidth > SCREEN_MAX_WIDTH_SIZE)
+           && (iScreenHeight > SCREEN_MAX_HEIGHT_SIZE))) {
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
@@ -1047,13 +1020,12 @@ bool UKUITaskGroup::isSetMaxWindow()
 void UKUITaskGroup::showPreview()
 {
     int n = 6;
-    if (plugin()->panel()->isHorizontal()) n = 10;
-    if(m_visibleHash.size() <= n)
-    {
-        showAllWindowByThumbnail();
+    if (plugin()->panel()->isHorizontal()) {
+        n = 10;
     }
-    else
-    {
+    if (m_visibleHash.size() <= n) {
+        showAllWindowByThumbnail();
+    } else {
         showAllWindowByList();
     }
 }
@@ -1061,13 +1033,12 @@ void UKUITaskGroup::showPreview()
 void UKUITaskGroup::adjustPopWindowSize(int winWidth, int winHeight)
 {
     int size = m_visibleHash.size();
-    if (m_isWaylandGroup) size = 1;
-    if(plugin()->panel()->isHorizontal())
-    {
-        m_popup->setFixedSize(winWidth*size + (size + 1)*3, winHeight + 6);
+    if (m_isWaylandGroup) {
+        size = 1;
     }
-    else
-    {
+    if (plugin()->panel()->isHorizontal()) {
+        m_popup->setFixedSize(winWidth*size + (size + 1)*3, winHeight + 6);
+    } else {
         m_popup->setFixedSize(winWidth + 6,winHeight*size + (size + 1)*3);
     }
     m_popup->adjustSize();
@@ -1077,18 +1048,17 @@ void UKUITaskGroup::v_adjustPopWindowSize(int winWidth, int winHeight, int v_all
 {
     int fixed_size = v_all;
 
-    if(plugin()->panel()->isHorizontal())
-    {
+    if (plugin()->panel()->isHorizontal()) {
         int iScreenWidth = QApplication::screens().at(0)->size().width();
-        if (fixed_size > iScreenWidth)
+        if (fixed_size > iScreenWidth) {
             fixed_size = iScreenWidth;
+        }
         m_popup->setFixedSize(fixed_size,  winHeight + 6);
-    }
-    else
-    {
+    } else {
         int iScreenHeight = QApplication::screens().at(0)->size().height();
-        if (fixed_size > iScreenHeight)
+        if (fixed_size > iScreenHeight) {
             fixed_size = iScreenHeight;
+        }
         m_popup->setFixedSize(winWidth + 6, fixed_size);
     }
     m_popup->adjustSize();
@@ -1096,40 +1066,29 @@ void UKUITaskGroup::v_adjustPopWindowSize(int winWidth, int winHeight, int v_all
 
 void UKUITaskGroup::timeout()
 {
-
-    if(m_taskGroupEvent == ENTEREVENT)
-    {
-        if(m_timer->isActive())
-        {
+    if (m_taskGroupEvent == ENTEREVENT) {
+        if (m_timer->isActive()) {
             m_timer->stop();
         }
         handleSavedEvent();
-    }
-    else if(m_taskGroupEvent == LEAVEEVENT)
-    {
-        if(m_timer->isActive())
-        {
+    } else if(m_taskGroupEvent == LEAVEEVENT) {
+        if (m_timer->isActive()) {
             m_timer->stop();
         }
         setPopupVisible(false);
         QToolButton::leaveEvent(m_event);
         m_taskGroupStatus = NORMAL;
         update();
-    }
-    else
-    {
+    } else {
         setPopupVisible(false);
     }
 }
 
 int UKUITaskGroup::calcAverageHeight()
 {
-    if(plugin()->panel()->isHorizontal())
-    {
+    if (plugin()->panel()->isHorizontal()) {
         return 0;
-    }
-    else
-    {
+    } else {
         int size = m_visibleHash.size();
         int iScreenHeight = QApplication::screens().at(0)->size().height();
         int iMarginHeight = (size+1)*3;
@@ -1140,17 +1099,14 @@ int UKUITaskGroup::calcAverageHeight()
 
 int UKUITaskGroup::calcAverageWidth()
 {
-    if(plugin()->panel()->isHorizontal())
-    {
+    if (plugin()->panel()->isHorizontal()) {
         int size = m_visibleHash.size();
         int iScreenWidth = QApplication::screens().at(0)->size().width();
         int iMarginWidth = (size+1)*3;
         int iAverageWidth;
         iAverageWidth =  (size == 0 ? size : (iScreenWidth - iMarginWidth)/size);//calculate average width of window
         return iAverageWidth;
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
@@ -1162,12 +1118,10 @@ void UKUITaskGroup::showAllWindowByList()
     int iPreviewPosition = 0;
     int popWindowheight = (winheight) * (m_visibleHash.size());
     int screenAvailabelHeight = QApplication::screens().at(0)->size().height() - plugin()->panel()->panelSize();
-    if(!plugin()->panel()->isHorizontal())
-    {
+    if (!plugin()->panel()->isHorizontal()) {
         screenAvailabelHeight = QApplication::screens().at(0)->size().height();//panel is vect
     }
-    if(m_popup->layout()->count() > 0)
-    {
+    if (m_popup->layout()->count() > 0) {
         removeSrollWidget();
     }
     m_scrollArea = new QScrollArea(this);
@@ -1180,8 +1134,7 @@ void UKUITaskGroup::showAllWindowByList()
     m_scrollArea->setWidget(m_widget);
     setLayOutForPostion();
     /*begin catch preview picture*/
-    for (QVector<UKUITaskWidget*>::iterator it = m_showInTurn.begin();it != m_showInTurn.end();it++)
-    {
+    for (QVector<UKUITaskWidget*>::iterator it = m_showInTurn.begin();it != m_showInTurn.end();it++) {
         UKUITaskWidget *btn = *it;
         btn->clearMask();
         btn->setTitleFixedWidth(m_widget->width());
@@ -1198,13 +1151,10 @@ void UKUITaskGroup::showAllWindowByList()
     }
     /*end*/
     plugin()->willShowWindow(m_popup);
-    if(plugin()->panel()->isHorizontal())
-    {
+    if (plugin()->panel()->isHorizontal()) {
         iPreviewPosition =  plugin()->panel()->panelSize()/2 - winWidth/2;
         m_popup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(iPreviewPosition,0)), m_popup->size()));
-    }
-    else
-    {
+    } else {
         iPreviewPosition = plugin()->panel()->panelSize()/2 - winWidth/2;
         m_popup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,iPreviewPosition)), m_popup->size()));
     }
@@ -1226,8 +1176,7 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         int previewPosition = 0;
         m_widget = new QWidget();
         m_widget->setAttribute(Qt::WA_TranslucentBackground);
-        for (UKUITaskButtonHash::const_iterator it = m_buttonHash.begin();it != m_buttonHash.end();it++)
-        {
+        for (UKUITaskButtonHash::const_iterator it = m_buttonHash.begin(); it != m_buttonHash.end(); it++) {
             QPixmap thumbnail;
             UKUITaskWidget *btn = it.value();
             thumbnail = QIcon::fromTheme(m_iconName).pixmap(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT - 160);
@@ -1239,38 +1188,33 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             //m_widget->layout()->addWidget(btn);
         }
         adjustPopWindowSize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT - 160);
-        if(plugin()->panel()->isHorizontal())//set preview window position
-        {
-            if(m_popup->size().width()/2 < QCursor::pos().x())
-            {
+        //set preview window position
+        if (plugin()->panel()->isHorizontal()) {
+            if (m_popup->size().width()/2 < QCursor::pos().x()) {
                 previewPosition = 0 - m_popup->size().width()/2 + plugin()->panel()->panelSize()/2;
-            }
-            else
-            {
+            } else {
                 previewPosition = 0 -(QCursor::pos().x() + plugin()->panel()->panelSize()/2);
             }
             m_popup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(previewPosition,0)), m_popup->size()));
-        }
-        else
-        {
-            if(m_popup->size().height()/2 < QCursor::pos().y())
-            {
+        } else {
+            if (m_popup->size().height()/2 < QCursor::pos().y()) {
                 previewPosition = 0 - m_popup->size().height()/2 + plugin()->panel()->panelSize()/2;
-            }
-            else
-            {
+            } else {
                 previewPosition = 0 -(QCursor::pos().y() + plugin()->panel()->panelSize()/2);
             }
             m_popup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,previewPosition)), m_popup->size()));
         }
-        if(m_popup->isVisible())
-        {
+#if 0
+        if (m_popup->isVisible()) {
     //        m_popup-
-        }
-        else
-        {
+        } else {
             m_popup->show();
         }
+#else
+        if (!m_popup->isVisible()) {
+            m_popup->show();
+        }
+#endif
         return;
     }
 
@@ -1288,36 +1232,26 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int iAverageHeight = calcAverageHeight();
     /*begin get the winsize*/
     bool isMaxWinSize = isSetMaxWindow();
-    if(isMaxWinSize)
-    {
-        if(0 == iAverageWidth)
-        {
+    if (isMaxWinSize) {
+        if (0 == iAverageWidth) {
             winHeight = PREVIEW_WIDGET_MAX_HEIGHT < iAverageHeight?PREVIEW_WIDGET_MAX_HEIGHT:iAverageHeight;
             winWidth = winHeight*PREVIEW_WIDGET_MAX_WIDTH/PREVIEW_WIDGET_MAX_HEIGHT;
-        }
-        else
-        {
+        } else {
             winWidth = PREVIEW_WIDGET_MAX_WIDTH < iAverageWidth?PREVIEW_WIDGET_MAX_WIDTH:iAverageWidth;
             winHeight = winWidth*PREVIEW_WIDGET_MAX_HEIGHT/PREVIEW_WIDGET_MAX_WIDTH;
         }
-    }
-    else
-    {
-        if(0 == iAverageWidth)
-        {
+    } else {
+        if (0 == iAverageWidth) {
             winHeight = PREVIEW_WIDGET_MIN_HEIGHT < iAverageHeight?PREVIEW_WIDGET_MIN_HEIGHT:iAverageHeight;
             winWidth = winHeight*PREVIEW_WIDGET_MIN_WIDTH/PREVIEW_WIDGET_MIN_HEIGHT;
-        }
-        else
-        {
+        } else {
             winWidth = PREVIEW_WIDGET_MIN_WIDTH < iAverageWidth?PREVIEW_WIDGET_MIN_WIDTH:iAverageWidth;
             winHeight = winWidth*PREVIEW_WIDGET_MIN_HEIGHT/PREVIEW_WIDGET_MIN_WIDTH;
         }
     }
     /*end get the winsize*/
 
-    if(m_popup->layout()->count() > 0)
-    {
+    if (m_popup->layout()->count() > 0) {
         removeWidget();
     }
     m_widget = new QWidget(this);
@@ -1333,19 +1267,18 @@ void UKUITaskGroup::showAllWindowByThumbnail()
     int v_all = 0;
     int iScreenWidth = QApplication::screens().at(0)->size().width();
     float minimumHeight = THUMBNAIL_HEIGHT;
-    for (UKUITaskButtonHash::const_iterator it = m_visibleHash.begin();it != m_visibleHash.end();it++)
-    {
+    for (UKUITaskButtonHash::const_iterator it = m_visibleHash.begin(); it != m_visibleHash.end(); it++) {
         it.value()->removeThumbNail();
         display = XOpenDisplay(nullptr);
         XGetWindowAttributes(display, it.key(), &attr);
         max_Height = attr.height > max_Height ? attr.height : max_Height;
         max_Width = attr.width > max_Width ? attr.width : max_Width;
         truewidth += attr.width;
-        if(display)
+        if (display) {
             XCloseDisplay(display);
+        }
     }
-    for (UKUITaskButtonHash::const_iterator it = m_buttonHash.begin();it != m_buttonHash.end();it++)
-    {
+    for (UKUITaskButtonHash::const_iterator it = m_buttonHash.begin(); it != m_buttonHash.end(); it++) {
         UKUITaskWidget *btn = it.value();
         btn->setParent(m_popup);
         connect(btn, &UKUITaskWidget::closeSigtoPop, [this] { m_popup->pubcloseWindowDelay(); });
@@ -1360,14 +1293,14 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             float thmbwidth = (float)attr.width / (float)attr.height;
             imgWidth = thmbwidth * winHeight;
             imgHeight = winHeight;
-            if (imgWidth > THUMBNAIL_WIDTH)
+            if (imgWidth > THUMBNAIL_WIDTH) {
                 imgWidth = THUMBNAIL_WIDTH;
+            }
         } else {
             imgWidth = THUMBNAIL_WIDTH;
             imgHeight = (float)attr.height / (float)attr.width * THUMBNAIL_WIDTH;
         }
-        if (plugin()->panel()->isHorizontal())
-        {
+        if (plugin()->panel()->isHorizontal()) {
             if (m_visibleHash.contains(btn->windowId())) {
                 v_all += (int)imgWidth;
                 imgWidth_sum += (int)imgWidth;
@@ -1378,21 +1311,20 @@ void UKUITaskGroup::showAllWindowByThumbnail()
             btn->setThumbMaximumSize(MAX_SIZE_OF_Thumb);
             btn->setThumbScale(true);
         } else {
-            if (attr.width != max_Width)
-            {
+            if (attr.width != max_Width) {
                 float tmp = (float)attr.width / (float)max_Width;
                 imgWidth =  imgWidth * tmp;
             }
-            if ((int)imgHeight > (int)minimumHeight)
-            {
+            if ((int)imgHeight > (int)minimumHeight) {
                 imgHeight = minimumHeight;
             }
             if (m_visibleHash.contains(btn->windowId())) {
                 v_all += (int)imgHeight;
             }
-            if (m_visibleHash.size() == 1 ) changed = (int)imgHeight;
-            if ((int)imgWidth < 150)
-            {
+            if (m_visibleHash.size() == 1 ) {
+                changed = (int)imgHeight;
+            }
+            if ((int)imgWidth < 150) {
                 btn->setThumbFixedSize((int)imgWidth);
                 btn->setThumbScale(false);
             } else {
@@ -1400,18 +1332,17 @@ void UKUITaskGroup::showAllWindowByThumbnail()
                 btn->setThumbScale(true);
             }
         }
-        if(img)
-        {
+        if (img) {
             thumbnail = qimageFromXImage(img).scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
-            if (!parentTaskBar()->getCpuInfoFlg()) thumbnail.save(QString("/tmp/%1.png").arg(it.key()));
-        }
-        else
-        {
+            if (!parentTaskBar()->getCpuInfoFlg()) {
+                thumbnail.save(QString("/tmp/%1.png").arg(it.key()));
+            }
+        } else {
             qDebug()<<"can not catch picture";
             QPixmap pxmp;
-            if (pxmp.load(QString("/tmp/%1.png").arg(it.key())))
+            if (pxmp.load(QString("/tmp/%1.png").arg(it.key()))) {
                 thumbnail = pxmp.scaled((int)imgWidth, (int)imgHeight, Qt::KeepAspectRatio,Qt::SmoothTransformation);
-            else {
+            } else {
                 thumbnail = QPixmap((int)imgWidth, (int)imgHeight);
                 thumbnail.fill(QColor(0, 0, 0, 127));
             }
@@ -1421,84 +1352,80 @@ void UKUITaskGroup::showAllWindowByThumbnail()
         btn->setFixedSize((int)imgWidth, (int)imgHeight);
         m_widget->layout()->setContentsMargins(0,0,0,0);
         m_widget->layout()->addWidget(btn);
-        if(img)
-        {
+        if (img) {
            XDestroyImage(img);
         }
-        if(display)
-        {
+        if (display) {
             XCloseDisplay(display);
         }
     }
     /*end*/
-        for (UKUITaskButtonHash::const_iterator it = m_buttonHash.begin();it != m_buttonHash.end();it++)
-        {
-            UKUITaskWidget *btn = it.value();
-            if (plugin()->panel()->isHorizontal())  {
-                if (imgWidth_sum > iScreenWidth)
-                    title_width = (int)(btn->width()  * iScreenWidth / imgWidth_sum - 80);
-                else
-                    title_width = btn->width() - 75;
+    for (UKUITaskButtonHash::const_iterator it = m_buttonHash.begin(); it != m_buttonHash.end(); it++) {
+        UKUITaskWidget *btn = it.value();
+        if (plugin()->panel()->isHorizontal()) {
+            if (imgWidth_sum > iScreenWidth) {
+                title_width = (int)(btn->width()  * iScreenWidth / imgWidth_sum - 80);
             } else {
-                 title_width = winWidth- 70;
+                title_width = btn->width() - 75;
             }
-            btn->setTitleFixedWidth(title_width);
+        } else {
+             title_width = winWidth- 70;
         }
+        btn->setTitleFixedWidth(title_width);
+    }
     plugin()->willShowWindow(m_popup);
     m_popup->layout()->addWidget(m_widget);
-    if (m_visibleHash.size() == 1 && changed != 0)
+    if (m_visibleHash.size() == 1 && changed != 0) {
         if (plugin()->panel()->isHorizontal()) {
             adjustPopWindowSize(changed, winHeight);
         } else {
             adjustPopWindowSize(winWidth, changed);
         }
-    else if (m_visibleHash.size() != 1)
+    } else if (m_visibleHash.size() != 1) {
         v_adjustPopWindowSize(winWidth, winHeight, v_all);
-    else
+    } else {
         adjustPopWindowSize(winWidth, winHeight);
+    }
 
-    if(plugin()->panel()->isHorizontal())//set preview window position
-    {
-        if(m_popup->size().width()/2 < QCursor::pos().x())
-        {
+    //set preview window position
+    if (plugin()->panel()->isHorizontal()) {
+        if (m_popup->size().width()/2 < QCursor::pos().x()) {
             previewPosition = 0 - m_popup->size().width()/2 + plugin()->panel()->panelSize()/2;
-        }
-        else
-        {
+        } else {
             previewPosition = 0 -(QCursor::pos().x() + plugin()->panel()->panelSize()/2);
         }
         m_popup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(previewPosition,0)), m_popup->size()));
-    }
-    else
-    {
-        if(m_popup->size().height()/2 < QCursor::pos().y())
-        {
+    } else {
+        if (m_popup->size().height()/2 < QCursor::pos().y()) {
             previewPosition = 0 - m_popup->size().height()/2 + plugin()->panel()->panelSize()/2;
-        }
-        else
-        {
+        } else {
             previewPosition = 0 -(QCursor::pos().y() + plugin()->panel()->panelSize()/2);
         }
         m_popup->setGeometry(plugin()->panel()->calculatePopupWindowPos(mapToGlobal(QPoint(0,previewPosition)), m_popup->size()));
     }
-    if(m_popup->isVisible())
-    {
+#if 0
+    if (m_popup->isVisible()) {
 //        m_popup-
-    }
-    else
-    {
+    } else {
         m_popup->show();
     }
+#else
+    if (!m_popup->isVisible()) {
+        m_popup->show();
+    }
+#endif
 //   emit popupShown(this);
 }
 
-void UKUITaskGroup::setActivateState_wl(bool _state) {
+void UKUITaskGroup::setActivateState_wl(bool _state)
+{
     m_isWinActivate = _state;
     m_taskGroupStatus = (_state ? HOVER : NORMAL);
     repaint();
 }
 
-void UKUITaskGroup::winClickActivate_wl(bool _getActive) {
+void UKUITaskGroup::winClickActivate_wl(bool _getActive)
+{
     QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
     QList<QVariant> args;
     quint32 m_wid=windowId();
@@ -1513,17 +1440,17 @@ void UKUITaskGroup::winClickActivate_wl(bool _getActive) {
 
 QWidget * UKUITaskGroup::wl_addWindow(WId id)
 {
-
-    if (m_buttonHash.contains(id))
+    if (m_buttonHash.contains(id)) {
         return m_buttonHash.value(id);
+    }
     UKUITaskWidget *btn;
     if (m_isWaylandGroup) {
         btn = new UKUITaskWidget(QString("kyiln-video"), id, parentTaskBar(), m_popup);
         m_buttonHash.insert(id, btn);
         return btn;
-    }
-    else
+    } else {
         btn = new UKUITaskWidget(id, parentTaskBar(), m_popup);
+    }
     m_buttonHash.insert(id, btn);
     connect(btn, SIGNAL(clicked()), this, SLOT(onClicked(bool)));
     connect(btn, SIGNAL(windowMaximize()), this, SLOT(onChildButtonClicked()));
@@ -1532,7 +1459,8 @@ QWidget * UKUITaskGroup::wl_addWindow(WId id)
     return btn;
 }
 
-void UKUITaskGroup::closeGroup_wl() {
+void UKUITaskGroup::closeGroup_wl()
+{
     QDBusMessage message = QDBusMessage::createSignal("/", "com.ukui.kwin", "request");
     QList<QVariant> args;
     quint32 m_wid=windowId();
@@ -1542,9 +1470,12 @@ void UKUITaskGroup::closeGroup_wl() {
     QDBusConnection::sessionBus().send(message);
 }
 
-void UKUITaskGroup::wl_widgetUpdateTitle(QString caption) {
-    if (caption.isNull())
+void UKUITaskGroup::wl_widgetUpdateTitle(QString caption)
+{
+    if (caption.isNull()) {
         return;
-    for (UKUITaskWidget *button : qAsConst(m_buttonHash) )
+    }
+    for (UKUITaskWidget *button : qAsConst(m_buttonHash) ) {
         button->wl_updateTitle(caption);
+    }
 }

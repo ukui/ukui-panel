@@ -50,8 +50,7 @@ void UKUITaskCloseButton::mousePressEvent(QMouseEvent* event)
  ************************************************/
 void UKUITaskCloseButton::mouseReleaseEvent(QMouseEvent* event)
 {
-    if (event->button()== Qt::LeftButton)
-    {
+    if (event->button() == Qt::LeftButton) {
         emit sigClicked();
     }
     QToolButton::mouseReleaseEvent(event);
