@@ -1310,10 +1310,33 @@ void UKUITaskBar::addWindow_wl(QString iconName, QString caption, WId window)
 
 //        group->setFixedSize(panel()->panelSize(),panel()->panelSize());
         //group->setFixedSize(40,40);
-        m_layout->addWidget(group) ;
-        group->wl_widgetUpdateTitle(caption);
-        group->setStyle(new CustomStyle("taskbutton"));
-        group->setToolButtonsStyle(m_buttonStyle);
+        QString groupDesktopName = "/usr/share/applications/" + group_id + ".desktop";
+        bool isNeedAddNewWidget = true;
+        for (auto it = m_vBtn.begin(); it!=m_vBtn.end(); ++it) {
+            UKUITaskGroup *pQuickBtn = *it;
+            if(pQuickBtn->m_fileName == groupDesktopName
+               &&(m_layout->indexOf(pQuickBtn) >= 0 )) {
+                m_layout->addWidget(group);
+                m_layout->moveItem(m_layout->indexOf(group), m_layout->indexOf(pQuickBtn));
+                pQuickBtn->setHidden(true);
+                isNeedAddNewWidget = false;
+                group->m_existSameQckBtn = true;
+                pQuickBtn->m_existSameQckBtn = true;
+                group->wl_widgetUpdateTitle(caption);
+                group->setStyle(new CustomStyle("taskbutton"));
+                group->setToolButtonsStyle(m_buttonStyle);
+                group->setQckLchBtn(pQuickBtn);
+                group->m_fileName = groupDesktopName;
+                break;
+            }
+        }
+
+        if (isNeedAddNewWidget) {
+            m_layout->addWidget(group);
+            group->wl_widgetUpdateTitle(caption);
+            group->setStyle(new CustomStyle("taskbutton"));
+            group->setToolButtonsStyle(m_buttonStyle);
+        }
     }
 
     m_knownWindows[window] = group;

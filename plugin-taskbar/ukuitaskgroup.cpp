@@ -254,7 +254,7 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu * menu = new QMenu(tr("Group"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    if (!m_fileName.isEmpty()) {
+    if (!m_fileName.isEmpty() && !m_isWaylandGroup) {
         menu->addAction(m_act);
         menu->addActions(m_act->addtitionalActions());
         menu->addSeparator();
