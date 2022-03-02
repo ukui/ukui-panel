@@ -801,15 +801,13 @@ void UKUITaskGroup::enterEvent(QEvent *event)
 
 void UKUITaskGroup::handleSavedEvent()
 {
-#if 0
-    if (m_draggging)
-        return;
-    if (!m_statFlag) return;
-#else
-    if (m_draggging || !m_statFlag) {
+    if (m_draggging) {
         return;
     }
-#endif
+    if (!m_statFlag) {
+        return;
+    }
+
     if (m_statFlag && parentTaskBar()->isShowGroupOnHover()) {
         setPopupVisible(true);
     }

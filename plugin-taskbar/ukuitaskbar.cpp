@@ -132,17 +132,17 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
         m_changeTheme = new QGSettings(id_Theme);
     }
     connect(m_changeTheme, &QGSettings::changed, this, [=] (const QString &key) {
-        if (key=="iconThemeName") {
-            sleep(1);
-            for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++) {
-                UKUITaskGroup *group = it.value();
-                group->updateIcon();
-            }
-        }
-        if (key == PANEL_POSITION_KEY) {
-            realign();
-        }
-    });
+                if (key=="iconThemeName") {
+                    sleep(1);
+                    for(auto it= m_knownWindows.begin(); it != m_knownWindows.end();it++) {
+                        UKUITaskGroup *group = it.value();
+                        group->updateIcon();
+                    }
+                }
+                if (key == PANEL_POSITION_KEY) {
+                    realign();
+                }
+            });
 
     connect(m_signalMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped), this, &UKUITaskBar::activateTask);
 
@@ -187,7 +187,7 @@ UKUITaskBar::UKUITaskBar(IUKUIPanelPlugin *plugin, QWidget *parent) :
  ************************************************/
 UKUITaskBar::~UKUITaskBar()
 {
-    for(auto it = m_vBtn.begin(); it != m_vBtn.end();) {
+    for (auto it = m_vBtn.begin(); it != m_vBtn.end();) {
         (*it)->deleteLater();
         m_vBtn.erase(it);
     }
@@ -219,7 +219,7 @@ void UKUITaskBar::onDesktopChanged()
 
 void UKUITaskBar::refreshQuickLaunch()
 {
-    for(auto it = m_vBtn.begin(); it != m_vBtn.end();) {
+    for (auto it = m_vBtn.begin(); it != m_vBtn.end();) {
         (*it)->deleteLater();
         m_vBtn.erase(it);
     }
@@ -908,18 +908,12 @@ void UKUITaskBar::addButton(QuickLaunchAction* action)
 
 void UKUITaskBar::switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button)
 {
-#if 0
     if (dst_button == src_button) {
         return;
     }
     if (!dst_button || !src_button) {
         return;
     }
-#else
-    if (dst_button && src_button) {
-        return;
-    }
-#endif
 
     int dst = m_layout->indexOf(dst_button);
     int src = m_layout->indexOf(src_button);

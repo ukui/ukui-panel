@@ -162,7 +162,7 @@ void UKUIGroupPopup::killTimerDelay()
 
 void UKUIGroupPopup::closeWindowDelay()
 {
-    if(m_closeTimer.isActive()) {
+    if (m_closeTimer.isActive()) {
         m_closeTimer.stop();
     }
     close();
