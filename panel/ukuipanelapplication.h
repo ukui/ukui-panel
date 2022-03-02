@@ -143,6 +143,7 @@ private:
     QTranslator *m_translator;
      static void sigtermHandler(int signo);
      void translator();
+     bool copyFileToPath(QString sourceDir ,QString toDir, QString copyFileToPath, bool coverFileIfExist);
 
 private slots:
     /*!

@@ -26,7 +26,6 @@ set(PUB_HEADERS
     pluginsettings.h
     iukuipanelplugin.h
     iukuipanel.h
-    comm_func.h
 
     common/ukuisettings.h
     common/ukuiplugininfo.h
@@ -55,7 +54,6 @@ set(SOURCES
     pluginsettings.cpp
     pluginmoveprocessor.cpp
     ukuipanelpluginconfigdialog.cpp
-    comm_func.cpp
 
     common/ukuiplugininfo.cpp
     common/ukuisettings.cpp

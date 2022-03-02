@@ -39,7 +39,6 @@
 #include <KWindowEffects>
 #include <QCommandLineParser>
 #include <QFile>
-#include "comm_func.h"
 
 #define CONFIG_FILE_BACKUP     "/usr/share/ukui/panel.conf"
 #define CONFIG_FILE_LOCAL      ".config/ukui/panel.conf"
@@ -390,3 +389,31 @@ void UKUIPanelApplication::translator(){
      }
 }
 
+bool UKUIPanelApplication::copyFileToPath(QString sourceDir ,QString toDir, QString fileName, bool coverFileIfExist)
+{
+    if (sourceDir == toDir){
+        return true;
+    }
+    if (!QFile::exists(sourceDir+fileName)){
+        return false;
+    }
+    QDir *createDir = new QDir;
+    bool dirExist = createDir->exists(toDir);
+    if(!dirExist)
+        createDir->mkdir(toDir);
+    QFile *createFile = new QFile;
+    bool fileExist = createFile->exists(toDir+fileName);
+    if (fileExist){
+        if(coverFileIfExist){
+            createFile->remove(toDir+fileName);
+        }
+    }//end if
+    free(createDir);
+    free(createFile);
+
+    if(!QFile::copy(sourceDir+fileName, toDir+fileName))
+    {
+        return false;
+    }
+    return true;
+}
