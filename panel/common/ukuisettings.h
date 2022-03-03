@@ -161,7 +161,7 @@ public:
     static QList<UKUiTheme> allThemes();
 
 private:
-    static UKUiTheme* mInstance;
+    static UKUiTheme* m_instance;
     QSharedDataPointer<UKUiThemeData> d;
 };
 
@@ -184,8 +184,8 @@ public:
     void loadToSettings();
 
 private:
-    QSettings &mSettings;
-    QHash<QString, QVariant> mCache;
+    QSettings &m_settings;
+    QHash<QString, QVariant> m_cache;
 };
 
 class GlobalSettingsPrivate;

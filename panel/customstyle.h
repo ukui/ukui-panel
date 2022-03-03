@@ -154,7 +154,7 @@ signals:
 
 public slots:
 private:
-    QString pluginName;
-    bool multileWindow = false;
+    QString m_pluginName;
+    bool m_multileWindow = false;
 };
 #endif // CUSTOMSTYLE_H

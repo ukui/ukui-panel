@@ -110,9 +110,9 @@ public:
      about the startupInfo parameters, IUKUIPanelPlugin processes the parameters itself.
      **/
     IUKUIPanelPlugin(const IUKUIPanelPluginStartupInfo &startupInfo):
-        mSettings(startupInfo.settings),
-        mPanel(startupInfo.ukuiPanel),
-        mDesktopFile(startupInfo.desktopFile)
+        m_settings(startupInfo.settings),
+        m_panel(startupInfo.ukuiPanel),
+        m_desktopFile(startupInfo.desktopFile)
     {}
 
     /**
@@ -178,11 +178,11 @@ public:
     /**
     Returns the panel object.
      **/
-    IUKUIPanel *panel() const { return mPanel; }
+    IUKUIPanel *panel() const { return m_panel; }
 
 
-    PluginSettings *settings() const { return mSettings; }
-    const UKUi::PluginInfo *desktopFile() const { return mDesktopFile; }
+    PluginSettings *settings() const { return m_settings; }
+    const UKUi::PluginInfo *desktopFile() const { return m_desktopFile; }
 
     /**
      Helper functions for calculating global screen position of some popup window with windowSize size.
@@ -190,7 +190,7 @@ public:
      **/
     virtual QRect calculatePopupWindowPos(const QSize &windowSize)
     {
-        return mPanel->calculatePopupWindowPos(this, windowSize);
+        return m_panel->calculatePopupWindowPos(this, windowSize);
     }
 
     /*!
@@ -201,7 +201,7 @@ public:
      */
     inline void willShowWindow(QWidget * w)
     {
-        mPanel->willShowWindow(w);
+        m_panel->willShowWindow(w);
     }
 
     /*!
@@ -212,15 +212,15 @@ public:
      */
     inline void pluginFlagsChanged()
     {
-        mPanel->pluginFlagsChanged(this);
+        m_panel->pluginFlagsChanged(this);
     }
 
     virtual bool isSeparate() const { return false;  }
     virtual bool isExpandable() const { return false; }
 private:
-    PluginSettings *mSettings;
-    IUKUIPanel *mPanel;
-    const UKUi::PluginInfo *mDesktopFile;
+    PluginSettings *m_settings;
+    IUKUIPanel *m_panel;
+    const UKUi::PluginInfo *m_desktopFile;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(IUKUIPanelPlugin::Flags)

@@ -421,10 +421,10 @@ void LayoutItemGrid::setHoriz(bool value)
  ************************************************/
 UKUIPanelLayout::UKUIPanelLayout(QWidget *parent) :
     QLayout(parent),
-    mLeftGrid(new LayoutItemGrid()),
-    mRightGrid(new LayoutItemGrid()),
-    mPosition(IUKUIPanel::PositionBottom),
-    mAnimate(false)
+    m_leftGrid(new LayoutItemGrid()),
+    m_rightGrid(new LayoutItemGrid()),
+    m_position(IUKUIPanel::PositionBottom),
+    m_animate(false)
 {
     setContentsMargins(0, 0, 0, 0);
 }
@@ -435,8 +435,8 @@ UKUIPanelLayout::UKUIPanelLayout(QWidget *parent) :
  ************************************************/
 UKUIPanelLayout::~UKUIPanelLayout()
 {
-    delete mLeftGrid;
-    delete mRightGrid;
+    delete m_leftGrid;
+    delete m_rightGrid;
 }
 
 
@@ -445,11 +445,11 @@ UKUIPanelLayout::~UKUIPanelLayout()
  ************************************************/
 void UKUIPanelLayout::addItem(QLayoutItem *item)
 {
-    LayoutItemGrid *grid = mRightGrid;
+    LayoutItemGrid *grid = m_rightGrid;
 
     Plugin *p = qobject_cast<Plugin*>(item->widget());
     if (p && p->alignment() == Plugin::AlignLeft)
-        grid = mLeftGrid;
+        grid = m_leftGrid;
 
     grid->addItem(item);
 }
@@ -460,15 +460,15 @@ void UKUIPanelLayout::addItem(QLayoutItem *item)
  ************************************************/
 void UKUIPanelLayout::globalIndexToLocal(int index, LayoutItemGrid **grid, int *gridIndex)
 {
-    if (index < mLeftGrid->count())
+    if (index < m_leftGrid->count())
     {
-        *grid = mLeftGrid;
+        *grid = m_leftGrid;
         *gridIndex = index;
         return;
     }
 
-    *grid = mRightGrid;
-    *gridIndex = index - mLeftGrid->count();
+    *grid = m_rightGrid;
+    *gridIndex = index - m_leftGrid->count();
 }
 
 /************************************************
@@ -476,15 +476,15 @@ void UKUIPanelLayout::globalIndexToLocal(int index, LayoutItemGrid **grid, int *
  ************************************************/
 void UKUIPanelLayout::globalIndexToLocal(int index, LayoutItemGrid **grid, int *gridIndex) const
 {
-    if (index < mLeftGrid->count())
+    if (index < m_leftGrid->count())
     {
-        *grid = mLeftGrid;
+        *grid = m_leftGrid;
         *gridIndex = index;
         return;
     }
 
-    *grid = mRightGrid;
-    *gridIndex = index - mLeftGrid->count();
+    *grid = m_rightGrid;
+    *gridIndex = index - m_leftGrid->count();
 }
 
 
@@ -525,7 +525,7 @@ QLayoutItem *UKUIPanelLayout::takeAt(int index)
  ************************************************/
 int UKUIPanelLayout::count() const
 {
-    return mLeftGrid->count() + mRightGrid->count();
+    return m_leftGrid->count() + m_rightGrid->count();
 }
 
 
@@ -560,7 +560,7 @@ void UKUIPanelLayout::moveItem(int from, int to, bool withAnimation)
         }
     }
 
-    mAnimate = withAnimation;
+    m_animate = withAnimation;
     invalidate();
 }
 
@@ -570,14 +570,14 @@ void UKUIPanelLayout::moveItem(int from, int to, bool withAnimation)
  ************************************************/
 QSize UKUIPanelLayout::sizeHint() const
 {
-    if (!mLeftGrid->isValid())
-        mLeftGrid->update();
+    if (!m_leftGrid->isValid())
+        m_leftGrid->update();
 
-    if (!mRightGrid->isValid())
-        mRightGrid->update();
+    if (!m_rightGrid->isValid())
+        m_rightGrid->update();
 
-    QSize ls = mLeftGrid->sizeHint();
-    QSize rs = mRightGrid->sizeHint();
+    QSize ls = m_leftGrid->sizeHint();
+    QSize rs = m_rightGrid->sizeHint();
 
     if (isHorizontal())
     {
@@ -597,11 +597,11 @@ QSize UKUIPanelLayout::sizeHint() const
  ************************************************/
 void UKUIPanelLayout::setGeometry(const QRect &geometry)
 {
-    if (!mLeftGrid->isValid())
-        mLeftGrid->update();
+    if (!m_leftGrid->isValid())
+        m_leftGrid->update();
 
-    if (!mRightGrid->isValid())
-        mRightGrid->update();
+    if (!m_rightGrid->isValid())
+        m_rightGrid->update();
 
     QRect my_geometry{geometry};
     my_geometry -= contentsMargins();
@@ -613,7 +613,7 @@ void UKUIPanelLayout::setGeometry(const QRect &geometry)
             setGeometryVert(my_geometry);
     }
 
-    mAnimate = false;
+    m_animate = false;
     QLayout::setGeometry(my_geometry);
 }
 
@@ -648,14 +648,14 @@ void UKUIPanelLayout::setGeometryHoriz(const QRect &geometry)
     // Calc expFactor for expandable plugins like TaskBar.
     double expFactor;
     {
-        int expWidth = mLeftGrid->expandableSize() + mRightGrid->expandableSize();
-        int nonExpWidth = mLeftGrid->sizeHint().width()  - mLeftGrid->expandableSize() +
-                      mRightGrid->sizeHint().width() - mRightGrid->expandableSize();
+        int expWidth = m_leftGrid->expandableSize() + m_rightGrid->expandableSize();
+        int nonExpWidth = m_leftGrid->sizeHint().width()  - m_leftGrid->expandableSize() +
+                      m_rightGrid->sizeHint().width() - m_rightGrid->expandableSize();
         expFactor = expWidth ? ((1.0 * geometry.width() - nonExpWidth) / expWidth) : 1;
     }
 
     // Calc baselines for plugins like button.
-    QVector<int> baseLines(qMax(mLeftGrid->colCount(), mRightGrid->colCount()));
+    QVector<int> baseLines(qMax(m_leftGrid->colCount(), m_rightGrid->colCount()));
     const int bh = geometry.height() / baseLines.count();
     const int base_center = bh >> 1;
     const int height_remain = 0 < bh ? geometry.height() % baseLines.size() : 0;
@@ -672,24 +672,24 @@ void UKUIPanelLayout::setGeometryHoriz(const QRect &geometry)
     qDebug() << "geometry: " << geometry;
 
     qDebug() << "Left grid";
-    qDebug() << "  cols:" << mLeftGrid->colCount() << " rows:" << mLeftGrid->rowCount();
-    qDebug() << "  usedCols" << mLeftGrid->usedColCount();
+    qDebug() << "  cols:" << m_leftGrid->colCount() << " rows:" << m_leftGrid->rowCount();
+    qDebug() << "  usedCols" << m_leftGrid->usedColCount();
 
     qDebug() << "Right grid";
-    qDebug() << "  cols:" << mRightGrid->colCount() << " rows:" << mRightGrid->rowCount();
-    qDebug() << "  usedCols" << mRightGrid->usedColCount();
+    qDebug() << "  cols:" << m_rightGrid->colCount() << " rows:" << m_rightGrid->rowCount();
+    qDebug() << "  usedCols" << m_rightGrid->usedColCount();
 #endif
 
 
     // Left aligned plugins.
     int left=geometry.left();
-    for (int r=0; r<mLeftGrid->rowCount(); ++r)
+    for (int r=0; r<m_leftGrid->rowCount(); ++r)
     {
         int rw = 0;
         int remain = height_remain;
-        for (int c=0; c<mLeftGrid->usedColCount(); ++c)
+        for (int c=0; c<m_leftGrid->usedColCount(); ++c)
         {
-            const LayoutItemInfo &info = mLeftGrid->itemInfo(r, c);
+            const LayoutItemInfo &info = m_leftGrid->itemInfo(r, c);
             if (info.item)
             {
                 QRect rect;
@@ -722,7 +722,7 @@ void UKUIPanelLayout::setGeometryHoriz(const QRect &geometry)
                 rw = qMax(rw, rect.width());
                 if (visual_h_reversed)
                     rect.moveLeft(geometry.left() + geometry.right() - rect.x() - rect.width() + 1);
-                setItemGeometry(info.item, rect, mAnimate);
+                setItemGeometry(info.item, rect, m_animate);
             }
         }
         left += rw;
@@ -730,13 +730,13 @@ void UKUIPanelLayout::setGeometryHoriz(const QRect &geometry)
 
     // Right aligned plugins.
     int right=geometry.right();
-    for (int r=mRightGrid->rowCount()-1; r>=0; --r)
+    for (int r=m_rightGrid->rowCount()-1; r>=0; --r)
     {
         int rw = 0;
         int remain = height_remain;
-        for (int c=0; c<mRightGrid->usedColCount(); ++c)
+        for (int c=0; c<m_rightGrid->usedColCount(); ++c)
         {
-            const LayoutItemInfo &info = mRightGrid->itemInfo(r, c);
+            const LayoutItemInfo &info = m_rightGrid->itemInfo(r, c);
             if (info.item)
             {
                 QRect rect;
@@ -770,7 +770,7 @@ void UKUIPanelLayout::setGeometryHoriz(const QRect &geometry)
                 rw = qMax(rw, rect.width());
                 if (visual_h_reversed)
                     rect.moveLeft(geometry.left() + geometry.right() - rect.x() - rect.width() + 1);
-                setItemGeometry(info.item, rect, mAnimate);
+                setItemGeometry(info.item, rect, m_animate);
             }
         }
         right -= rw;
@@ -787,14 +787,14 @@ void UKUIPanelLayout::setGeometryVert(const QRect &geometry)
     // Calc expFactor for expandable plugins like TaskBar.
     double expFactor;
     {
-        int expHeight = mLeftGrid->expandableSize() + mRightGrid->expandableSize();
-        int nonExpHeight = mLeftGrid->sizeHint().height()  - mLeftGrid->expandableSize() +
-                           mRightGrid->sizeHint().height() - mRightGrid->expandableSize();
+        int expHeight = m_leftGrid->expandableSize() + m_rightGrid->expandableSize();
+        int nonExpHeight = m_leftGrid->sizeHint().height()  - m_leftGrid->expandableSize() +
+                           m_rightGrid->sizeHint().height() - m_rightGrid->expandableSize();
         expFactor = expHeight ? ((1.0 * geometry.height() - nonExpHeight) / expHeight) : 1;
     }
 
     // Calc baselines for plugins like button.
-    QVector<int> baseLines(qMax(mLeftGrid->colCount(), mRightGrid->colCount()));
+    QVector<int> baseLines(qMax(m_leftGrid->colCount(), m_rightGrid->colCount()));
     const int bw = geometry.width() / baseLines.count();
     const int base_center = bw >> 1;
     const int width_remain = 0 < bw ? geometry.width() % baseLines.size() : 0;
@@ -811,23 +811,23 @@ void UKUIPanelLayout::setGeometryVert(const QRect &geometry)
     qDebug() << "geometry: " << geometry;
 
     qDebug() << "Left grid";
-    qDebug() << "  cols:" << mLeftGrid->colCount() << " rows:" << mLeftGrid->rowCount();
-    qDebug() << "  usedCols" << mLeftGrid->usedColCount();
+    qDebug() << "  cols:" << m_leftGrid->colCount() << " rows:" << m_leftGrid->rowCount();
+    qDebug() << "  usedCols" << m_leftGrid->usedColCount();
 
     qDebug() << "Right grid";
-    qDebug() << "  cols:" << mRightGrid->colCount() << " rows:" << mRightGrid->rowCount();
-    qDebug() << "  usedCols" << mRightGrid->usedColCount();
+    qDebug() << "  cols:" << m_rightGrid->colCount() << " rows:" << m_rightGrid->rowCount();
+    qDebug() << "  usedCols" << m_rightGrid->usedColCount();
 #endif
 
     // Top aligned plugins.
     int top=geometry.top();
-    for (int r=0; r<mLeftGrid->rowCount(); ++r)
+    for (int r=0; r<m_leftGrid->rowCount(); ++r)
     {
         int rh = 0;
         int remain = width_remain;
-        for (int c=0; c<mLeftGrid->usedColCount(); ++c)
+        for (int c=0; c<m_leftGrid->usedColCount(); ++c)
         {
-            const LayoutItemInfo &info = mLeftGrid->itemInfo(r, c);
+            const LayoutItemInfo &info = m_leftGrid->itemInfo(r, c);
             if (info.item)
             {
                 QRect rect;
@@ -860,7 +860,7 @@ void UKUIPanelLayout::setGeometryVert(const QRect &geometry)
                 rh = qMax(rh, rect.height());
                 if (visual_h_reversed)
                     rect.moveLeft(geometry.left() + geometry.right() - rect.x() - rect.width() + 1);
-                setItemGeometry(info.item, rect, mAnimate);
+                setItemGeometry(info.item, rect, m_animate);
             }
         }
         top += rh;
@@ -869,13 +869,13 @@ void UKUIPanelLayout::setGeometryVert(const QRect &geometry)
 
     // Bottom aligned plugins.
     int bottom=geometry.bottom();
-    for (int r=mRightGrid->rowCount()-1; r>=0; --r)
+    for (int r=m_rightGrid->rowCount()-1; r>=0; --r)
     {
         int rh = 0;
         int remain = width_remain;
-        for (int c=0; c<mRightGrid->usedColCount(); ++c)
+        for (int c=0; c<m_rightGrid->usedColCount(); ++c)
         {
-            const LayoutItemInfo &info = mRightGrid->itemInfo(r, c);
+            const LayoutItemInfo &info = m_rightGrid->itemInfo(r, c);
             if (info.item)
             {
                 QRect rect;
@@ -908,7 +908,7 @@ void UKUIPanelLayout::setGeometryVert(const QRect &geometry)
                 rh = qMax(rh, rect.height());
                 if (visual_h_reversed)
                     rect.moveLeft(geometry.left() + geometry.right() - rect.x() - rect.width() + 1);
-                setItemGeometry(info.item, rect, mAnimate);
+                setItemGeometry(info.item, rect, m_animate);
             }
         }
         bottom -= rh;
@@ -921,9 +921,9 @@ void UKUIPanelLayout::setGeometryVert(const QRect &geometry)
  ************************************************/
 void UKUIPanelLayout::invalidate()
 {
-    mLeftGrid->invalidate();
-    mRightGrid->invalidate();
-    mMinPluginSize = QSize();
+    m_leftGrid->invalidate();
+    m_rightGrid->invalidate();
+    m_minPluginSize = QSize();
     QLayout::invalidate();
 }
 
@@ -933,7 +933,7 @@ void UKUIPanelLayout::invalidate()
  ************************************************/
 int UKUIPanelLayout::lineCount() const
 {
-    return mLeftGrid->colCount();
+    return m_leftGrid->colCount();
 }
 
 
@@ -942,8 +942,8 @@ int UKUIPanelLayout::lineCount() const
  ************************************************/
 void UKUIPanelLayout::setLineCount(int value)
 {
-    mLeftGrid->setColCount(value);
-    mRightGrid->setColCount(value);
+    m_leftGrid->setColCount(value);
+    m_rightGrid->setColCount(value);
     invalidate();
 }
 
@@ -953,8 +953,8 @@ void UKUIPanelLayout::setLineCount(int value)
  ************************************************/
 void UKUIPanelLayout::rebuild()
 {
-    mLeftGrid->rebuild();
-    mRightGrid->rebuild();
+    m_leftGrid->rebuild();
+    m_rightGrid->rebuild();
 }
 
 
@@ -963,7 +963,7 @@ void UKUIPanelLayout::rebuild()
  ************************************************/
 int UKUIPanelLayout::lineSize() const
 {
-    return mLeftGrid->lineSize();
+    return m_leftGrid->lineSize();
 }
 
 
@@ -972,8 +972,8 @@ int UKUIPanelLayout::lineSize() const
  ************************************************/
 void UKUIPanelLayout::setLineSize(int value)
 {
-    mLeftGrid->setLineSize(value);
-    mRightGrid->setLineSize(value);
+    m_leftGrid->setLineSize(value);
+    m_rightGrid->setLineSize(value);
     invalidate();
 }
 
@@ -983,9 +983,9 @@ void UKUIPanelLayout::setLineSize(int value)
  ************************************************/
 void UKUIPanelLayout::setPosition(IUKUIPanel::Position value)
 {
-    mPosition = value;
-    mLeftGrid->setHoriz(isHorizontal());
-    mRightGrid->setHoriz(isHorizontal());
+    m_position = value;
+    m_leftGrid->setHoriz(isHorizontal());
+    m_rightGrid->setHoriz(isHorizontal());
 }
 
 
@@ -994,8 +994,8 @@ void UKUIPanelLayout::setPosition(IUKUIPanel::Position value)
  ************************************************/
 bool UKUIPanelLayout::isHorizontal() const
 {
-    return mPosition == IUKUIPanel::PositionTop ||
-            mPosition == IUKUIPanel::PositionBottom;
+    return m_position == IUKUIPanel::PositionTop ||
+            m_position == IUKUIPanel::PositionBottom;
 }
 
 
@@ -1042,7 +1042,7 @@ void UKUIPanelLayout::finishMovePlugin()
     {
         Plugin *plugin = moveProcessor->plugin();
         int n = indexOf(plugin);
-        plugin->setAlignment(n<mLeftGrid->count() ? Plugin::AlignLeft : Plugin::AlignRight);
+        plugin->setAlignment(n<m_leftGrid->count() ? Plugin::AlignLeft : Plugin::AlignRight);
         emit pluginMoved(plugin);
     }
 }

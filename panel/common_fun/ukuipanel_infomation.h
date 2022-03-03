@@ -30,12 +30,12 @@ public:
     explicit UKuiPanelInformation(QObject *parent = 0);
 
 private:
-    int screen_x;
-    int screen_y;
-    int screen_width;
-    int screen_height;
-    int panelposition;
-    int panelsize;
+    int m_screenX;
+    int m_screenY;
+    int m_screenWidth;
+    int m_screenHeight;
+    int m_panelPosition;
+    int m_panelSize;
 
 public Q_SLOTS:
     QVariantList GetPrimaryScreenGeometry();

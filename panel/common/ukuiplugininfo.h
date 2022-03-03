@@ -73,7 +73,7 @@ public:
 
 
     //! Returns identification string of this plugin, identified plugin type. Now id is part of the filename.
-    QString id() const { return mId; }
+    QString id() const { return m_id; }
 
     //! This function is provided for convenience. It's equivalent to calling value("ServiceTypes").toString().
     QString serviceType() const  { return value(QL1S("ServiceTypes")).toString(); }
@@ -99,7 +99,7 @@ public:
     static QList<PluginInfo> search(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter = QLatin1String("*"));
 
 private:
-    QString mId;
+    QString m_id;
 };
 
 typedef QList<PluginInfo> PluginInfoList;

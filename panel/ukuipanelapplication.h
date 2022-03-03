@@ -74,7 +74,7 @@ public:
      * \brief Determines the number of UKUIPanel objects
      * \return the current number of UKUIPanel objects
      */
-    int count() const { return mPanels.count(); }
+    int count() const { return m_panels.count(); }
 
     /*!
      * \brief Checks if a given Plugin is running and has the
@@ -122,11 +122,11 @@ private:
     /*!
      * \brief Holds all the instances of UKUIPanel.
      */
-    QList<UKUIPanel*> mPanels;
+    QList<UKUIPanel*> m_panels;
     /*!
      * \brief The global icon theme used by all apps (except for panels perhaps).
      */
-    QString mGlobalIconTheme;
+    QString m_globalIconTheme;
     /*!
      * \brief Creates a new UKUIPanel with the given name and connects the
      * appropriate signals and slots.

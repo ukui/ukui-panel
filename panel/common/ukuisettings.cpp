@@ -107,7 +107,7 @@ private:
 };
 
 
-UKUiTheme* UKUiTheme::mInstance = 0;
+UKUiTheme* UKUiTheme::m_instance = 0;
 
 class UKUi::UKUiThemeData: public QSharedData {
 public:
@@ -643,7 +643,7 @@ QList<UKUiTheme> UKUiTheme::allThemes()
 
  ************************************************/
 SettingsCache::SettingsCache(QSettings &settings) :
-    mSettings(settings)
+    m_settings(settings)
 {
     loadFromSettings();
 }
@@ -653,7 +653,7 @@ SettingsCache::SettingsCache(QSettings &settings) :
 
  ************************************************/
 SettingsCache::SettingsCache(QSettings *settings) :
-    mSettings(*settings)
+    m_settings(*settings)
 {
     loadFromSettings();
 }
@@ -664,11 +664,11 @@ SettingsCache::SettingsCache(QSettings *settings) :
  ************************************************/
 void SettingsCache::loadFromSettings()
 {
-    const QStringList keys = mSettings.allKeys();
+    const QStringList keys = m_settings.allKeys();
 
     const int N = keys.size();
     for (int i = 0; i < N; ++i) {
-        mCache.insert(keys.at(i), mSettings.value(keys.at(i)));
+        m_cache.insert(keys.at(i), m_settings.value(keys.at(i)));
     }
 }
 
@@ -678,15 +678,15 @@ void SettingsCache::loadFromSettings()
  ************************************************/
 void SettingsCache::loadToSettings()
 {
-    QHash<QString, QVariant>::const_iterator i = mCache.constBegin();
+    QHash<QString, QVariant>::const_iterator i = m_cache.constBegin();
 
-    while(i != mCache.constEnd())
+    while(i != m_cache.constEnd())
     {
-        mSettings.setValue(i.key(), i.value());
+        m_settings.setValue(i.key(), i.value());
         ++i;
     }
 
-    mSettings.sync();
+    m_settings.sync();
 }
 
 

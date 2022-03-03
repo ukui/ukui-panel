@@ -35,10 +35,10 @@
  ************************************************/
 PluginMoveProcessor::PluginMoveProcessor(UKUIPanelLayout *layout, Plugin *plugin):
     QWidget(plugin),
-    mLayout(layout),
-    mPlugin(plugin)
+    m_layout(layout),
+    m_plugin(plugin)
 {
-    mDestIndex = mLayout->indexOf(plugin);
+    m_destIndex = m_layout->indexOf(plugin);
 
     grabKeyboard();
 }
@@ -65,7 +65,7 @@ void PluginMoveProcessor::start()
     cursorAnimation->setDuration(150);
 
     cursorAnimation->setStartValue(QCursor::pos());
-    cursorAnimation->setEndValue(mPlugin->mapToGlobal(mPlugin->rect().center()));
+    cursorAnimation->setEndValue(m_plugin->mapToGlobal(m_plugin->rect().center()));
     cursorAnimation->start(QAbstractAnimation::DeleteWhenStopped);
     cursorAnimation->deleteLater();
 }
@@ -78,7 +78,7 @@ void PluginMoveProcessor::doStart()
 {
     setMouseTracking(true);
     show(); //  Only visible widgets can grab mouse input.
-    grabMouse(mLayout->isHorizontal() ? Qt::SizeHorCursor : Qt::SizeVerCursor);
+    grabMouse(m_layout->isHorizontal() ? Qt::SizeHorCursor : Qt::SizeVerCursor);
 }
 
 
@@ -87,7 +87,7 @@ void PluginMoveProcessor::doStart()
  ************************************************/
 void PluginMoveProcessor::mouseMoveEvent(QMouseEvent *event)
 {
-    QPoint mouse = mLayout->parentWidget()->mapFromGlobal(event->globalPos());
+    QPoint mouse = m_layout->parentWidget()->mapFromGlobal(event->globalPos());
     qDebug()<<"mouse:"<<mouse;
     MousePosInfo pos = itemByMousePos(mouse);
 
@@ -95,33 +95,33 @@ void PluginMoveProcessor::mouseMoveEvent(QMouseEvent *event)
     QLayoutItem *nextItem = 0;
     if (pos.after)
     {
-        mDestIndex = pos.index + 1;
+        m_destIndex = pos.index + 1;
         prevItem = pos.item;
-        nextItem = mLayout->itemAt(pos.index + 1);
+        nextItem = m_layout->itemAt(pos.index + 1);
     }
     else
     {
-        prevItem = mLayout->itemAt(pos.index - 1);
+        prevItem = m_layout->itemAt(pos.index - 1);
         nextItem = pos.item;
-        mDestIndex = pos.index;
+        m_destIndex = pos.index;
     }
 
-    bool plugSep = mPlugin->isSeparate();
+    bool plugSep = m_plugin->isSeparate();
     bool prevSep =UKUIPanelLayout::itemIsSeparate(prevItem);
     bool nextSep =UKUIPanelLayout::itemIsSeparate(nextItem);
 
     if (!nextItem)
     {
-        if (mLayout->isHorizontal())
+        if (m_layout->isHorizontal())
             drawMark(prevItem, prevSep ? RightMark : BottomMark);
         else
             drawMark(prevItem, prevSep ? BottomMark : RightMark);
         return;
     }
 
-    if (mLayout->lineCount() == 1)
+    if (m_layout->lineCount() == 1)
     {
-        if (mLayout->isHorizontal())
+        if (m_layout->isHorizontal())
             drawMark(nextItem, LeftMark);
         else
             drawMark(nextItem, TopMark);
@@ -131,7 +131,7 @@ void PluginMoveProcessor::mouseMoveEvent(QMouseEvent *event)
 
     if (!prevItem)
     {
-        if (mLayout->isHorizontal())
+        if (m_layout->isHorizontal())
             drawMark(nextItem, nextSep ? LeftMark : TopMark);
         else
             drawMark(nextItem, nextSep ? TopMark : LeftMark);
@@ -143,14 +143,14 @@ void PluginMoveProcessor::mouseMoveEvent(QMouseEvent *event)
     // previous item hase same type as moved plugin we draw line at the end of previous one.
     if (plugSep != nextSep && plugSep == prevSep)
     {
-        if (mLayout->isHorizontal())
+        if (m_layout->isHorizontal())
             drawMark(prevItem, prevSep ? RightMark : BottomMark);
         else
             drawMark(prevItem, prevSep ? BottomMark : RightMark);
     }
     else
     {
-        if (mLayout->isHorizontal())
+        if (m_layout->isHorizontal())
             drawMark(nextItem, nextSep ? LeftMark : TopMark);
         else
             drawMark(nextItem, nextSep ? TopMark : LeftMark);
@@ -165,9 +165,9 @@ PluginMoveProcessor::MousePosInfo PluginMoveProcessor::itemByMousePos(const QPoi
 {
     MousePosInfo ret;
 
-    for (int i = mLayout->count()-1; i > -1; --i)
+    for (int i = m_layout->count()-1; i > -1; --i)
     {
-        QLayoutItem *item = mLayout->itemAt(i);
+        QLayoutItem *item = m_layout->itemAt(i);
         QRect itemRect = item->geometry();
         if (mouse.x() > itemRect.left() &&
             mouse.y() > itemRect.top())
@@ -175,7 +175,7 @@ PluginMoveProcessor::MousePosInfo PluginMoveProcessor::itemByMousePos(const QPoi
 
             ret.index = i;
             ret.item = item;
-            if (mLayout->isHorizontal())
+            if (m_layout->isHorizontal())
             {
                 ret.after =UKUIPanelLayout::itemIsSeparate(item) ?
                         mouse.x() > itemRect.center().x() :
@@ -192,7 +192,7 @@ PluginMoveProcessor::MousePosInfo PluginMoveProcessor::itemByMousePos(const QPoi
     }
 
     ret.index = 0;
-    ret.item = mLayout->itemAt(0);
+    ret.item = m_layout->itemAt(0);
     ret.after = false;
     return ret;
 }
@@ -298,14 +298,14 @@ void PluginMoveProcessor::doFinish(bool cancel)
 
     if (!cancel)
     {
-        int currentIdx = mLayout->indexOf(mPlugin);
-        if (currentIdx == mDestIndex)
+        int currentIdx = m_layout->indexOf(m_plugin);
+        if (currentIdx == m_destIndex)
             return;
 
-        if (mDestIndex > currentIdx)
-            mDestIndex--;
+        if (m_destIndex > currentIdx)
+            m_destIndex--;
 
-        mLayout->moveItem(currentIdx, mDestIndex, true);
+        m_layout->moveItem(currentIdx, m_destIndex, true);
     }
 
     emit finished();
