@@ -29,7 +29,7 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
 private:
-    WId mWindow;
+    WId m_window;
 signals:
     void sigClicked();
 };
