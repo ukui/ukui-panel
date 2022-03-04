@@ -47,7 +47,7 @@ ShowDesktop::ShowDesktop(const IUKUIPanelPluginStartupInfo &startupInfo) :
     IUKUIPanelPlugin(startupInfo)
 {
     translator();
-    state=NORMAL;
+    m_state=NORMAL;
     this->setToolTip(tr("Show Desktop"));
     realign();
     this->setContextMenuPolicy(Qt::PreventContextMenu);
@@ -70,14 +70,14 @@ void ShowDesktop::realign()
     if(panel()->isHorizontal())
     {
         this->setFixedSize(DESKTOP_WIDTH,panel()->panelSize());
-        xEndPoint=0;
-        yEndPoint=100;
+        m_xEndPoint=0;
+        m_yEndPoint=100;
     }
     else
     {
        this->setFixedSize(panel()->panelSize(),DESKTOP_WIDTH);
-        xEndPoint=100;
-        yEndPoint=0;
+        m_xEndPoint=100;
+        m_yEndPoint=0;
     }
 }
 
@@ -93,14 +93,14 @@ void ShowDesktop::paintEvent(QPaintEvent *)
     QPainter p(this);
     /*设置画笔的颜色，此处画笔作用与Line，所以必须在drawLine　之前调用*/
     p.setPen(QColor(0x62,0x6C,0x6E,0xcc));
-    switch (state) {
+    switch (m_state) {
     case NORMAL:
 
-        p.drawLine(0,0,xEndPoint,yEndPoint);
+        p.drawLine(0,0,m_xEndPoint,m_yEndPoint);
         break;
     case HOVER:
         p.setBrush(QBrush(QColor(0xff,0xff,0xff,0x0f)));
-        p.drawLine(0,0,xEndPoint,yEndPoint);
+        p.drawLine(0,0,m_xEndPoint,m_yEndPoint);
         break;
     default:
         break;
@@ -112,13 +112,13 @@ void ShowDesktop::paintEvent(QPaintEvent *)
 
 void ShowDesktop::enterEvent(QEvent *event)
 {
-    state=HOVER;
+    m_state=HOVER;
     update();
 }
 
 void ShowDesktop::leaveEvent(QEvent *event)
 {
-    state=NORMAL;
+    m_state=NORMAL;
     update();
 }
 #undef DEFAULT_SHORTCUT

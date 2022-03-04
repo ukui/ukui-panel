@@ -103,16 +103,16 @@ void NightMode::realign()
 
 NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     QToolButton(parent),
-    mPlugin(plugin)
+    m_plugin(plugin)
 {  
     /*系统主题gsettings  qt+gtk*/
     const QByteArray styleid(UKUI_QT_STYLE);
     if(QGSettings::isSchemaInstalled(styleid)) {
-        mqtstyleGsettings = new QGSettings(styleid);
+        m_qtstyleGsettings = new QGSettings(styleid);
     }
     const QByteArray gtkstyleid(GTK_STYLE);
     if(QGSettings::isSchemaInstalled(gtkstyleid)) {
-        mgtkstyleGsettings = new QGSettings(gtkstyleid);
+        m_gtkstyleGsettings = new QGSettings(gtkstyleid);
     }
 
     QDBusConnection::sessionBus().connect(QString(),
@@ -134,20 +134,20 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     connect(this,&NightModeButton::clicked,this, [this] { onClick();});
 }
 NightModeButton::~NightModeButton(){
-    delete mqtstyleGsettings;
-    delete mgtkstyleGsettings;
+    delete m_qtstyleGsettings;
+    delete m_gtkstyleGsettings;
 }
 
 void NightModeButton::onClick()
 {
     getNightModeState();
-    if(mode){
+    if(m_mode){
         setUkuiStyle(DEFAULT_STYLE);
 
     }else{
         setUkuiStyle(DARK_STYLE);
     }
-    setNightMode(!mode);
+    setNightMode(!m_mode);
     this->setEnabled(true);
 }
 
@@ -174,7 +174,7 @@ void NightModeButton::setNightMode(const bool nightMode){
     if(nightMode){
         data.insert("Active", true);
         data.insert("Mode", 3);
-        data.insert("NightTemperature", colorTemperature);
+        data.insert("NightTemperature", m_colorTemperature);
 
         iproperty.call("setNightColorConfig", data);
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
@@ -203,7 +203,7 @@ void NightModeButton::controlCenterSetNightMode(const bool nightMode){
 
     if(nightMode){
         data.insert("Active", true);
-        data.insert("NightTemperature", colorTemperature);
+        data.insert("NightTemperature", m_colorTemperature);
         iproperty.call("setNightColorConfig", data);
         QIcon icon=QIcon("/usr/share/ukui-panel/panel/img/nightmode-night.svg");
         this->setIcon(icon);
@@ -231,9 +231,9 @@ void NightModeButton::getNightModeState()
     for( QString outer_key : map.keys() ){
         QVariant innerMap = map.value( outer_key );
         if(outer_key=="NightTemperature")
-            colorTemperature=innerMap.toInt();
+            m_colorTemperature=innerMap.toInt();
         if(outer_key=="Active")
-            mode=innerMap.toBool();
+            m_mode=innerMap.toBool();
         //        if(!outer_key.contains("EveningBeginFixed"))
 
     }
@@ -241,24 +241,24 @@ void NightModeButton::getNightModeState()
 void NightModeButton::nightChangedSlot(QHash<QString, QVariant> nightArg)
 {
     getNightModeState();
-    controlCenterSetNightMode(mode);
+    controlCenterSetNightMode(m_mode);
 }
 
 /*设置主题*/
 void NightModeButton::setUkuiStyle(QString style)
 {
     if(QString::compare(style,DEFAULT_STYLE)==0){
-        if(mqtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || mqtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
-            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,DEFAULT_STYLE);
-        if(mgtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || mgtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
-            mgtkstyleGsettings->set(GTK_STYLE_NAME,GTK_WHITE_STYLE);
+        if(m_qtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || m_qtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
+            m_qtstyleGsettings->set(UKUI_QT_STYLE_NAME,DEFAULT_STYLE);
+        if(m_gtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || m_gtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
+            m_gtkstyleGsettings->set(GTK_STYLE_NAME,GTK_WHITE_STYLE);
 
     }
     else{
-        if(mqtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || mqtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
-            mqtstyleGsettings->set(UKUI_QT_STYLE_NAME,DARK_STYLE);
-        if(mgtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || mgtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
-            mgtkstyleGsettings->set(GTK_STYLE_NAME,BLACK_STYLE);
+        if(m_qtstyleGsettings->keys().contains(DEFAULT_QT_STYLE_NAME) || m_qtstyleGsettings->keys().contains(UKUI_QT_STYLE_NAME))
+            m_qtstyleGsettings->set(UKUI_QT_STYLE_NAME,DARK_STYLE);
+        if(m_gtkstyleGsettings->keys().contains(DEFAULT_GTK_STYLE_NAME) || m_gtkstyleGsettings->keys().contains(GTK_STYLE_NAME))
+            m_gtkstyleGsettings->set(GTK_STYLE_NAME,BLACK_STYLE);
     }
 }
 
