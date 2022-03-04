@@ -36,7 +36,7 @@ public:
 private:
     void register_dbus();
 
-    PinToTaskbar* taskbar_dbus;
+    PinToTaskbar* m_taskbarDBus;
 };
 
 #endif // WATCHERMANAGER_H

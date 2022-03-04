@@ -49,8 +49,8 @@ Q_SIGNALS:
 //    QString TimeChanged();
 
 private:
-    FileWatcher *mFileWatcher;
-    ConvertDesktopToWinId *mDesktop;
+    FileWatcher *m_fileWatcher;
+    ConvertDesktopToWinId *m_desktop;
 
 };
 
