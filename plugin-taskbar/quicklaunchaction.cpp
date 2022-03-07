@@ -43,7 +43,7 @@
 #include <QtX11Extras/QX11Info>
 #include <kstartupinfo.h>
 
-#define USE_STARTUP_INFO true
+//#define USE_STARTUP_INFO true
 
 /*用xdg的方式解析*/
 QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
@@ -89,7 +89,8 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     }
 }
 
-#if USE_STARTUP_INFO
+//#if USE_STARTUP_INFO
+#if HAVE_STARTUP_ICON_GEOMETRY
 void pid_callback(GDesktopAppInfo *appinfo, GPid pid, gpointer user_data) {
     KStartupInfoId* startInfoId = static_cast<KStartupInfoId*>(user_data);
     KStartupInfoData data;
@@ -121,7 +122,7 @@ void QuickLaunchAction::execAction(QString additionalAction)
             if (xdg.load(exec))
             {
                 if (additionalAction.isEmpty()) {
-#if USE_STARTUP_INFO
+#if HAVE_STARTUP_ICON_GEOMETRY
                     bool needCleanup = true;
                     QWidget * pw = static_cast<QWidget*>(parent());
                     float scale = qApp->devicePixelRatio();
