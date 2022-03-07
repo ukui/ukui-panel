@@ -58,20 +58,20 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     QString title(xdg->localizedValue("Name").toString());
     QIcon icon=QIcon::fromTheme(xdg->localizedValue("Icon").toString());
     //add special path search /use/share/pixmaps
-    if (icon.isNull())
-    {
+    if (icon.isNull()) {
         QString path = QString("/usr/share/pixmaps/%1.%2").arg(xdg->localizedValue("Icon").toString()).arg("png");
         QString path_svg = QString("/usr/share/pixmaps/%1.%2").arg(xdg->localizedValue("Icon").toString()).arg("svg");
         //qDebug() << "createDesktopFileThumbnail path:" <<path;
-        if(QFile::exists(path)){
+        if (QFile::exists(path)) {
             icon=QIcon(path);
         }
-        else if(QFile::exists(path_svg)){
+        else if (QFile::exists(path_svg)) {
             icon=QIcon(path_svg);
         }
     }
-    if (icon.isNull())
+    if (icon.isNull()) {
         icon = xdg->icon();
+    }
     setText(title);
 
     setIcon(icon);
@@ -80,8 +80,7 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     connect(this, &QAction::triggered, this, [this] { execAction(); });
 
     // populate the additional actions
-    for (auto const & action : const_cast<const QStringList &&>(xdg->actions()))
-    {
+    for (auto const & action : const_cast<const QStringList &&>(xdg->actions())) {
         QAction * act = new QAction{xdg->actionIcon(action), xdg->actionName(action), this};
         act->setData(action);
         connect(act, &QAction::triggered, [this, act] { execAction(act->data().toString()); });
@@ -111,16 +110,15 @@ void QuickLaunchAction::execAction(QString additionalAction)
     UKUITaskBar *uqk = qobject_cast<UKUITaskBar*>(parent());
     QString exec(data().toString());
     bool showQMessage = false;
-    switch (m_type)
-    {
+    switch (m_type) {
         case ActionLegacy:
-            if (!QProcess::startDetached(exec))
+            if (!QProcess::startDetached(exec)) {
                 showQMessage =true;
+            }
             break;
         case ActionXdg: {
             XdgDesktopFile xdg;
-            if (xdg.load(exec))
-            {
+            if (xdg.load(exec)) {
                 if (additionalAction.isEmpty()) {
 #if HAVE_STARTUP_ICON_GEOMETRY
                     bool needCleanup = true;
@@ -152,13 +150,15 @@ void QuickLaunchAction::execAction(QString additionalAction)
                     }
 #else
                     GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
-                    if (!g_app_info_launch_uris(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
+                    if (!g_app_info_launch_uris(G_APP_INFO(appinfo),nullptr, nullptr, nullptr)) {
                         showQMessage =true;
+                    }
                     g_object_unref(appinfo);
 #endif
                 } else {
-                    if (!xdg.actionActivate(additionalAction, QStringList{}))
+                    if (!xdg.actionActivate(additionalAction, QStringList{})) {
                         showQMessage =true;
+                    }
                 }
 #if 0
                  } else {
@@ -172,8 +172,9 @@ void QuickLaunchAction::execAction(QString additionalAction)
                     }
                 }
 #endif
-            } else
+            } else {
                 showQMessage =true;
+            }
         }
             break;
         case ActionFile:
