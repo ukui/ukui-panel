@@ -49,9 +49,9 @@ public:
 
     bool isApplicationHidden() const;
     bool isApplicationActive() const;
-    WId windowId() const { return mWindow; }
+    WId windowId() const { return m_window; }
 
-    bool hasUrgencyHint() const { return mUrgencyHint; }
+    bool hasUrgencyHint() const { return m_urgencyHint; }
     void setUrgencyHint(bool set);
 
     bool isOnDesktop(int desktop) const;
@@ -66,7 +66,7 @@ public:
     Qt::Corner origin() const;
     virtual void setAutoRotation(bool value, IUKUIPanel::Position position);
 
-    UKUITaskBar * parentTaskBar() const {return mParentTaskBar;}
+    UKUITaskBar * parentTaskBar() const {return m_parentTaskBar;}
 
     void refreshIconGeometry(QRect const & geom);
     static QString mimeDataFormat() { return QLatin1String("ukui/UKUITaskWidget"); }
@@ -78,7 +78,7 @@ public:
     void updateTitle();
     void removeThumbNail();
     void addThumbNail();
-    void setPixmap(QPixmap mPixmap);
+    void setPixmap(QPixmap m_pixmap);
     int getWidth();
     QPixmap getPixmap();
 
@@ -125,38 +125,36 @@ protected:
     void paintEvent(QPaintEvent *);
     void contextMenuEvent(QContextMenuEvent *event);
 
-    void setWindowId(WId wid) {mWindow = wid;}
+    void setWindowId(WId wid) {m_window = wid;}
     virtual QMimeData * mimeData();
-    static bool sDraggging;
+    static bool m_draggging;
 
-    inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
+    inline IUKUIPanelPlugin * plugin() const { return m_plugin; }
 
 private:
-    NET::States stat;
-    WId mWindow;
-    bool mUrgencyHint;
-    QPoint mDragStartPosition;
-    Qt::Corner mOrigin;
-    QPixmap mPixmap;
-    bool mDrawPixmap;
-    UKUITaskBar * mParentTaskBar;
-    IUKUIPanelPlugin * mPlugin;
-    QLabel *mTitleLabel;
-    QLabel *mThumbnailLabel;
-    QLabel *mAppIcon;
-    UKUITaskCloseButton *mCloseBtn;
-    QVBoxLayout *mVWindowsLayout;
-    QHBoxLayout *mTopBarLayout;
+    WId m_window;
+    bool m_urgencyHint;
+    QPoint m_dragStartPosition;
+    Qt::Corner m_origin;
+    QPixmap m_pixmap;
+    bool m_drawPixmap;
+    UKUITaskBar * m_parentTaskBar;
+    IUKUIPanelPlugin * m_plugin;
+    QLabel *m_titleLabel;
+    QLabel *m_thumbnailLabel;
+    QLabel *m_appIcon;
+    UKUITaskCloseButton *m_closeBtn;
+    QVBoxLayout *m_vWindowsLayout;
+    QHBoxLayout *m_topBarLayout;
 
 
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
-    QTimer * mDNDTimer;
+    QTimer * m_DNDTimer;
     enum TaskWidgetStatus{NORMAL, HOVER, PRESS};
-    TaskWidgetStatus status;
-    bool taskWidgetPress; //按钮左键是否按下
+    TaskWidgetStatus m_status;
 
-    bool isWaylandWidget = false;
+    bool m_isWaylandWidget = false;
 
 private slots:
     void activateWithDraggable();
