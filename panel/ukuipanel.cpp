@@ -631,7 +631,7 @@ void UKUIPanel::setPanelGeometry(bool animate)
     }
     if (rect != geometry()) {
         setFixedSize(rect.size());
-        if (animate)
+        if (animate) {
             if (m_animation == nullptr) {
                 m_animation = new QPropertyAnimation(this, "geometry");
                 m_animation->setEasingCurve(QEasingCurve::Linear);
