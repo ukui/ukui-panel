@@ -53,8 +53,8 @@ static void drawArrow(const QStyle *style, const QStyleOptionToolButton *toolbut
 
 CustomStyle::CustomStyle(const QString &proxyStyleName, bool multileWins, QObject *parent) : QProxyStyle (proxyStyleName)
 {
-    pluginName=proxyStyleName;
-    multileWindow=multileWins;
+    m_pluginName=proxyStyleName;
+    m_multileWindow=multileWins;
 }
 CustomStyle::~CustomStyle()
 {
@@ -298,7 +298,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
      * 在同一个PE中有两个toolbutton 的样式
     */
     case PE_PanelButtonTool:{
-        if(QString::compare(pluginName,"taskbutton")==0)
+        if(QString::compare(m_pluginName,"taskbutton")==0)
         {
             painter->save();
             painter->setRenderHint(QPainter::Antialiasing,true);
@@ -315,7 +315,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
             painter->restore();
 
             /*buttom center x:22.5  y:42*/
-            if(multileWindow)
+            if(m_multileWindow)
             {
                 painter->save();
                 painter->setRenderHint(QPainter::Antialiasing, true);
@@ -330,7 +330,7 @@ void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOp
             return;
         }
 
-        else if(QString::compare(pluginName,"closebutton")==0)
+        else if(QString::compare(m_pluginName,"closebutton")==0)
         {
             painter->save();
             painter->setRenderHint(QPainter::Antialiasing,true);

@@ -27,7 +27,7 @@ class ListenGsettings : public QObject
     Q_OBJECT
 public:
     ListenGsettings();
-    QGSettings *panel_gsettings;
+    QGSettings *m_panelGsettings;
 Q_SIGNALS:
     void panelsizechanged(int panelsize);
     void iconsizechanged(int iconsize);

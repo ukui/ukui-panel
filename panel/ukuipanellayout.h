@@ -69,7 +69,7 @@ public:
     int lineSize() const;
     void setLineSize(int value);
 
-    IUKUIPanel::Position position() const { return mPosition; }
+    IUKUIPanel::Position position() const { return m_position; }
     void setPosition(IUKUIPanel::Position value);
 
     /*! \brief Force the layout to re-read items/plugins "static" configuration
@@ -87,11 +87,11 @@ public slots:
     void addPlugin(Plugin * plugin);
 
 private:
-    mutable QSize mMinPluginSize;
-    LayoutItemGrid *mLeftGrid;
-    LayoutItemGrid *mRightGrid;
-    IUKUIPanel::Position mPosition;
-    bool mAnimate;
+    mutable QSize m_minPluginSize;
+    LayoutItemGrid *m_leftGrid;
+    LayoutItemGrid *m_rightGrid;
+    IUKUIPanel::Position m_position;
+    bool m_animate;
 
 
     void setGeometryHoriz(const QRect &geometry);

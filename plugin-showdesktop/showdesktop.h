@@ -52,10 +52,10 @@ protected:
 
 private:
     enum showDeskTopState{NORMAL,HOVER};
-    showDeskTopState state;
+    showDeskTopState m_state;
 
-    int xEndPoint;
-    int yEndPoint;
+    int m_xEndPoint;
+    int m_yEndPoint;
     QTranslator *m_translator;
 private:
     void translator();

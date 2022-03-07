@@ -27,16 +27,16 @@
 ListenGsettings::ListenGsettings()
 {
     const QByteArray id(PANEL_SETTINGS);
-    panel_gsettings = new QGSettings(id);
-    QObject::connect(panel_gsettings, &QGSettings::changed, this, [=] (const QString &key){
+    m_panelGsettings = new QGSettings(id);
+    QObject::connect(m_panelGsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key == PANEL_POSITION_KEY){
-            emit panelpositionchanged(panel_gsettings->get(PANEL_POSITION_KEY).toInt());
+            emit panelpositionchanged(m_panelGsettings->get(PANEL_POSITION_KEY).toInt());
         }
         if(key == ICON_SIZE_KEY){
-            emit iconsizechanged(panel_gsettings->get(ICON_SIZE_KEY).toInt());
+            emit iconsizechanged(m_panelGsettings->get(ICON_SIZE_KEY).toInt());
         }
         if(key == PANEL_SIZE_KEY){
-            emit panelsizechanged(panel_gsettings->get(PANEL_SIZE_KEY).toInt());
+            emit panelsizechanged(m_panelGsettings->get(PANEL_SIZE_KEY).toInt());
         }
     });
 }

@@ -26,12 +26,10 @@ set(PUB_HEADERS
     pluginsettings.h
     iukuipanelplugin.h
     iukuipanel.h
-    comm_func.h
 
     common/ukuisettings.h
     common/ukuiplugininfo.h
     common/ukuiapplication.h
-    common/ukuisingleapplication.h
     common/ukuitranslator.h
 
     common/ukuigridlayout.h
@@ -56,12 +54,10 @@ set(SOURCES
     pluginsettings.cpp
     pluginmoveprocessor.cpp
     ukuipanelpluginconfigdialog.cpp
-    comm_func.cpp
 
     common/ukuiplugininfo.cpp
     common/ukuisettings.cpp
     common/ukuiapplication.cpp
-    common/ukuisingleapplication.cpp
     common/ukuitranslator.cpp
 
     common/ukuigridlayout.cpp
@@ -104,11 +100,6 @@ set(QTX_LIBRARIES Qt5::Widgets Qt5::Xml Qt5::DBus)
 #)
 
 ukui_app_translation_loader(SOURCES ${PROJECT_NAME})
-
-QT5_ADD_DBUS_ADAPTOR(DBUS_ADAPTOR_SRCS
-    common/dbus/org.ukui.SingleApplication.xml
-    common/ukuisingleapplication.h UKUi::SingleApplication
-)
 
 set_property(SOURCE ${DBUS_INTERFACE_SRCS} ${DBUS_ADAPTOR_SRCS} PROPERTY SKIP_AUTOGEN ON)
 list(APPEND SOURCES "${DBUS_INTERFACE_SRCS}" "${DBUS_ADAPTOR_SRCS}")

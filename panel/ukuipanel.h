@@ -656,7 +656,7 @@ private:
      *
      * \sa mHidable, mVisibleMargin, mHidden, showPanel(), hidePanel(), hidePanelWork()
      */
-    QTimer mHideTimer;
+    QTimer m_hideTimer;
     /**
      * @brief Stores the duration of auto-hide animation.
      *

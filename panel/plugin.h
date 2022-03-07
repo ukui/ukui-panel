@@ -61,31 +61,31 @@ public:
     explicit Plugin(const UKUi::PluginInfo &desktopFile, UKUi::Settings *settings, const QString &settingsGroup, UKUIPanel *panel);
     ~Plugin();
 
-    bool isLoaded() const { return mPlugin != 0; }
-    Alignment alignment() const { return mAlignment; }
+    bool isLoaded() const { return m_plugin != 0; }
+    Alignment alignment() const { return m_alignment; }
     void setAlignment(Alignment alignment);
 
-    QString settingsGroup() const { return mSettings->group(); }
+    QString settingsGroup() const { return m_settings->group(); }
 
     void saveSettings();
 
     QMenu* popupMenu() const;
-    const IUKUIPanelPlugin * iPlugin() const { return mPlugin; }
+    const IUKUIPanelPlugin * iPlugin() const { return m_plugin; }
 
-    const UKUi::PluginInfo desktopFile() const { return mDesktopFile; }
+    const UKUi::PluginInfo desktopFile() const { return m_desktopFile; }
 
     bool isSeparate() const;
     bool isExpandable() const;
 
-    QWidget *widget() { return mPluginWidget; }
+    QWidget *widget() { return m_pluginWidget; }
 
-    QString name() const { return mName; }
+    QString name() const { return m_name; }
 
     virtual bool eventFilter(QObject * watched, QEvent * event);
 
     // For QSS properties ..................
-    static QColor moveMarkerColor() { return mMoveMarkerColor; }
-    static void setMoveMarkerColor(QColor color) { mMoveMarkerColor = color; }
+    static QColor moveMarkerColor() { return m_moveMarkerColor; }
+    static void setMoveMarkerColor(QColor color) { m_moveMarkerColor = color; }
 
 public slots:
     void realign();
@@ -114,16 +114,16 @@ private:
     void watchWidgets(QObject * const widget);
     void unwatchWidgets(QObject * const widget);
 
-    const UKUi::PluginInfo mDesktopFile;
-    QPluginLoader *mPluginLoader;
-    IUKUIPanelPlugin *mPlugin;
-    QWidget *mPluginWidget;
-    Alignment mAlignment;
-    PluginSettings *mSettings;
-    UKUIPanel *mPanel;
-    static QColor mMoveMarkerColor;
-    QString mName;
-    QPointer<QDialog> mConfigDialog; //!< plugin's config dialog (if any)
+    const UKUi::PluginInfo m_desktopFile;
+    QPluginLoader *m_pluginLoader;
+    IUKUIPanelPlugin *m_plugin;
+    QWidget *m_pluginWidget;
+    Alignment m_alignment;
+    PluginSettings *m_settings;
+    UKUIPanel *m_panel;
+    static QColor m_moveMarkerColor;
+    QString m_name;
+    QPointer<QDialog> m_configDialog; //!< plugin's config dialog (if any)
 
 private slots:
     void settingsChanged();

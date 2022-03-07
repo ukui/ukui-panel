@@ -42,7 +42,6 @@ set(HEADERS
     ukuisettings.h
     ukuiplugininfo.h
     ukuiapplication.h
-    ukuisingleapplication.h
     ukuitranslator.h
 
     ukuigridlayout.h
@@ -66,7 +65,6 @@ set(SOURCES
     ukuiplugininfo.cpp
     ukuisettings.cpp
     ukuiapplication.cpp
-    ukuisingleapplication.cpp
     ukuitranslator.cpp
     ukuiprogramfinder.cpp
 
@@ -86,11 +84,6 @@ set(FORMS
 )
 
 file(GLOB UKUI_CONFIG_FILES resources/*.conf)
-
-QT5_ADD_DBUS_ADAPTOR(DBUS_ADAPTOR_SRCS
-    dbus/org.ukui.SingleApplication.xml
-    ukuisingleapplication.h UKUi::SingleApplication
-)
 
 set_property(SOURCE ${DBUS_INTERFACE_SRCS} ${DBUS_ADAPTOR_SRCS} PROPERTY SKIP_AUTOGEN ON)
 list(APPEND SOURCES "${DBUS_INTERFACE_SRCS}" "${DBUS_ADAPTOR_SRCS}")

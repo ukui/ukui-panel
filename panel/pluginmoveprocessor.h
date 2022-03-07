@@ -45,7 +45,7 @@ public:
     explicit PluginMoveProcessor(UKUIPanelLayout *layout, Plugin *plugin);
     ~PluginMoveProcessor();
 
-    Plugin *plugin() const { return mPlugin; }
+    Plugin *plugin() const { return m_plugin; }
 
 signals:
     void finished();
@@ -79,9 +79,9 @@ private:
         bool after;
     };
 
-   UKUIPanelLayout *mLayout;
-    Plugin *mPlugin;
-    int mDestIndex;
+   UKUIPanelLayout *m_layout;
+    Plugin *m_plugin;
+    int m_destIndex;
 
     MousePosInfo itemByMousePos(const QPoint mouse) const;
     void drawMark(QLayoutItem *item, MarkType markType);
