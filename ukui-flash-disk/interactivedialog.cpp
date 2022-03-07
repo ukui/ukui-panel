@@ -24,8 +24,6 @@ interactiveDialog::interactiveDialog(QString strDevId, QWidget *parent):QWidget(
     this->setFixedSize(300,86);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
 
-    m_strDevId = strDevId;
-
     QPainterPath path;
     auto rect = this->rect();
     rect.adjust(1, 1, -1, -1);
@@ -33,7 +31,7 @@ interactiveDialog::interactiveDialog(QString strDevId, QWidget *parent):QWidget(
     setProperty("blurRegion", QRegion(path.toFillPolygon().toPolygon()));
 
     this->setAttribute(Qt::WA_TranslucentBackground);
-    initWidgets();
+    initWidgets(strDevId);
     connect(chooseBtnCancle,SIGNAL(clicked()),this,SLOT(close()));
     connect(chooseBtnContinue,SIGNAL(clicked()),this,SLOT(convert()));
     moveChooseDialogRight();
@@ -68,27 +66,11 @@ void interactiveDialog::getTransparentData()
     }
 }
 
-void interactiveDialog::initWidgets()
+void interactiveDialog::initWidgets(QString strDevId)
 {
     contentLable = new QLabel(this);
     contentLable->setWordWrap(true);
-    #ifdef UDISK_SUPPORT_FORCEEJECT
-    if (m_strDevId.startsWith("/dev/sr")) {
-        contentLable->setText(tr("cdrom is occupying,do you want to eject it"));
-    } else if (m_strDevId.startsWith("/dev/mmcblk")) {
-        contentLable->setText(tr("sd is occupying,do you want to eject it"));
-    } else {
-        contentLable->setText(tr("usb is occupying,do you want to eject it"));
-    }
-    #else 
-    if (m_strDevId.startsWith("/dev/sr")) {
-        contentLable->setText(tr("cdrom is occupying"));
-    } else if (m_strDevId.startsWith("/dev/mmcblk")) {
-        contentLable->setText(tr("sd is occupying"));
-    } else {
-        contentLable->setText(tr("usb is occupying"));
-    }
-    #endif
+    updateContentLable(strDevId);
     content_H_BoxLayout = new QHBoxLayout();
     content_H_BoxLayout->addWidget(contentLable, 1, Qt::AlignCenter);
 
@@ -127,6 +109,28 @@ void interactiveDialog::initWidgets()
     main_V_BoxLayout->addLayout(chooseBtn_H_BoxLayout);
 
     this->setLayout(main_V_BoxLayout);
+}
+
+void interactiveDialog::updateContentLable(QString strDevId)
+{
+    m_strDevId = strDevId;
+    #ifdef UDISK_SUPPORT_FORCEEJECT
+    if (m_strDevId.startsWith("/dev/sr")) {
+        contentLable->setText(tr("cdrom is occupying,do you want to eject it"));
+    } else if (m_strDevId.startsWith("/dev/mmcblk")) {
+        contentLable->setText(tr("sd is occupying,do you want to eject it"));
+    } else {
+        contentLable->setText(tr("usb is occupying,do you want to eject it"));
+    }
+    #else
+    if (m_strDevId.startsWith("/dev/sr")) {
+        contentLable->setText(tr("cdrom is occupying"));
+    } else if (m_strDevId.startsWith("/dev/mmcblk")) {
+        contentLable->setText(tr("sd is occupying"));
+    } else {
+        contentLable->setText(tr("usb is occupying"));
+    }
+    #endif
 }
 
 void interactiveDialog::convert()

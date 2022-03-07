@@ -244,15 +244,27 @@ bool MainWindow::getDevInterface(QString strDev)
     QProcess *p = new QProcess();
     p->start(cmd);
     p->waitForFinished();
-    while(p->canReadLine()) {
-        QString str = p->readLine();
-        QStringList infoList = str.split('\n');
-        QStringList::Iterator it = infoList.begin();
-        for (; it != infoList.end(); it++){
-            if(*it==("E: ID_BUS=ata")){
-            return false;
+    if(!m_ismountadd){
+        while(p->canReadLine()) {
+            QString str = p->readLine();
+            QStringList infoList = str.split('\n');
+            QStringList::Iterator it = infoList.begin();
+            for (; it != infoList.end(); it++){
+                if(*it==("E: ID_BUS=ata")){
+                    return false;
+                }
             }
-
+        }
+    }else{
+        while(p->canReadLine()) {
+            QString str = p->readLine();
+            QStringList infoList = str.split('=');
+            QStringList::Iterator it = infoList.begin();
+            for (; it != infoList.end(); it++){
+                if(*it==("E: ID_FS_TYPE")){
+                    return false;
+                }
+            }
         }
     }
     delete p;
@@ -844,6 +856,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
     int a = 0;
     char buf[128] = {0};
 
+    p_this->m_ismountadd = false;
     fp = fopen("/proc/cmdline","r");
     if (fp) {
         while(fscanf(fp,"%127s",buf) > 0) {
@@ -1055,11 +1068,16 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                             g_object_unref(mount);
                         } else {
                             if(p_this->ifsettings->get(IFAUTOLOAD).toBool()) {
+                                p_this->m_ismountadd = true;
+                                if (p_this->getDevInterface(volumeInfo.strId.c_str())){
+                                   p_this->m_ismountadd = false;
+                                   return;
+                                }
                                 g_volume_mount(volume,
                                             G_MOUNT_MOUNT_NONE,
                                             nullptr,
                                             nullptr,
-                                            GAsyncReadyCallback(frobnitz_result_func_volume),
+                                            nullptr,  //GAsyncReadyCallback(frobnitz_result_func_volume),
                                             p_this);
                             }
                         }
@@ -2502,6 +2520,8 @@ void MainWindow::frobnitz_result_func(GDrive *source_object,GAsyncResult *res,Ma
 
         if (p_this->chooseDialog == nullptr) {
             p_this->chooseDialog = new interactiveDialog(QString::fromStdString(driveInfo.strId), p_this->ui->centralWidget);
+        }else{
+            p_this->chooseDialog->updateContentLable(QString::fromStdString(driveInfo.strId));
         }
         p_this->chooseDialog->show();
         p_this->chooseDialog->setFocus();
