@@ -30,9 +30,12 @@
 #include <QDateTime>
 #include <stdio.h>
 #include <string.h>
+#include <QDebug>
 #include "clickLabel.h"
 #include "MacroFile.h"
 #include "datacdrom.h"
+
+static void mount_cdrom (GDrive* drive, gpointer u);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -407,6 +410,10 @@ void MainWindow::getDeviceInfo()
                         g_list_free(gdriveVolumes);
                     }
                     m_dataFlashDisk->addDriveInfo(driveInfo);
+
+                    if (G_IS_DRIVE(gdrive) && !driveInfo.strId.empty() && g_str_has_prefix (driveInfo.strId.c_str(), "/dev/sr")) {
+                        g_signal_connect(G_DRIVE(gdrive), "changed", G_CALLBACK (mount_cdrom), NULL);
+                    }
                 }
             }
             g_free(devPath);
@@ -795,6 +802,10 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
         //     qInfo()<<"wrong disk has intered";
         //     p_this->onInsertAbnormalDiskNotify(tr("There is a problem with this device"));
         // }
+
+        if (G_IS_DRIVE(gdrive) && !driveInfo.strId.empty() && g_str_has_prefix (driveInfo.strId.c_str(), "/dev/sr")) {
+            g_signal_connect(G_DRIVE (gdrive), "changed", G_CALLBACK (mount_cdrom), NULL);
+        }
     }
 
     if(p_this->m_dataFlashDisk->getValidInfoCount() >= 1) {
@@ -815,6 +826,11 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
     if (devPath != NULL) {
         driveInfo.strId = devPath;
         g_free(devPath);
+    }
+
+    // disconnect udf cdrom
+    if (!driveInfo.strId.empty() && G_IS_DRIVE(drive)) {
+        g_signal_handlers_disconnect_by_func (drive, (void*) mount_cdrom, NULL);
     }
 
     vector<string>::iterator itDeviceId = p_this->m_vtDeviveId.begin();
@@ -3160,5 +3176,25 @@ void MainWindow::getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo)
             }
         }
         g_object_unref(g_icon);
+    }
+}
+
+static void mount_cdrom (GDrive* drive, gpointer u)
+{
+    g_return_if_fail(G_IS_DRIVE (drive));
+
+    if (g_drive_has_media (drive)) {
+        g_autofree char* devName = g_drive_get_identifier (drive, G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+        const char* name = g_get_user_name ();
+        if (devName && name) {
+            qDebug() << "DJ- execute return: " << QProcess::execute ("pkexec", QStringList()
+            << "/usr/bin/ukui-flash-disks-pkexec.sh"
+            << "-d"
+            << devName
+            << "-p"
+            << QString("/media/%1/%2").arg(name)
+            .arg(QString(QCryptographicHash::hash(devName, QCryptographicHash::Md5).toBase64()
+            .replace ("/", "").replace ("+","").replace ("=", ""))));
+        }
     }
 }
