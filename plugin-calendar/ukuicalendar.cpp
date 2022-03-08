@@ -40,7 +40,6 @@
 #include "../panel/pluginsettings.h"
 #include <QDebug>
 #include <QApplication>
-#include <QtWebKit/qwebsettings.h>
 #include <QStyleOption>
 #include <glib.h>
 #include <gio/gio.h>

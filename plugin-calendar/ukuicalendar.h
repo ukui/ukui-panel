@@ -29,7 +29,6 @@
 
 #include <QDialog>
 #include <QLabel>
-#include <QtWebKitWidgets/QWebView>
 #include <QGSettings>
 #include <QMenu>
 #include <QProcess>
