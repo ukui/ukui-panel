@@ -18,14 +18,14 @@
 #include <QDebug>
 #include "ukuitaskclosebutton.h"
 #include "../panel/customstyle.h"
-#include "../panel/highlight-effect.h"
 UKUITaskCloseButton::UKUITaskCloseButton(const WId window, QWidget *parent):
     QToolButton(parent),
     m_window(window)
 {
     this->setStyle(new CustomStyle("closebutton"));
-    this->setIcon(QIcon(HighLightEffect::drawSymbolicColoredPixmap(QPixmap::fromImage(QIcon::fromTheme("window-close-symbolic").pixmap(24,24).toImage()))));
+    this->setIcon(QIcon::fromTheme("window-close-symbolic").pixmap(24,24));
     this->setIconSize(QSize(9,9));
+    this->setProperty("useIconHighlightEffect", 0x2);
     //connect(parent, &UKUITaskBar::buttonRotationRefreshed, this, &UKUITaskGroup::setAutoRotation);
 }
 

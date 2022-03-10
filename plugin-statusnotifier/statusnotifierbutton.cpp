@@ -35,7 +35,6 @@
 #include "../panel/iukuipanelplugin.h"
 #include "sniasync.h"
 #include "../panel/customstyle.h"
-#include "../panel/highlight-effect.h"
 #include <QDebug>
 #include <KWindowEffects>
 //#include <XdgIcon>
@@ -183,7 +182,6 @@ void StatusNotifierButton::refetchIcon(Status status)
                     }
                 }
             }
-            nextIcon=HighLightEffect::drawSymbolicColoredIcon(nextIcon);
 
             switch (status)
             {

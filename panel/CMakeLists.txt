@@ -16,7 +16,6 @@ set(PRIV_HEADERS
     plugin.h
     pluginsettings_p.h
     ukuipanellimits.h
-    highlight-effect.h
 )
 
 # using UKUi namespace in the public headers.
@@ -37,7 +36,6 @@ set(PUB_HEADERS
     common_fun/ukuipanel_infomation.h
     common_fun/dbus-adaptor.h
     common_fun/panel_commission.h
-    highlight-effect.cpp
     customstyle.h
 )
 

@@ -36,10 +36,10 @@
 #include <QDesktopWidget>
 #include <QGSettings/QGSettings>
 #include <QtDBus/QtDBus>
+#include <QStyleOption>
 #include "common/ukuisettings.h"
 #include "iukuipanel.h"
 #include "ukuipanelglobals.h"
-#include "highlight-effect.h"
 
 class QMenu;
 class Plugin;
