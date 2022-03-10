@@ -53,7 +53,6 @@ set(SOURCES
     plugin.cpp
     pluginsettings.cpp
     pluginmoveprocessor.cpp
-    ukuipanelpluginconfigdialog.cpp
 
     common/ukuiplugininfo.cpp
     common/ukuisettings.cpp
