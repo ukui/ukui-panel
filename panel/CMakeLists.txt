@@ -16,7 +16,6 @@ set(PRIV_HEADERS
     plugin.h
     pluginsettings_p.h
     ukuipanellimits.h
-    pluginmoveprocessor.h
     highlight-effect.h
 )
 
@@ -52,7 +51,6 @@ set(SOURCES
     ukuipanellayout.cpp
     plugin.cpp
     pluginsettings.cpp
-    pluginmoveprocessor.cpp
 
     common/ukuiplugininfo.cpp
     common/ukuisettings.cpp
