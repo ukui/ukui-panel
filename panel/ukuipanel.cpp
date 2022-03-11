@@ -271,8 +271,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
 
     connect(UKUi::Settings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
 
-    connect(ukuiApp, SIGNAL(themeChanged()), this, SLOT(realign()));
-
     connect(m_standaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(m_standaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
 

@@ -27,7 +27,6 @@ set(PUB_HEADERS
 
     common/ukuisettings.h
     common/ukuiplugininfo.h
-    common/ukuiapplication.h
     common/ukuitranslator.h
 
     common/ukuigridlayout.h
@@ -51,7 +50,6 @@ set(SOURCES
 
     common/ukuiplugininfo.cpp
     common/ukuisettings.cpp
-    common/ukuiapplication.cpp
     common/ukuitranslator.cpp
 
     common/ukuigridlayout.cpp

@@ -29,8 +29,8 @@
 #define UKUIPanelAPPLICATION_H
 
 //#include <UKUi/Application>
-#include "common/ukuiapplication.h"
 #include "iukuipanelplugin.h"
+#include <QApplication>
 
 class QScreen;
 
@@ -48,7 +48,7 @@ class UKUIPanelApplicationPrivate;
  * to have more than one panel (for example one panel at the top and one
  * panel at the bottom of the screen) without additional effort.
  */
-class UKUIPanelApplication : public UKUi::Application
+class UKUIPanelApplication : public QApplication
 {
     Q_OBJECT
 public:

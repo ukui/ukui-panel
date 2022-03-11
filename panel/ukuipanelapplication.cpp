@@ -80,7 +80,7 @@ IUKUIPanel::Position UKUIPanelApplicationPrivate::computeNewPanelPosition(const 
 }
 
 UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
-    : UKUi::Application(argc, argv, true),
+    : QApplication(argc, argv, true),
     d_ptr(new UKUIPanelApplicationPrivate(this))
 
 {

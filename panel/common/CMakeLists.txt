@@ -41,7 +41,6 @@ set(UKUI_PKG_CONFIG_DESCRIPTION "Shared library for UKUi applications")
 set(HEADERS
     ukuisettings.h
     ukuiplugininfo.h
-    ukuiapplication.h
     ukuitranslator.h
 
     ukuigridlayout.h
@@ -64,7 +63,6 @@ set(PUBLIC_CLASSES
 set(SOURCES
     ukuiplugininfo.cpp
     ukuisettings.cpp
-    ukuiapplication.cpp
     ukuitranslator.cpp
     ukuiprogramfinder.cpp
 
