@@ -81,7 +81,6 @@ class UKUI_PANEL_API UKUIPanel : public QFrame, public IUKUIPanel
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString position READ qssPosition)
 
     Q_CLASSINFO("D-Bus Interface", "org.ukui.panel.settings")
     // for configuration dialog
@@ -169,13 +168,6 @@ public:
      */
     Plugin *findPlugin(const IUKUIPanelPlugin *iPlugin) const;
 
-    // For QSS properties ..................
-    /**
-     * @brief Returns the position as string
-     *
-     * \sa positionToStr().
-     */
-    QString qssPosition() const;
 
     /**
      * @brief Checks if this UKUIPanel can be placed at a given position
@@ -234,7 +226,6 @@ public:
     bool visibleMargin() const { return m_visibleMargin; }
     int animationTime() const { return m_animationTime; }
     int showDelay() const { return m_showDelayTimer.interval(); }
-    QString iconTheme() const;
 
     /*!
      * \brief Checks if a given Plugin is running and has the
@@ -309,13 +300,10 @@ public slots:
     void setLength(int length, bool inPercents, bool save); //!< \sa setPanelSize()
     void setPosition(int screen, IUKUIPanel::Position position, bool save); //!< \sa setPanelSize()
     void setAlignment(UKUIPanel::Alignment value, bool save); //!< \sa setPanelSize()
-    void setFontColor(QColor color, bool save); //!< \sa setPanelSize()
-    void setReserveSpace(bool reserveSpace, bool save); //!< \sa setPanelSize()
     void setHidable(bool hidable, bool save); //!< \sa setPanelSize()
     void setVisibleMargin(bool visibleMargin, bool save); //!< \sa setPanelSize()
     void setAnimationTime(int animationTime, bool save); //!< \sa setPanelSize()
     void setShowDelay(int showDelay, bool save); //!< \sa setPanelSize()
-    void setIconTheme(const QString& iconTheme);
 
     /**
      * @brief Saves the current configuration, i.e. writes the current
@@ -395,7 +383,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent *event);
-    void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
 
 public slots:
@@ -450,15 +437,6 @@ private slots:
      * @param plug
      */
     void pluginMoved(Plugin * plug);
-    /**
-     * @brief Removes this panel's entries from the config file and emits
-     * the deletedByUser signal.
-     * The "Remove Panel" button in the panel's contex menu will
-     * be connected to this slot, so this method will be called whenever
-     * the user clicks "Remove Panel".
-     */
-    void userRequestForDeletion();
-
 private:
     /**
      * @brief The UKUIPanelLayout of this panel. All the Plugins will be added
@@ -722,7 +700,6 @@ private:
     void connectToServer();
 
 private slots:
-    void panelReset();
     void keyChangedSlot(const QString &key);
     void priScreenChanged(int x, int y, int width, int height);
 

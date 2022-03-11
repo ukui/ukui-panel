@@ -15,7 +15,6 @@ set(PRIV_HEADERS
     ukuipanellayout.h
     plugin.h
     pluginsettings_p.h
-    ukuipanellimits.h
 )
 
 # using UKUi namespace in the public headers.
@@ -28,6 +27,7 @@ set(PUB_HEADERS
     common/ukuisettings.h
     common/ukuiplugininfo.h
     common/ukuitranslator.h
+    common/common.h
 
     common/ukuigridlayout.h
     common/ukuiglobals.h

@@ -39,7 +39,7 @@
 #include <QMouseEvent>
 #include <QPropertyAnimation>
 #include "plugin.h"
-#include "ukuipanellimits.h"
+#include "common/common.h"
 #include "iukuipanelplugin.h"
 #include "ukuipanel.h"
 #include <QToolButton>

@@ -50,35 +50,6 @@ UKUIPanelApplicationPrivate::UKUIPanelApplicationPrivate(UKUIPanelApplication *q
 }
 
 
-IUKUIPanel::Position UKUIPanelApplicationPrivate::computeNewPanelPosition(const UKUIPanel *p, const int screenNum)
-{
-//#define Q_D(Class) Class##Private * const d = d_func()
-//#define Q_Q(Class) Class * const q = q_func()
-    Q_Q(UKUIPanelApplication);
-    QVector<bool> screenPositions(4, false); // false means not occupied
-
-    for (int i = 0; i < q->m_panels.size(); ++i) {
-        if (p != q->m_panels.at(i)) {
-            // We are not the newly added one
-            if (screenNum == q->m_panels.at(i)->screenNum()) { // Panels on the same screen
-                int p = static_cast<int> (q->m_panels.at(i)->position());
-                screenPositions[p] = true; // occupied
-            }
-        }
-    }
-
-    int availablePosition = 0;
-
-    for (int i = 0; i < 4; ++i) { // Bottom, Top, Left, Right
-        if (!screenPositions[i]) {
-            availablePosition = i;
-            break;
-        }
-    }
-
-    return static_cast<IUKUIPanel::Position> (availablePosition);
-}
-
 UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     : QApplication(argc, argv, true),
     d_ptr(new UKUIPanelApplicationPrivate(this))
@@ -195,23 +166,6 @@ void UKUIPanelApplication::cleanup()
     qDeleteAll(m_panels);
 }
 
-void UKUIPanelApplication::addNewPanel()
-{
-    Q_D(UKUIPanelApplication);
-
-    QString name("panel_" + QUuid::createUuid().toString());
-
-    UKUIPanel *p = addPanel(name);
-    int screenNum = p->screenNum();
-    IUKUIPanel::Position newPanelPosition = d->computeNewPanelPosition(p, screenNum);
-    p->setPosition(screenNum, newPanelPosition, true);
-    QStringList panels = d->mSettings->value("panels").toStringList();
-    panels << name;
-    d->mSettings->setValue("panels", panels);
-
-    // Poupup the configuration dialog to allow user configuration right away
-//    p->showConfigDialog();
-}
 
 UKUIPanel* UKUIPanelApplication::addPanel(const QString& name)
 {
@@ -222,7 +176,6 @@ UKUIPanel* UKUIPanelApplication::addPanel(const QString& name)
     m_panels << panel;
 
     // reemit signals
-    connect(panel, &UKUIPanel::deletedByUser, this, &UKUIPanelApplication::removePanel);
     connect(panel, &UKUIPanel::pluginAdded, this, &UKUIPanelApplication::pluginAdded);
     connect(panel, &UKUIPanel::pluginRemoved, this, &UKUIPanelApplication::pluginRemoved);
 
@@ -235,41 +188,6 @@ void UKUIPanelApplication::handleScreenAdded(QScreen* newScreen)
     connect(newScreen, &QScreen::destroyed, this, &UKUIPanelApplication::screenDestroyed);
 }
 
-void UKUIPanelApplication::reloadPanelsAsNeeded()
-{
-    Q_D(UKUIPanelApplication);
-
-    // NOTE by PCMan: This is a workaround for Qt 5 bug #40681.
-    // Here we try to re-create the missing panels which are deleted in
-    // UKUIPanelApplication::screenDestroyed().
-
-    // qDebug() << "UKUIPanelApplication::reloadPanelsAsNeeded()";
-    const QStringList names = d->mSettings->value("panels").toStringList();
-    for(const QString& name : names)
-    {
-        bool found = false;
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-        for(int i=0;i<m_panels.size();i++){
-            UKUIPanel* panel=m_panels[i];
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-        for(UKUIPanel* panel : qAsConst(m_panels)){
-#endif
-            if(panel->name() == name)
-            {
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            // the panel is found in the config file but does not exist, create it.
-            qDebug() << "Workaround Qt 5 bug #40681: re-create panel:" << name;
-            addPanel(name);
-        }
-    }
-    qApp->setQuitOnLastWindowClosed(true);
-}
 
 void UKUIPanelApplication::screenDestroyed(QObject* screenObj)
 {
@@ -326,20 +244,6 @@ void UKUIPanelApplication::screenDestroyed(QObject* screenObj)
         qApp->setQuitOnLastWindowClosed(true);
 }
 
-void UKUIPanelApplication::removePanel(UKUIPanel* panel)
-{
-    Q_D(UKUIPanelApplication);
-    Q_ASSERT(m_panels.contains(panel));
-
-    m_panels.removeAll(panel);
-
-    QStringList panels = d->mSettings->value("panels").toStringList();
-    panels.removeAll(panel->name());
-    d->mSettings->setValue("panels", panels);
-
-    panel->deleteLater();
-}
-
 bool UKUIPanelApplication::isPluginSingletonAndRunnig(QString const & pluginId) const
 {
     for (auto const & panel : m_panels)
@@ -347,29 +251,6 @@ bool UKUIPanelApplication::isPluginSingletonAndRunnig(QString const & pluginId) 
             return true;
 
     return false;
-}
-
-// See UKUIPanelApplication::UKUIPanelApplication for why this isn't good.
-void UKUIPanelApplication::setIconTheme(const QString &iconTheme)
-{
-    Q_D(UKUIPanelApplication);
-
-    d->mSettings->setValue("iconTheme", iconTheme == m_globalIconTheme ? QString() : iconTheme);
-    QString newTheme = iconTheme.isEmpty() ? m_globalIconTheme : iconTheme;
-    if (newTheme != QIcon::themeName())
-    {
-        QIcon::setThemeName(newTheme);
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-        for(int i=0;i<m_panels.size();i++){
-            UKUIPanel *panel=m_panels[i];
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-        for(UKUIPanel* panel : qAsConst(m_panels)){
-#endif
-//            panel->update();
-//            panel->updateConfigDialog();
-        }
-    }
 }
 
 void UKUIPanelApplication::sigtermHandler(int signo)
