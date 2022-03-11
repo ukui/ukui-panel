@@ -19,13 +19,15 @@
 #include "ukuitaskclosebutton.h"
 #include "../panel/customstyle.h"
 UKUITaskCloseButton::UKUITaskCloseButton(const WId window, QWidget *parent):
-    QToolButton(parent),
+    QPushButton(parent),
     m_window(window)
 {
-    this->setStyle(new CustomStyle("closebutton"));
+//    this->setStyle(new CustomStyle("closebutton"));
     this->setIcon(QIcon::fromTheme("window-close-symbolic").pixmap(24,24));
     this->setIconSize(QSize(9,9));
-    this->setProperty("useIconHighlightEffect", 0x2);
+    this->setProperty("isWindowButton",0x02);
+    this->setProperty("useIconHighlightEffect", 0x08);
+    this->setFlat(true);
     //connect(parent, &UKUITaskBar::buttonRotationRefreshed, this, &UKUITaskGroup::setAutoRotation);
 }
 
@@ -42,7 +44,7 @@ void UKUITaskCloseButton::mousePressEvent(QMouseEvent* event)
 //    else if (Qt::MidButton == b && parentTaskBar()->closeOnMiddleClick())
 //        closeApplication();
 
-    QToolButton::mousePressEvent(event);
+    QPushButton::mousePressEvent(event);
 }
 
 /************************************************
@@ -53,6 +55,6 @@ void UKUITaskCloseButton::mouseReleaseEvent(QMouseEvent* event)
     if (event->button() == Qt::LeftButton) {
         emit sigClicked();
     }
-    QToolButton::mouseReleaseEvent(event);
+    QPushButton::mouseReleaseEvent(event);
 
 }
