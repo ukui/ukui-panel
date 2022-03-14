@@ -39,10 +39,9 @@
 #include <QMouseEvent>
 #include <QPropertyAnimation>
 #include "plugin.h"
-#include "ukuipanellimits.h"
+#include "common/common.h"
 #include "iukuipanelplugin.h"
 #include "ukuipanel.h"
-#include "pluginmoveprocessor.h"
 #include <QToolButton>
 #include <QStyle>
 
@@ -1018,38 +1017,6 @@ bool UKUIPanelLayout::itemIsSeparate(QLayoutItem *item)
 /************************************************
 
  ************************************************/
-void UKUIPanelLayout::startMovePlugin()
-{
-    Plugin *plugin = qobject_cast<Plugin*>(sender());
-    if (plugin)
-    {
-        // We have not memoryleaks there.
-        // The processor will be automatically deleted when stopped.
-        PluginMoveProcessor *moveProcessor = new PluginMoveProcessor(this, plugin);
-        moveProcessor->start();
-        connect(moveProcessor, SIGNAL(finished()), this, SLOT(finishMovePlugin()));
-    }
-}
-
-
-/************************************************
-
- ************************************************/
-void UKUIPanelLayout::finishMovePlugin()
-{
-    PluginMoveProcessor *moveProcessor = qobject_cast<PluginMoveProcessor*>(sender());
-    if (moveProcessor)
-    {
-        Plugin *plugin = moveProcessor->plugin();
-        int n = indexOf(plugin);
-        plugin->setAlignment(n<m_leftGrid->count() ? Plugin::AlignLeft : Plugin::AlignRight);
-        emit pluginMoved(plugin);
-    }
-}
-
-/************************************************
-
- ************************************************/
 void UKUIPanelLayout::moveUpPlugin(Plugin * plugin)
 {
     const int i = indexOf(plugin);
@@ -1062,8 +1029,6 @@ void UKUIPanelLayout::moveUpPlugin(Plugin * plugin)
  ************************************************/
 void UKUIPanelLayout::addPlugin(Plugin * plugin)
 {
-    connect(plugin, &Plugin::startMove, this, &UKUIPanelLayout::startMovePlugin);
-
     const int prev_count = count();
     addWidget(plugin);
 

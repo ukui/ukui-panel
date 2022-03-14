@@ -36,8 +36,6 @@ public:
 
     UKUi::Settings *mSettings;
 
-    IUKUIPanel::Position computeNewPanelPosition(const UKUIPanel *p, const int screenNum);
-
 private:
     UKUIPanelApplication *const q_ptr;
 };

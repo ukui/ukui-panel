@@ -26,7 +26,7 @@
 
 
 #include "ukuipanel.h"
-#include "ukuipanellimits.h"
+#include "common/common.h"
 #include "iukuipanelplugin.h"
 #include "ukuipanelapplication.h"
 #include "ukuipanellayout.h"
@@ -65,51 +65,6 @@
 #ifdef DEBUG_PLUGIN_LOADTIME
 #include <QElapsedTimer>
 #endif
-
-// Config keys and groups
-#define CFG_KEY_SCREENNUM          "desktop"
-#define CFG_KEY_POSITION           "position"
-#define CFG_KEY_LINECNT            "lineCount"
-#define CFG_KEY_LENGTH             "width"
-#define CFG_KEY_PERCENT            "width-percent"
-#define CFG_KEY_ALIGNMENT          "alignment"
-#define CFG_KEY_RESERVESPACE       "reserve-space"
-#define CFG_KEY_PLUGINS            "plugins"
-#define CFG_KEY_HIDABLE            "hidable"
-#define CFG_KEY_VISIBLE_MARGIN     "visible-margin"
-#define CFG_KEY_ANIMATION          "animation-duration"
-#define CFG_KEY_SHOW_DELAY         "show-delay"
-#define CFG_KEY_LOCKPANEL          "lockPanel"
-#define CFG_KEY_PLUGINS_PC         "plugins-pc"
-#define CFG_KEY_PLUGINS_PAD         "plugins-pad"
-
-#define GSETTINGS_SCHEMA_SCREENSAVER "org.mate.interface"
-#define KEY_MODE "gtk-theme"
-
-#define PANEL_SIZE_LARGE  92
-#define PANEL_SIZE_MEDIUM 70
-#define PANEL_SIZE_SMALL  46
-#define ICON_SIZE_LARGE   64
-#define ICON_SIZE_MEDIUM  48
-#define ICON_SIZE_SMALL   32
-#define PANEL_SIZE_LARGE_V 70
-#define PANEL_SIZE_MEDIUM_V 62
-#define PANEL_SIZE_SMALL_V 47
-#define POPUP_BORDER_SPACING 4
-
-#define PANEL_SETTINGS      "org.ukui.panel.settings"
-#define PANEL_SIZE_KEY      "panelsize"
-#define ICON_SIZE_KEY       "iconsize"
-#define PANEL_POSITION_KEY  "panelposition"
-#define SHOW_TASKVIEW       "showtaskview"
-#define SHOW_NIGHTMODE      "shownightmode"
-
-#define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
-#define TRANSPARENCY_KEY            "transparency"
-
-#define UKUI_SERVICE        "org.gnome.SessionManager"
-#define UKUI_PATH           "/org/gnome/SessionManager"
-#define UKUI_INTERFACE      "org.gnome.SessionManager"
 
 
 /************************************************
@@ -270,8 +225,6 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     });
 
     connect(UKUi::Settings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
-
-    connect(ukuiApp, SIGNAL(themeChanged()), this, SLOT(realign()));
 
     connect(m_standaloneWindows.data(), &WindowNotifier::firstShown, [this] { showPanel(true); });
     connect(m_standaloneWindows.data(), &WindowNotifier::lastHidden, this, &UKUIPanel::hidePanel);
@@ -842,48 +795,6 @@ int UKUIPanel::findAvailableScreen(UKUIPanel::Position position)
     return 0;
 }
 
-
-//void UKUIPanel::showConfigDialog()
-//{
-//        if (mConfigDialog.isNull())
-//            mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
-
-//        mConfigDialog->showConfigPanelPage();
-//        mStandaloneWindows->observeWindow(mConfigDialog.data());
-//        mConfigDialog->show();
-//        mConfigDialog->raise();
-//        mConfigDialog->activateWindow();
-//        WId wid = mConfigDialog->windowHandle()->winId();
-
-//        KWindowSystem::activateWindow(wid);
-//        KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
-
-//    mConfigDialog = new ConfigPanelDialog(this, nullptr);
-//    mConfigDialog->show();
-//    //mConfigWidget->positionChanged();
-
-//}
-
-
-/************************************************
-
- ************************************************/
-//void UKUIPanel::showAddPluginDialog()
-//{
-//    if (mConfigDialog.isNull())
-//        mConfigDialog = new ConfigPanelDialog(this, nullptr /*make it top level window*/);
-
-//    mConfigDialog->showConfigPluginsPage();
-//    mStandaloneWindows->observeWindow(mConfigDialog.data());
-//    mConfigDialog->show();
-//    mConfigDialog->raise();
-//    mConfigDialog->activateWindow();
-//    WId wid = mConfigDialog->windowHandle()->winId();
-
-//    KWindowSystem::activateWindow(wid);
-//    KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
-//}
-
 /*右键　系统监视器选项*/
 void UKUIPanel::systeMonitor()
 {
@@ -1150,47 +1061,14 @@ void UKUIPanel::setAlignment(Alignment value, bool save)
     realign();
 }
 
-/************************************************
- *
- ************************************************/
-void UKUIPanel::setFontColor(QColor color, bool save)
-{
-    m_fontColor = color;
-
-    if (save)
-        saveSettings(true);
-}
-
-/************************************************
-
- ************************************************/
-void UKUIPanel::setReserveSpace(bool reserveSpace, bool save)
-{
-    if (m_reserveSpace == reserveSpace)
-        return;
-
-    m_reserveSpace = reserveSpace;
-
-    if (save)
-        saveSettings(true);
-
-    updateWmStrut();
-}
 
 
-/************************************************
-
- ************************************************/
 QRect UKUIPanel::globalGeometry() const
 {
     // panel is the the top-most widget/window, no calculation needed
     return geometry();
 }
 
-
-/************************************************
-
- ************************************************/
 bool UKUIPanel::event(QEvent *event)
 {
     switch (event->type())
@@ -1228,12 +1106,12 @@ bool UKUIPanel::event(QEvent *event)
         event->accept();
         //no break intentionally
     case QEvent::Enter:
-//        reloadPlugins("pc");
         m_showDelayTimer.start();
         break;
 
     case QEvent::Leave:
-//        reloadPlugins("pad");
+        setCursor(Qt::ArrowCursor);
+        break;
     case QEvent::DragLeave:
         m_showDelayTimer.stop();
         hidePanel();
@@ -1337,18 +1215,6 @@ void UKUIPanel::showPopupMenu(Plugin *plugin)
             delete m;
         }
     }
-
-/*
-//    menu->addTitle(QIcon(), tr("Panel"));
-    menu->addAction(XdgIcon::fromTheme(QLatin1String("configure")),
-                   tr("Configure Panel"),
-                   this, SLOT(showConfigDialog())
-                  )->setDisabled(mLockPanel);
-    menu->addAction(XdgIcon::fromTheme("preferences-plugin"),
-                   tr("Manage Widgets"),
-                   this, SLOT(showAddPluginDialog())
-                  )->setDisabled(mLockPanel);
-*/
 
     m_menu->addSeparator();
 
@@ -1512,9 +1378,6 @@ QRect UKUIPanel::calculatePopupWindowPos(QPoint const & absolutePos, QSize const
     return res;
 }
 
-/************************************************
-
- ************************************************/
 QRect UKUIPanel::calculatePopupWindowPos(const IUKUIPanelPlugin *plugin, const QSize &windowSize) const
 {
     Plugin *panel_plugin = findPlugin(plugin);
@@ -1532,33 +1395,16 @@ QRect UKUIPanel::calculatePopupWindowPos(const IUKUIPanelPlugin *plugin, const Q
 }
 
 
-/************************************************
-
- ************************************************/
 void UKUIPanel::willShowWindow(QWidget * w)
 {
     m_standaloneWindows->observeWindow(w);
 }
 
-/************************************************
-
- ************************************************/
 void UKUIPanel::pluginFlagsChanged(const IUKUIPanelPlugin * /*plugin*/)
 {
     m_layout->rebuild();
 }
 
-/************************************************
-
- ************************************************/
-QString UKUIPanel::qssPosition() const
-{
-    return positionToStr(position());
-}
-
-/************************************************
-
- ************************************************/
 void UKUIPanel::pluginMoved(Plugin * plug)
 {
     //get new position of the moved plugin
@@ -1579,33 +1425,6 @@ void UKUIPanel::pluginMoved(Plugin * plug)
     m_plugins->movePlugin(plug, plug_is_before);
 }
 
-
-/************************************************
-
- ************************************************/
-void UKUIPanel::userRequestForDeletion()
-{
-    const QMessageBox::StandardButton ret
-            = QMessageBox::warning(this, tr("Remove Panel", "Dialog Title") ,
-                                   tr("Removing a panel can not be undone.\nDo you want to remove this panel?"),
-                                   QMessageBox::Yes | QMessageBox::No);
-
-    if (ret != QMessageBox::Yes) {
-        return;
-    }
-
-    m_settings->beginGroup(m_configGroup);
-    const QStringList plugins = m_settings->value("plugins").toStringList();
-    m_settings->endGroup();
-
-    for(const QString& i : plugins)
-        if (!i.isEmpty())
-            m_settings->remove(i);
-
-    m_settings->remove(m_configGroup);
-
-    emit deletedByUser(this);
-}
 
 void UKUIPanel::showPanel(bool animate)
 {
@@ -1688,28 +1507,6 @@ void UKUIPanel::setShowDelay(int showDelay, bool save)
         saveSettings(true);
 }
 
-QString UKUIPanel::iconTheme() const
-{
-    return m_settings->value("iconTheme").toString();
-}
-
-void UKUIPanel::setIconTheme(const QString& iconTheme)
-{
-    UKUIPanelApplication *a = reinterpret_cast<UKUIPanelApplication*>(qApp);
-    a->setIconTheme(iconTheme);
-}
-
-//void UKUIPanel::updateConfigDialog() const
-//{
-//    if (!mConfigDialog.isNull() && mConfigDialog->isVisible())
-//    {
-//        mConfigDialog->updateIconThemeSettings();
-//        const QList<QWidget*> widgets = mConfigDialog->findChildren<QWidget*>();
-//        for (QWidget *widget : widgets)
-//            widget->update();
-//    }
-//}
-
 bool UKUIPanel::isPluginSingletonAndRunnig(QString const & pluginId) const
 {
     Plugin const * plugin = m_plugins->pluginByID(pluginId);
@@ -1717,12 +1514,6 @@ bool UKUIPanel::isPluginSingletonAndRunnig(QString const & pluginId) const
         return false;
     else
         return plugin->iPlugin()->flags().testFlag(IUKUIPanelPlugin::SingleInstance);
-}
-
-void UKUIPanel::panelReset()
-{
-    QFile::remove(QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
-    QFile::copy("/usr/share/ukui/panel.conf",QString(qgetenv("HOME"))+"/.config/ukui/panel.conf");
 }
 
 void UKUIPanel::connectToServer(){
@@ -1775,10 +1566,6 @@ IUKUIPanel::Position UKUIPanel::areaDivid(QPoint globalpos) {
 
 void UKUIPanel::mousePressEvent(QMouseEvent *event) {
     setCursor(Qt::DragMoveCursor);
-}
-
-void UKUIPanel::enterEvent(QEvent *event) {
-       // setCursor(Qt::SizeVerCursor);
 }
 
 void UKUIPanel::leaveEvent(QEvent *event) {

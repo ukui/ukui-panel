@@ -52,7 +52,6 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include "../panel/iukuipanelplugin.h"
-#include "../panel/highlight-effect.h"
 #include <QSize>
 #include <QScreen>
 #include <XdgIcon>
@@ -259,9 +258,9 @@ void UKUITaskGroup::contextMenuEvent(QContextMenuEvent *event)
         menu->addActions(m_act->addtitionalActions());
         menu->addSeparator();
         menu->addSeparator();
-        QAction *m_deleteAct = menu->addAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-unfixed")), tr("delete from taskbar"));
+        QAction *m_deleteAct = menu->addAction(QIcon::fromTheme("ukui-unfixed"), tr("delete from taskbar"));
         connect(m_deleteAct, SIGNAL(triggered()), this, SLOT(RemovefromTaskBar()));
-        QAction *mAddAct = menu->addAction(HighLightEffect::drawSymbolicColoredIcon(QIcon::fromTheme("ukui-fixed")), tr("add to taskbar"));
+        QAction *mAddAct = menu->addAction(QIcon::fromTheme("ukui-fixed"), tr("add to taskbar"));
         connect(mAddAct, SIGNAL(triggered()), this, SLOT(AddtoTaskBar()));
         if (m_existSameQckBtn) {
             menu->removeAction(mAddAct);

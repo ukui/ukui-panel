@@ -30,7 +30,6 @@
 #include <QDBusMessage>
 
 #include "../panel/ukuipanel.h"
-#include "../panel/ukuicontrolstyle.h"
 
 class NightModeButton:public QToolButton
 {

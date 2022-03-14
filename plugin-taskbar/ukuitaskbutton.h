@@ -37,7 +37,6 @@
 #include "../panel/iukuipanel.h"
 //#include <QWinThumbnailToolBar>
 #include <QtX11Extras/qtx11extrasversion.h>
-#include "../panel/ukuicontrolstyle.h"
 
 #include "quicklaunchaction.h"
 #include <QMimeData>
@@ -45,6 +44,7 @@
 #include <QStyleOption>
 #include <QGSettings>
 #include <QPainter>
+#include <QMenu>
 
 class QPainter;
 class QPalette;

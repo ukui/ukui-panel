@@ -15,9 +15,6 @@ set(PRIV_HEADERS
     ukuipanellayout.h
     plugin.h
     pluginsettings_p.h
-    ukuipanellimits.h
-    pluginmoveprocessor.h
-    highlight-effect.h
 )
 
 # using UKUi namespace in the public headers.
@@ -29,8 +26,8 @@ set(PUB_HEADERS
 
     common/ukuisettings.h
     common/ukuiplugininfo.h
-    common/ukuiapplication.h
     common/ukuitranslator.h
+    common/common.h
 
     common/ukuigridlayout.h
     common/ukuiglobals.h
@@ -38,8 +35,6 @@ set(PUB_HEADERS
     common_fun/ukuipanel_infomation.h
     common_fun/dbus-adaptor.h
     common_fun/panel_commission.h
-    ukuicontrolstyle.h
-    highlight-effect.cpp
     customstyle.h
 )
 
@@ -52,12 +47,9 @@ set(SOURCES
     ukuipanellayout.cpp
     plugin.cpp
     pluginsettings.cpp
-    pluginmoveprocessor.cpp
-    ukuipanelpluginconfigdialog.cpp
 
     common/ukuiplugininfo.cpp
     common/ukuisettings.cpp
-    common/ukuiapplication.cpp
     common/ukuitranslator.cpp
 
     common/ukuigridlayout.cpp
@@ -65,7 +57,6 @@ set(SOURCES
     common_fun/ukuipanel_infomation.cpp
     common_fun/dbus-adaptor.cpp
     common_fun/panel_commission.cpp
-    ukuicontrolstyle.cpp
     customstyle.cpp
 )
 
