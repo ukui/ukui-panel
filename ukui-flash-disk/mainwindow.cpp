@@ -424,6 +424,7 @@ void MainWindow::getDeviceInfo()
                     m_dataFlashDisk->addDriveInfo(driveInfo);
 
                     if (G_IS_DRIVE(gdrive) && !driveInfo.strId.empty() && g_str_has_prefix (driveInfo.strId.c_str(), "/dev/sr")) {
+                        mount_cdrom (gdrive, NULL);
                         g_signal_connect(G_DRIVE(gdrive), "changed", G_CALLBACK (mount_cdrom), NULL);
                     }
                 }
