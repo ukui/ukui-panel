@@ -144,7 +144,7 @@ function mount_udf_cdrom()
 {
     if [[ "x$1" != "x" && "x$2" != "x" ]]; then
         [[ ! -d "$2" ]] && mkdir -p "$2"
-        mount -t udf "$1" "$2"
+        mount -o nouser "$1" "$2"
     fi
 }
 
