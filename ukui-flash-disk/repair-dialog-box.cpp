@@ -144,10 +144,37 @@ void RepairDialogBox::initUI()
     setWindowTitle(tr("Disk test"));
     setBackgroundRole(QPalette::Base);
     setContentsMargins(24, 24, 24, 24);
-    setFixedSize(mFixWidth, mFixHeight);
 
     setWindowIcon(QIcon::fromTheme("system-file-manager"));
     setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
+
+    QGSettings* fontSettings = nullptr;
+    const QByteArray id1(THEME_QT_SCHEMA);
+    static int fontSize;
+
+    if(QGSettings::isSchemaInstalled(id1))
+    {
+        fontSettings = new QGSettings(id1);
+    }
+
+    fontSize = fontSettings->get(FONT_SIZE).toString().toFloat();
+    if(fontSize>=14)
+    {
+        setFixedSize(mFixWidth, mFixHeight+55);
+    }else{
+        setFixedSize(mFixWidth, mFixHeight);
+    }
+    QObject::connect(fontSettings,&QGSettings::changed,[=](QString key)
+    {
+       fontSize = fontSettings->get(FONT_SIZE).toString().toFloat();
+       if(fontSize>=14)
+       {
+           setFixedSize(mFixWidth, mFixHeight+55);
+       }
+       else{
+           setFixedSize(mFixWidth, mFixHeight);
+       }
+    });
 
     QGridLayout* mainLayout = new QGridLayout(this);
     mainLayout->setContentsMargins(0,0,0,0);
@@ -552,7 +579,7 @@ BaseDialog::BaseDialog(QWidget *parent) : QDialog(parent)
 
         connect(mGSettings, &QGSettings::changed, this, [=] (const QString &key) {
             if ("styleName" == key) {
-                setStyleSheet ("QCheckBox{margin:3px;}");
+                //setStyleSheet ("QCheckBox{margin:3px;}");
                 QPalette p = getPalette();
                 for (auto obj : children ()) {
                     if (QWidget* w = qobject_cast<QWidget*>(obj)) {
@@ -570,7 +597,7 @@ BaseDialog::BaseDialog(QWidget *parent) : QDialog(parent)
 
     if (qgetenv ("DESKTOP_SESSION") == "ukui" && qgetenv ("XDG_SESSION_TYPE") == "x11") {
         setStyle (BaseDialogStyle::getStyle ());
-        setStyleSheet ("QCheckBox{margin:3px;}");
+        //setStyleSheet ("QCheckBox{margin:3px;}");
     }
 }
 

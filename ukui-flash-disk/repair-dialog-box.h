@@ -37,6 +37,7 @@
 #include <gio/gio.h>
 #include "device-operation.h"
 #include "flashdiskdata.h"
+#include "MacroFile.h"
 
 class QGSettings;
 class QDBusConnection;
