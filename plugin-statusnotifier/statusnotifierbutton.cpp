@@ -35,6 +35,7 @@
 #include "../panel/iukuipanelplugin.h"
 #include "sniasync.h"
 #include "../panel/customstyle.h"
+#include "../panel/highlight-effect.h"
 #include <QDebug>
 #include <KWindowEffects>
 //#include <XdgIcon>
@@ -182,8 +183,9 @@ void StatusNotifierButton::refetchIcon(Status status)
                     }
                 }
             }
-
-            switch (status)
+	    nextIcon=HighLightEffect::drawSymbolicColoredIcon(nextIcon);
+           
+	    switch (status)
             {
                 case Active:
                     mOverlayIcon = nextIcon;
