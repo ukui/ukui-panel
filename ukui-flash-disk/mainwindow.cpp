@@ -35,7 +35,11 @@
 #include "MacroFile.h"
 #include "datacdrom.h"
 
-static void mount_cdrom (GDrive* drive, gpointer u);
+ static void mount_cdrom (GDrive* drive, gpointer u);
+ static void eject_cdrom (GDrive* drive, gpointer u);
+
+static QMap<QString, bool>* gMountCdrom = nullptr;
+static QMap<QString, QString>* gMountCdromMountPoint = nullptr;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -844,6 +848,19 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
     // disconnect udf cdrom
     if (!driveInfo.strId.empty() && G_IS_DRIVE(drive)) {
         g_signal_handlers_disconnect_by_func (drive, (void*) mount_cdrom, NULL);
+
+        qDebug() << "DJ- udf cdrom disconnected";
+        if (gMountCdrom->contains (QString(driveInfo.strId.c_str()))) {
+            gMountCdrom->remove (QString(driveInfo.strId.c_str()));
+            QStringList mountPoints;
+            for (auto val : gMountCdromMountPoint->values()) {
+                if (QString(driveInfo.strId.c_str()) == val) {
+                    mountPoints << val;
+                }
+            }
+            for (auto m : mountPoints)
+                gMountCdromMountPoint->remove (m);
+        }
     }
 
     vector<string>::iterator itDeviceId = p_this->m_vtDeviveId.begin();
@@ -1164,6 +1181,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     FDVolumeInfo volumeInfo;
     FDMountInfo mountInfo;
     bool isValidMount = true;
+
     if (gdrive) {
         char *devPath = g_drive_get_identifier(gdrive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
         if (devPath != NULL) {
@@ -1179,6 +1197,11 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
             g_free(devPath);
+        }
+
+        if (gMountCdrom->contains (QString(driveInfo.strId.c_str()))) {
+            (*gMountCdrom)[QString(driveInfo.strId.c_str())] = true;
+            qDebug() << "DJ- Mount add" << driveInfo.strId.c_str();
         }
         g_object_unref(gdrive);
     }
@@ -1328,6 +1351,19 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
     if (mountName) {
         mountInfo.strName = mountName;
         g_free(mountName);
+    }
+
+    qDebug() << "DJ- Umount --- 1 " << mountInfo.strName.c_str();
+    g_autoptr (GFile) mountP = g_mount_get_root (mount);
+    if (G_IS_FILE(mountP)) {
+        g_autofree char* path = g_file_get_path (mountP);
+        if (gMountCdromMountPoint->contains (QString(path))) {
+            QString devName = (*gMountCdromMountPoint)[path];
+            if (gMountCdrom->contains (devName)) {
+                (*gMountCdrom)[devName] = false;
+                qDebug() << "DJ- Umount(not auto mount) --- 2 " << devName;
+            }
+        }
     }
     mountInfo.isCanUnmount = g_mount_can_unmount(mount);
     GFile *root = g_mount_get_default_location(mount);
@@ -3200,22 +3236,72 @@ void MainWindow::getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo)
     }
 }
 
+static void eject_cdrom (GDrive* drive, gpointer u)
+{
+    qDebug() << "DJ-  eject!!!";
+
+    g_return_if_fail (G_IS_DRIVE (drive));
+
+    g_autofree char* devName = g_drive_get_identifier (drive, G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+
+    if (devName) {
+        if (gMountCdrom->contains (QString(devName))) {
+            gMountCdrom->remove (QString(devName));
+            QStringList mountPoints;
+            for (auto val : gMountCdromMountPoint->values()) {
+                if (QString(devName) == val) {
+                    mountPoints << val;
+                }
+            }
+            for (auto m : mountPoints)
+                gMountCdromMountPoint->remove (m);
+        }
+    }
+}
+
 static void mount_cdrom (GDrive* drive, gpointer u)
 {
     g_return_if_fail(G_IS_DRIVE (drive));
 
+    if (!gMountCdrom) {
+        gMountCdrom = new QMap<QString, bool>();
+    }
+
+    if (!gMountCdromMountPoint) {
+        gMountCdromMountPoint = new QMap<QString, QString>();
+    }
+
+    bool canMount = true;
     if (g_drive_has_media (drive)) {
         g_autofree char* devName = g_drive_get_identifier (drive, G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
         const char* name = g_get_user_name ();
         if (devName && name) {
-            qDebug() << "DJ- execute return: " << QProcess::execute ("pkexec", QStringList()
-            << "/usr/bin/ukui-flash-disks-pkexec.sh"
-            << "-d"
-            << devName
-            << "-p"
-            << QString("/media/%1/%2").arg(name)
-            .arg(QString(QCryptographicHash::hash(devName, QCryptographicHash::Md5).toBase64()
-            .replace ("/", "").replace ("+","").replace ("=", ""))));
+
+            QString mountPoint = QString("/media/%1/%2").arg(name)
+                    .arg(QString(QCryptographicHash::hash(devName, QCryptographicHash::Md5).toBase64()
+                    .replace ("/", "").replace ("+","").replace ("=", "")));
+
+            if (gMountCdrom->contains (devName) && !(*gMountCdrom)[QString(devName)]) {
+                canMount = false;
+            }
+
+            if (canMount) {
+                int ret = QProcess::execute ("pkexec", QStringList()
+                        << "/usr/bin/ukui-flash-disks-pkexec.sh"
+                        << "-d"
+                        << devName
+                        << "-p"
+                        << mountPoint);
+
+                qDebug() << "DJ- execute 'mount_cdrom' return: " << ret;
+
+                if (!gMountCdrom->contains (devName)) {
+                    gMountCdrom->insert (QString(devName), true);
+                    gMountCdromMountPoint->insert (mountPoint, QString(devName));
+                }
+            }
         }
+    } else {
+        eject_cdrom (drive, u);
     }
 }
