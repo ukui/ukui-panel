@@ -15,6 +15,7 @@ set(PRIV_HEADERS
     ukuipanellayout.h
     plugin.h
     pluginsettings_p.h
+    highlight-effect.h
 )
 
 # using UKUi namespace in the public headers.
@@ -58,6 +59,7 @@ set(SOURCES
     common_fun/dbus-adaptor.cpp
     common_fun/panel_commission.cpp
     customstyle.cpp
+    highlight-effect.cpp
 )
 
 file(GLOB CONFIG_FILES resources/*.conf resources/*.qss)
