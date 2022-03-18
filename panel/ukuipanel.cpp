@@ -270,7 +270,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
                                     "com.kylin.statusmanager.interface",
                                     QDBusConnection::sessionBus(),this);
 
-    if(m_interface->isValid()){
+    if (m_interface->isValid()) {
         QDBusReply<bool> status = m_interface->call("get_current_tabletmode");
         m_model = status;
     }
@@ -401,6 +401,7 @@ UKUIPanel::~UKUIPanel()
 {
     m_layout->setEnabled(false);
     delete m_animation;
+    delete m_interface;
 //    delete mConfigDialog.data();
     // do not save settings because of "user deleted panel" functionality saveSettings();
 }
