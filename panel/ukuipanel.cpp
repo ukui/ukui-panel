@@ -134,7 +134,8 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     m_animationTime(0),
     m_reserveSpace(true),
     m_animation(nullptr),
-    m_lockPanel(false)
+    m_lockPanel(false),
+    m_model(false)
 {
     qDebug()<<"Panel :: Constructor start";
     //You can find information about the flags and widget attributes in your
@@ -265,7 +266,18 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     loadPlugins();
     qDebug()<<"Panel :: loadPlugins finished";
 
-    show();
+    m_interface = new QDBusInterface("com.kylin.statusmanager.interface","/",
+                                    "com.kylin.statusmanager.interface",
+                                    QDBusConnection::sessionBus(),this);
+
+    if(m_interface->isValid()){
+        QDBusReply<bool> status = m_interface->call("get_current_tabletmode");
+        m_model = status;
+    }
+    setPanelHide(m_model);
+    QDBusConnection::sessionBus().connect("com.kylin.statusmanager.interface","/",
+                             "com.kylin.statusmanager.interface","mode_change_signal",
+                             this,SLOT(setPanelHide(bool)));
     qDebug()<<"Panel :: show UKuiPanel finished";	
     //给session发信号，告知任务栏已经启动完成，可以启动下一个组件
     QDBusInterface interface(UKUI_SERVICE,
@@ -288,6 +300,16 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     if(!con.registerService("org.ukui.panel") ||
             !con.registerObject("/panel/position",dbus)) {
         qDebug()<<"fail";
+    }
+}
+
+void UKUIPanel::setPanelHide(bool model)
+{
+    m_model = model;
+    if (m_model) {
+        hide();
+    } else {
+        show();
     }
 }
 

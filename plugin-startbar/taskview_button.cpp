@@ -17,6 +17,8 @@
  */
 
 #include "taskview_button.h"
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusConnection>
 
 
 TaskViewButton::TaskViewButton(IUKUIPanelPlugin *plugin,QWidget *parent):
@@ -79,6 +81,11 @@ void TaskViewButton::mousePressEvent(QMouseEvent *event)
 
     //调用命令
     if (Qt::LeftButton == b){
+        QDBusInterface iface("org.ukui.KWin",
+                             "/WindowsView",
+                             "org.ukui.KWin.WindowsView",
+                             QDBusConnection::sessionBus());
+        iface.call("showWindowsView");
         system("ukui-window-switch --show-workspace");
     }
 
