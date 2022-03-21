@@ -702,12 +702,15 @@ private:
 private slots:
     void keyChangedSlot(const QString &key);
     void priScreenChanged(int x, int y, int width, int height);
+    void setPanelHide(bool model);
 
 
 public:
     QGSettings *m_gsettings;
     QGSettings *m_transparencyGsettings;
     QTimer *m_time;
+
+    QDBusInterface *m_interface;
 
 };
 
