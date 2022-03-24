@@ -505,6 +505,12 @@ void FormateDialog::initUI()
     mFSCombox->addItem("vfat/fat32");
     mainLayout->addWidget(fsLabel, 2, 1, 1, 2);
     mainLayout->addWidget(mFSCombox, 2, 3, 1, 6);
+    if (BaseDialog* wi = qobject_cast<BaseDialog*>(this)) {
+        QAbstractItemView * popuView = mFSCombox->view();
+        popuView->setPalette(wi->palette());
+        popuView = mRomSizeCombox->view();
+        popuView->setPalette(wi->palette());
+    }
 
     QLabel* uNameLabel = new QLabel;
     uNameLabel->setText(tr("Disk name:"));
@@ -585,6 +591,11 @@ BaseDialog::BaseDialog(QWidget *parent) : QDialog(parent)
                     if (QWidget* w = qobject_cast<QWidget*>(obj)) {
                         w->setPalette (p);
                         w->update ();
+                        if (QComboBox * combo = qobject_cast<QComboBox*>(obj)) {
+                            QAbstractItemView * popuView = combo->view();
+                            popuView->setPalette(p);
+                            popuView->update();
+                        }
                     }
                 }
                 setPalette(p);
@@ -595,7 +606,8 @@ BaseDialog::BaseDialog(QWidget *parent) : QDialog(parent)
 
     setTheme();
 
-    if (qgetenv ("DESKTOP_SESSION") == "ukui" && qgetenv ("XDG_SESSION_TYPE") == "x11") {
+    if ((qgetenv ("DESKTOP_SESSION") == "ukui" && qgetenv ("XDG_SESSION_TYPE") == "x11")||
+		(qgetenv ("DESKTOP_SESSION") == "ukui-wayland" && qgetenv ("XDG_SESSION_TYPE") == "wayland")) {
         setStyle (BaseDialogStyle::getStyle ());
         //setStyleSheet ("QCheckBox{margin:3px;}");
     }
