@@ -710,7 +710,6 @@ public:
     QGSettings *m_transparencyGsettings;
     QTimer *m_time;
 
-    bool m_model;
     QDBusInterface *m_interface;
 
 };
