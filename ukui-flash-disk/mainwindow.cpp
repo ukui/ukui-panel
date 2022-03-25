@@ -850,7 +850,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
         g_signal_handlers_disconnect_by_func (drive, (void*) mount_cdrom, NULL);
 
         qDebug() << "DJ- udf cdrom disconnected";
-        if (gMountCdrom->contains (QString(driveInfo.strId.c_str()))) {
+        if (gMountCdrom && gMountCdrom->contains (QString(driveInfo.strId.c_str()))) {
             gMountCdrom->remove (QString(driveInfo.strId.c_str()));
             QStringList mountPoints;
             for (auto val : gMountCdromMountPoint->values()) {
@@ -1199,7 +1199,7 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
             g_free(devPath);
         }
 
-        if (gMountCdrom->contains (QString(driveInfo.strId.c_str()))) {
+        if (gMountCdrom && gMountCdrom->contains (QString(driveInfo.strId.c_str()))) {
             (*gMountCdrom)[QString(driveInfo.strId.c_str())] = true;
             qDebug() << "DJ- Mount add" << driveInfo.strId.c_str();
         }
@@ -1357,7 +1357,7 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
     g_autoptr (GFile) mountP = g_mount_get_root (mount);
     if (G_IS_FILE(mountP)) {
         g_autofree char* path = g_file_get_path (mountP);
-        if (gMountCdromMountPoint->contains (QString(path))) {
+        if (gMountCdromMountPoint && gMountCdromMountPoint->contains (QString(path))) {
             QString devName = (*gMountCdromMountPoint)[path];
             if (gMountCdrom->contains (devName)) {
                 (*gMountCdrom)[devName] = false;
