@@ -114,7 +114,15 @@ NightModeButton::NightModeButton( IUKUIPanelPlugin *plugin, QWidget* parent):
     if(QGSettings::isSchemaInstalled(gtkstyleid)) {
         mgtkstyleGsettings = new QGSettings(gtkstyleid);
     }
+    
+    QDBusInterface iproperty("org.ukui.KWin",
+                             "/ColorCorrect",
+                             "org.ukui.kwin.ColorCorrect",
+                             QDBusConnection::sessionBus());
 
+    if (!iproperty.isValid()) {
+        this->setVisible(false);
+    }
     QDBusConnection::sessionBus().connect(QString(),
                                           QString("/ColorCorrect"),
                                           "org.ukui.kwin.ColorCorrect",
