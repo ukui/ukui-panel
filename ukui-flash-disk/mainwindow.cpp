@@ -309,7 +309,7 @@ void MainWindow::getDeviceInfo()
     g_signal_connect (g_volume_monitor, "mount-removed", G_CALLBACK (mount_removed_callback), this);
 
     GList *lDrive = NULL, *lVolume = NULL, *lMount = NULL;
-    p_this->m_ismountadd = false;
+    m_ismountadd = false;
     // about drive
     GList *current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
     for (lDrive = current_drive_list; lDrive != NULL; lDrive = lDrive->next) {
