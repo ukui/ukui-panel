@@ -58,7 +58,7 @@ public:
     QSystemTrayIcon *m_systray;
     ejectInterface *m_eject = nullptr;
     interactiveDialog *chooseDialog = nullptr;
-    bool m_ismountadd;
+    bool m_ismountadd = false;
     bool ifSucess;
     int flagType;
     int driveMountNum;
