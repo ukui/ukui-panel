@@ -134,7 +134,7 @@ UKUIPanel::UKUIPanel(const QString &configGroup, UKUi::Settings *settings, QWidg
     m_animationTime(0),
     m_reserveSpace(true),
     m_animation(nullptr),
-    m_lockPanel(false),
+    m_lockPanel(false)
 {
     qDebug()<<"Panel :: Constructor start";
     //You can find information about the flags and widget attributes in your
