@@ -118,6 +118,7 @@ RepairDialogBox::RepairDialogBox(GVolume* volume, QWidget* parent) : BaseDialog(
         }
     });
 }
+bool RepairDialogBox::mshowflag = false;
 
 void RepairDialogBox::onRemountDevice()
 {
@@ -158,7 +159,7 @@ void RepairDialogBox::initUI()
     }
 
     fontSize = fontSettings->get(FONT_SIZE).toString().toFloat();
-    if(fontSize>=14)
+    if((fontSize>=14)&&(qgetenv ("GDM_LANG") == "en"))
     {
         setFixedSize(mFixWidth, mFixHeight+55);
     }else{
@@ -166,13 +167,15 @@ void RepairDialogBox::initUI()
     }
     QObject::connect(fontSettings,&QGSettings::changed,[=](QString key)
     {
-       fontSize = fontSettings->get(FONT_SIZE).toString().toFloat();
-       if(fontSize>=14)
-       {
-           setFixedSize(mFixWidth, mFixHeight+55);
-       }
-       else{
-           setFixedSize(mFixWidth, mFixHeight);
+       if(mshowflag){
+           fontSize = fontSettings->get(FONT_SIZE).toString().toFloat();
+           if((fontSize>=14)&&(qgetenv ("GDM_LANG") == "en"))
+           {
+               setFixedSize(mFixWidth, mFixHeight+55);
+           }
+           else{
+               setFixedSize(mFixWidth, mFixHeight);
+           }
        }
     });
 
