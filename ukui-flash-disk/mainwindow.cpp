@@ -2670,10 +2670,12 @@ bool MainWindow::onDeviceErrored(GDrive* drive)
         RepairDialogBox* b = new RepairDialogBox(drive);
         b->connect(b, &RepairDialogBox::repairOK, this, [=] (RepairDialogBox* d) {
             if (mRepairDialog.contains(d->getDeviceName())) {
+                b->mshowflag = false;
                 mRepairDialog.remove(d->getDeviceName());
             }
         });
         mRepairDialog[device] = b;
+        b->mshowflag = true;
         b->show();
     } else {
         for (auto v = volumes; nullptr != v; v = v->next) {
@@ -2686,10 +2688,12 @@ bool MainWindow::onDeviceErrored(GDrive* drive)
                     b->connect(b, &RepairDialogBox::remountDevice, this, &MainWindow::remountVolume);
                     b->connect(b, &RepairDialogBox::repairOK, this, [=] (RepairDialogBox* d) {
                         if (mRepairDialog.contains(d->getDeviceName())) {
+                            b->mshowflag = false;
                             mRepairDialog.remove(d->getDeviceName());
                         }
                     });
                     mRepairDialog[volumeName] = b;
+                    b->mshowflag = true;
                     b->show();
                 }
             }
