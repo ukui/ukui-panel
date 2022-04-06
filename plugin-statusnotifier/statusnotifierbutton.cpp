@@ -469,7 +469,17 @@ void StatusNotifierButton::resizeEvent(QResizeEvent *event){
         this->setIconSize(QSize(this->height()*0.5,this->height()*0.5));
     }
 
-     QToolButton::resizeEvent(event);
+    QToolButton::resizeEvent(event);
+}
+
+void StatusNotifierButton::enterEvent(QEvent *event)
+{
+    update();
+}
+
+void StatusNotifierButton::leaveEvent(QEvent *event)
+{
+    update();
 }
 
 QString StatusNotifierButton::hideAbleStatusNotifierButton()
