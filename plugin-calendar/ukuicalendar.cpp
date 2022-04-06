@@ -70,6 +70,7 @@
 
 #define HOUR_SYSTEM_KEY  "hoursystem"
 #define SYSTEM_FONT_SIZE "systemFontSize"
+#define SYSTEM_FONT      "systemFont"
 #define SYSTEM_FONT_SET  "org.ukui.style"
 
 #define KYSDK_TIMERSERVER "com.kylin.kysdk.TimeServer"
@@ -150,7 +151,7 @@ IndicatorCalendar::IndicatorCalendar(const IUKUIPanelPluginStartupInfo &startupI
     const QByteArray _id(SYSTEM_FONT_SET);
     fgsettings = new QGSettings(_id);
     connect(fgsettings, &QGSettings::changed, this, [=] (const QString &keys){
-        if(keys == SYSTEM_FONT_SIZE){
+        if(keys == SYSTEM_FONT_SIZE || keys == SYSTEM_FONT){
             updateTimeText();
         }
     });
