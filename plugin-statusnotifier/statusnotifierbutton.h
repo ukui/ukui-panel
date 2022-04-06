@@ -147,6 +147,8 @@ protected:
     bool event(QEvent *e);
     virtual QMimeData * mimeData();
     void resizeEvent(QResizeEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
 
     void refetchIcon(Status status);
     void resetIcon();
