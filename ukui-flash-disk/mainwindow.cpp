@@ -30,9 +30,18 @@
 #include <QDateTime>
 #include <stdio.h>
 #include <string.h>
+#include <QDebug>
 #include "clickLabel.h"
 #include "MacroFile.h"
 #include "datacdrom.h"
+
+#if UDFAUTOMOUNT
+static void mount_cdrom (GDrive* drive, gpointer u);
+static void eject_cdrom (GDrive* drive, gpointer u);
+
+static QMap<QString, bool>* gMountCdrom = nullptr;
+static QMap<QString, QString>* gMountCdromMountPoint = nullptr;
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -90,7 +99,7 @@ void MainWindow::initFlashDisk()
     this->setAttribute(Qt::WA_TranslucentBackground);
 
     m_systray = new QSystemTrayIcon(this);
-    m_systray->setIcon(QIcon::fromTheme("media-removable-symbolic"));
+    m_systray->setIcon(QIcon::fromTheme("drive-removable-media-usb-symbolic"));
     //m_systray->setVisible(true);
     m_systray->setToolTip(tr("usb management tool"));
 
@@ -236,6 +245,47 @@ bool MainWindow::isSystemRootDev(QString strDev)
     return m_strSysRootDev.startsWith(strDev);
 }
 
+bool MainWindow::getDevInterface(QString strDev)
+{
+    char* chDev;
+    QByteArray ba = strDev.toLatin1();
+    chDev=ba.data();
+
+    QString cmd = "udevadm info -n ";
+    cmd.append(strDev);
+    QProcess *p = new QProcess();
+    p->start(cmd);
+    p->waitForFinished();
+    if(!m_ismountadd){
+        while(p->canReadLine()) {
+            QString str = p->readLine();
+            QStringList infoList = str.split('\n');
+            QStringList::Iterator it = infoList.begin();
+            for (; it != infoList.end(); it++){
+                if((*it==("E: ID_BUS=ata"))&&(!g_str_has_prefix(chDev,"/dev/sr"))){
+                    return false;
+                }
+            }
+        }
+    }else{
+        while(p->canReadLine()) {
+            QString str = p->readLine();
+            QStringList infoList = str.split('=');
+            QStringList::Iterator it = infoList.begin();
+            for (; it != infoList.end(); it++){
+                if(*it==("E: ID_FS_TYPE")){
+                    return false;
+                }
+            }
+        }
+    }
+    delete p;
+    p = nullptr;
+
+    return true;
+
+}
+
 void MainWindow::getDeviceInfo()
 {
     // setting
@@ -266,6 +316,7 @@ void MainWindow::getDeviceInfo()
     g_signal_connect (g_volume_monitor, "mount-removed", G_CALLBACK (mount_removed_callback), this);
 
     GList *lDrive = NULL, *lVolume = NULL, *lMount = NULL;
+    m_ismountadd = false;
     // about drive
     GList *current_drive_list = g_volume_monitor_get_connected_drives(g_volume_monitor);
     for (lDrive = current_drive_list; lDrive != NULL; lDrive = lDrive->next) {
@@ -284,7 +335,7 @@ void MainWindow::getDeviceInfo()
             driveInfo.isCanStop = g_drive_can_stop(gdrive);
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
-            if(!isSystemRootDev(driveInfo.strId.c_str()) && (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
+            if(!isSystemRootDev(driveInfo.strId.c_str()) && getDevInterface(driveInfo.strId.c_str()) && (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
                 if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
                     || g_str_has_prefix(devPath,"/dev/mmcblk")) {
                     GList* gdriveVolumes = g_drive_get_volumes(gdrive);
@@ -383,6 +434,12 @@ void MainWindow::getDeviceInfo()
                         g_list_free(gdriveVolumes);
                     }
                     m_dataFlashDisk->addDriveInfo(driveInfo);
+#if UDFAUTOMOUNT
+                    if (G_IS_DRIVE(gdrive) && !driveInfo.strId.empty() && g_str_has_prefix (driveInfo.strId.c_str(), "/dev/sr")) {
+                        mount_cdrom (gdrive, NULL);
+                        g_signal_connect(G_DRIVE(gdrive), "changed", G_CALLBACK (mount_cdrom), NULL);
+                    }
+#endif
                 }
             }
             g_free(devPath);
@@ -771,6 +828,11 @@ void MainWindow::drive_connected_callback(GVolumeMonitor *monitor, GDrive *drive
         //     qInfo()<<"wrong disk has intered";
         //     p_this->onInsertAbnormalDiskNotify(tr("There is a problem with this device"));
         // }
+#if UDFAUTOMOUNT
+        if (G_IS_DRIVE(gdrive) && !driveInfo.strId.empty() && g_str_has_prefix (driveInfo.strId.c_str(), "/dev/sr")) {
+            g_signal_connect(G_DRIVE (gdrive), "changed", G_CALLBACK (mount_cdrom), NULL);
+        }
+#endif
     }
 
     if(p_this->m_dataFlashDisk->getValidInfoCount() >= 1) {
@@ -793,6 +855,25 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
         g_free(devPath);
     }
 
+ #if UDFAUTOMOUNT
+    // disconnect udf cdrom
+    if (!driveInfo.strId.empty() && G_IS_DRIVE(drive)) {
+        g_signal_handlers_disconnect_by_func (drive, (void*) mount_cdrom, NULL);
+
+        qDebug() << "DJ- udf cdrom disconnected";
+        if (gMountCdrom && gMountCdrom->contains (QString(driveInfo.strId.c_str()))) {
+            gMountCdrom->remove (QString(driveInfo.strId.c_str()));
+            QStringList mountPoints;
+            for (auto val : gMountCdromMountPoint->values()) {
+                if (QString(driveInfo.strId.c_str()) == val) {
+                    mountPoints << val;
+                }
+            }
+            for (auto m : mountPoints)
+                gMountCdromMountPoint->remove (m);
+        }
+    }
+#endif
     vector<string>::iterator itDeviceId = p_this->m_vtDeviveId.begin();
     for (; itDeviceId != p_this->m_vtDeviveId.end();) {
         if (driveInfo.strId == *itDeviceId) {
@@ -802,6 +883,7 @@ void MainWindow::drive_disconnected_callback (GVolumeMonitor *monitor, GDrive *d
         }
     }
     p_this->m_dataFlashDisk->removeDriveInfo(driveInfo);
+    Q_EMIT p_this->notifyDeviceRemoved(QString::fromStdString(driveInfo.strId));
     if(p_this->m_dataFlashDisk->getValidInfoCount() == 0) {
         p_this->ui->centralWidget->hide();
         p_this->m_systray->hide();
@@ -819,6 +901,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
     int a = 0;
     char buf[128] = {0};
 
+    p_this->m_ismountadd = false;
     fp = fopen("/proc/cmdline","r");
     if (fp) {
         while(fscanf(fp,"%127s",buf) > 0) {
@@ -955,7 +1038,7 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
             driveInfo.isCanStart = g_drive_can_start(gdrive);
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
 
-            if(!p_this->isSystemRootDev(driveInfo.strId.c_str()) &&
+            if(!p_this->isSystemRootDev(driveInfo.strId.c_str()) && p_this->getDevInterface(driveInfo.strId.c_str()) &&
                 (driveInfo.isCanEject || driveInfo.isCanStop || driveInfo.isRemovable)) {
                 if(g_str_has_prefix(devPath,"/dev/sr") || g_str_has_prefix(devPath,"/dev/bus") || g_str_has_prefix(devPath,"/dev/sd")
                     || g_str_has_prefix(devPath,"/dev/mmcblk")) {
@@ -1030,11 +1113,16 @@ void MainWindow::volume_added_callback(GVolumeMonitor *monitor, GVolume *volume,
                             g_object_unref(mount);
                         } else {
                             if(p_this->ifsettings->get(IFAUTOLOAD).toBool()) {
+                                p_this->m_ismountadd = true;
+                                if (p_this->getDevInterface(volumeInfo.strId.c_str())){
+                                   p_this->m_ismountadd = false;
+                                   return;
+                                }
                                 g_volume_mount(volume,
                                             G_MOUNT_MOUNT_NONE,
                                             nullptr,
                                             nullptr,
-                                            GAsyncReadyCallback(frobnitz_result_func_volume),
+                                            nullptr,  //GAsyncReadyCallback(frobnitz_result_func_volume),
                                             p_this);
                             }
                         }
@@ -1104,10 +1192,16 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
     FDVolumeInfo volumeInfo;
     FDMountInfo mountInfo;
     bool isValidMount = true;
+    p_this->m_ismountadd = false;
+
     if (gdrive) {
         char *devPath = g_drive_get_identifier(gdrive,G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
         if (devPath != NULL) {
             driveInfo.strId = devPath;
+            if (!(p_this->getDevInterface(driveInfo.strId.c_str()))){
+                qInfo() << "---------------the devpath is "<<driveInfo.strId.c_str();
+                isValidMount = false;
+            }
             char *strName = g_drive_get_name(gdrive);
             if (strName) {
                 driveInfo.strName = strName;
@@ -1120,6 +1214,12 @@ void MainWindow::mount_added_callback(GVolumeMonitor *monitor, GMount *mount, Ma
             driveInfo.isRemovable = g_drive_is_removable(gdrive);
             g_free(devPath);
         }
+#if UDFAUTOMOUNT
+        if (gMountCdrom && gMountCdrom->contains (QString(driveInfo.strId.c_str()))) {
+            (*gMountCdrom)[QString(driveInfo.strId.c_str())] = true;
+            qDebug() << "DJ- Mount add" << driveInfo.strId.c_str();
+        }
+#endif
         g_object_unref(gdrive);
     }
     if (gvolume) {
@@ -1269,6 +1369,21 @@ void MainWindow::mount_removed_callback(GVolumeMonitor *monitor, GMount *mount, 
         mountInfo.strName = mountName;
         g_free(mountName);
     }
+
+#if UDFAUTOMOUNT
+    qDebug() << "DJ- Umount --- 1 " << mountInfo.strName.c_str();
+    g_autoptr (GFile) mountP = g_mount_get_root (mount);
+    if (G_IS_FILE(mountP)) {
+        g_autofree char* path = g_file_get_path (mountP);
+        if (gMountCdromMountPoint && gMountCdromMountPoint->contains (QString(path))) {
+            QString devName = (*gMountCdromMountPoint)[path];
+            if (gMountCdrom->contains (devName)) {
+                (*gMountCdrom)[devName] = false;
+                qDebug() << "DJ- Umount(not auto mount) --- 2 " << devName;
+            }
+        }
+    }
+#endif
     mountInfo.isCanUnmount = g_mount_can_unmount(mount);
     GFile *root = g_mount_get_default_location(mount);
     if (root) {
@@ -2477,6 +2592,8 @@ void MainWindow::frobnitz_result_func(GDrive *source_object,GAsyncResult *res,Ma
 
         if (p_this->chooseDialog == nullptr) {
             p_this->chooseDialog = new interactiveDialog(QString::fromStdString(driveInfo.strId), p_this->ui->centralWidget);
+        }else{
+            p_this->chooseDialog->updateContentLable(QString::fromStdString(driveInfo.strId));
         }
         p_this->chooseDialog->show();
         p_this->chooseDialog->setFocus();
@@ -2571,10 +2688,12 @@ bool MainWindow::onDeviceErrored(GDrive* drive)
         RepairDialogBox* b = new RepairDialogBox(drive);
         b->connect(b, &RepairDialogBox::repairOK, this, [=] (RepairDialogBox* d) {
             if (mRepairDialog.contains(d->getDeviceName())) {
+                b->mshowflag = false;
                 mRepairDialog.remove(d->getDeviceName());
             }
         });
         mRepairDialog[device] = b;
+        b->mshowflag = true;
         b->show();
     } else {
         for (auto v = volumes; nullptr != v; v = v->next) {
@@ -2587,10 +2706,12 @@ bool MainWindow::onDeviceErrored(GDrive* drive)
                     b->connect(b, &RepairDialogBox::remountDevice, this, &MainWindow::remountVolume);
                     b->connect(b, &RepairDialogBox::repairOK, this, [=] (RepairDialogBox* d) {
                         if (mRepairDialog.contains(d->getDeviceName())) {
+                            b->mshowflag = false;
                             mRepairDialog.remove(d->getDeviceName());
                         }
                     });
                     mRepairDialog[volumeName] = b;
+                    b->mshowflag = true;
                     b->show();
                 }
             }
@@ -3137,3 +3258,75 @@ void MainWindow::getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo)
         g_object_unref(g_icon);
     }
 }
+
+#if UDFAUTOMOUNT
+static void eject_cdrom (GDrive* drive, gpointer u)
+{
+    qDebug() << "DJ-  eject!!!";
+
+    g_return_if_fail (G_IS_DRIVE (drive));
+
+    g_autofree char* devName = g_drive_get_identifier (drive, G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+
+    if (devName) {
+        if (gMountCdrom->contains (QString(devName))) {
+            gMountCdrom->remove (QString(devName));
+            QStringList mountPoints;
+            for (auto val : gMountCdromMountPoint->values()) {
+                if (QString(devName) == val) {
+                    mountPoints << val;
+                }
+            }
+            for (auto m : mountPoints)
+                gMountCdromMountPoint->remove (m);
+        }
+    }
+}
+
+static void mount_cdrom (GDrive* drive, gpointer u)
+{
+    g_return_if_fail(G_IS_DRIVE (drive));
+
+    if (!gMountCdrom) {
+        gMountCdrom = new QMap<QString, bool>();
+    }
+
+    if (!gMountCdromMountPoint) {
+        gMountCdromMountPoint = new QMap<QString, QString>();
+    }
+
+    bool canMount = true;
+    if (g_drive_has_media (drive)) {
+        g_autofree char* devName = g_drive_get_identifier (drive, G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE);
+        const char* name = g_get_user_name ();
+        if (devName && name) {
+
+            QString mountPoint = QString("/media/%1/%2").arg(name)
+                    .arg(QString(QCryptographicHash::hash(devName, QCryptographicHash::Md5).toBase64()
+                    .replace ("/", "").replace ("+","").replace ("=", "")));
+
+            if (gMountCdrom->contains (devName) && !(*gMountCdrom)[QString(devName)]) {
+                canMount = false;
+            }
+
+            if (canMount) {
+                int ret = QProcess::execute ("pkexec", QStringList()
+                        << "/usr/bin/ukui-flash-disks-pkexec.sh"
+                        << "-d"
+                        << devName
+                        << "-p"
+                        << mountPoint);
+
+                qDebug() << "DJ- execute 'mount_cdrom' return: " << ret;
+
+                if (!gMountCdrom->contains (devName)) {
+                    gMountCdrom->insert (QString(devName), true);
+                    gMountCdromMountPoint->insert (mountPoint, QString(devName));
+                }
+            }
+        }
+    } else {
+        eject_cdrom (drive, u);
+    }
+}
+#endif

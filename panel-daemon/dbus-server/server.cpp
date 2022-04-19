@@ -25,15 +25,15 @@
 Server::Server(QObject *parent) :
     QObject(parent)
 {
-    mFileWatcher = new FileWatcher();
-    connect(mFileWatcher,&FileWatcher::DesktopDeleteFile,this,&Server::DesktopFileDeleteSlot);
-    mDesktop = new ConvertDesktopToWinId();
+    m_fileWatcher = new FileWatcher();
+    connect(m_fileWatcher,&FileWatcher::DesktopDeleteFile,this,&Server::DesktopFileDeleteSlot);
+    m_desktop = new ConvertDesktopToWinId();
 }
 
 
 QString Server::WIDToDesktop(int id)
 {
-    return mDesktop->tranIdToDesktop(id);
+    return m_desktop->tranIdToDesktop(id);
 }
 
 int Server::DesktopToWID(QString desktop)

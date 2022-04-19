@@ -41,6 +41,7 @@ set(LIBRARIES
     ${GIOUNIX2_LIBRARIES}
     ${X11_LIBRARIES}
     Qt5X11Extras
+    -lukui-com4cxx
 )
 
 install(FILES
@@ -53,3 +54,23 @@ include(../cmake/UkuiPluginTranslationTs.cmake)
 ukui_plugin_translate_ts(${PLUGIN})
 
 BUILD_UKUI_PLUGIN(${PLUGIN})
+
+SET(_code "#include <KStartupInfo>
+    #include <KWindowSystem>
+    int main()
+    {
+        KStartupInfoData asn_data;
+        asn_data.iconGeometry();
+        return 0;
+    }")
+SET(_file ${CMAKE_CURRENT_BINARY_DIR}/quicklaunchaction.cpp)
+FILE(WRITE "${_file}" "${_code}")
+TRY_COMPILE(HAVE_STARTUP_ICON_GEOMETRY
+    "${CMAKE_CURRENT_BINARY_DIR}"
+    "${_file}"
+    LINK_LIBRARIES KF5::WindowSystem
+    OUTPUT_VARIABLE OUTPUT)
+MESSAGE("Build output:${OUTPUT} HAVE_STARTUP_ICON_GEOMETRY: ${HAVE_STARTUP_ICON_GEOMETRY}")
+if(HAVE_STARTUP_ICON_GEOMETRY)
+    add_definitions(-DHAVE_STARTUP_ICON_GEOMETRY=1)
+endif()

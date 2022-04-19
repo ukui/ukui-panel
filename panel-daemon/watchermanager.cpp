@@ -28,7 +28,7 @@ WatcherManager::WatcherManager(QObject *parent) : QObject(parent)
 
 WatcherManager::~WatcherManager()
 {
-    delete taskbar_dbus;
+    delete m_taskbarDBus;
 }
 
 void WatcherManager::register_dbus()
@@ -52,15 +52,15 @@ void WatcherManager::register_dbus()
     }
 
 
-    taskbar_dbus=new PinToTaskbar;
-    new PanelAdaptor(taskbar_dbus);
+    m_taskbarDBus=new PinToTaskbar;
+    new PanelAdaptor(m_taskbarDBus);
     QDBusConnection taskbar_connection=QDBusConnection::sessionBus();
 
     if(!taskbar_connection.registerService("com.ukui.panel.desktop"))
     {
         qDebug()<<"error1:"<<con.lastError().message();
     }
-    if(!taskbar_connection.registerObject("/",taskbar_dbus,
+    if(!taskbar_connection.registerObject("/",m_taskbarDBus,
                            QDBusConnection::ExportAllSlots|
                            QDBusConnection::ExportAllSignals))
     {

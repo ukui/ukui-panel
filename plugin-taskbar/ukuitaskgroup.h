@@ -40,7 +40,6 @@
 #include <KF5/KWindowSystem/kwindowsystem.h>
 #include <QTimer>
 #include <QScrollArea>
-#include "../panel/ukuipanelpluginconfigdialog.h"
 #include "../panel/pluginsettings.h"
 #include <QAbstractButton>
 //#include <Xlib.h>
@@ -94,20 +93,18 @@ class UKUITaskGroup: public UKUITaskButton
     Q_OBJECT
 
 public:
-    bool statFlag = true;
-    bool existSameQckBtn = false;
-    int QckBtnIndex = -1;
-    bool hasbeenSaved = false;
+    bool m_statFlag = true;
+    bool m_existSameQckBtn = false;
     UKUITaskGroup(const QString & groupName, WId window, UKUITaskBar * parent);
     UKUITaskGroup(QuickLaunchAction * act, IUKUIPanelPlugin * plugin, UKUITaskBar *parent);
     UKUITaskGroup(const QString & iconName, const QString & caption, WId window, UKUITaskBar *parent = 0);
     virtual ~UKUITaskGroup();
-    QString groupName() const { return mGroupName; }
+    QString groupName() const { return m_groupName; }
 
     int buttonsCount() const;
     int visibleButtonsCount() const;
     void initVisibleHash();
-    UKUITaskGroup* getOwnQckBtn() { return this->mpQckLchBtn; }
+    UKUITaskGroup* getOwnQckBtn() { return this->m_qckLchBtn; }
 
     QWidget * addWindow(WId id);
 
@@ -128,13 +125,13 @@ public:
     void singleWindowClick();
     void VisibleWndRemoved(WId window);
     void setAutoRotation(bool value, IUKUIPanel::Position position);
-    void setQckLchBtn(UKUITaskGroup *utgp) { if(statFlag) mpQckLchBtn = utgp; }
-    UKUITaskGroup* getQckLchBtn() { return mpQckLchBtn; }
+    void setQckLchBtn(UKUITaskGroup *utgp) { if(m_statFlag) m_qckLchBtn = utgp; }
+    UKUITaskGroup* getQckLchBtn() { return m_qckLchBtn; }
 
     void setActivateState_wl(bool _state);
     void wl_widgetUpdateTitle(QString caption);
     QWidget * wl_addWindow(WId id);
-    bool CheckifWaylandGroup() {return isWaylandGroup;}
+    bool CheckifWaylandGroup() {return m_isWaylandGroup;}
 
 
 public slots:
@@ -183,25 +180,24 @@ signals:
 
 private:
     //bool isDesktopFile(QString urlName);
-    UKUITaskBar * mParent;
-    UKUITaskGroup *mpQckLchBtn;
+    UKUITaskBar * m_parent;
+    UKUITaskGroup *m_qckLchBtn;
     void changeTaskButtonStyle();
-    QString mGroupName;
-    UKUIGroupPopup * mPopup;
-    QVBoxLayout *VLayout;
-    UKUITaskButtonHash mButtonHash;
-    UKUITaskButtonHash mVisibleHash;
-    bool mPreventPopup;
-    bool mSingleButton; //!< flag if this group should act as a "standard" button (no groupping or only one "shown" window in group)
+    QString m_groupName;
+    UKUIGroupPopup * m_popup;
+    UKUITaskButtonHash m_buttonHash;
+    UKUITaskButtonHash m_visibleHash;
+    bool m_preventPopup;
+    bool m_singleButton; //!< flag if this group should act as a "standard" button (no groupping or only one "shown" window in group)
     enum TaskGroupStatus{NORMAL, HOVER, PRESS};
     enum TaskGroupEvent{ENTEREVENT, LEAVEEVENT, OTHEREVENT};
-    TaskGroupStatus taskgroupStatus;
-    TaskGroupEvent  mTaskGroupEvent;
-    QWidget *mpWidget;
-    QScrollArea *mpScrollArea;
-    QEvent * mEvent;
-    QVector<UKUITaskWidget*> mShowInTurn;
-    QTimer *mTimer;
+    TaskGroupStatus m_taskGroupStatus;
+    TaskGroupEvent  m_taskGroupEvent;
+    QWidget *m_widget;
+    QScrollArea *m_scrollArea;
+    QEvent * m_event;
+    QVector<UKUITaskWidget*> m_showInTurn;
+    QTimer *m_timer;
     QSize recalculateFrameSize();
     QPoint recalculateFramePosition();
     void recalculateFrameIfVisible();
@@ -216,16 +212,15 @@ private:
 
     ///////////////////////////////
     // quicklaunch button
-    QuickLaunchAction *mAct;
-    IUKUIPanelPlugin * mPlugin;
-    QAction *mDeleteAct;
-    QuicklaunchMenu *mMenu;
-    QPoint mDragStart;
-    TaskGroupStatus quicklanuchstatus;
-    CustomStyle toolbuttonstyle;
-    QGSettings *mgsettings;
+    QuickLaunchAction *m_act;
+    IUKUIPanelPlugin * m_plugin;
+    QAction *m_deleteAct;
+    QuicklaunchMenu *m_menu;
+    TaskGroupStatus m_quickLanuchStatus;
+    CustomStyle m_toolButtonStyle;
+    QGSettings *m_gsettings;
 
-    bool isWaylandGroup;
+    bool m_isWaylandGroup;
 
     void winClickActivate_wl(bool _getActive);
     void closeGroup_wl();

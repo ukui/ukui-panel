@@ -66,6 +66,12 @@ void StatusNotifierStorageArrow::dragEnterEvent(QDragEnterEvent *event){
     QToolButton::dragEnterEvent(event);
 }
 
+void StatusNotifierStorageArrow::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    update();
+    event->accept();
+}
+
 void StatusNotifierStorageArrow::mousePressEvent(QMouseEvent *e)
 {
     if(e->button() == Qt::LeftButton){
@@ -121,7 +127,7 @@ void StatusNotifierStorageArrow::resizeEvent(QResizeEvent *event){
         this->setIconSize(QSize(this->height()*0.5,this->height()*0.5));
     }
 
-     QToolButton::resizeEvent(event);
+    QToolButton::resizeEvent(event);
 }
 
 void StatusNotifierStorageArrow::mouseMoveEvent(QMouseEvent *e)

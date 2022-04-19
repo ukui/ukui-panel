@@ -24,7 +24,6 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "spacer.h"
-#include "spacerconfiguration.h"
 #include <QApplication>
 
 void SpacerWidget::setType(QString const & type)
@@ -56,34 +55,8 @@ Spacer::Spacer(const IUKUIPanelPluginStartupInfo &startupInfo) :
     , mSize(8)
     , mExpandable(false)
 {
-    settingsChanged();
 }
 
-/************************************************
-
- ************************************************/
-void Spacer::settingsChanged()
-{
-    mSize = settings()->value(QStringLiteral("size"), 8).toInt();
-    const bool old_expandable = mExpandable;
-    mExpandable = settings()->value(QStringLiteral("expandable"), false).toBool();
-    mSpacer.setType(settings()->value(QStringLiteral("spaceType"), SpacerConfiguration::msTypes[0]).toString());
-    setSizes();
-    if (old_expandable != mExpandable)
-        pluginFlagsChanged();
-}
-
-/************************************************
-
- ************************************************/
-QDialog *Spacer::configureDialog()
-{
-    return new SpacerConfiguration(settings());
-}
-
-/************************************************
-
- ************************************************/
 void Spacer::setSizes()
 {
     if (mExpandable)

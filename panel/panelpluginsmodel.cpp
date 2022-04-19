@@ -40,8 +40,8 @@ PanelPluginsModel::PanelPluginsModel(UKUIPanel * panel,
                                      QStringList const & desktopDirs,
                                      QObject * parent/* = nullptr*/)
     : QAbstractListModel{parent},
-    mNamesKey(namesKey),
-    mPanel(panel)
+    m_namesKey(namesKey),
+    m_panel(panel)
 {
     loadPlugins(desktopDirs);
 }
@@ -53,7 +53,7 @@ PanelPluginsModel::~PanelPluginsModel()
 
 int PanelPluginsModel::rowCount(const QModelIndex & parent/* = QModelIndex()*/) const
 {
-    return QModelIndex() == parent ? mPlugins.size() : 0;
+    return QModelIndex() == parent ? m_plugins.size() : 0;
 }
 
 
@@ -61,10 +61,10 @@ QVariant PanelPluginsModel::data(const QModelIndex & index, int role/* = Qt::Dis
 {
     Q_ASSERT(QModelIndex() == index.parent()
             && 0 == index.column()
-            && mPlugins.size() > index.row()
+            && m_plugins.size() > index.row()
             );
 
-    pluginslist_t::const_reference plugin = mPlugins[index.row()];
+    pluginslist_t::const_reference plugin = m_plugins[index.row()];
     QVariant ret;
     switch (role)
     {
@@ -95,7 +95,7 @@ Qt::ItemFlags PanelPluginsModel::flags(const QModelIndex & index) const
 QStringList PanelPluginsModel::pluginNames() const
 {
     QStringList names;
-    for (auto const & p : mPlugins)
+    for (auto const & p : m_plugins)
         names.append(p.first);
     return names;
 }
@@ -103,7 +103,7 @@ QStringList PanelPluginsModel::pluginNames() const
 QList<Plugin *> PanelPluginsModel::plugins() const
 {
     QList<Plugin *> plugins;
-    for (auto const & p : mPlugins)
+    for (auto const & p : m_plugins)
         if (!p.second.isNull())
             plugins.append(p.second.data());
     return plugins;
@@ -111,7 +111,7 @@ QList<Plugin *> PanelPluginsModel::plugins() const
 
 Plugin* PanelPluginsModel::pluginByName(QString name) const
 {
-    for (auto const & p : mPlugins)
+    for (auto const & p : m_plugins)
         if (p.first == name)
             return p.second.data();
     return nullptr;
@@ -119,7 +119,7 @@ Plugin* PanelPluginsModel::pluginByName(QString name) const
 
 Plugin const * PanelPluginsModel::pluginByID(QString id) const
 {
-    for (auto const & p : mPlugins)
+    for (auto const & p : m_plugins)
     {
         Plugin *plugin = p.second.data();
         if (plugin && plugin->desktopFile().id() == id)
@@ -137,25 +137,25 @@ void PanelPluginsModel::addPlugin(const UKUi::PluginInfo &desktopFile)
     if (plugin.isNull())
         return;
     qDebug()<< plugin->name()<<endl;
-    beginInsertRows(QModelIndex(), mPlugins.size(), mPlugins.size());
-    mPlugins.append({name, plugin});
+    beginInsertRows(QModelIndex(), m_plugins.size(), m_plugins.size());
+    m_plugins.append({name, plugin});
     endInsertRows();
-    mPanel->settings()->setValue(mNamesKey, pluginNames());
+    m_panel->settings()->setValue(m_namesKey, pluginNames());
     emit pluginAdded(plugin.data());
 }
 
 void PanelPluginsModel::removePlugin(pluginslist_t::iterator plugin)
 {
-    if (mPlugins.end() != plugin)
+    if (m_plugins.end() != plugin)
     {
-        mPanel->settings()->remove(plugin->first);
+        m_panel->settings()->remove(plugin->first);
         Plugin * p = plugin->second.data();
-        const int row = plugin - mPlugins.begin();
+        const int row = plugin - m_plugins.begin();
         beginRemoveRows(QModelIndex(), row, row);
-        mPlugins.erase(plugin);
+        m_plugins.erase(plugin);
         endRemoveRows();
         emit pluginRemoved(p); // p can be nullptr
-        mPanel->settings()->setValue(mNamesKey, pluginNames());
+        m_panel->settings()->setValue(m_namesKey, pluginNames());
         if (nullptr != p)
             p->deleteLater();
     }
@@ -164,7 +164,7 @@ void PanelPluginsModel::removePlugin(pluginslist_t::iterator plugin)
 void PanelPluginsModel::removePlugin()
 {
     Plugin * p = qobject_cast<Plugin*>(sender());
-    auto plugin = std::find_if(mPlugins.begin(), mPlugins.end(),
+    auto plugin = std::find_if(m_plugins.begin(), m_plugins.end(),
                                [p] (pluginslist_t::const_reference obj) { return p == obj.second; });
     removePlugin(std::move(plugin));
 }
@@ -174,11 +174,11 @@ void PanelPluginsModel::movePlugin(Plugin * plugin, QString const & nameAfter)
     //merge list of plugins (try to preserve original position)
     //subtract mPlugin.begin() from the found Plugins to get the model index
     const int from =
-        std::find_if(mPlugins.begin(), mPlugins.end(), [plugin] (pluginslist_t::const_reference obj) { return plugin == obj.second.data(); })
-        - mPlugins.begin();
+        std::find_if(m_plugins.begin(), m_plugins.end(), [plugin] (pluginslist_t::const_reference obj) { return plugin == obj.second.data(); })
+        - m_plugins.begin();
     const int to =
-        std::find_if(mPlugins.begin(), mPlugins.end(), [nameAfter] (pluginslist_t::const_reference obj) { return nameAfter == obj.first; })
-        - mPlugins.begin();
+        std::find_if(m_plugins.begin(), m_plugins.end(), [nameAfter] (pluginslist_t::const_reference obj) { return nameAfter == obj.first; })
+        - m_plugins.begin();
     /* 'from' is the current position of the Plugin to be moved ("moved Plugin"),
      * 'to' is the position of the Plugin behind the one that is being moved
      * ("behind Plugin"). There are several cases to distinguish:
@@ -207,10 +207,10 @@ void PanelPluginsModel::movePlugin(Plugin * plugin, QString const & nameAfter)
          */
         beginMoveRows(QModelIndex(), from, from, QModelIndex(), to);
         // For the QList::move method, use the right position
-        mPlugins.move(from, to_plugins);
+        m_plugins.move(from, to_plugins);
         endMoveRows();
         emit pluginMoved(plugin);
-        mPanel->settings()->setValue(mNamesKey, pluginNames());
+        m_panel->settings()->setValue(m_namesKey, pluginNames());
     }
 }
 
@@ -218,7 +218,7 @@ void PanelPluginsModel::loadPlugins(QStringList const & desktopDirs)
 {
     QSettings backup_qsettings(CONFIG_FILE_BACKUP,QSettings::IniFormat);
 
-    QStringList plugin_names = backup_qsettings.value(mNamesKey).toStringList();
+    QStringList plugin_names = backup_qsettings.value(m_namesKey).toStringList();
 
 #ifdef DEBUG_PLUGIN_LOADTIME
     QElapsedTimer timer;
@@ -227,7 +227,7 @@ void PanelPluginsModel::loadPlugins(QStringList const & desktopDirs)
 #endif
     for (auto const & name : plugin_names)
     {
-        pluginslist_t::iterator i = mPlugins.insert(mPlugins.end(), {name, nullptr});
+        pluginslist_t::iterator i = m_plugins.insert(m_plugins.end(), {name, nullptr});
         QString type = backup_qsettings.value(name + "/type").toString();
         if (type.isEmpty())
         {
@@ -271,10 +271,10 @@ void PanelPluginsModel::loadPlugins(QStringList const & desktopDirs)
 
 QPointer<Plugin> PanelPluginsModel::loadPlugin(UKUi::PluginInfo const & desktopFile, QString const & settingsGroup)
 {
-    std::unique_ptr<Plugin> plugin(new Plugin(desktopFile, mPanel->settings(), settingsGroup, mPanel));
+    std::unique_ptr<Plugin> plugin(new Plugin(desktopFile, m_panel->settings(), settingsGroup, m_panel));
     if (plugin->isLoaded())
     {
-        connect(mPanel, &UKUIPanel::realigned, plugin.get(), &Plugin::realign);
+        connect(m_panel, &UKUIPanel::realigned, plugin.get(), &Plugin::realign);
         connect(plugin.get(), &Plugin::remove,
                 this, static_cast<void (PanelPluginsModel::*)()>(&PanelPluginsModel::removePlugin));
         return plugin.release();
@@ -285,7 +285,7 @@ QPointer<Plugin> PanelPluginsModel::loadPlugin(UKUi::PluginInfo const & desktopF
 
 QString PanelPluginsModel::findNewPluginSettingsGroup(const QString &pluginType) const
 {
-    QStringList groups = mPanel->settings()->childGroups();
+    QStringList groups = m_panel->settings()->childGroups();
     groups.sort();
 
     // Generate new section name
@@ -307,7 +307,7 @@ QString PanelPluginsModel::findNewPluginSettingsGroup(const QString &pluginType)
 bool PanelPluginsModel::isIndexValid(QModelIndex const & index) const
 {
     return index.isValid() && QModelIndex() == index.parent()
-        && 0 == index.column() && mPlugins.size() > index.row();
+        && 0 == index.column() && m_plugins.size() > index.row();
 }
 
 void PanelPluginsModel::onMovePluginUp(QModelIndex const & index)
@@ -320,17 +320,17 @@ void PanelPluginsModel::onMovePluginUp(QModelIndex const & index)
         return; //can't move up
 
     beginMoveRows(QModelIndex(), row, row, QModelIndex(), row - 1);
-    mPlugins.swap(row - 1, row);
+    m_plugins.swap(row - 1, row);
     endMoveRows();
-    pluginslist_t::const_reference moved_plugin = mPlugins[row - 1];
-    pluginslist_t::const_reference prev_plugin = mPlugins[row];
+    pluginslist_t::const_reference moved_plugin = m_plugins[row - 1];
+    pluginslist_t::const_reference prev_plugin = m_plugins[row];
 
     emit pluginMoved(moved_plugin.second.data());
     //emit signal for layout only in case both plugins are loaded/displayed
     if (!moved_plugin.second.isNull() && !prev_plugin.second.isNull())
         emit pluginMovedUp(moved_plugin.second.data());
 
-    mPanel->settings()->setValue(mNamesKey, pluginNames());
+    m_panel->settings()->setValue(m_namesKey, pluginNames());
 }
 
 void PanelPluginsModel::onMovePluginDown(QModelIndex const & index)
@@ -339,20 +339,20 @@ void PanelPluginsModel::onMovePluginDown(QModelIndex const & index)
         return;
 
     const int row = index.row();
-    if (mPlugins.size() <= row + 1)
+    if (m_plugins.size() <= row + 1)
         return; //can't move down
 
     beginMoveRows(QModelIndex(), row, row, QModelIndex(), row + 2);
-    mPlugins.swap(row, row + 1);
+    m_plugins.swap(row, row + 1);
     endMoveRows();
-    pluginslist_t::const_reference moved_plugin = mPlugins[row + 1];
-    pluginslist_t::const_reference next_plugin = mPlugins[row];
+    pluginslist_t::const_reference moved_plugin = m_plugins[row + 1];
+    pluginslist_t::const_reference next_plugin = m_plugins[row];
 
     emit pluginMoved(moved_plugin.second.data());
     //emit signal for layout only in case both plugins are loaded/displayed
     if (!moved_plugin.second.isNull() && !next_plugin.second.isNull())
         emit pluginMovedUp(next_plugin.second.data());
-    mPanel->settings()->setValue(mNamesKey, pluginNames());
+    m_panel->settings()->setValue(m_namesKey, pluginNames());
 }
 
 void PanelPluginsModel::onConfigurePlugin(QModelIndex const & index)
@@ -360,7 +360,7 @@ void PanelPluginsModel::onConfigurePlugin(QModelIndex const & index)
     if (!isIndexValid(index))
         return;
 
-    Plugin * const plugin = mPlugins[index.row()].second.data();
+    Plugin * const plugin = m_plugins[index.row()].second.data();
     if (nullptr != plugin && (IUKUIPanelPlugin::HaveConfigDialog & plugin->iPlugin()->flags()))
         plugin->showConfigureDialog();
 }
@@ -370,7 +370,7 @@ void PanelPluginsModel::onRemovePlugin(QModelIndex const & index)
     if (!isIndexValid(index))
         return;
 
-    auto plugin = mPlugins.begin() + index.row();
+    auto plugin = m_plugins.begin() + index.row();
     if (plugin->second.isNull())
         removePlugin(std::move(plugin));
     else

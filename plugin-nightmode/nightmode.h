@@ -30,7 +30,6 @@
 #include <QDBusMessage>
 
 #include "../panel/ukuipanel.h"
-#include "../panel/ukuicontrolstyle.h"
 
 class NightModeButton:public QToolButton
 {
@@ -62,13 +61,11 @@ private:
      */
     void getNightModeState();
 
-    IUKUIPanelPlugin * mPlugin;
-    QGSettings *mqtstyleGsettings;
-    QGSettings *mgtkstyleGsettings;
-    QSettings *mqsettings;
-    QSettings  * kwinSettings;
-    int colorTemperature;
-    bool mode;
+    IUKUIPanelPlugin * m_plugin;
+    QGSettings *m_qtstyleGsettings;
+    QGSettings *m_gtkstyleGsettings;
+    int m_colorTemperature;
+    bool m_mode;
 
 public slots:
         void onClick();

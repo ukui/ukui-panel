@@ -32,7 +32,6 @@
 #include <QFile>
 #include <QApplication>
 #include <QDrag>
-#include <dbusmenu-qt5/dbusmenuimporter.h>
 #include "../panel/iukuipanelplugin.h"
 #include "sniasync.h"
 #include "../panel/customstyle.h"
@@ -43,27 +42,10 @@
 
 #define MIMETYPE "ukui/UkuiTaskBar"
 
-namespace
-{
-    /*! \brief specialized DBusMenuImporter to correctly create actions' icons based
-     * on name
-     */
-    class MenuImporter : public DBusMenuImporter
-    {
-    public:
-        using DBusMenuImporter::DBusMenuImporter;
-
-    protected:
-        virtual QIcon iconForName(const QString & name) override
-        {
-            return QIcon::fromTheme(name);
-        }
-    };
-}
-
 StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, IUKUIPanelPlugin* plugin, QWidget *parent)
     : QToolButton(parent),
     mMenu(nullptr),
+    mMenuImporter(nullptr),
     mStatus(Passive),
     mFallbackIcon(QIcon::fromTheme("application-x-executable")),
     mPlugin(plugin)
@@ -94,18 +76,23 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         }
     });
 
+
     /*Menu返回值：
-    无菜单项返回: "/NO_DBUSMENU"；
-    有菜单项返回: "/MenuBar",其他；
-    x-sni注册的返回: ""
+        无菜单项返回 - "/NO_DBUSMENU"；
+        有菜单项返回 - "/MenuBar",其他；
+        x-sni注册的图标返回 - ""
     */
     interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
         if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
         {
-            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
-            if(mMenu){
-                mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
-                KWindowEffects::enableBlurBehind(mMenu->winId(), true);
+            mMenuImporter = new MenuImporter(interface->service(), path.path(), this);
+            if(mMenuImporter){
+                connect(mMenuImporter, &MenuImporter::menuUpdated, this, &StatusNotifierButton::updataItemMenu);
+                mMenu = mMenuImporter->menu();
+                if(mMenu){
+                    mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+                    KWindowEffects::enableBlurBehind(mMenu->winId(), true);
+                }
             }
         }
     });
@@ -135,7 +122,6 @@ StatusNotifierButton::~StatusNotifierButton()
 void StatusNotifierButton::newIcon()
 {
     refetchIcon(Passive);
-    updataItemMenu();
 }
 
 void StatusNotifierButton::newOverlayIcon()
@@ -197,9 +183,9 @@ void StatusNotifierButton::refetchIcon(Status status)
                     }
                 }
             }
-            nextIcon=HighLightEffect::drawSymbolicColoredIcon(nextIcon);
-
-            switch (status)
+	    nextIcon=HighLightEffect::drawSymbolicColoredIcon(nextIcon);
+           
+	    switch (status)
             {
                 case Active:
                     mOverlayIcon = nextIcon;
@@ -344,15 +330,14 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
         interface->SecondaryActivate(QCursor::pos().x(), QCursor::pos().y());
     else if (Qt::RightButton == event->button())
     {
-        if (mMenu)
-        {
-            if (!mMenu->isEmpty()){
-                mPlugin->willShowWindow(mMenu);
-                mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(QCursor::pos(), mMenu->sizeHint()).topLeft());
+        mCursorLeftPos = QCursor::pos();
+        if(mMenuImporter) {
+            mMenuImporter->updateMenu();
+        }
+        else {
+            interface->ContextMenu(mCursorLeftPos.x(), mCursorLeftPos.y());
+        }
 
-            }
-        } else
-            interface->ContextMenu(QCursor::pos().x(), QCursor::pos().y());
     }
     update();
     QToolButton::mouseReleaseEvent(event);
@@ -401,18 +386,15 @@ void StatusNotifierButton::systemThemeChanges()
 
 void StatusNotifierButton::updataItemMenu()
 {
-    interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
-        if(path.path() != "/NO_DBUSMENU" && !path.path().isEmpty())
-        {
-            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
-            if(mMenu){
-                mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
-                KWindowEffects::enableBlurBehind(mMenu->winId(), true);
-            }
-        }
-    });
+    mMenu = mMenuImporter->menu();
+    if (mMenu && !mMenu->isEmpty()){
+        mPlugin->willShowWindow(mMenu);
+        mMenu->exec(mPlugin->panel()->calculatePopupWindowPos(mCursorLeftPos, mMenu->sizeHint()).topLeft()); //任务栏显示右键菜单
+    }
+    else{
+        interface->ContextMenu(mCursorLeftPos.x(), mCursorLeftPos.y()); //应用显示右键菜单
+    }
 }
-
 
 void StatusNotifierButton::dragMoveEvent(QDragMoveEvent * e)
 {
@@ -487,7 +469,17 @@ void StatusNotifierButton::resizeEvent(QResizeEvent *event){
         this->setIconSize(QSize(this->height()*0.5,this->height()*0.5));
     }
 
-     QToolButton::resizeEvent(event);
+    QToolButton::resizeEvent(event);
+}
+
+void StatusNotifierButton::enterEvent(QEvent *event)
+{
+    update();
+}
+
+void StatusNotifierButton::leaveEvent(QEvent *event)
+{
+    update();
 }
 
 QString StatusNotifierButton::hideAbleStatusNotifierButton()

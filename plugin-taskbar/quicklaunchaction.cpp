@@ -42,8 +42,9 @@
 #include <QFileInfo>
 #include <QtX11Extras/QX11Info>
 #include <kstartupinfo.h>
+#include <ukuisdk/kylin-com4cxx.h>
 
-#define USE_STARTUP_INFO false
+//#define USE_STARTUP_INFO true
 
 /*用xdg的方式解析*/
 QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
@@ -58,20 +59,20 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     QString title(xdg->localizedValue("Name").toString());
     QIcon icon=QIcon::fromTheme(xdg->localizedValue("Icon").toString());
     //add special path search /use/share/pixmaps
-    if (icon.isNull())
-    {
+    if (icon.isNull()) {
         QString path = QString("/usr/share/pixmaps/%1.%2").arg(xdg->localizedValue("Icon").toString()).arg("png");
         QString path_svg = QString("/usr/share/pixmaps/%1.%2").arg(xdg->localizedValue("Icon").toString()).arg("svg");
         //qDebug() << "createDesktopFileThumbnail path:" <<path;
-        if(QFile::exists(path)){
+        if (QFile::exists(path)) {
             icon=QIcon(path);
         }
-        else if(QFile::exists(path_svg)){
+        else if (QFile::exists(path_svg)) {
             icon=QIcon(path_svg);
         }
     }
-    if (icon.isNull())
+    if (icon.isNull()) {
         icon = xdg->icon();
+    }
     setText(title);
 
     setIcon(icon);
@@ -80,8 +81,7 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     connect(this, &QAction::triggered, this, [this] { execAction(); });
 
     // populate the additional actions
-    for (auto const & action : const_cast<const QStringList &&>(xdg->actions()))
-    {
+    for (auto const & action : const_cast<const QStringList &&>(xdg->actions())) {
         QAction * act = new QAction{xdg->actionIcon(action), xdg->actionName(action), this};
         act->setData(action);
         connect(act, &QAction::triggered, [this, act] { execAction(act->data().toString()); });
@@ -89,7 +89,8 @@ QuickLaunchAction::QuickLaunchAction(const XdgDesktopFile * xdg,
     }
 }
 
-#if USE_STARTUP_INFO
+//#if USE_STARTUP_INFO
+#if HAVE_STARTUP_ICON_GEOMETRY
 void pid_callback(GDesktopAppInfo *appinfo, GPid pid, gpointer user_data) {
     KStartupInfoId* startInfoId = static_cast<KStartupInfoId*>(user_data);
     KStartupInfoData data;
@@ -104,24 +105,45 @@ void pid_callback(GDesktopAppInfo *appinfo, GPid pid, gpointer user_data) {
 }
 #endif
 
+bool QuickLaunchAction::getCurrentMode()
+{
+    static QString projectCode = nullptr;
+    QString deviceName = "V10SP1";
+    bool isTabletmode = false;
+
+    if (nullptr == projectCode) {
+        QString arg = QString::fromStdString(KDKGetPrjCodeName());
+        projectCode = arg.toLower();
+    }
+    if (QString::compare(projectCode,deviceName) == 0) {
+        QString feature = QString::fromStdString(KDKGetOSRelease("V10SP1"));
+        if (feature == "3") {
+            isTabletmode = true; //XC
+        } else {
+            isTabletmode = false;//主线
+        }
+    }
+    return isTabletmode;
+}
+
 /*解析Exec字段*/
 void QuickLaunchAction::execAction(QString additionalAction)
 {
+    m_tabletMode = getCurrentMode();
     UKUITaskBar *uqk = qobject_cast<UKUITaskBar*>(parent());
     QString exec(data().toString());
     bool showQMessage = false;
-    switch (m_type)
-    {
+    switch (m_type) {
         case ActionLegacy:
-            if (!QProcess::startDetached(exec))
+            if (!QProcess::startDetached(exec)) {
                 showQMessage =true;
+            }
             break;
         case ActionXdg: {
             XdgDesktopFile xdg;
-            if (xdg.load(exec))
-            {
+            if (xdg.load(exec)) {
                 if (additionalAction.isEmpty()) {
-#if USE_STARTUP_INFO
+#if HAVE_STARTUP_ICON_GEOMETRY
                     bool needCleanup = true;
                     QWidget * pw = static_cast<QWidget*>(parent());
                     float scale = qApp->devicePixelRatio();
@@ -140,24 +162,43 @@ void QuickLaunchAction::execAction(QString additionalAction)
                     data.setDescription("Launch by ukui-panel");
                     KStartupInfo::sendStartup(*startInfoId, data);
 
-                    GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
-                    needCleanup = !g_desktop_app_info_launch_uris_as_manager(appinfo, nullptr, nullptr, 
-                                                                             GSpawnFlags::G_SPAWN_DEFAULT, nullptr, nullptr, 
-                                                                             pid_callback, (gpointer)startInfoId, nullptr);
-                    if (needCleanup) {
-                        showQMessage =true;
-                        delete startInfoId;
-                        g_object_unref(appinfo);
+
+                    if (m_tabletMode) {
+                        QDBusInterface iface("com.kylin.AppManager",
+                                             "/com/kylin/AppManager",
+                                             "com.kylin.AppManager",
+                                             QDBusConnection::sessionBus());
+                        iface.call("LaunchApp",exec);
+                    } else {
+                        GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
+                        needCleanup = !g_desktop_app_info_launch_uris_as_manager(appinfo, nullptr, nullptr,
+                                                                                 GSpawnFlags::G_SPAWN_DEFAULT, nullptr, nullptr,
+                                                                                 pid_callback, (gpointer)startInfoId, nullptr);
+                        if (needCleanup) {
+                            showQMessage =true;
+                            delete startInfoId;
+                            g_object_unref(appinfo);
+                        }
                     }
 #else
-                    GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
-                    if (!g_app_info_launch_uris(G_APP_INFO(appinfo),nullptr, nullptr, nullptr))
-                        showQMessage =true;
-                    g_object_unref(appinfo);
+                    if (m_tabletMode) {
+                        QDBusInterface iface("com.kylin.AppManager",
+                                             "/com/kylin/AppManager",
+                                             "com.kylin.AppManager",
+                                             QDBusConnection::sessionBus());
+                        iface.call("LaunchApp",exec);
+                    } else {
+                        GDesktopAppInfo * appinfo=g_desktop_app_info_new_from_filename(xdg.fileName().toStdString().data());
+                        if (!g_app_info_launch_uris(G_APP_INFO(appinfo),nullptr, nullptr, nullptr)) {
+                            showQMessage =true;
+                        }
+                        g_object_unref(appinfo);
+                    }
 #endif
                 } else {
-                    if (!xdg.actionActivate(additionalAction, QStringList{}))
+                    if (!xdg.actionActivate(additionalAction, QStringList{})) {
                         showQMessage =true;
+                    }
                 }
 #if 0
                  } else {
@@ -171,8 +212,9 @@ void QuickLaunchAction::execAction(QString additionalAction)
                     }
                 }
 #endif
-            } else
+            } else {
                 showQMessage =true;
+            }
         }
             break;
         case ActionFile:

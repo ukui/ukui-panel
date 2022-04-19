@@ -315,7 +315,7 @@ private:
      * names of the Plugins in a panel. Set upon creation, passed as
      * a parameter by the panel.
      */
-    const QString mNamesKey;
+    const QString m_namesKey;
     /*!
      * \brief mPlugins Stores all the Plugins.
      *
@@ -329,11 +329,11 @@ private:
      *
      * \sa pluginslist_t
      */
-    pluginslist_t mPlugins;
+    pluginslist_t m_plugins;
     /*!
      * \brief mPanel Stores a reference to the UKUIPanel.
      */
-    UKUIPanel * mPanel;
+    UKUIPanel * m_panel;
 };
 
 Q_DECLARE_METATYPE(Plugin const *)

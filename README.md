@@ -11,10 +11,9 @@ ukui-panel represents the taskbar of UKUI
 ## About Project
 
 ukui-panel contains the following plugins:
-   * startmenu 
-   * quicklaunch
+   * startbar 
    * taskbar
-   * tray
+   * statusnotifier
    * calendar
    * nightmode
    * showdesktop ...

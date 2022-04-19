@@ -63,12 +63,9 @@ public:
     bool isExpandable() const override { return mExpandable; }
 
     virtual IUKUIPanelPlugin::Flags flags() const override { return HaveConfigDialog; }
-    QDialog *configureDialog() override;
 
     virtual void realign() override;
 
-private slots:
-    virtual void settingsChanged() override;
 
 private:
     void setSizes();

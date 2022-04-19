@@ -32,7 +32,7 @@ class FileWatcher : public QObject
 public:
     FileWatcher();
 
-    QFileSystemWatcher *fsWatcher;
+    QFileSystemWatcher *m_fsWatcher;
     void initDirMonitor(QString path);
     QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
     void directoryUpdated(const QString &path);

@@ -91,6 +91,19 @@ target_link_libraries(${PROJECT_NAME}  Qt5::Widgets Qt5::DBus Qt5::Network ${GLI
 
 install(TARGETS ukui-flash-disk DESTINATION bin)
 
+#install(FILES
+#        disk-resources/org.ukui.ukui-flash-disks-pkexec.policy
+#        DESTINATION "/usr/share/polkit-1/actions/"
+#        COMPONENT Runtime
+#)
+
+#install(FILES
+#        disk-resources/ukui-flash-disks-pkexec.sh
+#        DESTINATION "/usr/bin/"
+#        COMPONENT Runtime
+#        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
+#)
+
 install(FILES
     disk-resources/ukui-flash-disk.desktop
     DESTINATION "/etc/xdg/autostart/"

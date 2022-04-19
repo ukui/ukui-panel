@@ -27,10 +27,10 @@
 
 FileWatcher::FileWatcher()
 {
-    fsWatcher=new QFileSystemWatcher(this);
-    fsWatcher->addPath(APPLICATION_PATH);
+    m_fsWatcher=new QFileSystemWatcher(this);
+    m_fsWatcher->addPath(APPLICATION_PATH);
     initDirMonitor(APPLICATION_PATH);
-    connect(fsWatcher,&QFileSystemWatcher::directoryChanged,[this](){
+    connect(m_fsWatcher,&QFileSystemWatcher::directoryChanged,[this](){
                directoryUpdated(APPLICATION_PATH);
             });
 

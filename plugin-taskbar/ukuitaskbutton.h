@@ -37,7 +37,6 @@
 #include "../panel/iukuipanel.h"
 //#include <QWinThumbnailToolBar>
 #include <QtX11Extras/qtx11extrasversion.h>
-#include "../panel/ukuicontrolstyle.h"
 
 #include "quicklaunchaction.h"
 #include <QMimeData>
@@ -45,6 +44,7 @@
 #include <QStyleOption>
 #include <QGSettings>
 #include <QPainter>
+#include <QMenu>
 
 class QPainter;
 class QPalette;
@@ -86,9 +86,9 @@ public:
 
     bool isApplicationHidden() const;
     bool isApplicationActive() const;
-    WId windowId() const { return mWindow; }
+    WId windowId() const { return m_window; }
 
-    bool hasUrgencyHint() const { return mUrgencyHint; }
+    bool hasUrgencyHint() const { return m_urgencyHint; }
     void setUrgencyHint(bool set);
 
     bool isOnDesktop(int desktop) const;
@@ -96,12 +96,12 @@ public:
     bool isMinimized() const;
     void updateText();
     void setLeaderWindow(WId leaderWindow);
-    bool isLeaderWindow(WId compare) { return mWindow == compare; }
+    bool isLeaderWindow(WId compare) { return m_window == compare; }
 
     Qt::Corner origin() const;
     virtual void setAutoRotation(bool value, IUKUIPanel::Position position);
 
-    UKUITaskBar * parentTaskBar() const {return mParentTaskBar;}
+    UKUITaskBar * parentTaskBar() const {return m_parentTaskBar;}
 
     void refreshIconGeometry(QRect const & geom);
     static QString mimeDataFormat() { return QLatin1String("ukui/UKUITaskButton"); }
@@ -111,16 +111,16 @@ public:
 
     /////////////////////////////////
     QHash<QString,QString> settingsMap();
-    QString file_name;
-    QString file;
-    QString name;
-    QString exec;
+    QString m_fileName;
+    QString m_file;
+    QString m_name;
+    QString m_exec;
 
     void toDomodifyQuicklaunchMenuAction(bool direction) { modifyQuicklaunchMenuAction(direction);}
 
-    bool isWinActivate;  //1为激活状态，0为隐藏状态
-    QString mIconName;
-    QString mCaption;
+    bool m_isWinActivate;  //1为激活状态，0为隐藏状态
+    QString m_iconName;
+    QString m_caption;
 
 public slots:
     void raiseApplication();
@@ -158,45 +158,44 @@ protected:
     void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
 
-    void setWindowId(WId wid) {mWindow = wid;}
+    void setWindowId(WId wid) {m_window = wid;}
     virtual QMimeData * mimeData();
-    static bool sDraggging;
+    static bool m_draggging;
 
-    inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
+    inline IUKUIPanelPlugin * plugin() const { return m_plugin; }
 
     /////////////////////////////////////
     //virtual QMimeData * mimeData();
 
 private:
-    bool statFlag = true;
+    bool m_statFlag = true;
 
-    WId mWindow;
-    QString mAppName;
-    bool mUrgencyHint;
-    QPoint mDragStartPosition;
-    Qt::Corner mOrigin;
-    QPixmap mPixmap;
-    bool mDrawPixmap;
-    UKUITaskBar * mParentTaskBar;
-    IUKUIPanelPlugin * mPlugin;
+    WId m_window;
+    QString m_appName;
+    bool m_urgencyHint;
+    QPoint m_dragStartPosition;
+    Qt::Corner m_origin;
+    bool m_drawPixmap;
+    UKUITaskBar * m_parentTaskBar;
+    IUKUIPanelPlugin * m_plugin;
     enum TaskButtonStatus{NORMAL, HOVER, PRESS};
-    TaskButtonStatus taskbuttonstatus;
-    QIcon mIcon;
+    TaskButtonStatus m_taskButtonStatus;
+    QIcon m_icon;
 
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
-    QTimer * mDNDTimer;
-    QGSettings *gsettings;
+    QTimer * m_DNDTimer;
+    QGSettings *m_gsettings;
 
 
     ///////////////////////////////////
-    QuickLaunchAction *mAct;
-    QAction *mDeleteAct;
-    QuicklaunchMenu *mMenu;
-    QPoint mDragStart;
-    TaskButtonStatus quicklanuchstatus;
-    CustomStyle toolbuttonstyle;
-    QGSettings *mgsettings;
+    QuickLaunchAction *m_act;
+    QAction *m_deleteAct;
+    QuicklaunchMenu *m_menu;
+    QPoint m_dragStart;
+    TaskButtonStatus m_quickLanuchStatus;
+    CustomStyle m_toolButtonStyle;
+    QGSettings *m_gsettingsQuickLaunch;
 
     void modifyQuicklaunchMenuAction(bool direction);
 private slots:
@@ -219,15 +218,15 @@ class ButtonMimeData: public QMimeData
 public:
     ButtonMimeData():
         QMimeData(),
-        mButton(0)
+        m_button(0)
     {
     }
 
-    UKUITaskButton *button() const { return mButton; }
-    void setButton(UKUITaskButton *button) { mButton = button; }
+    UKUITaskButton *button() const { return m_button; }
+    void setButton(UKUITaskButton *button) { m_button = button; }
 
 private:
-    UKUITaskButton *mButton;
+    UKUITaskButton *m_button;
 };
 //typedef QHash<WId,UKUITaskButton*> UKUITaskButtonHash;
 //typedef QHash<WId,QWidget*> UKUITaskButtonHash;
