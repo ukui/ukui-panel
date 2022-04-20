@@ -19,9 +19,9 @@
 #ifndef UKUITASKCLOSEBUTTON_H
 #define UKUITASKCLOSEBUTTON_H
 
-#include <QToolButton>
+#include <QPushButton>
 #include <QMouseEvent>
-class UKUITaskCloseButton : public QToolButton
+class UKUITaskCloseButton : public QPushButton
 {
     Q_OBJECT
 public:
@@ -29,7 +29,7 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
 private:
-    WId mWindow;
+    WId m_window;
 signals:
     void sigClicked();
 };

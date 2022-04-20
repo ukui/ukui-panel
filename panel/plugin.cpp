@@ -114,24 +114,24 @@ extern void * loadPluginTranslation_segmentation_helper;
 extern void * loadPluginTranslation_nightmode_helper;
 #endif
 
-QColor Plugin::mMoveMarkerColor= QColor(255, 0, 0, 255);
+QColor Plugin::m_moveMarkerColor= QColor(255, 0, 0, 255);
 
 /************************************************
 
  ************************************************/
 Plugin::Plugin(const UKUi::PluginInfo &desktopFile, UKUi::Settings *settings, const QString &settingsGroup,UKUIPanel *panel) :
     QFrame(panel),
-    mDesktopFile(desktopFile),
-    mPluginLoader(0),
-    mPlugin(0),
-    mPluginWidget(0),
-    mAlignment(AlignLeft),
-    mPanel(panel)
+    m_desktopFile(desktopFile),
+    m_pluginLoader(0),
+    m_plugin(0),
+    m_pluginWidget(0),
+    m_alignment(AlignLeft),
+    m_panel(panel)
 {
-    mSettings = PluginSettingsFactory::create(settings, settingsGroup);
+    m_settings = PluginSettingsFactory::create(settings, settingsGroup);
 
     setWindowTitle(desktopFile.name());
-    mName = desktopFile.name();
+    m_name = desktopFile.name();
 
     QStringList dirs;
     dirs << QProcessEnvironment::systemEnvironment().value("UKUIPanel_PLUGIN_PATH").split(":");
@@ -173,42 +173,42 @@ Plugin::Plugin(const UKUi::PluginInfo &desktopFile, UKUi::Settings *settings, co
         return;
     }
 
-    setObjectName(mPlugin->themeId() + "Plugin");
+    setObjectName(m_plugin->themeId() + "Plugin");
 
     // plugin handle for easy context menu
-    setProperty("NeedsHandle", mPlugin->flags().testFlag(IUKUIPanelPlugin::NeedsHandle));
+    setProperty("NeedsHandle", m_plugin->flags().testFlag(IUKUIPanelPlugin::NeedsHandle));
 
-    QString s = mSettings->value("alignment").toString();
+    QString s = m_settings->value("alignment").toString();
 
     // Retrun default value
     if (s.isEmpty())
     {
-        mAlignment = (mPlugin->flags().testFlag(IUKUIPanelPlugin::PreferRightAlignment)) ?
+        m_alignment = (m_plugin->flags().testFlag(IUKUIPanelPlugin::PreferRightAlignment)) ?
                     Plugin::AlignRight :
                     Plugin::AlignLeft;
     }
     else
     {
-        mAlignment = (s.toUpper() == "RIGHT") ?
+        m_alignment = (s.toUpper() == "RIGHT") ?
                     Plugin::AlignRight :
                     Plugin::AlignLeft;
 
     }
 
-    if (mPluginWidget)
+    if (m_pluginWidget)
     {
         QGridLayout* layout = new QGridLayout(this);
         layout->setSpacing(0);
         layout->setContentsMargins(0, 0, 0, 0);
         setLayout(layout);
-        layout->addWidget(mPluginWidget, 0, 0);
+        layout->addWidget(m_pluginWidget, 0, 0);
     }
 
     saveSettings();
 
     // delay the connection to settingsChanged to avoid conflicts
     // while the plugin is still being initialized
-    connect(mSettings, &PluginSettings::settingsChanged,
+    connect(m_settings, &PluginSettings::settingsChanged,
             this, &Plugin::settingsChanged);
 }
 
@@ -218,14 +218,14 @@ Plugin::Plugin(const UKUi::PluginInfo &desktopFile, UKUi::Settings *settings, co
  ************************************************/
 Plugin::~Plugin()
 {
-    delete mPlugin;
-    delete mPluginLoader;
-    delete mSettings;
+    delete m_plugin;
+    delete m_pluginLoader;
+    delete m_settings;
 }
 
 void Plugin::setAlignment(Plugin::Alignment alignment)
 {
-    mAlignment = alignment;
+    m_alignment = alignment;
     saveSettings();
 }
 
@@ -320,22 +320,22 @@ IUKUIPanelPluginLibrary const * Plugin::findStaticPlugin(const QString &libraryN
 bool Plugin::loadLib(IUKUIPanelPluginLibrary const * pluginLib)
 {
     IUKUIPanelPluginStartupInfo startupInfo;
-    startupInfo.settings = mSettings;
-    startupInfo.desktopFile = &mDesktopFile;
-    startupInfo.ukuiPanel = mPanel;
+    startupInfo.settings = m_settings;
+    startupInfo.desktopFile = &m_desktopFile;
+    startupInfo.ukuiPanel = m_panel;
 
-    mPlugin = pluginLib->instance(startupInfo);
-    if (!mPlugin)
+    m_plugin = pluginLib->instance(startupInfo);
+    if (!m_plugin)
     {
-        qWarning() << QString("Can't load plugin \"%1\". Plugin can't build IUKUIPanelPlugin.").arg(mDesktopFile.id());
+        qWarning() << QString("Can't load plugin \"%1\". Plugin can't build IUKUIPanelPlugin.").arg(m_desktopFile.id());
         return false;
     }
 
-    mPluginWidget = mPlugin->widget();
-    if (mPluginWidget)
+    m_pluginWidget = m_plugin->widget();
+    if (m_pluginWidget)
     {
-        mPluginWidget->setObjectName(mPlugin->themeId());
-        watchWidgets(mPluginWidget);
+        m_pluginWidget->setObjectName(m_plugin->themeId());
+        watchWidgets(m_pluginWidget);
     }
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     return true;
@@ -344,25 +344,25 @@ bool Plugin::loadLib(IUKUIPanelPluginLibrary const * pluginLib)
 // load dynamic plugin from a *.so module
 bool Plugin::loadModule(const QString &libraryName)
 {
-    mPluginLoader = new QPluginLoader(libraryName);
+    m_pluginLoader = new QPluginLoader(libraryName);
 
-    if (!mPluginLoader->load())
+    if (!m_pluginLoader->load())
     {
-        qWarning() << mPluginLoader->errorString();
+        qWarning() << m_pluginLoader->errorString();
         return false;
     }
 
-    QObject *obj = mPluginLoader->instance();
+    QObject *obj = m_pluginLoader->instance();
     if (!obj)
     {
-        qWarning() << mPluginLoader->errorString();
+        qWarning() << m_pluginLoader->errorString();
         return false;
     }
 
     IUKUIPanelPluginLibrary* pluginLib= qobject_cast<IUKUIPanelPluginLibrary*>(obj);
     if (!pluginLib)
     {
-        qWarning() << QString("Can't load plugin \"%1\". Plugin is not a IUKUIPanelPluginLibrary.").arg(mPluginLoader->fileName());
+        qWarning() << QString("Can't load plugin \"%1\". Plugin is not a IUKUIPanelPluginLibrary.").arg(m_pluginLoader->fileName());
         delete obj;
         return false;
     }
@@ -403,7 +403,7 @@ void Plugin::unwatchWidgets(QObject * const widget)
  ************************************************/
 void Plugin::settingsChanged()
 {
-    mPlugin->settingsChanged();
+    m_plugin->settingsChanged();
 }
 
 
@@ -412,9 +412,9 @@ void Plugin::settingsChanged()
  ************************************************/
 void Plugin::saveSettings()
 {
-    mSettings->setValue("alignment", (mAlignment == AlignLeft) ? "Left" : "Right");
-    mSettings->setValue("type", mDesktopFile.id());
-    mSettings->sync();
+    m_settings->setValue("alignment", (m_alignment == AlignLeft) ? "Left" : "Right");
+    m_settings->setValue("type", m_desktopFile.id());
+    m_settings->sync();
 
 }
 
@@ -424,7 +424,7 @@ void Plugin::saveSettings()
  ************************************************/
 void Plugin::contextMenuEvent(QContextMenuEvent *event)
 {
-    mPanel->showPopupMenu(this);
+    m_panel->showPopupMenu(this);
 }
 
 
@@ -436,11 +436,11 @@ void Plugin::mousePressEvent(QMouseEvent *event)
     switch (event->button())
     {
     case Qt::LeftButton:
-        mPlugin->activated(IUKUIPanelPlugin::Trigger);
+        m_plugin->activated(IUKUIPanelPlugin::Trigger);
         break;
 
     case Qt::MidButton:
-        mPlugin->activated(IUKUIPanelPlugin::MiddleClick);
+        m_plugin->activated(IUKUIPanelPlugin::MiddleClick);
         break;
 
     default:
@@ -454,7 +454,7 @@ void Plugin::mousePressEvent(QMouseEvent *event)
  ************************************************/
 void Plugin::mouseDoubleClickEvent(QMouseEvent*)
 {
-    mPlugin->activated(IUKUIPanelPlugin::DoubleClick);
+    m_plugin->activated(IUKUIPanelPlugin::DoubleClick);
 }
 
 
@@ -463,8 +463,8 @@ void Plugin::mouseDoubleClickEvent(QMouseEvent*)
  ************************************************/
 void Plugin::showEvent(QShowEvent *)
 {
-    if (mPluginWidget)
-        mPluginWidget->adjustSize();
+    if (m_pluginWidget)
+        m_pluginWidget->adjustSize();
 }
 
 
@@ -508,7 +508,7 @@ QMenu *Plugin::popupMenu() const
  ************************************************/
 bool Plugin::isSeparate() const
 {
-   return mPlugin->isSeparate();
+   return m_plugin->isSeparate();
 }
 
 
@@ -517,7 +517,7 @@ bool Plugin::isSeparate() const
  ************************************************/
 bool Plugin::isExpandable() const
 {
-    return mPlugin->isExpandable();
+    return m_plugin->isExpandable();
 }
 
 
@@ -548,8 +548,8 @@ bool Plugin::eventFilter(QObject * watched, QEvent * event)
  ************************************************/
 void Plugin::realign()
 {
-    if (mPlugin)
-        mPlugin->realign();
+    if (m_plugin)
+        m_plugin->realign();
 }
 
 
@@ -558,19 +558,19 @@ void Plugin::realign()
  ************************************************/
 void Plugin::showConfigureDialog()
 {
-    if (!mConfigDialog)
-        mConfigDialog = mPlugin->configureDialog();
+    if (!m_configDialog)
+        m_configDialog = m_plugin->configureDialog();
 
-    if (!mConfigDialog)
+    if (!m_configDialog)
         return;
 
-    connect(this, &Plugin::destroyed, mConfigDialog.data(), &QWidget::close);
-    mPanel->willShowWindow(mConfigDialog);
-    mConfigDialog->show();
-    mConfigDialog->raise();
-    mConfigDialog->activateWindow();
+    connect(this, &Plugin::destroyed, m_configDialog.data(), &QWidget::close);
+    m_panel->willShowWindow(m_configDialog);
+    m_configDialog->show();
+    m_configDialog->raise();
+    m_configDialog->activateWindow();
 
-    WId wid = mConfigDialog->windowHandle()->winId();
+    WId wid = m_configDialog->windowHandle()->winId();
     KWindowSystem::activateWindow(wid);
     KWindowSystem::setOnDesktop(wid, KWindowSystem::currentDesktop());
 }

@@ -6,16 +6,11 @@ Uploaders: Aron Xu <aron@debian.org>,
            handsome_feng <jianfengli@ubuntukylin.com>
 Build-Depends: debhelper-compat (= 12),
                cmake,
-               libasound2-dev,
                libdbusmenu-qt5-dev,
                libglib2.0-dev(>=2.36),
-               libicu-dev,
-               libkf5solid-dev,
-               libkf5windowsystem-dev(>=5.68.0-0kylin1k2~),
+               libkf5windowsystem-dev,
                libqt5svg5-dev,
                libqt5x11extras5-dev,
-               libsensors4-dev [!hurd-any],
-               libstatgrab-dev [linux-any],
                libx11-dev,
                libxcb-damage0-dev,
                libxcb-util0-dev,
@@ -25,7 +20,6 @@ Build-Depends: debhelper-compat (= 12),
                libxkbcommon-dev,
                libxkbcommon-x11-dev,
                libxrender-dev,
-               libqt5webkit5-dev,
                libqt5xdg-dev,
                qttools5-dev,
                libgsettings-qt-dev,
@@ -40,7 +34,8 @@ Build-Depends: debhelper-compat (= 12),
 	       libxcb-render-util0-dev,
 	       libxcb-image0-dev,
 	       libxcb-composite0-dev,
-	       libxcb-shape0-dev
+	       libxcb-shape0-dev,
+               libukui-common-dev
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/ukui/ukui-panel
@@ -53,7 +48,8 @@ Depends: ${misc:Depends},
          ${shlibs:Depends}
 Provides: ukui-indicators
 Suggests: ukui-window-switch (>=3.0.0-3),
-          time-shutdown
+          time-shutdown,
+	  libkysdk-system
 Description: ukui desktop panel
  The ukui desktop panel is used on ukui desktop and has some plugins like
  starmenu, quicklaunch and other useful tools.

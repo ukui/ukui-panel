@@ -37,6 +37,8 @@ protected:
 private:
     QWidget *m_parent;
     IUKUIPanelPlugin * m_plugin;
+    QGSettings *m_gsettings;
+    bool m_isDarkStyle;
 
 };
 

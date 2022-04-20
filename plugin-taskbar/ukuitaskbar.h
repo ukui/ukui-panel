@@ -61,6 +61,9 @@
 #include <QScrollArea>
 #include <QScrollBar>
 
+#define DESKTOP_FILE_PATH          "/usr/share/applications/"
+#define ANDROID_DESKTOP_FILE_PATH  "/.local/share/applications/"
+
 QT_BEGIN_NAMESPACE
 class QByteArray;
 template<class T> class QList;
@@ -100,23 +103,23 @@ public:
 
     void realign();
 
-    Qt::ToolButtonStyle buttonStyle() const { return mButtonStyle; }
-    int buttonWidth() const { return mButtonWidth; }
-    bool closeOnMiddleClick() const { return mCloseOnMiddleClick; }
-    bool raiseOnCurrentDesktop() const { return mRaiseOnCurrentDesktop; }
-    bool isShowOnlyOneDesktopTasks() const { return mShowOnlyOneDesktopTasks; }
-    int showDesktopNum() const { return mShowDesktopNum; }
-    bool getCpuInfoFlg() const { return CpuInfoFlg; }
-    bool isShowOnlyCurrentScreenTasks() const { return mShowOnlyCurrentScreenTasks; }
-    bool isShowOnlyMinimizedTasks() const { return mShowOnlyMinimizedTasks; }
-    bool isAutoRotate() const { return mAutoRotate; }
-    bool isGroupingEnabled() const { return mGroupingEnabled; }
-    bool isShowGroupOnHover() const { return mShowGroupOnHover; }
-    bool isIconByClass() const { return mIconByClass; }
+    Qt::ToolButtonStyle buttonStyle() const { return m_buttonStyle; }
+    int buttonWidth() const { return m_buttonWidth; }
+    bool closeOnMiddleClick() const { return m_closeOnMiddleClick; }
+    bool raiseOnCurrentDesktop() const { return m_raiseOnCurrentDesktop; }
+    bool isShowOnlyOneDesktopTasks() const { return m_showOnlyOneDesktopTasks; }
+    int showDesktopNum() const { return m_showDesktopNum; }
+    bool getCpuInfoFlg() const { return m_cpuInfoFlg; }
+    bool isShowOnlyCurrentScreenTasks() const { return m_showOnlyCurrentScreenTasks; }
+    bool isShowOnlyMinimizedTasks() const { return m_showOnlyMinimizedTasks; }
+    bool isAutoRotate() const { return m_autoRotate; }
+    bool isGroupingEnabled() const { return m_groupingEnabled; }
+    bool isShowGroupOnHover() const { return m_showGroupOnHover; }
+    bool isIconByClass() const { return m_iconByClass; }
     void setShowGroupOnHover(bool bFlag);
-    inline IUKUIPanel * panel() const { return mPlugin->panel(); }
-    inline IUKUIPanelPlugin * plugin() const { return mPlugin; }
-    inline UKUITaskBarIcon* fetchIcon()const{return mpTaskBarIcon;}
+    inline IUKUIPanel * panel() const { return m_plugin->panel(); }
+    inline IUKUIPanelPlugin * plugin() const { return m_plugin; }
+    inline UKUITaskBarIcon* fetchIcon()const{return m_taskbarIcon;}
     void pubAddButton(QuickLaunchAction* action) { addButton(action); }
     void pubSaveSettings() { saveSettings(); }
 
@@ -131,7 +134,7 @@ public:
     void saveSettings();
     void refreshQuickLaunch();
     friend class FilectrlAdaptor;
-    QStringList mIgnoreWindow;
+    QStringList m_ignoreWindow;
 
 
 signals:
@@ -143,7 +146,7 @@ signals:
     void popupShown(UKUITaskGroup* sender);
     void sendToUkuiDEApp(void);
 //quicklaunch
-    void setsizeoftaskbarbutton(int _size);
+    void setSizeOfTaskbarButton(int _size);
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent * event);
@@ -166,7 +169,6 @@ private slots:
     void onWindowAdded(WId window);
     void onWindowRemoved(WId window);
     void activateTask(int pos);
-    void DosaveSettings() { saveSettings(); }
     void onDesktopChanged();
 
     ////////////////////////////
@@ -180,11 +182,10 @@ private slots:
     void switchButtons(UKUITaskGroup *dst_button, UKUITaskGroup *src_button);
     QString readFile(const QString &filename);
 
-    void _AddToTaskbar(QString arg);
+    void addToTaskbar(QString arg);
 
-    void wl_kwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption);
-
-    bool isFileExit(const QString &filename);
+    void wlKwinSigHandler(quint32 wl_winId, int opNo, QString wl_iconName, QString wl_caption);
+    void readPanelConfig(bool isTabletMode);
 
 private:
     typedef QMap<WId, UKUITaskGroup*> windowMap_t;
@@ -199,44 +200,40 @@ private:
 
 
     enum TaskStatus{NORMAL, HOVER, PRESS};
-    TaskStatus taskstatus;
+    TaskStatus m_taskStatus;
 
     ////////////////////////////////////
     /// quicklaunch parameter
 
-    QVector<UKUITaskGroup*> mVBtn;
-    QGSettings *settings;
+    QVector<UKUITaskGroup*> m_vBtn;
+    QGSettings *m_settings;
 
-    QToolButton *pageup;
-    QToolButton *pagedown;
-    QWidget *tmpwidget;
-    QVector <UKUITaskGroup*> mBtnAll;
-    QVector <int> mBtncvd;
+    QWidget *m_tmpWidget;
 
 private:
-    QMap<WId, UKUITaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
-    QList <WId> swid;
-    UKUi::GridLayout *mLayout;
+    QMap<WId, UKUITaskGroup*> m_knownWindows; //!< Ids of known windows (mapping to buttons/groups)
+    QList <WId> m_swid;
+    UKUi::GridLayout *m_layout;
 //    QList<GlobalKeyShortcut::Action*> mKeys;
-    QSignalMapper *mSignalMapper;
+    QSignalMapper *m_signalMapper;
 
     // Settings
-    Qt::ToolButtonStyle mButtonStyle;
-    int mButtonWidth;
-    int mButtonHeight;
+    Qt::ToolButtonStyle m_buttonStyle;
+    int m_buttonWidth;
+    int m_buttonHeight;
 
-    bool CpuInfoFlg = true;
-    bool mCloseOnMiddleClick;
-    bool mRaiseOnCurrentDesktop;
-    bool mShowOnlyOneDesktopTasks;
-    int mShowDesktopNum;
-    bool mShowOnlyCurrentScreenTasks;
-    bool mShowOnlyMinimizedTasks;
-    bool mAutoRotate;
-    bool mGroupingEnabled;
-    bool mShowGroupOnHover;
-    bool mIconByClass;
-    bool mCycleOnWheelScroll; //!< flag for processing the wheelEvent
+    bool m_cpuInfoFlg = true;
+    bool m_closeOnMiddleClick;
+    bool m_raiseOnCurrentDesktop;
+    bool m_showOnlyOneDesktopTasks;
+    int m_showDesktopNum;
+    bool m_showOnlyCurrentScreenTasks;
+    bool m_showOnlyMinimizedTasks;
+    bool m_autoRotate;
+    bool m_groupingEnabled;
+    bool m_showGroupOnHover;
+    bool m_iconByClass;
+    bool m_cycleOnWheelScroll; //!< flag for processing the wheelEvent
 
     bool acceptWindow(WId window) const;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
@@ -246,15 +243,20 @@ private:
     void wheelEvent(QWheelEvent* event);
     void changeEvent(QEvent* event);
     void resizeEvent(QResizeEvent *event);
+    void directoryUpdated(const QString &path);
 
-    IUKUIPanelPlugin *mPlugin;
-    LeftAlignedTextStyle *mStyle;
-    UKUITaskBarIcon *mpTaskBarIcon;
-    QWidget *mAllFrame;
-    QWidget *mPlaceHolder;
+    QFileSystemWatcher *m_fsWatcher;
+    QMap<QString, QStringList> m_currentContentsMap; // 当前每个监控的内容目录列表
+    QString m_desfktopFilePath =DESKTOP_FILE_PATH;
+    QString m_androidDesktopFilePath =QDir::homePath()+ANDROID_DESKTOP_FILE_PATH;
 
-    QGSettings *changeTheme;
-    QHash<QString,QString> mAndroidIconHash;
+    IUKUIPanelPlugin *m_plugin;
+    LeftAlignedTextStyle *m_style;
+    UKUITaskBarIcon *m_taskbarIcon;
+    QWidget *m_allFrame;
+    QWidget *m_placeHolder;
+    QGSettings *m_changeTheme;
+    QHash<QString,QString> m_androidIconHash;
 
     QHash<QString,QString> matchAndroidIcon();
     QString captionExchange(QString str);

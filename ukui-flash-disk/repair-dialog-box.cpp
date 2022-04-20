@@ -118,6 +118,7 @@ RepairDialogBox::RepairDialogBox(GVolume* volume, QWidget* parent) : BaseDialog(
         }
     });
 }
+bool RepairDialogBox::mshowflag = false;
 
 void RepairDialogBox::onRemountDevice()
 {
@@ -144,10 +145,39 @@ void RepairDialogBox::initUI()
     setWindowTitle(tr("Disk test"));
     setBackgroundRole(QPalette::Base);
     setContentsMargins(24, 24, 24, 24);
-    setFixedSize(mFixWidth, mFixHeight);
 
     setWindowIcon(QIcon::fromTheme("system-file-manager"));
     setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
+
+    QGSettings* fontSettings = nullptr;
+    const QByteArray id1(THEME_QT_SCHEMA);
+    static int fontSize;
+
+    if(QGSettings::isSchemaInstalled(id1))
+    {
+        fontSettings = new QGSettings(id1);
+    }
+
+    fontSize = fontSettings->get(FONT_SIZE).toString().toFloat();
+    if((fontSize>=14)&&(qgetenv ("GDM_LANG") == "en"))
+    {
+        setFixedSize(mFixWidth, mFixHeight+55);
+    }else{
+        setFixedSize(mFixWidth, mFixHeight);
+    }
+    QObject::connect(fontSettings,&QGSettings::changed,[=](QString key)
+    {
+       if(mshowflag){
+           fontSize = fontSettings->get(FONT_SIZE).toString().toFloat();
+           if((fontSize>=14)&&(qgetenv ("GDM_LANG") == "en"))
+           {
+               setFixedSize(mFixWidth, mFixHeight+55);
+           }
+           else{
+               setFixedSize(mFixWidth, mFixHeight);
+           }
+       }
+    });
 
     QGridLayout* mainLayout = new QGridLayout(this);
     mainLayout->setContentsMargins(0,0,0,0);
@@ -478,6 +508,12 @@ void FormateDialog::initUI()
     mFSCombox->addItem("vfat/fat32");
     mainLayout->addWidget(fsLabel, 2, 1, 1, 2);
     mainLayout->addWidget(mFSCombox, 2, 3, 1, 6);
+    if (BaseDialog* wi = qobject_cast<BaseDialog*>(this)) {
+        QAbstractItemView * popuView = mFSCombox->view();
+        popuView->setPalette(wi->palette());
+        popuView = mRomSizeCombox->view();
+        popuView->setPalette(wi->palette());
+    }
 
     QLabel* uNameLabel = new QLabel;
     uNameLabel->setText(tr("Disk name:"));
@@ -552,12 +588,17 @@ BaseDialog::BaseDialog(QWidget *parent) : QDialog(parent)
 
         connect(mGSettings, &QGSettings::changed, this, [=] (const QString &key) {
             if ("styleName" == key) {
-                setStyleSheet ("QCheckBox{margin:3px;}");
+                //setStyleSheet ("QCheckBox{margin:3px;}");
                 QPalette p = getPalette();
                 for (auto obj : children ()) {
                     if (QWidget* w = qobject_cast<QWidget*>(obj)) {
                         w->setPalette (p);
                         w->update ();
+                        if (QComboBox * combo = qobject_cast<QComboBox*>(obj)) {
+                            QAbstractItemView * popuView = combo->view();
+                            popuView->setPalette(p);
+                            popuView->update();
+                        }
                     }
                 }
                 setPalette(p);
@@ -568,9 +609,10 @@ BaseDialog::BaseDialog(QWidget *parent) : QDialog(parent)
 
     setTheme();
 
-    if (qgetenv ("DESKTOP_SESSION") == "ukui" && qgetenv ("XDG_SESSION_TYPE") == "x11") {
+    if ((qgetenv ("DESKTOP_SESSION") == "ukui" && qgetenv ("XDG_SESSION_TYPE") == "x11")||
+		(qgetenv ("DESKTOP_SESSION") == "ukui-wayland" && qgetenv ("XDG_SESSION_TYPE") == "wayland")) {
         setStyle (BaseDialogStyle::getStyle ());
-        setStyleSheet ("QCheckBox{margin:3px;}");
+        //setStyleSheet ("QCheckBox{margin:3px;}");
     }
 }
 

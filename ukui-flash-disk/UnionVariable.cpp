@@ -78,7 +78,34 @@ QString getElidedText(QFont font, QString str, int MaxWidth)
     return str;
 }
 
-void handleVolumeLabelForFat32Me(QString &volumeName,const QString &unixDeviceName){
+/**
+ * @brief
+ *  使用 glib 提供的设备名，做到与文件管理器统一。
+ */
+void handleVolumeLabelForFat32Me(QString &volumeName,const QString &unixDeviceName)
+{
+    if (unixDeviceName.isNull() || unixDeviceName.isEmpty()) {
+        return;
+    }
+
+    GVolumeMonitor *vm = g_volume_monitor_get();
+    GList *volumes = g_volume_monitor_get_volumes(vm);
+    GList *l = volumes;
+    while (l) {
+        GVolume *volume = static_cast<GVolume *>(l->data);
+        g_autofree char *volume_unix_dev = g_volume_get_identifier(volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+        if (unixDeviceName == volume_unix_dev) {
+            g_autofree char *volume_name = g_volume_get_name(volume);
+            volumeName = volume_name;
+            break;
+        }
+        l = l->next;
+    }
+    g_list_free_full(volumes, g_object_unref);
+    g_object_unref(vm);
+
+    return;
+
     QFileInfoList diskList;
     QFileInfo diskLabel;
     QDir diskDir;
@@ -110,7 +137,7 @@ void handleVolumeLabelForFat32Me(QString &volumeName,const QString &unixDeviceNa
     if(!tmpName.isEmpty()){
         if(tmpName == volumeName)      //ntfs、exfat格式或者非纯中文名的fat32设备,这个设备的名字不需要转码
             return;
-        else{
+        else {
             finalName = transcodeForGbkCode(tmpName.toLocal8Bit(), volumeName);
             if(!finalName.isEmpty())
                 volumeName = finalName;

@@ -1,0 +1,25 @@
+<svg id="icon_icon-任务视图-任务栏-深色主题" data-name="icon/icon-任务视图-任务栏-深色主题" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #262626;
+      }
+
+      .cls-3 {
+        opacity: 0.65;
+      }
+    </style>
+  </defs>
+  <g id="任务栏_icon_程序切换" data-name="任务栏/icon/程序切换">
+    <g id="任务栏_icon_程序切换-2" data-name="任务栏/icon/程序切换">
+      <rect id="矩形备份_2" data-name="矩形备份 2" class="cls-1" width="32" height="32"/>
+      <rect id="矩形" class="cls-2" width="14" height="22" rx="1" transform="translate(9 5)"/>
+      <rect id="矩形备份" class="cls-3" width="4" height="16" rx="1" transform="translate(25 8)"/>
+      <rect id="矩形备份_3" data-name="矩形备份 3" class="cls-3" width="4" height="16" rx="1" transform="translate(3 8)"/>
+    </g>
+  </g>
+</svg>

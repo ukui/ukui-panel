@@ -94,10 +94,13 @@ void StartMenuButton::contextMenuEvent(QContextMenuEvent *event)
                                    this, SLOT(SessionHibernate())
                                    );                              //休眠
     }
-    pSleepHibernate->addAction(QIcon::fromTheme("ukui-hebernate-symbolic"),
-                               tr("Sleep Mode"),
-                               this, SLOT(SessionSuspend())
-                               );                                   //睡眠
+    if(QString::compare(getCanSuspendResult(),"yes") == 0)
+    {
+        pSleepHibernate->addAction(QIcon::fromTheme("ukui-hebernate-symbolic"),
+                                   tr("Sleep Mode"),
+                                   this, SLOT(SessionSuspend())
+                                   );                                   //睡眠
+    }
     pPowerSupply->addAction(QIcon::fromTheme("ukui-system-restart-symbolic"),
                             tr("Restart"),
                             this, SLOT(SessionReboot())
@@ -186,18 +189,37 @@ void StartMenuButton::getOsRelease()
 //检测当前系统能否执行休眠操作
 QString StartMenuButton::getCanHibernateResult()
 {
-    QDBusInterface interface("org.freedesktop.login1", "/org/freedesktop/login1",
-                             "org.freedesktop.login1.Manager",
-                             QDBusConnection::systemBus());
+    QDBusInterface interface(LOGIN_SERVICE, LOGIN_PATH,
+                             LOGIN_INTERFACE, QDBusConnection::systemBus());
     if (!interface.isValid()) {
         qCritical() << QDBusConnection::sessionBus().lastError().message();
+        return QString("");
     }
     /*调用远程的 CanHibernate 方法，判断是否可以执行休眠的操作,返回值为yes为允许执行休眠，no为无法执行休眠 na为交换分区不足*/
     QDBusReply<QString> reply = interface.call("CanHibernate");
     if (reply.isValid()) {
-        return reply;
+        return reply.value();
     } else {
         qCritical() << "Call Dbus method failed";
+        return QString("");
+    }
+}
+
+//检测当前系统能否执行睡眠操作
+QString StartMenuButton::getCanSuspendResult()
+{
+    QDBusInterface interface(LOGIN_SERVICE, LOGIN_PATH,
+                             LOGIN_INTERFACE, QDBusConnection::systemBus());
+    if (!interface.isValid()) {
+        qCritical() << QDBusConnection::sessionBus().lastError().message();
+        return QString("");
+    }
+    QDBusReply<QString> reply = interface.call("CanSuspend");
+    if (reply.isValid()) {
+        return reply.value();
+    } else {
+        qCritical() << "Call Dbus method failed";
+        return QString("");
     }
 }
 

@@ -55,19 +55,19 @@ UKuiPanelInformation::UKuiPanelInformation(QObject *parent) : QObject(parent)
 
 void UKuiPanelInformation::setPanelInformation(int x, int y, int width, int height, int size, int position)
 {
-    screen_x=x;
-    screen_y=y;
-    screen_width=width;
-    screen_height=height;
-    panelsize=size;
-    panelposition=position;
+    m_screenX=x;
+    m_screenY=y;
+    m_screenWidth=width;
+    m_screenHeight=height;
+    m_panelSize=size;
+    m_panelPosition=position;
 
     QDBusMessage message = QDBusMessage::createSignal("/panel/position", "org.ukui.panel", "PrimaryScreenAvailiableGeometryChanged");
     QList<QVariant> args;
-    args.append(screen_x);
-    args.append(screen_y);
-    args.append(screen_width);
-    args.append(screen_height);
+    args.append(m_screenX);
+    args.append(m_screenY);
+    args.append(m_screenWidth);
+    args.append(m_screenHeight);
     message.setArguments(args);
     QDBusConnection::sessionBus().send(message);
 
@@ -76,41 +76,45 @@ void UKuiPanelInformation::setPanelInformation(int x, int y, int width, int heig
 }
 QVariantList UKuiPanelInformation::GetPrimaryScreenGeometry()
 {
-    int available_primary_screen_x;int available_primary_screen_y ; int available_primary_screen_width; int available_primary_screen_height;int available_panel_position;
+    int available_primary_screen_x;
+    int available_primary_screen_y ;
+    int available_primary_screen_width;
+    int available_primary_screen_height;
+    int available_panel_position;
     QVariantList vlist;
-    switch(panelposition){
+    switch(m_panelPosition){
     case 0:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height-panelsize;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight-m_panelSize;
         break;
     case 1:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y+panelsize;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height-panelsize;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY + m_panelSize;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight - m_panelSize;
         break;
     case 2:
-        available_primary_screen_x=screen_x + panelsize;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width-panelsize;
-        available_primary_screen_height=screen_height;
+        available_primary_screen_x = m_screenX + m_panelSize;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth - m_panelSize;
+        available_primary_screen_height = m_screenHeight;
         break;
     case 3:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width-panelsize;
-        available_primary_screen_height=screen_height;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth - m_panelSize;
+        available_primary_screen_height = m_screenHeight;
         break;
     default:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height-panelsize;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight - m_panelSize;
         break;
     }
-    vlist<<available_primary_screen_x<<available_primary_screen_y<<available_primary_screen_width<<available_primary_screen_height<<panelposition;
+    vlist<<available_primary_screen_x<<available_primary_screen_y<<available_primary_screen_width<<available_primary_screen_height<<m_panelPosition;
     return vlist;
 }
 
@@ -118,39 +122,39 @@ QVariantList UKuiPanelInformation::GetPrimaryScreenAvailableGeometry()
 {
     int available_primary_screen_x;int available_primary_screen_y ; int available_primary_screen_width; int available_primary_screen_height;int available_panel_position;
     QVariantList vlist;
-    switch(panelposition){
+    switch(m_panelPosition){
     case 0:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height-panelsize;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight - m_panelSize;
         break;
     case 1:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y+panelsize;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height-panelsize;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY + m_panelSize;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight - m_panelSize;
         break;
     case 2:
-        available_primary_screen_x=screen_x + panelsize;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width-panelsize;
-        available_primary_screen_height=screen_height;
+        available_primary_screen_x = m_screenX + m_panelSize;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth - m_panelSize;
+        available_primary_screen_height = m_screenHeight;
         break;
     case 3:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width-panelsize;
-        available_primary_screen_height=screen_height;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth - m_panelSize;
+        available_primary_screen_height = m_screenHeight;
         break;
     default:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height-panelsize;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight - m_panelSize;
         break;
     }
-    vlist<<available_primary_screen_x<<available_primary_screen_y<<available_primary_screen_width<<available_primary_screen_height<<panelposition;
+    vlist<<available_primary_screen_x<<available_primary_screen_y<<available_primary_screen_width<<available_primary_screen_height<<m_panelPosition;
     return vlist;
 }
 
@@ -158,33 +162,33 @@ QVariantList UKuiPanelInformation::GetPrimaryScreenPhysicalGeometry()
 {
     int available_primary_screen_x;int available_primary_screen_y ; int available_primary_screen_width; int available_primary_screen_height;int available_panel_position;
     QVariantList vlist;
-    switch(panelposition){
+    switch(m_panelPosition){
     case 1:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight;
         break;
     case 2:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight;
         break;
     case 3:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight;
         break;
     default:
-        available_primary_screen_x=screen_x;
-        available_primary_screen_y=screen_y;
-        available_primary_screen_width=screen_width;
-        available_primary_screen_height=screen_height;
+        available_primary_screen_x = m_screenX;
+        available_primary_screen_y = m_screenY;
+        available_primary_screen_width = m_screenWidth;
+        available_primary_screen_height = m_screenHeight;
         break;
     }
-    vlist<<available_primary_screen_x<<available_primary_screen_y<<available_primary_screen_width<<available_primary_screen_height<<panelsize<<panelposition<<panelPositionTransform(panelposition);
+    vlist<<available_primary_screen_x<<available_primary_screen_y<<available_primary_screen_width<<available_primary_screen_height<<m_panelSize<<m_panelPosition<<panelPositionTransform(m_panelPosition);
     return vlist;
 }
 

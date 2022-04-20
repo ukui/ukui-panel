@@ -33,6 +33,10 @@
 #include "../panel/iukuipanelplugin.h"
 #include "../panel/customstyle.h"
 
+#define LOGIN_SERVICE   "org.freedesktop.login1"
+#define LOGIN_PATH      "/org/freedesktop/login1"
+#define LOGIN_INTERFACE "org.freedesktop.login1.Manager"
+
 class StartMenuButton : public QToolButton
 {
     Q_OBJECT
@@ -54,6 +58,7 @@ private:
 
     void getOsRelease();
     QString getCanHibernateResult();
+    QString getCanSuspendResult();
     bool hasMultipleUsers();
 
 private slots:

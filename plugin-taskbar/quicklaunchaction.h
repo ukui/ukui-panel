@@ -70,6 +70,8 @@ private:
     QString m_data;
     bool m_valid;
     QList<QAction *> m_addtitionalActions;
+    bool m_tabletMode;
+    bool getCurrentMode();
 };
 
 #endif

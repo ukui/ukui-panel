@@ -52,7 +52,7 @@ PluginInfo::PluginInfo():
 bool PluginInfo::load(const QString& fileName)
 {
     XdgDesktopFile::load(fileName);
-    mId = QFileInfo(fileName).completeBaseName();
+    m_id = QFileInfo(fileName).completeBaseName();
     return isValid();
 }
 

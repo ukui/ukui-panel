@@ -34,7 +34,6 @@
 #include "../panel/ukuipanel.h"
 #include <QMenu>
 #include <QPointF>
-#include "../panel/highlight-effect.h"
 #include <QMainWindow>
 
 #include "startmenu_button.h"

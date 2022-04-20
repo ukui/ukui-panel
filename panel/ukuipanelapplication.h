@@ -29,8 +29,8 @@
 #define UKUIPanelAPPLICATION_H
 
 //#include <UKUi/Application>
-#include "common/ukuiapplication.h"
 #include "iukuipanelplugin.h"
+#include <QApplication>
 
 class QScreen;
 
@@ -48,7 +48,7 @@ class UKUIPanelApplicationPrivate;
  * to have more than one panel (for example one panel at the top and one
  * panel at the bottom of the screen) without additional effort.
  */
-class UKUIPanelApplication : public UKUi::Application
+class UKUIPanelApplication : public QApplication
 {
     Q_OBJECT
 public:
@@ -69,12 +69,11 @@ public:
     explicit UKUIPanelApplication(int& argc, char** argv);
     ~UKUIPanelApplication();
 
-    void setIconTheme(const QString &iconTheme);
     /*!
      * \brief Determines the number of UKUIPanel objects
      * \return the current number of UKUIPanel objects
      */
-    int count() const { return mPanels.count(); }
+    int count() const { return m_panels.count(); }
 
     /*!
      * \brief Checks if a given Plugin is running and has the
@@ -88,25 +87,6 @@ public:
      */
     bool isPluginSingletonAndRunnig(QString const & pluginId) const;
 
-public slots:
-    /*!
-     * \brief Adds a new UKUIPanel which consists of the following steps:
-     * 1. Create id/name.
-     * 2. Create the UKUIPanel: call addPanel(name).
-     * 3. Update the config file (add the new panel id to the list of panels).
-     * 4. Show the panel configuration dialog so that the user can add plugins.
-     *
-     * This method will create a new UKUIPanel with a new name and add this
-     * to the config file. So this should only be used while the application
-     * is running and the user decides to add a new panel. At application
-     * startup, addPanel() should be used instead.
-     *
-     * \note This slot will be used from the UKUIPanel right-click menu. As we
-     * can only add new panels from a visible panel, we should never run
-     * lxqt-panel without an UKUIPanel. Without a panel, we have just an
-     * invisible application.
-     */
-    void addNewPanel();
 
 signals:
     /*!
@@ -122,11 +102,11 @@ private:
     /*!
      * \brief Holds all the instances of UKUIPanel.
      */
-    QList<UKUIPanel*> mPanels;
+    QList<UKUIPanel*> m_panels;
     /*!
      * \brief The global icon theme used by all apps (except for panels perhaps).
      */
-    QString mGlobalIconTheme;
+    QString m_globalIconTheme;
     /*!
      * \brief Creates a new UKUIPanel with the given name and connects the
      * appropriate signals and slots.
@@ -143,17 +123,9 @@ private:
     QTranslator *m_translator;
      static void sigtermHandler(int signo);
      void translator();
+     bool copyFileToPath(QString sourceDir ,QString toDir, QString copyFileToPath, bool coverFileIfExist);
 
 private slots:
-    /*!
-     * \brief Removes the given UKUIPanel which consists of the following
-     * steps:
-     * 1. Remove the panel from mPanels.
-     * 2. Remove the panel from the config file.
-     * 3. Schedule the QObject for deletion: QObject::deleteLater().
-     * \param panel UKUIPanel instance that should be removed.
-     */
-    void removePanel(UKUIPanel* panel);
 
     /*!
      * \brief Connects the QScreen::destroyed signal of a new screen to
@@ -168,11 +140,6 @@ private slots:
      * \param screenObj The QScreen that was destroyed.
      */
     void screenDestroyed(QObject* screenObj);
-    /*!
-     * \brief Reloads the panels. This is the second part of the workaround
-     * mentioned above.
-     */
-    void reloadPanelsAsNeeded();
     /*!
      * \brief Deletes all UKUIPanel instances that are stored in mPanels.
      */

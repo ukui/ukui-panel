@@ -17,7 +17,16 @@
  */
 
 #include "taskview_button.h"
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusConnection>
 
+#define ORG_UKUI_STYLE            "org.ukui.style"
+#define STYLE_NAME                "styleName"
+#define STYLE_NAME_KEY_DARK       "ukui-dark"
+#define STYLE_NAME_KEY_DEFAULT    "ukui-default"
+#define STYLE_NAME_KEY_BLACK       "ukui-black"
+#define STYLE_NAME_KEY_LIGHT       "ukui-light"
+#define STYLE_NAME_KEY_WHITE       "ukui-white"
 
 TaskViewButton::TaskViewButton(IUKUIPanelPlugin *plugin,QWidget *parent):
     m_parent(parent),
@@ -28,8 +37,29 @@ TaskViewButton::TaskViewButton(IUKUIPanelPlugin *plugin,QWidget *parent):
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setToolTip(tr("Show Taskview"));
     this->setStyle(new CustomStyle());
-    this->setIcon(QIcon::fromTheme("taskview",QIcon("/usr/share/ukui-panel/panel/img/taskview.svg")));
+    
+    const QByteArray id(ORG_UKUI_STYLE);
+        QStringList stylelist;
+        stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+        if (QGSettings::isSchemaInstalled(id)) {
+            m_gsettings = new QGSettings(id);
+            if (stylelist.contains(m_gsettings->get(STYLE_NAME).toString())) {
+                this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/taskview-light.svg"));
+            } else {
+                this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/taskview-dark.svg"));
+            }
+        }
+        connect(m_gsettings, &QGSettings::changed, this, [=] (const QString &key) {
+            if (key==STYLE_NAME) {
+                if (stylelist.contains(m_gsettings->get(STYLE_NAME).toString())) {
+                    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/taskview-light.svg"));
+                } else {
+                    this->setIcon(QIcon("/usr/share/ukui-panel/panel/img/taskview-dark.svg"));
+                }
+            }
+        });
     this->setIconSize(QSize(m_plugin->panel()->iconSize(),m_plugin->panel()->iconSize()));
+    this->setContextMenuPolicy(Qt::PreventContextMenu);
 }
 TaskViewButton::~TaskViewButton(){
 }
@@ -78,6 +108,11 @@ void TaskViewButton::mousePressEvent(QMouseEvent *event)
 
     //调用命令
     if (Qt::LeftButton == b){
+        QDBusInterface iface("org.ukui.KWin",
+                             "/WindowsView",
+                             "org.ukui.KWin.WindowsView",
+                             QDBusConnection::sessionBus());
+        iface.call("showWindowsView");
         system("ukui-window-switch --show-workspace");
     }
 

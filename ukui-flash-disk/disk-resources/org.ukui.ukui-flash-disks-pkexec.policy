@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>                                                                                                                                                                             
+<!DOCTYPE policyconfig PUBLIC
+    "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+    "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+    <vendor>ukui-flash-disks-pkexec</vendor>
+    <vendor_url></vendor_url>
+    <action id="org.freedesktop.pkexec.ukui_flash_disks_pkexec">
+        <description>ukui-flash-disks-pkexec</description>
+        <description xml:lang="zh_CN">ukui-flash-disks-pkexec</description>
+        <message>Authentication </message>
+        <message xml:lang="zh_CN">ukui-flash-disks-pkexec</message>
+        <icon_name>system-file-manager</icon_name>
+        <defaults>
+            <allow_any>yes</allow_any>
+            <allow_inactive>yes</allow_inactive>
+            <allow_active>yes</allow_active>
+        </defaults>
+        <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/ukui-flash-disks-pkexec.sh</annotate>
+        <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+    </action>
+</policyconfig>

@@ -41,6 +41,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
+    void dragLeaveEvent(QDragLeaveEvent *event);
     void resizeEvent(QResizeEvent *event);
 
 private:

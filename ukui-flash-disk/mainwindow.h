@@ -42,6 +42,8 @@ using namespace std;
 #include "fdclickwidget.h"
 #include "repair-dialog-box.h"
 
+#define UDFAUTOMOUNT 0
+
 namespace Ui {
 class MainWindow;
 }
@@ -58,6 +60,7 @@ public:
     QSystemTrayIcon *m_systray;
     ejectInterface *m_eject = nullptr;
     interactiveDialog *chooseDialog = nullptr;
+    bool m_ismountadd = false;
     bool ifSucess;
     int flagType;
     int driveMountNum;
@@ -185,6 +188,7 @@ private:
     void getDriveIconsInfo(GDrive* drive, FDDriveInfo& driveInfo);
     void getVolumeIconsInfo(GVolume* volume, FDVolumeInfo& volumeInfo);
     void getMountIconsInfo(GMount* mount, FDMountInfo& mountInfo);
+    bool getDevInterface(QString strDev);
 
 public Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);    

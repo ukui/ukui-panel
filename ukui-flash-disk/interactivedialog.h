@@ -48,6 +48,7 @@ class interactiveDialog: public QWidget
 public:
     interactiveDialog(QString strDevId, QWidget *parent);
     ~interactiveDialog();
+    void updateContentLable(QString strDevId);
 private:
     QPushButton *chooseBtnContinue = nullptr;
     QPushButton *chooseBtnCancle = nullptr;
@@ -62,7 +63,7 @@ private:
     QGSettings *gsetting = nullptr;
 
 private:
-    void initWidgets();
+    void initWidgets(QString strDevId);
     void moveChooseDialogRight();
     void initTransparentState();
     void getTransparentData();

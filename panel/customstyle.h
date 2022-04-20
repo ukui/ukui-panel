@@ -22,6 +22,7 @@
 
 #include <QProxyStyle>
 #include <QDebug>
+#include <QGSettings>
 /*!
  * \brief The CustomStyle class
  * \details
@@ -154,7 +155,9 @@ signals:
 
 public slots:
 private:
-    QString pluginName;
-    bool multileWindow = false;
+    QString m_pluginName;
+    bool m_multileWindow = false;
+    bool m_isDarkStyle;
+    QGSettings *m_gsettings;
 };
 #endif // CUSTOMSTYLE_H

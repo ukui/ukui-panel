@@ -37,6 +37,7 @@
 #include <gio/gio.h>
 #include "device-operation.h"
 #include "flashdiskdata.h"
+#include "MacroFile.h"
 
 class QGSettings;
 class QDBusConnection;
@@ -91,6 +92,7 @@ public:
     explicit RepairDialogBox(GDrive* drive, QWidget *parent = nullptr);
     explicit RepairDialogBox(GVolume* volume, QWidget *parent = nullptr);
     QString getDeviceName ();
+    static bool mshowflag;
     ~RepairDialogBox();
 
 public Q_SLOTS:

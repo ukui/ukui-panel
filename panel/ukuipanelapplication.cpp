@@ -39,7 +39,6 @@
 #include <KWindowEffects>
 #include <QCommandLineParser>
 #include <QFile>
-#include "comm_func.h"
 
 #define CONFIG_FILE_BACKUP     "/usr/share/ukui/panel.conf"
 #define CONFIG_FILE_LOCAL      ".config/ukui/panel.conf"
@@ -51,37 +50,8 @@ UKUIPanelApplicationPrivate::UKUIPanelApplicationPrivate(UKUIPanelApplication *q
 }
 
 
-IUKUIPanel::Position UKUIPanelApplicationPrivate::computeNewPanelPosition(const UKUIPanel *p, const int screenNum)
-{
-//#define Q_D(Class) Class##Private * const d = d_func()
-//#define Q_Q(Class) Class * const q = q_func()
-    Q_Q(UKUIPanelApplication);
-    QVector<bool> screenPositions(4, false); // false means not occupied
-
-    for (int i = 0; i < q->mPanels.size(); ++i) {
-        if (p != q->mPanels.at(i)) {
-            // We are not the newly added one
-            if (screenNum == q->mPanels.at(i)->screenNum()) { // Panels on the same screen
-                int p = static_cast<int> (q->mPanels.at(i)->position());
-                screenPositions[p] = true; // occupied
-            }
-        }
-    }
-
-    int availablePosition = 0;
-
-    for (int i = 0; i < 4; ++i) { // Bottom, Top, Left, Right
-        if (!screenPositions[i]) {
-            availablePosition = i;
-            break;
-        }
-    }
-
-    return static_cast<IUKUIPanel::Position> (availablePosition);
-}
-
 UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
-    : UKUi::Application(argc, argv, true),
+    : QApplication(argc, argv, true),
     d_ptr(new UKUIPanelApplicationPrivate(this))
 
 {
@@ -164,7 +134,7 @@ UKUIPanelApplication::UKUIPanelApplication(int& argc, char** argv)
     // However, it is optional and can be used as the last resort for avoiding a low
     // contrast in the case of symbolic SVG icons. (The correct way of doing that is
     // using a Qt widget style that can assign a separate theme/QPalette to the panel.)
-    mGlobalIconTheme = QIcon::themeName();
+    m_globalIconTheme = QIcon::themeName();
     const QString iconTheme = d->mSettings->value("iconTheme").toString();
     if (!iconTheme.isEmpty())
         QIcon::setThemeName(iconTheme);
@@ -193,26 +163,9 @@ UKUIPanelApplication::~UKUIPanelApplication()
 
 void UKUIPanelApplication::cleanup()
 {
-    qDeleteAll(mPanels);
+    qDeleteAll(m_panels);
 }
 
-void UKUIPanelApplication::addNewPanel()
-{
-    Q_D(UKUIPanelApplication);
-
-    QString name("panel_" + QUuid::createUuid().toString());
-
-    UKUIPanel *p = addPanel(name);
-    int screenNum = p->screenNum();
-    IUKUIPanel::Position newPanelPosition = d->computeNewPanelPosition(p, screenNum);
-    p->setPosition(screenNum, newPanelPosition, true);
-    QStringList panels = d->mSettings->value("panels").toStringList();
-    panels << name;
-    d->mSettings->setValue("panels", panels);
-
-    // Poupup the configuration dialog to allow user configuration right away
-//    p->showConfigDialog();
-}
 
 UKUIPanel* UKUIPanelApplication::addPanel(const QString& name)
 {
@@ -220,10 +173,9 @@ UKUIPanel* UKUIPanelApplication::addPanel(const QString& name)
 
     UKUIPanel *panel = new UKUIPanel(name, d->mSettings);
     KWindowEffects::enableBlurBehind(panel->winId(),true);
-    mPanels << panel;
+    m_panels << panel;
 
     // reemit signals
-    connect(panel, &UKUIPanel::deletedByUser, this, &UKUIPanelApplication::removePanel);
     connect(panel, &UKUIPanel::pluginAdded, this, &UKUIPanelApplication::pluginAdded);
     connect(panel, &UKUIPanel::pluginRemoved, this, &UKUIPanelApplication::pluginRemoved);
 
@@ -236,41 +188,6 @@ void UKUIPanelApplication::handleScreenAdded(QScreen* newScreen)
     connect(newScreen, &QScreen::destroyed, this, &UKUIPanelApplication::screenDestroyed);
 }
 
-void UKUIPanelApplication::reloadPanelsAsNeeded()
-{
-    Q_D(UKUIPanelApplication);
-
-    // NOTE by PCMan: This is a workaround for Qt 5 bug #40681.
-    // Here we try to re-create the missing panels which are deleted in
-    // UKUIPanelApplication::screenDestroyed().
-
-    // qDebug() << "UKUIPanelApplication::reloadPanelsAsNeeded()";
-    const QStringList names = d->mSettings->value("panels").toStringList();
-    for(const QString& name : names)
-    {
-        bool found = false;
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-        for(int i=0;i<mPanels.size();i++){
-            UKUIPanel* panel=mPanels[i];
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-        for(UKUIPanel* panel : qAsConst(mPanels)){
-#endif
-            if(panel->name() == name)
-            {
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            // the panel is found in the config file but does not exist, create it.
-            qDebug() << "Workaround Qt 5 bug #40681: re-create panel:" << name;
-            addPanel(name);
-        }
-    }
-    qApp->setQuitOnLastWindowClosed(true);
-}
 
 void UKUIPanelApplication::screenDestroyed(QObject* screenObj)
 {
@@ -302,11 +219,11 @@ void UKUIPanelApplication::screenDestroyed(QObject* screenObj)
     bool reloadNeeded = false;
     qApp->setQuitOnLastWindowClosed(false);
 #if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-    for(int i=0;i<mPanels.size();i++){
-        UKUIPanel *panel=mPanels[i];
+    for(int i=0;i<m_panels.size();i++){
+        UKUIPanel *panel=m_panels[i];
 #endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-    for(UKUIPanel* panel : qAsConst(mPanels)){
+    for(UKUIPanel* panel : qAsConst(m_panels)){
 #endif
         QWindow* panelWindow = panel->windowHandle();
         if(panelWindow && panelWindow->screen() == screen)
@@ -316,7 +233,7 @@ void UKUIPanelApplication::screenDestroyed(QObject* screenObj)
             QString name = panel->name();
             panel->saveSettings(false);
             delete panel; // delete the panel, so Qt does not have a chance to set a new screen to it.
-            mPanels.removeAll(panel);
+            m_panels.removeAll(panel);
             reloadNeeded = true;
             qDebug() << "Workaround Qt 5 bug #40681: delete panel:" << name;
         }
@@ -327,50 +244,13 @@ void UKUIPanelApplication::screenDestroyed(QObject* screenObj)
         qApp->setQuitOnLastWindowClosed(true);
 }
 
-void UKUIPanelApplication::removePanel(UKUIPanel* panel)
-{
-    Q_D(UKUIPanelApplication);
-    Q_ASSERT(mPanels.contains(panel));
-
-    mPanels.removeAll(panel);
-
-    QStringList panels = d->mSettings->value("panels").toStringList();
-    panels.removeAll(panel->name());
-    d->mSettings->setValue("panels", panels);
-
-    panel->deleteLater();
-}
-
 bool UKUIPanelApplication::isPluginSingletonAndRunnig(QString const & pluginId) const
 {
-    for (auto const & panel : mPanels)
+    for (auto const & panel : m_panels)
         if (panel->isPluginSingletonAndRunnig(pluginId))
             return true;
 
     return false;
-}
-
-// See UKUIPanelApplication::UKUIPanelApplication for why this isn't good.
-void UKUIPanelApplication::setIconTheme(const QString &iconTheme)
-{
-    Q_D(UKUIPanelApplication);
-
-    d->mSettings->setValue("iconTheme", iconTheme == mGlobalIconTheme ? QString() : iconTheme);
-    QString newTheme = iconTheme.isEmpty() ? mGlobalIconTheme : iconTheme;
-    if (newTheme != QIcon::themeName())
-    {
-        QIcon::setThemeName(newTheme);
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-        for(int i=0;i<mPanels.size();i++){
-            UKUIPanel *panel=mPanels[i];
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-        for(UKUIPanel* panel : qAsConst(mPanels)){
-#endif
-//            panel->update();
-//            panel->updateConfigDialog();
-        }
-    }
 }
 
 void UKUIPanelApplication::sigtermHandler(int signo)
@@ -390,3 +270,31 @@ void UKUIPanelApplication::translator(){
      }
 }
 
+bool UKUIPanelApplication::copyFileToPath(QString sourceDir ,QString toDir, QString fileName, bool coverFileIfExist)
+{
+    if (sourceDir == toDir){
+        return true;
+    }
+    if (!QFile::exists(sourceDir+fileName)){
+        return false;
+    }
+    QDir *createDir = new QDir;
+    bool dirExist = createDir->exists(toDir);
+    if(!dirExist)
+        createDir->mkdir(toDir);
+    QFile *createFile = new QFile;
+    bool fileExist = createFile->exists(toDir+fileName);
+    if (fileExist){
+        if(coverFileIfExist){
+            createFile->remove(toDir+fileName);
+        }
+    }//end if
+    free(createDir);
+    free(createFile);
+
+    if(!QFile::copy(sourceDir+fileName, toDir+fileName))
+    {
+        return false;
+    }
+    return true;
+}
