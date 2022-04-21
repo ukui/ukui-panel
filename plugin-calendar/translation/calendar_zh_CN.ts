@@ -4,12 +4,12 @@
 <context>
     <name>CalendarActiveLabel</name>
     <message>
-        <location filename="../ukuicalendar.cpp" line="600"/>
+        <location filename="../ukuicalendar.cpp" line="595"/>
         <source>Time and Date</source>
         <translation>时间与日期</translation>
     </message>
     <message>
-        <location filename="../ukuicalendar.cpp" line="651"/>
+        <location filename="../ukuicalendar.cpp" line="646"/>
         <source>Time and Date Setting</source>
         <translation>时间日期设置</translation>
     </message>
@@ -21,22 +21,22 @@
 <context>
     <name>LunarCalendarItem</name>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="701"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="726"/>
         <source>消防宣传日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="704"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="729"/>
         <source>志愿者服务日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="707"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="732"/>
         <source>全国爱眼日</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="710"/>
+        <location filename="../lunarcalendarwidget/lunarcalendaritem.cpp" line="735"/>
         <source>抗战纪念日</source>
         <translation type="unfinished"></translation>
     </message>
@@ -44,20 +44,20 @@
 <context>
     <name>LunarCalendarWidget</name>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="369"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="370"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="387"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="388"/>
         <source>Year</source>
         <translation type="unfinished">年</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="379"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="380"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="397"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="398"/>
         <source>Month</source>
         <translation type="unfinished">月</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="391"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="392"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="409"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="410"/>
         <source>Today</source>
         <translation type="unfinished">今天</translation>
     </message>
@@ -90,8 +90,8 @@
         <translation type="obsolete">周六</translation>
     </message>
     <message>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="701"/>
-        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="921"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="719"/>
+        <location filename="../lunarcalendarwidget/lunarcalendarwidget.cpp" line="939"/>
         <source>解析json文件错误！</source>
         <translation type="unfinished"></translation>
     </message>
@@ -136,7 +136,7 @@
     <name>frmLunarCalendarWidget</name>
     <message>
         <location filename="../lunarcalendarwidget/frmlunarcalendarwidget.ui" line="14"/>
-        <location filename="../lunarcalendarwidget/ui_frmlunarcalendarwidget.h" line="126"/>
+        <location filename="../lunarcalendarwidget/ui_frmlunarcalendarwidget.h" line="144"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>

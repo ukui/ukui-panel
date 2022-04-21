@@ -44,12 +44,12 @@ LunarCalendarMonthItem::LunarCalendarMonthItem(QWidget *parent) : QWidget(parent
     QGSettings * fontSetting = new QGSettings(id, QByteArray(), this);
     connect(fontSetting, &QGSettings::changed,[=](QString key) {
         if(fontSetting->get("style-name").toString() == "ukui-default") {
-            weekColor = QColor(255, 255, 255);
-            currentTextColor = QColor(255, 255, 255);
-            otherTextColor = QColor(255, 255, 255,40);
-            otherLunarColor = QColor(255, 255, 255,40);
-            currentLunarColor = QColor(255, 255, 255,90);
-            lunarColor = QColor(255, 255, 255,90);
+            weekColor = QColor(0, 0, 0);
+            currentTextColor = QColor(0, 0, 0);
+            otherTextColor = QColor(0,0,0,40);
+            otherLunarColor = QColor(0,0,0,40);
+            currentLunarColor = QColor(0,0,0,90);
+            lunarColor = QColor(0,0,0,90);
         } else if(fontSetting->get("style-name").toString() == "ukui-light") {
             weekColor = QColor(0, 0, 0);
             currentTextColor = QColor(0, 0, 0);
@@ -68,6 +68,13 @@ LunarCalendarMonthItem::LunarCalendarMonthItem(QWidget *parent) : QWidget(parent
     });
 
     if(fontSetting->get("style-name").toString() == "ukui-light") {
+        weekColor = QColor(0, 0, 0);
+        currentTextColor = QColor(0, 0, 0);
+        otherTextColor = QColor(0,0,0,40);
+        otherLunarColor = QColor(0,0,0,40);
+        currentLunarColor = QColor(0,0,0,90);
+        lunarColor = QColor(0,0,0,90);
+    } else if(fontSetting->get("style-name").toString() == "ukui-default"){
         weekColor = QColor(0, 0, 0);
         currentTextColor = QColor(0, 0, 0);
         otherTextColor = QColor(0,0,0,40);
