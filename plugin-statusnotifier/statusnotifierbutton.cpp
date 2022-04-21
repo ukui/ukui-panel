@@ -109,7 +109,8 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
         refetchIcon(NeedsAttention);
     });
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    this->setProperty("useIconHighlightEffect", 0x2);
+    this->setProperty("useButtonPalette", true);
+    this->setProperty("useIconHighlightEffect", 0x02);
     newToolTip();
     systemThemeChanges();
 }
@@ -157,8 +158,9 @@ void StatusNotifierButton::refetchIcon(Status status)
         QIcon nextIcon;
         if (!iconName.isEmpty())
         {
-            if (QIcon::hasThemeIcon(iconName))
+            if (QIcon::hasThemeIcon(iconName)){
                 nextIcon = QIcon::fromTheme(iconName);
+            }
             else
             {
                 QDir themeDir(mThemePath);
@@ -183,9 +185,8 @@ void StatusNotifierButton::refetchIcon(Status status)
                     }
                 }
             }
-	    nextIcon=HighLightEffect::drawSymbolicColoredIcon(nextIcon);
-           
-	    switch (status)
+
+            switch (status)
             {
                 case Active:
                     mOverlayIcon = nextIcon;
@@ -350,19 +351,27 @@ void StatusNotifierButton::wheelEvent(QWheelEvent *event)
 
 void StatusNotifierButton::resetIcon()
 {
+    QIcon appIcon;
     if (mStatus == Active && !mOverlayIcon.isNull())
-        setIcon(mOverlayIcon);
+        appIcon = mOverlayIcon;
     else if (mStatus == NeedsAttention && !mAttentionIcon.isNull())
-        setIcon(mAttentionIcon);
+        appIcon = mAttentionIcon;
     else if (!mIcon.isNull()) // mStatus == Passive
-        setIcon(mIcon);
+        appIcon = mIcon;
     else if (!mOverlayIcon.isNull())
-        setIcon(mOverlayIcon);
+        appIcon = mOverlayIcon;
     else if (!mAttentionIcon.isNull())
-        setIcon(mAttentionIcon);
+        appIcon = mAttentionIcon;
     else
-        setIcon(mFallbackIcon);
+        appIcon = mFallbackIcon;
 
+    QStringList stylelist;
+    stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK;
+    if (stylelist.contains(mThemeSettings->get(STYLE_NAME).toString())){
+        appIcon=QIcon(HighLightEffect::drawSymbolicColoredIcon(appIcon));
+    }
+
+    setIcon(appIcon);
 
     mIconStatus=true;
     emit paramReady();
@@ -374,11 +383,10 @@ void StatusNotifierButton::systemThemeChanges()
     const QByteArray styleId(ORG_UKUI_STYLE);
     if(QGSettings::isSchemaInstalled(styleId)){
         mThemeSettings = new QGSettings(styleId);
-
         connect(mThemeSettings, &QGSettings::changed, this, [=] (const QString &key){
-            if(key == ICON_THEME_NAME){
+            if(key == STYLE_NAME){
                 //主题变化任务栏主动更新图标
-                refetchIcon(Passive);
+                resetIcon();
             }
         });
     }

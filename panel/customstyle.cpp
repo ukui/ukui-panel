@@ -59,7 +59,7 @@ CustomStyle::CustomStyle(const QString &proxyStyleName, bool multileWins, QObjec
 
     const QByteArray id(ORG_UKUI_STYLE);
         QStringList stylelist;
-        stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK<<STYLE_NAME_KEY_DEFAULT;
+        stylelist<<STYLE_NAME_KEY_DARK<<STYLE_NAME_KEY_BLACK;
         if (QGSettings::isSchemaInstalled(id)) {
             m_gsettings = new QGSettings(id);
             if (stylelist.contains(m_gsettings->get(STYLE_NAME).toString()))
